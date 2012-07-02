@@ -19,9 +19,9 @@ import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.6
+ * @since   1.7
  */
 public class OfferTemplateRequest extends AbstractRequest {
 

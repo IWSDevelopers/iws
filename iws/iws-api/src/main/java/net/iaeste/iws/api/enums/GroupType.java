@@ -22,9 +22,9 @@ package net.iaeste.iws.api.enums;
  * Members, National and Sar - In fact, a user can only be member of either 1
  * National or 1 SAR.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  */
 public enum GroupType {
 

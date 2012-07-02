@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  */
 public class ExchangeController extends CommonController implements Exchange {
 

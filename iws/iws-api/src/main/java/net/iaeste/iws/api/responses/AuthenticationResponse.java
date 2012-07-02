@@ -23,7 +23,7 @@ import net.iaeste.iws.api.data.AuthenticationToken;
  * contain a successful result, i.e. an AuthenticationToken for the requested
  * user. Or it will contain an error message.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection SuppressionAnnotation

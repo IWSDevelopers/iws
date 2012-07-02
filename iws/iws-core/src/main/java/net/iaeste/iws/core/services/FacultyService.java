@@ -22,7 +22,7 @@ import net.iaeste.iws.api.responses.FacultyResponse;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  */
 public class FacultyService {
 

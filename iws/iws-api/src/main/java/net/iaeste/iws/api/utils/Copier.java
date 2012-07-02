@@ -26,7 +26,7 @@ import java.util.Map;
  * reason for using this, is to ensure that object, which is not immutable is
  * properly copied - to avoid leaking internal data references.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

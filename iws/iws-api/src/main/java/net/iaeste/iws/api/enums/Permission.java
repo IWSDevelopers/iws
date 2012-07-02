@@ -15,7 +15,7 @@
 package net.iaeste.iws.api.enums;
 
 /**
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

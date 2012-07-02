@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Listing of Permission for a user.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection SuppressionAnnotation

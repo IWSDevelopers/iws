@@ -22,7 +22,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
  * Interface, which throws this Exception, if there lacks important information
  * required for the processing.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

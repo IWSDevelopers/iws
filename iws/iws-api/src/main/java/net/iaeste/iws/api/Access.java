@@ -25,7 +25,7 @@ import net.iaeste.iws.api.responses.PermissionResponse;
  * request a new session and deprecate an ongoing session. As well as list the
  * permissions that a user has.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

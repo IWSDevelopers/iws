@@ -23,7 +23,7 @@ import java.io.Serializable;
  * they are containing the expected information. Thus, they all have to
  * implement this Interface.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

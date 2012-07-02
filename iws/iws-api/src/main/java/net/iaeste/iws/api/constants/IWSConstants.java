@@ -17,7 +17,7 @@ package net.iaeste.iws.api.constants;
 /**
  * Generic constants, for the IW Services.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

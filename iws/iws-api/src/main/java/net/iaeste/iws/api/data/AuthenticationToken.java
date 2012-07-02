@@ -24,7 +24,7 @@ import net.iaeste.iws.api.requests.Verifiable;
  * enough information to positively identify the user, who initiated a given
  * Request.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection SuppressionAnnotation

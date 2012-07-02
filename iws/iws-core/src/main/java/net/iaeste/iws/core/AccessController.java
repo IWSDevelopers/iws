@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  */
 public final class AccessController extends CommonController implements Access {
 

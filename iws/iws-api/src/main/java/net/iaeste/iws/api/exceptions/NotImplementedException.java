@@ -22,9 +22,9 @@ import net.iaeste.iws.api.constants.IWSErrors;
  * this exception should not become the norm, rather the exception for features
  * which have been added to the external API, but haven't been implemented yet.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  */
 public class NotImplementedException extends IWSException {
 

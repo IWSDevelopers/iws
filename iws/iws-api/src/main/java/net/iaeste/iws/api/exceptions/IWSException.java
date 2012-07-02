@@ -21,7 +21,7 @@ import net.iaeste.iws.api.constants.IWSError;
  * Basic Exception, which all other exceptions in the system should inherit
  * from. It may not be thrown directly.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

@@ -20,7 +20,7 @@ import java.io.Serializable;
  * All error codes, which are sent externally accessible, should be of this
  * type.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection SuppressionAnnotation

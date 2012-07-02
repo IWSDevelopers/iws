@@ -15,9 +15,9 @@
 package net.iaeste.iws.api.enums;
 
 /**
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since  1.6
+ * @since   1.7
  */
 public enum Membership {
 

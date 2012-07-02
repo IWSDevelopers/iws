@@ -14,11 +14,6 @@
  */
 package net.iaeste.iws.api.responses;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
 import com.gargoylesoftware.base.testing.EqualsTester;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
@@ -26,12 +21,15 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.data.AuthenticationToken;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+
 /**
  * Test for the AuthenticationResponse Object.
  * 
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  * @noinspection SuppressionAnnotation
  */
 public class AuthenticationResultTest {

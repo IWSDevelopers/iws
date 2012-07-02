@@ -14,18 +14,18 @@
  */
 package net.iaeste.iws.api.data;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-
 import com.gargoylesoftware.base.testing.EqualsTester;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+
 /**
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  * @noinspection SuppressionAnnotation
  */
 public final class AuthenticationTokenTest {

@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * Contains the functionality to properly verify given values.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

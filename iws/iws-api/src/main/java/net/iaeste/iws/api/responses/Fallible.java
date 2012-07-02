@@ -22,7 +22,7 @@ import java.io.Serializable;
  * All Result Object must implement this functionality, since it contains the
  * error information.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

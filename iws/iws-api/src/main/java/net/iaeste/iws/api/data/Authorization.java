@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * Contains the information about a permission.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection SuppressionAnnotation

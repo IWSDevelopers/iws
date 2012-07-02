@@ -14,20 +14,20 @@
  */
 package net.iaeste.iws.api.requests;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-
 import com.gargoylesoftware.base.testing.EqualsTester;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+
 /**
  * Test for the AuthenticationRequest Object.
  *
- * @author  Kim Jensen
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  * @noinspection SuppressionAnnotation
  */
 public class AuthenticationRequestTest {

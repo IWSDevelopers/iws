@@ -1,0 +1,476 @@
+IWS Permission Model.
+
+--------------------------------------------------------------------------------
+----------                           PART I                           ----------
+--------------------------------------------------------------------------------
+
+The IntraWeb Services requires that all requests are made with enough
+information to determine if the request can be authenticated (do we know the
+user) and authorized (do we allow the requst for this known user).
+  To accomplish this, lets first look at the requirements for accessing the
+system, together with the requested changes.
+
+1. Users must be assigned to Groups.
+2. Groups may share commonalities, i.e. national, local, etc.
+3. Users may belong to multiple Groups
+4. Users Permissions in a group are determined by a Role
+
+So far, this means that we have the following terms; User, Group, Role,
+Permission, Commonalities. Since Commonalities are directly linked to Groups
+and more accurately specify the Groups "Type", we'll rename this to
+"GroupType".
+
+This means that we have the following list:
+ o User
+ o Group
+ o GroupType
+ o Role
+ o Permission
+
+Now, we need to link the information together in a more formalized way, to
+ensure that the model will be computable, i.e. we need to be able to link all
+of the information together in the database in a way, which can be accessed
+with a single query.
+  First, it makes sense to define a simple User Group relationship, which
+determines the users access in a group: user_to_group (user_id, group_id). This
+must be a unique entity, so a constraint on this value pair is required.
+  Additionally, we need to specify the permissions that a user has in a Group,
+this is done by additionally have a role_id assigned, so the user_to_group
+table will look as follows:
+
+table user_to_group (
+  user_id_fk       INTEGER REFERENCES users (id),
+  group_id_fk      INTEGER REFERENCES groups (id),
+  role_id_fk       INTEGER REFERENCES roles (id),
+  UNIQUE (user_id_fk, group_id_fk)
+);
+
+Next, we need to determine what a Role really implies. We do this, by creating
+another relation table called permission_to_role (permission_id, role_id),
+which will determine what kind of permissions a certain role may have.
+
+table permission_to_role (
+  permission_id_fk INTEGER REFERENCES permissions (id),
+  role_id_fk       INTEGER REFERENCES roles (id),
+  UNIQUE (permission_id_fk, role_id_fk)
+);
+
+Now, we have determined the model, that will be the basis for access. A user is
+uniquely identified with a group and a set of permissions. However, there is
+still something missing. Two aspects have to be clarified.
+  First, how to differentiate between the permissions a group may have. We
+already established, that Groups have GroupTypes, so let's start linking it
+together.
+
+table groups (
+  id               INTEGER PRIMARY KEY,
+  group_type_id_fk INTEGER REFERENCES group_types (id)
+);
+
+With this in place, all we need is to assign permissions to the GroupType:
+
+table permission_to_group_type (
+  permission_id_fk INTEGER REFERENCES permissions (id),
+  group_type_id_fk INTEGER REFERENCES group_types (id)
+  UNIQUE (permission_id_fk, group_type_id_fk)
+);
+
+Now, we have determined how Permissions are assigned to a Group, via the
+GroupType. We come to the second problem. How to ensure that users will not be
+confused, as to what a role means! If we start creating new unique roles for
+each GroupType, we will end up with users having many different roles, and most
+of them will share some common aspects, which is applicable to all groups, and
+also have some additional features, unique to the GroupType. Rather than doing
+this, we simply allow a Role to be used acrosse multiple Groups, regardless of
+their GroupType. By doing this, we face the problem that 2 listing of
+Permissions exists. However, here we have a simple solution, we simply look at
+the two sets of permissions, and only the overlapping will be accessible for
+the current User, towards the Group.
+
+The current IntraWeb (IW3) has some additional features, and there has also
+been requests to extend this, so the Roles of Group members can be more
+differentiated. For example, so there may be a role to administrate Users, one
+to administrate exchange inbox and a third to administrate the outbox. There
+are also Groups, which have some rights assigned directly, i.e. without using
+the normally assigned rights via the GroupType.
+
+If the above mentioned model is not finalized, then it should be possible to
+create additional roles, with different rights assigned. The group specific
+rules would require a third relation, but rather than creating a third
+relation, it can also be accomplished by creating an additional GroupType, with
+only 1 Group using it. This way, the complexity of the queries can be kept to
+a minimum.
+
+One problem with doing these things in accordance to this is that a number of
+roles may be created. This list of roles will contain both the general, but
+also the special cases. To fix this problem, a new table can be added, which is
+only used when listing potential roles. Now the problem is, that if the
+custom rules are linked to the GroupTypes, then they may appear as clutter.
+Instead, a mechanism should be added, to give a combined list of roles which
+consists of generic roles and special roles.
+
+table role_2_group (
+  role_id_fk       INTEGER REFERENCES roles (id),
+  group_id_fk      INTEGER REFERENCES groups (id),
+);
+
+Roles are all listed in this table, if the group_id is -1, then it is a generic
+role, otherwise the specific group must be listed.
+
+Now, let's try to construct all the tables again, but with a bit additional
+information, just enough to make it clearer what is going on.
+
+--------------------------------------------------------------------------------
+----------                          PART II                           ----------
+--------------------------------------------------------------------------------
+
+-- First, let's drop any existing tables & views, to avoid errors
+drop view if exists group_permissions;
+drop view if exists user_permissions;
+drop table if exists role_to_group;
+drop table if exists user_to_group;
+drop table if exists permission_to_role;
+drop table if exists permission_to_group_type;
+drop table if exists users;
+drop table if exists roles;
+drop table if exists groups;
+drop table if exists group_types;
+drop table if exists permissions;
+
+-- Standard tables for users, groups, roles & permissions
+create table users (
+  id               INTEGER PRIMARY KEY,
+  user_name        VARCHAR(50)
+);
+
+create table group_types (
+  id               INTEGER PRIMARY KEY,
+  group_type       VARCHAR(50)
+);
+
+create table groups (
+  id               INTEGER PRIMARY KEY,
+  group_name       VARCHAR(50),
+  group_type_id_fk INTEGER REFERENCES group_types (id)
+);
+
+drop table if exists permissions;
+create table permissions (
+  id               INTEGER PRIMARY KEY,
+  permission       VARCHAR(50)
+);
+
+create table roles (
+  id               INTEGER PRIMARY KEY,
+  role             VARCHAR(50)
+);
+
+-- Relation tables for the permission model
+create table permission_to_group_type (
+  permission_id_fk INTEGER REFERENCES permissions (id),
+  group_type_id_fk INTEGER REFERENCES roles (id),
+  UNIQUE (permission_id_fk, group_type_id_fk)
+);
+
+create table permission_to_role (
+  permission_id_fk INTEGER REFERENCES permissions (id),
+  role_id_fk       INTEGER REFERENCES roles (id),
+  UNIQUE (permission_id_fk, role_id_fk)
+);
+
+create table role_to_group (
+  role_id_fk       INTEGER REFERENCES roles (id),
+  group_id_fk      INTEGER REFERENCES groups (id)
+);
+
+create table user_to_group (
+  user_id_fk       INTEGER REFERENCES users (id),
+  group_id_fk      INTEGER REFERENCES groups (id),
+  role_id_fk       INTEGER REFERENCES roles (id),
+  PRIMARY KEY (user_id_fk, group_id_fk)
+);
+
+-- Views, to simplify the lookups
+create view user_permissions as
+  select
+    u.id         as uid,
+    g.id         as gid,
+    t.id         as tid,
+    r.id         as rid,
+    p.id         as pid,
+    u.user_name  as username,
+    g.group_name as groupname,
+    t.group_type as grouptype,
+    r.role       as rolename,
+    p.permission as permission
+  from
+    users u,
+    groups g,
+    group_types t,
+    roles r,
+    permissions p,
+    user_to_group u2g,
+    permission_to_role p2r,
+    permission_to_group_type p2t
+  where t.id = g.group_type_id_fk
+    and u.id = u2g.user_id_fk
+    and g.id = u2g.group_id_fk
+    and r.id = u2g.role_id_fk
+    and p.id = p2r.permission_id_fk
+    and r.id = p2r.role_id_fk
+    and p.id = p2t.permission_id_fk
+    and t.id = p2t.group_type_id_fk
+;
+
+create view group_permissions as
+  select
+    t.id   as tid,
+    p.id   as pid,
+    t.group_type as grouptype,
+    p.permission as permission
+  from
+    group_types t,
+    permissions p,
+    permission_to_group_type p2t
+  where t.id = p2t.group_type_id_fk
+    and p.id = p2t.permission_id_fk
+;
+
+-- Let's illustrate this setup, by using a construct from the Lord of the Rings
+
+-- First, the weapons, that is permitted to be used
+insert into permissions (id, permission) values (1, 'Cast Spells');
+insert into permissions (id, permission) values (2, 'Bow & Arrow');
+insert into permissions (id, permission) values (3, 'Axe');
+insert into permissions (id, permission) values (4, 'Swords');
+insert into permissions (id, permission) values (5, 'Daggers');
+insert into permissions (id, permission) values (6, 'Horse Riding');
+insert into permissions (id, permission) values (7, 'Spears');
+-- Second, the different GroupTypes, that we have
+insert into group_types (id, group_type) values (1, 'Half Size');
+insert into group_types (id, group_type) values (2, 'Full Size');
+insert into group_types (id, group_type) values (3, 'Wizardry');
+insert into group_types (id, group_type) values (4, 'Fellowship');
+-- Third, the different Roles in the system
+insert into roles (id, role) values (1, 'Traveller');
+insert into roles (id, role) values (2, 'Horseman');
+insert into roles (id, role) values (3, 'Wizard');
+insert into roles (id, role) values (4, 'Dwarfs');
+insert into roles (id, role) values (5, 'Elves');
+insert into roles (id, role) values (6, 'Hobbits');
+
+-- Now, that have the primary elements for the permission, let's assign the
+-- roles & group_types some permissions
+-- First, the permissions for each grouptype
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (1, 3);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (1, 5);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (2, 1);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (2, 2);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (2, 4);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (2, 6);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (2, 7);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (3, 1);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (3, 6);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (4, 1);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (4, 2);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (4, 3);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (4, 4);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (4, 5);
+insert into permission_to_group_type (group_type_id_fk, permission_id_fk) values (4, 6);
+-- Second, the permissions to each role
+insert into permission_to_role (role_id_fk, permission_id_fk) values (1, 2);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (1, 4);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (1, 6);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (2, 6);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (2, 7);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (3, 1);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (3, 4);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (3, 6);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (4, 3);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (5, 2);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (5, 4);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (5, 6);
+insert into permission_to_role (role_id_fk, permission_id_fk) values (6, 5);
+
+-- With this rather simple setup, we can now start creating different groups
+insert into groups (id, group_type_id_fk, group_name) values (1, 1, 'Dwarfs');
+insert into groups (id, group_type_id_fk, group_name) values (2, 1, 'Hobbits');
+insert into groups (id, group_type_id_fk, group_name) values (3, 2, 'Elves');
+insert into groups (id, group_type_id_fk, group_name) values (4, 2, 'Men');
+insert into groups (id, group_type_id_fk, group_name) values (5, 3, 'Wizards');
+insert into groups (id, group_type_id_fk, group_name) values (6, 4, 'Fellowship');
+-- Now, let's add some users
+insert into users (id, user_name) values ( 1, 'Frodo');
+insert into users (id, user_name) values ( 2, 'Sam');
+insert into users (id, user_name) values ( 3, 'Merry');
+insert into users (id, user_name) values ( 4, 'Pippin');
+insert into users (id, user_name) values ( 5, 'Gandalf');
+insert into users (id, user_name) values ( 6, 'Aragorn');
+insert into users (id, user_name) values ( 7, 'Boromir');
+insert into users (id, user_name) values ( 8, 'Gimli');
+insert into users (id, user_name) values ( 9, 'Legolas');
+insert into users (id, user_name) values (10, 'Elrond');
+insert into users (id, user_name) values (11, 'Saruman');
+insert into users (id, user_name) values (12, 'Eomer');
+
+-- With the list of Users, Groups & Role sin place, let's put them together :-)
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 8, 1, 4);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 1, 2, 6);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 2, 2, 6);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 3, 2, 6);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 4, 2, 6);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 9, 3, 1);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values (10, 3, 3);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 5, 4, 3);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 6, 4, 1);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 7, 4, 1);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values (11, 4, 3);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values (12, 4, 2);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 5, 5, 3);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values (11, 5, 3);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 1, 6, 6);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 2, 6, 6);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 3, 6, 6);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 4, 6, 6);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 5, 6, 3);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 6, 6, 1);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 7, 6, 1);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 8, 6, 4);
+insert into user_to_group (user_id_fk, group_id_fk, role_id_fk) values ( 9, 6, 5);
+
+--------------------------------------------------------------------------------
+----------                          PART III                          ----------
+--------------------------------------------------------------------------------
+
+Now we have described the idea, created the database and added data to actually
+display the idea - let's try to make some queries to show how the idea works.
+
+First, let's try to see what we get from the user_permission view:
+
+$ select uid, gid, username, groupname, permission from user_permissions;
+ uid | gid | username | groupname  |  permission
+-----+-----+----------+------------+--------------
+   7 |   6 | Boromir  | Fellowship | Bow & Arrow
+   6 |   6 | Aragorn  | Fellowship | Bow & Arrow
+   7 |   4 | Boromir  | Men        | Bow & Arrow
+   6 |   4 | Aragorn  | Men        | Bow & Arrow
+   9 |   3 | Legolas  | Elves      | Bow & Arrow
+   7 |   6 | Boromir  | Fellowship | Swords
+   6 |   6 | Aragorn  | Fellowship | Swords
+   7 |   4 | Boromir  | Men        | Swords
+   6 |   4 | Aragorn  | Men        | Swords
+   9 |   3 | Legolas  | Elves      | Swords
+   7 |   6 | Boromir  | Fellowship | Horse Riding
+   6 |   6 | Aragorn  | Fellowship | Horse Riding
+   7 |   4 | Boromir  | Men        | Horse Riding
+   6 |   4 | Aragorn  | Men        | Horse Riding
+   9 |   3 | Legolas  | Elves      | Horse Riding
+  12 |   4 | Eomer    | Men        | Horse Riding
+  12 |   4 | Eomer    | Men        | Spears
+   5 |   6 | Gandalf  | Fellowship | Cast Spells
+  11 |   5 | Saruman  | Wizards    | Cast Spells
+   5 |   5 | Gandalf  | Wizards    | Cast Spells
+  11 |   4 | Saruman  | Men        | Cast Spells
+   5 |   4 | Gandalf  | Men        | Cast Spells
+  10 |   3 | Elrond   | Elves      | Cast Spells
+   5 |   6 | Gandalf  | Fellowship | Swords
+  11 |   4 | Saruman  | Men        | Swords
+   5 |   4 | Gandalf  | Men        | Swords
+  10 |   3 | Elrond   | Elves      | Swords
+   5 |   6 | Gandalf  | Fellowship | Horse Riding
+  11 |   5 | Saruman  | Wizards    | Horse Riding
+   5 |   5 | Gandalf  | Wizards    | Horse Riding
+  11 |   4 | Saruman  | Men        | Horse Riding
+   5 |   4 | Gandalf  | Men        | Horse Riding
+  10 |   3 | Elrond   | Elves      | Horse Riding
+   8 |   6 | Gimli    | Fellowship | Axe
+   8 |   1 | Gimli    | Dwarfs     | Axe
+   9 |   6 | Legolas  | Fellowship | Bow & Arrow
+   9 |   6 | Legolas  | Fellowship | Swords
+   9 |   6 | Legolas  | Fellowship | Horse Riding
+   4 |   6 | Pippin   | Fellowship | Daggers
+   3 |   6 | Merry    | Fellowship | Daggers
+   2 |   6 | Sam      | Fellowship | Daggers
+   1 |   6 | Frodo    | Fellowship | Daggers
+   4 |   2 | Pippin   | Hobbits    | Daggers
+   3 |   2 | Merry    | Hobbits    | Daggers
+   2 |   2 | Sam      | Hobbits    | Daggers
+   1 |   2 | Frodo    | Hobbits    | Daggers
+(46 rows)
+
+It may not be entirely clear what we actually are reading. So, if we look at
+the list for a specific group, eg. Elves:
+
+$ select uid, username, rolename, permission from user_permissions where gid = 3;
+ uid | username | rolename  |  permission
+-----+----------+-----------+--------------
+  10 | Elrond   | Wizard    | Cast Spells
+   9 | Legolas  | Traveller | Bow & Arrow
+   9 | Legolas  | Traveller | Swords
+  10 | Elrond   | Wizard    | Swords
+   9 | Legolas  | Traveller | Horse Riding
+  10 | Elrond   | Wizard    | Horse Riding
+(6 rows)
+
+This makes it easier. Now we can see that we have 2 users, Elrond & Legolas. In
+this context, Legolas is known as a Traveller, while Elrond is known as a
+Wizard. This means that they both have overlapping permissions, but also
+different permissions. Elrond is allowed to Cast Spells, whereas Legolas is
+allowed (famous for) using a Bow & Arrow. Both can use swords and ride horses.
+
+If we look at the grouptype for the Elves, we'll get a different picture:
+
+$ select tid, grouptype, permission from group_permissions where tid = 2;
+ tid | grouptype |  permission
+-----+-----------+--------------
+   2 | Full Size | Cast Spells
+   2 | Full Size | Bow & Arrow
+   2 | Full Size | Swords
+   2 | Full Size | Horse Riding
+   2 | Full Size | Spears
+(5 rows)
+
+We can see that the Elves are considered part of a GroupType called "Full Size"
+which in addition to the other rights we have just seen, also have the
+permission to use Spears. However, when we invoke the first view again, with
+this specific permission, we get a list of all users who are allowed to use it:
+
+$ select uid, gid, username, groupname, rolename, permission from user_permissions where pid = 7;
+ uid | gid | username | groupname | rolename | permission
+-----+-----+----------+-----------+----------+------------
+  12 |   4 | Eomer    | Men       | Horseman | Spears
+(1 row)
+
+Here we can see, that only the user Eomer is allowed to use this functionality,
+and only for the group Men. If we instead ask who may use magic:
+
+$ select uid, gid, username, groupname, rolename, permission from user_permissions where pid = 1;
+ uid | gid | username | groupname  | rolename | permission
+-----+-----+----------+------------+----------+-------------
+  10 |   3 | Elrond   | Elves      | Wizard   | Cast Spells
+   5 |   4 | Gandalf  | Men        | Wizard   | Cast Spells
+  11 |   4 | Saruman  | Men        | Wizard   | Cast Spells
+   5 |   5 | Gandalf  | Wizards    | Wizard   | Cast Spells
+  11 |   5 | Saruman  | Wizards    | Wizard   | Cast Spells
+   5 |   6 | Gandalf  | Fellowship | Wizard   | Cast Spells
+(6 rows)
+
+We get a more differentiated answer. Three different users belonging to a total
+of four different groups are allowed to use this. Since the permission is
+generally assigned to the role Wizard. We can also make the lookup differently,
+by invokding the other view and see which groups are permitted to invoke spell
+casting:
+
+$ select tid, grouptype, permission from group_permissions where pid = 1;
+ tid | grouptype  | permission
+-----+------------+-------------
+   2 | Full Size  | Cast Spells
+   3 | Wizardry   | Cast Spells
+   4 | Fellowship | Cast Spells
+(3 rows)
+
+So, to summarize. It is possible to fine-grain the permissions that a given
+User has towards a given Group. The same role will yield a different result
+against Groups with different GroupTypes. Of course, the examples given here
+are rather primitive, and LoTR is not the optimal choice for this setup - but
+it was still possible to get the picture.

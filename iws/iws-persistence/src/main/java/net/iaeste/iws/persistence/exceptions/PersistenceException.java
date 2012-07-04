@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.exceptions.AuthorizationException
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.exceptions.PersistenceException
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,33 +12,28 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.core.exceptions;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
+package net.iaeste.iws.persistence.exceptions;
+
+import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.exceptions.IWSException;
 
 /**
- * If the user is not allowed to perform a given action, then this Exception is
- * thrown.
- *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class AuthorizationException extends IWSException {
-
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
-    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+public class PersistenceException extends IWSException {
 
     /**
-     * Default Constructor.
+     * Default Constructor, for the case where an error condition has arisen,
+     * and the only information available is the type of error, and a message
+     * describing the error.
      *
-     * @param message  Specific message, regarding the problem
-     * @see IWSException
-     * @see IWSErrors#AUTHORIZATION_ERROR
+     * @param error   IW-Base Error
+     * @param message Specific message, regarding the problem
      */
-    public AuthorizationException(final String message) {
-        super(IWSErrors.AUTHORIZATION_ERROR, message);
+    public PersistenceException(final IWSError error, final String message) {
+        super(error, message);
     }
 }

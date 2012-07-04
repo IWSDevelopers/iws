@@ -11,6 +11,7 @@
     <modules>
         <module>../iws-api</module>
         <module>../iws-common</module>
+        <module>../iws-persistence</module>
         <module>../iws-core</module>
     </modules>
 

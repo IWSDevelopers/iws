@@ -19,6 +19,11 @@ import net.iaeste.iws.api.data.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.FacultyRequest;
+import net.iaeste.iws.api.requests.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.FetchOffersRequest;
+import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.OfferRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
@@ -83,8 +88,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FacultyResponse findFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        LOG.trace("Starting findFaculties()");
+    public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
+        LOG.trace("Starting fetchFaculties()");
         FacultyResponse response;
 
         try {
@@ -92,12 +97,12 @@ public class ExchangeController extends CommonController implements Exchange {
             verify(request, "To be clarified.");
 
             final FacultyService service = factory.prepareFacultyService();
-            response = service.findFaculties(token, request);
+            response = service.fetchFaculties(token, request);
         } catch (IWSException e) {
             response = new FacultyResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished findFaculties()");
+        LOG.trace("Finished fetchFaculties()");
         return response;
     }
 
@@ -128,8 +133,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse findOffers(final AuthenticationToken token, final OfferRequest request) {
-        LOG.trace("Starting findOffers()");
+    public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+        LOG.trace("Starting fetchOffers()");
         OfferResponse response;
 
         try {
@@ -137,12 +142,12 @@ public class ExchangeController extends CommonController implements Exchange {
             verify(request, "To be clarified.");
 
             final OfferService service = factory.prepareOfferService();
-            response = service.findOffers(token, request);
+            response = service.fetchOffers(token, request);
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished findOffers()");
+        LOG.trace("Finished fetchOffers()");
         return response;
     }
 
@@ -173,8 +178,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferTemplateResponse findOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
-        LOG.trace("Starting findOfferTemplates()");
+    public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
+        LOG.trace("Starting fetchOfferTemplates()");
         OfferTemplateResponse response;
 
         try {
@@ -182,12 +187,12 @@ public class ExchangeController extends CommonController implements Exchange {
             verify(request, "To be clarified.");
 
             final OfferService service = factory.prepareOfferService();
-            response = service.findOfferTemplates(token, request);
+            response = service.fetchOfferTemplates(token, request);
         } catch (IWSException e) {
             response = new OfferTemplateResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished findOfferTemplates()");
+        LOG.trace("Finished fetchOfferTemplates()");
         return response;
     }
 
@@ -218,8 +223,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public PublishGroupResponse findPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
-        LOG.trace("Starting findPublishGroups()");
+    public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+        LOG.trace("Starting fetchPublishGroups()");
         PublishGroupResponse response;
 
         try {
@@ -227,12 +232,12 @@ public class ExchangeController extends CommonController implements Exchange {
             verify(request, "To be clarified.");
 
             final OfferService service = factory.prepareOfferService();
-            response = service.findPublishGroups(token, request);
+            response = service.fetchPublishGroups(token, request);
         } catch (IWSException e) {
             response = new PublishGroupResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished findPublishGroups()");
+        LOG.trace("Finished fetchPublishGroups()");
         return response;
     }
 
@@ -263,8 +268,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public StudentResponse findStudents(final AuthenticationToken token, final StudentRequest request) {
-        LOG.trace("Starting findStudents()");
+    public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+        LOG.trace("Starting fetchStudents()");
         StudentResponse response;
 
         try {
@@ -272,12 +277,12 @@ public class ExchangeController extends CommonController implements Exchange {
             verify(request, "To be clarified.");
 
             final StudentService service = factory.prepareStudentService();
-            response = service.findStudents(token, request);
+            response = service.fetchStudents(token, request);
         } catch (IWSException e) {
             response = new StudentResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished findStudents()");
+        LOG.trace("Finished fetchStudents()");
         return response;
     }
 }

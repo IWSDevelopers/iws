@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.services.StudentService
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchOfferTemplatesRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,26 +12,24 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.core.services;
+package net.iaeste.iws.api.requests;
 
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.StudentResponse;
+import net.iaeste.iws.api.exceptions.VerificationException;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class StudentService {
+public class FetchOfferTemplatesRequest extends AbstractRequest {
 
-    public void processStudents(final AuthenticationToken token, final StudentRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+    @Override
+    public void verify() throws VerificationException {
+        throw new NotImplementedException("Not yet implemented");
     }
 }

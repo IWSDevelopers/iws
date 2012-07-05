@@ -17,6 +17,7 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.data.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FacultyRequest;
+import net.iaeste.iws.api.requests.FetchFacultiesRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 
 /**
@@ -30,7 +31,7 @@ public class FacultyService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public FacultyResponse findFaculties(final AuthenticationToken token, final FacultyRequest request) {
+    public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

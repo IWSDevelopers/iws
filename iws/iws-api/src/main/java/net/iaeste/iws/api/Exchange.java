@@ -15,11 +15,7 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.data.AuthenticationToken;
-import net.iaeste.iws.api.requests.FacultyRequest;
-import net.iaeste.iws.api.requests.OfferRequest;
-import net.iaeste.iws.api.requests.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.PublishGroupRequest;
-import net.iaeste.iws.api.requests.StudentRequest;
+import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.OfferResponse;
@@ -35,17 +31,17 @@ import net.iaeste.iws.api.responses.StudentResponse;
 public interface Exchange {
 
     Fallible processFaculties(AuthenticationToken token, FacultyRequest request);
-    FacultyResponse findFaculties(AuthenticationToken token, FacultyRequest request);
+    FacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
 
     Fallible processOffers(AuthenticationToken token, OfferRequest request);
-    OfferResponse findOffers(AuthenticationToken token, OfferRequest request);
+    OfferResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
     Fallible processOfferTemplates(AuthenticationToken token, OfferTemplateRequest request);
-    OfferTemplateResponse findOfferTemplates(AuthenticationToken token, OfferTemplateRequest request);
+    OfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
 
     Fallible processPublishGroups(AuthenticationToken token, PublishGroupRequest request);
-    PublishGroupResponse findPublishGroups(AuthenticationToken token, PublishGroupRequest request);
+    PublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
     Fallible processStudents(AuthenticationToken token, StudentRequest request);
-    StudentResponse findStudents(AuthenticationToken token, StudentRequest request);
+    StudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
 }

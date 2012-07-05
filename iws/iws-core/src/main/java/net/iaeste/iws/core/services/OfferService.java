@@ -16,9 +16,7 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.data.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.OfferRequest;
-import net.iaeste.iws.api.requests.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.PublishGroupRequest;
+import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
@@ -34,7 +32,7 @@ public class OfferService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public OfferResponse findOffers(final AuthenticationToken token, final OfferRequest request) {
+    public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
@@ -42,7 +40,7 @@ public class OfferService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public OfferTemplateResponse findOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
@@ -50,7 +48,7 @@ public class OfferService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public PublishGroupResponse findPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
+    public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

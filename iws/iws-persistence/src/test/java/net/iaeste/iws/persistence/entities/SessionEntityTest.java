@@ -83,7 +83,6 @@ public class SessionEntityTest {
             fail("This should not happen!");
         } else {
             final SessionEntity result = entities.get(0);
-            assertThat(result.getId(), is(2L));
             assertThat(result.getSessionKey(), is(key));
         }
     }

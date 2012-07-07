@@ -13,6 +13,7 @@
         <module>../iws-common</module>
         <module>../iws-persistence</module>
         <module>../iws-core</module>
+        <module>../iws-fe</module>
     </modules>
 
     <organization>
@@ -26,6 +27,13 @@
             <name>Kim Nørregaard Jensen</name>
             <roles>
                 <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>matej</id>
+            <name>Matej Kosco</name>
+            <roles>
                 <role>developer</role>
             </roles>
         </developer>

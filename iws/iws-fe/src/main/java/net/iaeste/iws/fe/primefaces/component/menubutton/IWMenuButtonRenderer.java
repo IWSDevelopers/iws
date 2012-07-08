@@ -22,8 +22,9 @@ import java.io.IOException;
 public class IWMenuButtonRenderer extends MenuButtonRenderer {
 
     /**
-     * Overwritten because we want to have the icon on the right side of the button
+     * {@inheritDoc}
      */
+    @Override
     protected void encodeButton(FacesContext context, MenuButton button, String buttonId, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String value = button.getValue();

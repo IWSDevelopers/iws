@@ -34,7 +34,10 @@
                     <ui:insert name="navigation"/>
 
                     <div class="rightNavigation">
-                        <p:menuButton value="Logged in user first name" styleClass="menuAlignRight">
+                        <!-- TODO remomve username check and use only the actual username as soon as login functionality is provided -->
+                        <p:menuButton
+                                value="#{securityContext.username != null ? securityContext.username : 'username'}"
+                                styleClass="menuAlignRight">
                             <p:menuitem value="#{amsg.userSettings}" icon="ui-icon-gear"/>
                             <p:menuitem value="#{amsg.logOut}" icon="ui-icon-arrowreturnthick-1-e" url="/logout"/>
                         </p:menuButton>
@@ -69,7 +72,7 @@
             </p:panel>
 
             <p:panel styleClass="content">
-                <h1 class="pageTitle"></h1>
+                <h1 class="pageTitle">#{title}</h1>
                 <ui:insert name="content"/>
             </p:panel>
 

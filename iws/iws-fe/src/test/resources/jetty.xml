@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+
+<!-- Configuration for-jetty-maven plugin to be able to run embedded jetty server for development -->
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+    <Call class="java.lang.System" name="setProperty">
+        <Arg>java.security.auth.login.config</Arg>
+        <Arg>./src/main/webapp/WEB-INF/login.conf
+        </Arg>
+    </Call>
+
+    <Call name="addBean">
+        <Arg>
+            <New class="org.eclipse.jetty.plus.jaas.JAASLoginService">
+                <!-- IWS Security Realm -->
+                <Set name="name">INTRAWEB</Set>
+                <!--
+                    Defines which java.security.Principal implementation should be used for Roles
+                    Must be set up, otherwise the server/servlet container does not know the difference
+                    between a user and a role.
+                 -->
+                <Set name="roleClassNames">
+                    <Array type="java.lang.String">
+                        <Item>net.iaeste.iws.fe.security.jaas.IWSRole</Item>
+                    </Array>
+                </Set>
+                <!-- Name of the used javax.security.auth.spi.LoginModule implementation -->
+                <Set name="LoginModuleName">IWSLoginModule</Set>
+            </New>
+        </Arg>
+    </Call>
+
+</Configure>

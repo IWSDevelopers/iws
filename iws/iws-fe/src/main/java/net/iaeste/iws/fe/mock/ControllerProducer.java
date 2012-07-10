@@ -16,13 +16,13 @@ package net.iaeste.iws.fe.mock;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.fe.exceptions.ProjectStageException;
+import net.iaeste.iws.fe.util.ProjectStageProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.ProjectStage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 /**
@@ -43,8 +43,8 @@ public class ControllerProducer {
 
     private static final Logger LOG = LoggerFactory.getLogger(ControllerProducer.class);
 
-    /* JSF Project stage */
-    private final ProjectStage projectStage = FacesContext.getCurrentInstance().getApplication().getProjectStage();
+    @Inject
+    private ProjectStage projectStage;
 
     @Inject
     @Mock

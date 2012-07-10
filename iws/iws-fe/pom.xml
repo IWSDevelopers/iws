@@ -48,6 +48,7 @@
                     </systemProperties>
                     <stopKey>X</stopKey>
                     <stopPort>9999</stopPort>
+                    <jettyXml>${build.testOutputDirectory}/jetty.xml</jettyXml>
                 </configuration>
             </plugin>
 
@@ -69,7 +70,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependency>
 
         <!-- JSF -->

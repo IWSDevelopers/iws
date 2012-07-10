@@ -17,8 +17,9 @@ package net.iaeste.iws.fe.mock;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.data.AuthenticationToken;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.data.Authorization;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
@@ -27,7 +28,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Mock implementation of {@link Access}
@@ -43,18 +48,33 @@ public class MockAccessController implements Access, Serializable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
     private static final Logger LOG = LoggerFactory.getLogger(MockAccessController.class);
 
+    /* Map<Token, Username> */
+    private Map<String, String> loggedInUsers = new HashMap<>();
+
+    @Inject
+    private TestUserProvider testUserProvider;
+
     @Override
     public AuthenticationResponse generateSession(AuthenticationRequest request) {
-        throw new NotImplementedException("TBD");
+        if (testUserProvider.getUserNames().contains(request.getUsername())) {
+            String dummy = "DUMMY_TOKEN_".concat(String.valueOf(loggedInUsers.size()));
+            AuthenticationToken token = new AuthenticationToken(dummy);
+            loggedInUsers.put(token.getToken(), request.getUsername());
+            return new AuthenticationResponse(token);
+        }
+        return new AuthenticationResponse(IWSErrors.AUTHENTICATION_ERROR, "Wrong username or password");
     }
 
     @Override
     public Fallible deprecateSession(AuthenticationToken token) {
-        throw new NotImplementedException("TBD");
+        loggedInUsers.remove(token.getToken());
+        return new AuthenticationResponse(token);
     }
 
     @Override
     public PermissionResponse findPermissions(AuthenticationToken token) {
-        throw new NotImplementedException("TBD");
+        String username = loggedInUsers.get(token.getToken());
+        List<Authorization> auth = testUserProvider.getUserAuthorizations(username);
+        return new PermissionResponse(auth);
     }
 }

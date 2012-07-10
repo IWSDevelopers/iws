@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fe) - net.iaeste.iws.fe.exceptions.ProjectStageException
+ * Project: IntraWeb Services (iws-fe) - net.iaeste.iws.fe.servlet.LogoutServlet
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,33 +12,31 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.fe.exceptions;
+package net.iaeste.iws.fe.servlet;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.exceptions.IWSException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * This exception should be throws if there is an issue with the
- * {@link javax.faces.application.ProjectStage}
+ * WebServlet to log out the current users
  *
  * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class ProjectStageException extends IWSException {
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+public class LogoutServlet extends HttpServlet {
 
-    /* {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
-    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Destroys the session for this user.
+        request.getSession(false).invalidate();
 
-    /**
-     * Default Constructor.
-     *
-     * @param message Specific message, regarding the problem
-     * @see IWSException
-     * @see net.iaeste.iws.api.constants.IWSErrors#FATAL
-     */
-    public ProjectStageException(final String message) {
-        super(IWSErrors.FATAL, message);
+        // Redirects back to the initial page.
+        response.sendRedirect(request.getContextPath());
     }
 }

@@ -20,5 +20,10 @@
             <renderer-type>org.primefaces.component.MenuButtonRenderer</renderer-type>
             <renderer-class>net.iaeste.iws.fe.primefaces.component.menubutton.IWMenuButtonRenderer</renderer-class>
         </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OutputLabelRenderer</renderer-type>
+            <renderer-class>net.iaeste.iws.fe.primefaces.component.outputlabel.IWOutputLabelRenderer</renderer-class>
+        </renderer>
     </render-kit>
 </faces-config>

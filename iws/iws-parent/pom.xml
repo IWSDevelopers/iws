@@ -13,7 +13,6 @@
         <module>../iws-common</module>
         <module>../iws-persistence</module>
         <module>../iws-core</module>
-        <module>../iws-fe</module>
     </modules>
 
     <organization>

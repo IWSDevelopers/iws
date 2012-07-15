@@ -71,15 +71,31 @@ public class SecurityContextImpl implements SecurityContext {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void authenticate(String username, String password) throws AuthenticationException {
+        authenticateUser(username, password);
+        List<Authorization> permissions = requestPermissions(null);
+        authorizations.put(DEFAULT_GROUP_ID, permissions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isAuthenticated() {
+        return authentication != null;
+    }
+
+    /**
+     * @see SecurityContextImpl#authenticate(String, String)
+     */
+    private void authenticateUser(String username, String password) {
         AuthenticationRequest request = new AuthenticationRequest(username, password);
         AuthenticationResponse response = accessController.generateSession(request);
 
         if (response.isOk()) {
-            LOG.info("User {} successfully authenticated!", username);
             this.username = username;
             this.authentication = response.getToken();
-            requestPermissions(null);
+            LOG.info("User {} successfully authenticated!", username);
         } else {
             LOG.info("Could not authenticate user {}", username);
             throw new AuthenticationException(response.getMessage());
@@ -87,21 +103,21 @@ public class SecurityContextImpl implements SecurityContext {
     }
 
     /**
-     * Request permissions for an authenticated user,optionally for a given group.
+     * Request permissions for an authenticated user, optionally for a given group.
      * <p/>
      * Stores the permissions in the <code>authorizations</code> Map.
      * If no permissions could be found, stores an empty List in the Map.
      *
      * @param groupId a groupId if the permissions are requested
-     *                for a certain group, otherwise null
+     *                for a certain group, null otherwise
      * @throws AuthenticationException if permissions could not be loaded
      */
-    private void requestPermissions(Integer groupId) throws AuthenticationException {
+    private List<Authorization> requestPermissions(Integer groupId) throws AuthenticationException {
         AuthenticationToken copyToken = new AuthenticationToken(authentication.getToken(), groupId);
         PermissionResponse response = accessController.findPermissions(copyToken);
 
         if (response.isOk()) {
-            authorizations.put(groupId == null ? DEFAULT_GROUP_ID : groupId, response.getAuthorizations());
+            return response.getAuthorizations();
         } else {
             LOG.info("Could not request permissions for user {}, group {}", username, groupId);
             throw new AuthenticationException(response.getMessage());
@@ -111,6 +127,7 @@ public class SecurityContextImpl implements SecurityContext {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getUsername() {
         return username;
     }
@@ -118,6 +135,7 @@ public class SecurityContextImpl implements SecurityContext {
     /**
      * {@inheritDoc}
      */
+    @Override
     public AuthenticationToken getAuthentication() {
         return new AuthenticationToken(authentication);
     }
@@ -125,6 +143,7 @@ public class SecurityContextImpl implements SecurityContext {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasPermission(Permission permission) {
         return hasPermission(permission, DEFAULT_GROUP_ID);
     }
@@ -132,6 +151,7 @@ public class SecurityContextImpl implements SecurityContext {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasPermission(Permission permission, Integer groupId) {
         if (groupId == null) {
             throw new VerificationException("GroupId cannot be null");
@@ -139,7 +159,8 @@ public class SecurityContextImpl implements SecurityContext {
 
         if (!authorizations.containsKey(groupId)) {
             try {
-                requestPermissions(groupId);
+                List<Authorization> permissions = requestPermissions(groupId);
+                authorizations.put(groupId, permissions);
             } catch (AuthenticationException e) {
                 LOG.error("Reading permissions for groupId " + groupId + " failed!", e);
                 authorizations.put(groupId, Collections.<Authorization>emptyList());
@@ -157,6 +178,7 @@ public class SecurityContextImpl implements SecurityContext {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void logout() {
         Fallible response = accessController.deprecateSession(authentication);
 

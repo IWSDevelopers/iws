@@ -38,7 +38,8 @@ public interface SecurityContext extends Serializable {
      *
      * @param username plaintext username
      * @param password plaintext password
-     * @throws AuthenticationException if the response was not ok or permission could not be loaded
+     * @throws AuthenticationException if the user could not be authenticated
+     *                                 or permissions could not be loaded
      */
     public void authenticate(String username, String password) throws AuthenticationException;
 
@@ -74,4 +75,9 @@ public interface SecurityContext extends Serializable {
      * User credentials are removed event if deprecating the session fails.
      */
     public void logout();
+
+    /**
+     * @return true if a user is already authenticated
+     */
+    public boolean isAuthenticated();
 }

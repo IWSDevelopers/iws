@@ -47,6 +47,7 @@ public class MockAccessController implements Access, Serializable {
 
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
     private static final Logger LOG = LoggerFactory.getLogger(MockAccessController.class);
+    private static int sessionCounter;
 
     /* Map<Token, Username> */
     private Map<String, String> loggedInUsers = new HashMap<>();
@@ -56,13 +57,23 @@ public class MockAccessController implements Access, Serializable {
 
     @Override
     public AuthenticationResponse generateSession(AuthenticationRequest request) {
-        if (testUserProvider.getUserNames().contains(request.getUsername())) {
-            String dummy = "DUMMY_TOKEN_".concat(String.valueOf(loggedInUsers.size()));
-            AuthenticationToken token = new AuthenticationToken(dummy);
+        if (credentialsOK(request)) {
+            AuthenticationToken token = getDummyToken();
             loggedInUsers.put(token.getToken(), request.getUsername());
             return new AuthenticationResponse(token);
         }
         return new AuthenticationResponse(IWSErrors.AUTHENTICATION_ERROR, "Wrong username or password");
+    }
+
+    private boolean credentialsOK(AuthenticationRequest request) {
+        String uName = request.getUsername() != null ? request.getUsername() : "";
+        String pass = request.getPassword() != null ? request.getPassword() : "";
+        return testUserProvider.getUserNames().contains(uName) && testUserProvider.getPassword(uName).equals(pass);
+    }
+
+    private AuthenticationToken getDummyToken() {
+        String dummy = "DUMMY_TOKEN_".concat(String.valueOf(sessionCounter++));
+        return new AuthenticationToken(dummy);
     }
 
     @Override

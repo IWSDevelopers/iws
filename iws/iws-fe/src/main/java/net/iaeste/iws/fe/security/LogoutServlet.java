@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fe) - net.iaeste.iws.fe.servlet.LogoutServlet
+ * Project: IntraWeb Services (iws-fe) - net.iaeste.iws.fe.security.LogoutServlet
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.fe.servlet;
+package net.iaeste.iws.fe.security;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

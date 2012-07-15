@@ -17,19 +17,15 @@ package net.iaeste.iws.fe.security.jaas;
 
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.fe.security.SecurityContext;
-import net.iaeste.iws.fe.security.SecurityContextImpl;
-import net.iaeste.iws.fe.util.BeanManagerProvider;
+import net.iaeste.iws.fe.util.CdiHelper;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Inject;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.*;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Custom implementation of the {@link LoginModule}.
@@ -46,7 +42,7 @@ import java.util.Set;
  * access to any part of the Frontend, except for the login and  password
  * forgotten pages.
  * <p/>
- * See <code>web.xml</code> for the configuration.
+ * See <code>WEB-INF/web.xml</code> for the configuration.
  *
  * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -62,6 +58,10 @@ public class IWSLoginModule implements LoginModule {
     /* Subject to store between initialization and authentication. */
     private Subject subject;
 
+    /* The security context for the current http session */
+    @Inject
+    private SecurityContext securityContext;
+
     private String login;
     private String credentials;
 
@@ -70,8 +70,20 @@ public class IWSLoginModule implements LoginModule {
      */
     @Override
     public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
+        initSecurityContext();
         this.handler = callbackHandler;
         this.subject = subject;
+    }
+
+    /**
+     * Initialize resources if they haven't been injected yet.
+     * Injection via @Inject does not usually work at least for
+     * servlet containers so we have to do it programatically.
+     */
+    private void initSecurityContext() {
+        if (securityContext == null) {
+            CdiHelper.programmaticInjection(this);
+        }
     }
 
     /**
@@ -86,11 +98,11 @@ public class IWSLoginModule implements LoginModule {
         try {
             handler.handle(callbacks);
 
-            String name = ((NameCallback) callbacks[0]).getName();
-            String password = String.valueOf(((PasswordCallback) callbacks[1]).getPassword());
+            String name = ((NameCallback) callbacks[0]).getName().trim();
+            String password = String.valueOf(((PasswordCallback) callbacks[1]).getPassword()).trim();
 
             try {
-                getSecurityContext().authenticate(name, password);
+                securityContext.authenticate(name, password);
             } catch (AuthenticationException e) {
                 throw new LoginException("Authentication failed");
             }
@@ -100,9 +112,7 @@ public class IWSLoginModule implements LoginModule {
 
             return true;
 
-        } catch (IOException e) {
-            throw new LoginException(e.getMessage());
-        } catch (UnsupportedCallbackException e) {
+        } catch (IOException | UnsupportedCallbackException e) {
             throw new LoginException(e.getMessage());
         }
     }
@@ -141,7 +151,7 @@ public class IWSLoginModule implements LoginModule {
     @Override
     public boolean logout() throws LoginException {
         try {
-            getSecurityContext().logout();
+            securityContext.logout();
 
             IWSUser user = new IWSUser(login);
             IWSRole role = new IWSRole(DEFAULT_ROLE);
@@ -150,35 +160,10 @@ public class IWSLoginModule implements LoginModule {
             subject.getPrincipals().remove(role);
 
             return true;
+
         } catch (Exception e) {
             throw new LoginException(e.getMessage());
         }
     }
-
-    /**
-     * Get the current instance of the {@link net.iaeste.iws.fe.security.SecurityContext}
-     * We cannot use injection through annotations here so we have to lookup the bean
-     * manually.
-     *
-     * @return
-     */
-    private SecurityContext getSecurityContext() {
-        BeanManager bm = BeanManagerProvider.getBeanManager();
-        Set<Bean<?>> beans = bm.getBeans(SecurityContextImpl.class);
-
-        if (beans.size() == 0) {
-            throw new RuntimeException("no beans of type " + SecurityContextImpl.class.getName() + " found!");
-        }
-
-        if (beans.size() > 1) {
-            throw new RuntimeException("multiple beans of type " + SecurityContextImpl.class.getName() + " found!");
-        }
-
-        Bean<SecurityContext> bean = (Bean<SecurityContext>) beans.iterator().next();
-        CreationalContext<SecurityContext> ctx = bm.createCreationalContext(bean);
-
-        return (SecurityContext) bm.getReference(bean, SecurityContext.class, ctx);
-    }
-
 
 }

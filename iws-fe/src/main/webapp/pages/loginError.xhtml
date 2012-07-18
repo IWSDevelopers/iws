@@ -7,45 +7,24 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
+<ui:composition template="/pages/templates/login.xhtml">
 
-<f:view>
+<ui:param name="title" value="#{amsg.defaultPageHeader}" />
 
-    <h:head>
-        <title>Dummy Login Form</title>
-    </h:head>
+<ui:define name="content">
 
-    <h:body>
-        <h2>Login Failed! Try again:</h2>
+    <h:panelGrid columns="1">
 
-        <form method="post" action="j_security_check">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="j_username" value="Please type your user name:"/>
-                <h:inputText id="j_username"/>
-                <h:outputLabel for="j_password" value="Please type your password:"/>
-                <h:inputText id="j_password"/>
-                <h:outputText value="&nbsp;"/>
-                <input type="submit" name="submit" value="Submit"/>
-                <input type="reset" name="reset" value="Reset"/>
-            </h:panelGrid>
-        </form>
+        <h:outputText value="#{amsg.loginError}" styleClass="error" />
 
-        <h:panelGroup rendered="#{projectStage == 'Development'}">
-            <h2>Development mode</h2>
-            <h3>Available dummy users:</h3>
-
-            <p:dataTable value="#{testUserProvider.userNameList}" var="user">
-                <p:column headerText="username">
-                    <h:outputText value="#{user}"/>
-                </p:column>
-                <p:column headerText="password">
-                    <h:outputText value="#{testUserProvider.getPassword(user)}"/>
-                </p:column>
-                <p:column headerText="permissions">
-                    <h:outputText value="#{testUserProvider.getUserAuthorizations(user)}"/>
-                </p:column>
-            </p:dataTable>
-
+        <h:panelGroup>
+            <h:link value="#{amsg.backToLogin}" outcome="login" />
+            <p:spacer width="35px" height="33px"/>
+            <h:link value="#{amsg.passwordForgotten}" outcome="passwordForgotten" styleClass="light"/>
         </h:panelGroup>
-    </h:body>
-</f:view>
+
+    </h:panelGrid>
+
+</ui:define>
+</ui:composition>
 </html>

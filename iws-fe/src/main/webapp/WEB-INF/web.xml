@@ -64,8 +64,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>intraweb</web-resource-name>
-            <url-pattern>/pages/*.xhtml</url-pattern>
-            <url-pattern>/</url-pattern>
+            <url-pattern>/pages/iaeste/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>IS_AUTHENTICATED</role-name>

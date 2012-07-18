@@ -33,8 +33,7 @@ abstract class AbstractRequest implements Verifiable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** The e-mail compliance regular expression. */
-    private static final String EMAIL_REGEX = "^[a-z0-9_\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|eu|mobi)$";
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(IWSConstants.EMAIL_REGEX);
 
     /**
      * The method takes a value, and verifies that this value is not null. If
@@ -104,7 +103,7 @@ abstract class AbstractRequest implements Verifiable {
      */
     protected void verifyEmail(final String field, final String value) throws VerificationException {
         if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
-            throw new VerificationException(format("The field %s isn't compliant with the allowed format for e-mail's: %s.", field, EMAIL_REGEX));
+            throw new VerificationException(format("The field %s isn't compliant with the allowed format for e-mail's: %s.", field, IWSConstants.EMAIL_REGEX));
         }
     }
 

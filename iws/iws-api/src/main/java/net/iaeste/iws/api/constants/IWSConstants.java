@@ -17,20 +17,25 @@ package net.iaeste.iws.api.constants;
 /**
  * Generic constants, for the IW Services.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public interface IWSConstants {
+
+    /**
+     * The e-mail compliance regular expression.
+     */
+    String EMAIL_REGEX = "^[a-z0-9_\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|eu|mobi)$";
 
     /**
      * All serialized classes should use this value. The value reflects the
      * current version of the system. If updates are made in one or more of the
      * serialized classes, it should be updated.<br />
-     *   If not used, then all classes that are serialized will have a runtime
+     * If not used, then all classes that are serialized will have a runtime
      * performance overhead while calculating a UID, which matches the current
      * class. See "Effective Java, 2nd Edition" - Item 75.<br />
-     *   As this is a useless overhead and simple to avoid, it is recommended to
+     * As this is a useless overhead and simple to avoid, it is recommended to
      * do so. Just add the following line in the beginning of all serialized
      * and derived classes:<br /><br />
      *

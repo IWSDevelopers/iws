@@ -1,0 +1,113 @@
+<ui:component xmlns=""
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+        <composite:attribute name="offer" required="true" type="net.iaeste.iws.fe.model.Offer"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGrid columns="3">
+
+            <p:outputLabel for="faculty" value="#{amsg.faculty}"/>
+            <p:autoComplete id="faculty" value="#{cc.attrs.offer.faculty}" minQueryLength="3" dropdown="true" required="true"
+                            completeMethod="#{offerBean.completeFaculty}" var="e" itemLabel="#{e.name}" itemValue="#{e}" styleClass="xLargeInput"/>
+            <h:message for="faculty" errorClass="error"/>
+
+            <p:outputLabel for="otherFaculty" value="#{amsg.otherFaculty}"/>
+            <p:inputText id="otherFaculty" value="#{cc.attrs.offer.otherFaculty}" styleClass="xLargeInput"/>
+            <h:message for="otherFaculty" errorClass="error"/>
+
+            <p:outputLabel for="specialization" value="#{amsg.specialization}"/>
+            <p:inputText id="specialization" value="#{cc.attrs.offer.specialization}" styleClass="xLargeInput"/>
+            <h:message for="specialization" errorClass="error"/>
+
+            <p:outputLabel for="studyLevel" value="#{amsg.studyLevel}"/>
+            <p:selectManyCheckbox id="studyLevel" value="#{cc.attrs.offer.selectedLevelOfStudy}" layout="pageDirection" required="true"
+                                  label="#{amsg.studyLevel}">
+                <f:selectItems value="#{offerBean.studyLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+            </p:selectManyCheckbox>
+            <h:message for="studyLevel" errorClass="error"/>
+
+            <p:outputLabel for="previousTrainingRequired" value="#{amsg.previousTrainingRequired}"/>
+            <p:selectBooleanCheckbox id="previousTrainingRequired" value="#{cc.attrs.offer.previousTrainingRequired}"/>
+            <h:message for="previousTrainingRequired" errorClass="error"/>
+
+            <p:outputLabel for="otherRequirements" value="#{amsg.otherRequirements}"/>
+            <p:inputTextarea id="otherRequirements" value="#{cc.attrs.offer.otherRequirements}" rows="6" cols="33" styleClass="xLargeInput"/>
+            <h:message for="otherRequirements" errorClass="error"/>
+
+            <p:outputLabel for="gender" value="#{amsg.gender}"/>
+            <p:selectOneRadio id="gender" value="#{cc.attrs.offer.selectedGender}" required="true">
+                <f:selectItems value="#{offerBean.genders}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+            </p:selectOneRadio>
+            <h:message for="gender" errorClass="error"/>
+
+            <p:outputLabel for="language1" value="#{amsg.language1}"/>
+            <h:panelGroup>
+                <p:inputText id="language1" value="#{cc.attrs.offer.language1}" required="#{cc.attrs.offer.language1Required}" styleClass="xLargeInput"/>
+                <p:selectOneRadio id="languageOneLevel" value="#{cc.attrs.offer.languageOneLevel}" required="#{cc.attrs.offer.language1Required}"
+                                  label="#{amsg.language1}">
+                    <f:selectItems value="#{offerBean.languageLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                </p:selectOneRadio>
+                <p:selectBooleanCheckbox id="or" value="#{cc.attrs.offer.language1Required}"
+                                         disabled="#{empty cc.attrs.offer.language2 and empty cc.attrs.offer.language3}"
+                                         required="#{empty cc.attrs.offer.language2 and empty cc.attrs.offer.language3}">
+                    <p:ajax update="language1 languageOneLevel" process="@this"/>
+                </p:selectBooleanCheckbox>
+                <h:outputText value="#{amsg.checkRequired}"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <h:message for="languageOneLevel" errorClass="error"/>
+                <h:message for="language1" errorClass="error"/>
+            </h:panelGroup>
+
+            <h:panelGroup/>
+            <h:outputText value="#{amsg.languageRequirements}" styleClass="description"/>
+            <h:panelGroup/>
+
+            <p:outputLabel for="language2" value="#{amsg.language2}"/>
+            <h:panelGroup>
+                <p:inputText id="language2" value="#{cc.attrs.offer.language2}" required="#{cc.attrs.offer.language2Required}" styleClass="xLargeInput">
+                    <p:ajax event="keyup" process="@this" update="or"/>
+                </p:inputText>
+                <p:selectOneRadio id="languageTwoLevel" value="#{cc.attrs.offer.languageTwoLevel}" required="#{cc.attrs.offer.language2Required}"
+                                  label="#{amsg.language2}">
+                    <f:selectItems value="#{offerBean.languageLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                </p:selectOneRadio>
+                <p:selectBooleanCheckbox id="or2" value="#{cc.attrs.offer.language2Required}">
+                    <p:ajax update="language2 languageTwoLevel" process="@this"/>
+                </p:selectBooleanCheckbox>
+                <h:outputText value="#{amsg.checkRequired}"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <h:message for="language2" errorClass="error"/>
+                <h:message for="languageTwoLevel" errorClass="error"/>
+            </h:panelGroup>
+
+            <p:outputLabel for="language3" value="#{amsg.language3}"/>
+            <h:panelGroup>
+                <p:inputText id="language3" value="#{cc.attrs.offer.language3}" required="#{cc.attrs.offer.language3Required}" styleClass="xLargeInput">
+                    <p:ajax event="keyup" process="@this" update="or"/>
+                </p:inputText>
+                <p:selectOneRadio id="languageThreeLevel" value="#{cc.attrs.offer.languageThreeLevel}" required="#{cc.attrs.offer.language3Required}"
+                                  label="#{amsg.language3}">
+                    <f:selectItems value="#{offerBean.languageLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                </p:selectOneRadio>
+                <p:selectBooleanCheckbox id="or3" value="#{cc.attrs.offer.language3Required}">
+                    <p:ajax update="language3 languageThreeLevel" process="@this"/>
+                </p:selectBooleanCheckbox>
+                <h:outputText value="#{amsg.checkRequired}"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <h:message for="language3" errorClass="error"/>
+                <h:message for="languageThreeLevel" errorClass="error"/>
+            </h:panelGroup>
+
+        </h:panelGrid>
+    </composite:implementation>
+
+</ui:component>

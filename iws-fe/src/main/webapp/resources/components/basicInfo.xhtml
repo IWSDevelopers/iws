@@ -1,0 +1,30 @@
+<ui:component xmlns=""
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui">
+
+    <composite:interface>
+        <composite:attribute name="offer" required="true" type="net.iaeste.iws.fe.model.Offer"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGrid columns="3">
+
+            <p:outputLabel for="refNo" value="#{amsg.refNo}"/>
+            <p:inputMask id="refNo" value="#{cc.attrs.offer.refNo}" mask="AT-9999-9999-aa" styleClass="mediumInput"/>
+            <h:message for="refNo" errorClass="error"/>
+
+            <h:panelGroup/>
+            <h:outputText value="#{amsg.refNoDescription}" styleClass="description"/>
+            <h:panelGroup/>
+
+            <p:outputLabel for="nominationDeadline" value="#{amsg.nominationDeadline}"/>
+            <p:calendar id="nominationDeadline" value="#{cc.attrs.offer.nominationDeadline}" required="true" pattern="#{JSFUtils.defaultDateFormat}"
+                        styleClass="mediumInput"/>
+            <h:message for="nominationDeadline" errorClass="error"/>
+
+        </h:panelGrid>
+    </composite:implementation>
+
+</ui:component>

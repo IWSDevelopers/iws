@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:offer="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="/pages/templates/iaeste.xhtml">
+    <ui:param name="title" value="#{amsg.editOFormHeader}"/>
+    <ui:define name="content">
+        <h:form>
+            <p:tabView>
+
+                <p:tab title="#{amsg.basicInfoText}">
+                    <offer:basicInfo offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+
+                <p:tab title="#{amsg.employerInfoText}">
+                    <offer:employerInfo offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+
+                <p:tab title="#{amsg.studentInfoText}">
+                    <offer:studentInfo offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+
+                <p:tab title="#{amsg.workOfferedText}">
+                    <offer:workOffered offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+
+                <p:tab title="#{amsg.accommodationText}">
+                     <offer:accommodation offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+            </p:tabView>
+            <p:commandButton value="#{amsg.saveOFormButton}" process="@form" update="@form"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

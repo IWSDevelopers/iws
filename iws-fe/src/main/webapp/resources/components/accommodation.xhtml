@@ -1,0 +1,53 @@
+<ui:component xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+        <composite:attribute name="offer" required="true" type="net.iaeste.iws.fe.model.Offer"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGrid columns="3">
+
+            <p:outputLabel for="lodgingArrangedBy" value="#{amsg.lodgingArrangedBy}"/>
+            <p:inputText id="lodgingArrangedBy" value="#{cc.attrs.offer.lodgingArrangedBy}" styleClass="largeInput"/>
+            <h:message for="lodgingArrangedBy" errorClass="error"/>
+
+            <p:outputLabel id="costOfLodgingLbl" for="estimatedCostOfLodging"
+                           value="#{amsg.estimatedCostOfLodging} (#{amsg.handleGetObject(cc.attrs.offer.selectedCurrency.nameProperty)})"/>
+            <h:panelGroup>
+                <p:inputText id="estimatedCostOfLodging" value="#{cc.attrs.offer.estimatedCostOfLodging}" styleClass="smallInput"/>
+                <p:selectOneRadio id="estimatedCostOfLodgingPeriod" value="#{cc.attrs.offer.selectedCostOfLodgingPeriod}" required="true"
+                                  label="#{amsg.estimatedCostOfLodging}">
+                    <f:selectItems value="#{offerBean.paymentPeriods}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                </p:selectOneRadio>
+            </h:panelGroup>
+            <h:panelGroup>
+                <h:message for="estimatedCostOfLodging" errorClass="error"/>
+                <h:message for="estimatedCostOfLodgingPeriod" errorClass="error"/>
+            </h:panelGroup>
+
+            <p:outputLabel id="costOfLivingLbl" for="estimatedCostOfLiving"
+                           value="#{amsg.estimatedCostOfLiving} (#{amsg.handleGetObject(cc.attrs.offer.selectedCurrency.nameProperty)})"/>
+            <h:panelGroup>
+                <p:inputText id="estimatedCostOfLiving" value="#{cc.attrs.offer.estimatedCostOfLiving}" styleClass="smallInput"/>
+                <p:selectOneRadio id="estimatedCostOfLivingPeriod" value="#{cc.attrs.offer.selectedCostOfLivingPeriod}" required="true"
+                                  label="#{amsg.estimatedCostOfLiving}">
+                    <f:selectItems value="#{offerBean.paymentPeriods}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                </p:selectOneRadio>
+            </h:panelGroup>
+            <h:panelGroup>
+                <h:message for="estimatedCostOfLiving" errorClass="error"/>
+                <h:message for="estimatedCostOfLivingPeriod" errorClass="error"/>
+            </h:panelGroup>
+
+            <p:outputLabel for="canteenFacilities" value="#{amsg.canteenFacilities}"/>
+            <p:selectBooleanCheckbox id="canteenFacilities" value="#{cc.attrs.offer.canteenFacilities}"/>
+            <h:message for="canteenFacilities" errorClass="error"/>
+
+        </h:panelGrid>
+    </composite:implementation>
+
+</ui:component>

@@ -88,3 +88,22 @@ html, body {
     margin: 0 0 10px 0;
     padding: 0 0 0 0;
 }
+
+.loginForm {
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    width: 400px;
+    height: 150px;
+    text-align: center;
+
+}
+
+.loginForm table{
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}

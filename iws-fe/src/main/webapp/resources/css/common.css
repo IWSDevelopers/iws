@@ -3,3 +3,45 @@
 * that can be used by developers to style widgets
 */
 
+.xSmallInput, .xSmallInput input {
+    width: 25px !important;
+}
+
+.smallInput, .smallInput input {
+    width: 50px !important;
+}
+
+.mediumInput, .mediumInput input {
+    width: 100px !important;
+}
+
+.largeInput, .largeInput input {
+    width: 150px !important;
+}
+
+.xLargeInput, .xLargeInput input {
+    width: 200px !important;
+}
+
+.xxLargeInput, .xxLargeInput input {
+    width: 250px !important;
+}
+
+.light {
+    color: #A29B9B !important;
+    text-decoration: none;
+}
+
+.light:hover {
+    color: #000000 !important;
+}
+
+.error, .error a {
+    color: #FF0000 !important;
+    font-weight: bold;
+}
+
+.description {
+    color: #A29B9B;
+    font-style: italic;
+}

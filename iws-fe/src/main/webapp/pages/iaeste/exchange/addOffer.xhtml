@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:offer="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="/pages/templates/iaeste.xhtml">
+    <ui:param name="title" value="#{amsg.newOFormHeader}"/>
+    <ui:define name="content">
+        <h:form>
+            <p:wizard widgetVar="wiz" flowListener="#{offerBean.onFlowProcess}">
+
+                <p:tab id="basicInfo" title="#{amsg.basicInfoText}">
+                    <offer:basicInfo offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+
+                <p:tab id="employerInfo" title="#{amsg.employerInfoText}">
+                    <offer:employerInfo offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+
+                <p:tab id="studentInfo" title="#{amsg.studentInfoText}">
+                    <offer:studentInfo offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+
+                <p:tab id="workOffered" title="#{amsg.workOfferedText}">
+                    <offer:workOffered offer="#{offerBean.emptyOffer}"/>
+                </p:tab>
+
+                <p:tab id="accommodation" title="#{amsg.accommodationText}">
+                    <offer:accommodation offer="#{offerBean.emptyOffer}"/>
+                    <p:commandButton value="#{amsg.addOFormButton}" process="@form" update="@form"/>
+                </p:tab>
+
+            </p:wizard>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

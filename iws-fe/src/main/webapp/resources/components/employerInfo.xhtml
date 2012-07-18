@@ -1,0 +1,69 @@
+<ui:component xmlns=""
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+        <composite:attribute name="offer" required="true" type="net.iaeste.iws.fe.model.Offer"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGrid id="emplInfoParent" columns="3">
+
+            <p:outputLabel for="employer" value="#{amsg.employer}"/>
+            <p:autoComplete id="employer" value="#{cc.attrs.offer.employer}" minQueryLength="3" dropdown="true" required="true"
+                            completeMethod="#{offerBean.complete}" var="e" itemLabel="#{e.employer}" itemValue="#{e}" styleClass="LargeInput">
+                <p:ajax event="itemSelect" process="@this" update="emplInfoParent" listener="#{cc.attrs.offer.employerChanged}"/>
+            </p:autoComplete>
+            <h:message for="employer" errorClass="error"/>
+
+            <p:outputLabel for="address" value="#{amsg.address}"/>
+            <p:inputText id="address" value="#{cc.attrs.offer.address}" styleClass="LargeInput"/>
+            <h:message for="address" errorClass="error"/>
+
+            <h:panelGrid/>
+            <p:inputText id="address2" value="#{cc.attrs.offer.address2}" styleClass="LargeInput"/>
+            <h:message for="address2" errorClass="error"/>
+
+            <p:outputLabel for="businessOrProducts" value="#{amsg.businessOrProducts}"/>
+            <p:inputText id="businessOrProducts" value="#{cc.attrs.offer.businessOrProducts}" styleClass="LargeInput"/>
+            <h:message for="businessOrProducts" errorClass="error"/>
+
+            <p:outputLabel for="numberOfEmployees" value="#{amsg.numberOfEmployees}"/>
+            <p:inputText id="numberOfEmployees" value="#{cc.attrs.offer.numberOfEmployees}" styleClass="smallInput"/>
+            <h:message for="numberOfEmployees" errorClass="error"/>
+
+            <p:outputLabel for="website" value="#{amsg.website}"/>
+            <p:inputText id="website" value="#{cc.attrs.offer.website}" styleClass="xLargeInput"/>
+            <h:message for="website" errorClass="error"/>
+
+            <p:outputLabel for="workingPlace" value="#{amsg.workingPlace}"/>
+            <p:inputText id="workingPlace" value="#{cc.attrs.offer.workingPlace}" styleClass="largeInput"/>
+            <h:message for="workingPlace" errorClass="error"/>
+
+            <p:outputLabel for="nearestInternationalAirport" value="#{amsg.nearestInternationalAirport}"/>
+            <p:inputText id="nearestInternationalAirport" value="#{cc.attrs.offer.nearestInternationalAirport}" styleClass="largeInput"/>
+            <h:message for="nearestInternationalAirport" errorClass="error"/>
+
+            <p:outputLabel for="nearestPublicTransport" value="#{amsg.nearestPublicTransport}"/>
+            <p:inputText id="nearestPublicTransport" value="#{cc.attrs.offer.nearestPublicTransport}" styleClass="largeInput"/>
+            <h:message for="nearestPublicTransport" errorClass="error"/>
+
+            <p:outputLabel for="weeklyWorkingHours" value="#{amsg.weeklyWorkingHours}"/>
+            <p:inputText id="weeklyWorkingHours" value="#{cc.attrs.offer.weeklyWorkingHours}" required="true" styleClass="smallInput">
+                <f:validateDoubleRange minimum="1" maximum="60"/>
+            </p:inputText>
+            <h:message for="weeklyWorkingHours" errorClass="error"/>
+
+            <p:outputLabel for="dailyWorkingHours" value="#{amsg.dailyWorkingHours}"/>
+            <p:inputText id="dailyWorkingHours" value="#{cc.attrs.offer.dailyWorkingHours}" styleClass="smallInput">
+                <f:validateDoubleRange minimum="1" maximum="12"/>
+            </p:inputText>
+            <h:message for="dailyWorkingHours" errorClass="error"/>
+
+        </h:panelGrid>
+    </composite:implementation>
+
+</ui:component>

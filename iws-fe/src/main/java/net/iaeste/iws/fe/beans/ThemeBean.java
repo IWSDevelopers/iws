@@ -40,7 +40,7 @@ public class ThemeBean implements Serializable {
     private String currentTheme;
 
     public ThemeBean() {
-        currentTheme = Theme.START.getCode();
+        currentTheme = Theme.REDMOND.getCode();
         availableThemes = Theme.getThemeMap();
     }
 

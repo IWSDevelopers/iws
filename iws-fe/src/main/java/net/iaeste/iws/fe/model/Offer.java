@@ -21,6 +21,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -144,6 +145,23 @@ public class Offer {
         }
     }
 
+    public enum TableView {
+        BASIC("basicTableView"),
+        COMPACT("compactTableView"),
+        DETAILED("detailedTableView");
+
+        private String nameProperty;
+
+        private TableView(String nameProperty) {
+            this.nameProperty = nameProperty;
+        }
+
+        public String getNameProperty() {
+            return nameProperty;
+        }
+    }
+
+
     @Length(min = 7, max = 15)
     private String refNo;
     @NotNull
@@ -204,6 +222,15 @@ public class Offer {
     private BigDecimal estimatedCostOfLiving;
     private PaymentPeriod selectedCostOfLivingPeriod;
     private boolean canteenFacilities;
+    private TableView selectedTableView;
+
+    public TableView getSelectedTableView() {
+        return selectedTableView;
+    }
+
+    public void setSelectedTableView(TableView selectedTableView) {
+        this.selectedTableView = selectedTableView;
+    }
 
     public void employerChanged() {
         this.address = employer.getAddress();

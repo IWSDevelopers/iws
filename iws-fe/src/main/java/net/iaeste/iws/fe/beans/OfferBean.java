@@ -37,6 +37,145 @@ import java.util.List;
 @SessionScoped
 public class OfferBean implements Serializable {
 
+    private dummyOffer[] dummyOfferAll = new dummyOffer[]{
+     new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Specific", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "28/1/2010", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
+    };
+
+    public dummyOffer[] getDummyOfferAll() {
+        return dummyOfferAll;
+    }
+
+    public void setDummyOfferAll(dummyOffer[] dummyOfferAll) {
+        this.dummyOfferAll = dummyOfferAll;
+    }
+
+    private dummyOffer selectedOffer;
+
+    public dummyOffer getSelectedOffer() {
+        return selectedOffer;
+    }
+
+    public void setSelectedOffer(dummyOffer selectedOffer) {
+        this.selectedOffer = selectedOffer;
+    }
+
+    public class dummyOffer {
+        String refNo;
+        String nominationDeadline;
+        String employer;
+        String website;
+        String weeksOffered;
+        String grossPay;
+        String faculty;
+        String specialization;
+        String studyLevel;
+        String gender;
+
+        public dummyOffer(String refNo, String nominationDeadline, String employer, String website,
+                          String weeksOffered, String grossPay, String faculty, String specialization, String studyLevel, String gender) {
+            this.refNo = refNo;
+            this.nominationDeadline = nominationDeadline;
+            this.employer = employer;
+            this.website = website;
+            this.weeksOffered = weeksOffered;
+            this.grossPay = grossPay;
+            this.faculty = faculty;
+            this.specialization = specialization;
+            this.studyLevel = studyLevel;
+            this.gender = gender;
+        }
+
+        public String getRefNo() {
+            return refNo;
+        }
+
+        public void setRefNo(String refNo) {
+            this.refNo = refNo;
+        }
+
+        public String getNominationDeadline() {
+            return nominationDeadline;
+        }
+
+        public void setNominationDeadline(String nominationDeadline) {
+            this.nominationDeadline = nominationDeadline;
+        }
+
+        public String getEmployer() {
+            return employer;
+        }
+
+        public void setEmployer(String employer) {
+            this.employer = employer;
+        }
+
+        public String getWebsite() {
+            return website;
+        }
+
+        public void setWebsite(String website) {
+            this.website = website;
+        }
+
+        public String getWeeksOffered() {
+            return weeksOffered;
+        }
+
+        public void setWeeksOffered(String weeksOffered) {
+            this.weeksOffered = weeksOffered;
+        }
+
+        public String getGrossPay() {
+            return grossPay;
+        }
+
+        public void setGrossPay(String grossPay) {
+            this.grossPay = grossPay;
+        }
+
+        public String getFaculty() {
+            return faculty;
+        }
+
+        public void setFaculty(String faculty) {
+            this.faculty = faculty;
+        }
+
+        public String getSpecialization() {
+            return specialization;
+        }
+
+        public void setSpecialization(String specialization) {
+            this.specialization = specialization;
+        }
+
+        public String getStudyLevel() {
+            return studyLevel;
+        }
+
+        public void setStudyLevel(String studyLevel) {
+            this.studyLevel = studyLevel;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+    }
+
+
     private Offer emptyOffer = new Offer();
     private boolean language2Required;
     private boolean language3Required;
@@ -47,6 +186,15 @@ public class OfferBean implements Serializable {
     private Offer.TypeOfWork[] categories = Offer.TypeOfWork.values();
     private Offer.GrossPayPeriod[] grossPayPeriods = Offer.GrossPayPeriod.values();
     private Offer.Currency[] currencies = Offer.Currency.values();
+    private Offer.TableView[] tableViews = Offer.TableView.values();
+
+    public Offer.TableView[] getTableViews() {
+        return tableViews;
+    }
+
+    public void setTableViews(Offer.TableView[] tableViews) {
+        this.tableViews = tableViews;
+    }
 
     public Offer.Currency[] getCurrencies() {
         return currencies;

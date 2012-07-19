@@ -1,0 +1,9 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="=============================================================================&#10;Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.&#10;-----------------------------------------------------------------------------&#10;Project: IntraWeb Services (&amp;#36;module.name) - &amp;#36;file.qualifiedClassName&#10;-----------------------------------------------------------------------------&#10;This software is provided by the members of the IAESTE Internet Development&#10;Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be&#10;redistributed. IAESTE A.s.b.l. is not permitted to sell this software.&#10;&#10;This software is provided &quot;as is&quot;; the IDT or individuals within the IDT&#10;cannot be held legally responsible for any problems the software may cause.&#10;=============================================================================" />
+    <option name="keyword" value="Copyright" />
+    <option name="allowReplaceKeyword" value="" />
+    <option name="myName" value="IDT" />
+    <option name="myLocal" value="true" />
+  </copyright>
+</component>

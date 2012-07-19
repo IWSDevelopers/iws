@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/templates/iaeste.xhtml">
+    <ui:param name="title" value="#{amsg.listOfOffersHeader}"/>
+    <ui:define name="content">
+        <h:form id="form">
+
+            <h:panelGrid columns="2" style="float: right; margin-right: 60px">
+
+                <p:outputLabel for="tableView" value="#{amsg.selectTableView}"/>
+
+                <p:selectOneRadio id="tableView" value="#{offerBean.emptyOffer.selectedTableView}">
+                    <f:selectItems id="selectedTableView" value="#{offerBean.tableViews}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                    <p:ajax event="valueChange" process="@this" update="@form"/>
+                </p:selectOneRadio>
+
+            </h:panelGrid>
+
+            <p:dataTable id="listOfOffers" var="fetch" value="#{offerBean.dummyOfferAll}" selection="#{offerBean.selectedOffer}" rowKey="#{fetch.refNo}"
+                         selectionMode="single" emptyMessage="#{amsg.offerNotFound}" paginator="true" paginatorPosition="top" rows="8">
+
+                <f:facet name="header">
+                    <h:outputText value="#{amsg.viewOfferTableHeader}"/>
+                </f:facet>
+
+                <p:column headerText="#{amsg.refNo}" filterBy="#{fetch.refNo}" filterMatchMode="contains">
+                    <h:outputText value="#{fetch.refNo}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.nominationDeadline}" filterBy="#{fetch.nominationDeadline}" filterMatchMode="contains"
+                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
+                    <h:outputText value="#{fetch.nominationDeadline}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.employer}" filterBy="#{fetch.employer}" filterMatchMode="contains"
+                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
+                    <h:outputText value="#{fetch.employer}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.website}" filterBy="#{fetch.website}" filterMatchMode="contains"
+                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
+                    <h:outputText value="#{fetch.website}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.weeksOffered}" filterBy="#{fetch.weeksOffered}" filterMatchMode="contains"
+                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
+                    <h:outputText value="#{fetch.weeksOffered}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.grossPay}" filterBy="#{fetch.grossPay}" filterMatchMode="contains"
+                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
+                    <h:outputText value="#{fetch.grossPay}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.faculty}" filterBy="#{fetch.faculty}" filterMatchMode="contains">
+                    <h:outputText value="#{fetch.faculty}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.specialization}" filterBy="#{fetch.specialization}" filterMatchMode="contains"
+                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
+                    <h:outputText value="#{fetch.specialization}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.studyLevel}" filterBy="#{fetch.studyLevel}" filterMatchMode="contains"
+                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
+                    <h:outputText value="#{fetch.studyLevel}"/>
+                </p:column>
+
+                <p:column headerText="#{amsg.gender}" filterBy="#{fetch.gender}" filterMatchMode="contains"
+                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
+                    <h:outputText value="#{fetch.gender}"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

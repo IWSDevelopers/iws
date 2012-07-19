@@ -39,11 +39,11 @@
             <h:message for="maxNumberOfWeeksOffered" errorClass="error"/>
 
             <p:outputLabel for="dateFrom" value="#{amsg.dateFrom}"/>
-            <p:calendar id="dateFrom" value="#{cc.attrs.offer.dateFrom}" pattern="#{JSFUtils.defaultDateFormat}" required="true"/>
+            <p:calendar id="dateFrom" value="#{cc.attrs.offer.dateFrom}" required="true"/>
             <h:message for="dateFrom" errorClass="error"/>
 
             <p:outputLabel for="dateTo" value="#{amsg.dateTo}"/>
-            <p:calendar id="dateTo" value="#{cc.attrs.offer.dateTo}" pattern="#{JSFUtils.defaultDateFormat}" required="true"/>
+            <p:calendar id="dateTo" value="#{cc.attrs.offer.dateTo}" required="true"/>
             <h:message for="dateTo" errorClass="error"/>
 
             <h:panelGroup>
@@ -56,11 +56,11 @@
             <h:panelGroup/>
 
             <p:outputLabel for="dateFrom2" value="#{amsg.dateFrom}"/>
-            <p:calendar id="dateFrom2" value="#{cc.attrs.offer.dateFrom2}" pattern="#{JSFUtils.defaultDateFormat}" required="#{cc.attrs.offer.date1Required}"/>
+            <p:calendar id="dateFrom2" value="#{cc.attrs.offer.dateFrom2}" required="#{cc.attrs.offer.date1Required}"/>
             <h:message for="dateFrom2" errorClass="error"/>
 
             <p:outputLabel for="dateTo2" value="#{amsg.dateTo}"/>
-            <p:calendar id="dateTo2" value="#{cc.attrs.offer.dateTo2}" pattern="#{JSFUtils.defaultDateFormat}" required="#{cc.attrs.offer.date1Required}"/>
+            <p:calendar id="dateTo2" value="#{cc.attrs.offer.dateTo2}" required="#{cc.attrs.offer.date1Required}"/>
             <h:message for="dateTo2" errorClass="error"/>
 
             <h:panelGroup>
@@ -73,13 +73,11 @@
             <h:panelGroup/>
 
             <p:outputLabel for="dateFromHolidays" value="#{amsg.dateFrom}"/>
-            <p:calendar id="dateFromHolidays" value="#{cc.attrs.offer.dateFromHolidays}" pattern="#{JSFUtils.defaultDateFormat}"
-                        required="#{cc.attrs.offer.holidaysRequired}"/>
+            <p:calendar id="dateFromHolidays" value="#{cc.attrs.offer.dateFromHolidays}" required="#{cc.attrs.offer.holidaysRequired}"/>
             <h:message for="dateFromHolidays" errorClass="error"/>
 
             <p:outputLabel for="dateToHolidays" value="#{amsg.dateTo}"/>
-            <p:calendar id="dateToHolidays" value="#{cc.attrs.offer.dateToHolidays}" pattern="#{JSFUtils.defaultDateFormat}"
-                        required="#{cc.attrs.offer.holidaysRequired}"/>
+            <p:calendar id="dateToHolidays" value="#{cc.attrs.offer.dateToHolidays}" required="#{cc.attrs.offer.holidaysRequired}"/>
             <h:message for="dateToHolidays" errorClass="error"/>
 
             <p:outputLabel for="grossPay" value="#{amsg.grossPay}"/>

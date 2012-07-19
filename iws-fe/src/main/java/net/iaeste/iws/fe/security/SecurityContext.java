@@ -19,6 +19,7 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * The SecurityContext is responsible for holding the security information of the
@@ -33,8 +34,8 @@ public interface SecurityContext extends Serializable {
 
     /**
      * Authenticates a user with the given credentials.
-     * Initializes the default Permissions if the user is
-     * authenticated successfully.
+     * Initializes the default Permissions and settings
+     * if the user is authenticated successfully.
      *
      * @param username plaintext username
      * @param password plaintext password
@@ -80,4 +81,9 @@ public interface SecurityContext extends Serializable {
      * @return true if a user is already authenticated
      */
     public boolean isAuthenticated();
+
+    /**
+     * @return the {@link} Locale of the current logged in user
+     */
+    public Locale getUserLocale();
 }

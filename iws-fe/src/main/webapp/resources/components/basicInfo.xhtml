@@ -12,7 +12,7 @@
         <h:panelGrid columns="3">
 
             <p:outputLabel for="refNo" value="#{amsg.refNo}"/>
-            <p:inputMask id="refNo" value="#{cc.attrs.offer.refNo}" mask="AT-9999-9999-aa" styleClass="mediumInput"/>
+            <p:inputMask id="refNo" value="#{cc.attrs.offer.refNo}" mask="AT-9999-9999-aa" required="true" styleClass="mediumInput"/>
             <h:message for="refNo" errorClass="error"/>
 
             <h:panelGroup/>
@@ -20,7 +20,7 @@
             <h:panelGroup/>
 
             <p:outputLabel for="nominationDeadline" value="#{amsg.nominationDeadline}"/>
-            <p:calendar id="nominationDeadline" value="#{cc.attrs.offer.nominationDeadline}" required="true" pattern="#{JSFUtils.defaultDateFormat}"
+            <p:calendar id="nominationDeadline" value="#{cc.attrs.offer.nominationDeadline}" required="true"
                         styleClass="mediumInput"/>
             <h:message for="nominationDeadline" errorClass="error"/>
 

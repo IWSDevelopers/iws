@@ -29,12 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Implementation of the {@link SecurityContext}
@@ -190,5 +188,14 @@ public class SecurityContextImpl implements SecurityContext {
         }
         this.username = null;
         this.authentication = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Locale getUserLocale() {
+        // TODO change to the logged in users locale
+        return Locale.GERMAN;
     }
 }

@@ -45,6 +45,9 @@ public class SpringConfig {
                 .addScript("hsqldb/init_tables.sql")
                 .addScript("hsqldb/init_views.sql")
                 .addScript("hsqldb/init_data.sql")
+                .addScript("hsqldb/exchange-init.sql")
+                .addScript("hsqldb/exchange-views.sql")
+                .addScript("hsqldb/exchange-data.sql")
                 .build();
     }
 

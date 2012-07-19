@@ -1,0 +1,1 @@
+-- Please add the initialization of all Exchange related tables here

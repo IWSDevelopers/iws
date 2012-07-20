@@ -6,7 +6,9 @@ CREATE TABLE addresses {
     street2            TEXT         DEFAULT '',
     zip                TEXT         DEFAULT '',
     city               TEXT         DEFAULT '',
-    country_id         INTEGER   NOT NULL REFERENCES countries (id) ON DELETE RESTRICT
+    country_id         INTEGER      NOT NULL REFERENCES countries (id) ON DELETE RESTRICT
+    modified           TIMESTAMP    DEFAULT now(),
+    created            TIMESTAMP    DEFAULT now()
 };
 
 CREATE SEQUENCE employer_sequence START 1;
@@ -21,7 +23,24 @@ CREATE TABLE employers {
     airport                TEXT         DEFAULT '',
     transport              TEXT         DEFAULT '',
     employees              TEXT         DEFAULT '',
+    modified               TIMESTAMP    DEFAULT now(),
+    created                TIMESTAMP    DEFAULT now()
 };
+
+CREATE SEQUENCE study_fields_sequence START 1;
+CREATE TABLE study_fields {
+    id                     INTEGER      DEFAULT NextVal('study_fields_sequence'::TEXT) NOT NULL PRIMARY KEY,
+    modified               TIMESTAMP    DEFAULT now(),
+    created                TIMESTAMP    DEFAULT now()
+};
+
+CREATE TABLE study_field2group (
+    study_field_id     INTEGER NOT NULL REFERENCES study_fields (id) ON DELETE CASCADE,
+    group_id           INTEGER NOT NULL REFERENCES groups (id) ON DELETE CASCADE,
+    support            VARCHAR(10) DEFAULT 'yes',
+    modified           TIMESTAMP DEFAULT now(),
+    created            TIMESTAMP DEFAULT now()
+);
 
 CREATE SEQUENCE offer_sequence  START 1;
 CREATE TABLE offers (
@@ -40,7 +59,7 @@ CREATE TABLE offers (
     hours_weekly           REAL,
     hours_daily            REAL,
 
-    faculty_id             INTEGER      NOT NULL --references, we have To look AT faculties TABLE,
+    study_field_id         INTEGER      NOT NULL REFERENCES study_fields (id) ON DELETE CASCADE,
     faculty_other          TEXT         DEFAULT '',
     specialization         TEXT         DEFAULT '',
     study_completed        INTEGER, --VALUES From enum
@@ -57,7 +76,7 @@ CREATE TABLE offers (
     ----------------
     other_requirements     TEXT,
     training_required      TEXT         DEFAULT '',
-    gender                 INTEGER, --enum
+    gender                 VARCHAR(1), --enum
 
     work_kind              TEXT,
     work_type              INTEGER, --enum
@@ -96,6 +115,22 @@ CREATE TABLE offers (
     modified_by            INTEGER, --i'm NOT sure now whether this IS reference To users TABLE, need have a look AT the Code afternoon
     created                TIMESTAMP,
     created_by             INTEGER, --i'm not sure now whether this is reference to users TABLE, need have a look at the code afternoon
-    country_id             NOT NULL, NOT NULL REFERENCES countries (id) ON DELETE RESTRICT
+    country_id             NOT NULL REFERENCES countries (id) ON DELETE RESTRICT,
     student_id             INTEGER REFERENCES students (id) ON DELETE SET NULL
+);
+
+CREATE TABLE offer2group (
+    offer_id           INTEGER    REFERENCES offers (id) ON DELETE CASCADE,
+    group_id           INTEGER    REFERENCES groups (id) ON DELETE CASCADE,
+    student_id         INTEGER    REFERENCES students (id) ON DELETE SET NULL, --TODO: duplicity - offers.student_id
+    status             VARCHAR(1) DEFAULT 'n',
+    visible            BOOLEAN    DEFAULT true,
+    comment            TEXT       DEFAULT '',
+    exchanged          BOOLEAN    DEFAULT false,
+    answered_by        INTEGER    REFERENCES users (id), --ON DELETE ???,
+    answered           TIMESTAMP,
+    modified           TIMESTAMP,
+    created_by         INTEGER    REFERENCES users (id), --ON DELETE ???
+    created            TIMESTAMP,
+    is_archived        BOOLEAN    DEFAULT false NOT NULL
 );

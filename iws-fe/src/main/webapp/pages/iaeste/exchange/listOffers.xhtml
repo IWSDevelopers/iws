@@ -13,10 +13,10 @@
 
                 <p:outputLabel for="tableView" value="#{amsg.selectTableView}"/>
 
-                <p:selectOneRadio id="tableView" value="#{offerBean.emptyOffer.selectedTableView}">
+                <p:selectOneButton id="tableView" value="#{offerBean.emptyOffer.selectedTableView}">
                     <f:selectItems id="selectedTableView" value="#{offerBean.tableViews}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
-                    <p:ajax event="valueChange" process="@this" update="@form"/>
-                </p:selectOneRadio>
+                    <p:ajax event="change" process="@this" update="listOfOffers"/>
+                </p:selectOneButton>
 
             </h:panelGrid>
 

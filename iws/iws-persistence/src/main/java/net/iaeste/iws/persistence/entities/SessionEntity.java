@@ -14,26 +14,17 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.Date;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection AssignmentToDateFieldFromParameter
+ * @since 1.7
  */
 @Entity
 @NamedQueries({
@@ -44,19 +35,22 @@ import java.util.Date;
 })
 @Table(name = "sessions")
 public class SessionEntity {
-
+    @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Getter @Setter
     @Basic
     @Column(nullable = false, name = "session_key")
     private String sessionKey;
 
+    @Getter @Setter
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(nullable = false, name = "user_id")
     private UserEntity user;
 
+    @Getter @Setter
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
@@ -73,37 +67,5 @@ public class SessionEntity {
         this.sessionKey = sessionKey;
         user = null;
         created = null;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public String getSessionKey() {
-        return sessionKey;
-    }
-
-    public void setSessionKey(final String sessionKey) {
-        this.sessionKey = sessionKey;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(final Date created) {
-        this.created = created;
-    }
-
-    public void setUser(final UserEntity user) {
-        this.user = user;
-    }
-
-    public UserEntity getUser() {
-        return user;
     }
 }

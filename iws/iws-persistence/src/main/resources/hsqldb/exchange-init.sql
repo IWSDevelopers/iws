@@ -1,18 +1,40 @@
 -- Please add the initialization of all Exchange related tables here
+
+SET search_path to iws;
+
+DROP SEQUENCE IF EXISTS address_sequence;
+DROP SEQUENCE IF EXISTS employer_sequence;
+DROP SEQUENCE IF EXISTS study_fields_sequence;
+DROP SEQUENCE IF EXISTS offer_sequence;
+DROP SEQUENCE IF EXISTS student_sequence;
+
+DROP TABLE IF EXISTS students CASCADE;
+DROP TABLE IF EXISTS employers CASCADE;
+DROP TABLE IF EXISTS study_field2group CASCADE;
+DROP TABLE IF EXISTS study_fields CASCADE;
+DROP TABLE IF EXISTS offer2group;
+DROP TABLE IF EXISTS offers;
+DROP TABLE IF EXISTS addresses;
+
+CREATE SEQUENCE student_sequence  START 1;
+CREATE TABLE students (
+    id                     INTEGER      DEFAULT NextVal('student_sequence'::TEXT) NOT NULL PRIMARY KEY
+);
+
 CREATE SEQUENCE address_sequence START 1;
-CREATE TABLE addresses {
+CREATE TABLE addresses (
     id                 INTEGER      DEFAULT NextVal('address_sequence'::TEXT) NOT NULL PRIMARY KEY,
     street1            TEXT         DEFAULT '',
     street2            TEXT         DEFAULT '',
     zip                TEXT         DEFAULT '',
     city               TEXT         DEFAULT '',
-    country_id         INTEGER      NOT NULL REFERENCES countries (id) ON DELETE RESTRICT
+    country_id         INTEGER      NOT NULL REFERENCES countries (id) ON DELETE RESTRICT,
     modified           TIMESTAMP    DEFAULT now(),
     created            TIMESTAMP    DEFAULT now()
-};
+);
 
 CREATE SEQUENCE employer_sequence START 1;
-CREATE TABLE employers {
+CREATE TABLE employers (
     id                     INTEGER      DEFAULT NextVal('employer_sequence'::TEXT) NOT NULL PRIMARY KEY,
     name                   TEXT         DEFAULT '',
     address_id             INTEGER      NOT NULL REFERENCES addresses (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -25,14 +47,14 @@ CREATE TABLE employers {
     employees              TEXT         DEFAULT '',
     modified               TIMESTAMP    DEFAULT now(),
     created                TIMESTAMP    DEFAULT now()
-};
+);
 
 CREATE SEQUENCE study_fields_sequence START 1;
-CREATE TABLE study_fields {
+CREATE TABLE study_fields (
     id                     INTEGER      DEFAULT NextVal('study_fields_sequence'::TEXT) NOT NULL PRIMARY KEY,
     modified               TIMESTAMP    DEFAULT now(),
     created                TIMESTAMP    DEFAULT now()
-};
+);
 
 CREATE TABLE study_field2group (
     study_field_id     INTEGER NOT NULL REFERENCES study_fields (id) ON DELETE CASCADE,
@@ -87,7 +109,7 @@ CREATE TABLE offers (
     from_date2             DATE,
     to_date2               DATE,
     holidays_from          DATE,
-    holidays_to            DATE
+    holidays_to            DATE,
     payment                INTEGER,
     payment_frequency      INTEGER, --enum
     deduction              TEXT         DEFAULT '',
@@ -115,7 +137,7 @@ CREATE TABLE offers (
     modified_by            INTEGER, --i'm NOT sure now whether this IS reference To users TABLE, need have a look AT the Code afternoon
     created                TIMESTAMP,
     created_by             INTEGER, --i'm not sure now whether this is reference to users TABLE, need have a look at the code afternoon
-    country_id             NOT NULL REFERENCES countries (id) ON DELETE RESTRICT,
+    country_id             INTEGER NOT NULL REFERENCES countries (id) ON DELETE RESTRICT,
     student_id             INTEGER REFERENCES students (id) ON DELETE SET NULL
 );
 

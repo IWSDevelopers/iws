@@ -14,31 +14,30 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 @Entity
 @Table(name = "users")
 public class UserEntity {
-
+    @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Getter @Setter
     @Basic
     @Column(name = "username")
     private String userName;
 
+    @Getter @Setter
     @Basic
     @Column(name = "password")
     private String password;
@@ -56,29 +55,5 @@ public class UserEntity {
         id = null;
         this.userName = userName;
         this.password = password;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setUserName(final String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

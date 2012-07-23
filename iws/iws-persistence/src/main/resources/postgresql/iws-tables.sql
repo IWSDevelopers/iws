@@ -29,7 +29,8 @@
 SET client_min_messages='warning';
 
 -- Build a Schema and use this per default
-CREATE SCHEMA iws;
+-- DROP SCHEMA IF EXISTS iws CASCADE;
+CREATE SCHEMA IF NOT EXISTS iws;
 SET search_path to iws;
 
 -- ============================================================================
@@ -67,8 +68,8 @@ CREATE SEQUENCE groups_sequence START 1;
 -- ============================================================================
 CREATE TABLE countries (
     id                  INTEGER DEFAULT NextVal('countries_sequence') NOT NULL PRIMARY KEY,
-    country_code        VARCHAR(2)   NOT NULL CHECK (country_code == 2),
-    country_name        VARCHAR(100) NOT NULL CHECK (country_name > 1),
+    country_code        VARCHAR(2)   NOT NULL CHECK (length(country_code) = 2),
+    country_name        VARCHAR(100) NOT NULL CHECK (length(country_code) > 1),
     country_fullname    VARCHAR(100) DEFAULT '',
     country_native      VARCHAR(100) DEFAULT '',
     nationality         VARCHAR(100) NOT NULL,

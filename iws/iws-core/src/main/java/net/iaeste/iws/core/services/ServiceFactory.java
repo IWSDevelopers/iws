@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.services;
 
+import javax.persistence.EntityManager;
+
 /**
  * Service Factory, to prepare the different Service instances, before being
  * used. Since the individual services may have different pre-requisites, then
@@ -26,19 +28,25 @@ package net.iaeste.iws.core.services;
  */
 public class ServiceFactory {
 
+    private final EntityManager entityManager;
+
+    public ServiceFactory(final EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     public AccessService prepareAuthenticationService() {
-        return new AccessService();
+        return new AccessService(entityManager);
     }
 
     public FacultyService prepareFacultyService() {
-        return new FacultyService();
+        return new FacultyService(entityManager);
     }
 
-    public OfferService prepareOfferService() {
-        return new OfferService();
+    public ExchangeService prepareOfferService() {
+        return new ExchangeService(entityManager);
     }
 
     public StudentService prepareStudentService() {
-        return new StudentService();
+        return new StudentService(entityManager);
     }
 }

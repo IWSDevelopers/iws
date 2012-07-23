@@ -21,12 +21,20 @@ import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 
+import javax.persistence.EntityManager;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class OfferService {
+public class ExchangeService {
+
+    private EntityManager entityManager;
+
+    public ExchangeService(final EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     public void processOffers(final AuthenticationToken token, final OfferRequest request) {
         throw new NotImplementedException("Method pending implementation.");

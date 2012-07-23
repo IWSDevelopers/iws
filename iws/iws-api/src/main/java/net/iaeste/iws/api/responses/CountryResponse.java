@@ -14,10 +14,50 @@
  */
 package net.iaeste.iws.api.responses;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
+
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.6
+ * @since   1.7
  */
-public class CountryResponse {
+public final class CountryResponse extends AbstractResponse {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
+    public CountryResponse() {
+    }
+
+    /**
+     * Error Constructor.
+     *
+     * @param error    IWS Error Object
+     * @param message  Error Message
+     */
+    public CountryResponse(final IWSError error, final String message) {
+        super(error, message);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        throw new NotImplementedException("TBD");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        throw new NotImplementedException("TBD");
+    }
 }

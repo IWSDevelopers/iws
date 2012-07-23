@@ -34,6 +34,10 @@ public class ServiceFactory {
         this.entityManager = entityManager;
     }
 
+    public AdministrationService prepareAdministrationService() {
+        return new AdministrationService(entityManager);
+    }
+
     public AccessService prepareAuthenticationService() {
         return new AccessService(entityManager);
     }

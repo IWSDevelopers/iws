@@ -37,6 +37,8 @@ import java.util.List;
 @SessionScoped
 public class OfferBean implements Serializable {
 
+    //TODO: This is the current dummy offer that needs to be changed with the new one in the Offer bean
+
     private dummyOffer[] dummyOfferAll = new dummyOffer[]{
      new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
             new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
@@ -188,6 +190,7 @@ public class OfferBean implements Serializable {
     private Offer.Currency[] currencies = Offer.Currency.values();
     private Offer.TableView[] tableViews = Offer.TableView.values();
 
+
     public Offer.TableView[] getTableViews() {
         return tableViews;
     }
@@ -300,5 +303,4 @@ public class OfferBean implements Serializable {
         }
         return resultsFaculty;
     }
-
 }

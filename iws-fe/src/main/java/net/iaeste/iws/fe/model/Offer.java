@@ -652,4 +652,136 @@ public class Offer {
     public void setCanteenFacilities(boolean canteenFacilities) {
         this.canteenFacilities = canteenFacilities;
     }
+
+    //TODO: TESTING NEW DUMMY OFFER. Still not working
+
+        private String t_refNo;
+        private String t_nominationDeadline;
+        private String t_employer;
+        private String t_website;
+        private String t_numberOfWeeksOffered;
+        private String t_grossPay;
+        private String t_faculty;
+        private String t_specialization;
+        private String t_studyLevel;
+        private String t_gender;
+
+
+        public static List<Offer> t_getDummyOffers(){
+            List<Offer> t_list = new ArrayList<>();
+            for(int i=0; i<35; i++){
+                Offer t_o = new Offer();
+                t_o.setT_refNo("ReferenceNo" + i);
+                t_o.setT_nominationDeadline("22.5.201" + i);
+                t_o.setT_employer("Employer" + i);
+                t_o.setT_website("Website" + i);
+                t_o.setT_numberOfWeeksOffered(i + "-" + i+6);
+                t_o.setT_grossPay("45" + i);
+                t_o.setT_faculty("Faculty" + i);
+                t_o.setT_specialization("Specialization" + i);
+                t_o.setT_studyLevel("Study Level" + i);
+                t_o.setT_gender("Gender" + i);
+            }
+            return t_list;
+        }
+
+    private Offer t_offer;
+
+        public boolean t_nameMatches(String str){
+            return this.t_refNo.toLowerCase().startsWith(str.toLowerCase());
+        }
+
+    public void testingOffer() {
+        this.t_refNo=t_offer.getT_refNo();
+        this.t_nominationDeadline=t_offer.getT_nominationDeadline();
+        this.t_employer=t_offer.getT_employer();
+        this.t_website=t_offer.getT_website();
+        this.t_numberOfWeeksOffered=t_offer.getT_numberOfWeeksOffered();
+        this.t_grossPay=t_offer.getT_grossPay();
+        this.t_faculty=t_offer.getT_faculty();
+        this.t_specialization=t_offer.getT_specialization();
+        this.t_studyLevel=t_offer.getT_studyLevel();
+        this.t_gender=t_offer.getT_gender();
+    }
+
+        public String getT_refNo() {
+            return t_refNo;
+        }
+
+        public void setT_refNo(String t_refNo) {
+            this.t_refNo = t_refNo;
+        }
+
+        public String getT_nominationDeadline() {
+            return t_nominationDeadline;
+        }
+
+        public void setT_nominationDeadline(String t_nominationDeadline) {
+            this.t_nominationDeadline = t_nominationDeadline;
+        }
+
+        public String getT_employer() {
+            return t_employer;
+        }
+
+        public void setT_employer(String t_employer) {
+            this.t_employer = t_employer;
+        }
+
+        public String getT_website() {
+            return t_website;
+        }
+
+        public void setT_website(String t_website) {
+            this.t_website = t_website;
+        }
+
+        public String getT_numberOfWeeksOffered() {
+            return t_numberOfWeeksOffered;
+        }
+
+        public void setT_numberOfWeeksOffered(String t_numberOfWeeksOffered) {
+            this.t_numberOfWeeksOffered = t_numberOfWeeksOffered;
+        }
+
+        public String getT_grossPay() {
+            return t_grossPay;
+        }
+
+        public void setT_grossPay(String t_grossPay) {
+            this.t_grossPay = t_grossPay;
+        }
+
+        public String getT_faculty() {
+            return t_faculty;
+        }
+
+        public void setT_faculty(String t_faculty) {
+            this.t_faculty = t_faculty;
+        }
+
+        public String getT_specialization() {
+            return t_specialization;
+        }
+
+        public void setT_specialization(String t_specialization) {
+            this.t_specialization = t_specialization;
+        }
+
+        public String getT_studyLevel() {
+            return t_studyLevel;
+        }
+
+        public void setT_studyLevel(String t_studyLevel) {
+            this.t_studyLevel = t_studyLevel;
+        }
+
+        public String getT_gender() {
+            return t_gender;
+        }
+
+        public void setT_gender(String t_gender) {
+            this.t_gender = t_gender;
+        }
+
 }

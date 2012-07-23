@@ -14,10 +14,33 @@
  */
 package net.iaeste.iws.api.requests;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.exceptions.VerificationException;
+
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.6
+ * @since   1.7
+ * @noinspection RedundantNoArgConstructor
  */
-public class FetchGroupRequest {
+public final class FetchGroupRequest extends AbstractRequest {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
+    public FetchGroupRequest() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void verify() throws VerificationException {
+        throw new NotImplementedException("TBD");
+    }
 }

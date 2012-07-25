@@ -15,7 +15,6 @@
 
 package net.iaeste.iws.persistence.entities;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +27,7 @@ import javax.persistence.Table;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-@Entity
+//@Entity
 @Table(name = "studentfiles")
 public class StudentFileEntity {
     @Id

@@ -1,7 +1,6 @@
 package net.iaeste.iws.persistence.entities;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -15,7 +14,7 @@ import java.util.Collection;
  * Time: 00:35
  */
 @Table(name = "countries", schema = "iws", catalog = "")
-@Entity
+//@Entity
 public class CountryEntity {
 
     @Column(name = "id")

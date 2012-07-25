@@ -31,7 +31,7 @@ import java.sql.Timestamp;
  * Time: 00:35
  */
 @Table(name = "offers", schema = "iws", catalog = "")
-@Entity
+//@Entity
 public class OfferEntity {
     @Column(name = "id")
     @Id

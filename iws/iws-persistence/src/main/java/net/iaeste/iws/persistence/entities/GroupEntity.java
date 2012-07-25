@@ -15,7 +15,6 @@
 package net.iaeste.iws.persistence.entities;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -27,7 +26,7 @@ import java.sql.Timestamp;
  * Time: 00:35
  */
 @Table(name = "groups", schema = "iws", catalog = "")
-@Entity
+//@Entity
 public class GroupEntity {
 
     @Column(name = "id")

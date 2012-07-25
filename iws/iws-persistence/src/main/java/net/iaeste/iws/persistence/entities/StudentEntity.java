@@ -35,7 +35,7 @@ import java.sql.Timestamp;
  * Time: 00:35
  */
 @Table(name = "students", schema = "iws", catalog = "")
-@Entity
+//@Entity
 public class StudentEntity {
     /*@Getter @Setter
     @Column(name = "id")

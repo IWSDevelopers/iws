@@ -2,7 +2,6 @@ package net.iaeste.iws.persistence.entities;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,7 +17,7 @@ import java.util.Collection;
  * Time: 00:35
  */
 @Table(name = "addresses", schema = "iws", catalog = "")
-@Entity
+//@Entity
 public class AddressEntity {
     @Column(name = "id")
     @Id

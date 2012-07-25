@@ -23,9 +23,9 @@ import net.iaeste.iws.api.exceptions.NotImplementedException;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class StudentResponse extends AbstractResponse {
+public final class StudentResponse extends AbstractResponse {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**

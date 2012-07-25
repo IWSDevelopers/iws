@@ -34,8 +34,8 @@ import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
+import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.FacultyService;
-import net.iaeste.iws.core.services.OfferService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.core.services.StudentService;
 import org.slf4j.Logger;
@@ -118,7 +118,7 @@ public class ExchangeController extends CommonController implements Exchange {
             verifyAccess(token, Permission.PROCESS_OFFERS);
             verify(request, "To be clarified.");
 
-            final OfferService service = factory.prepareOfferService();
+            final ExchangeService service = factory.prepareOfferService();
             service.processOffers(token, request);
             response = new OfferResponse();
         } catch (IWSException e) {
@@ -141,7 +141,7 @@ public class ExchangeController extends CommonController implements Exchange {
             verifyAccess(token, Permission.LOOKUP_OFFERS);
             verify(request, "To be clarified.");
 
-            final OfferService service = factory.prepareOfferService();
+            final ExchangeService service = factory.prepareOfferService();
             response = service.fetchOffers(token, request);
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());
@@ -163,7 +163,7 @@ public class ExchangeController extends CommonController implements Exchange {
             verifyAccess(token, Permission.PROCESS_OFFER_TEMPLATES);
             verify(request, "To be clarified.");
 
-            final OfferService service = factory.prepareOfferService();
+            final ExchangeService service = factory.prepareOfferService();
             service.processOfferTemplates(token, request);
             response = new OfferTemplateResponse();
         } catch (IWSException e) {
@@ -186,7 +186,7 @@ public class ExchangeController extends CommonController implements Exchange {
             verifyAccess(token, Permission.LOOKUP_OFFER_TEMPLATES);
             verify(request, "To be clarified.");
 
-            final OfferService service = factory.prepareOfferService();
+            final ExchangeService service = factory.prepareOfferService();
             response = service.fetchOfferTemplates(token, request);
         } catch (IWSException e) {
             response = new OfferTemplateResponse(e.getError(), e.getMessage());
@@ -208,7 +208,7 @@ public class ExchangeController extends CommonController implements Exchange {
             verifyAccess(token, Permission.PROCESS_OFFER_PUBLISH_GROUPS);
             verify(request, "To be clarified.");
 
-            final OfferService service = factory.prepareOfferService();
+            final ExchangeService service = factory.prepareOfferService();
             service.processPublishGroups(token, request);
             response = new PublishGroupResponse();
         } catch (IWSException e) {
@@ -231,7 +231,7 @@ public class ExchangeController extends CommonController implements Exchange {
             verifyAccess(token, Permission.LOOKUP_OFFER_PUBLISH_GROUPS);
             verify(request, "To be clarified.");
 
-            final OfferService service = factory.prepareOfferService();
+            final ExchangeService service = factory.prepareOfferService();
             response = service.fetchPublishGroups(token, request);
         } catch (IWSException e) {
             response = new PublishGroupResponse(e.getError(), e.getMessage());

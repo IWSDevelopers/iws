@@ -22,14 +22,25 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection RedundantNoArgConstructor
  */
-public class FetchPublishGroupsRequest extends AbstractRequest {
+public final class FetchPublishGroupsRequest extends AbstractRequest {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
+    public FetchPublishGroupsRequest() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void verify() throws VerificationException {
-        throw new NotImplementedException("Not yet implemented");
+        throw new NotImplementedException("TBD");
     }
 }

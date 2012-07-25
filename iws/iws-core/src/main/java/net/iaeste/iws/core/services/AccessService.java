@@ -18,6 +18,7 @@ import net.iaeste.iws.api.data.AuthenticationToken;
 import net.iaeste.iws.api.data.Authorization;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -26,6 +27,12 @@ import java.util.List;
  * @since   1.7
  */
 public class AccessService {
+
+    private final EntityManager entityManager;
+
+    public AccessService(final EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     public AuthenticationToken generateSession(final String username, final String password) {
         throw new NotImplementedException("The 'generateSession' method is not yet implemented");

@@ -1,21 +1,6 @@
 -- Please add the initialization of all Exchange related tables here
 -- Note; The HSQLDB is for in-memory testing, hence it makes no sense to have
 --  drop the tables and sequences first!
-SET search_path to iws;
-
-DROP SEQUENCE IF EXISTS address_sequence;
-DROP SEQUENCE IF EXISTS employer_sequence;
-DROP SEQUENCE IF EXISTS study_fields_sequence;
-DROP SEQUENCE IF EXISTS offer_sequence;
-DROP SEQUENCE IF EXISTS student_sequence;
-
-DROP TABLE IF EXISTS students CASCADE;
-DROP TABLE IF EXISTS employers CASCADE;
-DROP TABLE IF EXISTS study_field2group CASCADE;
-DROP TABLE IF EXISTS study_fields CASCADE;
-DROP TABLE IF EXISTS offer2group;
-DROP TABLE IF EXISTS offers;
-DROP TABLE IF EXISTS addresses;
 
 CREATE SEQUENCE studentfiles_sequence START 1;
 -- TODO: student_files table is now the same as in the current version. I will look a bit more at this if I should change something

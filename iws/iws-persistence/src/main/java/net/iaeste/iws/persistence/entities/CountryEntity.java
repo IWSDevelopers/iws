@@ -1,7 +1,5 @@
 package net.iaeste.iws.persistence.entities;
 
-import lombok.Data;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +15,6 @@ import java.util.Collection;
  * Time: 00:35
  */
 @Table(name = "countries", schema = "iws", catalog = "")
-@Data
 @Entity
 public class CountryEntity {
 

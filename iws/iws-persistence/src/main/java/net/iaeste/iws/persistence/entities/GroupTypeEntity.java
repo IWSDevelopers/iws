@@ -1,9 +1,10 @@
 package net.iaeste.iws.persistence.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
@@ -17,22 +18,18 @@ import java.sql.Timestamp;
 @Entity
 public class GroupTypeEntity {
 
-    @Getter @Setter
     @Column(name = "id")
     @Id
     private int id;
 
-    @Getter @Setter
     @Column(name = "group_type")
     @Basic
     private String groupType;
 
-    @Getter @Setter
     @Column(name = "modified")
     @Basic
     private Timestamp modified;
 
-    @Getter @Setter
     @Column(name = "created")
     @Basic
     private Timestamp created;

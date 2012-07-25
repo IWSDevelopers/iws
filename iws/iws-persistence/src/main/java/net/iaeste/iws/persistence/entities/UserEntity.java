@@ -14,10 +14,13 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -27,17 +30,14 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 public class UserEntity {
-    @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Getter @Setter
     @Basic
     @Column(name = "username")
     private String userName;
 
-    @Getter @Setter
     @Basic
     @Column(name = "password")
     private String password;

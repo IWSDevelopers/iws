@@ -1,9 +1,29 @@
+/*
+ * =============================================================================
+ * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
+ * -----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.StudentEntity
+ * -----------------------------------------------------------------------------
+ * This software is provided by the members of the IAESTE Internet Development
+ * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
+ * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
+ *
+ * This software is provided "as is"; the IDT or individuals within the IDT
+ * cannot be held legally responsible for any problems the software may cause.
+ * =============================================================================
+ */
 package net.iaeste.iws.persistence.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -26,170 +46,129 @@ public class StudentEntity {
 //    private Collection<Offer2GroupEntity> offer2GroupsById;
 //    @OneToMany(mappedBy = "studentsByStudentId")
 //    private Collection<OfferEntity> offersesById;
-    @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Getter @Setter
     @Basic
     @Column(nullable = false, name = "firstname")
     private String firstname;
-    @Getter @Setter
     @Basic
     @Column(nullable = false, name = "lastname")
     private String lastname;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "adress_id", referencedColumnName = "id", nullable = false)
     private AddressEntity address;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
     private CountryEntity country;
-    @Getter @Setter
     @Basic
     @Column(name = "phone")
     private String phone;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "termaddress_id", referencedColumnName = "id", nullable = false)
     private AddressEntity termaddress;
-    @Getter @Setter
     @Basic
     @Column(name = "termphone")
     private String termphone;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "termcountry_id", referencedColumnName = "id", nullable = false)
     private CountryEntity termcountry;
-    @Getter @Setter
     @Basic
     @Column(nullable = false, name = "email")
     private String email;
-    @Getter @Setter
     @Basic
     @Column(name = "alternativemail")
     private String alternativemail;
-    @Getter @Setter
     @Basic
     @Column(name = "birthday")
     private Date birthday;
-    @Getter @Setter
     @Basic
     @Column(name = "birthplace")
     private String birthplace;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "nationality_id", referencedColumnName = "id", nullable = false)
     private CountryEntity nationality;
-    @Getter @Setter
     @Basic
     @Column(name = "passportnumber")
     private String passportnumber;
-    @Getter @Setter
     @Basic
     @Column(name = "passportissued")
     private String passportissued;
-    @Getter @Setter
     @Basic
     @Column(name = "passportvalidity")
     private String passportvalidity;
-    @Getter @Setter
     @Basic
     @Column(name = "gender")
     private Character gender;
-    @Getter @Setter
     @Basic
     @Column(name = "maritalstatus")
     private Character maritalstatus;
-    @Getter @Setter
     @Basic
     @Column(name = "medicallyfit")
     private Character medicallyfit;
-    @Getter @Setter
     @Basic
     @Column(name = "university")
     private String university;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "faculty_id", referencedColumnName = "id", nullable = false)
     private StudyFieldEntity studyfields;
-    @Getter @Setter
     @Basic
     @Column(name = "specialization")
     private String specialization;
-    @Getter @Setter
     @Basic
     @Column(name = "studycompleted")
     private Character studycompleted;
-    @Getter @Setter
     @Basic
     @Column(name = "studyrequired")
     private Character studyrequired;
     //TODO - WORK IN PROGRESS WITH LANGUAGES
     // Language part will be implemented soon
     //TODO END
-    @Getter @Setter
     @Basic
     @Column(name = "fromdate")
     private Date fromdate;
-    @Getter @Setter
     @Basic
     @Column(name = "todate")
     private Date todate;
-    @Getter @Setter
     @Basic
     @Column(name = "requireloding")
     private Boolean requireloding;
-    @Getter @Setter
     @Basic
     @Column(name = "trainingreport")
     private Boolean trainingreport;
-    @Getter @Setter
     @Basic
     @Column(name = "comment")
     private String comment;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "filepicture_id", referencedColumnName = "id", nullable = false)
     private StudentFileEntity filepicture;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "filecv_id", referencedColumnName = "id", nullable = false)
     private StudentFileEntity filecv;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "filecover_id", referencedColumnName = "id", nullable = false)
     private StudentFileEntity filecover;
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "fileother_id", referencedColumnName = "id", nullable = false)
     private StudentFileEntity fileother;
-    @Getter @Setter
     @Basic
     @Column(name = "status")
     private Character status;
-    @Getter @Setter
     @Basic
     @Column(name = "modified")
     private Timestamp modified;
-    @Getter @Setter
     @ManyToMany
     @JoinColumn(name = "modifiedby_id", referencedColumnName = "id", nullable = false)
     private UserEntity modifiedby;
-    @Getter @Setter
     @Basic
     @Column(name = "created")
     private Timestamp created;
-    @Getter @Setter
     @ManyToMany
     @JoinColumn(name = "created_id", referencedColumnName = "id", nullable = false)
     private UserEntity createdby;
-    @Getter @Setter
     @Basic
     @Column(name = "logincode")
     private String logincode;
-    @Getter @Setter
     @Basic
     @Column(name = "completed")
     private Boolean completed;

@@ -1,7 +1,18 @@
+/*
+ * =============================================================================
+ * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
+ * -----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.GroupEntity
+ * -----------------------------------------------------------------------------
+ * This software is provided by the members of the IAESTE Internet Development
+ * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
+ * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
+ *
+ * This software is provided "as is"; the IDT or individuals within the IDT
+ * cannot be held legally responsible for any problems the software may cause.
+ * =============================================================================
+ */
 package net.iaeste.iws.persistence.entities;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,27 +29,23 @@ import java.sql.Timestamp;
 @Table(name = "groups", schema = "iws", catalog = "")
 @Entity
 public class GroupEntity {
-    @Getter @Setter
+
     @Column(name = "id")
     @Id
     private int id;
 
-    @Getter @Setter
     @Column(name = "group_type_fk")
     @javax.persistence.Basic
     private int groupTypeFk;
 
-    @Getter @Setter
     @Column(name = "modified")
     @javax.persistence.Basic
     private Timestamp modified;
 
-    @Getter @Setter
     @Column(name = "created")
     @javax.persistence.Basic
     private Timestamp created;
 
-    @Getter @Setter
     @javax.persistence.ManyToOne
     @javax.persistence.JoinColumn(name = "group_type_fk", referencedColumnName = "id", nullable = false)
     private GroupTypeEntity groupType;

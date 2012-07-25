@@ -1,8 +1,26 @@
+/*
+ * =============================================================================
+ * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
+ * -----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.OfferEntity
+ * -----------------------------------------------------------------------------
+ * This software is provided by the members of the IAESTE Internet Development
+ * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
+ * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
+ *
+ * This software is provided "as is"; the IDT or individuals within the IDT
+ * cannot be held legally responsible for any problems the software may cause.
+ * =============================================================================
+ */
 package net.iaeste.iws.persistence.entities;
 
-import lombok.Data;
-
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -13,7 +31,6 @@ import java.sql.Timestamp;
  * Time: 00:35
  */
 @Table(name = "offers", schema = "iws", catalog = "")
-@Data
 @Entity
 public class OfferEntity {
     @Column(name = "id")

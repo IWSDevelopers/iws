@@ -1,5 +1,6 @@
 -- Please add the initialization of all Exchange related tables here
-
+-- Note; The HSQLDB is for in-memory testing, hence it makes no sense to have
+--  drop the tables and sequences first!
 SET search_path to iws;
 
 DROP SEQUENCE IF EXISTS address_sequence;

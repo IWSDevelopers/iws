@@ -1,2 +1,5 @@
-/JavaApplication2/nbproject/private/
-/MyJMS2/nbproject/private/
+nbproject/
+target/
+.idea/
+*.iml
+*.class

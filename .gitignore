@@ -1,5 +1,16 @@
+*.class
+*.swp
+
+# netbeans specific
 nbproject/
+nbbuild/
+nbidst/
+build.xml
+nb-build.xml
+
+# IntelliJ IDEA specific
 target/
 .idea/
+.idea/workspace.xml
 *.iml
-*.class
+*.iws

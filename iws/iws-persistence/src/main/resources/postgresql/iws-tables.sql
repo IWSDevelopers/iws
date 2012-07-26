@@ -25,20 +25,19 @@
 --  o user2group
 -- ============================================================================
 
--- So we don't get the annoying warnings about lictly created indexes.
+-- So we don't get the annoying warnings about implicitly created indexes.
 SET client_min_messages='warning';
 
 -- Build a Schema and use this per default
--- DROP SCHEMA IF EXISTS iws CASCADE;
 CREATE SCHEMA IF NOT EXISTS iws;
 SET search_path to iws;
 
 -- ============================================================================
 -- Cleanup, ensuring that existing tables are removed
 -- ============================================================================
-DROP TABLE IF EXISTS function2group_type CASCADE;
-DROP TABLE IF EXISTS function2role CASCADE;
-DROP TABLE IF EXISTS user2group CASCADE;
+DROP TABLE IF EXISTS function_to_group_type CASCADE;
+DROP TABLE IF EXISTS function_to_role CASCADE;
+DROP TABLE IF EXISTS user_to_group CASCADE;
 DROP TABLE IF EXISTS functions CASCADE;
 DROP TABLE IF EXISTS groups CASCADE;
 DROP TABLE IF EXISTS roles CASCADE;
@@ -69,7 +68,7 @@ CREATE SEQUENCE groups_sequence START 1;
 CREATE TABLE countries (
     id                  INTEGER DEFAULT NextVal('countries_sequence') NOT NULL PRIMARY KEY,
     country_code        VARCHAR(2)   NOT NULL CHECK (length(country_code) = 2),
-    country_name        VARCHAR(100) NOT NULL CHECK (length(country_code) > 1),
+    country_name        VARCHAR(100) NOT NULL CHECK (length(country_name) > 1),
     country_fullname    VARCHAR(100) DEFAULT '',
     country_native      VARCHAR(100) DEFAULT '',
     nationality         VARCHAR(100) NOT NULL,
@@ -171,7 +170,7 @@ CREATE TABLE groups (
 -- ============================================================================
 -- Function to Role Relation Table - Tells which functions a role may perform
 -- ============================================================================
-CREATE TABLE function2role (
+CREATE TABLE function_to_role (
     function_id_fk      INTEGER NOT NULL REFERENCES functions (id) ON DELETE CASCADE,
     role_id_fk          INTEGER NOT NULL REFERENCES roles (id) ON DELETE CASCADE,
     modified            TIMESTAMP    DEFAULT now(),
@@ -183,7 +182,7 @@ CREATE TABLE function2role (
 -- ============================================================================
 -- Function to GroupTypes Relation Table - Overall functionality for groups
 -- ============================================================================
-CREATE TABLE function2group_type (
+CREATE TABLE function_to_group_type (
     function_id_fk      INTEGER NOT NULL REFERENCES functions (id) ON DELETE CASCADE,
     group_type_id_fk    INTEGER NOT NULL REFERENCES group_types (id) ON DELETE CASCADE,
     modified            TIMESTAMP    DEFAULT now(),
@@ -195,7 +194,7 @@ CREATE TABLE function2group_type (
 -- ============================================================================
 -- User to Group relation table - Links users to a group with a role
 -- ============================================================================
-CREATE TABLE user2group (
+CREATE TABLE user_to_group (
     user_id_fk          INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     group_id_fk         INTEGER NOT NULL REFERENCES groups (id) ON DELETE CASCADE,
     roles_id_fk         INTEGER NOT NULL REFERENCES roles (id),

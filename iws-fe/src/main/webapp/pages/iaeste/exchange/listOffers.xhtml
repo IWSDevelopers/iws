@@ -21,58 +21,60 @@
             </h:panelGrid>
 
             <p:dataTable id="listOfOffers" var="fetch" value="#{offerBean.dummyOfferAll}" selection="#{offerBean.selectedOffer}" rowKey="#{fetch.refNo}"
-                         selectionMode="single" emptyMessage="#{amsg.offerNotFound}" paginator="true"
+                         selectionMode="single" emptyMessage="#{amsg.offerNotFound}" paginator="true" lazy="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15" rows="10">
+                <p:ajax event="rowDblselect" listener="#{offerBean.onRowDblselect}"/>
 
                 <f:facet name="header">
                     <h:outputText value="#{amsg.viewOfferTableHeader}"/>
                 </f:facet>
 
-                <p:column headerText="#{amsg.refNo}" filterBy="#{fetch.refNo}" filterMatchMode="contains">
+                <p:column headerText="#{amsg.refNo}" filterBy="#{fetch.refNo}" filterMatchMode="contains" sortBy="#{fetch.refNo}">
                     <h:outputText value="#{fetch.refNo}"/>
                 </p:column>
 
                 <p:column headerText="#{amsg.nominationDeadline}" filterBy="#{fetch.nominationDeadline}" filterMatchMode="contains"
+                          sortBy="#{fetch.nominationDeadline}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
                     <h:outputText value="#{fetch.nominationDeadline}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.employer}" filterBy="#{fetch.employer}" filterMatchMode="contains"
+                <p:column headerText="#{amsg.employer}" filterBy="#{fetch.employer}" filterMatchMode="contains" sortBy="#{fetch.employer}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
                     <h:outputText value="#{fetch.employer}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.website}" filterBy="#{fetch.website}" filterMatchMode="contains"
+                <p:column headerText="#{amsg.website}" filterBy="#{fetch.website}" filterMatchMode="contains" sortBy="#{fetch.website}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
                     <h:outputText value="#{fetch.website}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.weeksOffered}" filterBy="#{fetch.weeksOffered}" filterMatchMode="contains"
+                <p:column headerText="#{amsg.weeksOffered}" filterBy="#{fetch.weeksOffered}" filterMatchMode="contains" sortBy="#{fetch.weeksOffered}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
                     <h:outputText value="#{fetch.weeksOffered}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.grossPay}" filterBy="#{fetch.grossPay}" filterMatchMode="contains"
+                <p:column headerText="#{amsg.grossPay}" filterBy="#{fetch.grossPay}" filterMatchMode="contains" sortBy="#{fetch.grossPay}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
                     <h:outputText value="#{fetch.grossPay}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.faculty}" filterBy="#{fetch.faculty}" filterMatchMode="contains">
+                <p:column headerText="#{amsg.faculty}" filterBy="#{fetch.faculty}" filterMatchMode="contains" sortBy="#{fetch.faculty}">
                     <h:outputText value="#{fetch.faculty}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.specialization}" filterBy="#{fetch.specialization}" filterMatchMode="contains"
+                <p:column headerText="#{amsg.specialization}" filterBy="#{fetch.specialization}" filterMatchMode="contains" sortBy="#{fetch.specialization}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
                     <h:outputText value="#{fetch.specialization}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.studyLevel}" filterBy="#{fetch.studyLevel}" filterMatchMode="contains"
+                <p:column headerText="#{amsg.studyLevel}" filterBy="#{fetch.studyLevel}" filterMatchMode="contains" sortBy="#{fetch.studyLevel}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
                     <h:outputText value="#{fetch.studyLevel}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.gender}" filterBy="#{fetch.gender}" filterMatchMode="contains"
+                <p:column headerText="#{amsg.gender}" filterBy="#{fetch.gender}" filterMatchMode="contains" sortBy="#{fetch.gender}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
                     <h:outputText value="#{fetch.gender}"/>
                 </p:column>

@@ -45,3 +45,7 @@
     color: #A29B9B;
     font-style: italic;
 }
+
+.bold {
+    font-weight: bold;
+}

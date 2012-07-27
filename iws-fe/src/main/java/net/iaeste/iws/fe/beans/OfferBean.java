@@ -15,10 +15,9 @@
 
 package net.iaeste.iws.fe.beans;
 
-import net.iaeste.iws.fe.model.Employer;
-import net.iaeste.iws.fe.model.Faculty;
-import net.iaeste.iws.fe.model.Offer;
+import net.iaeste.iws.fe.model.*;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.event.SelectEvent;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -37,222 +36,88 @@ import java.util.List;
 @SessionScoped
 public class OfferBean implements Serializable {
 
-    //TODO: This is the current dummy offer that needs to be changed with the new one in the Offer bean
-
-    private dummyOffer[] dummyOfferAll = new dummyOffer[]{
-     new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Specific", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "28/1/2010", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-            new dummyOffer("AT-2012-1111-VI", "22/12/2012", "Employer1", "employer@emp.com", "8-16", "550 €", "TU WIEN", "Electrical engineering", "Middle", "M"),
-    };
-
-    public dummyOffer[] getDummyOfferAll() {
-        return dummyOfferAll;
-    }
-
-    public void setDummyOfferAll(dummyOffer[] dummyOfferAll) {
-        this.dummyOfferAll = dummyOfferAll;
-    }
-
-    private dummyOffer selectedOffer;
-
-    public dummyOffer getSelectedOffer() {
-        return selectedOffer;
-    }
-
-    public void setSelectedOffer(dummyOffer selectedOffer) {
-        this.selectedOffer = selectedOffer;
-    }
-
-    public class dummyOffer {
-        String refNo;
-        String nominationDeadline;
-        String employer;
-        String website;
-        String weeksOffered;
-        String grossPay;
-        String faculty;
-        String specialization;
-        String studyLevel;
-        String gender;
-
-        public dummyOffer(String refNo, String nominationDeadline, String employer, String website,
-                          String weeksOffered, String grossPay, String faculty, String specialization, String studyLevel, String gender) {
-            this.refNo = refNo;
-            this.nominationDeadline = nominationDeadline;
-            this.employer = employer;
-            this.website = website;
-            this.weeksOffered = weeksOffered;
-            this.grossPay = grossPay;
-            this.faculty = faculty;
-            this.specialization = specialization;
-            this.studyLevel = studyLevel;
-            this.gender = gender;
-        }
-
-        public String getRefNo() {
-            return refNo;
-        }
-
-        public void setRefNo(String refNo) {
-            this.refNo = refNo;
-        }
-
-        public String getNominationDeadline() {
-            return nominationDeadline;
-        }
-
-        public void setNominationDeadline(String nominationDeadline) {
-            this.nominationDeadline = nominationDeadline;
-        }
-
-        public String getEmployer() {
-            return employer;
-        }
-
-        public void setEmployer(String employer) {
-            this.employer = employer;
-        }
-
-        public String getWebsite() {
-            return website;
-        }
-
-        public void setWebsite(String website) {
-            this.website = website;
-        }
-
-        public String getWeeksOffered() {
-            return weeksOffered;
-        }
-
-        public void setWeeksOffered(String weeksOffered) {
-            this.weeksOffered = weeksOffered;
-        }
-
-        public String getGrossPay() {
-            return grossPay;
-        }
-
-        public void setGrossPay(String grossPay) {
-            this.grossPay = grossPay;
-        }
-
-        public String getFaculty() {
-            return faculty;
-        }
-
-        public void setFaculty(String faculty) {
-            this.faculty = faculty;
-        }
-
-        public String getSpecialization() {
-            return specialization;
-        }
-
-        public void setSpecialization(String specialization) {
-            this.specialization = specialization;
-        }
-
-        public String getStudyLevel() {
-            return studyLevel;
-        }
-
-        public void setStudyLevel(String studyLevel) {
-            this.studyLevel = studyLevel;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public void setGender(String gender) {
-            this.gender = gender;
-        }
-    }
-
-
     private Offer emptyOffer = new Offer();
-    private boolean language2Required;
-    private boolean language3Required;
-    private Offer.PaymentPeriod[] paymentPeriods = Offer.PaymentPeriod.values();
-    private Offer.StudyLevel[] studyLevels = Offer.StudyLevel.values();
-    private Offer.Gender[] genders = Offer.Gender.values();
-    private Offer.LanguageLevel[] languageLevels = Offer.LanguageLevel.values();
-    private Offer.TypeOfWork[] categories = Offer.TypeOfWork.values();
-    private Offer.GrossPayPeriod[] grossPayPeriods = Offer.GrossPayPeriod.values();
-    private Offer.Currency[] currencies = Offer.Currency.values();
-    private Offer.TableView[] tableViews = Offer.TableView.values();
+    private PaymentPeriod[] paymentPeriods = PaymentPeriod.values();
+    private StudyLevel[] studyLevels = StudyLevel.values();
+    private Gender[] genders = Gender.values();
+    private TypeOfWork[] typesOfWork = TypeOfWork.values();
+    private GrossPayPeriod[] grossPayPeriods = GrossPayPeriod.values();
+    private Currency[] currencies = Currency.values();
+    private TableView[] tableViews = TableView.values();
+    private Language[] languages = Language.values();
+    private LanguageLevel[] languageLevels = LanguageLevel.values();
+    private LanguageOperator[] languageOperators = LanguageOperator.values();
 
+    public LanguageOperator[] getLanguageOperators() {
+        return languageOperators;
+    }
 
-    public Offer.TableView[] getTableViews() {
+    public void setLanguageOperators(LanguageOperator[] languageOperators) {
+        this.languageOperators = languageOperators;
+    }
+
+    public Language[] getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Language[] languages) {
+        this.languages = languages;
+    }
+
+    public TableView[] getTableViews() {
         return tableViews;
     }
 
-    public void setTableViews(Offer.TableView[] tableViews) {
+    public void setTableViews(TableView[] tableViews) {
         this.tableViews = tableViews;
     }
 
-    public Offer.Currency[] getCurrencies() {
+    public Currency[] getCurrencies() {
         return currencies;
     }
 
-    public void setCurrencies(Offer.Currency[] currencies) {
+    public void setCurrencies(Currency[] currencies) {
         this.currencies = currencies;
     }
 
-    public Offer.GrossPayPeriod[] getGrossPayPeriods() {
+    public GrossPayPeriod[] getGrossPayPeriods() {
         return grossPayPeriods;
     }
 
-    public void setGrossPayPeriods(Offer.GrossPayPeriod[] grossPayPeriods) {
+    public void setGrossPayPeriods(GrossPayPeriod[] grossPayPeriods) {
         this.grossPayPeriods = grossPayPeriods;
     }
 
-    public Offer.TypeOfWork[] getCategories() {
-        return categories;
+    public TypeOfWork[] getTypesOfWork() {
+        return typesOfWork;
     }
 
-    public void setCategories(Offer.TypeOfWork[] categories) {
-        this.categories = categories;
+    public void setTypesOfWork(TypeOfWork[] typesOfWork) {
+        this.typesOfWork = typesOfWork;
     }
 
-    public Offer.LanguageLevel[] getLanguageLevels() {
+    public LanguageLevel[] getLanguageLevels() {
         return languageLevels;
     }
 
-    public void setLanguageLevels(Offer.LanguageLevel[] languageLevels) {
+    public void setLanguageLevels(LanguageLevel[] languageLevels) {
         this.languageLevels = languageLevels;
     }
 
-    public Offer.Gender[] getGenders() {
+    public Gender[] getGenders() {
         return genders;
     }
 
-    public void setGenders(Offer.Gender[] genders) {
+    public void setGenders(Gender[] genders) {
         this.genders = genders;
     }
 
-    public Offer.StudyLevel[] getStudyLevels() {
+    public StudyLevel[] getStudyLevels() {
         return studyLevels;
     }
 
-    public void setStudyLevels(Offer.StudyLevel[] studyLevels) {
+    public void setStudyLevels(StudyLevel[] studyLevels) {
         this.studyLevels = studyLevels;
-    }
-
-    public boolean isLanguage2Required() {
-        return language2Required;
-    }
-
-    public void setLanguage2Required(boolean language2Required) {
-        this.language2Required = language2Required;
     }
 
     public Offer getEmptyOffer() {
@@ -263,25 +128,16 @@ public class OfferBean implements Serializable {
         this.emptyOffer = emptyOffer;
     }
 
-    public boolean isLanguage3Required() {
-        return language3Required;
+    public PaymentPeriod[] getPaymentPeriods() {
+        return paymentPeriods;
     }
 
-    public void setLanguage3Required(boolean language3Required) {
-        this.language3Required = language3Required;
+    public void setPaymentPeriods(PaymentPeriod[] paymentPeriods) {
+        this.paymentPeriods = paymentPeriods;
     }
 
     public String onFlowProcess(FlowEvent event) {
         return event.getNewStep();
-
-    }
-
-    public Offer.PaymentPeriod[] getPaymentPeriods() {
-        return paymentPeriods;
-    }
-
-    public void setPaymentPeriods(Offer.PaymentPeriod[] paymentPeriods) {
-        this.paymentPeriods = paymentPeriods;
     }
 
     public List<Employer> complete(String query) {

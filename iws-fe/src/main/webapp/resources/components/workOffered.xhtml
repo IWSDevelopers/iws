@@ -16,11 +16,11 @@
             <p:inputTextarea id="workDescription" rows="6" cols="100" value="#{cc.attrs.offer.workDescription}"/>
             <h:message for="workDescription" errorClass="error"/>
 
-            <p:outputLabel for="categories" value="#{amsg.typeOfWork}"/>
-            <p:selectManyCheckbox id="categories" value="#{cc.attrs.offer.selectedTypesOfWork}" layout="pageDirection" label="#{amsg.categories}">
-                <f:selectItems value="#{offerBean.categories}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+            <p:outputLabel for="typesOfWork" value="#{amsg.typeOfWork}"/>
+            <p:selectManyCheckbox id="typesOfWork" value="#{cc.attrs.offer.selectedTypesOfWork}" layout="pageDirection" label="#{amsg.categories}">
+                <f:selectItems value="#{offerBean.typesOfWork}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
             </p:selectManyCheckbox>
-            <h:message for="categories" errorClass="error"/>
+            <h:message for="typesOfWork" errorClass="error"/>
 
             <p:outputLabel for="minNumberOfWeeksOffered" value="#{amsg.weeksOffered}"/>
             <h:panelGroup>

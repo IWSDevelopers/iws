@@ -15,6 +15,8 @@
 
 package net.iaeste.iws.fe.model;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +27,10 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
+
 public class Employer {
 
-    private String employer;
+    private String name;
     private String address;
     private String businessOrProducts;
     private Integer numberOfEmployees;
@@ -43,7 +46,7 @@ public class Employer {
         List<Employer> list = new ArrayList<>();
      for (int i=0; i< 10; i++) {
          Employer e = new Employer();
-         e.setEmployer("Employer" + i);
+         e.setName("Employer" + i);
          e.setAddress("Street " + i);
          e.setAddress2("Town " + i);
          e.setBusinessOrProducts("businessOrProducts " + i);
@@ -61,15 +64,15 @@ public class Employer {
     }
 
     public boolean nameMatches(String str) {
-        return this.employer.toLowerCase().startsWith(str.toLowerCase());
+        return this.name.toLowerCase().startsWith(str.toLowerCase());
     }
 
-    public String getEmployer() {
-        return employer;
+    public String getName() {
+        return name;
     }
 
-    public void setEmployer(String employer) {
-        this.employer = employer;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {

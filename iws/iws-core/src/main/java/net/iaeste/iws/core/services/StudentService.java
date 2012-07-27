@@ -20,12 +20,20 @@ import net.iaeste.iws.api.requests.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.StudentResponse;
 
+import javax.persistence.EntityManager;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 public class StudentService {
+
+    private final EntityManager entityManager;
+
+    public StudentService(final EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     public void processStudents(final AuthenticationToken token, final StudentRequest request) {
         throw new NotImplementedException("Method pending implementation.");

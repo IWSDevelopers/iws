@@ -23,14 +23,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 @Entity
 @Table(name = "users")
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -42,6 +41,30 @@ public class UserEntity {
     @Basic
     @Column(name = "password")
     private String password;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     /**
      * Empty Constructor, JPA requirement.
@@ -56,29 +79,5 @@ public class UserEntity {
         id = null;
         this.userName = userName;
         this.password = password;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setUserName(final String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

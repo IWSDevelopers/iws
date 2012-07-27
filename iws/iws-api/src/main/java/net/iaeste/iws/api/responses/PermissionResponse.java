@@ -30,7 +30,7 @@ import java.util.List;
  * @since   1.7
  * @noinspection SuppressionAnnotation
  */
-public class PermissionResponse extends AbstractResponse {
+public final class PermissionResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

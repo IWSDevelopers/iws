@@ -30,10 +30,10 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection AssignmentToDateFieldFromParameter
+ * @since 1.7
  */
 @Entity
 @NamedQueries({
@@ -79,7 +79,7 @@ public class SessionEntity {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -87,23 +87,23 @@ public class SessionEntity {
         return sessionKey;
     }
 
-    public void setSessionKey(final String sessionKey) {
+    public void setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public Date getCreated() {
         return created;
     }
 
-    public void setCreated(final Date created) {
+    public void setCreated(Date created) {
         this.created = created;
-    }
-
-    public void setUser(final UserEntity user) {
-        this.user = user;
-    }
-
-    public UserEntity getUser() {
-        return user;
     }
 }

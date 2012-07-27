@@ -14,7 +14,7 @@
 
             <p:outputLabel for="faculty" value="#{amsg.faculty}"/>
             <p:autoComplete id="faculty" value="#{cc.attrs.offer.faculty}" minQueryLength="3" dropdown="true" required="true"
-                            completeMethod="#{offerBean.completeFaculty}" var="e" itemLabel="#{e.name}" itemValue="#{e}" styleClass="xLargeInput"/>
+                            completeMethod="#{offerBean.completeFaculty}" var="f" itemLabel="#{f.name}" itemValue="#{f}" styleClass="xLargeInput"/>
             <h:message for="faculty" errorClass="error"/>
 
             <p:outputLabel for="otherFaculty" value="#{amsg.otherFaculty}"/>
@@ -46,66 +46,44 @@
             </p:selectOneRadio>
             <h:message for="gender" errorClass="error"/>
 
-            <p:outputLabel for="language1" value="#{amsg.language1}"/>
-            <h:panelGroup>
-                <p:inputText id="language1" value="#{cc.attrs.offer.language1}" required="#{cc.attrs.offer.language1Required}" styleClass="xLargeInput"/>
-                <p:selectOneRadio id="languageOneLevel" value="#{cc.attrs.offer.languageOneLevel}" required="#{cc.attrs.offer.language1Required}"
-                                  label="#{amsg.language1}">
-                    <f:selectItems value="#{offerBean.languageLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
-                </p:selectOneRadio>
-                <p:selectBooleanCheckbox id="or" value="#{cc.attrs.offer.language1Required}"
-                                         disabled="#{empty cc.attrs.offer.language2 and empty cc.attrs.offer.language3}"
-                                         required="#{empty cc.attrs.offer.language2 and empty cc.attrs.offer.language3}">
-                    <p:ajax update="language1 languageOneLevel" process="@this"/>
-                </p:selectBooleanCheckbox>
-                <h:outputText value="#{amsg.checkRequired}"/>
-            </h:panelGroup>
-            <h:panelGroup>
-                <h:message for="languageOneLevel" errorClass="error"/>
-                <h:message for="language1" errorClass="error"/>
-            </h:panelGroup>
+            <h:outputText value="#{amsg.languageLabel}"/>
+            <p:outputPanel autoUpdate="true">
+                <ui:repeat value="#{cc.attrs.offer.languages}" var="wrapper" varStatus="status">
 
-            <h:panelGroup/>
-            <h:outputText value="#{amsg.languageRequirements}" styleClass="description"/>
-            <h:panelGroup/>
+                    <p:selectOneMenu value="#{cc.attrs.offer.languageOperators[status.index - 1]}" styleClass="smallInput" rendered="#{status.index != 0}"
+                            converter="languageOperatorConverter">
+                        <f:selectItems value="#{offerBean.languageOperators}" var="l" itemLabel="#{amsg.handleGetObject(l.nameProperty)}" itemValue="#{l}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
 
-            <p:outputLabel for="language2" value="#{amsg.language2}"/>
-            <h:panelGroup>
-                <p:inputText id="language2" value="#{cc.attrs.offer.language2}" required="#{cc.attrs.offer.language2Required}" styleClass="xLargeInput">
-                    <p:ajax event="keyup" process="@this" update="or"/>
-                </p:inputText>
-                <p:selectOneRadio id="languageTwoLevel" value="#{cc.attrs.offer.languageTwoLevel}" required="#{cc.attrs.offer.language2Required}"
-                                  label="#{amsg.language2}">
-                    <f:selectItems value="#{offerBean.languageLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
-                </p:selectOneRadio>
-                <p:selectBooleanCheckbox id="or2" value="#{cc.attrs.offer.language2Required}">
-                    <p:ajax update="language2 languageTwoLevel" process="@this"/>
-                </p:selectBooleanCheckbox>
-                <h:outputText value="#{amsg.checkRequired}"/>
-            </h:panelGroup>
-            <h:panelGroup>
-                <h:message for="language2" errorClass="error"/>
-                <h:message for="languageTwoLevel" errorClass="error"/>
-            </h:panelGroup>
+                    <p:spacer width="20px" rendered="#{status.index != 0}"/>
 
-            <p:outputLabel for="language3" value="#{amsg.language3}"/>
-            <h:panelGroup>
-                <p:inputText id="language3" value="#{cc.attrs.offer.language3}" required="#{cc.attrs.offer.language3Required}" styleClass="xLargeInput">
-                    <p:ajax event="keyup" process="@this" update="or"/>
-                </p:inputText>
-                <p:selectOneRadio id="languageThreeLevel" value="#{cc.attrs.offer.languageThreeLevel}" required="#{cc.attrs.offer.language3Required}"
-                                  label="#{amsg.language3}">
-                    <f:selectItems value="#{offerBean.languageLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
-                </p:selectOneRadio>
-                <p:selectBooleanCheckbox id="or3" value="#{cc.attrs.offer.language3Required}">
-                    <p:ajax update="language3 languageThreeLevel" process="@this"/>
-                </p:selectBooleanCheckbox>
-                <h:outputText value="#{amsg.checkRequired}"/>
-            </h:panelGroup>
-            <h:panelGroup>
-                <h:message for="language3" errorClass="error"/>
-                <h:message for="languageThreeLevel" errorClass="error"/>
-            </h:panelGroup>
+                    <h:outputText value="(" rendered="#{not cc.attrs.offer.allLanguageOperatorsMatch() and status.index == 1}"/>
+
+                    <p:selectOneMenu value="#{wrapper.language}" styleClass="LargeInput">
+                        <f:selectItem itemLabel="#{amsg.selectLanguage}" itemValue="#{null}"/>
+                        <f:selectItems value="#{offerBean.languages}" var="l" itemLabel="#{amsg.handleGetObject(l.nameProperty)}" itemValue="#{l}"
+                                       itemDisabled="#{cc.attrs.offer.isLanguageSelected(l, status.index)}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+
+                    <p:selectOneMenu value="#{wrapper.level}" styleClass="LargeInput">
+                        <f:selectItems value="#{offerBean.languageLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}" itemValue="#{p}"/>
+                        <p:ajax process="@this"/>
+                    </p:selectOneMenu>
+
+                    <h:outputText value=")" rendered="#{not cc.attrs.offer.allLanguageOperatorsMatch() and status.index == 2}"/>
+
+                    <p:commandButton process="@this" icon="ui-icon-circle-minus" immediate="true"
+                                     action="#{cc.attrs.offer.removeLanguageWithOperator(status.index)}"
+                                     rendered="#{cc.attrs.offer.languages.size() &gt; 1}"/>
+
+                    <p:spacer width="20px"/>
+                </ui:repeat>
+
+                <p:commandButton process="@this" icon="ui-icon-circle-plus" immediate="true" action="#{cc.attrs.offer.addLanguageWithOperator()}"
+                                 disabled="#{not cc.attrs.offer.canAddAnotherLanguage()}" rendered="#{cc.attrs.offer.languages.size() &lt; 3}"/>
+            </p:outputPanel>
 
         </h:panelGrid>
     </composite:implementation>

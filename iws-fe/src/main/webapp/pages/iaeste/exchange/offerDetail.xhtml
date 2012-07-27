@@ -1,0 +1,179 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/templates/iaeste.xhtml">
+    <ui:param name="title" value="#{amsg.workOfferedText}"/>
+    <ui:define name="content">
+        <h:form id="form">
+
+            <p:fieldset legend="#{amsg.offerBasicInfo}">
+                <h:panelGrid columns="2">
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.refNo}:"/>
+                        <h:outputText value="#{flash.selectedOffer.refNo}"/> <p:spacer width="250" height="10"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.nominationDeadline}:"/>
+                        <h:outputText value="#{flash.selectedOffer.nominationDeadline}"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="#{amsg.employerInfoText}">
+                <h:panelGrid columns="2">
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.employer}:"/>
+                        <h:outputText value="#{flash.selectedOffer.employer}"/> <p:spacer width="250" height="10"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.website}:"/>
+                        <h:outputText value="#{flash.selectedOffer.website}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup/>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.workingPlace}:"/>
+                        <h:outputText value="#{flash.selectedOffer.workingPlace}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup/>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.nearestInternationalAirport}:"/>
+                        <h:outputText value="#{flash.selectedOffer.nearestInternationalAirport}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup/>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.nearestPublicTransport}:"/>
+                        <h:outputText value="#{flash.selectedOffer.nearestPublicTransport}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.businessOrProducts}:"/>
+                        <h:outputText value="#{flash.selectedOffer.businessOrProducts}"/> <p:spacer width="250" height="10"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.numberOfEmployees}:"/>
+                        <h:outputText value="#{flash.selectedOffer.numberOfEmployees}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup/>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.weeklyWorkingHours}:"/>
+                        <h:outputText value="#{flash.selectedOffer.weeklyWorkingHours}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup/>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.dailyWorkingHours}:"/>
+                        <h:outputText value="#{flash.selectedOffer.dailyWorkingHours}"/>
+                    </h:panelGroup>
+
+                </h:panelGrid>
+            </p:fieldset>
+            <p:spacer height="10"/>
+            <p:fieldset legend="#{amsg.studentInfoText}">
+                <h:panelGrid columns="2">
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.faculty}:"/>
+                        <h:outputText value="#{flash.selectedOffer.faculty}"/> <p:spacer width="250" height="10"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.languageRequiredText}:"/>
+                        <h:outputText value="#{flash.selectedOffer.languages}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.specialization}:"/>
+                        <h:outputText value="#{flash.selectedOffer.specialization}"/>
+                    </h:panelGroup>
+                    <h:panelGroup/>
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.studyLevel}:"/>
+                        <h:outputText value="#{flash.selectedOffer.studyLevel}"/> <p:spacer width="250" height="10"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.gender}:"/>
+                        <h:outputText value="#{flash.selectedOffer.gender}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.otherRequirements}:"/>
+                        <h:outputText value="#{flash.selectedOffer.otherRequirements}"/> <p:spacer width="250" height="10"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.previousTrainingRequired}:"/>
+                        <h:outputText value="#{flash.selectedOffer.previousTrainingRequired}"/>
+                    </h:panelGroup>
+
+                </h:panelGrid>
+            </p:fieldset>
+            <p:spacer height="10"/>
+            <p:fieldset legend="#{amsg.workOfferedText}">
+                <h:panelGrid columns="2">
+
+                    <p:layout style="min-width:700px;min-height:200px;">
+                        <p:layoutUnit position="west" size="330">
+                            <h:outputText value="#{amsg.workDescription}:"/>
+                            <h:outputText value="#{flash.selectedOffer.workDescription}"/>
+                        </p:layoutUnit>
+
+                        <p:layoutUnit position="center" size="370">
+                            <h:panelGrid columns="2">
+                                <h:outputText value="#{amsg.typeOfWork}:"/>
+                                <h:outputText value="#{flash.selectedOffer.typeOfWork}"/>
+
+                                <h:outputText value="#{amsg.weeksOffered}:"/>
+                                <h:outputText value="#{flash.selectedOffer.weeksOffered}"/>
+
+                                <h:outputText value="#{amsg.withinTheMonths}:"/>
+                                <h:outputText value="#{flash.selectedOffer.dateFrom}-#{flash.selectedOffer.dateTo}"/>
+
+                                <h:outputText value="#{amsg.grossPay}:"/>
+                                <h:outputText value="#{flash.selectedOffer.grossPay}"/>
+
+                                <h:outputText value="#{amsg.deductionsExpected}:"/>
+                                <h:outputText value="#{flash.selectedOffer.deductionsExpected}"/>
+                            </h:panelGrid>
+                        </p:layoutUnit>
+                    </p:layout>
+
+                </h:panelGrid>
+            </p:fieldset>
+            <p:spacer height="10"/>
+            <p:fieldset legend="#{amsg.accommodationText}">
+                <h:panelGrid columns="2">
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.lodgingArrangedBy}:"/>
+                        <h:outputText value="#{flash.selectedOffer.lodgingArrangedBy}"/> <p:spacer width="250" height="10"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.estimatedCostOfLodging}:"/>
+                        <h:outputText value="#{flash.selectedOffer.estimatedCostOfLodging}"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.canteenFacilitiesText}:"/>
+                        <h:outputText value="#{flash.selectedOffer.canteenFacilities}"/> <p:spacer width="250" height="10"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputText value="#{amsg.estimatedCostOfLiving}:"/>
+                        <h:outputText value="#{flash.selectedOffer.estimatedCostOfLiving}"/>
+                    </h:panelGroup>
+
+                </h:panelGrid>
+            </p:fieldset>
+            <p:spacer height="20"/>
+            <h:outputText value="#{amsg.lastDateModified}" />
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.client.spring;
 
+import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -32,8 +33,18 @@ import javax.sql.DataSource;
  */
 public class Config {
 
+    /**
+     * Must be replaced by a proper properties setup, but until we actually have
+     * a real database working, this will suffice.
+     */
+    private static final Boolean USE_INMEMORY_DATABASE = true;
+
     @Bean
     public DataSource dataSource() {
+        return USE_INMEMORY_DATABASE ? prepareHSQLDataSource() : preparePostgreSQLDataSource();
+    }
+
+    private DataSource prepareHSQLDataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.HSQL)
                 .addScript("hsqldb/init_tables.sql")
@@ -43,6 +54,18 @@ public class Config {
                 .addScript("hsqldb/exchange-views.sql")
                 .addScript("hsqldb/exchange-data.sql")
                 .build();
+    }
+
+    private DataSource preparePostgreSQLDataSource() {
+        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+
+        dataSource.setDatabaseName("IWS");
+        dataSource.setUser("postgres");
+        dataSource.setPassword("password");
+        dataSource.setServerName("localhost");
+        dataSource.setPortNumber(5432);
+
+        return dataSource;
     }
 
     @Bean

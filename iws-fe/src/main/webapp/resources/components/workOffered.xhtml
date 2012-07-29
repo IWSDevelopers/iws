@@ -10,103 +10,101 @@
     </composite:interface>
 
     <composite:implementation>
-        <h:panelGrid columns="3">
-
-            <p:outputLabel for="workDescription" value="#{amsg.workDescription}"/>
-            <p:inputTextarea id="workDescription" rows="6" cols="100" value="#{cc.attrs.offer.workDescription}"/>
-            <h:message for="workDescription" errorClass="error"/>
-
+        <p:fieldset>
+            <ul>
+                <li>
+                    <p:outputLabel for="workDescription" value="#{amsg.workDescription}"/>
+                    <p:inputTextarea id="workDescription" rows="6" cols="50" value="#{cc.attrs.offer.workDescription}"/>
+                    <h:message for="workDescription" errorClass="error"/>
+                </li>
+                <li>
             <p:outputLabel for="typesOfWork" value="#{amsg.typeOfWork}"/>
             <p:selectManyCheckbox id="typesOfWork" value="#{cc.attrs.offer.selectedTypesOfWork}" layout="pageDirection" label="#{amsg.categories}">
                 <f:selectItems value="#{offerBean.typesOfWork}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
-            </p:selectManyCheckbox>
+                    </p:selectManyCheckbox>
             <h:message for="typesOfWork" errorClass="error"/>
-
-            <p:outputLabel for="minNumberOfWeeksOffered" value="#{amsg.weeksOffered}"/>
-            <h:panelGroup>
-                <p:inputText id="minNumberOfWeeksOffered"
-                             value="#{cc.attrs.offer.minNumberOfWeeksOffered}" required="true" styleClass="xSmallInput"/>
-                <h:outputText value="#{amsg.minNumberOfWeeksOffered}"/>
-            </h:panelGroup>
-            <h:message for="minNumberOfWeeksOffered" errorClass="error"/>
-
-            <h:panelGroup/>
-            <h:panelGroup>
-                <p:inputText id="maxNumberOfWeeksOffered" label="#{amsg.weeksOffered}"
-                             value="#{cc.attrs.offer.maxNumberOfWeeksOffered}" required="true" styleClass="xSmallInput"/>
-                <h:outputText value="#{amsg.maxNumberOfWeeksOffered}"/>
-            </h:panelGroup>
-            <h:message for="maxNumberOfWeeksOffered" errorClass="error"/>
-
-            <p:outputLabel for="dateFrom" value="#{amsg.dateFrom}"/>
-            <p:calendar id="dateFrom" value="#{cc.attrs.offer.dateFrom}" required="true"/>
-            <h:message for="dateFrom" errorClass="error"/>
-
-            <p:outputLabel for="dateTo" value="#{amsg.dateTo}"/>
-            <p:calendar id="dateTo" value="#{cc.attrs.offer.dateTo}" required="true"/>
-            <h:message for="dateTo" errorClass="error"/>
-
-            <h:panelGroup>
-                <p:selectBooleanCheckbox id="dateOr" value="#{cc.attrs.offer.date1Required}">
-                    <p:ajax process="@this"/>
-                </p:selectBooleanCheckbox>
-                <h:outputText value="#{amsg.checkIfOr}"/>
-            </h:panelGroup>
-            <h:panelGroup/>
-            <h:panelGroup/>
-
-            <p:outputLabel for="dateFrom2" value="#{amsg.dateFrom}"/>
-            <p:calendar id="dateFrom2" value="#{cc.attrs.offer.dateFrom2}" required="#{cc.attrs.offer.date1Required}"/>
-            <h:message for="dateFrom2" errorClass="error"/>
-
-            <p:outputLabel for="dateTo2" value="#{amsg.dateTo}"/>
-            <p:calendar id="dateTo2" value="#{cc.attrs.offer.dateTo2}" required="#{cc.attrs.offer.date1Required}"/>
-            <h:message for="dateTo2" errorClass="error"/>
-
-            <h:panelGroup>
-                <p:selectBooleanCheckbox id="dateOr2" value="#{cc.attrs.offer.holidaysRequired}">
-                    <p:ajax process="@this"/>
-                </p:selectBooleanCheckbox>
-                <h:outputText value="#{amsg.checkIfHolidays}"/>
-            </h:panelGroup>
-            <h:panelGroup/>
-            <h:panelGroup/>
-
-            <p:outputLabel for="dateFromHolidays" value="#{amsg.dateFrom}"/>
-            <p:calendar id="dateFromHolidays" value="#{cc.attrs.offer.dateFromHolidays}" required="#{cc.attrs.offer.holidaysRequired}"/>
-            <h:message for="dateFromHolidays" errorClass="error"/>
-
-            <p:outputLabel for="dateToHolidays" value="#{amsg.dateTo}"/>
-            <p:calendar id="dateToHolidays" value="#{cc.attrs.offer.dateToHolidays}" required="#{cc.attrs.offer.holidaysRequired}"/>
-            <h:message for="dateToHolidays" errorClass="error"/>
-
-            <p:outputLabel for="grossPay" value="#{amsg.grossPay}"/>
-            <h:panelGroup>
-                <p:inputText id="grossPay" value="#{cc.attrs.offer.grossPay}" styleClass="mediumInput">
-                    <p:ajax event="blur" process="@this" update="selectedGrossPayPaymentPeriod grossPayMsg"/>
-                </p:inputText>
-                <p:selectOneMenu value="#{cc.attrs.offer.selectedCurrency}" styleClass="mediumInput">
-                    <f:selectItems value="#{offerBean.currencies}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
-                    <p:ajax event="valueChange" process="@this" update="@(label[id$=costOfLivingLbl], label[id$=costOfLodgingLbl])"/>
-                </p:selectOneMenu>
-                <p:selectOneRadio id="selectedGrossPayPaymentPeriod" value="#{cc.attrs.offer.selectedGrossPayPaymentPeriod}" label="#{amsg.grossPay}"
-                                  required="#{cc.attrs.offer.grossPay > 0}">
-                    <f:selectItems value="#{offerBean.grossPayPeriods}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
-                </p:selectOneRadio>
-            </h:panelGroup>
-            <h:panelGroup>
-                <h:message id="grossPayMsg" for="grossPay" errorClass="error"/>
-                <h:message for="selectedGrossPayPaymentPeriod" errorClass="error"/>
-            </h:panelGroup>
-
-            <p:outputLabel for="deductionsExpected" value="#{amsg.deductionsExpected}"/>
-            <h:panelGroup>
-                <p:inputText id="deductionsExpected" value="#{cc.attrs.offer.deductionsExpected}" styleClass="smallInput"/>
-                <h:outputText value="%"/>
-            </h:panelGroup>
-            <h:message for="deductionsExpected" errorClass="error"/>
-
-        </h:panelGrid>
+                </li>
+                <li>
+                    <p:outputLabel for="minNumberOfWeeksOffered" value="#{amsg.weeksOffered}"/>
+                    <p:inputText id="minNumberOfWeeksOffered" value="#{cc.attrs.offer.minNumberOfWeeksOffered}" required="true" styleClass="xSmallInput"/>
+                    <h:outputText value="#{amsg.minNumberOfWeeksOffered}"/>
+                    <h:message for="minNumberOfWeeksOffered" errorClass="error"/>
+                </li>
+                <li>
+                    <p:inputText id="maxNumberOfWeeksOffered" label="#{amsg.weeksOffered}" value="#{cc.attrs.offer.maxNumberOfWeeksOffered}" required="true"
+                                 styleClass="xSmallInput"/>
+                    <h:outputText value="#{amsg.maxNumberOfWeeksOffered}"/>
+                    <h:message for="maxNumberOfWeeksOffered" errorClass="error"/>
+                </li>
+                <li>
+                    <p:outputLabel for="dateFrom" value="#{amsg.dateFrom}"/>
+                    <p:calendar id="dateFrom" value="#{cc.attrs.offer.dateFrom}" required="true"/>
+                    <h:message for="dateFrom" errorClass="error"/>
+                </li>
+                <li>
+                    <p:outputLabel for="dateTo" value="#{amsg.dateTo}"/>
+                    <p:calendar id="dateTo" value="#{cc.attrs.offer.dateTo}" required="true"/>
+                    <h:message for="dateTo" errorClass="error"/>
+                </li>
+                <li>
+                    <p:selectBooleanCheckbox id="dateOr" value="#{cc.attrs.offer.date1Required}">
+                        <p:ajax process="@this"/>
+                    </p:selectBooleanCheckbox>
+                    <h:outputText value="#{amsg.checkIfOr}"/>
+                </li>
+                <li>
+                    <p:outputLabel for="dateFrom2" value="#{amsg.dateFrom}"/>
+                    <p:calendar id="dateFrom2" value="#{cc.attrs.offer.dateFrom2}" required="#{cc.attrs.offer.date1Required}"/>
+                    <h:message for="dateFrom2" errorClass="error"/>
+                </li>
+                <li>
+                    <p:outputLabel for="dateTo2" value="#{amsg.dateTo}"/>
+                    <p:calendar id="dateTo2" value="#{cc.attrs.offer.dateTo2}" required="#{cc.attrs.offer.date1Required}"/>
+                    <h:message for="dateTo2" errorClass="error"/>
+                </li>
+                <li>
+                    <p:selectBooleanCheckbox id="dateOr2" value="#{cc.attrs.offer.holidaysRequired}">
+                        <p:ajax process="@this" update="@none"/>
+                    </p:selectBooleanCheckbox>
+                    <p:outputLabel for="dateOr2" value="#{amsg.checkIfHolidays}"/>
+                </li>
+                <li>
+                    <p:outputLabel for="dateFromHolidays" value="#{amsg.dateFrom}"/>
+                    <p:calendar id="dateFromHolidays" value="#{cc.attrs.offer.dateFromHolidays}" required="#{cc.attrs.offer.holidaysRequired}"/>
+                    <h:message for="dateFromHolidays" errorClass="error"/>
+                </li>
+                <li>
+                    <p:outputLabel for="dateToHolidays" value="#{amsg.dateTo}"/>
+                    <p:calendar id="dateToHolidays" value="#{cc.attrs.offer.dateToHolidays}" required="#{cc.attrs.offer.holidaysRequired}"/>
+                    <h:message for="dateToHolidays" errorClass="error"/>
+                </li>
+                <li>
+                    <p:outputLabel for="grossPay" value="#{amsg.grossPay}"/>
+                    <p:inputText id="grossPay" value="#{cc.attrs.offer.grossPay}" styleClass="mediumInput">
+                        <p:ajax event="blur" process="@this" update="selectedGrossPayPaymentPeriod grossPayMsg"/>
+                    </p:inputText>
+                    <p:selectOneMenu value="#{cc.attrs.offer.selectedCurrency}" styleClass="mediumInput">
+                        <f:selectItems value="#{offerBean.currencies}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                        <p:ajax event="valueChange" process="@this" update="@(label[id$=costOfLivingLbl], label[id$=costOfLodgingLbl])"/>
+                    </p:selectOneMenu>
+                    <p:selectOneRadio id="selectedGrossPayPaymentPeriod" value="#{cc.attrs.offer.selectedGrossPayPaymentPeriod}" label="#{amsg.grossPay}"
+                                      required="#{cc.attrs.offer.grossPay > 0}">
+                        <f:selectItems value="#{offerBean.grossPayPeriods}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                    </p:selectOneRadio>
+                    <h:message id="grossPayMsg" for="grossPay" errorClass="error"/>
+                    <h:message for="selectedGrossPayPaymentPeriod" errorClass="error"/>
+                </li>
+                <li>
+                    <p:outputLabel for="deductionsExpected" value="#{amsg.deductionsExpected}"/>
+                    <p:inputText id="deductionsExpected" value="#{cc.attrs.offer.deductionsExpected}" styleClass="smallInput"/>
+                    <h:outputText value="%"/>
+                    <h:message for="deductionsExpected" errorClass="error"/>
+                </li>
+                <li>
+                    <composite:renderFacet name="actions" required="false"/>
+                </li>
+            </ul>
+        </p:fieldset>
     </composite:implementation>
 
 </ui:component>

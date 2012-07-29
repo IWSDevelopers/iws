@@ -73,7 +73,7 @@ html, body {
     margin: 0 5px 5px 0;
 }
 
-.ui-panel {
+.ui-panel, .ui-widget-content, fieldset, .ui-fieldset {
     border: none;
 }
 
@@ -102,8 +102,78 @@ html, body {
 
 }
 
-.loginForm table{
-    margin-left:auto;
-    margin-right:auto;
+.loginForm table {
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
 }
+
+.ui-wizard {
+    display: inline-block;
+}
+
+.ui-fieldset-content {
+    border-top: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
+}
+
+fieldset ul, fieldset ol {
+    list-style: none;
+    padding: 0 0 0 225px;
+}
+
+fieldset li {
+    margin-bottom: 5px;
+}
+
+fieldset li label:first-child {
+    width: 195px;
+    min-height: 1px;
+    padding-right: 15px;
+    margin-left: -210px;
+    margin-top: 1px;
+    margin-bottom: 3px;
+    display: block;
+    text-align: right;
+    position: relative;
+    float: left;
+    vertical-align: top;
+    line-height: 16px;
+}
+
+fieldset li table label:first-child {
+    width: auto;
+    margin-left: 0;
+    padding-right: 0px;
+    text-align: left;
+}
+
+.formActions {
+    margin-left: 255px;
+    display: block;
+}
+
+.formActions button {
+    margin-right: 5px;
+}
+
+.ui-tabs-nav {
+    height: 32px;
+}
+
+.ui-tabs-selected {
+    height: 30px;
+}
+
+fieldset ul li span.description {
+    display: block;
+}
+
+fieldset ul li span.error {
+    display: block;
+}
+
+.ui-wizard-step-title {
+    font-size: 14px !important;
+}
+

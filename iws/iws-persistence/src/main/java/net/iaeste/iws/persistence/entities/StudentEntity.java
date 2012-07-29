@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.FieldOfStudy;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -111,7 +113,7 @@ public class StudentEntity {
     private String university;
     @ManyToOne
     @JoinColumn(name = "faculty_id", referencedColumnName = "id", nullable = false)
-    private StudyFieldEntity studyfields;
+    private FieldOfStudy studyfields;
     @Basic
     @Column(name = "specialization")
     private String specialization;
@@ -238,7 +240,7 @@ public class StudentEntity {
                          Character maritalstatus,
                          Character medicallyfit,
                          String university,
-                         StudyFieldEntity studyfield,
+                         FieldOfStudy studyfield,
                          String specialization,
                          Character studycompleted,
                          Character studyrequired,

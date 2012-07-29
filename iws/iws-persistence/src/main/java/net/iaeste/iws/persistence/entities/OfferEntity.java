@@ -14,300 +14,595 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import java.sql.Date;
-import java.sql.Timestamp;
+import net.iaeste.iws.api.enums.*;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Michal
- * Date: 24.07.12
- * Time: 00:35
+ * @author Michal Knapik / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @noinspection AssignmentToDateFieldFromParameter
+ * @since 1.7
  */
-@Table(name = "offers", schema = "iws", catalog = "")
-//@Entity
+@Table(name = "offers")
+@Entity
 public class OfferEntity {
-    @Column(name = "id")
+
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Column(name = "group_id")
-    @Basic
-    private int groupId;
+    @Column(name = "ref_no", nullable = false, unique = true)
+    private String refNo;
 
-    @Column(name = "system_ref_no")
-    @Basic
-    private String systemRefNo;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "nomination_deadline", nullable = false)
+    private Date nominationDeadline;
 
+    /**
+     * Employer information should be duplicated in each offer for several reasons:
+     * <ul>
+     * <li>multiple locations for big companies</li>
+     * <li>working hours can change from offer to offer</li>
+     * <li>adds unnecessary complexity</li>
+     * </ul>
+     */
 
-    @Column(name = "local_ref_no")
-    @Basic
-    private String localRefNo;
+    // Employer information
+    @Column(name = "employer_name", nullable = false)
+    private String employerName;
 
-    @Column(name = "exchange_year")
-    @Basic
-    private int exchangeYear;
+    @Column(name = "employer_address")
+    private String employerAddress;
 
-    @Column(name = "offer_year")
-    @Basic
-    private int offerYear;
+    @Column(name = "employer_address_2")
+    private String employerAddress2;
 
-    @Column(name = "is_archive")
-    @Basic
-    private int isArchive;
+    @Column(name = "employer_business")
+    private String employerBusiness;
 
-    @Column(name = "deadline")
-    @Basic
-    private Date deadline;
+    @Column(name = "employer_employees_cnt")
+    private Integer employerEmployeesCount;
 
-    @Column(name = "expire")
-    @Basic
-    private Date expire;
+    @Column(name = "employer_website")
+    private String employerWebsite;
 
-    @Column(name = "employer_id")
-    @Basic
-    private int employerId;
+    //Student Information
+    @ElementCollection
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "field_of_studies")
+    private List<FieldOfStudy> fieldOfStudies;
 
-
-    @Column(name = "hours_weekly")
-    @Basic
-    private float hoursWeekly;
-
-    @Column(name = "hours_daily")
-    @Basic
-    private float hoursDaily;
-
-    @Column(name = "study_field_id")
-    @Basic
-    private int studyFieldId;
-
-    @Column(name = "faculty_other")
-    @Basic
-    private String facultyOther;
-
+    /**
+     * Has to be defined as a List of Strings because
+     * the user should be able to add custom
+     * specializations in addition to the predefined ones.
+     */
+    @ElementCollection
     @Column(name = "specialization")
-    @Basic
-    private String specialization;
+    private List<String> specializations;
 
-    @Column(name = "study_completed")
-    @Basic
-    private int studyCompleted;
+    @ElementCollection
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "study_levels", nullable = false)
+    private List<StudyLevel> studyLevels = new ArrayList<>();
 
-    @Column(name = "study_required")
-    @Basic
-    private String studyRequired;
+    @Column(name = "prev_training_req")
+    private Boolean prevTrainingRequired;
 
-    @Column(name = "language1")
-    @Basic
-    private String language1;
-
-    @Column(name = "language1_level")
-    @Basic
-    private int language1Level;
-
-    @Column(name = "language1or")
-    @Basic
-    private boolean language1Or;
-
-    @Column(name = "language2")
-    @Basic
-    private String language2;
-
-
-    @Column(name = "language2_level")
-    @Basic
-    private int language2Level;
-
-    @Column(name = "language2or")
-    @Basic
-    private boolean language2Or;
-
-    @Column(name = "language3")
-    @Basic
-    private String language3;
-
-    @Column(name = "language3_level")
-    @Basic
-    private int language3Level;
-
-    @Column(name = "other_requirements")
-    @Basic
+    @Column(name = "other_requirements", length = 500)
     private String otherRequirements;
 
-    @Column(name = "training_required")
-    @Basic
-    private String trainingRequired;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "gender", nullable = false, length = 1)
+    private Gender gender;
 
-    @Column(name = "gender")
-    @Basic
-    private String gender;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_1", nullable = false)
+    private Language language1;
 
-    @Column(name = "work_kind")
-    @Basic
-    private String workKind;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_1_level", nullable = false, length = 1)
+    private LanguageLevel language1Level;
 
-    @Column(name = "work_type")
-    @Basic
-    private int workType;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_1_op", length = 1)
+    private LanguageOperator language1Operator;
 
-    @Column(name = "weeksmin")
-    @Basic
-    private int weeksmin;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_2")
+    private Language language2;
 
-    @Column(name = "weeksmax")
-    @Basic
-    private int weeksmax;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_2_level", length = 1)
+    private LanguageLevel language2Level;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_2_op", length = 1)
+    private LanguageOperator language2Operator;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_3")
+    private Language language3;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_3_level", length = 1)
+    private LanguageLevel language3Level;
+
+    // Work offered
+    @Column(name = "work_description", nullable = false, length = 1000)
+    private String workDescription;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "work_type", length = 1)
+    private TypeOfWork typeOfWork;
+
+    @Column(name = "min_weeks", nullable = false)
+    private Integer minimumWeeks;
+
+    @Column(name = "max_weeks", nullable = false)
+    private Integer maximumWeeks;
+
+    @Temporal(value = TemporalType.DATE)
     @Column(name = "from_date")
-    @Basic
     private Date fromDate;
 
+    @Temporal(value = TemporalType.DATE)
     @Column(name = "to_date")
-    @Basic
     private Date toDate;
 
-    @Column(name = "from_date2")
-    @Basic
+    @Temporal(value = TemporalType.DATE)
+    @Column(name = "from_date_2")
     private Date fromDate2;
 
-    @Column(name = "to_date2")
-    @Basic
+    @Temporal(value = TemporalType.DATE)
+    @Column(name = "to_date_2")
     private Date toDate2;
 
+    @Temporal(value = TemporalType.DATE)
     @Column(name = "holidays_from")
-    @Basic
     private Date holidaysFrom;
 
+    @Temporal(value = TemporalType.DATE)
     @Column(name = "holidays_to")
-    @Basic
     private Date holidaysTo;
 
-    @Column(name = "payment")
-    @Basic
-    private int payment;
+    @Column(name = "working_place")
+    private String workingPlace;
 
-    @Column(name = "payment_frequency")
-    @Basic
-    private int paymentFrequency;
+    @Column(name = "nearest_airport")
+    private String nearestAirport;
 
-    @Column(name = "deduction")
-    @Basic
-    private String deduction;
+    @Column(name = "nearest_pub_transport")
+    private String nearestPubTransport;
 
-    @Column(name = "lodging")
-    @Basic
-    private String lodging;
+    @Column(name = "weekly_hours", nullable = false, scale = 5, precision = 3)
+    private Float weeklyHours;
 
-    @Column(name = "lodging_cost")
-    @Basic
-    private int lodgingCost;
+    @Column(name = "daily_hours", nullable = false, scale = 5, precision = 3)
+    private Float dailyHours;
 
-    @Column(name = "lodging_cost_frequency")
-    @Basic
-    private int lodgingCostFrequency;
+    /**
+     * need big numbers, e.g. 1 EUR = 26.435,00 VND
+     */
+    @Column(name = "payment", scale = 12, precision = 2)
+    private BigDecimal payment;
 
-    @Column(name = "living_cost")
-    @Basic
-    private int livingCost;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "currency", length = 3)
+    private Currency currency;
 
-    @Column(name = "living_cost_frequency")
-    @Basic
-    private int livingCostFrequency;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "payment_frequency", length = 1)
+    private PaymentFrequency paymentFrequency;
+
+    @Column(name = "deduction", scale = 2, precision = 0)
+    private Integer deduction;
+
+    // Accommodation
+    @Column(name = "lodging_by")
+    private String lodgingBy;
+
+    @Column(name = "lodging_cost", scale = 12, precision = 2)
+    private BigDecimal lodgingCost;
+
+    @Column(name = "lodging_payment_frequency", length = 1)
+    private PaymentFrequency lodgingPaymentFrequency;
+
+    @Column(name = "living_cost", scale = 12, precision = 2)
+    private BigDecimal livingCost;
+
+    @Column(name = "living_payment_frequency", length = 1)
+    private int livingPaymentFrequency;
 
     @Column(name = "canteen")
-    @Basic
-    private boolean canteen;
+    private Boolean canteen;
 
-    @Column(name = "nomination_e")
-    @Basic
-    private boolean nominationE;
+    public Boolean getCanteen() {
+        return canteen;
+    }
 
-    @Column(name = "nomination_h")
-    @Basic
-    private boolean nominationH;
+    public void setCanteen(Boolean canteen) {
+        this.canteen = canteen;
+    }
 
-    @Column(name = "nomination_and_or")
-    @Basic
-    private boolean nominationAndOr;
+    public Currency getCurrency() {
+        return currency;
+    }
 
-    @Column(name = "no_hard_copies")
-    @Basic
-    private int noHardCopies;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
-    @Column(name = "require_student")
-    @Basic
-    private boolean requireStudent;
+    public Float getDailyHours() {
+        return dailyHours;
+    }
 
-    @Column(name = "comment")
-    @Basic
-    private String comment;
+    public void setDailyHours(Float dailyHours) {
+        this.dailyHours = dailyHours;
+    }
 
-    @Column(name = "answered")
-    @Basic
-    private Timestamp answered;
+    public Integer getDeduction() {
+        return deduction;
+    }
 
-    @Column(name = "status")
-    @Basic
-    private int status;
+    public void setDeduction(Integer deduction) {
+        this.deduction = deduction;
+    }
 
-    @Column(name = "published")
-    @Basic
-    private Timestamp published;
+    public String getEmployerAddress2() {
+        return employerAddress2;
+    }
 
-    @Column(name = "published_by")
-    @Basic
-    private int publishedBy;
+    public void setEmployerAddress2(String employerAddress2) {
+        this.employerAddress2 = employerAddress2;
+    }
 
-    @Column(name = "modified")
-    @Basic
-    private Timestamp modified;
+    public String getEmployerAddress() {
+        return employerAddress;
+    }
 
-    @Column(name = "modified_by")
-    @Basic
-    private int modifiedBy;
+    public void setEmployerAddress(String employerAddress) {
+        this.employerAddress = employerAddress;
+    }
 
-    @Column(name = "created")
-    @Basic
-    private Timestamp created;
+    public String getEmployerBusiness() {
+        return employerBusiness;
+    }
 
-    @Column(name = "created_by")
-    @Basic
-    private int createdBy;
+    public void setEmployerBusiness(String employerBusiness) {
+        this.employerBusiness = employerBusiness;
+    }
 
-    @Column(name = "country_id")
-    @Basic
-    private int countryId;
+    public Integer getEmployerEmployeesCount() {
+        return employerEmployeesCount;
+    }
 
-    @Column(name = "student_id")
-    @Basic
-    private int studentId;
+    public void setEmployerEmployeesCount(Integer employerEmployeesCount) {
+        this.employerEmployeesCount = employerEmployeesCount;
+    }
 
-//    private Collection<Offer2GroupEntity> offer2GroupsById;
+    public String getEmployerName() {
+        return employerName;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
-    private CountryEntity country;
+    public void setEmployerName(String employerName) {
+        this.employerName = employerName;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "employer_id", referencedColumnName = "id", nullable = false)
-    private EmployerEntity employer;
+    public String getEmployerWebsite() {
+        return employerWebsite;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
-    private GroupEntity group;
+    public void setEmployerWebsite(String employerWebsite) {
+        this.employerWebsite = employerWebsite;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private StudentEntity student;
+    public List<FieldOfStudy> getFieldOfStudies() {
+        return fieldOfStudies;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "study_field_id", referencedColumnName = "id", nullable = false)
-    private StudyFieldEntity studyField;
+    public void setFieldOfStudies(List<FieldOfStudy> fieldOfStudies) {
+        this.fieldOfStudies = fieldOfStudies;
+    }
 
+    public Date getFromDate2() {
+        return fromDate2;
+    }
+
+    public void setFromDate2(Date fromDate2) {
+        this.fromDate2 = fromDate2;
+    }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Date getHolidaysFrom() {
+        return holidaysFrom;
+    }
+
+    public void setHolidaysFrom(Date holidaysFrom) {
+        this.holidaysFrom = holidaysFrom;
+    }
+
+    public Date getHolidaysTo() {
+        return holidaysTo;
+    }
+
+    public void setHolidaysTo(Date holidaysTo) {
+        this.holidaysTo = holidaysTo;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Language getLanguage1() {
+        return language1;
+    }
+
+    public void setLanguage1(Language language1) {
+        this.language1 = language1;
+    }
+
+    public LanguageLevel getLanguage1Level() {
+        return language1Level;
+    }
+
+    public void setLanguage1Level(LanguageLevel language1Level) {
+        this.language1Level = language1Level;
+    }
+
+    public LanguageOperator getLanguage1Operator() {
+        return language1Operator;
+    }
+
+    public void setLanguage1Operator(LanguageOperator language1Operator) {
+        this.language1Operator = language1Operator;
+    }
+
+    public Language getLanguage2() {
+        return language2;
+    }
+
+    public void setLanguage2(Language language2) {
+        this.language2 = language2;
+    }
+
+    public LanguageLevel getLanguage2Level() {
+        return language2Level;
+    }
+
+    public void setLanguage2Level(LanguageLevel language2Level) {
+        this.language2Level = language2Level;
+    }
+
+    public LanguageOperator getLanguage2Operator() {
+        return language2Operator;
+    }
+
+    public void setLanguage2Operator(LanguageOperator language2Operator) {
+        this.language2Operator = language2Operator;
+    }
+
+    public Language getLanguage3() {
+        return language3;
+    }
+
+    public void setLanguage3(Language language3) {
+        this.language3 = language3;
+    }
+
+    public LanguageLevel getLanguage3Level() {
+        return language3Level;
+    }
+
+    public void setLanguage3Level(LanguageLevel language3Level) {
+        this.language3Level = language3Level;
+    }
+
+    public BigDecimal getLivingCost() {
+        return livingCost;
+    }
+
+    public void setLivingCost(BigDecimal livingCost) {
+        this.livingCost = livingCost;
+    }
+
+    public int getLivingPaymentFrequency() {
+        return livingPaymentFrequency;
+    }
+
+    public void setLivingPaymentFrequency(int livingPaymentFrequency) {
+        this.livingPaymentFrequency = livingPaymentFrequency;
+    }
+
+    public String getLodgingBy() {
+        return lodgingBy;
+    }
+
+    public void setLodgingBy(String lodgingBy) {
+        this.lodgingBy = lodgingBy;
+    }
+
+    public BigDecimal getLodgingCost() {
+        return lodgingCost;
+    }
+
+    public void setLodgingCost(BigDecimal lodgingCost) {
+        this.lodgingCost = lodgingCost;
+    }
+
+    public PaymentFrequency getLodgingPaymentFrequency() {
+        return lodgingPaymentFrequency;
+    }
+
+    public void setLodgingPaymentFrequency(PaymentFrequency lodgingPaymentFrequency) {
+        this.lodgingPaymentFrequency = lodgingPaymentFrequency;
+    }
+
+    public Integer getMaximumWeeks() {
+        return maximumWeeks;
+    }
+
+    public void setMaximumWeeks(Integer maximumWeeks) {
+        this.maximumWeeks = maximumWeeks;
+    }
+
+    public Integer getMinimumWeeks() {
+        return minimumWeeks;
+    }
+
+    public void setMinimumWeeks(Integer minimumWeeks) {
+        this.minimumWeeks = minimumWeeks;
+    }
+
+    public String getNearestAirport() {
+        return nearestAirport;
+    }
+
+    public void setNearestAirport(String nearestAirport) {
+        this.nearestAirport = nearestAirport;
+    }
+
+    public String getNearestPubTransport() {
+        return nearestPubTransport;
+    }
+
+    public void setNearestPubTransport(String nearestPubTransport) {
+        this.nearestPubTransport = nearestPubTransport;
+    }
+
+    public Date getNominationDeadline() {
+        return nominationDeadline;
+    }
+
+    public void setNominationDeadline(Date nominationDeadline) {
+        this.nominationDeadline = nominationDeadline;
+    }
+
+    public String getOtherRequirements() {
+        return otherRequirements;
+    }
+
+    public void setOtherRequirements(String otherRequirements) {
+        this.otherRequirements = otherRequirements;
+    }
+
+    public BigDecimal getPayment() {
+        return payment;
+    }
+
+    public void setPayment(BigDecimal payment) {
+        this.payment = payment;
+    }
+
+    public PaymentFrequency getPaymentFrequency() {
+        return paymentFrequency;
+    }
+
+    public void setPaymentFrequency(PaymentFrequency paymentFrequency) {
+        this.paymentFrequency = paymentFrequency;
+    }
+
+    public Boolean getPrevTrainingRequired() {
+        return prevTrainingRequired;
+    }
+
+    public void setPrevTrainingRequired(Boolean prevTrainingRequired) {
+        this.prevTrainingRequired = prevTrainingRequired;
+    }
+
+    public String getRefNo() {
+        return refNo;
+    }
+
+    public void setRefNo(String refNo) {
+        this.refNo = refNo;
+    }
+
+    public List<String> getSpecializations() {
+        return specializations;
+    }
+
+    public void setSpecializations(List<String> specializations) {
+        this.specializations = specializations;
+    }
+
+    public List<StudyLevel> getStudyLevels() {
+        return studyLevels;
+    }
+
+    public void setStudyLevels(List<StudyLevel> studyLevels) {
+        this.studyLevels = studyLevels;
+    }
+
+    public Date getToDate2() {
+        return toDate2;
+    }
+
+    public void setToDate2(Date toDate2) {
+        this.toDate2 = toDate2;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
+    public TypeOfWork getTypeOfWork() {
+        return typeOfWork;
+    }
+
+    public void setTypeOfWork(TypeOfWork typeOfWork) {
+        this.typeOfWork = typeOfWork;
+    }
+
+    public Float getWeeklyHours() {
+        return weeklyHours;
+    }
+
+    public void setWeeklyHours(Float weeklyHours) {
+        this.weeklyHours = weeklyHours;
+    }
+
+    public String getWorkDescription() {
+        return workDescription;
+    }
+
+    public void setWorkDescription(String workDescription) {
+        this.workDescription = workDescription;
+    }
+
+    public String getWorkingPlace() {
+        return workingPlace;
+    }
+
+    public void setWorkingPlace(String workingPlace) {
+        this.workingPlace = workingPlace;
+    }
 }

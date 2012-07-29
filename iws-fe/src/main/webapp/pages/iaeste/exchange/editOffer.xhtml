@@ -6,10 +6,17 @@
       xmlns:offer="http://java.sun.com/jsf/composite/components">
 
 <ui:composition template="/pages/templates/iaeste.xhtml">
-    <ui:param name="title" value="#{amsg.editOFormHeader}"/>
+
+    <ui:define name="header">
+        <h1 class="pageTitle">
+            <span class="light">#{amsg.editOfferHeader}</span>
+            <span class="">#{offerBean.emptyOffer.refNo}</span>
+        </h1>
+    </ui:define>
+
     <ui:define name="content">
         <h:form>
-            <p:tabView>
+            <p:tabView dynamic="true" cache="false">
 
                 <p:tab title="#{amsg.offerBasicInfo}">
                     <offer:basicInfo offer="#{offerBean.emptyOffer}"/>
@@ -28,10 +35,15 @@
                 </p:tab>
 
                 <p:tab title="#{amsg.accommodationText}">
-                     <offer:accommodation offer="#{offerBean.emptyOffer}"/>
+                    <offer:accommodation offer="#{offerBean.emptyOffer}"/>
                 </p:tab>
+
             </p:tabView>
-            <p:commandButton value="#{amsg.saveOFormButton}" process="@form" update="@form"/>
+
+            <h:panelGroup styleClass="formActions">
+                <p:commandButton widgetVar="submit" value="#{amsg.saveOffer}" process="@form" update="@form" icon="ui-icon-disk"/>
+                <p:button value="#{amsg.cancel}" icon="ui-icon-cancel"/>
+            </h:panelGroup>
         </h:form>
     </ui:define>
 </ui:composition>

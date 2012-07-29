@@ -9,7 +9,7 @@
     <ui:param name="title" value="#{amsg.newOFormHeader}"/>
     <ui:define name="content">
         <h:form>
-            <p:wizard widgetVar="wiz" flowListener="#{offerBean.onFlowProcess}">
+            <p:wizard flowListener="#{offerBean.onFlowProcess}">
 
                 <p:tab id="basicInfo" title="#{amsg.offerBasicInfo}">
                     <offer:basicInfo offer="#{offerBean.emptyOffer}"/>
@@ -29,7 +29,7 @@
 
                 <p:tab id="accommodation" title="#{amsg.accommodationText}">
                     <offer:accommodation offer="#{offerBean.emptyOffer}"/>
-                    <p:commandButton value="#{amsg.addOFormButton}" process="@form" update="@form"/>
+                    <p:commandButton value="#{amsg.saveOffer}" process="@form" update="@form" icon="ui-icon-disk" styleClass="ui-wizard-nav-next"/>
                 </p:tab>
 
             </p:wizard>

@@ -42,7 +42,7 @@ public class Offer {
     @NotNull
     private Date nominationDeadline;
     @Valid
-    private Employer employer;
+    private Employer employer = new Employer();
     @Valid
     private Faculty faculty;
     private String specialization;

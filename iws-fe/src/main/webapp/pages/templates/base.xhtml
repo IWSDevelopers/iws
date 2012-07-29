@@ -19,6 +19,8 @@
         <h:outputStylesheet library="css" name="common.css"/>
 
         <h:outputScript library="js" name="menubutton.js"/>
+        <h:outputScript library="js" name="commandButton.js"/>
+        <h:outputScript library="js" name="tabview.js"/>
     </h:head>
 
     <h:body>
@@ -70,7 +72,9 @@
             </p:panel>
 
             <p:panel styleClass="content">
-                <h1 class="pageTitle">#{title}</h1>
+                <ui:insert name="header">
+                    <h1 class="pageTitle">#{title}</h1>
+                </ui:insert>
                 <ui:insert name="content"/>
             </p:panel>
 

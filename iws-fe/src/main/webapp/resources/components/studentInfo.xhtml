@@ -13,7 +13,7 @@
         <p:fieldset>
             <ul>
                 <li>
-                    <p:outputLabel for="faculty" value="#{amsg.faculty}"/>
+                    <p:outputLabel for="faculty" value="#{amsg.fieldsOfStudy}"/>
                     <p:autoComplete id="faculty" value="#{cc.attrs.offer.faculty}" minQueryLength="3" dropdown="true" required="true"
                                     completeMethod="#{offerBean.completeFaculty}" var="f" itemLabel="#{f.name}" itemValue="#{f}" styleClass="xLargeInput"/>
                     <h:message for="faculty" errorClass="error"/>

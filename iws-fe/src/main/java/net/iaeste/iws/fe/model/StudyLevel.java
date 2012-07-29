@@ -8,9 +8,9 @@ package net.iaeste.iws.fe.model;
 * @since 1.7
 */
 public enum StudyLevel {
-    BEGINNING("beginningLvl"),
-    MIDDLE("middleLvl"),
-    END("endLvl");
+    BEGINNING("studyLevelBegin"),
+    MIDDLE("studyLevelMiddle"),
+    END("studyLevelEnd");
 
     private String nameProperty;
 

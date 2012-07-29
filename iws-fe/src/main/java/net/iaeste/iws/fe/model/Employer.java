@@ -38,8 +38,8 @@ public class Employer {
     private String workingPlace;
     private String nearestInternationalAirport;
     private String nearestPublicTransport;
-    private static Float weeklyWorkingHours;
-    private static Float dailyWorkingHours;
+    private Float weeklyWorkingHours;
+    private Float dailyWorkingHours;
     private String address2;
 
     public static List<Employer> getDummyEmployers() {

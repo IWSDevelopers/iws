@@ -19,9 +19,11 @@
                 <li>
                     <p:outputLabel id="costOfLodgingLbl" for="estimatedCostOfLodging"
                                    value="#{amsg.estimatedCostOfLodging} (#{amsg.handleGetObject(cc.attrs.offer.selectedCurrency.nameProperty)})"/>
-                    <p:inputText id="estimatedCostOfLodging" value="#{cc.attrs.offer.estimatedCostOfLodging}" styleClass="smallInput"/>
-                    <p:selectOneRadio id="estimatedCostOfLodgingPeriod" value="#{cc.attrs.offer.selectedCostOfLodgingPeriod}" required="true"
-                                      label="#{amsg.estimatedCostOfLodging}">
+                    <p:inputText id="estimatedCostOfLodging" value="#{cc.attrs.offer.estimatedCostOfLodging}" styleClass="smallInput">
+                        <p:ajax event="valueChange" process="@this" update="estimatedCostOfLodgingPeriod"/>
+                    </p:inputText>
+                    <p:selectOneRadio id="estimatedCostOfLodgingPeriod" value="#{cc.attrs.offer.selectedCostOfLodgingPeriod}"
+                                      required="#{cc.attrs.offer.estimatedCostOfLodging != null}" label="#{amsg.estimatedCostOfLodging}">
                         <f:selectItems value="#{offerBean.paymentPeriods}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
                     </p:selectOneRadio>
                     <h:message for="estimatedCostOfLodging" errorClass="error"/>
@@ -30,9 +32,11 @@
                 <li>
                     <p:outputLabel id="costOfLivingLbl" for="estimatedCostOfLiving"
                                    value="#{amsg.estimatedCostOfLiving} (#{amsg.handleGetObject(cc.attrs.offer.selectedCurrency.nameProperty)})"/>
-                    <p:inputText id="estimatedCostOfLiving" value="#{cc.attrs.offer.estimatedCostOfLiving}" styleClass="smallInput"/>
-                    <p:selectOneRadio id="estimatedCostOfLivingPeriod" value="#{cc.attrs.offer.selectedCostOfLivingPeriod}" required="true"
-                                      label="#{amsg.estimatedCostOfLiving}">
+                    <p:inputText id="estimatedCostOfLiving" value="#{cc.attrs.offer.estimatedCostOfLiving}" styleClass="smallInput">
+                        <p:ajax event="valueChange" process="@this" update="estimatedCostOfLivingPeriod"/>
+                    </p:inputText>
+                    <p:selectOneRadio id="estimatedCostOfLivingPeriod" value="#{cc.attrs.offer.selectedCostOfLivingPeriod}"
+                                      required="#{cc.attrs.offer.estimatedCostOfLiving != null}" label="#{amsg.estimatedCostOfLiving}">
                         <f:selectItems value="#{offerBean.paymentPeriods}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
                     </p:selectOneRadio>
                     <h:message for="estimatedCostOfLiving" errorClass="error"/>

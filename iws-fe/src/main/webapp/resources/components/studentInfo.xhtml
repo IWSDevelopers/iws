@@ -43,7 +43,8 @@
                 </li>
                 <li>
                     <p:outputLabel for="otherRequirements" value="#{amsg.otherRequirements}"/>
-                    <p:inputTextarea id="otherRequirements" value="#{cc.attrs.offer.otherRequirements}" rows="6" cols="33" styleClass="xLargeInput"/>
+                    <p:inputTextarea id="otherRequirements" value="#{cc.attrs.offer.otherRequirements}" rows="6" cols="33" counter="counter" maxlength="500"
+                                     counterTemplate="{0}#{amsg.remainingCharactersMessage}" styleClass="xLargeInput"/>
                     <h:message for="otherRequirements" errorClass="error"/>
                 </li>
                 <li>

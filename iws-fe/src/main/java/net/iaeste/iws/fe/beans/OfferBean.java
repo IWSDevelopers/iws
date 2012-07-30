@@ -15,6 +15,7 @@
 
 package net.iaeste.iws.fe.beans;
 
+import net.iaeste.iws.api.enums.*;
 import net.iaeste.iws.fe.model.*;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
@@ -37,11 +38,11 @@ import java.util.List;
 public class OfferBean implements Serializable {
 
     private Offer emptyOffer = new Offer();
-    private PaymentPeriod[] paymentPeriods = PaymentPeriod.values();
+    private PaymentFrequency[] paymentPeriods = PaymentFrequency.values();
     private StudyLevel[] studyLevels = StudyLevel.values();
     private Gender[] genders = Gender.values();
     private TypeOfWork[] typesOfWork = TypeOfWork.values();
-    private GrossPayPeriod[] grossPayPeriods = GrossPayPeriod.values();
+    private PaymentFrequency[] grossPayPeriods = PaymentFrequency.values();
     private Currency[] currencies = Currency.values();
     private TableView[] tableViews = TableView.values();
     private Language[] languages = Language.values();
@@ -80,11 +81,11 @@ public class OfferBean implements Serializable {
         this.currencies = currencies;
     }
 
-    public GrossPayPeriod[] getGrossPayPeriods() {
+    public PaymentFrequency[] getGrossPayPeriods() {
         return grossPayPeriods;
     }
 
-    public void setGrossPayPeriods(GrossPayPeriod[] grossPayPeriods) {
+    public void setGrossPayPeriods(PaymentFrequency[] grossPayPeriods) {
         this.grossPayPeriods = grossPayPeriods;
     }
 
@@ -128,11 +129,11 @@ public class OfferBean implements Serializable {
         this.emptyOffer = emptyOffer;
     }
 
-    public PaymentPeriod[] getPaymentPeriods() {
+    public PaymentFrequency[] getPaymentPeriods() {
         return paymentPeriods;
     }
 
-    public void setPaymentPeriods(PaymentPeriod[] paymentPeriods) {
+    public void setPaymentPeriods(PaymentFrequency[] paymentPeriods) {
         this.paymentPeriods = paymentPeriods;
     }
 

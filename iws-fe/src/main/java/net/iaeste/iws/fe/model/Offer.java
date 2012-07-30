@@ -13,25 +13,10 @@
  * =============================================================================
  */
 
-/*
- * =============================================================================
- * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fe) - net.iaeste.iws.fe.model.Offer
- * -----------------------------------------------------------------------------
- * This software is provided by the members of the IAESTE Internet Development
- * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
- * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
- *
- * This software is provided "as is"; the IDT or individuals within the IDT
- * cannot be held legally responsible for any problems the software may cause.
- * =============================================================================
- */
-
 package net.iaeste.iws.fe.model;
 
 
-import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.enums.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
@@ -66,7 +51,7 @@ public class Offer {
     private boolean previousTrainingRequired;
     @Length(min = 0, max = 500)
     private String otherRequirements;
-    private Gender selectedGender = Gender.EITHER;
+    private Gender selectedGender = Gender.E;
     private String otherFaculty;
     @Length(min = 0, max = 1000)
     private String workDescription;
@@ -85,13 +70,13 @@ public class Offer {
     private Date dateToHolidays;
     private BigDecimal grossPay;
     private Currency selectedCurrency;
-    private GrossPayPeriod selectedGrossPayPaymentPeriod;
+    private PaymentFrequency selectedGrossPayPaymentPeriod;
     private Integer deductionsExpected;
     private String lodgingArrangedBy;
     private BigDecimal estimatedCostOfLodging;
-    private PaymentPeriod selectedCostOfLodgingPeriod;
+    private PaymentFrequency selectedCostOfLodgingPeriod;
     private BigDecimal estimatedCostOfLiving;
-    private PaymentPeriod selectedCostOfLivingPeriod;
+    private PaymentFrequency selectedCostOfLivingPeriod;
     private boolean canteenFacilities;
     private TableView selectedTableView;
     private List<LanguageWrapper> languages = new ArrayList<>(3);
@@ -103,7 +88,7 @@ public class Offer {
 
     public boolean canAddAnotherLanguage() {
         for (LanguageWrapper l : languages) {
-            if (l.getLanguage() == null || l.getLevel() == null) {
+            if (l.getLanguage() == null) {
                 return false;
             }
         }
@@ -112,7 +97,7 @@ public class Offer {
 
     public void addLanguageWithOperator() {
         this.languages.add(new LanguageWrapper());
-        this.languageOperators.add(LanguageOperator.AND);
+        this.languageOperators.add(LanguageOperator.A);
     }
 
     public void removeLanguageWithOperator(int position) {
@@ -327,11 +312,11 @@ public class Offer {
         this.selectedCurrency = selectedCurrency;
     }
 
-    public GrossPayPeriod getSelectedGrossPayPaymentPeriod() {
+    public PaymentFrequency getSelectedGrossPayPaymentPeriod() {
         return selectedGrossPayPaymentPeriod;
     }
 
-    public void setSelectedGrossPayPaymentPeriod(GrossPayPeriod selectedGrossPayPaymentPeriod) {
+    public void setSelectedGrossPayPaymentPeriod(PaymentFrequency selectedGrossPayPaymentPeriod) {
         this.selectedGrossPayPaymentPeriod = selectedGrossPayPaymentPeriod;
     }
 
@@ -359,11 +344,11 @@ public class Offer {
         this.estimatedCostOfLodging = estimatedCostOfLodging;
     }
 
-    public PaymentPeriod getSelectedCostOfLodgingPeriod() {
+    public PaymentFrequency getSelectedCostOfLodgingPeriod() {
         return selectedCostOfLodgingPeriod;
     }
 
-    public void setSelectedCostOfLodgingPeriod(PaymentPeriod selectedCostOfLodgingPeriod) {
+    public void setSelectedCostOfLodgingPeriod(PaymentFrequency selectedCostOfLodgingPeriod) {
         this.selectedCostOfLodgingPeriod = selectedCostOfLodgingPeriod;
     }
 
@@ -375,11 +360,11 @@ public class Offer {
         this.estimatedCostOfLiving = estimatedCostOfLiving;
     }
 
-    public PaymentPeriod getSelectedCostOfLivingPeriod() {
+    public PaymentFrequency getSelectedCostOfLivingPeriod() {
         return selectedCostOfLivingPeriod;
     }
 
-    public void setSelectedCostOfLivingPeriod(PaymentPeriod selectedCostOfLivingPeriod) {
+    public void setSelectedCostOfLivingPeriod(PaymentFrequency selectedCostOfLivingPeriod) {
         this.selectedCostOfLivingPeriod = selectedCostOfLivingPeriod;
     }
 

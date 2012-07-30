@@ -15,6 +15,9 @@
 
 package net.iaeste.iws.fe.model;
 
+import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.LanguageLevel;
+
 /**
  * A container for the language level and the level itself
  *
@@ -24,7 +27,7 @@ package net.iaeste.iws.fe.model;
  */
 public class LanguageWrapper {
     private Language language;
-    private LanguageLevel level = LanguageLevel.EXCELLENT;
+    private LanguageLevel level = LanguageLevel.E;
 
     public Language getLanguage() {
         return language;

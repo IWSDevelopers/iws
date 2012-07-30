@@ -15,8 +15,8 @@
 
 package net.iaeste.iws.fe.converter;
 
-import net.iaeste.iws.fe.model.LanguageOperator;
 
+import net.iaeste.iws.api.enums.LanguageOperator;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;

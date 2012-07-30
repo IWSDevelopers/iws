@@ -31,6 +31,7 @@
 package net.iaeste.iws.fe.model;
 
 
+import net.iaeste.iws.api.enums.StudyLevel;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
@@ -63,10 +64,11 @@ public class Offer {
     private String specialization;
     private List<StudyLevel> selectedLevelOfStudy;
     private boolean previousTrainingRequired;
+    @Length(min = 0, max = 500)
     private String otherRequirements;
     private Gender selectedGender = Gender.EITHER;
     private String otherFaculty;
-
+    @Length(min = 0, max = 1000)
     private String workDescription;
     private List<TypeOfWork> selectedTypesOfWork;
     @Min(1)

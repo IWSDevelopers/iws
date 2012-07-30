@@ -32,7 +32,7 @@
                     <p:outputLabel for="studyLevel" value="#{amsg.studyLevel}"/>
                     <p:selectManyCheckbox id="studyLevel" value="#{cc.attrs.offer.selectedLevelOfStudy}" layout="pageDirection" required="true"
                                           label="#{amsg.studyLevel}">
-                        <f:selectItems value="#{offerBean.studyLevels}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                        <f:selectItems value="#{offerBean.studyLevels}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"/>
                     </p:selectManyCheckbox>
                     <h:message for="studyLevel" errorClass="error"/>
                 </li>
@@ -43,8 +43,9 @@
                 </li>
                 <li>
                     <p:outputLabel for="otherRequirements" value="#{amsg.otherRequirements}"/>
-                    <p:inputTextarea id="otherRequirements" value="#{cc.attrs.offer.otherRequirements}" rows="6" cols="33" counter="counter" maxlength="500"
-                                     counterTemplate="{0}#{amsg.remainingCharactersMessage}" styleClass="xLargeInput"/>
+                    <p:inputTextarea id="otherRequirements" value="#{cc.attrs.offer.otherRequirements}" rows="6" cols="34" counter="counter" maxlength="500"
+                                     counterTemplate="{0} #{amsg.remainingCharactersMessage}" styleClass="xLargeInput"/>
+                    <h:outputText id="counter" styleClass="description"/>
                     <h:message for="otherRequirements" errorClass="error"/>
                 </li>
                 <li>

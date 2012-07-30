@@ -14,15 +14,17 @@
             <ul>
                 <li>
                     <p:outputLabel for="workDescription" value="#{amsg.workDescription}"/>
-                    <p:inputTextarea id="workDescription" rows="6" cols="50" value="#{cc.attrs.offer.workDescription}"/>
+                    <p:inputTextarea id="workDescription" value="#{cc.attrs.offer.workDescription}" rows="6" cols="50" counter="counter" maxlength="1000"
+                                     counterTemplate="{0} #{amsg.remainingCharactersMessage}"/>
+                    <h:outputText id="counter" styleClass="description"/>
                     <h:message for="workDescription" errorClass="error"/>
                 </li>
                 <li>
-            <p:outputLabel for="typesOfWork" value="#{amsg.typeOfWork}"/>
-            <p:selectManyCheckbox id="typesOfWork" value="#{cc.attrs.offer.selectedTypesOfWork}" layout="pageDirection" label="#{amsg.categories}">
-                <f:selectItems value="#{offerBean.typesOfWork}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
+                    <p:outputLabel for="typesOfWork" value="#{amsg.typeOfWork}"/>
+                    <p:selectManyCheckbox id="typesOfWork" value="#{cc.attrs.offer.selectedTypesOfWork}" layout="pageDirection" label="#{amsg.categories}">
+                        <f:selectItems value="#{offerBean.typesOfWork}" var="p" itemLabel="#{amsg.handleGetObject(p.nameProperty)}"/>
                     </p:selectManyCheckbox>
-            <h:message for="typesOfWork" errorClass="error"/>
+                    <h:message for="typesOfWork" errorClass="error"/>
                 </li>
                 <li>
                     <p:outputLabel for="minNumberOfWeeksOffered" value="#{amsg.weeksOffered}"/>

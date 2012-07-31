@@ -19,29 +19,30 @@
             <p:tabView dynamic="true" cache="false">
 
                 <p:tab title="#{amsg.offerBasicInfo}">
-                    <offer:basicInfo offer="#{offerBean.emptyOffer}"/>
+                    <offer:basicInfo offer="#{offerBean.selectedOffer}"/>
                 </p:tab>
 
                 <p:tab title="#{amsg.employerInfoText}">
-                    <offer:employerInfo offer="#{offerBean.emptyOffer}"/>
+                    <offer:employerInfo offer="#{offerBean.selectedOffer}"/>
                 </p:tab>
 
                 <p:tab title="#{amsg.studentInfoText}">
-                    <offer:studentInfo offer="#{offerBean.emptyOffer}"/>
+                    <offer:studentInfo offer="#{offerBean.selectedOffer}"/>
                 </p:tab>
 
                 <p:tab title="#{amsg.workOfferedText}">
-                    <offer:workOffered offer="#{offerBean.emptyOffer}"/>
+                    <offer:workOffered offer="#{offerBean.selectedOffer}"/>
                 </p:tab>
 
                 <p:tab title="#{amsg.accommodationText}">
-                    <offer:accommodation offer="#{offerBean.emptyOffer}"/>
+                    <offer:accommodation offer="#{offerBean.selectedOffer}"/>
                 </p:tab>
 
             </p:tabView>
 
             <h:panelGroup styleClass="formActions">
-                <p:commandButton widgetVar="submit" value="#{amsg.saveOffer}" process="@form" update="@form" icon="ui-icon-disk"/>
+                <p:commandButton widgetVar="submit" value="#{amsg.saveOffer}" process="@form" update="@form" action="#{offerBean.updateOffer()}"
+                                 icon="ui-icon-disk"/>
                 <p:button value="#{amsg.cancel}" icon="ui-icon-cancel"/>
             </h:panelGroup>
         </h:form>

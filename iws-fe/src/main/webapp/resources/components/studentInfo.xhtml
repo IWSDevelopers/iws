@@ -32,7 +32,8 @@
                     <p:outputLabel for="studyLevel" value="#{amsg.studyLevel}"/>
                     <p:selectManyCheckbox id="studyLevel" value="#{cc.attrs.offer.selectedLevelOfStudy}" layout="pageDirection" required="true"
                                           label="#{amsg.studyLevel}">
-                        <f:selectItems value="#{offerBean.studyLevels}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"/>
+                        <f:selectItems value="#{offerBean.studyLevels}" var="p"
+                                       itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
                     </p:selectManyCheckbox>
                     <h:message for="studyLevel" errorClass="error"/>
                 </li>
@@ -51,7 +52,8 @@
                 <li>
                     <p:outputLabel for="gender" value="#{amsg.gender}"/>
                     <p:selectOneRadio id="gender" value="#{cc.attrs.offer.selectedGender}" required="true">
-                        <f:selectItems value="#{offerBean.genders}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"/>
+                        <f:selectItems value="#{offerBean.genders}" var="p"
+                                       itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
                     </p:selectOneRadio>
                     <h:message for="gender" errorClass="error"/>
                 </li>
@@ -62,7 +64,8 @@
 
                             <p:selectOneMenu value="#{cc.attrs.offer.languageOperators[status.index - 1]}" styleClass="smallInput"
                                              rendered="#{status.index != 0}" converter="languageOperatorConverter">
-                                <f:selectItems value="#{offerBean.languageOperators}" var="l" itemLabel="#{l.class.simpleName.concat('.').concat(l.name())}"
+                                <f:selectItems value="#{offerBean.languageOperators}" var="l"
+                                               itemLabel="#{amsg.handleGetObject(l.class.simpleName.concat('.').concat(l.name()))}"
                                                itemValue="#{l}"/>
                                 <p:ajax process="@this"/>
                             </p:selectOneMenu>
@@ -73,13 +76,15 @@
 
                             <p:selectOneMenu value="#{wrapper.language}" styleClass="LargeInput">
                                 <f:selectItem itemLabel="#{amsg.selectLanguage}" itemValue="#{null}"/>
-                                <f:selectItems value="#{offerBean.languages}" var="l" itemLabel="#{l.class.simpleName.concat('.').concat(l.name())}"
+                                <f:selectItems value="#{offerBean.languages}" var="l"
+                                               itemLabel="#{amsg.handleGetObject(l.class.simpleName.concat('.').concat(l.name()))}"
                                                itemValue="#{l}" itemDisabled="#{cc.attrs.offer.isLanguageSelected(l, status.index)}"/>
                                 <p:ajax process="@this"/>
                             </p:selectOneMenu>
 
                             <p:selectOneMenu value="#{wrapper.level}" styleClass="LargeInput">
-                                <f:selectItems value="#{offerBean.languageLevels}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"
+                                <f:selectItems value="#{offerBean.languageLevels}" var="p"
+                                               itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"
                                                itemValue="#{p}"/>
                                 <p:ajax process="@this"/>
                             </p:selectOneMenu>

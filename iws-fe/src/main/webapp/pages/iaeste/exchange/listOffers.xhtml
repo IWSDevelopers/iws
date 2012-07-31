@@ -20,63 +20,62 @@
 
             </h:panelGrid>
 
-            <p:dataTable id="listOfOffers" var="fetch" value="#{offerBean}" selection="#{offerBean}" rowKey="#{fetch.refNo}"
-                         selectionMode="single" emptyMessage="#{amsg.offerNotFound}" paginator="true" lazy="true"
+            <p:dataTable id="listOfOffers" var="offer" value="#{offerBean.offerList}" emptyMessage="#{amsg.offerNotFound}" paginator="true" lazy="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15" rows="10">
+                         rowsPerPageTemplate="20,50,100" rows="20" rowKey="#{offer.refNo}" selection="#{offerBean.selectedOffer}" selectionMode="single" >
 
                 <f:facet name="header">
                     <h:outputText value="#{amsg.viewOfferTableHeader}"/>
                 </f:facet>
 
-                <p:column headerText="#{amsg.refNo}" filterBy="#{fetch.refNo}" filterMatchMode="contains" sortBy="#{fetch.refNo}">
-                    <h:outputText value="#{fetch.refNo}"/>
+                <p:column headerText="#{amsg.refNo}">
+                    <h:outputText value="#{offer.refNo}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.nominationDeadline}" filterBy="#{fetch.nominationDeadline}" filterMatchMode="contains"
-                          sortBy="#{fetch.nominationDeadline}"
+                <p:column headerText="#{amsg.nominationDeadline}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
-                    <h:outputText value="#{fetch.nominationDeadline}"/>
+                    <h:outputText value="#{offer.changeDateFormat(offer.nominationDeadline)}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.employer}" filterBy="#{fetch.employer}" filterMatchMode="contains" sortBy="#{fetch.employer}"
+                <p:column headerText="#{amsg.employer}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
-                    <h:outputText value="#{fetch.employer}"/>
+                    <h:outputText value="#{offer.employer.name}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.website}" filterBy="#{fetch.website}" filterMatchMode="contains" sortBy="#{fetch.website}"
+                <p:column headerText="#{amsg.weeksOffered}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
-                    <h:outputText value="#{fetch.website}"/>
+                    <h:outputText value="#{offer.minNumberOfWeeksOffered}-#{offer.maxNumberOfWeeksOffered}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.weeksOffered}" filterBy="#{fetch.weeksOffered}" filterMatchMode="contains" sortBy="#{fetch.weeksOffered}"
+                <p:column headerText="#{amsg.grossPay}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
-                    <h:outputText value="#{fetch.weeksOffered}"/>
+                    <h:outputText value="#{offer.grossPay}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.grossPay}" filterBy="#{fetch.grossPay}" filterMatchMode="contains" sortBy="#{fetch.grossPay}"
-                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
-                    <h:outputText value="#{fetch.grossPay}"/>
+                <p:column headerText="#{amsg.fieldsOfStudy}">
+                    <h:outputText value="#{offer.faculty}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.fieldsOfStudy}" filterBy="#{fetch.faculty}" filterMatchMode="contains" sortBy="#{fetch.faculty}">
-                    <h:outputText value="#{fetch.faculty}"/>
-                </p:column>
-
-                <p:column headerText="#{amsg.specialization}" filterBy="#{fetch.specialization}" filterMatchMode="contains" sortBy="#{fetch.specialization}"
+                <p:column headerText="#{amsg.specialization}"
                           rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED' || offerBean.emptyOffer.selectedTableView == 'COMPACT'}">
-                    <h:outputText value="#{fetch.specialization}"/>
+                    <h:outputText value="#{offer.specialization}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.studyLevel}" filterBy="#{fetch.studyLevel}" filterMatchMode="contains" sortBy="#{fetch.studyLevel}"
-                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
-                    <h:outputText value="#{fetch.studyLevel}"/>
+                <p:column headerText="#{amsg.studyLevel}" rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
+                    <h:outputText value="#{offer.selectedLevelOfStudy}"/>
                 </p:column>
 
-                <p:column headerText="#{amsg.gender}" filterBy="#{fetch.gender}" filterMatchMode="contains" sortBy="#{fetch.gender}"
-                          rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
-                    <h:outputText value="#{fetch.gender}"/>
+                <p:column headerText="#{amsg.gender}" rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
+                    <h:outputText value="#{amsg.handleGetObject(offer.selectedGender.class.simpleName.concat('.').concat(offer.selectedGender.name()))}"/>
                 </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton id="viewOffer" value="View" icon="ui-icon-search" action="offerDetail.xhtml?faces-redirect=true"/>
+                    <p:commandButton id="editOffer" value="#{amsg.editOfferHeader}" icon="ui-icon-folder-open"
+                                     action="/pages/iaeste/exchange/editOffer.xhtml?faces-redirect=true"/>
+                    <p:commandButton id="addOffer" value="#{amsg.addOFormButton}" icon="ui-icon-folder-open"
+                                     action="addOffer.xhtml?faces-redirect=true"/>
+                </f:facet>
 
             </p:dataTable>
         </h:form>

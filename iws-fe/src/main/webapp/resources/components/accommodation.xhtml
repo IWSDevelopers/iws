@@ -13,7 +13,9 @@
             <ul>
                 <li>
                     <p:outputLabel for="lodgingArrangedBy" value="#{amsg.lodgingArrangedBy}"/>
-                    <p:inputText id="lodgingArrangedBy" value="#{cc.attrs.offer.lodgingArrangedBy}" styleClass="largeInput"/>
+                    <p:inputText id="lodgingArrangedBy" value="#{cc.attrs.offer.lodgingArrangedBy}" styleClass="largeInput">
+                        <p:ajax process="@this"/>
+                    </p:inputText>
                     <h:message for="lodgingArrangedBy" errorClass="error"/>
                 </li>
                 <li>
@@ -24,7 +26,8 @@
                     </p:inputText>
                     <p:selectOneRadio id="estimatedCostOfLodgingPeriod" value="#{cc.attrs.offer.selectedCostOfLodgingPeriod}"
                                       required="#{cc.attrs.offer.estimatedCostOfLodging != null}" label="#{amsg.estimatedCostOfLodging}">
-                        <f:selectItems value="#{offerBean.paymentPeriods}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"/>
+                        <f:selectItems value="#{offerBean.paymentPeriods}" var="p"
+                                       itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
                     </p:selectOneRadio>
                     <h:message for="estimatedCostOfLodging" errorClass="error"/>
                     <h:message for="estimatedCostOfLodgingPeriod" errorClass="error"/>
@@ -37,14 +40,17 @@
                     </p:inputText>
                     <p:selectOneRadio id="estimatedCostOfLivingPeriod" value="#{cc.attrs.offer.selectedCostOfLivingPeriod}"
                                       required="#{cc.attrs.offer.estimatedCostOfLiving != null}" label="#{amsg.estimatedCostOfLiving}">
-                        <f:selectItems value="#{offerBean.paymentPeriods}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"/>
+                        <f:selectItems value="#{offerBean.paymentPeriods}" var="p"
+                                       itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
                     </p:selectOneRadio>
                     <h:message for="estimatedCostOfLiving" errorClass="error"/>
                     <h:message for="estimatedCostOfLivingPeriod" errorClass="error"/>
                 </li>
                 <li>
                     <p:outputLabel for="canteenFacilities" value="#{amsg.canteenFacilities}"/>
-                    <p:selectBooleanCheckbox id="canteenFacilities" value="#{cc.attrs.offer.canteenFacilities}"/>
+                    <p:selectBooleanCheckbox id="canteenFacilities" value="#{cc.attrs.offer.canteenFacilities}">
+                        <p:ajax process="@this" />
+                    </p:selectBooleanCheckbox>
                     <h:message for="canteenFacilities" errorClass="error"/>
                 </li>
                 <li>

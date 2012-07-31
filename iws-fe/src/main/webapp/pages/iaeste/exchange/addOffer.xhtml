@@ -29,7 +29,8 @@
 
                 <p:tab id="accommodation" title="#{amsg.accommodationText}">
                     <offer:accommodation offer="#{offerBean.emptyOffer}"/>
-                    <p:commandButton value="#{amsg.saveOffer}" process="@form" update="@form" icon="ui-icon-disk" styleClass="ui-wizard-nav-next"/>
+                    <p:commandButton value="#{amsg.saveOffer}" process="@form" immediate="true" icon="ui-icon-disk" action="#{offerBean.saveOffer()}"
+                                     styleClass="ui-wizard-nav-next"/>
                 </p:tab>
 
             </p:wizard>

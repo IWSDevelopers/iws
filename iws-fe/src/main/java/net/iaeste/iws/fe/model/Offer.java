@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -70,7 +71,7 @@ public class Offer {
     private Date dateToHolidays;
     private BigDecimal grossPay;
     private Currency selectedCurrency;
-    private PaymentFrequency selectedGrossPayPaymentPeriod;
+    private PaymentFrequency selectedGrossPayPaymentFrequency;
     private Integer deductionsExpected;
     private String lodgingArrangedBy;
     private BigDecimal estimatedCostOfLodging;
@@ -81,6 +82,7 @@ public class Offer {
     private TableView selectedTableView;
     private List<LanguageWrapper> languages = new ArrayList<>(3);
     private List<LanguageOperator> languageOperators = new ArrayList<>(2);
+
 
     public Offer() {
         languages.add(new LanguageWrapper());
@@ -118,6 +120,11 @@ public class Offer {
 
     public boolean allLanguageOperatorsMatch() {
         return new HashSet(languageOperators).size() <= 1;
+    }
+
+    public String changeDateFormat(Date complexDate) {
+        SimpleDateFormat change = new SimpleDateFormat("MMMM.dd.yyyy");
+        return change.format(complexDate);
     }
 
     public String getRefNo() {
@@ -312,12 +319,12 @@ public class Offer {
         this.selectedCurrency = selectedCurrency;
     }
 
-    public PaymentFrequency getSelectedGrossPayPaymentPeriod() {
-        return selectedGrossPayPaymentPeriod;
+    public PaymentFrequency getSelectedGrossPayPaymentFrequency() {
+        return selectedGrossPayPaymentFrequency;
     }
 
-    public void setSelectedGrossPayPaymentPeriod(PaymentFrequency selectedGrossPayPaymentPeriod) {
-        this.selectedGrossPayPaymentPeriod = selectedGrossPayPaymentPeriod;
+    public void setSelectedGrossPayPaymentFrequency(PaymentFrequency selectedGrossPayPaymentFrequency) {
+        this.selectedGrossPayPaymentFrequency = selectedGrossPayPaymentFrequency;
     }
 
     public Integer getDeductionsExpected() {

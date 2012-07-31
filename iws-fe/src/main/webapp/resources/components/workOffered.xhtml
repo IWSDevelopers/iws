@@ -22,7 +22,8 @@
                 <li>
                     <p:outputLabel for="typesOfWork" value="#{amsg.typeOfWork}"/>
                     <p:selectManyCheckbox id="typesOfWork" value="#{cc.attrs.offer.selectedTypesOfWork}" layout="pageDirection" label="#{amsg.categories}">
-                        <f:selectItems value="#{offerBean.typesOfWork}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"/>
+                        <f:selectItems value="#{offerBean.typesOfWork}" var="p"
+                                       itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
                     </p:selectManyCheckbox>
                     <h:message for="typesOfWork" errorClass="error"/>
                 </li>
@@ -83,18 +84,20 @@
                 <li>
                     <p:outputLabel for="grossPay" value="#{amsg.grossPay}"/>
                     <p:inputText id="grossPay" value="#{cc.attrs.offer.grossPay}" styleClass="mediumInput">
-                        <p:ajax event="blur" process="@this" update="selectedGrossPayPaymentPeriod grossPayMsg"/>
+                        <p:ajax event="blur" process="@this" update="selectedGrossPayPaymentFrequency grossPayMsg"/>
                     </p:inputText>
                     <p:selectOneMenu value="#{cc.attrs.offer.selectedCurrency}" styleClass="mediumInput">
-                        <f:selectItems value="#{offerBean.currencies}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"/>
+                        <f:selectItems value="#{offerBean.currencies}" var="p"
+                                       itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
                         <p:ajax event="valueChange" process="@this" update="@(label[id$=costOfLivingLbl], label[id$=costOfLodgingLbl])"/>
                     </p:selectOneMenu>
-                    <p:selectOneRadio id="selectedGrossPayPaymentPeriod" value="#{cc.attrs.offer.selectedGrossPayPaymentPeriod}" label="#{amsg.grossPay}"
+                    <p:selectOneRadio id="selectedGrossPayPaymentFrequency" value="#{cc.attrs.offer.selectedGrossPayPaymentFrequency}" label="#{amsg.grossPay}"
                                       required="#{cc.attrs.offer.grossPay > 0}">
-                        <f:selectItems value="#{offerBean.grossPayPeriods}" var="p" itemLabel="#{p.class.simpleName.concat('.').concat(p.name())}"/>
+                        <f:selectItems value="#{offerBean.grossPayPeriods}" var="p"
+                                       itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
                     </p:selectOneRadio>
                     <h:message id="grossPayMsg" for="grossPay" errorClass="error"/>
-                    <h:message for="selectedGrossPayPaymentPeriod" errorClass="error"/>
+                    <h:message for="selectedGrossPayPaymentFrequency" errorClass="error"/>
                 </li>
                 <li>
                     <p:outputLabel for="deductionsExpected" value="#{amsg.deductionsExpected}"/>

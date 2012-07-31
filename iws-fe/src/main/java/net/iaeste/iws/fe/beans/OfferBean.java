@@ -38,16 +38,53 @@ import java.util.List;
 public class OfferBean implements Serializable {
 
     private Offer emptyOffer = new Offer();
-    private PaymentFrequency[] paymentPeriods = PaymentFrequency.values();
+    private PaymentFrequency[] paymentPeriods = new PaymentFrequency[] {PaymentFrequency.W, PaymentFrequency.M};
     private StudyLevel[] studyLevels = StudyLevel.values();
     private Gender[] genders = Gender.values();
     private TypeOfWork[] typesOfWork = TypeOfWork.values();
-    private PaymentFrequency[] grossPayPeriods = PaymentFrequency.values();
+    private PaymentFrequency[] grossPayPeriods = new PaymentFrequency[] {PaymentFrequency.W, PaymentFrequency.M};
     private Currency[] currencies = Currency.values();
     private TableView[] tableViews = TableView.values();
     private Language[] languages = Language.values();
     private LanguageLevel[] languageLevels = LanguageLevel.values();
     private LanguageOperator[] languageOperators = LanguageOperator.values();
+    private List<Offer> offerList = new ArrayList<>();
+    private Offer selectedOffer;
+
+    public Offer getSelectedOffer() {
+        return selectedOffer;
+    }
+
+    public void setSelectedOffer(Offer selectedOffer) {
+        this.selectedOffer = selectedOffer;
+    }
+
+
+    public OfferBean() {
+    }
+
+    public String saveOffer() {
+        offerList.add(emptyOffer);
+        emptyOffer = new Offer();
+        return "listOffers?faces-redirect=true";
+    }
+
+    public String updateOffer() {
+        return "listOffers?faces-redirect=true";
+    }
+
+    public String deleteOffer() {
+        offerList.remove(selectedOffer);
+        return "listOffers?faces-redirect=true";
+    }
+
+    public List<Offer> getOfferList() {
+        return offerList;
+    }
+
+    public void setOfferList(List<Offer> offerList) {
+        this.offerList = offerList;
+    }
 
     public LanguageOperator[] getLanguageOperators() {
         return languageOperators;

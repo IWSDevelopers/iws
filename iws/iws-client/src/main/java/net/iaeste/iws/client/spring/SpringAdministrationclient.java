@@ -29,10 +29,6 @@ import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.services.ServiceFactory;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -43,19 +39,15 @@ import javax.persistence.PersistenceContext;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {Config.class})
 public class SpringAdministrationclient implements Administration {
 
-    @PersistenceContext
-    private EntityManager entityManager;
     private final Administration administration;
 
     /**
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringAdministrationclient() {
+    public SpringAdministrationclient(EntityManager entityManager) {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         administration = new AdministrationController(factory);
     }

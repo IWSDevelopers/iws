@@ -22,16 +22,13 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ *
  * The spring based implementation uses the "Test" setup for Spring, to provide
  * a working IWS Library instance. As we're using JPA for our persistence layer,
  * it is important that all invocations is made transactional, hence the need
@@ -41,19 +38,15 @@ import javax.persistence.PersistenceContext;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {Config.class})
 public class SpringAccessClient implements Access {
 
-    @PersistenceContext
-    private EntityManager entityManager;
     private final Access access;
 
     /**
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringAccessClient() {
+    public SpringAccessClient(EntityManager entityManager) {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         access = new AccessController(factory);
     }
@@ -71,7 +64,6 @@ public class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
     public Fallible deprecateSession(final AuthenticationToken token) {
         return access.deprecateSession(token);
     }
@@ -80,7 +72,6 @@ public class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
     public PermissionResponse findPermissions(final AuthenticationToken token) {
         return access.findPermissions(token);
     }

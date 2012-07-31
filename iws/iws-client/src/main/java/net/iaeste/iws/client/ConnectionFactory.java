@@ -17,31 +17,36 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.client.spring.EntityManagerProvider;
 import net.iaeste.iws.client.spring.SpringAccessClient;
 import net.iaeste.iws.client.spring.SpringAdministrationclient;
 import net.iaeste.iws.client.spring.SpringExchangeClient;
 
+import javax.persistence.EntityManager;
+
 /**
  * The ConnectionFactory will use the provided Properties, to determine which
  * instance or implementation of IWS to use for external testing.<br />
- *   Class is made package private, since it is only suppose to be used by the
+ * Class is made package private, since it is only suppose to be used by the
  * actual Client Classes in this package.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 final class ConnectionFactory {
 
+    private EntityManager em = EntityManagerProvider.getInstance();
+
     public Access getAccessImplementation() {
-        return new SpringAccessClient();
+        return new SpringAccessClient(em);
     }
 
     public Administration getAdministrationImplementation() {
-        return new SpringAdministrationclient();
+        return new SpringAdministrationclient(em);
     }
 
     public Exchange getExchangeImplementation() {
-        return new SpringExchangeClient();
+        return new SpringExchangeClient(em);
     }
 }

@@ -16,51 +16,28 @@ package net.iaeste.iws.client.spring;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.data.AuthenticationToken;
-import net.iaeste.iws.api.requests.FacultyRequest;
-import net.iaeste.iws.api.requests.FetchFacultiesRequest;
-import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
-import net.iaeste.iws.api.requests.FetchOffersRequest;
-import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.OfferRequest;
-import net.iaeste.iws.api.requests.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.PublishGroupRequest;
-import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.FacultyResponse;
-import net.iaeste.iws.api.responses.Fallible;
-import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.api.responses.OfferTemplateResponse;
-import net.iaeste.iws.api.responses.PublishGroupResponse;
-import net.iaeste.iws.api.responses.StudentResponse;
+import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.responses.*;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {Config.class})
 public class SpringExchangeClient implements Exchange {
 
-    @PersistenceContext
-    private EntityManager entityManager;
     private final Exchange exchange;
 
     /**
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringExchangeClient() {
+    public SpringExchangeClient(EntityManager entityManager) {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         exchange = new ExchangeController(factory);
     }

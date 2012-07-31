@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.client.spring;
 
+import net.iaeste.iws.client.Configuration;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -23,6 +24,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -31,17 +33,16 @@ import javax.sql.DataSource;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@org.springframework.context.annotation.Configuration
+@EnableTransactionManagement
 public class Config {
 
-    /**
-     * Must be replaced by a proper properties setup, but until we actually have
-     * a real database working, this will suffice.
-     */
-    private static final Boolean USE_INMEMORY_DATABASE = true;
+    private final Configuration configuration = Configuration.getInstance();
 
     @Bean
     public DataSource dataSource() {
-        return USE_INMEMORY_DATABASE ? prepareHSQLDataSource() : preparePostgreSQLDataSource();
+        final Boolean usePG = configuration.getUsePostgreSQLDatabase();
+        return usePG ? preparePostgreSQLDataSource() : prepareHSQLDataSource();
     }
 
     private DataSource prepareHSQLDataSource() {
@@ -59,11 +60,11 @@ public class Config {
     private DataSource preparePostgreSQLDataSource() {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setDatabaseName("IWS");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("password");
-        dataSource.setServerName("localhost");
-        dataSource.setPortNumber(5432);
+        dataSource.setDatabaseName(configuration.getPostgresqlDatabaseName());
+        dataSource.setUser(configuration.getPostgresqlUsername());
+        dataSource.setPassword(configuration.getPostgresqlPassword());
+        dataSource.setServerName(configuration.getPostgresqlServerName());
+        dataSource.setPortNumber(configuration.getPostgresqlPort());
 
         return dataSource;
     }

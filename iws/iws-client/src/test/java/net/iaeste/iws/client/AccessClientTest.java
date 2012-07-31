@@ -14,16 +14,15 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -40,7 +39,7 @@ public class AccessClientTest {
     }
 
     @Test
-    @Ignore("TYODO Kim; something is not working...")
+    //@Ignore("TYODO Kim; something is not working...")
     public void testInvalidGenerateSession() {
         final AuthenticationRequest request = new AuthenticationRequest();
 

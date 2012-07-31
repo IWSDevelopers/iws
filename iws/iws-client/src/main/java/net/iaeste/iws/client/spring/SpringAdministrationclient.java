@@ -41,15 +41,13 @@ import javax.persistence.PersistenceContext;
  */
 public class SpringAdministrationclient implements Administration {
 
-    @PersistenceContext
-    private EntityManager entityManager;
     private final Administration administration;
 
     /**
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringAdministrationclient() {
+    public SpringAdministrationclient(EntityManager entityManager) {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         administration = new AdministrationController(factory);
     }

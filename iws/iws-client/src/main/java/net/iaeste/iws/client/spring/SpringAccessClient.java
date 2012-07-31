@@ -22,6 +22,10 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -36,16 +40,14 @@ import net.iaeste.iws.core.services.ServiceFactory;
  */
 public class SpringAccessClient implements Access {
 
-    private final ClientEntityManagerService service;
     private final Access access;
 
     /**
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringAccessClient() {
-        service = new ClientEntityManagerService();
-        final ServiceFactory factory = new ServiceFactory(service.getEntityManager());
+    public SpringAccessClient(EntityManager entityManager) {
+        final ServiceFactory factory = new ServiceFactory(entityManager);
         access = new AccessController(factory);
     }
 
@@ -53,14 +55,9 @@ public class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        final AuthenticationResponse response;
-
-        service.startTransaction();
-        response = access.generateSession(request);
-        service.closeTransaction();
-
-        return response;
+        return access.generateSession(request);
     }
 
     /**
@@ -68,13 +65,7 @@ public class SpringAccessClient implements Access {
      */
     @Override
     public Fallible deprecateSession(final AuthenticationToken token) {
-        final Fallible response;
-
-        service.startTransaction();
-        response = access.deprecateSession(token);
-        service.closeTransaction();
-
-        return response;
+        return access.deprecateSession(token);
     }
 
     /**
@@ -82,12 +73,6 @@ public class SpringAccessClient implements Access {
      */
     @Override
     public PermissionResponse findPermissions(final AuthenticationToken token) {
-        final PermissionResponse response;
-
-        service.startTransaction();
-        response = access.findPermissions(token);
-        service.closeTransaction();
-
-        return response;
+        return access.findPermissions(token);
     }
 }

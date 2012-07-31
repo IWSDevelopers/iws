@@ -13,6 +13,7 @@
         <module>../iws-common</module>
         <module>../iws-persistence</module>
         <module>../iws-core</module>
+        <module>../iws-client</module>
     </modules>
 
     <organization>
@@ -137,6 +138,7 @@
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
                 <version>6.0</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>javax.persistence</groupId>

@@ -24,6 +24,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -32,6 +33,8 @@ import javax.sql.DataSource;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@org.springframework.context.annotation.Configuration
+@EnableTransactionManagement
 public class Config {
 
     private final Configuration configuration = Configuration.getInstance();

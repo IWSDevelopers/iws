@@ -14,8 +14,8 @@
             <ul>
                 <li>
                     <p:outputLabel for="workDescription" value="#{amsg.workDescription}"/>
-                    <p:inputTextarea id="workDescription" value="#{cc.attrs.offer.workDescription}" rows="6" cols="50" counter="counter" maxlength="1000"
-                                     counterTemplate="{0} #{amsg.remainingCharactersMessage}"/>
+                    <p:inputTextarea id="workDescription" value="#{cc.attrs.offer.workDescription}" rows="6" counter="counter" maxlength="1000"
+                                     counterTemplate="{0} #{amsg.remainingCharactersMessage}" styleClass="xxLargeInput"/>
                     <h:outputText id="counter" styleClass="description"/>
                     <h:message for="workDescription" errorClass="error"/>
                 </li>
@@ -51,36 +51,44 @@
                 </li>
                 <li>
                     <p:selectBooleanCheckbox id="dateOr" value="#{cc.attrs.offer.date1Required}">
-                        <p:ajax process="@this"/>
+                        <p:ajax event="change" process="@this" update="date2"/>
                     </p:selectBooleanCheckbox>
-                    <h:outputText value="#{amsg.checkIfOr}"/>
+                    <h:outputText value="#{amsg.checkIfDate2}"/>
                 </li>
-                <li>
-                    <p:outputLabel for="dateFrom2" value="#{amsg.dateFrom}"/>
-                    <p:calendar id="dateFrom2" value="#{cc.attrs.offer.dateFrom2}" required="#{cc.attrs.offer.date1Required}"/>
-                    <h:message for="dateFrom2" errorClass="error"/>
-                </li>
-                <li>
-                    <p:outputLabel for="dateTo2" value="#{amsg.dateTo}"/>
-                    <p:calendar id="dateTo2" value="#{cc.attrs.offer.dateTo2}" required="#{cc.attrs.offer.date1Required}"/>
-                    <h:message for="dateTo2" errorClass="error"/>
-                </li>
-                <li>
-                    <p:selectBooleanCheckbox id="dateOr2" value="#{cc.attrs.offer.holidaysRequired}">
-                        <p:ajax process="@this" update="@none"/>
-                    </p:selectBooleanCheckbox>
-                    <p:outputLabel for="dateOr2" value="#{amsg.checkIfHolidays}"/>
-                </li>
-                <li>
-                    <p:outputLabel for="dateFromHolidays" value="#{amsg.dateFrom}"/>
-                    <p:calendar id="dateFromHolidays" value="#{cc.attrs.offer.dateFromHolidays}" required="#{cc.attrs.offer.holidaysRequired}"/>
-                    <h:message for="dateFromHolidays" errorClass="error"/>
-                </li>
-                <li>
-                    <p:outputLabel for="dateToHolidays" value="#{amsg.dateTo}"/>
-                    <p:calendar id="dateToHolidays" value="#{cc.attrs.offer.dateToHolidays}" required="#{cc.attrs.offer.holidaysRequired}"/>
-                    <h:message for="dateToHolidays" errorClass="error"/>
-                </li>
+                <h:panelGroup id="date2">
+                    <li>
+                        <p:outputLabel for="dateFrom2" value="#{amsg.dateFrom}" rendered="#{cc.attrs.offer.date1Required}"/>
+                        <p:calendar id="dateFrom2" value="#{cc.attrs.offer.dateFrom2}" required="#{cc.attrs.offer.date1Required}"
+                                    rendered="#{cc.attrs.offer.date1Required}"/>
+                        <h:message for="dateFrom2" errorClass="error"/>
+                    </li>
+                    <li>
+                        <p:outputLabel for="dateTo2" value="#{amsg.dateTo}" rendered="#{cc.attrs.offer.date1Required}"/>
+                        <p:calendar id="dateTo2" value="#{cc.attrs.offer.dateTo2}" required="#{cc.attrs.offer.date1Required}"
+                                    rendered="#{cc.attrs.offer.date1Required}"/>
+                        <h:message for="dateTo2" errorClass="error"/>
+                    </li>
+                    <li>
+                        <p:selectBooleanCheckbox id="dateOr2" value="#{cc.attrs.offer.holidaysRequired}">
+                            <p:ajax event="change" process="@this" update="holidays"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel for="dateOr2" value="#{amsg.checkIfHolidays}"/>
+                    </li>
+                </h:panelGroup>
+                <h:panelGroup id="holidays">
+                    <li>
+                        <p:outputLabel for="dateFromHolidays" value="#{amsg.dateFrom}" rendered="#{cc.attrs.offer.holidaysRequired}"/>
+                        <p:calendar id="dateFromHolidays" value="#{cc.attrs.offer.dateFromHolidays}" required="#{cc.attrs.offer.holidaysRequired}"
+                                    rendered="#{cc.attrs.offer.holidaysRequired}"/>
+                        <h:message for="dateFromHolidays" errorClass="error"/>
+                    </li>
+                    <li>
+                        <p:outputLabel for="dateToHolidays" value="#{amsg.dateTo}" rendered="#{cc.attrs.offer.holidaysRequired}"/>
+                        <p:calendar id="dateToHolidays" value="#{cc.attrs.offer.dateToHolidays}" required="#{cc.attrs.offer.holidaysRequired}"
+                                    rendered="#{cc.attrs.offer.holidaysRequired}"/>
+                        <h:message for="dateToHolidays" errorClass="error"/>
+                    </li>
+                </h:panelGroup>
                 <li>
                     <p:outputLabel for="grossPay" value="#{amsg.grossPay}"/>
                     <p:inputText id="grossPay" value="#{cc.attrs.offer.grossPay}" styleClass="mediumInput">
@@ -95,6 +103,7 @@
                                       required="#{cc.attrs.offer.grossPay > 0}">
                         <f:selectItems value="#{offerBean.grossPayPeriods}" var="p"
                                        itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
+                        <p:ajax process="@this"/>
                     </p:selectOneRadio>
                     <h:message id="grossPayMsg" for="grossPay" errorClass="error"/>
                     <h:message for="selectedGrossPayPaymentFrequency" errorClass="error"/>

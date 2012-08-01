@@ -24,6 +24,11 @@
                     <h:message for="nominationDeadline" errorClass="error"/>
                 </li>
                 <li>
+                    <p:outputLabel for="numberOfHardCopies" value="#{amsg.numberOfHardCopies}"/>
+                    <p:inputText id="numberOfHardCopies" value="#{cc.attrs.offer.numberOfHardCopies}" styleClass="smallInput"/>
+                    <h:message for="numberOfHardCopies" errorClass="error"/>
+                </li>
+                <li>
                     <composite:renderFacet name="actions" required="false"/>
                 </li>
             </ul>

@@ -43,6 +43,7 @@ public class Offer {
     private String refNo;
     @NotNull
     private Date nominationDeadline;
+    private Integer numberOfHardCopies;
     @Valid
     private Employer employer = new Employer();
     @Valid
@@ -123,7 +124,7 @@ public class Offer {
     }
 
     public String changeDateFormat(Date complexDate) {
-        SimpleDateFormat change = new SimpleDateFormat("MMMM.dd.yyyy");
+        SimpleDateFormat change = new SimpleDateFormat("MMMM dd.yyyy");
         return change.format(complexDate);
     }
 
@@ -141,6 +142,14 @@ public class Offer {
 
     public void setNominationDeadline(Date nominationDeadline) {
         this.nominationDeadline = nominationDeadline;
+    }
+
+    public Integer getNumberOfHardCopies() {
+        return numberOfHardCopies;
+    }
+
+    public void setNumberOfHardCopies(Integer numberOfHardCopies) {
+        this.numberOfHardCopies = numberOfHardCopies;
     }
 
     public Employer getEmployer() {
@@ -197,14 +206,6 @@ public class Offer {
 
     public void setSelectedGender(Gender selectedGender) {
         this.selectedGender = selectedGender;
-    }
-
-    public String getOtherFaculty() {
-        return otherFaculty;
-    }
-
-    public void setOtherFaculty(String otherFaculty) {
-        this.otherFaculty = otherFaculty;
     }
 
     public String getWorkDescription() {

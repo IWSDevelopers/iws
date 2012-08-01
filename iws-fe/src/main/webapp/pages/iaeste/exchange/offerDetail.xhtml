@@ -5,197 +5,234 @@
       xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/pages/templates/iaeste.xhtml">
-    <ui:param name="title" value="#{amsg.workOfferedText}"/>
-    <ui:define name="content">
-        <h:form id="form">
+<ui:param name="title" value="#{amsg.workOfferedText}"/>
+<ui:define name="content">
+<h:form id="form">
 
+<p:splitButton value="#{amsg.editOfferHeader}" icon="ui-icon-folder-open" action="editOffer.xhtml?faces-redirect=true">
+    <p:menuitem value="#{amsg.deleteOffer}" icon="ui-icon-close" onclick="confirmation.show()"/>
+    <p:separator/>
+    <p:menuitem value="#{amsg.backToList}" icon="ui-icon-extlink" action="listOffers.xhtml?faces-redirect=true"/>
+</p:splitButton>
 
-            <p:splitButton value="#{amsg.editOfferHeader}" icon="ui-icon-folder-open" action="editOffer.xhtml?faces-redirect=true">
-                <p:menuitem value="#{amsg.deleteOffer}" icon="ui-icon-close" action="#{offerBean.deleteOffer()}"/>
-                <p:separator/>
-                <p:menuitem value="#{amsg.backToList}" icon="ui-icon-extlink" action="listOffers.xhtml?faces-redirect=true"/>
-            </p:splitButton>
+<p:confirmDialog id="confirmDialog" message="#{amsg.confirmDeleteMessage}" severity="alert" widgetVar="confirmation">
+    <p:commandButton id="confirm" value="#{amsg.answerYes}" oncomplete="confirmation.hide()" action="#{offerBean.deleteOffer()}"/>
+    <p:commandButton id="decline" value="#{amsg.answerNo}" onclick="confirmation.hide()" type="button"/>
+</p:confirmDialog>
 
-            <p:button value="#{amsg.applyForOffer}" icon="ui-icon-check"/>
+<p:button value="#{amsg.applyForOffer}" icon="ui-icon-check"/>
 
-            <h2>#{amsg.refNo}: #{offerBean.selectedOffer.refNo}</h2>
-            <p:separator style="width: 600px; float:left;"/>
-            <p:spacer height="20"/>
+<h2>#{amsg.refNo}: #{offerBean.selectedOffer.refNo}</h2>
+<p:separator style="width: 850px; float:left;"/>
+<p:spacer height="20"/>
 
-            <h3>#{amsg.employerInfoText}</h3>
-            <h:panelGrid columns="2">
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.employer}:  "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer}"/> <p:spacer width="250" height="10"/>
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.website}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer.website}"/>
-                </h:panelGroup>
+<h3>#{amsg.employerInfoText}</h3>
+<h:panelGrid columns="2">
+    <h:panelGroup>
+        <h:outputText value="#{amsg.employer}:  "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer}"/> <p:spacer width="250" height="10"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.website}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer.website}"/>
+    </h:panelGroup>
 
-                <h:panelGroup/>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.workingPlace}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer.workingPlace}"/>
-                </h:panelGroup>
+    <h:panelGroup/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.workingPlace}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer.workingPlace}"/>
+    </h:panelGroup>
 
-                <h:panelGroup/>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.nearestInternationalAirport}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer.nearestInternationalAirport}"/>
-                </h:panelGroup>
+    <h:panelGroup/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.nearestInternationalAirport}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer.nearestInternationalAirport}"/>
+    </h:panelGroup>
 
-                <h:panelGroup/>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.nearestPublicTransport}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer.nearestPublicTransport}"/>
-                </h:panelGroup>
+    <h:panelGroup/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.nearestPublicTransport}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer.nearestPublicTransport}"/>
+    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.businessOrProducts}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer.businessOrProducts}"/> <p:spacer width="250" height="10"/>
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.numberOfEmployees}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer.numberOfEmployees}"/>
-                </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.businessOrProducts}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer.businessOrProducts}"/> <p:spacer width="250" height="10"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.numberOfEmployees}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer.numberOfEmployees}"/>
+    </h:panelGroup>
 
-                <h:panelGroup/>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.weeklyWorkingHours}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer.weeklyWorkingHours}"/>
-                </h:panelGroup>
+    <h:panelGroup/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.weeklyWorkingHours}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer.weeklyWorkingHours}"/>
+    </h:panelGroup>
 
-                <h:panelGroup/>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.dailyWorkingHours}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.employer.dailyWorkingHours}"/>
-                </h:panelGroup>
+    <h:panelGroup/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.dailyWorkingHours}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.employer.dailyWorkingHours}"/>
+    </h:panelGroup>
 
-            </h:panelGrid>
-            <p:spacer height="10"/>
+</h:panelGrid>
+<p:spacer height="10"/>
 
-            <p:separator style="width: 600px; float:left;"/>
+<p:separator style="width: 850px; float:left;"/>
 
-            <h3>#{amsg.studentInfoText}</h3>
-            <h:panelGrid columns="2">
+<h3>#{amsg.studentInfoText}</h3>
+<h:panelGrid columns="2">
 
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.fieldsOfStudy}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.faculty}"/> <p:spacer width="250" height="10"/>
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.languageRequiredText}: "/>
-                    <h:outputText value="#{amsg.handleGetObject(offerBean.selectedOffer.languages)}"/>
-                </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.fieldsOfStudy}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.faculty}"/> <p:spacer width="357" height="10"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.languageRequiredText}: "/>
+        <ui:repeat value="#{cc.attrs.offer.languages}" var="wrapper" varStatus="status">
+            <h:outputText value="#{offerBean.selectedOffer.languages.class.simpleName.concat('.').concat(offerBean.selectedOffer.languages.name())}"/>
+        </ui:repeat>
+    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.specialization}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.specialization}"/>
-                </h:panelGroup>
-                <h:panelGroup/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.studyLevel}: "/>
+        <h:selectManyCheckbox value="#{offerBean.selectedOffer.selectedLevelOfStudy}" layout="pageDirection">
+            <f:selectItems value="#{offerBean.studyLevels}" itemDisabled="true" var="p"
+                           itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
+        </h:selectManyCheckbox>
+        <p:spacer width="250" height="10"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.specialization}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.specialization}"/>
+    </h:panelGroup>
+    <h:panelGroup/>
 
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.studyLevel}: "/>
-                    <h:selectManyCheckbox value="#{offerBean.selectedOffer.selectedLevelOfStudy}" layout="pageDirection">
-                        <f:selectItems value="#{offerBean.studyLevels}" itemDisabled="true" var="p"
-                                       itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
-                    </h:selectManyCheckbox>
-                    <p:spacer width="250" height="10"/>
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.gender}: "/>
-                    <h:outputText
-                            value="#{amsg.handleGetObject(offerBean.selectedOffer.selectedGender.class.simpleName.concat('.').concat(offerBean.selectedOffer.selectedGender.name()))}"/>
-                </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.previousTrainingRequired}: "/>
+        <h:selectBooleanCheckbox value="#{offerBean.selectedOffer.previousTrainingRequired}" disabled="true"/>
+    </h:panelGroup>
 
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.otherRequirements}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.otherRequirements}"/> <p:spacer width="250" height="10"/>
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.previousTrainingRequired}: "/>
-                    <h:selectBooleanCheckbox value="#{offerBean.selectedOffer.previousTrainingRequired}" disabled="true"/>
-                </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.gender}: "/>
+        <h:outputText
+                value="#{amsg.handleGetObject(offerBean.selectedOffer.selectedGender.class.simpleName.concat('.').concat(offerBean.selectedOffer.selectedGender.name()))}"/>
+    </h:panelGroup>
+    <h:panelGroup/>
 
-            </h:panelGrid>
-            <p:spacer height="10"/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.otherRequirements}: "/>
+        <h:panelGroup layout="block" style="word-wrap: break-word;" styleClass="xxLargeInput">
+            <h:outputText value="#{offerBean.selectedOffer.otherRequirements}"/>
+        </h:panelGroup>
+    </h:panelGroup>
+    <h:panelGroup/>
 
-            <p:separator style="width: 600px; float:left;"/>
+</h:panelGrid>
+<p:spacer height="10"/>
 
-            <h3>#{amsg.workOfferedText}</h3>
-            <p:layout style="min-width:700px;min-height:200px;">
-                <p:layoutUnit position="west" size="360">
-                    <h:outputText value="#{amsg.workDescription}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.workDescription}"/>
-                </p:layoutUnit>
+<p:separator style="width: 850px; float:left;"/>
 
-                <p:layoutUnit position="center" size="370">
-                    <h:panelGrid columns="2">
-                        <h:outputText value="#{amsg.typeOfWork}: "/>
-                        <h:selectManyCheckbox value="#{offerBean.selectedOffer.selectedTypesOfWork}" layout="pageDirection">
-                            <f:selectItems value="#{offerBean.typesOfWork}" itemDisabled="true" var="p"
-                                           itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
-                        </h:selectManyCheckbox>
+<h3>#{amsg.workOfferedText}</h3>
+<h:outputText value="#{amsg.workDescription}: "/>
+<h:panelGroup layout="block" style="word-wrap: break-word;" styleClass="xxLargeInput">
+    <h:outputText value="#{offerBean.selectedOffer.workDescription}"/>
+</h:panelGroup>
+<h:panelGrid columns="2">
+    <h:panelGroup>
+        <h:outputText value="#{amsg.typeOfWork}: "/>
+        <h:selectManyCheckbox value="#{offerBean.selectedOffer.selectedTypesOfWork}" layout="pageDirection"> <p:spacer width="400" height="10"/>
+            <f:selectItems value="#{offerBean.typesOfWork}" itemDisabled="true" var="p"
+                           itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
+        </h:selectManyCheckbox>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.weeksOffered}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.minNumberOfWeeksOffered}-#{offerBean.selectedOffer.maxNumberOfWeeksOffered}"/>
+    </h:panelGroup>
 
-                        <h:outputText value="#{amsg.weeksOffered}: "/>
-                        <h:outputText
-                                value="#{offerBean.selectedOffer.minNumberOfWeeksOffered}-#{offerBean.selectedOffer.maxNumberOfWeeksOffered}"/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.withinTheMonths}: "/>
+        <h:outputText
+                value="#{offerBean.selectedOffer.changeDateFormat(offerBean.selectedOffer.dateFrom)} - #{offerBean.selectedOffer.changeDateFormat(offerBean.selectedOffer.dateTo)}"/>
+        <p:spacer width="190" height="10"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.grossPay}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.grossPay} #{offerBean.selectedOffer.selectedCurrency}"/>
+    </h:panelGroup>
 
-                        <h:outputText value="#{amsg.dateFrom}: "/>
-                        <h:outputText value="#{offerBean.selectedOffer.changeDateFormat(offerBean.selectedOffer.dateFrom)}"/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.deductionsExpected}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.deductionsExpected} %"/>
+    </h:panelGroup>
+    <h:panelGroup/>
+</h:panelGrid>
 
-                        <h:outputText value="#{amsg.dateTo}: "/>
-                        <h:outputText value="#{offerBean.selectedOffer.changeDateFormat(offerBean.selectedOffer.dateTo)}"/>
+<p:separator style="width: 850px; float:left;"/>
 
-                        <h:outputText value="#{amsg.grossPay}: "/>
-                        <h:outputText value="#{offerBean.selectedOffer.grossPay} #{offerBean.selectedOffer.selectedCurrency}"/>
+<h3>#{amsg.accommodationText}</h3>
+<h:panelGrid columns="2">
 
-                        <h:outputText value="#{amsg.deductionsExpected}: "/>
-                        <h:outputText value="#{offerBean.selectedOffer.deductionsExpected} %"/>
-                    </h:panelGrid>
-                </p:layoutUnit>
-            </p:layout>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.lodgingArrangedBy}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.lodgingArrangedBy}"/> <p:spacer width="315" height="10"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.estimatedCostOfLodging}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.estimatedCostOfLodging} #{offerBean.selectedOffer.selectedCurrency}"/>
+    </h:panelGroup>
 
-            <p:separator style="width: 600px; float:left;"/>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.canteenFacilitiesText}: "/>
+        <h:selectBooleanCheckbox value="#{offerBean.selectedOffer.canteenFacilities}" disabled="true"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.estimatedCostOfLiving}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.estimatedCostOfLiving} #{offerBean.selectedOffer.selectedCurrency}"/>
+    </h:panelGroup>
 
-            <h3>#{amsg.accommodationText}</h3>
-            <h:panelGrid columns="2">
+</h:panelGrid>
 
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.lodgingArrangedBy}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.lodgingArrangedBy}"/> <p:spacer width="210" height="10"/>
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.estimatedCostOfLodging}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.estimatedCostOfLodging} #{offerBean.selectedOffer.selectedCurrency}"/>
-                </h:panelGroup>
+<p:separator style="width: 850px; float:left;"/>
+<p:spacer height="20px;"/>
 
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.canteenFacilitiesText}: "/>
-                    <h:selectBooleanCheckbox value="#{offerBean.selectedOffer.canteenFacilities}" disabled="true"/> <p:spacer width="210" height="10"/>
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.estimatedCostOfLiving}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.estimatedCostOfLiving} #{offerBean.selectedOffer.selectedCurrency}"/>
-                </h:panelGroup>
+<h:panelGrid columns="2">
+    <h:panelGroup>
+        <h:outputText value="#{amsg.forOfficialUseOnly}"/> <p:spacer width="73" height="10"/>
+        <p:spacer width="248" height="10"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.lastDateModified}: "/>
+        <p:spacer width="248" height="10"/>
+    </h:panelGroup>
 
-            </h:panelGrid>
+</h:panelGrid>
 
-            <p:separator style="width: 600px; float:left;"/>
-            <p:spacer height="20px;"/>
+<h:panelGrid columns="2">
+    <h:panelGroup>
+        <h:outputText value="#{amsg.pleaseSendUsNominationsBy} #{offerBean.selectedOffer.numberOfHardCopies} #{amsg.hardCopies}"/>
+    </h:panelGroup>
+    <h:panelGroup/>
+</h:panelGrid>
 
-            <h:panelGrid columns="2">
+<p:separator style="width: 850px; float:left;"/>
+<p:spacer height="20px;"/>
 
-                <h:panelGroup>
-                    <h:outputText value="#{amsg.nominationDeadline}: "/>
-                    <h:outputText value="#{offerBean.selectedOffer.changeDateFormat(offerBean.selectedOffer.nominationDeadline)}"/>
-                    <p:spacer width="230" height="10"/>
-                </h:panelGroup>
+<h:panelGrid columns="2">
 
-                <h:outputText value="#{amsg.lastDateModified}: "/>
-            </h:panelGrid>
-        </h:form>
-    </ui:define>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.nominationDeadline}: "/>
+        <h:outputText value="#{offerBean.selectedOffer.changeDateFormat(offerBean.selectedOffer.nominationDeadline)}"/>
+        <p:spacer width="248" height="10"/>
+    </h:panelGroup>
+    <h:panelGroup>
+        <h:outputText value="#{amsg.nationalSecretary}: "/>
+    </h:panelGroup>
+
+</h:panelGrid>
+</h:form>
+</ui:define>
 </ui:composition>
 </html>

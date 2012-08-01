@@ -19,11 +19,6 @@
                     <h:message for="faculty" errorClass="error"/>
                 </li>
                 <li>
-                    <p:outputLabel for="otherFaculty" value="#{amsg.otherFaculty}"/>
-                    <p:inputText id="otherFaculty" value="#{cc.attrs.offer.otherFaculty}" styleClass="xLargeInput"/>
-                    <h:message for="otherFaculty" errorClass="error"/>
-                </li>
-                <li>
                     <p:outputLabel for="specialization" value="#{amsg.specialization}"/>
                     <p:inputText id="specialization" value="#{cc.attrs.offer.specialization}" styleClass="xLargeInput"/>
                     <h:message for="specialization" errorClass="error"/>
@@ -34,6 +29,7 @@
                                           label="#{amsg.studyLevel}">
                         <f:selectItems value="#{offerBean.studyLevels}" var="p"
                                        itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
+                        <p:ajax process="@this" />
                     </p:selectManyCheckbox>
                     <h:message for="studyLevel" errorClass="error"/>
                 </li>
@@ -44,8 +40,8 @@
                 </li>
                 <li>
                     <p:outputLabel for="otherRequirements" value="#{amsg.otherRequirements}"/>
-                    <p:inputTextarea id="otherRequirements" value="#{cc.attrs.offer.otherRequirements}" rows="6" cols="34" counter="counter" maxlength="500"
-                                     counterTemplate="{0} #{amsg.remainingCharactersMessage}" styleClass="xLargeInput"/>
+                    <p:inputTextarea id="otherRequirements" value="#{cc.attrs.offer.otherRequirements}" rows="6" counter="counter" maxlength="500"
+                                     counterTemplate="{0} #{amsg.remainingCharactersMessage}" styleClass="xxLargeInput"/>
                     <h:outputText id="counter" styleClass="description"/>
                     <h:message for="otherRequirements" errorClass="error"/>
                 </li>

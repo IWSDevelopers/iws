@@ -43,7 +43,7 @@
             <h:panelGroup styleClass="formActions">
                 <p:commandButton widgetVar="submit" value="#{amsg.saveOffer}" process="@form" update="@form" action="#{offerBean.updateOffer()}"
                                  icon="ui-icon-disk"/>
-                <p:button value="#{amsg.cancel}" icon="ui-icon-cancel"/>
+                <p:button value="#{amsg.cancel}" href="listOffers.xhtml" icon="ui-icon-cancel"/>
             </h:panelGroup>
         </h:form>
     </ui:define>

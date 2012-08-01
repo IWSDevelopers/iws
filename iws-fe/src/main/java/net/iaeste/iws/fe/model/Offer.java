@@ -38,6 +38,7 @@ import java.util.List;
  */
 public class Offer {
 
+    private Long id;
 
     @Length(min = 7, max = 15)
     private String refNo;
@@ -46,15 +47,14 @@ public class Offer {
     private Integer numberOfHardCopies;
     @Valid
     private Employer employer = new Employer();
-    @Valid
-    private Faculty faculty;
+    @NotNull
+    private List<FieldOfStudy> fieldsOfStudy = new ArrayList<>();
     private String specialization;
-    private List<StudyLevel> selectedLevelOfStudy;
+    private List<StudyLevel> studyLevels;
     private boolean previousTrainingRequired;
     @Length(min = 0, max = 500)
     private String otherRequirements;
-    private Gender selectedGender = Gender.E;
-    private String otherFaculty;
+    private Gender gender = Gender.E;
     @Length(min = 0, max = 1000)
     private String workDescription;
     private List<TypeOfWork> selectedTypesOfWork;
@@ -71,7 +71,7 @@ public class Offer {
     private Date dateFromHolidays;
     private Date dateToHolidays;
     private BigDecimal grossPay;
-    private Currency selectedCurrency;
+    private Currency currency;
     private PaymentFrequency selectedGrossPayPaymentFrequency;
     private Integer deductionsExpected;
     private String lodgingArrangedBy;
@@ -128,6 +128,14 @@ public class Offer {
         return change.format(complexDate);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getRefNo() {
         return refNo;
     }
@@ -160,12 +168,16 @@ public class Offer {
         this.employer = employer;
     }
 
-    public Faculty getFaculty() {
-        return faculty;
+    public List<FieldOfStudy> getFieldsOfStudy() {
+        return fieldsOfStudy;
     }
 
-    public void setFaculty(Faculty faculty) {
-        this.faculty = faculty;
+    public void setFieldsOfStudy(List<FieldOfStudy> fieldsOfStudy) {
+        this.fieldsOfStudy = fieldsOfStudy;
+    }
+
+    public void removeFieldOfStudy(int index) {
+        this.fieldsOfStudy.remove(index);
     }
 
     public String getSpecialization() {
@@ -176,12 +188,12 @@ public class Offer {
         this.specialization = specialization;
     }
 
-    public List<StudyLevel> getSelectedLevelOfStudy() {
-        return selectedLevelOfStudy;
+    public List<StudyLevel> getStudyLevels() {
+        return studyLevels;
     }
 
-    public void setSelectedLevelOfStudy(List<StudyLevel> selectedLevelOfStudy) {
-        this.selectedLevelOfStudy = selectedLevelOfStudy;
+    public void setStudyLevels(List<StudyLevel> studyLevels) {
+        this.studyLevels = studyLevels;
     }
 
     public boolean isPreviousTrainingRequired() {
@@ -200,12 +212,12 @@ public class Offer {
         this.otherRequirements = otherRequirements;
     }
 
-    public Gender getSelectedGender() {
-        return selectedGender;
+    public Gender getGender() {
+        return gender;
     }
 
-    public void setSelectedGender(Gender selectedGender) {
-        this.selectedGender = selectedGender;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getWorkDescription() {
@@ -312,12 +324,12 @@ public class Offer {
         this.grossPay = grossPay;
     }
 
-    public Currency getSelectedCurrency() {
-        return selectedCurrency;
+    public Currency getCurrency() {
+        return currency;
     }
 
-    public void setSelectedCurrency(Currency selectedCurrency) {
-        this.selectedCurrency = selectedCurrency;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public PaymentFrequency getSelectedGrossPayPaymentFrequency() {
@@ -407,4 +419,5 @@ public class Offer {
     public void setLanguageOperators(List<LanguageOperator> languageOperators) {
         this.languageOperators = languageOperators;
     }
+
 }

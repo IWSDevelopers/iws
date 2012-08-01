@@ -62,11 +62,11 @@
                 </p:column>
 
                 <p:column headerText="#{amsg.studyLevel}" rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
-                    <h:outputText value="#{offer.selectedLevelOfStudy}"/>
+                    <h:outputText value="#{offer.studyLevels}"/>
                 </p:column>
 
                 <p:column headerText="#{amsg.gender}" rendered="#{offerBean.emptyOffer.selectedTableView == 'DETAILED'}">
-                    <h:outputText value="#{amsg.handleGetObject(offer.selectedGender.class.simpleName.concat('.').concat(offer.selectedGender.name()))}"/>
+                    <h:outputText value="#{amsg.handleGetObject(enumHelper.toMessageKey(offer.gender))}"/>
                 </p:column>
 
                 <f:facet name="footer">

@@ -97,9 +97,9 @@
 
     <h:panelGroup>
         <h:outputText value="#{amsg.studyLevel}: "/>
-        <h:selectManyCheckbox value="#{offerBean.selectedOffer.selectedLevelOfStudy}" layout="pageDirection">
+        <h:selectManyCheckbox value="#{offerBean.selectedOffer.studyLevels}" layout="pageDirection">
             <f:selectItems value="#{offerBean.studyLevels}" itemDisabled="true" var="p"
-                           itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
+                           itemLabel="#{amsg.handleGetObject(enumHelper.toMessageKey(p))}"/>
         </h:selectManyCheckbox>
         <p:spacer width="250" height="10"/>
     </h:panelGroup>
@@ -117,7 +117,7 @@
     <h:panelGroup>
         <h:outputText value="#{amsg.gender}: "/>
         <h:outputText
-                value="#{amsg.handleGetObject(offerBean.selectedOffer.selectedGender.class.simpleName.concat('.').concat(offerBean.selectedOffer.selectedGender.name()))}"/>
+                value="#{amsg.handleGetObject(enumHelper.toMessageKey(offerBean.selectedOffer.gender))}"/>
     </h:panelGroup>
     <h:panelGroup/>
 
@@ -144,7 +144,7 @@
         <h:outputText value="#{amsg.typeOfWork}: "/>
         <h:selectManyCheckbox value="#{offerBean.selectedOffer.selectedTypesOfWork}" layout="pageDirection"> <p:spacer width="400" height="10"/>
             <f:selectItems value="#{offerBean.typesOfWork}" itemDisabled="true" var="p"
-                           itemLabel="#{amsg.handleGetObject(p.class.simpleName.concat('.').concat(p.name()))}"/>
+                           itemLabel="#{amsg.handleGetObject(enumHelper.toMessageKey(p))}"/>
         </h:selectManyCheckbox>
     </h:panelGroup>
     <h:panelGroup>
@@ -160,7 +160,7 @@
     </h:panelGroup>
     <h:panelGroup>
         <h:outputText value="#{amsg.grossPay}: "/>
-        <h:outputText value="#{offerBean.selectedOffer.grossPay} #{offerBean.selectedOffer.selectedCurrency}"/>
+        <h:outputText value="#{offerBean.selectedOffer.grossPay} #{offerBean.selectedOffer.currency}"/>
     </h:panelGroup>
 
     <h:panelGroup>
@@ -181,7 +181,7 @@
     </h:panelGroup>
     <h:panelGroup>
         <h:outputText value="#{amsg.estimatedCostOfLodging}: "/>
-        <h:outputText value="#{offerBean.selectedOffer.estimatedCostOfLodging} #{offerBean.selectedOffer.selectedCurrency}"/>
+        <h:outputText value="#{offerBean.selectedOffer.estimatedCostOfLodging} #{offerBean.selectedOffer.currency}"/>
     </h:panelGroup>
 
     <h:panelGroup>
@@ -190,7 +190,7 @@
     </h:panelGroup>
     <h:panelGroup>
         <h:outputText value="#{amsg.estimatedCostOfLiving}: "/>
-        <h:outputText value="#{offerBean.selectedOffer.estimatedCostOfLiving} #{offerBean.selectedOffer.selectedCurrency}"/>
+        <h:outputText value="#{offerBean.selectedOffer.estimatedCostOfLiving} #{offerBean.selectedOffer.currency}"/>
     </h:panelGroup>
 
 </h:panelGrid>

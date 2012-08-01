@@ -16,9 +16,10 @@
 package net.iaeste.iws.fe.beans;
 
 import net.iaeste.iws.api.enums.*;
-import net.iaeste.iws.fe.model.*;
+import net.iaeste.iws.fe.model.Employer;
+import net.iaeste.iws.fe.model.Offer;
+import net.iaeste.iws.fe.model.TableView;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.event.SelectEvent;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -38,11 +39,11 @@ import java.util.List;
 public class OfferBean implements Serializable {
 
     private Offer emptyOffer = new Offer();
-    private PaymentFrequency[] paymentPeriods = new PaymentFrequency[] {PaymentFrequency.W, PaymentFrequency.M};
+    private PaymentFrequency[] paymentPeriods = new PaymentFrequency[]{PaymentFrequency.W, PaymentFrequency.M};
     private StudyLevel[] studyLevels = StudyLevel.values();
     private Gender[] genders = Gender.values();
     private TypeOfWork[] typesOfWork = TypeOfWork.values();
-    private PaymentFrequency[] grossPayPeriods = new PaymentFrequency[] {PaymentFrequency.W, PaymentFrequency.M};
+    private PaymentFrequency[] grossPayPeriods = new PaymentFrequency[]{PaymentFrequency.W, PaymentFrequency.M};
     private Currency[] currencies = Currency.values();
     private TableView[] tableViews = TableView.values();
     private Language[] languages = Language.values();
@@ -178,6 +179,14 @@ public class OfferBean implements Serializable {
         return event.getNewStep();
     }
 
+    public FieldOfStudy getSelectedFieldOfStudy() {
+        return null;
+    }
+
+    public void setSelectedFieldOfStudy(FieldOfStudy selectedFieldOfStudy) {
+        this.emptyOffer.getFieldsOfStudy().add(selectedFieldOfStudy);
+    }
+
     public List<Employer> complete(String query) {
         List<Employer> results = new ArrayList<>();
         for (Employer e : Employer.getDummyEmployers()) {
@@ -188,13 +197,14 @@ public class OfferBean implements Serializable {
         return results;
     }
 
-    public List<Faculty> completeFaculty(String query) {
-        List<Faculty> resultsFaculty = new ArrayList<>();
-        for (Faculty e : Faculty.getDummyFaculties()) {
-            if (e.nameMatches(query)) {
-                resultsFaculty.add(e);
+    public List<FieldOfStudy> completeFieldsOfStudy(String query) {
+        List<FieldOfStudy> matchingFields = new ArrayList<>();
+        for (FieldOfStudy f : FieldOfStudy.values()) {
+            if (f.name().toLowerCase().startsWith(query.toLowerCase())
+                    && !emptyOffer.getFieldsOfStudy().contains(f)) {
+                matchingFields.add(f);
             }
         }
-        return resultsFaculty;
+        return matchingFields;
     }
 }

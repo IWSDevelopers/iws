@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fe) - net.iaeste.iws.fe.model.Offer
+ * Project: IntraWeb Services (iws-fe) - net.iaeste.iws.fe.converter.StudyFieldConverter
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -15,7 +15,7 @@
 
 package net.iaeste.iws.fe.converter;
 
-import net.iaeste.iws.fe.model.Faculty;
+import net.iaeste.iws.api.enums.FieldOfStudy;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -24,28 +24,23 @@ import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
 /**
- * Converting a string into an object using the name of the faculty as a key
+ * Faces Converter for the Enum FieldOfStudy
  *
- * @author Marko Cilimkovic / last $Author:$
+ * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-@FacesConverter(value = "facultyConverter", forClass = Faculty.class)
-public class FacultyConverter implements Converter {
+@FacesConverter(value = "studyFieldConverter", forClass = FieldOfStudy.class)
+public class StudyFieldConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
-        for (Faculty f: Faculty.getDummyFaculties()) {
-            if (f.nameMatches(value)) {
-                return f;
-            }
-        }
-        return null;
+        return value != null ? FieldOfStudy.valueOf(value) : null;
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
-        if (value instanceof Faculty) {
-            return ((Faculty)value).getName();
+        if (value instanceof FieldOfStudy) {
+            return ((FieldOfStudy) value).name();
         }
         return null;
     }

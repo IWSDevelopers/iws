@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<beans/>
-
-<!--
-    This is the standard config file for CDI (Context and Dependency Injection
-    This file can be empty but must exist.
--->

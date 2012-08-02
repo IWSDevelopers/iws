@@ -20,6 +20,8 @@ import net.iaeste.iws.api.enums.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -84,7 +86,7 @@ public class Offer implements Serializable {
         setRefNo(refNo);
         setNominationDeadline(nominationDeadline);
         setEmployerName(employerName);
-        this.studyLevels.addAll(studyLevels);
+        setStudyLevels(studyLevels);
         setGender(gender);
         setLanguage1(language1);
         setLanguage1Level(language1Level);
@@ -108,13 +110,13 @@ public class Offer implements Serializable {
     private String employerWebsite;
 
     //Student Information
-    private List<FieldOfStudy> fieldOfStudies;
+    private List<FieldOfStudy> fieldOfStudies = new ArrayList<FieldOfStudy>();
     /**
      * Has to be defined as a List of Strings because
      * the user should be able to add custom
      * specializations in addition to the predefined ones.
      */
-    private List<String> specializations;
+    private List<Specialization> specializations = new ArrayList<>();
     private List<StudyLevel> studyLevels = new ArrayList<>();
     private Boolean prevTrainingRequired;
     private String otherRequirements;
@@ -160,12 +162,67 @@ public class Offer implements Serializable {
     private int livingPaymentFrequency;
     private Boolean canteen;
 
-    
+    /**
+     * Copy constructor.
+     *
+     * Fields are copied one by one. Correct "cloning" for muttable members is provided by setters.
+     *
+     * @param offer     Offer to copy
+     */
+    public Offer(final Offer offer) {
+        this.setId(offer.getId());
+        this.setRefNo(offer.getRefNo());
+        this.setNominationDeadline(offer.getNominationDeadline());
+        this.setEmployerName(offer.getEmployerName());
+        this.setEmployerAddress(offer.getEmployerAddress());
+        this.setEmployerAddress2(offer.getEmployerAddress2());
+        this.setEmployerBusiness(offer.getEmployerBusiness());
+        this.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
+        this.setEmployerWebsite(offer.getEmployerWebsite());
+        this.setPrevTrainingRequired(offer.getPrevTrainingRequired());
+        this.setOtherRequirements(offer.getOtherRequirements());
+        this.setGender(offer.getGender());
+        this.setLanguage1(offer.getLanguage1());
+        this.setLanguage1Level(offer.getLanguage1Level());
+        this.setLanguage1Operator(offer.getLanguage1Operator());
+        this.setLanguage2(offer.getLanguage2());
+        this.setLanguage2Level(offer.getLanguage2Level());
+        this.setLanguage2Operator(offer.getLanguage2Operator());
+        this.setLanguage3(offer.getLanguage3());
+        this.setLanguage3Level(offer.getLanguage3Level());
+        this.setWorkDescription(offer.getWorkDescription());
+        this.setTypeOfWork(offer.getTypeOfWork());
+        this.setMinimumWeeks(offer.getMinimumWeeks());
+        this.setMaximumWeeks(offer.getMaximumWeeks());
+        this.setFromDate(offer.getFromDate());
+        this.setToDate(offer.getToDate());
+        this.setFromDate2(offer.getFromDate2());
+        this.setToDate2(offer.getToDate2());
+        this.setHolidaysFrom(offer.getHolidaysFrom());
+        this.setHolidaysTo(offer.getHolidaysTo());
+        this.setWorkingPlace(offer.getWorkingPlace());
+        this.setNearestAirport(offer.getNearestAirport());
+        this.setNearestPubTransport(offer.getNearestPubTransport());
+        this.setWeeklyHours(offer.getWeeklyHours());
+        this.setDailyHours(offer.getDailyHours());
+        this.setPayment(offer.getPayment());
+        this.setCurrency(offer.getCurrency());
+        this.setPaymentFrequency(offer.getPaymentFrequency());
+        this.setDeduction(offer.getDeduction());
+        this.setLodgingBy(offer.getLodgingBy());
+        this.setLodgingCost(offer.getLodgingCost());
+        this.setLodgingPaymentFrequency(offer.getLodgingPaymentFrequency());
+        this.setLivingCost(offer.getLivingCost());
+        this.setLivingPaymentFrequency(offer.getLivingPaymentFrequency());
+        this.setCanteen(offer.getCanteen());
+    }
+
+
     public Boolean getCanteen() {
         return canteen;
     }
 
-    public void setCanteen(Boolean canteen) {
+    public void setCanteen(final Boolean canteen) {
         this.canteen = canteen;
     }
 
@@ -173,7 +230,7 @@ public class Offer implements Serializable {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(final Currency currency) {
         this.currency = currency;
     }
 
@@ -181,7 +238,7 @@ public class Offer implements Serializable {
         return dailyHours;
     }
 
-    public void setDailyHours(Float dailyHours) {
+    public void setDailyHours(final Float dailyHours) {
         this.dailyHours = dailyHours;
     }
 
@@ -189,7 +246,7 @@ public class Offer implements Serializable {
         return deduction;
     }
 
-    public void setDeduction(Integer deduction) {
+    public void setDeduction(final Integer deduction) {
         this.deduction = deduction;
     }
 
@@ -197,7 +254,7 @@ public class Offer implements Serializable {
         return employerAddress2;
     }
 
-    public void setEmployerAddress2(String employerAddress2) {
+    public void setEmployerAddress2(final String employerAddress2) {
         this.employerAddress2 = employerAddress2;
     }
 
@@ -205,7 +262,7 @@ public class Offer implements Serializable {
         return employerAddress;
     }
 
-    public void setEmployerAddress(String employerAddress) {
+    public void setEmployerAddress(final String employerAddress) {
         this.employerAddress = employerAddress;
     }
 
@@ -213,7 +270,7 @@ public class Offer implements Serializable {
         return employerBusiness;
     }
 
-    public void setEmployerBusiness(String employerBusiness) {
+    public void setEmployerBusiness(final String employerBusiness) {
         this.employerBusiness = employerBusiness;
     }
 
@@ -221,7 +278,7 @@ public class Offer implements Serializable {
         return employerEmployeesCount;
     }
 
-    public void setEmployerEmployeesCount(Integer employerEmployeesCount) {
+    public void setEmployerEmployeesCount(final Integer employerEmployeesCount) {
         this.employerEmployeesCount = employerEmployeesCount;
     }
 
@@ -229,7 +286,7 @@ public class Offer implements Serializable {
         return employerName;
     }
 
-    public void setEmployerName(String employerName) {
+    public void setEmployerName(final String employerName) {
         this.employerName = employerName;
     }
 
@@ -237,63 +294,63 @@ public class Offer implements Serializable {
         return employerWebsite;
     }
 
-    public void setEmployerWebsite(String employerWebsite) {
+    public void setEmployerWebsite(final String employerWebsite) {
         this.employerWebsite = employerWebsite;
     }
 
     public List<FieldOfStudy> getFieldOfStudies() {
-        return fieldOfStudies;
+        return Collections.unmodifiableList(fieldOfStudies);
     }
 
-    public void setFieldOfStudies(List<FieldOfStudy> fieldOfStudies) {
-        this.fieldOfStudies = fieldOfStudies;
+    public void setFieldOfStudies(final List<FieldOfStudy> fieldOfStudies) {
+        this.fieldOfStudies = new ArrayList<>(fieldOfStudies);
     }
 
     public Date getFromDate2() {
-        return fromDate2;
+        return (Date) fromDate2.clone();
     }
 
-    public void setFromDate2(Date fromDate2) {
-        this.fromDate2 = fromDate2;
+    public void setFromDate2(final Date fromDate) {
+        this.fromDate2 = (Date) fromDate.clone();
     }
 
     public Date getFromDate() {
-        return fromDate;
+        return (Date) fromDate.clone();
     }
 
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
+    public void setFromDate(final Date fromDate2) {
+        this.fromDate = (Date) fromDate2.clone();
     }
 
     public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(final Gender gender) {
         this.gender = gender;
     }
 
     public Date getHolidaysFrom() {
-        return holidaysFrom;
+        return (Date) holidaysFrom.clone();
     }
 
-    public void setHolidaysFrom(Date holidaysFrom) {
-        this.holidaysFrom = holidaysFrom;
+    public void setHolidaysFrom(final Date holidaysFrom) {
+        this.holidaysFrom = (Date) holidaysFrom.clone();
     }
 
     public Date getHolidaysTo() {
-        return holidaysTo;
+        return (Date) holidaysTo.clone();
     }
 
-    public void setHolidaysTo(Date holidaysTo) {
-        this.holidaysTo = holidaysTo;
+    public void setHolidaysTo(final Date holidaysTo) {
+        this.holidaysTo = (Date) holidaysTo.clone();
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -301,7 +358,7 @@ public class Offer implements Serializable {
         return language1;
     }
 
-    public void setLanguage1(Language language1) {
+    public void setLanguage1(final Language language1) {
         this.language1 = language1;
     }
 
@@ -309,7 +366,7 @@ public class Offer implements Serializable {
         return language1Level;
     }
 
-    public void setLanguage1Level(LanguageLevel language1Level) {
+    public void setLanguage1Level(final LanguageLevel language1Level) {
         this.language1Level = language1Level;
     }
 
@@ -317,7 +374,7 @@ public class Offer implements Serializable {
         return language1Operator;
     }
 
-    public void setLanguage1Operator(LanguageOperator language1Operator) {
+    public void setLanguage1Operator(final LanguageOperator language1Operator) {
         this.language1Operator = language1Operator;
     }
 
@@ -325,7 +382,7 @@ public class Offer implements Serializable {
         return language2;
     }
 
-    public void setLanguage2(Language language2) {
+    public void setLanguage2(final Language language2) {
         this.language2 = language2;
     }
 
@@ -333,7 +390,7 @@ public class Offer implements Serializable {
         return language2Level;
     }
 
-    public void setLanguage2Level(LanguageLevel language2Level) {
+    public void setLanguage2Level(final LanguageLevel language2Level) {
         this.language2Level = language2Level;
     }
 
@@ -341,7 +398,7 @@ public class Offer implements Serializable {
         return language2Operator;
     }
 
-    public void setLanguage2Operator(LanguageOperator language2Operator) {
+    public void setLanguage2Operator(final LanguageOperator language2Operator) {
         this.language2Operator = language2Operator;
     }
 
@@ -349,7 +406,7 @@ public class Offer implements Serializable {
         return language3;
     }
 
-    public void setLanguage3(Language language3) {
+    public void setLanguage3(final Language language3) {
         this.language3 = language3;
     }
 
@@ -357,7 +414,7 @@ public class Offer implements Serializable {
         return language3Level;
     }
 
-    public void setLanguage3Level(LanguageLevel language3Level) {
+    public void setLanguage3Level(final LanguageLevel language3Level) {
         this.language3Level = language3Level;
     }
 
@@ -365,7 +422,7 @@ public class Offer implements Serializable {
         return livingCost;
     }
 
-    public void setLivingCost(BigDecimal livingCost) {
+    public void setLivingCost(final BigDecimal livingCost) {
         this.livingCost = livingCost;
     }
 
@@ -373,7 +430,7 @@ public class Offer implements Serializable {
         return livingPaymentFrequency;
     }
 
-    public void setLivingPaymentFrequency(int livingPaymentFrequency) {
+    public void setLivingPaymentFrequency(final int livingPaymentFrequency) {
         this.livingPaymentFrequency = livingPaymentFrequency;
     }
 
@@ -381,7 +438,7 @@ public class Offer implements Serializable {
         return lodgingBy;
     }
 
-    public void setLodgingBy(String lodgingBy) {
+    public void setLodgingBy(final String lodgingBy) {
         this.lodgingBy = lodgingBy;
     }
 
@@ -389,7 +446,7 @@ public class Offer implements Serializable {
         return lodgingCost;
     }
 
-    public void setLodgingCost(BigDecimal lodgingCost) {
+    public void setLodgingCost(final BigDecimal lodgingCost) {
         this.lodgingCost = lodgingCost;
     }
 
@@ -397,7 +454,7 @@ public class Offer implements Serializable {
         return lodgingPaymentFrequency;
     }
 
-    public void setLodgingPaymentFrequency(PaymentFrequency lodgingPaymentFrequency) {
+    public void setLodgingPaymentFrequency(final PaymentFrequency lodgingPaymentFrequency) {
         this.lodgingPaymentFrequency = lodgingPaymentFrequency;
     }
 
@@ -405,7 +462,7 @@ public class Offer implements Serializable {
         return maximumWeeks;
     }
 
-    public void setMaximumWeeks(Integer maximumWeeks) {
+    public void setMaximumWeeks(final Integer maximumWeeks) {
         this.maximumWeeks = maximumWeeks;
     }
 
@@ -413,7 +470,7 @@ public class Offer implements Serializable {
         return minimumWeeks;
     }
 
-    public void setMinimumWeeks(Integer minimumWeeks) {
+    public void setMinimumWeeks(final Integer minimumWeeks) {
         this.minimumWeeks = minimumWeeks;
     }
 
@@ -421,7 +478,7 @@ public class Offer implements Serializable {
         return nearestAirport;
     }
 
-    public void setNearestAirport(String nearestAirport) {
+    public void setNearestAirport(final String nearestAirport) {
         this.nearestAirport = nearestAirport;
     }
 
@@ -429,23 +486,23 @@ public class Offer implements Serializable {
         return nearestPubTransport;
     }
 
-    public void setNearestPubTransport(String nearestPubTransport) {
+    public void setNearestPubTransport(final String nearestPubTransport) {
         this.nearestPubTransport = nearestPubTransport;
     }
 
     public Date getNominationDeadline() {
-        return nominationDeadline;
+        return (Date) nominationDeadline.clone();
     }
 
-    public void setNominationDeadline(Date nominationDeadline) {
-        this.nominationDeadline = nominationDeadline;
+    public void setNominationDeadline(final Date nominationDeadline) {
+        this.nominationDeadline = (Date) nominationDeadline.clone();
     }
 
     public String getOtherRequirements() {
         return otherRequirements;
     }
 
-    public void setOtherRequirements(String otherRequirements) {
+    public void setOtherRequirements(final String otherRequirements) {
         this.otherRequirements = otherRequirements;
     }
 
@@ -453,7 +510,7 @@ public class Offer implements Serializable {
         return payment;
     }
 
-    public void setPayment(BigDecimal payment) {
+    public void setPayment(final BigDecimal payment) {
         this.payment = payment;
     }
 
@@ -461,7 +518,7 @@ public class Offer implements Serializable {
         return paymentFrequency;
     }
 
-    public void setPaymentFrequency(PaymentFrequency paymentFrequency) {
+    public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
         this.paymentFrequency = paymentFrequency;
     }
 
@@ -469,7 +526,7 @@ public class Offer implements Serializable {
         return prevTrainingRequired;
     }
 
-    public void setPrevTrainingRequired(Boolean prevTrainingRequired) {
+    public void setPrevTrainingRequired(final Boolean prevTrainingRequired) {
         this.prevTrainingRequired = prevTrainingRequired;
     }
 
@@ -477,47 +534,47 @@ public class Offer implements Serializable {
         return refNo;
     }
 
-    public void setRefNo(String refNo) {
+    public void setRefNo(final String refNo) {
         this.refNo = refNo;
     }
 
-    public List<String> getSpecializations() {
-        return specializations;
+    public List<Specialization> getSpecializations() {
+        return Collections.unmodifiableList(specializations);
     }
 
-    public void setSpecializations(List<String> specializations) {
+    public void setSpecializations(final List<Specialization> specializations) {
         this.specializations = specializations;
     }
 
     public List<StudyLevel> getStudyLevels() {
-        return studyLevels;
+        return Collections.unmodifiableList(studyLevels);
     }
 
-    public void setStudyLevels(List<StudyLevel> studyLevels) {
-        this.studyLevels = studyLevels;
+    public void setStudyLevels(final Collection<StudyLevel> studyLevels) {
+        this.studyLevels = new ArrayList<>(studyLevels);
     }
 
     public Date getToDate2() {
-        return toDate2;
+        return (Date) toDate2.clone();
     }
 
-    public void setToDate2(Date toDate2) {
-        this.toDate2 = toDate2;
+    public void setToDate2(final Date toDate2) {
+        this.toDate2 = (Date) toDate2.clone();
     }
 
     public Date getToDate() {
-        return toDate;
+        return (Date) toDate.clone();
     }
 
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
+    public void setToDate(final Date toDate) {
+        this.toDate = (Date) toDate.clone();
     }
 
     public TypeOfWork getTypeOfWork() {
         return typeOfWork;
     }
 
-    public void setTypeOfWork(TypeOfWork typeOfWork) {
+    public void setTypeOfWork(final TypeOfWork typeOfWork) {
         this.typeOfWork = typeOfWork;
     }
 
@@ -525,7 +582,7 @@ public class Offer implements Serializable {
         return weeklyHours;
     }
 
-    public void setWeeklyHours(Float weeklyHours) {
+    public void setWeeklyHours(final Float weeklyHours) {
         this.weeklyHours = weeklyHours;
     }
 
@@ -533,7 +590,7 @@ public class Offer implements Serializable {
         return workDescription;
     }
 
-    public void setWorkDescription(String workDescription) {
+    public void setWorkDescription(final String workDescription) {
         this.workDescription = workDescription;
     }
 
@@ -541,7 +598,7 @@ public class Offer implements Serializable {
         return workingPlace;
     }
 
-    public void setWorkingPlace(String workingPlace) {
+    public void setWorkingPlace(final String workingPlace) {
         this.workingPlace = workingPlace;
     }
 
@@ -558,11 +615,11 @@ public class Offer implements Serializable {
      * @return
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Offer offer = (Offer) o;
+        final Offer offer = (Offer) o;
 
         if (!id.equals(offer.id)) return false;
         if (livingPaymentFrequency != offer.livingPaymentFrequency) return false;

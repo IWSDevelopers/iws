@@ -29,6 +29,10 @@ public final class OfferRequest extends AbstractRequest {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+//    TODO:
+//    private List<Offer> editOffers;
+//    private List<Integer> deleteOfferIDs;
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

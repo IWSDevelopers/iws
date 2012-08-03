@@ -11,10 +11,9 @@ import java.sql.Timestamp;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Michal
- * Date: 24.07.12
- * Time: 00:35
+ * @author Michal Knapik / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since 1.7
  */
 @Table(name = "addresses", schema = "iws", catalog = "")
 //@Entity

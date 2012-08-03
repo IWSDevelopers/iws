@@ -7,11 +7,9 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
- * Created with IntelliJ IDEA.
- * User: michal
- * Date: 24.07.12
- * Time: 00:34
- *
+ * @author Michal Knapik / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since 1.7
  */
 @Table(name = "group_types", schema = "iws", catalog = "")
 //@Entity

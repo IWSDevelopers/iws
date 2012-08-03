@@ -25,6 +25,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,9 +60,8 @@ public class OfferTest {
         offer.setRefNo(REF_NO);
         offer.setNominationDeadline(NOMINATION_DEADLINE);
         offer.setEmployerName(EMPLOYER_NAME);
-        final List<StudyLevel> list = new ArrayList<StudyLevel>() {{
-            add(StudyLevel.E);
-        }};
+        final List<StudyLevel> list = new ArrayList<StudyLevel>(1);
+        list.add(StudyLevel.E);
         offer.setStudyLevels(list);
         offer.setGender(Gender.E);
         offer.setLanguage1(Language.ENGLISH);
@@ -74,48 +77,49 @@ public class OfferTest {
     @Test
     public void testMinimalOffer() {
         Assert.assertNotNull("reference not null", offer);
-        Assert.assertEquals("RefNo", REF_NO, offer.getRefNo());
-        Assert.assertEquals("NominationDeadline", NOMINATION_DEADLINE, offer.getNominationDeadline());
-        Assert.assertEquals("EmployerName", EMPLOYER_NAME, offer.getEmployerName());
-        Assert.assertEquals("size of Study Levels collection should be 1", 1, offer.getStudyLevels().size());
-        Assert.assertEquals("first Study Level should be E", StudyLevel.E, offer.getStudyLevels().get(0));
-        Assert.assertEquals("Gender", Gender.E, offer.getGender());
-        Assert.assertEquals("Language", Language.ENGLISH, offer.getLanguage1());
-        Assert.assertEquals("LanguageLevel", LanguageLevel.E, offer.getLanguage1Level());
-        Assert.assertEquals("WorkDescription", WORK_DESCRIPTION, offer.getWorkDescription());
-        Assert.assertEquals("MaximumWeeks", MAXIMUM_WEEKS, offer.getMaximumWeeks());
-        Assert.assertEquals("MinimumWeeks", MINIMUM_WEEKS, offer.getMinimumWeeks());
-        Assert.assertEquals("WeeklyHours", WEEKLY_HOURS, offer.getWeeklyHours());
-        Assert.assertEquals("DailyHours", DAILY_HOURS, offer.getDailyHours());
+        Assert.assertThat("RefNo", REF_NO, is(offer.getRefNo()));
+        Assert.assertThat("NominationDeadline", NOMINATION_DEADLINE, is(offer.getNominationDeadline()));
+        Assert.assertThat("EmployerName", EMPLOYER_NAME, is(offer.getEmployerName()));
+        Assert.assertThat("size of Study Levels collection should be 1", 1, is(offer.getStudyLevels().size()));
+        Assert.assertThat("first Study Level should be E", StudyLevel.E, is(offer.getStudyLevels().get(0)));
+        Assert.assertThat("Gender", Gender.E, is(offer.getGender()));
+        Assert.assertThat("Language", Language.ENGLISH, is(offer.getLanguage1()));
+        Assert.assertThat("LanguageLevel", LanguageLevel.E, is(offer.getLanguage1Level()));
+        Assert.assertThat("WorkDescription", WORK_DESCRIPTION, is(offer.getWorkDescription()));
+        Assert.assertThat("MaximumWeeks", MAXIMUM_WEEKS, is(offer.getMaximumWeeks()));
+        Assert.assertThat("MinimumWeeks", MINIMUM_WEEKS, is(offer.getMinimumWeeks()));
+        Assert.assertThat("WeeklyHours", WEEKLY_HOURS, is(offer.getWeeklyHours()));
+        Assert.assertThat("DailyHours", DAILY_HOURS, is(offer.getDailyHours()));
     }
 
     @Test
     public void testMutableFields() {
         final Date nominationDeadline = offer.getNominationDeadline();
         nominationDeadline.setTime(new Date().getTime() + new Random().nextLong() + 1);
-        Assert.assertTrue(!nominationDeadline.equals(offer.getNominationDeadline()));
+        Assert.assertThat(nominationDeadline, is(not(offer.getNominationDeadline())));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAddingToUnmodificableFieldOfStudyList() {
         final List<FieldOfStudy> fieldOfStudies = offer.getFieldOfStudies();
         fieldOfStudies.add(FieldOfStudy.AERONAUTIC_ENGINEERING);
-        Assert.assertTrue(!fieldOfStudies.equals(offer.getFieldOfStudies()));
+        Assert.assertThat(fieldOfStudies, is(not(offer.getFieldOfStudies())));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAddingToUnmodificableSpecializationList() {
         final List<Specialization> specializations = offer.getSpecializations();
         specializations.add(Specialization.ASTROPHYSICS);
-        Assert.assertTrue(!specializations.equals(offer.getSpecializations()));
+        Assert.assertThat(specializations, is(not(offer.getSpecializations())));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAddingToUnmodificableStudyLevelList() {
         final List<StudyLevel> studyLevels = offer.getStudyLevels();
         studyLevels.add(StudyLevel.B);
-        Assert.assertTrue(!studyLevels.equals(offer.getStudyLevels()));
+        Assert.assertThat(studyLevels, is(not(offer.getStudyLevels())));
     }
+
     @Test
     public void testDatesImmutability() {
         final Date now = new Date();
@@ -129,20 +133,37 @@ public class OfferTest {
         offer.setNominationDeadline(now);
 
         now.setTime(now.getTime() + 1 + new Random().nextLong());
-        Assert.assertEquals("HolidaysFrom", oldDate, offer.getHolidaysFrom());
-        Assert.assertEquals("HolidaysTo", oldDate, offer.getHolidaysTo());
-        Assert.assertEquals("ToDate", oldDate, offer.getToDate());
-        Assert.assertEquals("ToDate2", oldDate, offer.getToDate2());
-        Assert.assertEquals("FromDate", oldDate, offer.getFromDate());
-        Assert.assertEquals("FromDate2", oldDate, offer.getFromDate2());
-        Assert.assertEquals("NominationDeadline", oldDate, offer.getNominationDeadline());
+        Assert.assertThat("HolidaysFrom", oldDate, is(offer.getHolidaysFrom()));
+        Assert.assertThat("HolidaysTo", oldDate, is(offer.getHolidaysTo()));
+        Assert.assertThat("ToDate", oldDate, is(offer.getToDate()));
+        Assert.assertThat("ToDate2", oldDate, is(offer.getToDate2()));
+        Assert.assertThat("FromDate", oldDate, is(offer.getFromDate()));
+        Assert.assertThat("FromDate2", oldDate, is(offer.getFromDate2()));
+        Assert.assertThat("NominationDeadline", oldDate, is(offer.getNominationDeadline()));
     }
 
-//    TODO: which fields are not important for the equality of an offer?
+    //    TODO: which fields are not important for the equality of an offer?
 //    @Test
 //    public void testEqualityOfSimilarOffers() {
 //        Offer offer2 = new Offer(offer);
 //        offer2.setWorkDescription("@#$#@");
 //        Assert.assertEquals(offer, offer2);
 //    }
+    @Test
+    public void testVerifyCorrectRefNo() {
+        final String[] correctRefNos = { "IN-2011-0001-KU", "UK-2011-0001-01", "UK-2011-00001" };
+        for (final String correctRefNo : correctRefNos) {
+            offer.setRefNo(correctRefNo );
+            Assert.assertThat(correctRefNo + " " + "should be correct", offer.verifyRefNo(), is(true));
+        }
+    }
+
+    @Test
+    public void testVerifyIncorrectRefNo() {
+        final String[] incorrectRefNos = { "INE-2011-0001-KU", "UK-2011-w001", "PL-201w-0001", "UK-2011-0001-101", "UK-10000-00001-01", "UK-2011-a000-01", "UK-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01", "XX-2011-a000-01", "XX-2011-0000-01" };
+        for (final String incorrectRefNo : incorrectRefNos) {
+            offer.setRefNo(incorrectRefNo);
+            Assert.assertThat(incorrectRefNo + " " + "should be incorrect", offer.verifyRefNo(), is(false));
+        }
+    }
 }

@@ -16,6 +16,7 @@ package net.iaeste.iws.api.data;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.*;
+import net.iaeste.iws.api.utils.Copier;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -23,7 +24,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Michael Pickelbauer / last $Author:$
@@ -307,19 +312,20 @@ public class Offer implements Serializable {
     }
 
     public Date getFromDate2() {
-        return (Date) fromDate2.clone();
+        return Copier.copy(fromDate2);
     }
 
     public void setFromDate2(final Date fromDate) {
-        this.fromDate2 = (Date) fromDate.clone();
+        this.fromDate2 = Copier.copy(fromDate);
+        this.fromDate2 = Copier.copy(fromDate);
     }
 
     public Date getFromDate() {
-        return (Date) fromDate.clone();
+        return Copier.copy(fromDate);
     }
 
     public void setFromDate(final Date fromDate2) {
-        this.fromDate = (Date) fromDate2.clone();
+        this.fromDate = Copier.copy(fromDate2);
     }
 
     public Gender getGender() {
@@ -331,19 +337,19 @@ public class Offer implements Serializable {
     }
 
     public Date getHolidaysFrom() {
-        return (Date) holidaysFrom.clone();
+        return Copier.copy(holidaysFrom);
     }
 
     public void setHolidaysFrom(final Date holidaysFrom) {
-        this.holidaysFrom = (Date) holidaysFrom.clone();
+        this.holidaysFrom = Copier.copy(holidaysFrom);
     }
 
     public Date getHolidaysTo() {
-        return (Date) holidaysTo.clone();
+        return Copier.copy(holidaysTo);
     }
 
     public void setHolidaysTo(final Date holidaysTo) {
-        this.holidaysTo = (Date) holidaysTo.clone();
+        this.holidaysTo = Copier.copy(holidaysTo);
     }
 
     public Long getId() {
@@ -491,11 +497,11 @@ public class Offer implements Serializable {
     }
 
     public Date getNominationDeadline() {
-        return (Date) nominationDeadline.clone();
+        return Copier.copy(nominationDeadline);
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
-        this.nominationDeadline = (Date) nominationDeadline.clone();
+        this.nominationDeadline = Copier.copy(nominationDeadline);
     }
 
     public String getOtherRequirements() {
@@ -555,19 +561,19 @@ public class Offer implements Serializable {
     }
 
     public Date getToDate2() {
-        return (Date) toDate2.clone();
+        return Copier.copy(toDate2);
     }
 
     public void setToDate2(final Date toDate2) {
-        this.toDate2 = (Date) toDate2.clone();
+        this.toDate2 = Copier.copy(toDate2);
     }
 
     public Date getToDate() {
-        return (Date) toDate.clone();
+        return Copier.copy(toDate);
     }
 
     public void setToDate(final Date toDate) {
-        this.toDate = (Date) toDate.clone();
+        this.toDate = Copier.copy(toDate);
     }
 
     public TypeOfWork getTypeOfWork() {
@@ -616,72 +622,159 @@ public class Offer implements Serializable {
      */
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         final Offer offer = (Offer) o;
 
-        if (!id.equals(offer.id)) return false;
-        if (livingPaymentFrequency != offer.livingPaymentFrequency) return false;
-        if (canteen != null ? !canteen.equals(offer.canteen) : offer.canteen != null) return false;
-        if (currency != offer.currency) return false;
-        if (dailyHours != null ? !dailyHours.equals(offer.dailyHours) : offer.dailyHours != null) return false;
-        if (deduction != null ? !deduction.equals(offer.deduction) : offer.deduction != null) return false;
-        if (employerAddress != null ? !employerAddress.equals(offer.employerAddress) : offer.employerAddress != null)
+        if (!id.equals(offer.id)) {
             return false;
-        if (employerAddress2 != null ? !employerAddress2.equals(offer.employerAddress2) : offer.employerAddress2 != null)
+        }
+        if (livingPaymentFrequency != offer.livingPaymentFrequency) {
             return false;
-        if (employerBusiness != null ? !employerBusiness.equals(offer.employerBusiness) : offer.employerBusiness != null)
+        }
+        if (canteen != null ? !canteen.equals(offer.canteen) : offer.canteen != null) {
             return false;
-        if (employerEmployeesCount != null ? !employerEmployeesCount.equals(offer.employerEmployeesCount) : offer.employerEmployeesCount != null)
+        }
+        if (currency != offer.currency) {
             return false;
-        if (employerName != null ? !employerName.equals(offer.employerName) : offer.employerName != null) return false;
-        if (employerWebsite != null ? !employerWebsite.equals(offer.employerWebsite) : offer.employerWebsite != null)
+        }
+        if (dailyHours != null ? !dailyHours.equals(offer.dailyHours) : offer.dailyHours != null) {
             return false;
-        if (fieldOfStudies != null ? !fieldOfStudies.equals(offer.fieldOfStudies) : offer.fieldOfStudies != null)
+        }
+        if (deduction != null ? !deduction.equals(offer.deduction) : offer.deduction != null) {
             return false;
-        if (fromDate != null ? !fromDate.equals(offer.fromDate) : offer.fromDate != null) return false;
-        if (fromDate2 != null ? !fromDate2.equals(offer.fromDate2) : offer.fromDate2 != null) return false;
-        if (gender != offer.gender) return false;
-        if (holidaysFrom != null ? !holidaysFrom.equals(offer.holidaysFrom) : offer.holidaysFrom != null) return false;
-        if (holidaysTo != null ? !holidaysTo.equals(offer.holidaysTo) : offer.holidaysTo != null) return false;
-        if (language1 != offer.language1) return false;
-        if (language1Level != offer.language1Level) return false;
-        if (language1Operator != offer.language1Operator) return false;
-        if (language2 != offer.language2) return false;
-        if (language2Level != offer.language2Level) return false;
-        if (language2Operator != offer.language2Operator) return false;
-        if (language3 != offer.language3) return false;
-        if (language3Level != offer.language3Level) return false;
-        if (livingCost != null ? !livingCost.equals(offer.livingCost) : offer.livingCost != null) return false;
-        if (lodgingBy != null ? !lodgingBy.equals(offer.lodgingBy) : offer.lodgingBy != null) return false;
-        if (lodgingCost != null ? !lodgingCost.equals(offer.lodgingCost) : offer.lodgingCost != null) return false;
-        if (lodgingPaymentFrequency != offer.lodgingPaymentFrequency) return false;
-        if (maximumWeeks != null ? !maximumWeeks.equals(offer.maximumWeeks) : offer.maximumWeeks != null) return false;
-        if (minimumWeeks != null ? !minimumWeeks.equals(offer.minimumWeeks) : offer.minimumWeeks != null) return false;
-        if (nearestAirport != null ? !nearestAirport.equals(offer.nearestAirport) : offer.nearestAirport != null)
+        }
+        if (employerAddress != null ? !employerAddress.equals(offer.employerAddress) : offer.employerAddress != null) {
             return false;
-        if (nearestPubTransport != null ? !nearestPubTransport.equals(offer.nearestPubTransport) : offer.nearestPubTransport != null)
+        }
+        if (employerAddress2 != null ? !employerAddress2.equals(offer.employerAddress2) : offer.employerAddress2 != null) {
             return false;
-        if (nominationDeadline != null ? !nominationDeadline.equals(offer.nominationDeadline) : offer.nominationDeadline != null)
+        }
+        if (employerBusiness != null ? !employerBusiness.equals(offer.employerBusiness) : offer.employerBusiness != null) {
             return false;
-        if (otherRequirements != null ? !otherRequirements.equals(offer.otherRequirements) : offer.otherRequirements != null)
+        }
+        if (employerEmployeesCount != null ? !employerEmployeesCount.equals(offer.employerEmployeesCount) : offer.employerEmployeesCount != null) {
             return false;
-        if (payment != null ? !payment.equals(offer.payment) : offer.payment != null) return false;
-        if (paymentFrequency != offer.paymentFrequency) return false;
-        if (prevTrainingRequired != null ? !prevTrainingRequired.equals(offer.prevTrainingRequired) : offer.prevTrainingRequired != null)
+        }
+        if (employerName != null ? !employerName.equals(offer.employerName) : offer.employerName != null) {
             return false;
-        if (!refNo.equals(offer.refNo)) return false;
-        if (specializations != null ? !specializations.equals(offer.specializations) : offer.specializations != null)
+        }
+        if (employerWebsite != null ? !employerWebsite.equals(offer.employerWebsite) : offer.employerWebsite != null) {
             return false;
-        if (studyLevels != null ? !studyLevels.equals(offer.studyLevels) : offer.studyLevels != null) return false;
-        if (toDate != null ? !toDate.equals(offer.toDate) : offer.toDate != null) return false;
-        if (toDate2 != null ? !toDate2.equals(offer.toDate2) : offer.toDate2 != null) return false;
-        if (typeOfWork != offer.typeOfWork) return false;
-        if (weeklyHours != null ? !weeklyHours.equals(offer.weeklyHours) : offer.weeklyHours != null) return false;
-        if (workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null)
+        }
+        if (fieldOfStudies != null ? !fieldOfStudies.equals(offer.fieldOfStudies) : offer.fieldOfStudies != null) {
             return false;
-        if (workingPlace != null ? !workingPlace.equals(offer.workingPlace) : offer.workingPlace != null) return false;
+        }
+        if (fromDate != null ? !fromDate.equals(offer.fromDate) : offer.fromDate != null) {
+            return false;
+        }
+        if (fromDate2 != null ? !fromDate2.equals(offer.fromDate2) : offer.fromDate2 != null) {
+            return false;
+        }
+        if (gender != offer.gender) {
+            return false;
+        }
+        if (holidaysFrom != null ? !holidaysFrom.equals(offer.holidaysFrom) : offer.holidaysFrom != null) {
+            return false;
+        }
+        if (holidaysTo != null ? !holidaysTo.equals(offer.holidaysTo) : offer.holidaysTo != null) {
+            return false;
+        }
+        if (language1 != offer.language1) {
+            return false;
+        }
+        if (language1Level != offer.language1Level) {
+            return false;
+        }
+        if (language1Operator != offer.language1Operator) {
+            return false;
+        }
+        if (language2 != offer.language2) {
+            return false;
+        }
+        if (language2Level != offer.language2Level) {
+            return false;
+        }
+        if (language2Operator != offer.language2Operator) {
+            return false;
+        }
+        if (language3 != offer.language3) {
+            return false;
+        }
+        if (language3Level != offer.language3Level) {
+            return false;
+        }
+        if (livingCost != null ? !livingCost.equals(offer.livingCost) : offer.livingCost != null) {
+            return false;
+        }
+        if (lodgingBy != null ? !lodgingBy.equals(offer.lodgingBy) : offer.lodgingBy != null) {
+            return false;
+        }
+        if (lodgingCost != null ? !lodgingCost.equals(offer.lodgingCost) : offer.lodgingCost != null) {
+            return false;
+        }
+        if (lodgingPaymentFrequency != offer.lodgingPaymentFrequency) {
+            return false;
+        }
+        if (maximumWeeks != null ? !maximumWeeks.equals(offer.maximumWeeks) : offer.maximumWeeks != null) {
+            return false;
+        }
+        if (minimumWeeks != null ? !minimumWeeks.equals(offer.minimumWeeks) : offer.minimumWeeks != null) {
+            return false;
+        }
+        if (nearestAirport != null ? !nearestAirport.equals(offer.nearestAirport) : offer.nearestAirport != null) {
+            return false;
+        }
+        if (nearestPubTransport != null ? !nearestPubTransport.equals(offer.nearestPubTransport) : offer.nearestPubTransport != null) {
+            return false;
+        }
+        if (nominationDeadline != null ? !nominationDeadline.equals(offer.nominationDeadline) : offer.nominationDeadline != null) {
+            return false;
+        }
+        if (otherRequirements != null ? !otherRequirements.equals(offer.otherRequirements) : offer.otherRequirements != null) {
+            return false;
+        }
+        if (payment != null ? !payment.equals(offer.payment) : offer.payment != null) {
+            return false;
+        }
+        if (paymentFrequency != offer.paymentFrequency) {
+            return false;
+        }
+        if (prevTrainingRequired != null ? !prevTrainingRequired.equals(offer.prevTrainingRequired) : offer.prevTrainingRequired != null) {
+            return false;
+        }
+        if (!refNo.equals(offer.refNo)) {
+            return false;
+        }
+        if (specializations != null ? !specializations.equals(offer.specializations) : offer.specializations != null) {
+            return false;
+        }
+        if (studyLevels != null ? !studyLevels.equals(offer.studyLevels) : offer.studyLevels != null) {
+            return false;
+        }
+        if (toDate != null ? !toDate.equals(offer.toDate) : offer.toDate != null) {
+            return false;
+        }
+        if (toDate2 != null ? !toDate2.equals(offer.toDate2) : offer.toDate2 != null) {
+            return false;
+        }
+        if (typeOfWork != offer.typeOfWork) {
+            return false;
+        }
+        if (weeklyHours != null ? !weeklyHours.equals(offer.weeklyHours) : offer.weeklyHours != null) {
+            return false;
+        }
+        if (workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null) {
+            return false;
+        }
+        if (workingPlace != null ? !workingPlace.equals(offer.workingPlace) : offer.workingPlace != null) {
+            return false;
+        }
 
         return true;
     }
@@ -798,5 +891,36 @@ public class Offer implements Serializable {
                 ", livingPaymentFrequency=" + livingPaymentFrequency +
                 ", canteen=" + canteen +
                 '}';
+    }
+    public boolean verify() throws VerifyError {
+        ArrayList<String> errors = new ArrayList<String>();
+        if(verifyRefNo()) {
+            errors.add("refNo: reference number has incorrect format");
+        }
+        return true;
+    }
+
+    /**
+     * verifies reference number format
+     *
+     * [ISO_3166-2 country code]-[exchange year]-[identification number]-[additional code (optional)]
+     * TODO: should "identification number" be exactly 4 characters long?
+     * E.g: UK-2011-0001-01, IN-2011-0001-KU
+     * TODO: make it private, HOWTO: test it?
+     *
+     * @return true if refNo is correct
+     */
+    boolean verifyRefNo() {
+        StringBuffer countryCodes = new StringBuffer();
+        final String[] codes = Locale.getISOCountries();
+        for(final String code : codes) {
+            countryCodes.append(code);
+            countryCodes.append('|');
+        }
+        countryCodes.delete(countryCodes.length()-1, countryCodes.length());
+        countryCodes.append("|UK"); // WARNING: watch out for the refNo definition, UK is not a standard ISO code for country!
+        final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d+(-[A-Z0-9]{2})?");
+        final Matcher matcher = refNoPattern.matcher(refNo);
+        return matcher.matches();
     }
 }

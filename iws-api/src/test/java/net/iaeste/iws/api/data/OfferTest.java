@@ -181,20 +181,6 @@ public class OfferTest {
         }
     }
 
-    @Test
-    public void testVerifyCorrectDates() {
-        // --nominationDeadline---from--------holidaysFrom------holidaysTo--------to-----------from2------------to2---------------->
-        // --nominationDeadline---from------------to--------------from2----holidaysFrom------holidaysTo--------to2----------------->
-        // --nominationDeadline---from-----------------------to-------------------------------------------------------------------->
-        // --nominationDeadline---from2-----------------------to2------------------------------------------------------------------>
-
-        // it doesn't matter which period is earlier: from-to or from2-to2
-        // --nominationDeadline---from2-----------------------to2--------------from------------to---------------------------------->
-        // --nominationDeadline---from------------------------to---------------from2-----------to2--------------------------------->
-
-        // --deadline-------------------from-------------holidaysFrom------holidaysTo--------to--------------from2------------to2-->
-    }
-
     @Before
     public void setUpDates() {
         long now = new Date().getTime();

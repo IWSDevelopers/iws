@@ -911,18 +911,17 @@ public class Offer implements Serializable {
 
     public boolean verify() throws VerifyError {
         final Collection<String> errors = new ArrayList<String>();
-        if (verifyRefNo()) {
+        if (!verifyRefNo()) {
             errors.add("refNo: reference number has incorrect format");
         }
-        if( verifyDates()) {
+        if(!verifyDates()) {
             errors.add("dates are not set correctly");
         }
-        if(verifyNumberOfWeeks()) {
+        if(!verifyNumberOfWeeks()) {
             errors.add("weeks are not set correctly");
         }
-        if(errors.isEmpty())
-            return true;
-        throw new VerifyError(errors.toString());
+        return errors.isEmpty();
+        //        throw new VerifyError(errors.toString());
     }
 
     boolean verifyNumberOfWeeks() {
@@ -946,7 +945,7 @@ public class Offer implements Serializable {
             countryCodes.append('|');
         }
         countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
-            final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d+(-[A-Z0-9]{2})?");
+        final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d+(-[A-Z0-9]{2})?");
         final Matcher matcher = refNoPattern.matcher(refNo);
         return matcher.matches();
     }

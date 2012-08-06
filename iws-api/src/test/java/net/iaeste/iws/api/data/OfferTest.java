@@ -15,7 +15,6 @@
 
 package net.iaeste.iws.api.data;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
@@ -46,8 +45,8 @@ public class OfferTest {
     private static final String WORK_DESCRIPTION = "nothing";
     private static final Integer MAXIMUM_WEEKS = 12;
     private static final Integer MINIMUM_WEEKS = 12;
-    private static final Float WEEKLY_HOURS = 40f;
-    private static final Float DAILY_HOURS = 8f;
+    private static final Float WEEKLY_HOURS = 40.0f;
+    private static final Float DAILY_HOURS = 8.0f;
     private Offer offer;
     /**
      * field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method
@@ -76,6 +75,14 @@ public class OfferTest {
         offer.setWeeklyHours(WEEKLY_HOURS);
         offer.setDailyHours(DAILY_HOURS);
         return offer;
+    }
+
+    private Offer getValidOffer() {
+        Offer minimalOffer = getMinimalOffer();
+        minimalOffer.setNominationDeadline(d[0]);
+        minimalOffer.setFromDate(d[1]);
+        minimalOffer.setToDate(d[2]);
+        return minimalOffer;
     }
 
     @Test
@@ -156,8 +163,8 @@ public class OfferTest {
 //        Assert.assertThat(offer, is(equalTo(offer2)));
     }
     @Test
-    public void testVerifyCorrectRefNo() {
-        final String[] correctRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "GB-2011-00001" };
+    public void testVerifyValidRefNo() {
+        final String[] correctRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "GB-2011-00001", "AT-2012-1234-AB" };
         for (final String correctRefNo : correctRefNos) {
             offer.setRefNo(correctRefNo);
             Assert.assertThat(correctRefNo + " " + "should be correct", offer.verifyRefNo(), is(true));
@@ -165,7 +172,7 @@ public class OfferTest {
     }
 
     @Test
-    public void testVerifyIncorrectRefNo() {
+    public void testVerifyInvalidRefNo() {
         final String[] incorrectRefNos = { "UK-2011-00001", "INE-2011-0001-KU", "GB-2011-w001", "PL-201w-0001", "GB-2011-0001-101", "GB-10000-00001-01",
                 "GB-2011-a000-01", "GB-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01", "XX-2011-a000-01", "XX-2011-0000-01" };
         for (final String incorrectRefNo : incorrectRefNos) {
@@ -430,6 +437,17 @@ public class OfferTest {
         offer.setMinimumWeeks(10);
         offer.setMaximumWeeks(12);
         Assert.assertThat(offer.verifyNumberOfWeeks(), is(true));
-
     }
+
+    @Test
+    public void testGetMinimalOfferShouldBeInvalid() {
+        Assert.assertThat("minimal offer should be invalid", offer.verify(), is(false));
+    }
+
+    @Test
+    public void testGetValidOfferShouldBeValid() {
+        offer = getValidOffer();
+        Assert.assertThat("valid offer from helper should be valid", offer.verify(), is(true));
+    }
+
 }

@@ -15,7 +15,16 @@
 package net.iaeste.iws.api.data;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.*;
+import net.iaeste.iws.api.enums.Currency;
+import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.Gender;
+import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.enums.LanguageOperator;
+import net.iaeste.iws.api.enums.PaymentFrequency;
+import net.iaeste.iws.api.enums.Specialization;
+import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.io.Serializable;
@@ -24,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -37,7 +45,9 @@ import java.util.regex.Pattern;
  */
 public class Offer implements Serializable {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
@@ -61,18 +71,18 @@ public class Offer implements Serializable {
     /**
      * Default Constructor.
      *
-     * @param refNo                 Reference Number
-     * @param nominationDeadline    nomination deadline
-     * @param employerName          employer name
-     * @param studyLevels           list of study levels
-     * @param gender                Gender
-     * @param language1             Language 1
-     * @param language1Level        Language 1 level
-     * @param workDescription       work description
-     * @param minimumWeeks          minimum weeks
-     * @param maximumWeeks          maximum weeks
-     * @param weeklyHours           weekly hours
-     * @param dailyHours            daily hours
+     * @param refNo              Reference Number
+     * @param nominationDeadline nomination deadline
+     * @param employerName       employer name
+     * @param studyLevels        list of study levels
+     * @param gender             Gender
+     * @param language1          Language 1
+     * @param language1Level     Language 1 level
+     * @param workDescription    work description
+     * @param minimumWeeks       minimum weeks
+     * @param maximumWeeks       maximum weeks
+     * @param weeklyHours        weekly hours
+     * @param dailyHours         daily hours
      */
     public Offer(final String refNo,
                  final Date nominationDeadline,
@@ -134,7 +144,7 @@ public class Offer implements Serializable {
     private LanguageOperator language2Operator;
     private Language language3;
     private LanguageLevel language3Level;
-    
+
     // Work offered
     private String workDescription;
     private TypeOfWork typeOfWork;
@@ -158,7 +168,7 @@ public class Offer implements Serializable {
     private Currency currency;
     private PaymentFrequency paymentFrequency;
     private Integer deduction;
-    
+
     // Accommodation
     private String lodgingBy;
     private BigDecimal lodgingCost;
@@ -169,10 +179,10 @@ public class Offer implements Serializable {
 
     /**
      * Copy constructor.
-     *
+     * <p/>
      * Fields are copied one by one. Correct "cloning" for muttable members is provided by setters.
      *
-     * @param offer     Offer to copy
+     * @param offer Offer to copy
      */
     public Offer(final Offer offer) {
         this.setId(offer.getId());
@@ -611,10 +621,10 @@ public class Offer implements Serializable {
     /**
      * first thought was that id should be sufficient, but what if two
      * NOT PRESISTED offers want to be compared, then there is no ID
-     *
+     * <p/>
      * Even persisted offers can be updated differently, so still all
      * fields need to be taken into conscideration.
-     *
+     * <p/>
      * {@inheritDoc}
      *
      * @param o
@@ -785,7 +795,7 @@ public class Offer implements Serializable {
     @Override
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-        
+
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + refNo.hashCode();
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nominationDeadline != null ? nominationDeadline.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (employerName != null ? employerName.hashCode() : 0);
@@ -892,9 +902,10 @@ public class Offer implements Serializable {
                 ", canteen=" + canteen +
                 '}';
     }
+
     public boolean verify() throws VerifyError {
-        ArrayList<String> errors = new ArrayList<String>();
-        if(verifyRefNo()) {
+        final Collection<String> errors = new ArrayList<String>();
+        if (verifyRefNo()) {
             errors.add("refNo: reference number has incorrect format");
         }
         return true;
@@ -902,25 +913,123 @@ public class Offer implements Serializable {
 
     /**
      * verifies reference number format
-     *
+     * <p/>
      * [ISO_3166-2 country code]-[exchange year]-[identification number]-[additional code (optional)]
-     * TODO: should "identification number" be exactly 4 characters long?
-     * E.g: UK-2011-0001-01, IN-2011-0001-KU
-     * TODO: make it private, HOWTO: test it?
      *
      * @return true if refNo is correct
+     * @todo should "identification number" be exactly 4 characters long?
+     * E.g: UK-2011-0001-01, IN-2011-0001-KU
+     * @todo make it private, HOWTO: test it?
      */
     boolean verifyRefNo() {
-        StringBuffer countryCodes = new StringBuffer();
+        final StringBuilder countryCodes = new StringBuilder();
         final String[] codes = Locale.getISOCountries();
-        for(final String code : codes) {
+        for (final String code : codes) {
             countryCodes.append(code);
             countryCodes.append('|');
         }
-        countryCodes.delete(countryCodes.length()-1, countryCodes.length());
+        countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
         countryCodes.append("|UK"); // WARNING: watch out for the refNo definition, UK is not a standard ISO code for country!
         final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d+(-[A-Z0-9]{2})?");
         final Matcher matcher = refNoPattern.matcher(refNo);
         return matcher.matches();
+    }
+
+    /**
+     * verifies dates
+     * <p/>
+     * <ul>
+     * <li>nominationDeadline must be present</li>
+     * <li>nominationDeadline must be before from and from2</li>
+     * <li>dateTo > dateFrom</li>
+     * <li>either 'from' either 'to' have to be present</li>
+     * <li>'from' has to have an adequate 'to'</li>
+     * <li>dates from different groups (1,2) cannot interwise</li>
+     * <li>holidays must be inside date group</li>
+     * </ul>
+     */
+    boolean verifyDates() {
+        // the order of invoking verifyDates*** methods is important!
+        return verifyDatesPresence() && verifyDatesOrder() && verifyDatesNominationDeadline() && verifyDatesGroupsOrder() && verifyDatesHolidaysOrder();
+    }
+
+    private boolean verifyDatesPresence() {
+        // either 'from' date either 'from2' date must be present
+        if (fromDate == null && fromDate2 == null) {
+            return false;
+        }
+        // if 'from' is present then 'to' is needed to
+        if (fromDate != null && toDate == null || fromDate == null && toDate != null) {
+            return false;
+        }
+        if (fromDate2 != null && toDate2 == null || fromDate2 == null && toDate2 != null) {
+            return false;
+        }
+        // if 'holidaysFrom' is present then 'holidaysTo' is needed to
+        if (holidaysFrom != null && holidaysTo == null || holidaysFrom == null && holidaysTo != null) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean verifyDatesOrder() {
+        // 'from' date can't be after 'to' date
+        if (fromDate != null && fromDate.compareTo(toDate) > 0) {
+            return false;
+        }
+        if (fromDate2 != null && fromDate2.compareTo(toDate2) > 0) {
+            return false;
+        }
+        if (holidaysFrom != null && holidaysFrom.compareTo(holidaysTo) > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean verifyDatesNominationDeadline() {
+        // @todo should 'nominationDeadline' be present?
+        if (nominationDeadline == null) {
+            return false;
+        } else {
+            // "nominationDeadline" must be before start of an internship
+            if ((fromDate != null && nominationDeadline.compareTo(fromDate) > 0)
+                    || (fromDate2 != null && nominationDeadline.compareTo(fromDate2) > 0)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean verifyDatesGroupsOrder() {
+        // dates from groups 1 and 2 cannot intertwine
+        if (fromDate != null && fromDate2 != null) {
+            // from < to and from2 < to is already checked
+            // to != null and to2 != null is already checked
+            if (!(fromDate.compareTo(toDate2) > 0 || fromDate2.compareTo(toDate) > 0)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean verifyDatesHolidaysOrder() {
+        if (holidaysFrom != null) {
+            // holidays "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
+            //      (otherwise the period of the internship can be shown unambiguously by changing "from" and "to" dates
+            if (fromDate != null) {
+                if (!(holidaysFrom.compareTo(fromDate) > 0 && holidaysFrom.compareTo(toDate) < 0
+                        && holidaysTo.compareTo(fromDate) > 0 && holidaysTo.compareTo(toDate) < 0)) {
+                    return false;
+                }
+            }
+            if (fromDate2 != null) {
+                if (!(holidaysFrom.compareTo(fromDate2) > 0 && holidaysFrom.compareTo(toDate2) < 0
+                        && holidaysTo.compareTo(fromDate2) > 0 && holidaysTo.compareTo(toDate2) < 0)) {
+                    return false;
+                }
+            }
+
+        }
+        return true;
     }
 }

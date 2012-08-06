@@ -15,6 +15,10 @@
 
 package net.iaeste.iws.api.data;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
@@ -24,10 +28,6 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +49,10 @@ public class OfferTest {
     private static final Float WEEKLY_HOURS = 40f;
     private static final Float DAILY_HOURS = 8f;
     private Offer offer;
+    /**
+     * field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method
+     */
+    private final Date[] d = new Date[9];
 
     @Before
     public void before() {
@@ -142,18 +146,20 @@ public class OfferTest {
         Assert.assertThat("NominationDeadline", oldDate, is(offer.getNominationDeadline()));
     }
 
-    //    TODO: which fields are not important for the equality of an offer?
-//    @Test
-//    public void testEqualityOfSimilarOffers() {
-//        Offer offer2 = new Offer(offer);
+    /**
+     * @todo which fields are not important for the equality of an offer?
+     */
+    @Test
+    public void testEqualityOfSimilarOffers() {
+//        final Offer offer2 = new Offer(offer);
 //        offer2.setWorkDescription("@#$#@");
-//        Assert.assertEquals(offer, offer2);
-//    }
+//        Assert.assertThat(offer, is(equalTo(offer2)));
+    }
     @Test
     public void testVerifyCorrectRefNo() {
         final String[] correctRefNos = { "IN-2011-0001-KU", "UK-2011-0001-01", "UK-2011-00001" };
         for (final String correctRefNo : correctRefNos) {
-            offer.setRefNo(correctRefNo );
+            offer.setRefNo(correctRefNo);
             Assert.assertThat(correctRefNo + " " + "should be correct", offer.verifyRefNo(), is(true));
         }
     }
@@ -165,5 +171,247 @@ public class OfferTest {
             offer.setRefNo(incorrectRefNo);
             Assert.assertThat(incorrectRefNo + " " + "should be incorrect", offer.verifyRefNo(), is(false));
         }
+    }
+
+    @Test
+    public void testVerifyCorrectDates() {
+        // --nominationDeadline---from--------holidaysFrom------holidaysTo--------to-----------from2------------to2---------------->
+        // --nominationDeadline---from------------to--------------from2----holidaysFrom------holidaysTo--------to2----------------->
+        // --nominationDeadline---from-----------------------to-------------------------------------------------------------------->
+        // --nominationDeadline---from2-----------------------to2------------------------------------------------------------------>
+
+        // it doesn't matter which period is earlier: from-to or from2-to2
+        // --nominationDeadline---from2-----------------------to2--------------from------------to---------------------------------->
+        // --nominationDeadline---from------------------------to---------------from2-----------to2--------------------------------->
+
+        // --deadline-------------------from-------------holidaysFrom------holidaysTo--------to--------------from2------------to2-->
+    }
+
+    @Before
+    public void setUpDates() {
+        long now = new Date().getTime();
+        for (int i = 0; i < d.length; ++i) {
+            d[i] = new Date(now + i * 3600 * 24);
+        }
+
+    }
+
+    /**
+     * @todo is presence of at least one period required?
+     */
+    @Test
+    public void testVerifyPresenceOfDates() {
+        final String error = "if 'from(2)' is present then 'to(2)' should be present";
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate(d[1]);
+        offer.setToDate(d[2]);
+        offer.setFromDate2(d[1]);
+        offer.setToDate2(d[2]);
+        offer.setHolidaysFrom(d[0]);
+        offer.setHolidaysTo(d[0]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline--------------------------to---------------------------------------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setToDate(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline--------------------------to2--------------------------------------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setToDate2(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline--------------------------from-------------------------------------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline--------------------------from2------------------------------------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+
+        // --deadline------------------from2---------------to---------------------------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate2(d[1]);
+        offer.setToDate(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline---------------from------------------to2---------------------------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate(d[1]);
+        offer.setToDate2(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline------------from----------------------to--------------to2----------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate(d[1]);
+        offer.setToDate(d[2]);
+        offer.setToDate2(d[3]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline------------from----------------------to--------------from2--------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate(d[1]);
+        offer.setToDate(d[2]);
+        offer.setFromDate2(d[3]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline------------from-----------------------from2----------to2----------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate(d[1]);
+        offer.setFromDate2(d[2]);
+        offer.setToDate2(d[3]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline--------------to-----------------------from2----------to2----------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setToDate(d[1]);
+        offer.setFromDate2(d[2]);
+        offer.setToDate2(d[3]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+
+    }
+
+    @Test
+    public void testVerifyOrderOfDates() {
+        final String error = "'from(2)' have to be before 'to(2)'";
+        // --deadline--------------------------to-------from----------------------------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setToDate(d[1]);
+        offer.setFromDate(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline--------------------------to2-------from2--------------------------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setToDate2(d[1]);
+        offer.setFromDate2(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+    }
+
+    /**
+     * @todo is presence of deadline required?
+     */
+    @Test
+    public void testVerifyPresenceOfDeadlineDate() {
+        final String error = "'nominationDeadline' presence";
+        offer = getMinimalOffer();
+        offer.setHolidaysFrom(null);
+        offer.setHolidaysTo(null);
+        offer.setFromDate(d[1]);
+        offer.setToDate(d[2]);
+        // --deadline--------------------------from-------to----------------------------------------------------------------------->
+        offer.setNominationDeadline(d[0]);
+        Assert.assertThat(error, offer.verifyDates(), is(true));
+        // ------------------------------------from-------to----------------------------------------------------------------------->
+        offer.setNominationDeadline(null);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+
+    }
+
+    @Test
+    public void testVerifyDeadlineOrder() {
+        final String error = "'nominationDeadline' should be before 'from' and 'from2'";
+        offer = getMinimalOffer();
+        offer.setFromDate(d[1]);
+        offer.setToDate(d[3]);
+        // ----from--------------deadline-------------------to--------------------------------------------------------------------->
+        offer.setNominationDeadline(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // ---from-----------------------to-------------deadline------------------------------------------------------------------->
+        offer.setNominationDeadline(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+
+        offer = getMinimalOffer();
+        offer.setFromDate2(d[1]);
+        offer.setToDate2(d[3]);
+        // ---from2--------------deadline-------------------to2-------------------------------------------------------------------->
+        offer.setNominationDeadline(d[2]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // ---from2-----------------------to2--------deadline---------------------------------------------------------------------->
+        offer.setNominationDeadline(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+
+        // ---from2-----------------------to2--------deadline--------from------to-------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setFromDate2(d[1]);
+        offer.setToDate2(d[3]);
+        offer.setFromDate(d[5]);
+        offer.setToDate(d[7]);
+        offer.setNominationDeadline(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // ---from-----------------------to---------deadline-------from2------to2-------------------------------------------------->
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        offer.setFromDate(d[1]);
+        offer.setToDate(d[3]);
+        offer.setFromDate2(d[5]);
+        offer.setToDate2(d[7]);
+        offer.setNominationDeadline(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+    }
+
+    @Test
+    public void testVerifyOrderOfDatesGroups() {
+        final String error = "dates from groups 1 and 2 cannot intertwine";
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        // --deadline------------from2-----from------------to--------------to2----------------------------------------------------->
+        offer.setFromDate2(d[1]);
+        offer.setFromDate(d[2]);
+        offer.setToDate(d[3]);
+        offer.setToDate2(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline------------from-----from2------------to--------------to2----------------------------------------------------->
+        offer.setFromDate(d[1]);
+        offer.setFromDate2(d[2]);
+        offer.setToDate(d[3]);
+        offer.setToDate2(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline------------from-----from2------------to2--------------to----------------------------------------------------->
+        offer.setFromDate(d[1]);
+        offer.setFromDate2(d[2]);
+        offer.setToDate2(d[3]);
+        offer.setToDate(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline------------from2-----from------------to--------------to2----------------------------------------------------->
+        offer.setFromDate2(d[1]);
+        offer.setFromDate(d[2]);
+        offer.setToDate(d[3]);
+        offer.setToDate2(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+    }
+
+    @Test
+    public void testVerifyOrderOfHolidaysDates() {
+        final String error = "holidays dates must be inside from-to or from2-to2";
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(d[0]);
+        // --deadline-----------from--------holidaysFrom---to------holidaysTo------------------------------------------------------>
+        offer.setFromDate(d[1]);
+        offer.setHolidaysFrom(d[2]);
+        offer.setToDate(d[3]);
+        offer.setHolidaysTo(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline--------holidaysFrom-----------from------holidaysTo---to------------------------------------------------------>
+        offer.setHolidaysFrom(d[1]);
+        offer.setFromDate(d[2]);
+        offer.setHolidaysTo(d[3]);
+        offer.setToDate(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline-----------holidaysFrom------holidaysTo------from--------to--------------------------------------------------->
+        offer.setHolidaysFrom(d[1]);
+        offer.setHolidaysTo(d[2]);
+        offer.setFromDate(d[3]);
+        offer.setToDate(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
+        // --deadline-----------from--------to------holidaysTo-----holidaysFrom---------------------------------------------------->
+        offer.setFromDate(d[1]);
+        offer.setToDate(d[2]);
+        offer.setHolidaysFrom(d[3]);
+        offer.setHolidaysTo(d[4]);
+        Assert.assertThat(error, offer.verifyDates(), is(false));
     }
 }

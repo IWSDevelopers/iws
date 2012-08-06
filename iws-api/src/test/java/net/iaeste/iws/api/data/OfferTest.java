@@ -157,7 +157,7 @@ public class OfferTest {
     }
     @Test
     public void testVerifyCorrectRefNo() {
-        final String[] correctRefNos = { "IN-2011-0001-KU", "UK-2011-0001-01", "UK-2011-00001" };
+        final String[] correctRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "GB-2011-00001" };
         for (final String correctRefNo : correctRefNos) {
             offer.setRefNo(correctRefNo);
             Assert.assertThat(correctRefNo + " " + "should be correct", offer.verifyRefNo(), is(true));
@@ -166,7 +166,8 @@ public class OfferTest {
 
     @Test
     public void testVerifyIncorrectRefNo() {
-        final String[] incorrectRefNos = { "INE-2011-0001-KU", "UK-2011-w001", "PL-201w-0001", "UK-2011-0001-101", "UK-10000-00001-01", "UK-2011-a000-01", "UK-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01", "XX-2011-a000-01", "XX-2011-0000-01" };
+        final String[] incorrectRefNos = { "UK-2011-00001", "INE-2011-0001-KU", "GB-2011-w001", "PL-201w-0001", "GB-2011-0001-101", "GB-10000-00001-01",
+                "GB-2011-a000-01", "GB-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01", "XX-2011-a000-01", "XX-2011-0000-01" };
         for (final String incorrectRefNo : incorrectRefNos) {
             offer.setRefNo(incorrectRefNo);
             Assert.assertThat(incorrectRefNo + " " + "should be incorrect", offer.verifyRefNo(), is(false));
@@ -413,5 +414,22 @@ public class OfferTest {
         offer.setHolidaysFrom(d[3]);
         offer.setHolidaysTo(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
+    }
+
+    @Test
+    public void testVerifyNumberOfWeeks() {
+        offer.setMinimumWeeks(0);
+        offer.setMaximumWeeks(10);
+        Assert.assertThat("minimumWeeks should be greater than 0", offer.verifyNumberOfWeeks(), is(false));
+        offer.setMinimumWeeks(20);
+        offer.setMaximumWeeks(10);
+        Assert.assertThat("maximumWeeks should be greater than or equal to minimumWeeks", offer.verifyNumberOfWeeks(), is(false));
+        offer.setMinimumWeeks(10);
+        offer.setMaximumWeeks(10);
+        Assert.assertThat("minimumWeeks can be equal to maximumWeeks", offer.verifyNumberOfWeeks(), is(true));
+        offer.setMinimumWeeks(10);
+        offer.setMaximumWeeks(12);
+        Assert.assertThat(offer.verifyNumberOfWeeks(), is(true));
+
     }
 }

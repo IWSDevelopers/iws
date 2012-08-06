@@ -903,17 +903,34 @@ public class Offer implements Serializable {
                 '}';
     }
 
+    /**
+     *
+     * @return true if offer is valid, otherwise thros an exception
+     * @throws VerifyError
+     */
+
     public boolean verify() throws VerifyError {
         final Collection<String> errors = new ArrayList<String>();
         if (verifyRefNo()) {
             errors.add("refNo: reference number has incorrect format");
         }
-        return true;
+        if( verifyDates()) {
+            errors.add("dates are not set correctly");
+        }
+        if(verifyNumberOfWeeks()) {
+            errors.add("weeks are not set correctly");
+        }
+        if(errors.isEmpty())
+            return true;
+        throw new VerifyError(errors.toString());
+    }
+
+    boolean verifyNumberOfWeeks() {
+        return minimumWeeks > 0 && maximumWeeks >= minimumWeeks;
     }
 
     /**
      * verifies reference number format
-     * <p/>
      * [ISO_3166-2 country code]-[exchange year]-[identification number]-[additional code (optional)]
      *
      * @return true if refNo is correct
@@ -929,8 +946,7 @@ public class Offer implements Serializable {
             countryCodes.append('|');
         }
         countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
-        countryCodes.append("|UK"); // WARNING: watch out for the refNo definition, UK is not a standard ISO code for country!
-        final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d+(-[A-Z0-9]{2})?");
+            final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d+(-[A-Z0-9]{2})?");
         final Matcher matcher = refNoPattern.matcher(refNo);
         return matcher.matches();
     }

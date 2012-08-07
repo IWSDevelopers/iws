@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>iws-core</artifactId>
+            <artifactId>iws-persistence</artifactId>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

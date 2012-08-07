@@ -15,6 +15,9 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.exceptions.PersistenceException;
+
+import java.util.List;
 
 /**
  * @author  Matej Kosco / last $Author:$
@@ -28,6 +31,26 @@ public interface OfferDao {
      *
      * @param offer {@code OfferEntity} instance to persist
      */
-    public void persist(OfferEntity offer);
+    void persist(OfferEntity offer);
 
+    /**
+     * Get all offers from the database.
+     * @return list of {@code OfferEntity}
+     */
+    List<OfferEntity> findAll();
+
+    /**
+     * Finds the entity in the database.
+     *
+     * @param offerId
+     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
+     * @throws PersistenceException
+     */
+    OfferEntity findOffer(final Integer offerId);
+
+    /**
+     * @param offerIds
+     * @return
+     */
+    List<OfferEntity> findOffers(final List<Integer> offerIds);
 }

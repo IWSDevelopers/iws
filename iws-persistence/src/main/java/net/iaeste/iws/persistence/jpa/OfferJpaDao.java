@@ -18,6 +18,7 @@ import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * @author Matej Kosco / last $Author:$
@@ -31,7 +32,7 @@ public class OfferJpaDao implements OfferDao {
     /**
      * Default Constructor.
      *
-     * @param entityManager  Entity Manager instance to use
+     * @param entityManager Entity Manager instance to use
      */
     public OfferJpaDao(final EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -45,4 +46,28 @@ public class OfferJpaDao implements OfferDao {
     public void persist(final OfferEntity offer) {
         entityManager.persist(offer);
     }
+
+    @Override
+    public List<OfferEntity> findAll() {
+        return entityManager.createNamedQuery("OfferEntity.findAll", OfferEntity.class).getResultList();
+    }
+
+    @Override
+    public OfferEntity findOffer(final Integer offerId) {
+        final List<OfferEntity> offers = entityManager.createNamedQuery("OfferEntity.findById", OfferEntity.class)
+                .setParameter("id", offerId).getResultList();
+        if (offers.size() != 1) {
+            return null;
+        }
+        return offers.get(0);
+
+    }
+
+    @Override
+    public List<OfferEntity> findOffers(final List<Integer> offerIds) {
+        final List<OfferEntity> offers = entityManager.createNamedQuery("OfferEntity.findByIds", OfferEntity.class)
+                .setParameter("ids", offerIds).getResultList();
+        return offers;
+    }
+
 }

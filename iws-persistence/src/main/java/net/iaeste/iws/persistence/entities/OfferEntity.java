@@ -14,11 +14,33 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import net.iaeste.iws.api.enums.*;
+import net.iaeste.iws.api.enums.Currency;
+import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.Gender;
+import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.enums.LanguageOperator;
+import net.iaeste.iws.api.enums.PaymentFrequency;
+import net.iaeste.iws.api.enums.Specialization;
+import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.enums.TypeOfWork;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +52,13 @@ import java.util.List;
  */
 @Table(name = "offers")
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "OfferEntity.findAll", query = "SELECT o FROM Offer o"),
+        @NamedQuery(name = "OfferEntity.findById", query = "SELECT o FROM Offer o WHERE o.id = :id"),
+        @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM Offer o WHERE o.id IN :ids"),
+        @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM Offer o WHERE o.refNo= :refNo"),
+        @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM Offer o WHERE o.employerName= :employerName")
+})
 public class OfferEntity {
 
     @Id
@@ -84,7 +113,7 @@ public class OfferEntity {
      */
     @ElementCollection
     @Column(name = "specialization")
-    private List<String> specializations;
+    private List<Specialization> specializations;
 
     @ElementCollection
     @Enumerated(value = EnumType.STRING)
@@ -226,7 +255,7 @@ public class OfferEntity {
         return canteen;
     }
 
-    public void setCanteen(Boolean canteen) {
+    public void setCanteen(final Boolean canteen) {
         this.canteen = canteen;
     }
 
@@ -234,7 +263,7 @@ public class OfferEntity {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(final Currency currency) {
         this.currency = currency;
     }
 
@@ -242,7 +271,7 @@ public class OfferEntity {
         return dailyHours;
     }
 
-    public void setDailyHours(Float dailyHours) {
+    public void setDailyHours(final Float dailyHours) {
         this.dailyHours = dailyHours;
     }
 
@@ -250,7 +279,7 @@ public class OfferEntity {
         return deduction;
     }
 
-    public void setDeduction(Integer deduction) {
+    public void setDeduction(final Integer deduction) {
         this.deduction = deduction;
     }
 
@@ -258,7 +287,7 @@ public class OfferEntity {
         return employerAddress2;
     }
 
-    public void setEmployerAddress2(String employerAddress2) {
+    public void setEmployerAddress2(final String employerAddress2) {
         this.employerAddress2 = employerAddress2;
     }
 
@@ -266,7 +295,7 @@ public class OfferEntity {
         return employerAddress;
     }
 
-    public void setEmployerAddress(String employerAddress) {
+    public void setEmployerAddress(final String employerAddress) {
         this.employerAddress = employerAddress;
     }
 
@@ -274,7 +303,7 @@ public class OfferEntity {
         return employerBusiness;
     }
 
-    public void setEmployerBusiness(String employerBusiness) {
+    public void setEmployerBusiness(final String employerBusiness) {
         this.employerBusiness = employerBusiness;
     }
 
@@ -282,7 +311,7 @@ public class OfferEntity {
         return employerEmployeesCount;
     }
 
-    public void setEmployerEmployeesCount(Integer employerEmployeesCount) {
+    public void setEmployerEmployeesCount(final Integer employerEmployeesCount) {
         this.employerEmployeesCount = employerEmployeesCount;
     }
 
@@ -290,7 +319,7 @@ public class OfferEntity {
         return employerName;
     }
 
-    public void setEmployerName(String employerName) {
+    public void setEmployerName(final String employerName) {
         this.employerName = employerName;
     }
 
@@ -298,7 +327,7 @@ public class OfferEntity {
         return employerWebsite;
     }
 
-    public void setEmployerWebsite(String employerWebsite) {
+    public void setEmployerWebsite(final String employerWebsite) {
         this.employerWebsite = employerWebsite;
     }
 
@@ -306,7 +335,7 @@ public class OfferEntity {
         return fieldOfStudies;
     }
 
-    public void setFieldOfStudies(List<FieldOfStudy> fieldOfStudies) {
+    public void setFieldOfStudies(final List<FieldOfStudy> fieldOfStudies) {
         this.fieldOfStudies = fieldOfStudies;
     }
 
@@ -314,7 +343,7 @@ public class OfferEntity {
         return fromDate2;
     }
 
-    public void setFromDate2(Date fromDate2) {
+    public void setFromDate2(final Date fromDate2) {
         this.fromDate2 = fromDate2;
     }
 
@@ -322,7 +351,7 @@ public class OfferEntity {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(final Date fromDate) {
         this.fromDate = fromDate;
     }
 
@@ -330,7 +359,7 @@ public class OfferEntity {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(final Gender gender) {
         this.gender = gender;
     }
 
@@ -338,7 +367,7 @@ public class OfferEntity {
         return holidaysFrom;
     }
 
-    public void setHolidaysFrom(Date holidaysFrom) {
+    public void setHolidaysFrom(final Date holidaysFrom) {
         this.holidaysFrom = holidaysFrom;
     }
 
@@ -346,7 +375,7 @@ public class OfferEntity {
         return holidaysTo;
     }
 
-    public void setHolidaysTo(Date holidaysTo) {
+    public void setHolidaysTo(final Date holidaysTo) {
         this.holidaysTo = holidaysTo;
     }
 
@@ -354,7 +383,7 @@ public class OfferEntity {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -362,7 +391,7 @@ public class OfferEntity {
         return language1;
     }
 
-    public void setLanguage1(Language language1) {
+    public void setLanguage1(final Language language1) {
         this.language1 = language1;
     }
 
@@ -370,7 +399,7 @@ public class OfferEntity {
         return language1Level;
     }
 
-    public void setLanguage1Level(LanguageLevel language1Level) {
+    public void setLanguage1Level(final LanguageLevel language1Level) {
         this.language1Level = language1Level;
     }
 
@@ -378,7 +407,7 @@ public class OfferEntity {
         return language1Operator;
     }
 
-    public void setLanguage1Operator(LanguageOperator language1Operator) {
+    public void setLanguage1Operator(final LanguageOperator language1Operator) {
         this.language1Operator = language1Operator;
     }
 
@@ -386,7 +415,7 @@ public class OfferEntity {
         return language2;
     }
 
-    public void setLanguage2(Language language2) {
+    public void setLanguage2(final Language language2) {
         this.language2 = language2;
     }
 
@@ -394,7 +423,7 @@ public class OfferEntity {
         return language2Level;
     }
 
-    public void setLanguage2Level(LanguageLevel language2Level) {
+    public void setLanguage2Level(final LanguageLevel language2Level) {
         this.language2Level = language2Level;
     }
 
@@ -402,7 +431,7 @@ public class OfferEntity {
         return language2Operator;
     }
 
-    public void setLanguage2Operator(LanguageOperator language2Operator) {
+    public void setLanguage2Operator(final LanguageOperator language2Operator) {
         this.language2Operator = language2Operator;
     }
 
@@ -410,7 +439,7 @@ public class OfferEntity {
         return language3;
     }
 
-    public void setLanguage3(Language language3) {
+    public void setLanguage3(final Language language3) {
         this.language3 = language3;
     }
 
@@ -418,7 +447,7 @@ public class OfferEntity {
         return language3Level;
     }
 
-    public void setLanguage3Level(LanguageLevel language3Level) {
+    public void setLanguage3Level(final LanguageLevel language3Level) {
         this.language3Level = language3Level;
     }
 
@@ -426,7 +455,7 @@ public class OfferEntity {
         return livingCost;
     }
 
-    public void setLivingCost(BigDecimal livingCost) {
+    public void setLivingCost(final BigDecimal livingCost) {
         this.livingCost = livingCost;
     }
 
@@ -434,7 +463,7 @@ public class OfferEntity {
         return livingPaymentFrequency;
     }
 
-    public void setLivingPaymentFrequency(int livingPaymentFrequency) {
+    public void setLivingPaymentFrequency(final int livingPaymentFrequency) {
         this.livingPaymentFrequency = livingPaymentFrequency;
     }
 
@@ -442,7 +471,7 @@ public class OfferEntity {
         return lodgingBy;
     }
 
-    public void setLodgingBy(String lodgingBy) {
+    public void setLodgingBy(final String lodgingBy) {
         this.lodgingBy = lodgingBy;
     }
 
@@ -450,7 +479,7 @@ public class OfferEntity {
         return lodgingCost;
     }
 
-    public void setLodgingCost(BigDecimal lodgingCost) {
+    public void setLodgingCost(final BigDecimal lodgingCost) {
         this.lodgingCost = lodgingCost;
     }
 
@@ -458,7 +487,7 @@ public class OfferEntity {
         return lodgingPaymentFrequency;
     }
 
-    public void setLodgingPaymentFrequency(PaymentFrequency lodgingPaymentFrequency) {
+    public void setLodgingPaymentFrequency(final PaymentFrequency lodgingPaymentFrequency) {
         this.lodgingPaymentFrequency = lodgingPaymentFrequency;
     }
 
@@ -466,7 +495,7 @@ public class OfferEntity {
         return maximumWeeks;
     }
 
-    public void setMaximumWeeks(Integer maximumWeeks) {
+    public void setMaximumWeeks(final Integer maximumWeeks) {
         this.maximumWeeks = maximumWeeks;
     }
 
@@ -474,7 +503,7 @@ public class OfferEntity {
         return minimumWeeks;
     }
 
-    public void setMinimumWeeks(Integer minimumWeeks) {
+    public void setMinimumWeeks(final Integer minimumWeeks) {
         this.minimumWeeks = minimumWeeks;
     }
 
@@ -482,7 +511,7 @@ public class OfferEntity {
         return nearestAirport;
     }
 
-    public void setNearestAirport(String nearestAirport) {
+    public void setNearestAirport(final String nearestAirport) {
         this.nearestAirport = nearestAirport;
     }
 
@@ -490,7 +519,7 @@ public class OfferEntity {
         return nearestPubTransport;
     }
 
-    public void setNearestPubTransport(String nearestPubTransport) {
+    public void setNearestPubTransport(final String nearestPubTransport) {
         this.nearestPubTransport = nearestPubTransport;
     }
 
@@ -498,7 +527,7 @@ public class OfferEntity {
         return nominationDeadline;
     }
 
-    public void setNominationDeadline(Date nominationDeadline) {
+    public void setNominationDeadline(final Date nominationDeadline) {
         this.nominationDeadline = nominationDeadline;
     }
 
@@ -506,7 +535,7 @@ public class OfferEntity {
         return otherRequirements;
     }
 
-    public void setOtherRequirements(String otherRequirements) {
+    public void setOtherRequirements(final String otherRequirements) {
         this.otherRequirements = otherRequirements;
     }
 
@@ -514,7 +543,7 @@ public class OfferEntity {
         return payment;
     }
 
-    public void setPayment(BigDecimal payment) {
+    public void setPayment(final BigDecimal payment) {
         this.payment = payment;
     }
 
@@ -522,7 +551,7 @@ public class OfferEntity {
         return paymentFrequency;
     }
 
-    public void setPaymentFrequency(PaymentFrequency paymentFrequency) {
+    public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
         this.paymentFrequency = paymentFrequency;
     }
 
@@ -530,7 +559,7 @@ public class OfferEntity {
         return prevTrainingRequired;
     }
 
-    public void setPrevTrainingRequired(Boolean prevTrainingRequired) {
+    public void setPrevTrainingRequired(final Boolean prevTrainingRequired) {
         this.prevTrainingRequired = prevTrainingRequired;
     }
 
@@ -538,15 +567,15 @@ public class OfferEntity {
         return refNo;
     }
 
-    public void setRefNo(String refNo) {
+    public void setRefNo(final String refNo) {
         this.refNo = refNo;
     }
 
-    public List<String> getSpecializations() {
+    public List<Specialization> getSpecializations() {
         return specializations;
     }
 
-    public void setSpecializations(List<String> specializations) {
+    public void setSpecializations(final List<Specialization> specializations) {
         this.specializations = specializations;
     }
 
@@ -554,15 +583,15 @@ public class OfferEntity {
         return studyLevels;
     }
 
-    public void setStudyLevels(List<StudyLevel> studyLevels) {
-        this.studyLevels = studyLevels;
+    public void setStudyLevels(final Collection<StudyLevel> studyLevels) {
+        this.studyLevels.addAll(studyLevels);
     }
 
     public Date getToDate2() {
         return toDate2;
     }
 
-    public void setToDate2(Date toDate2) {
+    public void setToDate2(final Date toDate2) {
         this.toDate2 = toDate2;
     }
 
@@ -570,7 +599,7 @@ public class OfferEntity {
         return toDate;
     }
 
-    public void setToDate(Date toDate) {
+    public void setToDate(final Date toDate) {
         this.toDate = toDate;
     }
 
@@ -578,7 +607,7 @@ public class OfferEntity {
         return typeOfWork;
     }
 
-    public void setTypeOfWork(TypeOfWork typeOfWork) {
+    public void setTypeOfWork(final TypeOfWork typeOfWork) {
         this.typeOfWork = typeOfWork;
     }
 
@@ -586,7 +615,7 @@ public class OfferEntity {
         return weeklyHours;
     }
 
-    public void setWeeklyHours(Float weeklyHours) {
+    public void setWeeklyHours(final Float weeklyHours) {
         this.weeklyHours = weeklyHours;
     }
 
@@ -594,7 +623,7 @@ public class OfferEntity {
         return workDescription;
     }
 
-    public void setWorkDescription(String workDescription) {
+    public void setWorkDescription(final String workDescription) {
         this.workDescription = workDescription;
     }
 
@@ -602,7 +631,7 @@ public class OfferEntity {
         return workingPlace;
     }
 
-    public void setWorkingPlace(String workingPlace) {
+    public void setWorkingPlace(final String workingPlace) {
         this.workingPlace = workingPlace;
     }
 }

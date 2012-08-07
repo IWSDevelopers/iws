@@ -15,18 +15,30 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.utils.Copier;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection RedundantNoArgConstructor
+ * @since 1.7
  */
 public final class FetchOffersRequest extends AbstractRequest {
+    private final FetchType fetchType;
+    private final List<Integer> offers;
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    public enum FetchType {
+        NONE, BY_ID, LIMIT, ALL
+    }
+
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
@@ -34,6 +46,13 @@ public final class FetchOffersRequest extends AbstractRequest {
      * for WebServices to work properly.
      */
     public FetchOffersRequest() {
+        fetchType = FetchType.ALL;
+        this.offers = new ArrayList<>();
+    }
+
+    public FetchOffersRequest(final List<Integer> offerIds) {
+        this.fetchType = FetchType.BY_ID;
+        this.offers = Copier.copy(offerIds);
     }
 
     /**
@@ -41,6 +60,19 @@ public final class FetchOffersRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        throw new NotImplementedException("TBD");
+        if (offers == null) {
+            throw new VerificationException("Unexpected null value for offers' list");
+        }
+        if (fetchType == null) {
+            throw new VerificationException("Unexpected null value for fetchType");
+        }
+    }
+
+    public FetchType getFetchType() {
+        return fetchType;
+    }
+
+    public List<Integer> getOffers() {
+        return Collections.unmodifiableList(offers);
     }
 }

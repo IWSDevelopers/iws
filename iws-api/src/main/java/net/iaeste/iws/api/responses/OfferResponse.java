@@ -16,7 +16,11 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.data.Offer;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.utils.Copier;
+
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -27,6 +31,7 @@ public final class OfferResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+    private List<Offer> offers;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -43,6 +48,14 @@ public final class OfferResponse extends AbstractResponse {
      */
     public OfferResponse(final IWSError error, final String message) {
         super(error, message);
+    }
+
+    public OfferResponse(List<Offer> offers) {
+        this.offers = Copier.copy(offers);
+    }
+
+    public List<Offer> getOffers() {
+        return Copier.copy(offers);
     }
 
     /**

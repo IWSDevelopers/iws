@@ -183,7 +183,7 @@ public class OfferTest {
 
     @Before
     public void setUpDates() {
-        long now = new Date().getTime();
+        final long now = new Date().getTime();
         for (int i = 0; i < d.length; ++i) {
             d[i] = new Date(now + i * 3600 * 24);
         }

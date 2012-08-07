@@ -15,29 +15,41 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.data.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.utils.Copier;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection RedundantNoArgConstructor
+ * @since 1.7
  */
 public final class OfferRequest extends AbstractRequest {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-//    TODO:
-//    private List<Offer> editOffers;
-//    private List<Integer> deleteOfferIDs;
+    private final List<Offer> editOffers;
+    private final List<Integer> deleteOfferIDs;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public OfferRequest() {
+        this(new ArrayList<Offer>(), new ArrayList<Integer>());
+    }
+
+    public OfferRequest(final List<Offer> editOffers, final List<Integer> deleteOfferIDs) {
+        this.editOffers = Copier.copy(editOffers);
+        this.deleteOfferIDs = Copier.copy(deleteOfferIDs);
     }
 
     /**
@@ -45,6 +57,17 @@ public final class OfferRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        throw new NotImplementedException("TBD");
+        for (final Offer offer : editOffers) {
+            if (!offer.verify()) {
+                throw new VerificationException("offer id=" + offer.getId() + " is not valid.");
+            }
+        }
+    }
+
+    public List<Offer> getEditOffers() {
+        return Collections.unmodifiableList(editOffers);
+    }
+    public List<Integer> getDeleteOfferIDs() {
+        return Collections.unmodifiableList(deleteOfferIDs);
     }
 }

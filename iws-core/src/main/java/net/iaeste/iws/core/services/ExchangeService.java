@@ -15,11 +15,19 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.data.Offer;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.FetchOffersRequest;
+import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.OfferRequest;
+import net.iaeste.iws.api.requests.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
+import net.iaeste.iws.core.convert.OfferConverter;
+import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 
 import javax.persistence.EntityManager;
 
@@ -37,11 +45,28 @@ public class ExchangeService {
     }
 
     public void processOffers(final AuthenticationToken token, final OfferRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        for (final Offer offer : request.getEditOffers()) {
+            // persist
+        }
+        for (final Integer offerId : request.getDeleteOfferIDs()) {
+            // delete from db
+        }
     }
 
     public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        final OfferJpaDao dao = new OfferJpaDao(entityManager);
+        switch (request.getFetchType()) {
+            case ALL:
+                return new OfferResponse(OfferConverter.toDTO(dao.findAll()));
+            case NONE:
+                throw new NotImplementedException("TBD");
+            case BY_ID:
+                return new OfferResponse(OfferConverter.toDTO(dao.findOffers(request.getOffers())));
+            case LIMIT:
+                // return offers from 'a' to 'b' using SQL's LIMIT, used for pagination
+                throw new NotImplementedException("TBD");
+        }
+        return new OfferResponse();
     }
 
     public void processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {

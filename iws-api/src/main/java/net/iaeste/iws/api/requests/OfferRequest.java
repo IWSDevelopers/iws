@@ -37,17 +37,17 @@ public final class OfferRequest extends AbstractRequest {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private final List<Offer> editOffers;
-    private final List<Integer> deleteOfferIDs;
+    private final List<Long> deleteOfferIDs;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public OfferRequest() {
-        this(new ArrayList<Offer>(), new ArrayList<Integer>());
+        this(new ArrayList<Offer>(), new ArrayList<Long>());
     }
 
-    public OfferRequest(final List<Offer> editOffers, final List<Integer> deleteOfferIDs) {
+    public OfferRequest(final List<Offer> editOffers, final List<Long> deleteOfferIDs) {
         this.editOffers = Copier.copy(editOffers);
         this.deleteOfferIDs = Copier.copy(deleteOfferIDs);
     }
@@ -67,7 +67,7 @@ public final class OfferRequest extends AbstractRequest {
     public List<Offer> getEditOffers() {
         return Collections.unmodifiableList(editOffers);
     }
-    public List<Integer> getDeleteOfferIDs() {
+    public List<Long> getDeleteOfferIDs() {
         return Collections.unmodifiableList(deleteOfferIDs);
     }
 }

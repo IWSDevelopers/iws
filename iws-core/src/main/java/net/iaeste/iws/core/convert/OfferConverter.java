@@ -18,6 +18,7 @@ package net.iaeste.iws.core.convert;
 import net.iaeste.iws.api.data.Offer;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,17 +28,20 @@ import java.util.List;
  * @since 1.7
  */
 public class OfferConverter {
-    private OfferConverter() {
+    private final EntityManager entityManager;
+
+    OfferConverter(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    public static List<OfferEntity> toEntity(final List<Offer> offers) {
+    public List<OfferEntity> toEntity(final List<Offer> offers) {
         final List<OfferEntity> offerEntities = new ArrayList<OfferEntity>(offers.size());
         for (final Offer offer : offers) {
             offerEntities.add(toEntity(offer));
         }
         return offerEntities;
     }
-    public static OfferEntity toEntity(final Offer offer) {
+    public OfferEntity toEntity(final Offer offer) {
         final OfferEntity offerEntity = new OfferEntity();
         offerEntity.setId(offer.getId());
         offerEntity.setRefNo(offer.getRefNo());
@@ -89,7 +93,7 @@ public class OfferConverter {
         return offerEntity;
     }
 
-    public static List<Offer> toDTO(final List<OfferEntity> offerEntities) {
+    public List<Offer> toDTO(final List<OfferEntity> offerEntities) {
         final List<Offer> offers = new ArrayList<Offer>(offerEntities.size());
         for (final OfferEntity offerEntity : offerEntities) {
             offers.add(toDTO(offerEntity));
@@ -97,7 +101,7 @@ public class OfferConverter {
         return offers;
     }
 
-    public static Offer toDTO(final OfferEntity offerEntity) {
+    public Offer toDTO(final OfferEntity offerEntity) {
         final Offer offer = new Offer(offerEntity.getRefNo(), offerEntity.getNominationDeadline(),
                 offerEntity.getEmployerName(), offerEntity.getStudyLevels(), offerEntity.getGender(),
                 offerEntity.getLanguage1(), offerEntity.getLanguage1Level(), offerEntity.getWorkDescription(),

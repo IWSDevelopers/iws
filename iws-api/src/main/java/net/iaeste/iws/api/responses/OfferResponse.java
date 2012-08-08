@@ -50,7 +50,7 @@ public final class OfferResponse extends AbstractResponse {
         super(error, message);
     }
 
-    public OfferResponse(List<Offer> offers) {
+    public OfferResponse(final List<Offer> offers) {
         this.offers = Copier.copy(offers);
     }
 

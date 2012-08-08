@@ -46,11 +46,27 @@ public interface OfferDao {
      * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
-    OfferEntity findOffer(final Integer offerId);
+    OfferEntity findOffer(final Long offerId);
 
     /**
      * @param offerIds
      * @return
      */
-    List<OfferEntity> findOffers(final List<Integer> offerIds);
+    List<OfferEntity> findOffers(final List<Long> offerIds);
+
+    /**
+     * Deletes an offer from database.
+     *
+     * @param offerId id of the offer to delete
+     * @return true if the offer has been deleted, otherwise false
+     */
+    boolean delete(final Long offerId);
+
+    /**
+     * Deletes an offer from database.
+     *
+     * @param offerIds ids of offers to delete
+     * @return number of deleted objects
+     */
+    Integer delete(final List<Long> offerIds);
 }

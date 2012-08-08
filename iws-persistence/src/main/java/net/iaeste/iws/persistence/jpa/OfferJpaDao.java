@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
@@ -53,7 +54,7 @@ public class OfferJpaDao implements OfferDao {
     }
 
     @Override
-    public OfferEntity findOffer(final Integer offerId) {
+    public OfferEntity findOffer(final Long offerId) {
         final List<OfferEntity> offers = entityManager.createNamedQuery("OfferEntity.findById", OfferEntity.class)
                 .setParameter("id", offerId).getResultList();
         if (offers.size() != 1) {
@@ -64,10 +65,26 @@ public class OfferJpaDao implements OfferDao {
     }
 
     @Override
-    public List<OfferEntity> findOffers(final List<Integer> offerIds) {
+    public List<OfferEntity> findOffers(final List<Long> offerIds) {
         final List<OfferEntity> offers = entityManager.createNamedQuery("OfferEntity.findByIds", OfferEntity.class)
                 .setParameter("ids", offerIds).getResultList();
         return offers;
+    }
+
+    @Override
+    public boolean delete(final Long offerId) {
+        final OfferEntity offer = findOffer(offerId);
+        if (offer == null) {
+            return false;
+        } else {
+            entityManager.remove(offer);
+            return true;
+        }
+    }
+
+    @Override
+    public Integer delete(final List<Long> offerIds) {
+        return entityManager.createNamedQuery("OfferEntity.deleteByIds").setParameter("ids", offerIds).executeUpdate();
     }
 
 }

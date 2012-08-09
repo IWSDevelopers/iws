@@ -67,6 +67,8 @@ public class Offer extends AbstractDto {
         this.minimumWeeks = null;
         this.weeklyHours = null;
         this.dailyHours = null;
+        this.fromDate = null;
+        this.toDate = null;
     }
 
     /**
@@ -96,7 +98,9 @@ public class Offer extends AbstractDto {
                  final Integer minimumWeeks,
                  final Integer maximumWeeks,
                  final Float weeklyHours,
-                 final Float dailyHours) {
+                 final Float dailyHours,
+                 final Date fromDate,
+                 final Date toDate) {
 
         //set required fields
         setRefNo(refNo);
@@ -111,6 +115,8 @@ public class Offer extends AbstractDto {
         setMinimumWeeks(minimumWeeks);
         setWeeklyHours(weeklyHours);
         setDailyHours(dailyHours);
+        setFromDate(fromDate);
+        setToDate(toDate);
     }
 
     /**
@@ -907,7 +913,7 @@ public class Offer extends AbstractDto {
             countryCodes.append('|');
         }
         countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
-        final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d+(-[A-Z0-9]{2})?");
+        final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d{4}(-[A-Z0-9]{2})?");
         final Matcher matcher = refNoPattern.matcher(refNo);
         return matcher.matches();
     }

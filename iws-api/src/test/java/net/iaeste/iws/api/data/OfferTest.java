@@ -27,6 +27,7 @@ import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.exceptions.EntityIdentificationException;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +53,7 @@ public class OfferTest {
     private static final Float DAILY_HOURS = 8.0f;
     private static final Date FROM_DATE = new Date();
     private static final Date TO_DATE = new Date(new Date().getTime() + 3600 * 24 * 90);
-    private Offer offer;
+    private Offer offer = getMinimalOffer();
     /**
      * field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method
      */
@@ -62,6 +63,8 @@ public class OfferTest {
     private static final String[] invalidRefNos = { "GB-2011-00001", "UK-2011-00001", "INE-2011-0001-KU", "GB-2011-w001", "PL-201w-0001", "GB-2011-0001-101",
             "GB-10000-00001-01", "GB-2011-a000-01", "GB-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01", "XX-2011-a000-01",
             "XX-2011-0000-01" };
+    static final String ERRMSG_NOT_NULL = " field cannot be null";
+    static final String ERRMSG_PRESENCE = "if 'from(2)' is present then 'to(2)' should be present";
 
     public static String[] getValidRefNos() {
         return validRefNos;
@@ -71,8 +74,16 @@ public class OfferTest {
         return invalidRefNos;
     }
 
+    private void setUpDates() {
+        final long now = new Date().getTime();
+        for (int i = 0; i < d.length; ++i) {
+            d[i] = new Date(now + i * 3600 * 24);
+        }
+    }
+
     @Before
     public void before() {
+        setUpDates();
         offer = getMinimalOffer();
     }
 
@@ -83,10 +94,12 @@ public class OfferTest {
     public static Offer getMinimalOffer() {
         final Offer minimalOffer = new Offer();
         minimalOffer.setRefNo(REF_NO);
-        minimalOffer.setNominationDeadline(NOMINATION_DEADLINE);
         minimalOffer.setEmployerName(EMPLOYER_NAME);
         final List<StudyLevel> list = new ArrayList<StudyLevel>(1);
         list.add(StudyLevel.E);
+        final List<FieldOfStudy> fieldOfStudies = new ArrayList<FieldOfStudy>();
+        fieldOfStudies.add(FieldOfStudy.IT);
+        minimalOffer.setFieldOfStudies(fieldOfStudies);
         minimalOffer.setStudyLevels(list);
         minimalOffer.setGender(Gender.E);
         minimalOffer.setLanguage1(Language.ENGLISH);
@@ -95,7 +108,6 @@ public class OfferTest {
         minimalOffer.setMaximumWeeks(MAXIMUM_WEEKS);
         minimalOffer.setMinimumWeeks(MINIMUM_WEEKS);
         minimalOffer.setWeeklyHours(WEEKLY_HOURS);
-        minimalOffer.setDailyHours(DAILY_HOURS);
         minimalOffer.setFromDate(d[1]);
         minimalOffer.setToDate(d[2]);
         return minimalOffer;
@@ -129,7 +141,6 @@ public class OfferTest {
     public void testMinimalOffer() {
         Assert.assertNotNull("reference not null", offer);
         Assert.assertThat("RefNo", REF_NO, is(offer.getRefNo()));
-        Assert.assertThat("NominationDeadline", NOMINATION_DEADLINE, is(offer.getNominationDeadline()));
         Assert.assertThat("EmployerName", EMPLOYER_NAME, is(offer.getEmployerName()));
         Assert.assertThat("size of Study Levels collection should be 1", 1, is(offer.getStudyLevels().size()));
         Assert.assertThat("first Study Level should be E", StudyLevel.E, is(offer.getStudyLevels().get(0)));
@@ -140,13 +151,15 @@ public class OfferTest {
         Assert.assertThat("MaximumWeeks", MAXIMUM_WEEKS, is(offer.getMaximumWeeks()));
         Assert.assertThat("MinimumWeeks", MINIMUM_WEEKS, is(offer.getMinimumWeeks()));
         Assert.assertThat("WeeklyHours", WEEKLY_HOURS, is(offer.getWeeklyHours()));
-        Assert.assertThat("DailyHours", DAILY_HOURS, is(offer.getDailyHours()));
+        Assert.assertThat("fromDate", d[1], is(offer.getFromDate()));
+        Assert.assertThat("toDate", d[2], is(offer.getToDate()));
     }
 
     @Test
     public void testMutableFields() {
+        offer.setNominationDeadline(NOMINATION_DEADLINE);
         final Date nominationDeadline = offer.getNominationDeadline();
-        nominationDeadline.setTime(new Date().getTime() + new Random().nextLong() + 1);
+        nominationDeadline.setTime(new Date().getTime() + 3600);
         Assert.assertThat(nominationDeadline, is(not(offer.getNominationDeadline())));
     }
 
@@ -208,6 +221,7 @@ public class OfferTest {
         for (final String correctRefNo : getValidRefNos()) {
             offer.setRefNo(correctRefNo);
             Assert.assertThat(String.format("%s should be correct", correctRefNo), offer.verifyRefNo(), is(true));
+            Assert.assertThat(isVerificationExceptionThrown(), is(false));
         }
     }
 
@@ -216,46 +230,52 @@ public class OfferTest {
         for (final String incorrectRefNo : getInvalidRefNos()) {
             offer.setRefNo(incorrectRefNo);
             Assert.assertThat(String.format("%s should be incorrect", incorrectRefNo), offer.verifyRefNo(), is(false));
+            Assert.assertThat(isVerificationExceptionThrown(), is(true));
         }
     }
 
-    @Before
-    public void setUpDates() {
-        final long now = new Date().getTime();
-        for (int i = 0; i < d.length; ++i) {
-            d[i] = new Date(now + i * 3600 * 24);
-        }
-
-    }
-
-    /**
-     * @todo refactor
-     */
     @Test
-    public void testVerifyPresenceOfDates() {
-        final String error = "if 'from(2)' is present then 'to(2)' should be present";
+    public void testVerifyPresenceOfDatesNoFrom() {
         // --deadline--------------------------to-------------------------------------->
-        offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(null);
         offer.setToDate(d[2]);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDatesNoFrom2() {
         // --deadline--------------------------to2------------------------------------->
-        offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setToDate2(d[2]);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        offer.setFromDate2(null);
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDatesNoTo() {
         // --deadline--------------------------from------------------------------------>
-        offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[2]);
         offer.setToDate(null);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDatesNoTo2() {
         // --deadline--------------------------from2----------------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate2(d[2]);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDates1() {
         // --deadline------------------from2---------------to-------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
@@ -263,7 +283,12 @@ public class OfferTest {
         offer.setToDate(d[2]);
         offer.setToDate2(null);
         offer.setFromDate(null);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDates2() {
         // --deadline---------------from------------------to2-------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
@@ -271,7 +296,12 @@ public class OfferTest {
         offer.setToDate2(d[2]);
         offer.setToDate(null);
         offer.setFromDate2(null);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDates3() {
         // --deadline------------from----------------------to--------------to2--------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
@@ -279,7 +309,12 @@ public class OfferTest {
         offer.setToDate(d[2]);
         offer.setToDate2(d[3]);
         offer.setFromDate(null);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDates4() {
         // --deadline------------from----------------------to--------------from2------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
@@ -287,14 +322,24 @@ public class OfferTest {
         offer.setToDate(d[2]);
         offer.setFromDate2(d[3]);
         offer.setToDate2(null);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDates5() {
         // --deadline------------from-----------------------from2----------to2--------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[1]);
         offer.setFromDate2(d[2]);
         offer.setToDate2(d[3]);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testVerifyPresenceOfDates6() {
         // --deadline--------------to-----------------------from2----------to2--------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
@@ -302,7 +347,8 @@ public class OfferTest {
         offer.setFromDate2(d[2]);
         offer.setToDate2(d[3]);
         offer.setFromDate(null);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(ERRMSG_PRESENCE, offer.verifyDates(), is(false));
+        Assert.assertThat(isVerificationExceptionThrown(), is(true));
     }
 
     @Test
@@ -322,12 +368,9 @@ public class OfferTest {
         Assert.assertThat(error, offer.verifyDates(), is(false));
     }
 
-    /**
-     * @todo is presence of deadline required?
-     */
     @Test
     public void testVerifyPresenceOfDeadlineDate() {
-        final String error = "'nominationDeadline' presence";
+        final String error = "'nominationDeadline' presence is not required";
         offer = getMinimalOffer();
         offer.setHolidaysFrom(null);
         offer.setHolidaysTo(null);
@@ -338,7 +381,7 @@ public class OfferTest {
         Assert.assertThat(error, offer.verifyDates(), is(true));
         // ------------------------------------from-------to--------------------------->
         offer.setNominationDeadline(null);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+        Assert.assertThat(error, offer.verifyDates(), is(true));
 
     }
 
@@ -464,10 +507,128 @@ public class OfferTest {
 
     @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
-    public void testGetValidOfferShouldBeValid() {
+    public void testMinimalOfferShouldBeValid() {
         offer = getMinimalOffer();
         // "valid offer from helper should be valid"
         offer.verify();
     }
 
+    @Test
+    public void testNotNullableRefNo() {
+        offer = getMinimalOffer();
+        offer.setRefNo(null);
+        Assert.assertThat(String.format("refNo%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testNotNullableEmployerName() {
+        offer = getMinimalOffer();
+        offer.setEmployerName(null);
+        Assert.assertThat(String.format("employerName%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableFieldOfStudies() {
+        offer = getMinimalOffer();
+        offer.setFieldOfStudies(null);
+        Assert.assertThat(String.format("fieldOfStudies%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableStudyLevels() {
+        offer = getMinimalOffer();
+        offer.setStudyLevels(null);
+        Assert.assertThat(String.format("studyLevels%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+    }
+
+    @Test
+    public void testNotEmptyStudyLevels() {
+        offer = getMinimalOffer();
+        offer.setStudyLevels(new ArrayList<StudyLevel>(0));
+        Assert.assertThat("studyLevels list cannot be empty", isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableGender() {
+        offer = getMinimalOffer();
+        offer.setGender(null);
+        Assert.assertThat(String.format("gender%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableLanguage1() {
+        offer = getMinimalOffer();
+        offer.setLanguage1(null);
+        Assert.assertThat(String.format("language1%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableLanguage1Level() {
+        offer = getMinimalOffer();
+        offer.setLanguage1Level(null);
+        Assert.assertThat(String.format("language1Level%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableWorkDescription() {
+        offer = getMinimalOffer();
+        offer.setWorkDescription(null);
+        Assert.assertThat(String.format("workDescription%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableMaximumWeeks() {
+        offer = getMinimalOffer();
+        offer.setMaximumWeeks(null);
+        Assert.assertThat(String.format("maximumWeeks%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableMinimumWeeks() {
+        offer = getMinimalOffer();
+        offer.setMinimumWeeks(null);
+        Assert.assertThat(String.format("minimumWeeks%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableWeeklyHours() {
+        offer = getMinimalOffer();
+        offer.setWeeklyHours(null);
+        Assert.assertThat(String.format("weeklyHours%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableFromDate() {
+        offer = getMinimalOffer();
+        offer.setFromDate(null);
+        Assert.assertThat(String.format("fromDate%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    @Test
+    public void testNotNullableToDate() {
+        offer = getMinimalOffer();
+        offer.setToDate(null);
+        Assert.assertThat(String.format("toDate%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+    }
+
+    public boolean isVerificationExceptionThrown() {
+        try {
+            offer.verify();
+            return false;
+        } catch (VerificationException ignore) {
+            return true;
+        }
+    }
 }

@@ -285,7 +285,7 @@ public class Offer extends AbstractDto {
     }
 
     public void setFieldOfStudies(final List<FieldOfStudy> fieldOfStudies) {
-        this.fieldOfStudies = new ArrayList<>(fieldOfStudies);
+        this.fieldOfStudies = Copier.copy(fieldOfStudies);
     }
 
     public Date getFromDate2() {
@@ -533,8 +533,8 @@ public class Offer extends AbstractDto {
         return Collections.unmodifiableList(studyLevels);
     }
 
-    public void setStudyLevels(final Collection<StudyLevel> studyLevels) {
-        this.studyLevels = new ArrayList<>(studyLevels);
+    public void setStudyLevels(final List<StudyLevel> studyLevels) {
+        this.studyLevels = Copier.copy(studyLevels);
     }
 
     public Date getToDate2() {
@@ -873,11 +873,12 @@ public class Offer extends AbstractDto {
     }
 
     /**
-     * @throws VerifyError if object is not valid
+     * @throws VerificationException if object is not valid
      */
     @Override
     public void verify() throws VerificationException {
         final Collection<String> errors = new ArrayList<>();
+        verifyNotNullableFields(errors);
         if (!verifyRefNo()) {
             errors.add("refNo: reference number has incorrect format");
         }
@@ -892,7 +893,52 @@ public class Offer extends AbstractDto {
         }
     }
 
+    private void verifyNotNullableFields(Collection<String> errors) {
+        if (fieldOfStudies == null || fieldOfStudies.isEmpty()) {
+            errors.add("'fieldOfStudies' is missing");
+        }
+        if (studyLevels == null || studyLevels.isEmpty()) {
+            errors.add("'studyLevels' is missing");
+        }
+        if (workDescription == null) {
+            errors.add("'workDescription' is missing");
+        }
+        if (language1 == null) {
+            errors.add("'language1' is missing");
+        }
+        if (language1Level == null) {
+            errors.add("'language1Level' is missing");
+        }
+        if (employerName == null) {
+            errors.add("'employerName' is missing");
+        }
+        if (gender == null) {
+            errors.add("'gender' is missing");
+        }
+        if (weeklyHours == null) {
+            errors.add("'weeklyHours' is missing");
+        }
+        if (refNo == null) {
+            errors.add("'refNo' is missing");
+        }
+        if (fromDate == null) {
+            errors.add("'fromDate' is missing");
+        }
+        if (toDate == null) {
+            errors.add("'toDate' is missing");
+        }
+        if (minimumWeeks == null) {
+            errors.add("'minimumWeeks' is missing");
+        }
+        if (maximumWeeks == null) {
+            errors.add("'minimumWeeks' is missing");
+        }
+    }
+
     boolean verifyNumberOfWeeks() {
+        if (minimumWeeks == null || maximumWeeks == null) {
+            return false;
+        }
         return minimumWeeks > 0 && maximumWeeks >= minimumWeeks;
     }
 
@@ -905,6 +951,9 @@ public class Offer extends AbstractDto {
      *         E.g: UK-2011-0001-01, IN-2011-0001-KU
      */
     boolean verifyRefNo() {
+        if (refNo == null) {
+            return false;
+        }
         final String[] codes = Locale.getISOCountries();
         // for each country code 3 bytes are needed: "CC|"
         final StringBuilder countryCodes = new StringBuilder(codes.length * 3 - 1);
@@ -922,7 +971,6 @@ public class Offer extends AbstractDto {
      * verifies dates
      * <p/>
      * <ul>
-     * <li>nominationDeadline must be present</li>
      * <li>nominationDeadline must be before from and from2</li>
      * <li>dateTo > dateFrom</li>
      * <li>either 'from' either 'to' have to be present</li>
@@ -939,13 +987,10 @@ public class Offer extends AbstractDto {
     @SuppressWarnings("OverlyComplexBooleanExpression")
     private boolean verifyDatesPresence() {
         // either 'from' date either 'from2' date must be present
-        if (fromDate == null && fromDate2 == null) {
+        if (fromDate == null || toDate == null) {
             return false;
         }
         // if 'from' is present then 'to' is needed to
-        if (fromDate != null && toDate == null || fromDate == null && toDate != null) {
-            return false;
-        }
         if (fromDate2 != null && toDate2 == null || fromDate2 == null && toDate2 != null) {
             return false;
         }
@@ -972,10 +1017,7 @@ public class Offer extends AbstractDto {
 
     @SuppressWarnings("OverlyComplexBooleanExpression")
     private boolean verifyDatesNominationDeadline() {
-        // @todo should 'nominationDeadline' be present?
-        if (nominationDeadline == null) {
-            return false;
-        } else {
+        if (nominationDeadline != null) {
             // "nominationDeadline" must be before start of an internship
             if ((fromDate != null && nominationDeadline.compareTo(fromDate) > 0)
                     || (fromDate2 != null && nominationDeadline.compareTo(fromDate2) > 0)) {

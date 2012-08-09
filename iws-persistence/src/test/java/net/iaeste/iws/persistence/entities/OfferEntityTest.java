@@ -44,7 +44,7 @@ import java.util.Date;
  * @since 1.7
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 public class OfferEntityTest {
 
     private static final String REF_NO = "AT-2012-1234-AB";
@@ -55,6 +55,9 @@ public class OfferEntityTest {
     private static final Integer MINIMUM_WEEKS = 12;
     private static final Float WEEKLY_HOURS = 40f;
     private static final Float DAILY_HOURS = 8f;
+    private static final Date FROM_DATE = new Date();
+    private static final Date TO_DATE = new Date(new Date().getTime() + 3600 * 24 * 90);
+    private static final BigDecimal PAYMENT = new BigDecimal(3000);
     private OfferDao dao;
     @PersistenceContext
     private EntityManager entityManager;
@@ -70,7 +73,6 @@ public class OfferEntityTest {
     private OfferEntity getMinimalOffer() {
         OfferEntity offer = new OfferEntity();
         offer.setRefNo(REF_NO);
-        offer.setNominationDeadline(NOMINATION_DEADLINE);
         offer.setEmployerName(EMPLOYER_NAME);
         offer.getStudyLevels().add(StudyLevel.E);
         offer.setGender(Gender.E);
@@ -80,7 +82,8 @@ public class OfferEntityTest {
         offer.setMaximumWeeks(MAXIMUM_WEEKS);
         offer.setMinimumWeeks(MINIMUM_WEEKS);
         offer.setWeeklyHours(WEEKLY_HOURS);
-        offer.setDailyHours(DAILY_HOURS);
+        offer.setFromDate(FROM_DATE);
+        offer.setToDate(TO_DATE);
         return offer;
     }
 
@@ -105,6 +108,8 @@ public class OfferEntityTest {
         Assert.assertEquals(MINIMUM_WEEKS, offer.getMinimumWeeks());
         Assert.assertEquals(WEEKLY_HOURS, offer.getWeeklyHours());
         Assert.assertEquals(DAILY_HOURS, offer.getDailyHours());
+        Assert.assertEquals(FROM_DATE, offer.getFromDate());
+        Assert.assertEquals(TO_DATE, offer.getToDate());
     }
 
     @Test(expected = PersistenceException.class)
@@ -118,11 +123,11 @@ public class OfferEntityTest {
     @Transactional
     public void testDuplicateRefNo() {
         dao.persist(offer);
-        OfferEntity o2 = getMinimalOffer();
+        final OfferEntity o2 = getMinimalOffer();
         dao.persist(o2);
     }
 
-    @Test(expected = PersistenceException.class)
+    @Test
     @Transactional
     public void testNullNominationDeadline() {
         offer.setNominationDeadline(null);
@@ -150,7 +155,15 @@ public class OfferEntityTest {
     public void testEmptyStudyLevel() {
         offer.setStudyLevels(Collections.<StudyLevel>emptyList());
         dao.persist(offer);
-    }*/
+    }
+    */
+    /* TODO: at least one field of studies
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullFieldOfStudies() {
+
+    }
+    */
 
     @Test(expected = PersistenceException.class)
     @Transactional
@@ -201,7 +214,7 @@ public class OfferEntityTest {
         dao.persist(offer);
     }
 
-    @Test(expected = PersistenceException.class)
+    @Test
     @Transactional
     public void testNullDailyHours() {
         offer.setDailyHours(null);
@@ -211,7 +224,7 @@ public class OfferEntityTest {
     @Test
     @Transactional
     public void testOtherRequirements() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 500; i++) {
             sb.append("a");
         }
@@ -223,7 +236,7 @@ public class OfferEntityTest {
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testTooLongOtherRequirements() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 501; i++) {
             sb.append("a");
         }
@@ -388,4 +401,67 @@ public class OfferEntityTest {
         dao.persist(offer);
     }*/
 
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullFromDate() {
+        offer.setFromDate(null);
+        dao.persist(offer);
+    }
+
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullToDate() {
+        offer.setToDate(null);
+        dao.persist(offer);
+    }
+
+    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
+    @Test
+    @Transactional
+    public void testNullPaymentFrequency() {
+        offer.setPayment(null);
+        offer.setPaymentFrequency(null);
+        dao.persist(offer);
+    }
+
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullPaymentFrequencyWhenPaymentNotNull() {
+        offer.setPayment(PAYMENT);
+        offer.setPaymentFrequency(null);
+        dao.persist(offer);
+    }
+
+    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
+    @Test
+    @Transactional
+    public void testNullLodgingPaymentFrequency() {
+        offer.setLodgingPaymentFrequency(null);
+        offer.setLodgingCost(null);
+        dao.persist(offer);
+    }
+
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullLodgingPaymentFrequencyWhenLodgingCostNotNull() {
+        offer.setLodgingPaymentFrequency(null);
+        dao.persist(offer);
+    }
+
+    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
+    @Test
+    @Transactional
+    public void testNullLivingPaymentFrequency() {
+        offer.setLivingPaymentFrequency(null);
+        offer.setLivingCost(null);
+        dao.persist(offer);
+    }
+
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullLivingPaymentFrequencyWhenLivingCostNotNull() {
+        offer.setLivingPaymentFrequency(null);
+        offer.setLivingCost(null);
+        dao.persist(offer);
+    }
 }

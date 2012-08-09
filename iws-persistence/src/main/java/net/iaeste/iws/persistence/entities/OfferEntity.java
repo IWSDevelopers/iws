@@ -58,8 +58,8 @@ import java.util.List;
         @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM Offer o WHERE o.id IN :ids"),
         @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM Offer o WHERE o.refNo= :refNo"),
         @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM Offer o WHERE o.employerName= :employerName"),
-        @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM offer o WHERE o.id = :id"),
-        @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM offer o WHERE o.id IN :ids")
+        @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM Offer o WHERE o.id = :id"),
+        @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM Offer o WHERE o.id IN :ids")
 })
 public class OfferEntity {
 
@@ -71,7 +71,7 @@ public class OfferEntity {
     private String refNo;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "nomination_deadline", nullable = false)
+    @Column(name = "nomination_deadline")
     private Date nominationDeadline;
 
     /**
@@ -105,7 +105,7 @@ public class OfferEntity {
     //Student Information
     @ElementCollection
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "field_of_studies")
+    @Column(name = "field_of_studies", nullable = false)
     private List<FieldOfStudy> fieldOfStudies;
 
     /**
@@ -179,11 +179,11 @@ public class OfferEntity {
     private Integer maximumWeeks;
 
     @Temporal(value = TemporalType.DATE)
-    @Column(name = "from_date")
+    @Column(name = "from_date", nullable = false)
     private Date fromDate;
 
     @Temporal(value = TemporalType.DATE)
-    @Column(name = "to_date")
+    @Column(name = "to_date", nullable = false)
     private Date toDate;
 
     @Temporal(value = TemporalType.DATE)
@@ -214,7 +214,7 @@ public class OfferEntity {
     @Column(name = "weekly_hours", nullable = false, scale = 5, precision = 3)
     private Float weeklyHours;
 
-    @Column(name = "daily_hours", nullable = false, scale = 5, precision = 3)
+    @Column(name = "daily_hours", scale = 5, precision = 3)
     private Float dailyHours;
 
     /**
@@ -248,7 +248,7 @@ public class OfferEntity {
     private BigDecimal livingCost;
 
     @Column(name = "living_payment_frequency", length = 1)
-    private int livingPaymentFrequency;
+    private PaymentFrequency livingPaymentFrequency;
 
     @Column(name = "canteen")
     private Boolean canteen;
@@ -461,11 +461,11 @@ public class OfferEntity {
         this.livingCost = livingCost;
     }
 
-    public int getLivingPaymentFrequency() {
+    public PaymentFrequency getLivingPaymentFrequency() {
         return livingPaymentFrequency;
     }
 
-    public void setLivingPaymentFrequency(final int livingPaymentFrequency) {
+    public void setLivingPaymentFrequency(final PaymentFrequency livingPaymentFrequency) {
         this.livingPaymentFrequency = livingPaymentFrequency;
     }
 

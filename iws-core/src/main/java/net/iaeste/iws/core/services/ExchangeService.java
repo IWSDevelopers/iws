@@ -16,6 +16,7 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.data.AuthenticationToken;
 import net.iaeste.iws.api.data.Offer;
+import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
@@ -33,11 +34,13 @@ import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public class ExchangeService {
 
@@ -50,16 +53,37 @@ public class ExchangeService {
     public ExchangeService(final EntityManager entityManager) {
         this.entityManager = entityManager;
         this.offerDao = new OfferJpaDao(entityManager);
+        // TODO Michal: @Kim: is there any better place for the factory? should ConverterFactory be changed into singleton?
         this.converterFactory = new ConverterFactory(entityManager);
         this.offerConverter = converterFactory.getOfferConverter();
     }
 
-    public void processOffers(final AuthenticationToken token, final OfferRequest request) {
+    /**
+     * @param token
+     * @param request
+     * @return OfferResponse contains list of Fallible Offers for which processing failed.
+     */
+    public OfferResponse processOffers(final AuthenticationToken token, final OfferRequest request) {
+        final List<Offer> offers = new ArrayList<>(request.getEditOffers().size() + request.getDeleteOfferIDs().size());
+
+        // If DTO objects has an id, we're trying to update the database.
+        // If DTO has an id and there is no such entity, an exception is thrown.
         for (final Offer offer : request.getEditOffers()) {
-            final OfferEntity offerEntity = offerConverter.toEntity(offer);
-            offerDao.persist(offerEntity);
+            try {
+                final OfferEntity offerEntity = offerConverter.toEntity(offer);
+                offerDao.persist(offerEntity);
+            } catch (EntityIdentificationException e) {
+                offers.add(new Offer(offer, e));
+            }
         }
-        final Integer deletedOffers = offerDao.delete(request.getDeleteOfferIDs());
+        for (final Long offer : request.getDeleteOfferIDs()) {
+            if (!offerDao.delete(offer)) {
+                final Offer o = new Offer();
+                o.setId(offer);
+                offers.add(new Offer(o, new EntityIdentificationException("No entity for given Id.")));
+            }
+        }
+        return new OfferResponse(offers);
     }
 
     public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
@@ -73,6 +97,8 @@ public class ExchangeService {
                 return new OfferResponse(offerConverter.toDTO(dao.findOffers(request.getOffers())));
             case LIMIT:
                 // return offers from 'a' to 'b' using SQL's LIMIT, used for pagination
+                throw new NotImplementedException("TBD");
+            case PROTOTYPE:
                 throw new NotImplementedException("TBD");
         }
         return new OfferResponse();

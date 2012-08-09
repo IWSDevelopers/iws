@@ -58,15 +58,14 @@ public final class OfferRequest extends AbstractRequest {
     @Override
     public void verify() throws VerificationException {
         for (final Offer offer : editOffers) {
-            if (!offer.verify()) {
-                throw new VerificationException("offer id=" + offer.getId() + " is not valid.");
-            }
+            offer.verify();
         }
     }
 
     public List<Offer> getEditOffers() {
         return Collections.unmodifiableList(editOffers);
     }
+
     public List<Long> getDeleteOfferIDs() {
         return Collections.unmodifiableList(deleteOfferIDs);
     }

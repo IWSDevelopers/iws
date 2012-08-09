@@ -24,6 +24,7 @@ import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -162,6 +163,7 @@ public class OfferTest {
 //        offer2.setWorkDescription("@#$#@");
 //        Assert.assertThat(offer, is(equalTo(offer2)));
     }
+
     @Test
     public void testVerifyValidRefNo() {
         final String[] correctRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "GB-2011-00001", "AT-2012-1234-AB" };
@@ -425,15 +427,17 @@ public class OfferTest {
         Assert.assertThat(offer.verifyNumberOfWeeks(), is(true));
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testGetMinimalOfferShouldBeInvalid() {
-        Assert.assertThat("minimal offer should be invalid", offer.verify(), is(false));
+        // "minimal offer should be invalid"
+        offer.verify();
     }
 
     @Test
     public void testGetValidOfferShouldBeValid() {
         offer = getValidOffer();
-        Assert.assertThat("valid offer from helper should be valid", offer.verify(), is(true));
+        // "valid offer from helper should be valid"
+        offer.verify();
     }
 
 }

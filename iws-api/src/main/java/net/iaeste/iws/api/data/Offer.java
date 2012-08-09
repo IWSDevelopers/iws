@@ -15,6 +15,8 @@
 package net.iaeste.iws.api.data;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
@@ -25,9 +27,12 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
+import net.iaeste.iws.api.exceptions.EntityIdentificationException;
+import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.Verifiable;
+import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.utils.Copier;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,12 +48,15 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class Offer implements Serializable {
+public class Offer implements Verifiable, Fallible {
 
     /**
      * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
      */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+    // TODO Michal: extract Fallible implementation to AbstractDTO? similar to AbstractResponse
+    private final IWSError error;
+    private final String message;
 
     /**
      * Empty Constructor, required for some communication frameworks.
@@ -66,6 +74,9 @@ public class Offer implements Serializable {
         this.minimumWeeks = null;
         this.weeklyHours = null;
         this.dailyHours = null;
+
+        error = IWSErrors.SUCCESS;
+        message = IWSConstants.SUCCESS;
     }
 
     /**
@@ -110,6 +121,31 @@ public class Offer implements Serializable {
         setMinimumWeeks(minimumWeeks);
         setWeeklyHours(weeklyHours);
         setDailyHours(dailyHours);
+
+        error = IWSErrors.SUCCESS;
+        message = IWSConstants.SUCCESS;
+    }
+
+    /**
+     * Copy constructor.
+     * <p/>
+     * Fields are copied one by one. Correct "cloning" for muttable members is provided by setters.
+     *
+     * @param offer Offer to copy
+     */
+    public Offer(final Offer offer) {
+        copyFields(offer, this);
+
+        error = IWSErrors.SUCCESS;
+        message = IWSConstants.SUCCESS;
+    }
+
+    public Offer(final Offer offer, final EntityIdentificationException e) {
+        copyFields(offer, this);
+
+        error = IWSErrors.VERIFICATION_ERROR;
+        message = e.getMessage();
+
     }
 
     private Long id;
@@ -176,62 +212,6 @@ public class Offer implements Serializable {
     private BigDecimal livingCost;
     private int livingPaymentFrequency;
     private Boolean canteen;
-
-    /**
-     * Copy constructor.
-     * <p/>
-     * Fields are copied one by one. Correct "cloning" for muttable members is provided by setters.
-     *
-     * @param offer Offer to copy
-     */
-    public Offer(final Offer offer) {
-        this.setId(offer.getId());
-        this.setRefNo(offer.getRefNo());
-        this.setNominationDeadline(offer.getNominationDeadline());
-        this.setEmployerName(offer.getEmployerName());
-        this.setEmployerAddress(offer.getEmployerAddress());
-        this.setEmployerAddress2(offer.getEmployerAddress2());
-        this.setEmployerBusiness(offer.getEmployerBusiness());
-        this.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
-        this.setEmployerWebsite(offer.getEmployerWebsite());
-        this.setPrevTrainingRequired(offer.getPrevTrainingRequired());
-        this.setOtherRequirements(offer.getOtherRequirements());
-        this.setGender(offer.getGender());
-        this.setLanguage1(offer.getLanguage1());
-        this.setLanguage1Level(offer.getLanguage1Level());
-        this.setLanguage1Operator(offer.getLanguage1Operator());
-        this.setLanguage2(offer.getLanguage2());
-        this.setLanguage2Level(offer.getLanguage2Level());
-        this.setLanguage2Operator(offer.getLanguage2Operator());
-        this.setLanguage3(offer.getLanguage3());
-        this.setLanguage3Level(offer.getLanguage3Level());
-        this.setWorkDescription(offer.getWorkDescription());
-        this.setTypeOfWork(offer.getTypeOfWork());
-        this.setMinimumWeeks(offer.getMinimumWeeks());
-        this.setMaximumWeeks(offer.getMaximumWeeks());
-        this.setFromDate(offer.getFromDate());
-        this.setToDate(offer.getToDate());
-        this.setFromDate2(offer.getFromDate2());
-        this.setToDate2(offer.getToDate2());
-        this.setHolidaysFrom(offer.getHolidaysFrom());
-        this.setHolidaysTo(offer.getHolidaysTo());
-        this.setWorkingPlace(offer.getWorkingPlace());
-        this.setNearestAirport(offer.getNearestAirport());
-        this.setNearestPubTransport(offer.getNearestPubTransport());
-        this.setWeeklyHours(offer.getWeeklyHours());
-        this.setDailyHours(offer.getDailyHours());
-        this.setPayment(offer.getPayment());
-        this.setCurrency(offer.getCurrency());
-        this.setPaymentFrequency(offer.getPaymentFrequency());
-        this.setDeduction(offer.getDeduction());
-        this.setLodgingBy(offer.getLodgingBy());
-        this.setLodgingCost(offer.getLodgingCost());
-        this.setLodgingPaymentFrequency(offer.getLodgingPaymentFrequency());
-        this.setLivingCost(offer.getLivingCost());
-        this.setLivingPaymentFrequency(offer.getLivingPaymentFrequency());
-        this.setCanteen(offer.getCanteen());
-    }
-
 
     public Boolean getCanteen() {
         return canteen;
@@ -630,6 +610,7 @@ public class Offer implements Serializable {
      * @param o
      * @return
      */
+    @SuppressWarnings("OverlyLongMethod")
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -792,6 +773,7 @@ public class Offer implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("OverlyLongMethod")
     @Override
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
@@ -904,24 +886,23 @@ public class Offer implements Serializable {
     }
 
     /**
-     *
-     * @return true if offer is valid, otherwise thros an exception
-     * @throws VerifyError
+     * @throws VerifyError if object is not valid
      */
-
-    public boolean verify() throws VerifyError {
-        final Collection<String> errors = new ArrayList<String>();
+    @Override
+    public void verify() throws VerificationException {
+        final Collection<String> errors = new ArrayList<>();
         if (!verifyRefNo()) {
             errors.add("refNo: reference number has incorrect format");
         }
-        if(!verifyDates()) {
+        if (!verifyDates()) {
             errors.add("dates are not set correctly");
         }
-        if(!verifyNumberOfWeeks()) {
+        if (!verifyNumberOfWeeks()) {
             errors.add("weeks are not set correctly");
         }
-        return errors.isEmpty();
-        //        throw new VerifyError(errors.toString());
+        if (!errors.isEmpty()) {
+            throw new VerificationException(errors.toString());
+        }
     }
 
     boolean verifyNumberOfWeeks() {
@@ -933,13 +914,13 @@ public class Offer implements Serializable {
      * [ISO_3166-2 country code]-[exchange year]-[identification number]-[additional code (optional)]
      *
      * @return true if refNo is correct
-     * @todo should "identification number" be exactly 4 characters long?
-     * E.g: UK-2011-0001-01, IN-2011-0001-KU
-     * @todo make it private, HOWTO: test it?
+     *         TODO Michal: check in the spec if "identification number" should  be exactly 4 characters long
+     *         E.g: UK-2011-0001-01, IN-2011-0001-KU
      */
     boolean verifyRefNo() {
-        final StringBuilder countryCodes = new StringBuilder();
         final String[] codes = Locale.getISOCountries();
+        // for each country code 3 bytes are needed: "CC|"
+        final StringBuilder countryCodes = new StringBuilder(codes.length * 3 - 1);
         for (final String code : codes) {
             countryCodes.append(code);
             countryCodes.append('|');
@@ -968,6 +949,7 @@ public class Offer implements Serializable {
         return verifyDatesPresence() && verifyDatesOrder() && verifyDatesNominationDeadline() && verifyDatesGroupsOrder() && verifyDatesHolidaysOrder();
     }
 
+    @SuppressWarnings("OverlyComplexBooleanExpression")
     private boolean verifyDatesPresence() {
         // either 'from' date either 'from2' date must be present
         if (fromDate == null && fromDate2 == null) {
@@ -1001,6 +983,7 @@ public class Offer implements Serializable {
         return true;
     }
 
+    @SuppressWarnings("OverlyComplexBooleanExpression")
     private boolean verifyDatesNominationDeadline() {
         // @todo should 'nominationDeadline' be present?
         if (nominationDeadline == null) {
@@ -1047,4 +1030,79 @@ public class Offer implements Serializable {
         }
         return true;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isOk() {
+        return IWSErrors.SUCCESS.getError() == error.getError();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IWSError getError() {
+        return error;
+    }
+
+    @SuppressWarnings("OverlyLongMethod")
+    private static void copyFields(final Offer from, final Offer to) {
+        to.setId(from.getId());
+        to.setRefNo(from.getRefNo());
+        to.setNominationDeadline(from.getNominationDeadline());
+        to.setEmployerName(from.getEmployerName());
+        to.setEmployerAddress(from.getEmployerAddress());
+        to.setEmployerAddress2(from.getEmployerAddress2());
+        to.setEmployerBusiness(from.getEmployerBusiness());
+        to.setEmployerEmployeesCount(from.getEmployerEmployeesCount());
+        to.setEmployerWebsite(from.getEmployerWebsite());
+        to.setPrevTrainingRequired(from.getPrevTrainingRequired());
+        to.setOtherRequirements(from.getOtherRequirements());
+        to.setGender(from.getGender());
+        to.setLanguage1(from.getLanguage1());
+        to.setLanguage1Level(from.getLanguage1Level());
+        to.setLanguage1Operator(from.getLanguage1Operator());
+        to.setLanguage2(from.getLanguage2());
+        to.setLanguage2Level(from.getLanguage2Level());
+        to.setLanguage2Operator(from.getLanguage2Operator());
+        to.setLanguage3(from.getLanguage3());
+        to.setLanguage3Level(from.getLanguage3Level());
+        to.setWorkDescription(from.getWorkDescription());
+        to.setTypeOfWork(from.getTypeOfWork());
+        to.setMinimumWeeks(from.getMinimumWeeks());
+        to.setMaximumWeeks(from.getMaximumWeeks());
+        to.setFromDate(from.getFromDate());
+        to.setToDate(from.getToDate());
+        to.setFromDate2(from.getFromDate2());
+        to.setToDate2(from.getToDate2());
+        to.setHolidaysFrom(from.getHolidaysFrom());
+        to.setHolidaysTo(from.getHolidaysTo());
+        to.setWorkingPlace(from.getWorkingPlace());
+        to.setNearestAirport(from.getNearestAirport());
+        to.setNearestPubTransport(from.getNearestPubTransport());
+        to.setWeeklyHours(from.getWeeklyHours());
+        to.setDailyHours(from.getDailyHours());
+        to.setPayment(from.getPayment());
+        to.setCurrency(from.getCurrency());
+        to.setPaymentFrequency(from.getPaymentFrequency());
+        to.setDeduction(from.getDeduction());
+        to.setLodgingBy(from.getLodgingBy());
+        to.setLodgingCost(from.getLodgingCost());
+        to.setLodgingPaymentFrequency(from.getLodgingPaymentFrequency());
+        to.setLivingCost(from.getLivingCost());
+        to.setLivingPaymentFrequency(from.getLivingPaymentFrequency());
+        to.setCanteen(from.getCanteen());
+    }
+
 }

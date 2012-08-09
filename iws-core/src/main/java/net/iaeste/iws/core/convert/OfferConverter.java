@@ -16,7 +16,9 @@
 package net.iaeste.iws.core.convert;
 
 import net.iaeste.iws.api.data.Offer;
+import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -29,67 +31,51 @@ import java.util.List;
  */
 public class OfferConverter {
     private final EntityManager entityManager;
+    // Converter is db dependent, because if we create a new entity we will loose information during invoking persist.
+    private final OfferJpaDao offerDao;
 
     OfferConverter(EntityManager entityManager) {
         this.entityManager = entityManager;
+        this.offerDao = new OfferJpaDao(entityManager);
     }
 
+    /**
+     * @return only Entities for which conversion succeded
+     * @throws net.iaeste.iws.api.exceptions.EntityIdentificationException
+     *
+     * @todo Michal: optimalization, get rid of loop and use NamedQuery for getting all offers.
+     */
     public List<OfferEntity> toEntity(final List<Offer> offers) {
         final List<OfferEntity> offerEntities = new ArrayList<OfferEntity>(offers.size());
         for (final Offer offer : offers) {
-            offerEntities.add(toEntity(offer));
+            try {
+                offerEntities.add(toEntity(offer));
+            } catch (EntityIdentificationException ignore) {
+            }
         }
         return offerEntities;
     }
-    public OfferEntity toEntity(final Offer offer) {
-        final OfferEntity offerEntity = new OfferEntity();
-        offerEntity.setId(offer.getId());
-        offerEntity.setRefNo(offer.getRefNo());
-        offerEntity.setNominationDeadline(offer.getNominationDeadline());
-        offerEntity.setEmployerName(offer.getEmployerName());
-        offerEntity.setEmployerAddress(offer.getEmployerAddress());
-        offerEntity.setEmployerAddress2(offer.getEmployerAddress2());
-        offerEntity.setEmployerBusiness(offer.getEmployerBusiness());
-        offerEntity.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
-        offerEntity.setEmployerWebsite(offer.getEmployerWebsite());
-        offerEntity.setFieldOfStudies(offer.getFieldOfStudies());
-        offerEntity.setSpecializations(offer.getSpecializations());
-        offerEntity.setPrevTrainingRequired(offer.getPrevTrainingRequired());
-        offerEntity.setOtherRequirements(offer.getOtherRequirements());
-        offerEntity.setGender(offer.getGender());
-        offerEntity.setLanguage1(offer.getLanguage1());
-        offerEntity.setLanguage1Level(offer.getLanguage1Level());
-        offerEntity.setLanguage1Operator(offer.getLanguage1Operator());
-        offerEntity.setLanguage2(offer.getLanguage2());
-        offerEntity.setLanguage2Level(offer.getLanguage2Level());
-        offerEntity.setLanguage2Operator(offer.getLanguage2Operator());
-        offerEntity.setLanguage3(offer.getLanguage3());
-        offerEntity.setLanguage3Level(offer.getLanguage3Level());
-        offerEntity.setWorkDescription(offer.getWorkDescription());
-        offerEntity.setTypeOfWork(offer.getTypeOfWork());
-        offerEntity.setMinimumWeeks(offer.getMinimumWeeks());
-        offerEntity.setMaximumWeeks(offer.getMaximumWeeks());
-        offerEntity.setFromDate(offer.getFromDate());
-        offerEntity.setToDate(offer.getToDate());
-        offerEntity.setFromDate2(offer.getFromDate2());
-        offerEntity.setToDate2(offer.getToDate2());
-        offerEntity.setHolidaysFrom(offer.getHolidaysFrom());
-        offerEntity.setHolidaysTo(offer.getHolidaysTo());
-        offerEntity.setWorkingPlace(offer.getWorkingPlace());
-        offerEntity.setNearestAirport(offer.getNearestAirport());
-        offerEntity.setNearestPubTransport(offer.getNearestPubTransport());
-        offerEntity.setWeeklyHours(offer.getWeeklyHours());
-        offerEntity.setDailyHours(offer.getDailyHours());
-        offerEntity.setPayment(offer.getPayment());
-        offerEntity.setCurrency(offer.getCurrency());
-        offerEntity.setPaymentFrequency(offer.getPaymentFrequency());
-        offerEntity.setDeduction(offer.getDeduction());
-        offerEntity.setLodgingBy(offer.getLodgingBy());
-        offerEntity.setLodgingCost(offer.getLodgingCost());
-        offerEntity.setLodgingPaymentFrequency(offer.getLodgingPaymentFrequency());
-        offerEntity.setLivingCost(offer.getLivingCost());
-        offerEntity.setLivingPaymentFrequency(offer.getLivingPaymentFrequency());
-        offerEntity.setCanteen(offer.getCanteen());
+
+    /**
+     * Converts DTO into Entity. Checks if the Entity exists in the database and returns managed objects if it does.
+     *
+     * @param offer DTO object
+     * @return for existing offers it returns managed Entity object
+     * @throws net.iaeste.iws.api.exceptions.EntityIdentificationException
+     *          if offer for with id does not exist in the database
+     */
+    public OfferEntity toEntity(final Offer offer) throws EntityIdentificationException {
+        final OfferEntity offerEntity;
+        final Long id = offer.getId();
+        if (id == null) {
+            offerEntity = new OfferEntity();
+        } else {
+            offerEntity = offerDao.findOffer(id);
+        }
+        if (offerEntity == null) {
+            throw new EntityIdentificationException("No such offer in the database. Cannot update the entity.");
+        }
+        copyFieldsToEntity(offer, offerEntity);
         return offerEntity;
     }
 
@@ -107,7 +93,11 @@ public class OfferConverter {
                 offerEntity.getLanguage1(), offerEntity.getLanguage1Level(), offerEntity.getWorkDescription(),
                 offerEntity.getMinimumWeeks(), offerEntity.getMaximumWeeks(), offerEntity.getWeeklyHours(),
                 offerEntity.getDailyHours());
+        copyFieldsToDTO(offerEntity, offer);
+        return offer;
+    }
 
+    private void copyFieldsToDTO(final OfferEntity offerEntity, final Offer offer) {
         offer.setId(offerEntity.getId());
         offer.setRefNo(offerEntity.getRefNo());
         offer.setNominationDeadline(offerEntity.getNominationDeadline());
@@ -155,7 +145,56 @@ public class OfferConverter {
         offer.setLivingCost(offerEntity.getLivingCost());
         offer.setLivingPaymentFrequency(offerEntity.getLivingPaymentFrequency());
         offer.setCanteen(offerEntity.getCanteen());
-        return offer;
+    }
+
+    private void copyFieldsToEntity(final Offer offer, final OfferEntity offerEntity) {
+        offerEntity.setId(offer.getId());
+        offerEntity.setRefNo(offer.getRefNo());
+        offerEntity.setNominationDeadline(offer.getNominationDeadline());
+        offerEntity.setEmployerName(offer.getEmployerName());
+        offerEntity.setEmployerAddress(offer.getEmployerAddress());
+        offerEntity.setEmployerAddress2(offer.getEmployerAddress2());
+        offerEntity.setEmployerBusiness(offer.getEmployerBusiness());
+        offerEntity.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
+        offerEntity.setEmployerWebsite(offer.getEmployerWebsite());
+        offerEntity.setFieldOfStudies(offer.getFieldOfStudies());
+        offerEntity.setSpecializations(offer.getSpecializations());
+        offerEntity.setPrevTrainingRequired(offer.getPrevTrainingRequired());
+        offerEntity.setOtherRequirements(offer.getOtherRequirements());
+        offerEntity.setGender(offer.getGender());
+        offerEntity.setLanguage1(offer.getLanguage1());
+        offerEntity.setLanguage1Level(offer.getLanguage1Level());
+        offerEntity.setLanguage1Operator(offer.getLanguage1Operator());
+        offerEntity.setLanguage2(offer.getLanguage2());
+        offerEntity.setLanguage2Level(offer.getLanguage2Level());
+        offerEntity.setLanguage2Operator(offer.getLanguage2Operator());
+        offerEntity.setLanguage3(offer.getLanguage3());
+        offerEntity.setLanguage3Level(offer.getLanguage3Level());
+        offerEntity.setWorkDescription(offer.getWorkDescription());
+        offerEntity.setTypeOfWork(offer.getTypeOfWork());
+        offerEntity.setMinimumWeeks(offer.getMinimumWeeks());
+        offerEntity.setMaximumWeeks(offer.getMaximumWeeks());
+        offerEntity.setFromDate(offer.getFromDate());
+        offerEntity.setToDate(offer.getToDate());
+        offerEntity.setFromDate2(offer.getFromDate2());
+        offerEntity.setToDate2(offer.getToDate2());
+        offerEntity.setHolidaysFrom(offer.getHolidaysFrom());
+        offerEntity.setHolidaysTo(offer.getHolidaysTo());
+        offerEntity.setWorkingPlace(offer.getWorkingPlace());
+        offerEntity.setNearestAirport(offer.getNearestAirport());
+        offerEntity.setNearestPubTransport(offer.getNearestPubTransport());
+        offerEntity.setWeeklyHours(offer.getWeeklyHours());
+        offerEntity.setDailyHours(offer.getDailyHours());
+        offerEntity.setPayment(offer.getPayment());
+        offerEntity.setCurrency(offer.getCurrency());
+        offerEntity.setPaymentFrequency(offer.getPaymentFrequency());
+        offerEntity.setDeduction(offer.getDeduction());
+        offerEntity.setLodgingBy(offer.getLodgingBy());
+        offerEntity.setLodgingCost(offer.getLodgingCost());
+        offerEntity.setLodgingPaymentFrequency(offer.getLodgingPaymentFrequency());
+        offerEntity.setLivingCost(offer.getLivingCost());
+        offerEntity.setLivingPaymentFrequency(offer.getLivingPaymentFrequency());
+        offerEntity.setCanteen(offer.getCanteen());
     }
 }
 

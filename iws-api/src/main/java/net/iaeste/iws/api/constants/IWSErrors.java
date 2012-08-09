@@ -17,9 +17,9 @@ package net.iaeste.iws.api.constants;
 /**
  * Defined IWS Errors.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public interface IWSErrors {
 
@@ -78,6 +78,11 @@ public interface IWSErrors {
      * Unknown Persistency Error.
      */
     IWSError PERSISTENCE_ERROR = new IWSError(302, "Persistency Error");
+
+    /**
+     * The Identification Error is passed when trying to edit unexisting <code>Entity</code>.
+     */
+    IWSError ID_ERROR = new IWSError(303, "Entity Identification Error");
 
     /**
      * The current method is not yet implemented.

@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
@@ -55,6 +54,9 @@ public class OfferJpaDao implements OfferDao {
 
     @Override
     public OfferEntity findOffer(final Long offerId) {
+        if (offerId == null) {
+            return null;
+        }
         final List<OfferEntity> offers = entityManager.createNamedQuery("OfferEntity.findById", OfferEntity.class)
                 .setParameter("id", offerId).getResultList();
         if (offers.size() != 1) {

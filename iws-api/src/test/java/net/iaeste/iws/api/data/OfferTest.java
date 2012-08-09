@@ -18,12 +18,15 @@ package net.iaeste.iws.api.data;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,6 +62,10 @@ public class OfferTest {
         offer = getMinimalOffer();
     }
 
+    private Offer getEmptyOffer() {
+        return new Offer();
+    }
+
     private Offer getMinimalOffer() {
         final Offer offer = new Offer();
         offer.setRefNo(REF_NO);
@@ -79,11 +86,39 @@ public class OfferTest {
     }
 
     private Offer getValidOffer() {
-        Offer minimalOffer = getMinimalOffer();
+        final Offer minimalOffer = getMinimalOffer();
         minimalOffer.setNominationDeadline(d[0]);
         minimalOffer.setFromDate(d[1]);
         minimalOffer.setToDate(d[2]);
         return minimalOffer;
+    }
+
+    @Test
+    public void testFallibleOffer() {
+        offer = new Offer();
+        offer.setId(1L);
+        final String msg = "Id does not exists.";
+        final EntityIdentificationException e = new EntityIdentificationException(msg);
+        final Offer fallenOffer = new Offer(offer, e);
+        Assert.assertThat(fallenOffer.isOk(), is(false));
+        Assert.assertThat(fallenOffer.getMessage(), is(msg));
+        Assert.assertThat(fallenOffer.getError(), is(e.getError()));
+    }
+
+    @Test
+    public void testFallibleOfferOk() {
+        offer = getMinimalOffer();
+        Assert.assertThat(offer.isOk(), is(true));
+        Assert.assertThat(offer.getMessage(), is(IWSConstants.SUCCESS));
+        Assert.assertThat(offer.getError(), is(IWSErrors.SUCCESS));
+        offer = getValidOffer();
+        Assert.assertThat(offer.isOk(), is(true));
+        Assert.assertThat(offer.getMessage(), is(IWSConstants.SUCCESS));
+        Assert.assertThat(offer.getError(), is(IWSErrors.SUCCESS));
+        offer = getEmptyOffer();
+        Assert.assertThat(offer.isOk(), is(true));
+        Assert.assertThat(offer.getMessage(), is(IWSConstants.SUCCESS));
+        Assert.assertThat(offer.getError(), is(IWSErrors.SUCCESS));
     }
 
     @Test
@@ -169,7 +204,7 @@ public class OfferTest {
         final String[] correctRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "GB-2011-00001", "AT-2012-1234-AB" };
         for (final String correctRefNo : correctRefNos) {
             offer.setRefNo(correctRefNo);
-            Assert.assertThat(correctRefNo + " " + "should be correct", offer.verifyRefNo(), is(true));
+            Assert.assertThat(String.format("%s should be correct", correctRefNo), offer.verifyRefNo(), is(true));
         }
     }
 
@@ -179,7 +214,7 @@ public class OfferTest {
                 "GB-2011-a000-01", "GB-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01", "XX-2011-a000-01", "XX-2011-0000-01" };
         for (final String incorrectRefNo : incorrectRefNos) {
             offer.setRefNo(incorrectRefNo);
-            Assert.assertThat(incorrectRefNo + " " + "should be incorrect", offer.verifyRefNo(), is(false));
+            Assert.assertThat(String.format("%s should be incorrect", incorrectRefNo), offer.verifyRefNo(), is(false));
         }
     }
 
@@ -206,61 +241,61 @@ public class OfferTest {
         offer.setHolidaysFrom(d[0]);
         offer.setHolidaysTo(d[0]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline--------------------------to---------------------------------------------------------------------------------->
+        // --deadline--------------------------to-------------------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setToDate(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline--------------------------to2--------------------------------------------------------------------------------->
+        // --deadline--------------------------to2------------------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setToDate2(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline--------------------------from-------------------------------------------------------------------------------->
+        // --deadline--------------------------from------------------------------------>
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline--------------------------from2------------------------------------------------------------------------------->
+        // --deadline--------------------------from2----------------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
 
-        // --deadline------------------from2---------------to---------------------------------------------------------------------->
+        // --deadline------------------from2---------------to-------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate2(d[1]);
         offer.setToDate(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline---------------from------------------to2---------------------------------------------------------------------->
+        // --deadline---------------from------------------to2-------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[1]);
         offer.setToDate2(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline------------from----------------------to--------------to2----------------------------------------------------->
+        // --deadline------------from----------------------to--------------to2--------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[1]);
         offer.setToDate(d[2]);
         offer.setToDate2(d[3]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline------------from----------------------to--------------from2--------------------------------------------------->
+        // --deadline------------from----------------------to--------------from2------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[1]);
         offer.setToDate(d[2]);
         offer.setFromDate2(d[3]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline------------from-----------------------from2----------to2----------------------------------------------------->
+        // --deadline------------from-----------------------from2----------to2--------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[1]);
         offer.setFromDate2(d[2]);
         offer.setToDate2(d[3]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline--------------to-----------------------from2----------to2----------------------------------------------------->
+        // --deadline--------------to-----------------------from2----------to2--------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setToDate(d[1]);
@@ -273,13 +308,13 @@ public class OfferTest {
     @Test
     public void testVerifyOrderOfDates() {
         final String error = "'from(2)' have to be before 'to(2)'";
-        // --deadline--------------------------to-------from----------------------------------------------------------------------->
+        // --deadline--------------------------to-------from--------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setToDate(d[1]);
         offer.setFromDate(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline--------------------------to2-------from2--------------------------------------------------------------------->
+        // --deadline--------------------------to2-------from2------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setToDate2(d[1]);
@@ -298,10 +333,10 @@ public class OfferTest {
         offer.setHolidaysTo(null);
         offer.setFromDate(d[1]);
         offer.setToDate(d[2]);
-        // --deadline--------------------------from-------to----------------------------------------------------------------------->
+        // --deadline--------------------------from-------to--------------------------->
         offer.setNominationDeadline(d[0]);
         Assert.assertThat(error, offer.verifyDates(), is(true));
-        // ------------------------------------from-------to----------------------------------------------------------------------->
+        // ------------------------------------from-------to--------------------------->
         offer.setNominationDeadline(null);
         Assert.assertThat(error, offer.verifyDates(), is(false));
 
@@ -313,24 +348,24 @@ public class OfferTest {
         offer = getMinimalOffer();
         offer.setFromDate(d[1]);
         offer.setToDate(d[3]);
-        // ----from--------------deadline-------------------to--------------------------------------------------------------------->
+        // ----from--------------deadline-------------------to------------------------->
         offer.setNominationDeadline(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // ---from-----------------------to-------------deadline------------------------------------------------------------------->
+        // ---from-----------------------to-------------deadline----------------------->
         offer.setNominationDeadline(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
 
         offer = getMinimalOffer();
         offer.setFromDate2(d[1]);
         offer.setToDate2(d[3]);
-        // ---from2--------------deadline-------------------to2-------------------------------------------------------------------->
+        // ---from2--------------deadline-------------------to2------------------------>
         offer.setNominationDeadline(d[2]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // ---from2-----------------------to2--------deadline---------------------------------------------------------------------->
+        // ---from2-----------------------to2--------deadline-------------------------->
         offer.setNominationDeadline(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
 
-        // ---from2-----------------------to2--------deadline--------from------to-------------------------------------------------->
+        // ---from2-----------------------to2--------deadline--------from------to------>
         offer = getMinimalOffer();
         offer.setFromDate2(d[1]);
         offer.setToDate2(d[3]);
@@ -338,7 +373,7 @@ public class OfferTest {
         offer.setToDate(d[7]);
         offer.setNominationDeadline(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // ---from-----------------------to---------deadline-------from2------to2-------------------------------------------------->
+        // ---from-----------------------to---------deadline-------from2------to2------>
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
         offer.setFromDate(d[1]);
@@ -354,25 +389,25 @@ public class OfferTest {
         final String error = "dates from groups 1 and 2 cannot intertwine";
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
-        // --deadline------------from2-----from------------to--------------to2----------------------------------------------------->
+        // --deadline------------from2-----from------------to--------------to2--------->
         offer.setFromDate2(d[1]);
         offer.setFromDate(d[2]);
         offer.setToDate(d[3]);
         offer.setToDate2(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline------------from-----from2------------to--------------to2----------------------------------------------------->
+        // --deadline------------from-----from2------------to--------------to2--------->
         offer.setFromDate(d[1]);
         offer.setFromDate2(d[2]);
         offer.setToDate(d[3]);
         offer.setToDate2(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline------------from-----from2------------to2--------------to----------------------------------------------------->
+        // --deadline------------from-----from2------------to2--------------to--------->
         offer.setFromDate(d[1]);
         offer.setFromDate2(d[2]);
         offer.setToDate2(d[3]);
         offer.setToDate(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline------------from2-----from------------to--------------to2----------------------------------------------------->
+        // --deadline------------from2-----from------------to--------------to2--------->
         offer.setFromDate2(d[1]);
         offer.setFromDate(d[2]);
         offer.setToDate(d[3]);
@@ -385,25 +420,25 @@ public class OfferTest {
         final String error = "holidays dates must be inside from-to or from2-to2";
         offer = getMinimalOffer();
         offer.setNominationDeadline(d[0]);
-        // --deadline-----------from--------holidaysFrom---to------holidaysTo------------------------------------------------------>
+        // --deadline-----------from--------holidaysFrom---to------holidaysTo---------->
         offer.setFromDate(d[1]);
         offer.setHolidaysFrom(d[2]);
         offer.setToDate(d[3]);
         offer.setHolidaysTo(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline--------holidaysFrom-----------from------holidaysTo---to------------------------------------------------------>
+        // --deadline--------holidaysFrom-----------from------holidaysTo---to---------->
         offer.setHolidaysFrom(d[1]);
         offer.setFromDate(d[2]);
         offer.setHolidaysTo(d[3]);
         offer.setToDate(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline-----------holidaysFrom------holidaysTo------from--------to--------------------------------------------------->
+        // --deadline-----------holidaysFrom------holidaysTo------from--------to------->
         offer.setHolidaysFrom(d[1]);
         offer.setHolidaysTo(d[2]);
         offer.setFromDate(d[3]);
         offer.setToDate(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline-----------from--------to------holidaysTo-----holidaysFrom---------------------------------------------------->
+        // --deadline-----------from--------to------holidaysTo-----holidaysFrom-------->
         offer.setFromDate(d[1]);
         offer.setToDate(d[2]);
         offer.setHolidaysFrom(d[3]);
@@ -433,6 +468,7 @@ public class OfferTest {
         offer.verify();
     }
 
+    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testGetValidOfferShouldBeValid() {
         offer = getValidOffer();

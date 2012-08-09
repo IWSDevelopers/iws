@@ -15,8 +15,6 @@
 package net.iaeste.iws.api.data;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
@@ -29,8 +27,6 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.Verifiable;
-import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.math.BigDecimal;
@@ -48,15 +44,12 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class Offer implements Verifiable, Fallible {
+public class Offer extends AbstractDto {
 
     /**
      * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
      */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    // TODO Michal: extract Fallible implementation to AbstractDTO? similar to AbstractResponse
-    private final IWSError error;
-    private final String message;
 
     /**
      * Empty Constructor, required for some communication frameworks.
@@ -74,9 +67,6 @@ public class Offer implements Verifiable, Fallible {
         this.minimumWeeks = null;
         this.weeklyHours = null;
         this.dailyHours = null;
-
-        error = IWSErrors.SUCCESS;
-        message = IWSConstants.SUCCESS;
     }
 
     /**
@@ -121,9 +111,6 @@ public class Offer implements Verifiable, Fallible {
         setMinimumWeeks(minimumWeeks);
         setWeeklyHours(weeklyHours);
         setDailyHours(dailyHours);
-
-        error = IWSErrors.SUCCESS;
-        message = IWSConstants.SUCCESS;
     }
 
     /**
@@ -135,17 +122,11 @@ public class Offer implements Verifiable, Fallible {
      */
     public Offer(final Offer offer) {
         copyFields(offer, this);
-
-        error = IWSErrors.SUCCESS;
-        message = IWSConstants.SUCCESS;
     }
 
     public Offer(final Offer offer, final EntityIdentificationException e) {
+        super(e.getError(), e.getMessage());
         copyFields(offer, this);
-
-        error = IWSErrors.VERIFICATION_ERROR;
-        message = e.getMessage();
-
     }
 
     private Long id;
@@ -1029,31 +1010,6 @@ public class Offer implements Verifiable, Fallible {
 
         }
         return true;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final boolean isOk() {
-        return IWSErrors.SUCCESS.getError() == error.getError();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IWSError getError() {
-        return error;
     }
 
     @SuppressWarnings("OverlyLongMethod")

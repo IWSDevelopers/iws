@@ -30,23 +30,23 @@ import javax.persistence.EntityManager;
  * Class is made package private, since it is only suppose to be used by the
  * actual Client Classes in this package.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 final class ConnectionFactory {
 
-    private EntityManager em = EntityManagerProvider.getInstance();
+    private final EntityManager entityManager = EntityManagerProvider.getInstance().getEntityManager();
 
     public Access getAccessImplementation() {
-        return new SpringAccessClient(em);
+        return new SpringAccessClient(entityManager);
     }
 
     public Administration getAdministrationImplementation() {
-        return new SpringAdministrationclient(em);
+        return new SpringAdministrationclient(entityManager);
     }
 
     public Exchange getExchangeImplementation() {
-        return new SpringExchangeClient(em);
+        return new SpringExchangeClient(entityManager);
     }
 }

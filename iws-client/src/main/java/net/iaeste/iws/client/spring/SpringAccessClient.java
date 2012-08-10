@@ -37,7 +37,7 @@ import javax.persistence.EntityManager;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class SpringAccessClient implements Access {
+public final class SpringAccessClient implements Access {
 
     private final Access access;
 
@@ -45,7 +45,7 @@ public class SpringAccessClient implements Access {
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringAccessClient(EntityManager entityManager) {
+    public SpringAccessClient(final EntityManager entityManager) {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         access = new AccessController(factory);
     }

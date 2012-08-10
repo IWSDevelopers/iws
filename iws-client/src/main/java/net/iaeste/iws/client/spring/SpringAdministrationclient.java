@@ -38,7 +38,7 @@ import javax.persistence.EntityManager;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class SpringAdministrationclient implements Administration {
+public final class SpringAdministrationclient implements Administration {
 
     private final Administration administration;
 
@@ -46,7 +46,7 @@ public class SpringAdministrationclient implements Administration {
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringAdministrationclient(EntityManager entityManager) {
+    public SpringAdministrationclient(final EntityManager entityManager) {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         administration = new AdministrationController(factory);
     }

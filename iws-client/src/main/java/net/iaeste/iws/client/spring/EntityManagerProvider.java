@@ -7,20 +7,34 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class EntityManagerProvider {
 
-    private static EntityManager instance;
+    private static EntityManagerProvider instance = null;
+    private static final Object LOCK = new Object();
+    private final EntityManager entityManager;
 
-    public synchronized static EntityManager getInstance() {
-        if (instance == null) {
-            ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config.class);
-            EntityManagerFactory factory = (EntityManagerFactory) applicationContext.getBean(EntityManagerFactory.class);
-            instance = factory.createEntityManager();
+    private EntityManagerProvider() {
+        final ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config.class);
+        final EntityManagerFactory factory = applicationContext.getBean(EntityManagerFactory.class);
+
+        entityManager = factory.createEntityManager();
+    }
+
+    public static EntityManagerProvider getInstance() {
+        synchronized (LOCK) {
+            if (instance == null) {
+                instance = new EntityManagerProvider();
+            }
+
+            return instance;
         }
-        return instance;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

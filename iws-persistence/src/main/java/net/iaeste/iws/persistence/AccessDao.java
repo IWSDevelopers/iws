@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 

@@ -19,6 +19,8 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 
 /**
+ * Default functionality for all Response Objects, and DTO's as well.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -28,10 +30,10 @@ public abstract class AbstractResponse implements Fallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** IWBase Error Object. */
+    /** IWS Error Object. */
     protected final IWSError error;
 
-    /** IWBase Error Message */
+    /** IWS Error Message */
     protected final String message;
 
     /**

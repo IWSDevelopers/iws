@@ -16,7 +16,7 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 
 /**
  * The Result Object from an Authentication Call, the object will either

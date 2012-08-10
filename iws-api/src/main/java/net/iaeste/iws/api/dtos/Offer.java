@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.data.Offer
+ * Project: IntraWeb Services (iws-api) - Offer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.data;
+package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Currency;
@@ -27,6 +27,8 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.Verifiable;
+import net.iaeste.iws.api.responses.AbstractResponse;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.math.BigDecimal;
@@ -40,15 +42,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Michael Pickelbauer / last $Author:$
+ * Standard IAESTE Offer.
+ *
+ * @author  Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public class Offer extends AbstractDto {
+public final class Offer extends AbstractResponse implements Verifiable {
 
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
@@ -69,6 +71,7 @@ public class Offer extends AbstractDto {
     }
 
     public Offer(final Offer offer, final EntityIdentificationException e) {
+
         super(e.getError(), e.getMessage());
         copyFields(offer, this);
     }

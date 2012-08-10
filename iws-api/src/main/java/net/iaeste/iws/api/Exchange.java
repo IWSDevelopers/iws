@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.api;
 
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;

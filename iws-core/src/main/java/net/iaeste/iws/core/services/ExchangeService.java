@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.core.services;
 
-import net.iaeste.iws.api.data.AuthenticationToken;
-import net.iaeste.iws.api.data.Offer;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;

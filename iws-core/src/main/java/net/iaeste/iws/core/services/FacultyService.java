@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core.services;
 
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;

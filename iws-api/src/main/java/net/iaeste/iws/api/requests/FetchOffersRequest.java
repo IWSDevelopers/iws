@@ -15,7 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.data.Offer;
+import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.Copier;
 

@@ -18,7 +18,7 @@ import com.gargoylesoftware.base.testing.EqualsTester;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;

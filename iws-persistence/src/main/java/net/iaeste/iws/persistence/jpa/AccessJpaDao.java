@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.SessionEntity;

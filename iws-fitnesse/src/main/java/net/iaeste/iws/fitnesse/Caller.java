@@ -17,7 +17,7 @@ package net.iaeste.iws.fitnesse;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;

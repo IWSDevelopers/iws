@@ -15,7 +15,7 @@
 
 package net.iaeste.iws.core.convert;
 
-import net.iaeste.iws.api.data.Offer;
+import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;

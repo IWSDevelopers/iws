@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.core.services;
 
-import net.iaeste.iws.api.data.AuthenticationToken;
-import net.iaeste.iws.api.data.Authorization;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 
 import javax.persistence.EntityManager;

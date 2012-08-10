@@ -15,8 +15,8 @@
 package net.iaeste.iws.core;
 
 import net.iaeste.iws.api.Access;
-import net.iaeste.iws.api.data.AuthenticationToken;
-import net.iaeste.iws.api.data.Authorization;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;

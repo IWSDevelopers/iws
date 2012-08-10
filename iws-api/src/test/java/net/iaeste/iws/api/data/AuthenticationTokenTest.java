@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.data;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 

@@ -15,7 +15,7 @@
 package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;

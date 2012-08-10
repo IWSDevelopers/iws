@@ -15,7 +15,7 @@
 package net.iaeste.iws.client.spring;
 
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.*;
 import net.iaeste.iws.core.ExchangeController;

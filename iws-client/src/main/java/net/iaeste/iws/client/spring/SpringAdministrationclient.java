@@ -15,7 +15,7 @@
 package net.iaeste.iws.client.spring;
 
 import net.iaeste.iws.api.Administration;
-import net.iaeste.iws.api.data.AuthenticationToken;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
@@ -32,7 +32,6 @@ import net.iaeste.iws.core.services.ServiceFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  * @author  Kim Jensen / last $Author:$

@@ -48,12 +48,12 @@ public class Config {
     private DataSource prepareHSQLDataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.HSQL)
-                .addScript("hsqldb/init_tables.sql")
-                .addScript("hsqldb/init_views.sql")
-                .addScript("hsqldb/init_data.sql")
-                .addScript("hsqldb/exchange-init.sql")
-                .addScript("hsqldb/exchange-views.sql")
-                .addScript("hsqldb/exchange-data.sql")
+                .addScript("classpath:/hsqldb/init_tables.sql")
+                .addScript("classpath:/hsqldb/init_views.sql")
+                .addScript("classpath:/hsqldb/init_data.sql")
+                .addScript("classpath:/hsqldb/exchange-init.sql")
+                .addScript("classpath:/hsqldb/exchange-views.sql")
+                .addScript("classpath:/hsqldb/exchange-data.sql")
                 .build();
     }
 

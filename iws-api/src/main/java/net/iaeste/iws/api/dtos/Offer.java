@@ -71,7 +71,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
     }
 
     public Offer(final Offer offer, final EntityIdentificationException e) {
-
+        // ToDo Kim; @Michal, Invalid Constructor, an Object cannot both have an error AND a result object!
         super(e.getError(), e.getMessage());
         copyFields(offer, this);
     }
@@ -526,6 +526,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
         this.workingPlace = workingPlace;
     }
 
+    // ToDo Kim; @Michal, an Offer always contain a *uniqie* RefNo, this can be used
     /**
      * first thought was that id should be sufficient, but what if two
      * NOT PRESISTED offers want to be compared, then there is no ID

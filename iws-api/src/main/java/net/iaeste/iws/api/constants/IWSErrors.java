@@ -55,34 +55,34 @@ public interface IWSErrors {
      * The data required for a given request is insufficient to be properly
      * processed.
      */
-    IWSError VERIFICATION_ERROR = new IWSError(101, "Given data is insufficient to properly handle request");
+    IWSError VERIFICATION_ERROR = new IWSError(401, "Given data is insufficient to properly handle request");
 
     /**
      * If the user making the request is not properly authenticated, i.e. no
      * proper user credentials like username/password or session checksum.
      */
-    IWSError AUTHENTICATION_ERROR = new IWSError(102, "User Authentication problem");
+    IWSError AUTHENTICATION_ERROR = new IWSError(402, "User Authentication problem");
 
     /**
      * If the user making the request is not allowed to perform the desired
      * action.
      */
-    IWSError AUTHORIZATION_ERROR = new IWSError(103, "User Authorization problem");
+    IWSError AUTHORIZATION_ERROR = new IWSError(403, "User Authorization problem");
 
     /**
      * The database is inaccessible.
      */
-    IWSError DATABASE_UNREACHABLE = new IWSError(301, "Database unreachable");
+    IWSError DATABASE_UNREACHABLE = new IWSError(501, "Database unreachable");
 
     /**
      * Unknown Persistency Error.
      */
-    IWSError PERSISTENCE_ERROR = new IWSError(302, "Persistency Error");
+    IWSError PERSISTENCE_ERROR = new IWSError(502, "Persistency Error");
 
     /**
-     * The Identification Error is passed when trying to edit unexisting <code>Entity</code>.
+     * The Identification Error is passed when trying to edit unexisting {@code Entity}.
      */
-    IWSError ID_ERROR = new IWSError(303, "Entity Identification Error");
+    IWSError ID_ERROR = new IWSError(503, "Entity Identification Error");
 
     /**
      * The current method is not yet implemented.

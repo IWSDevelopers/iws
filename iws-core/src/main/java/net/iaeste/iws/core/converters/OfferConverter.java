@@ -12,15 +12,12 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
-package net.iaeste.iws.core.convert;
+package net.iaeste.iws.core.converters;
 
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.persistence.entities.OfferEntity;
-import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +27,16 @@ import java.util.List;
  * @since 1.7
  */
 public class OfferConverter {
-    private final EntityManager entityManager;
-    // Converter is db dependent, because if we create a new entity we will loose information during invoking persist.
-    private final OfferJpaDao offerDao;
 
-    OfferConverter(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        this.offerDao = new OfferJpaDao(entityManager);
-    }
+    // ToDo Kim; @Michael, by mixing converting and persisting, you're increasing the complexity - and making the code harder to maintain
+//    private final EntityManager entityManager;
+//    // Converter is db dependent, because if we create a new entity we will loose information during invoking persist.
+//    private final OfferJpaDao offerDao;
+
+//    OfferConverter(EntityManager entityManager) {
+//        this.entityManager = entityManager;
+//        this.offerDao = new OfferJpaDao(entityManager);
+//    }
 
     /**
      * @return only Entities for which conversion succeded
@@ -65,12 +64,13 @@ public class OfferConverter {
      *          if offer for with id does not exist in the database
      */
     public OfferEntity toEntity(final Offer offer) throws EntityIdentificationException {
-        final OfferEntity offerEntity;
+        OfferEntity offerEntity = null;
         final Long id = offer.getId();
         if (id == null) {
             offerEntity = new OfferEntity();
-        } else {
-            offerEntity = offerDao.findOffer(id);
+            // ToDo Kim; @Michal, drop this crap - the class should only make convertions, nothing else!
+//        } else {
+//            offerEntity = offerDao.findOffer(id);
         }
         if (offerEntity == null) {
             throw new EntityIdentificationException("No such offer in the database. Cannot update the entity.");
@@ -94,6 +94,7 @@ public class OfferConverter {
     }
 
     private void copyFieldsToDTO(final OfferEntity offerEntity, final Offer offer) {
+        // ToDo Kim; @Michael, please avoid updating the objects given as parameters, it can be confusing and lead to other problems. Rather the code should create a new entity based on the given Object and return that
         offer.setId(offerEntity.getId());
         offer.setRefNo(offerEntity.getRefNo());
         offer.setNominationDeadline(offerEntity.getNominationDeadline());
@@ -144,6 +145,7 @@ public class OfferConverter {
     }
 
     private void copyFieldsToEntity(final Offer offer, final OfferEntity offerEntity) {
+        // ToDo Kim; @Michael, please avoid updating the objects given as parameters, it can be confusing and lead to other problems. Rather the code should create a new DTO based on the given Object and return that
         offerEntity.setId(offer.getId());
         offerEntity.setRefNo(offer.getRefNo());
         offerEntity.setNominationDeadline(offer.getNominationDeadline());

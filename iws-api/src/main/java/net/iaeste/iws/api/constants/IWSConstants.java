@@ -24,11 +24,6 @@ package net.iaeste.iws.api.constants;
 public interface IWSConstants {
 
     /**
-     * The e-mail compliance regular expression.
-     */
-    String EMAIL_REGEX = "^[a-z0-9_\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|eu|mobi)$";
-
-    /**
      * All serialized classes should use this value. The value reflects the
      * current version of the system. If updates are made in one or more of the
      * serialized classes, it should be updated.<br />
@@ -71,4 +66,9 @@ public interface IWSConstants {
      * Default IWBase Success message.
      */
     String SUCCESS = "OK";
+
+    /**
+     * The e-mail compliance regular expression.
+     */
+    String EMAIL_REGEX = "^[a-z0-9_\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|eu|mobi)$";
 }

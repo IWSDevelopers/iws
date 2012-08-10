@@ -27,8 +27,7 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
-import net.iaeste.iws.core.convert.ConverterFactory;
-import net.iaeste.iws.core.convert.OfferConverter;
+import net.iaeste.iws.core.converters.OfferConverter;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
@@ -47,15 +46,13 @@ public class ExchangeService {
     private final EntityManager entityManager;
     private final OfferDao offerDao;
     private final OfferConverter offerConverter;
-    private final ConverterFactory converterFactory;
 
 
     public ExchangeService(final EntityManager entityManager) {
         this.entityManager = entityManager;
         this.offerDao = new OfferJpaDao(entityManager);
         // TODO Michal: @Kim: is there any better place for the factory? should ConverterFactory be changed into singleton?
-        this.converterFactory = new ConverterFactory(entityManager);
-        this.offerConverter = converterFactory.getOfferConverter();
+        this.offerConverter = new OfferConverter();
     }
 
     /**

@@ -63,10 +63,12 @@ public final class OfferRequest extends AbstractRequest {
     }
 
     public List<Offer> getEditOffers() {
+        // ToDo Kim; @Michael, as I've already told you - please DO NOT use the unmodifialbleList, they give us other problems!
         return Collections.unmodifiableList(editOffers);
     }
 
     public List<Long> getDeleteOfferIDs() {
+        // ToDo Kim; @Michael, as I've already told you - please DO NOT use the unmodifialbleList, they give us other problems!
         return Collections.unmodifiableList(deleteOfferIDs);
     }
 }

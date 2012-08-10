@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.data.AuthenticationTokenTest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.AuthenticationTokenTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,10 +12,9 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.data;
+package net.iaeste.iws.api.dtos;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
-import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 

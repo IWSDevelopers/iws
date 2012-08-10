@@ -78,7 +78,7 @@ CREATE TABLE countries (
     citizens            VARCHAR(100) DEFAULT '',
     phone_code          VARCHAR(5)   DEFAULT '',
     currency            VARCHAR(3)   DEFAULT '',
-    æanguages           VARCHAR(100) DEFAULT '',
+    languages           VARCHAR(100) DEFAULT '',
     membership          INTEGER      DEFAULT 5,
     membership_since    INTEGER      DEFAULT -1,
     modified            TIMESTAMP    DEFAULT now(),

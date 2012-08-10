@@ -59,6 +59,6 @@ public interface Access {
      * @param token  User {@code AuthenticationToken}
      * @return Authorization Result Object
      */
-    PermissionResponse findPermissions(AuthenticationToken token);
+    PermissionResponse fetchPermissions(AuthenticationToken token);
 
 }

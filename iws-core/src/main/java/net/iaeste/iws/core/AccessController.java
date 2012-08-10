@@ -110,8 +110,8 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public PermissionResponse findPermissions(final AuthenticationToken token) {
-        LOG.trace("Starting findPermissions()");
+    public PermissionResponse fetchPermissions(final AuthenticationToken token) {
+        LOG.trace("Starting fetchPermissions()");
         PermissionResponse response;
 
         try {
@@ -125,7 +125,7 @@ public final class AccessController extends CommonController implements Access {
             response = new PermissionResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished findPermissions()");
+        LOG.trace("Finished fetchPermissions()");
         return response;
     }
 }

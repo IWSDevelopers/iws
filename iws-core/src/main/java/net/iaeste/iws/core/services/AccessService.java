@@ -43,6 +43,6 @@ public class AccessService {
     }
 
     public List<Authorization> findPermissions(final AuthenticationToken token) {
-        throw new NotImplementedException("The 'findPermissions' method is not yet implemented");
+        throw new NotImplementedException("The 'fetchPermissions' method is not yet implemented");
     }
 }

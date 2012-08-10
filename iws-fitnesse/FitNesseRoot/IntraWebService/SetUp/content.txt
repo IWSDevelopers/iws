@@ -1,0 +1,48 @@
+!path zobel-fitnesse.jar
+!define TEST_SYSTEM {slim}
+
+|import                  |
+|de.elster.zobel.fitnesse|
+
+|script                            |database controller|
+|clean database                                        |
+|clean ginster                                         |
+|initialize ginster data with datum|20100101           |
+
+----- ERROR-Codes:
+!define SUCCESS {510000000}
+!define FATAL {510009100}
+
+---- Ordnungsmerkmale
+!define UNKNOWN_ORDNUNGSMERKMAL {510005200}
+!define UNKNOWN_ZID {510005201}
+!define UNKNOWN_STNR_BY_DATE {510005202}
+!define INVALID_ZID {510009203}
+!define INVALID_STNR {510005205}
+!define CRITICAL_ZID_ERROR {510007204}
+
+---- Requests 
+!define REQUEST_INVALID {510005300}
+!define INSUFFICIENT_DATA {510001301}
+
+---- GINSTER 
+!define ADDRESS_LOOKUP_FAILURE {510005400}
+!define GINSTER_ADDRESS_LOOKUP_FAILURE {510001401}
+!define GINSTER_DATA_INVALID {510001402}
+!define GINSTER_INITIAL_IMPORT_INVALID {510001403}
+!define GINSTER_INTERNAL_ERROR {510001412}
+!define GINSTER_LIEFERUNG_ROLLBACK {510001410}
+!define GINSTER_STNR_LOOKUP_FAILURE {510001415}
+!define GINSTER_STNR_NOT_ACTIVE {510001414}
+!define GINSTER_UNKNOWN_STNR {510001413}
+!define GINSTER_UNREACHABLE {510003405}
+!define GINSTER_UPDATE_CONFLICT {510001404}
+!define GINSTER_UPDATE_INCONSISTENCY {510001409}
+!define COMNODE_ERROR {510001406}
+!define COMNODE_TIMEOUT {510003411}
+!define XML_VALIDATION_FAILURE {510001407}
+!define XML_PARSING_ERROR {510001408}
+!define UNSUPPORTED_SCHEMA_VERSION {510001416}
+
+---- Datenbank 
+!define DATABASE_UNREACHABLE {510003200}

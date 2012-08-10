@@ -62,7 +62,7 @@ public final class AccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public PermissionResponse findPermissions(final AuthenticationToken token) {
-        return access.findPermissions(token);
+    public PermissionResponse fetchPermissions(final AuthenticationToken token) {
+        return access.fetchPermissions(token);
     }
 }

@@ -88,11 +88,7 @@ public class OfferConverter {
     }
 
     public Offer toDTO(final OfferEntity offerEntity) {
-        final Offer offer = new Offer(offerEntity.getRefNo(), offerEntity.getNominationDeadline(),
-                offerEntity.getEmployerName(), offerEntity.getStudyLevels(), offerEntity.getGender(),
-                offerEntity.getLanguage1(), offerEntity.getLanguage1Level(), offerEntity.getWorkDescription(),
-                offerEntity.getMinimumWeeks(), offerEntity.getMaximumWeeks(), offerEntity.getWeeklyHours(),
-                offerEntity.getDailyHours());
+        final Offer offer = new Offer();
         copyFieldsToDTO(offerEntity, offer);
         return offer;
     }
@@ -128,8 +124,8 @@ public class OfferConverter {
         offer.setToDate(offerEntity.getToDate());
         offer.setFromDate2(offerEntity.getFromDate2());
         offer.setToDate2(offerEntity.getToDate2());
-        offer.setHolidaysFrom(offerEntity.getHolidaysFrom());
-        offer.setHolidaysTo(offerEntity.getHolidaysTo());
+        offer.setUnavailableFrom(offerEntity.getUnavailableFrom());
+        offer.setUnavailableTo(offerEntity.getUnavailableTo());
         offer.setWorkingPlace(offerEntity.getWorkingPlace());
         offer.setNearestAirport(offerEntity.getNearestAirport());
         offer.setNearestPubTransport(offerEntity.getNearestPubTransport());
@@ -141,9 +137,9 @@ public class OfferConverter {
         offer.setDeduction(offerEntity.getDeduction());
         offer.setLodgingBy(offerEntity.getLodgingBy());
         offer.setLodgingCost(offerEntity.getLodgingCost());
-        offer.setLodgingPaymentFrequency(offerEntity.getLodgingPaymentFrequency());
+        offer.setLodgingCostFrequency(offerEntity.getLodgingCostFrequency());
         offer.setLivingCost(offerEntity.getLivingCost());
-        offer.setLivingPaymentFrequency(offerEntity.getLivingPaymentFrequency());
+        offer.setLivingCostFrequency(offerEntity.getLivingCostFrequency());
         offer.setCanteen(offerEntity.getCanteen());
     }
 
@@ -178,8 +174,8 @@ public class OfferConverter {
         offerEntity.setToDate(offer.getToDate());
         offerEntity.setFromDate2(offer.getFromDate2());
         offerEntity.setToDate2(offer.getToDate2());
-        offerEntity.setHolidaysFrom(offer.getHolidaysFrom());
-        offerEntity.setHolidaysTo(offer.getHolidaysTo());
+        offerEntity.setUnavailableFrom(offer.getUnavailableFrom());
+        offerEntity.setUnavailableTo(offer.getUnavailableTo());
         offerEntity.setWorkingPlace(offer.getWorkingPlace());
         offerEntity.setNearestAirport(offer.getNearestAirport());
         offerEntity.setNearestPubTransport(offer.getNearestPubTransport());
@@ -191,9 +187,9 @@ public class OfferConverter {
         offerEntity.setDeduction(offer.getDeduction());
         offerEntity.setLodgingBy(offer.getLodgingBy());
         offerEntity.setLodgingCost(offer.getLodgingCost());
-        offerEntity.setLodgingPaymentFrequency(offer.getLodgingPaymentFrequency());
+        offerEntity.setLodgingCostFrequency(offer.getLodgingCostFrequency());
         offerEntity.setLivingCost(offer.getLivingCost());
-        offerEntity.setLivingPaymentFrequency(offer.getLivingPaymentFrequency());
+        offerEntity.setLivingCostFrequency(offer.getLivingCostFrequency());
         offerEntity.setCanteen(offer.getCanteen());
     }
 }

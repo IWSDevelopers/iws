@@ -32,6 +32,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,9 +51,11 @@ public class OfferTest {
     private static final Integer MAXIMUM_WEEKS = 12;
     private static final Integer MINIMUM_WEEKS = 12;
     private static final Float WEEKLY_HOURS = 40.0f;
-    private static final Float DAILY_HOURS = 8.0f;
     private static final Date FROM_DATE = new Date();
     private static final Date TO_DATE = new Date(new Date().getTime() + 3600 * 24 * 90);
+    private static final BigDecimal PAYMENT = new BigDecimal(3000);
+    private static final BigDecimal LODGING_COST = new BigDecimal(1000);
+    private static final BigDecimal LIVING_COST = new BigDecimal(2000);
     private Offer offer = getMinimalOffer();
     /**
      * field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method
@@ -188,8 +191,8 @@ public class OfferTest {
     public void testDatesImmutability() {
         final Date now = new Date();
         final Date oldDate = (Date) now.clone();
-        offer.setHolidaysFrom(now);
-        offer.setHolidaysTo(now);
+        offer.setUnavailableFrom(now);
+        offer.setUnavailableTo(now);
         offer.setToDate(now);
         offer.setToDate2(now);
         offer.setFromDate(now);
@@ -197,8 +200,8 @@ public class OfferTest {
         offer.setNominationDeadline(now);
 
         now.setTime(now.getTime() + 1 + new Random().nextLong());
-        Assert.assertThat("HolidaysFrom", oldDate, is(offer.getHolidaysFrom()));
-        Assert.assertThat("HolidaysTo", oldDate, is(offer.getHolidaysTo()));
+        Assert.assertThat("HolidaysFrom", oldDate, is(offer.getUnavailableFrom()));
+        Assert.assertThat("HolidaysTo", oldDate, is(offer.getUnavailableTo()));
         Assert.assertThat("ToDate", oldDate, is(offer.getToDate()));
         Assert.assertThat("ToDate2", oldDate, is(offer.getToDate2()));
         Assert.assertThat("FromDate", oldDate, is(offer.getFromDate()));
@@ -372,8 +375,8 @@ public class OfferTest {
     public void testVerifyPresenceOfDeadlineDate() {
         final String error = "'nominationDeadline' presence is not required";
         offer = getMinimalOffer();
-        offer.setHolidaysFrom(null);
-        offer.setHolidaysTo(null);
+        offer.setUnavailableFrom(null);
+        offer.setUnavailableTo(null);
         offer.setFromDate(d[1]);
         offer.setToDate(d[2]);
         // --deadline--------------------------from-------to--------------------------->
@@ -465,27 +468,27 @@ public class OfferTest {
         offer.setNominationDeadline(d[0]);
         // --deadline-----------from--------holidaysFrom---to------holidaysTo---------->
         offer.setFromDate(d[1]);
-        offer.setHolidaysFrom(d[2]);
+        offer.setUnavailableFrom(d[2]);
         offer.setToDate(d[3]);
-        offer.setHolidaysTo(d[4]);
+        offer.setUnavailableTo(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
         // --deadline--------holidaysFrom-----------from------holidaysTo---to---------->
-        offer.setHolidaysFrom(d[1]);
+        offer.setUnavailableFrom(d[1]);
         offer.setFromDate(d[2]);
-        offer.setHolidaysTo(d[3]);
+        offer.setUnavailableTo(d[3]);
         offer.setToDate(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
         // --deadline-----------holidaysFrom------holidaysTo------from--------to------->
-        offer.setHolidaysFrom(d[1]);
-        offer.setHolidaysTo(d[2]);
+        offer.setUnavailableFrom(d[1]);
+        offer.setUnavailableTo(d[2]);
         offer.setFromDate(d[3]);
         offer.setToDate(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
         // --deadline-----------from--------to------holidaysTo-----holidaysFrom-------->
         offer.setFromDate(d[1]);
         offer.setToDate(d[2]);
-        offer.setHolidaysFrom(d[3]);
-        offer.setHolidaysTo(d[4]);
+        offer.setUnavailableFrom(d[3]);
+        offer.setUnavailableTo(d[4]);
         Assert.assertThat(error, offer.verifyDates(), is(false));
     }
 
@@ -621,6 +624,51 @@ public class OfferTest {
         offer.setToDate(null);
         Assert.assertThat(String.format("toDate%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+    }
+
+    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
+    @Test
+    public void testNullPaymentFrequency() {
+        offer.setPayment(null);
+        offer.setPaymentFrequency(null);
+        offer.verify();
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testNotNullablePaymentFrequencyWhenPaymentNotNull() {
+        offer.setPayment(PAYMENT);
+        offer.setPaymentFrequency(null);
+        offer.verify();
+    }
+
+    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
+    @Test
+    public void testNullLodgingCostFrequency() {
+        offer.setLodgingCostFrequency(null);
+        offer.setLodgingCost(null);
+        offer.verify();
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testNotNullableLodgingCostFrequencyWhenLodgingCostNotNull() {
+        offer.setLodgingCostFrequency(null);
+        offer.setLodgingCost(LODGING_COST);
+        offer.verify();
+    }
+
+    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
+    @Test
+    public void testNullLivingCostFrequency() {
+        offer.setLivingCostFrequency(null);
+        offer.setLivingCost(null);
+        offer.verify();
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testNotNullableLivingCostFrequencyWhenLivingCostNotNull() {
+        offer.setLivingCostFrequency(null);
+        offer.setLivingCost(LIVING_COST);
+        offer.verify();
     }
 
     public boolean isVerificationExceptionThrown() {

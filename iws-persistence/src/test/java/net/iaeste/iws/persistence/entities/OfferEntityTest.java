@@ -14,9 +14,11 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
@@ -58,6 +60,8 @@ public class OfferEntityTest {
     private static final Date FROM_DATE = new Date();
     private static final Date TO_DATE = new Date(new Date().getTime() + 3600 * 24 * 90);
     private static final BigDecimal PAYMENT = new BigDecimal(3000);
+    private static final BigDecimal LODGING_COST = new BigDecimal(1000);
+    private static final BigDecimal LIVING_COST = new BigDecimal(2000);
     private OfferDao dao;
     @PersistenceContext
     private EntityManager entityManager;
@@ -75,6 +79,7 @@ public class OfferEntityTest {
         offer.setRefNo(REF_NO);
         offer.setEmployerName(EMPLOYER_NAME);
         offer.getStudyLevels().add(StudyLevel.E);
+        offer.getFieldOfStudies().add(FieldOfStudy.AERONAUTIC_ENGINEERING);
         offer.setGender(Gender.E);
         offer.setLanguage1(Language.ENGLISH);
         offer.setLanguage1Level(LanguageLevel.E);
@@ -94,12 +99,12 @@ public class OfferEntityTest {
         Assert.assertNotNull(offer.getId());
 
         offer = entityManager.find(OfferEntity.class, offer.getId());
-
         Assert.assertEquals(REF_NO, offer.getRefNo());
-        Assert.assertEquals(NOMINATION_DEADLINE, offer.getNominationDeadline());
         Assert.assertEquals(EMPLOYER_NAME, offer.getEmployerName());
         Assert.assertEquals(1, offer.getStudyLevels().size());
         Assert.assertEquals(StudyLevel.E, offer.getStudyLevels().get(0));
+        Assert.assertEquals(1, offer.getFieldOfStudies().size());
+        Assert.assertEquals(FieldOfStudy.AERONAUTIC_ENGINEERING, offer.getFieldOfStudies().get(0));
         Assert.assertEquals(Gender.E, offer.getGender());
         Assert.assertEquals(Language.ENGLISH, offer.getLanguage1());
         Assert.assertEquals(LanguageLevel.E, offer.getLanguage1Level());
@@ -107,7 +112,6 @@ public class OfferEntityTest {
         Assert.assertEquals(MAXIMUM_WEEKS, offer.getMaximumWeeks());
         Assert.assertEquals(MINIMUM_WEEKS, offer.getMinimumWeeks());
         Assert.assertEquals(WEEKLY_HOURS, offer.getWeeklyHours());
-        Assert.assertEquals(DAILY_HOURS, offer.getDailyHours());
         Assert.assertEquals(FROM_DATE, offer.getFromDate());
         Assert.assertEquals(TO_DATE, offer.getToDate());
     }
@@ -325,6 +329,7 @@ public class OfferEntityTest {
     @Transactional
     public void testPayment() {
         offer.setPayment(BigDecimal.valueOf(1234567890.12));
+        offer.setPaymentFrequency(PaymentFrequency.M);
         dao.persist(offer);
     }
 
@@ -361,6 +366,7 @@ public class OfferEntityTest {
     @Transactional
     public void testLodgingCost() {
         offer.setLodgingCost(BigDecimal.valueOf(1234567890.12));
+        offer.setLodgingCostFrequency(PaymentFrequency.M);
         dao.persist(offer);
     }
 
@@ -383,6 +389,7 @@ public class OfferEntityTest {
     @Transactional
     public void testLivingCost() {
         offer.setLivingCost(BigDecimal.valueOf(1234567890.12));
+        offer.setLivingCostFrequency(PaymentFrequency.M);
         dao.persist(offer);
     }
 
@@ -432,36 +439,64 @@ public class OfferEntityTest {
         dao.persist(offer);
     }
 
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullPaymentFrequencyWhenPaymentNotNullOnUpdate() {
+        dao.persist(offer);
+        offer.setPayment(PAYMENT);
+        offer.setPaymentFrequency(null);
+        dao.persist(offer);
+    }
+
     @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     @Transactional
-    public void testNullLodgingPaymentFrequency() {
-        offer.setLodgingPaymentFrequency(null);
+    public void testNullLodgingCostFrequency() {
+        offer.setLodgingCostFrequency(null);
         offer.setLodgingCost(null);
         dao.persist(offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
-    public void testNullLodgingPaymentFrequencyWhenLodgingCostNotNull() {
-        offer.setLodgingPaymentFrequency(null);
+    public void testNullLodgingCostFrequencyWhenLodgingCostNotNull() {
+        offer.setLodgingCostFrequency(null);
+        offer.setLodgingCost(LODGING_COST);
+        dao.persist(offer);
+    }
+
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullLodgingCostFrequencyWhenLodgingCostNotNullOnUpdate() {
+        dao.persist(offer);
+        offer.setLodgingCostFrequency(null);
+        offer.setLodgingCost(LODGING_COST);
         dao.persist(offer);
     }
 
     @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     @Transactional
-    public void testNullLivingPaymentFrequency() {
-        offer.setLivingPaymentFrequency(null);
+    public void testNullLivingCostFrequency() {
+        offer.setLivingCostFrequency(null);
         offer.setLivingCost(null);
         dao.persist(offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
-    public void testNullLivingPaymentFrequencyWhenLivingCostNotNull() {
-        offer.setLivingPaymentFrequency(null);
-        offer.setLivingCost(null);
+    public void testNullLivingCostFrequencyWhenLivingCostNotNull() {
+        offer.setLivingCostFrequency(null);
+        offer.setLivingCost(LIVING_COST);
+        dao.persist(offer);
+    }
+
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testNullLivingCostFrequencyWhenLivingCostNotNullOnUpdate() {
+        dao.persist(offer);
+        offer.setLivingCostFrequency(null);
+        offer.setLivingCost(LIVING_COST);
         dao.persist(offer);
     }
 }

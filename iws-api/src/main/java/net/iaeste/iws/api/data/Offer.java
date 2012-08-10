@@ -55,68 +55,6 @@ public class Offer extends AbstractDto {
      * Empty Constructor, required for some communication frameworks.
      */
     public Offer() {
-        this.refNo = null;
-        this.nominationDeadline = null;
-        this.employerName = null;
-        //this.studyLevels is already initialized
-        this.gender = null;
-        this.language1 = null;
-        this.language1Level = null;
-        this.workDescription = null;
-        this.maximumWeeks = null;
-        this.minimumWeeks = null;
-        this.weeklyHours = null;
-        this.dailyHours = null;
-        this.fromDate = null;
-        this.toDate = null;
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param refNo              Reference Number
-     * @param nominationDeadline nomination deadline
-     * @param employerName       employer name
-     * @param studyLevels        list of study levels
-     * @param gender             Gender
-     * @param language1          Language 1
-     * @param language1Level     Language 1 level
-     * @param workDescription    work description
-     * @param minimumWeeks       minimum weeks
-     * @param maximumWeeks       maximum weeks
-     * @param weeklyHours        weekly hours
-     * @param dailyHours         daily hours
-     */
-    public Offer(final String refNo,
-                 final Date nominationDeadline,
-                 final String employerName,
-                 final List<StudyLevel> studyLevels,
-                 final Gender gender,
-                 final Language language1,
-                 final LanguageLevel language1Level,
-                 final String workDescription,
-                 final Integer minimumWeeks,
-                 final Integer maximumWeeks,
-                 final Float weeklyHours,
-                 final Float dailyHours,
-                 final Date fromDate,
-                 final Date toDate) {
-
-        //set required fields
-        setRefNo(refNo);
-        setNominationDeadline(nominationDeadline);
-        setEmployerName(employerName);
-        setStudyLevels(studyLevels);
-        setGender(gender);
-        setLanguage1(language1);
-        setLanguage1Level(language1Level);
-        setWorkDescription(workDescription);
-        setMaximumWeeks(maximumWeeks);
-        setMinimumWeeks(minimumWeeks);
-        setWeeklyHours(weeklyHours);
-        setDailyHours(dailyHours);
-        setFromDate(fromDate);
-        setToDate(toDate);
     }
 
     /**
@@ -177,8 +115,8 @@ public class Offer extends AbstractDto {
     private Date toDate;
     private Date fromDate2;
     private Date toDate2;
-    private Date holidaysFrom;
-    private Date holidaysTo;
+    private Date unavailableFrom;
+    private Date unavailableTo;
     private String workingPlace;
     private String nearestAirport;
     private String nearestPubTransport;
@@ -195,9 +133,9 @@ public class Offer extends AbstractDto {
     // Accommodation
     private String lodgingBy;
     private BigDecimal lodgingCost;
-    private PaymentFrequency lodgingPaymentFrequency;
+    private PaymentFrequency lodgingCostFrequency;
     private BigDecimal livingCost;
-    private int livingPaymentFrequency;
+    private PaymentFrequency livingCostFrequency;
     private Boolean canteen;
 
     public Boolean getCanteen() {
@@ -313,20 +251,20 @@ public class Offer extends AbstractDto {
         this.gender = gender;
     }
 
-    public Date getHolidaysFrom() {
-        return Copier.copy(holidaysFrom);
+    public Date getUnavailableFrom() {
+        return Copier.copy(unavailableFrom);
     }
 
-    public void setHolidaysFrom(final Date holidaysFrom) {
-        this.holidaysFrom = Copier.copy(holidaysFrom);
+    public void setUnavailableFrom(final Date unavailableFrom) {
+        this.unavailableFrom = Copier.copy(unavailableFrom);
     }
 
-    public Date getHolidaysTo() {
-        return Copier.copy(holidaysTo);
+    public Date getUnavailableTo() {
+        return Copier.copy(unavailableTo);
     }
 
-    public void setHolidaysTo(final Date holidaysTo) {
-        this.holidaysTo = Copier.copy(holidaysTo);
+    public void setUnavailableTo(final Date unavailableTo) {
+        this.unavailableTo = Copier.copy(unavailableTo);
     }
 
     public Long getId() {
@@ -409,12 +347,12 @@ public class Offer extends AbstractDto {
         this.livingCost = livingCost;
     }
 
-    public int getLivingPaymentFrequency() {
-        return livingPaymentFrequency;
+    public PaymentFrequency getLivingCostFrequency() {
+        return livingCostFrequency;
     }
 
-    public void setLivingPaymentFrequency(final int livingPaymentFrequency) {
-        this.livingPaymentFrequency = livingPaymentFrequency;
+    public void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
+        this.livingCostFrequency = livingCostFrequency;
     }
 
     public String getLodgingBy() {
@@ -433,12 +371,12 @@ public class Offer extends AbstractDto {
         this.lodgingCost = lodgingCost;
     }
 
-    public PaymentFrequency getLodgingPaymentFrequency() {
-        return lodgingPaymentFrequency;
+    public PaymentFrequency getLodgingCostFrequency() {
+        return lodgingCostFrequency;
     }
 
-    public void setLodgingPaymentFrequency(final PaymentFrequency lodgingPaymentFrequency) {
-        this.lodgingPaymentFrequency = lodgingPaymentFrequency;
+    public void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
+        this.lodgingCostFrequency = lodgingCostFrequency;
     }
 
     public Integer getMaximumWeeks() {
@@ -612,7 +550,7 @@ public class Offer extends AbstractDto {
         if (!id.equals(offer.id)) {
             return false;
         }
-        if (livingPaymentFrequency != offer.livingPaymentFrequency) {
+        if (livingCostFrequency != offer.livingCostFrequency) {
             return false;
         }
         if (canteen != null ? !canteen.equals(offer.canteen) : offer.canteen != null) {
@@ -657,10 +595,10 @@ public class Offer extends AbstractDto {
         if (gender != offer.gender) {
             return false;
         }
-        if (holidaysFrom != null ? !holidaysFrom.equals(offer.holidaysFrom) : offer.holidaysFrom != null) {
+        if (unavailableFrom != null ? !unavailableFrom.equals(offer.unavailableFrom) : offer.unavailableFrom != null) {
             return false;
         }
-        if (holidaysTo != null ? !holidaysTo.equals(offer.holidaysTo) : offer.holidaysTo != null) {
+        if (unavailableTo != null ? !unavailableTo.equals(offer.unavailableTo) : offer.unavailableTo != null) {
             return false;
         }
         if (language1 != offer.language1) {
@@ -696,7 +634,7 @@ public class Offer extends AbstractDto {
         if (lodgingCost != null ? !lodgingCost.equals(offer.lodgingCost) : offer.lodgingCost != null) {
             return false;
         }
-        if (lodgingPaymentFrequency != offer.lodgingPaymentFrequency) {
+        if (lodgingCostFrequency != offer.lodgingCostFrequency) {
             return false;
         }
         if (maximumWeeks != null ? !maximumWeeks.equals(offer.maximumWeeks) : offer.maximumWeeks != null) {
@@ -795,8 +733,8 @@ public class Offer extends AbstractDto {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (toDate != null ? toDate.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (fromDate2 != null ? fromDate2.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (toDate2 != null ? toDate2.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (holidaysFrom != null ? holidaysFrom.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (holidaysTo != null ? holidaysTo.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (unavailableFrom != null ? unavailableFrom.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (unavailableTo != null ? unavailableTo.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (workingPlace != null ? workingPlace.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nearestAirport != null ? nearestAirport.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nearestPubTransport != null ? nearestPubTransport.hashCode() : 0);
@@ -808,9 +746,9 @@ public class Offer extends AbstractDto {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (deduction != null ? deduction.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (lodgingBy != null ? lodgingBy.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (lodgingCost != null ? lodgingCost.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (lodgingPaymentFrequency != null ? lodgingPaymentFrequency.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (lodgingCostFrequency != null ? lodgingCostFrequency.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (livingCost != null ? livingCost.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + livingPaymentFrequency;
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (livingCostFrequency != null ? livingCostFrequency.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (canteen != null ? canteen.hashCode() : 0);
         return hash;
     }
@@ -852,8 +790,8 @@ public class Offer extends AbstractDto {
                 ", toDate=" + toDate +
                 ", fromDate2=" + fromDate2 +
                 ", toDate2=" + toDate2 +
-                ", holidaysFrom=" + holidaysFrom +
-                ", holidaysTo=" + holidaysTo +
+                ", unavailableFrom=" + unavailableFrom +
+                ", unavailableTo=" + unavailableTo +
                 ", workingPlace='" + workingPlace + '\'' +
                 ", nearestAirport='" + nearestAirport + '\'' +
                 ", nearestPubTransport='" + nearestPubTransport + '\'' +
@@ -865,9 +803,9 @@ public class Offer extends AbstractDto {
                 ", deduction=" + deduction +
                 ", lodgingBy='" + lodgingBy + '\'' +
                 ", lodgingCost=" + lodgingCost +
-                ", lodgingPaymentFrequency=" + lodgingPaymentFrequency +
+                ", lodgingCostFrequency=" + lodgingCostFrequency +
                 ", livingCost=" + livingCost +
-                ", livingPaymentFrequency=" + livingPaymentFrequency +
+                ", livingCostFrequency=" + livingCostFrequency +
                 ", canteen=" + canteen +
                 '}';
     }
@@ -888,8 +826,21 @@ public class Offer extends AbstractDto {
         if (!verifyNumberOfWeeks()) {
             errors.add("weeks are not set correctly");
         }
+        verifyFieldDependencies(errors);
         if (!errors.isEmpty()) {
             throw new VerificationException(errors.toString());
+        }
+    }
+
+    private void verifyFieldDependencies(Collection<String> errors) {
+        if (livingCost != null && livingCostFrequency == null) {
+            errors.add("'livingCostFrequency' is required if 'livingCost' is not null");
+        }
+        if (payment != null && paymentFrequency == null) {
+            errors.add("'paymentFrequency' is required if 'payment' is not null");
+        }
+        if (lodgingCost != null && lodgingCostFrequency == null) {
+            errors.add("'lodgingCostFrequency' is required if 'lodgingCost' is not null");
         }
     }
 
@@ -994,8 +945,8 @@ public class Offer extends AbstractDto {
         if (fromDate2 != null && toDate2 == null || fromDate2 == null && toDate2 != null) {
             return false;
         }
-        // if 'holidaysFrom' is present then 'holidaysTo' is needed to
-        if (holidaysFrom != null && holidaysTo == null || holidaysFrom == null && holidaysTo != null) {
+        // if 'unavailableFrom' is present then 'unavailableTo' is needed to
+        if (unavailableFrom != null && unavailableTo == null || unavailableFrom == null && unavailableTo != null) {
             return false;
         }
         return true;
@@ -1009,7 +960,7 @@ public class Offer extends AbstractDto {
         if (fromDate2 != null && fromDate2.compareTo(toDate2) > 0) {
             return false;
         }
-        if (holidaysFrom != null && holidaysFrom.compareTo(holidaysTo) > 0) {
+        if (unavailableFrom != null && unavailableFrom.compareTo(unavailableTo) > 0) {
             return false;
         }
         return true;
@@ -1040,18 +991,18 @@ public class Offer extends AbstractDto {
     }
 
     private boolean verifyDatesHolidaysOrder() {
-        if (holidaysFrom != null) {
+        if (unavailableFrom != null) {
             // holidays "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
             //      (otherwise the period of the internship can be shown unambiguously by changing "from" and "to" dates
             if (fromDate != null) {
-                if (!(holidaysFrom.compareTo(fromDate) > 0 && holidaysFrom.compareTo(toDate) < 0
-                        && holidaysTo.compareTo(fromDate) > 0 && holidaysTo.compareTo(toDate) < 0)) {
+                if (!(unavailableFrom.compareTo(fromDate) > 0 && unavailableFrom.compareTo(toDate) < 0
+                        && unavailableTo.compareTo(fromDate) > 0 && unavailableTo.compareTo(toDate) < 0)) {
                     return false;
                 }
             }
             if (fromDate2 != null) {
-                if (!(holidaysFrom.compareTo(fromDate2) > 0 && holidaysFrom.compareTo(toDate2) < 0
-                        && holidaysTo.compareTo(fromDate2) > 0 && holidaysTo.compareTo(toDate2) < 0)) {
+                if (!(unavailableFrom.compareTo(fromDate2) > 0 && unavailableFrom.compareTo(toDate2) < 0
+                        && unavailableTo.compareTo(fromDate2) > 0 && unavailableTo.compareTo(toDate2) < 0)) {
                     return false;
                 }
             }
@@ -1090,8 +1041,8 @@ public class Offer extends AbstractDto {
         to.setToDate(from.getToDate());
         to.setFromDate2(from.getFromDate2());
         to.setToDate2(from.getToDate2());
-        to.setHolidaysFrom(from.getHolidaysFrom());
-        to.setHolidaysTo(from.getHolidaysTo());
+        to.setUnavailableFrom(from.getUnavailableFrom());
+        to.setUnavailableTo(from.getUnavailableTo());
         to.setWorkingPlace(from.getWorkingPlace());
         to.setNearestAirport(from.getNearestAirport());
         to.setNearestPubTransport(from.getNearestPubTransport());
@@ -1103,9 +1054,9 @@ public class Offer extends AbstractDto {
         to.setDeduction(from.getDeduction());
         to.setLodgingBy(from.getLodgingBy());
         to.setLodgingCost(from.getLodgingCost());
-        to.setLodgingPaymentFrequency(from.getLodgingPaymentFrequency());
+        to.setLodgingCostFrequency(from.getLodgingCostFrequency());
         to.setLivingCost(from.getLivingCost());
-        to.setLivingPaymentFrequency(from.getLivingPaymentFrequency());
+        to.setLivingCostFrequency(from.getLivingCostFrequency());
         to.setCanteen(from.getCanteen());
     }
 

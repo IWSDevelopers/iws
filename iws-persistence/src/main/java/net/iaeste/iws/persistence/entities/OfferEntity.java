@@ -106,7 +106,7 @@ public class OfferEntity {
     @ElementCollection
     @Enumerated(value = EnumType.STRING)
     @Column(name = "field_of_studies", nullable = false)
-    private List<FieldOfStudy> fieldOfStudies;
+    private List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
 
     /**
      * Has to be defined as a List of Strings because
@@ -195,12 +195,12 @@ public class OfferEntity {
     private Date toDate2;
 
     @Temporal(value = TemporalType.DATE)
-    @Column(name = "holidays_from")
-    private Date holidaysFrom;
+    @Column(name = "unavailable_from")
+    private Date unavailableFrom;
 
     @Temporal(value = TemporalType.DATE)
-    @Column(name = "holidays_to")
-    private Date holidaysTo;
+    @Column(name = "unavailable_to")
+    private Date unavailableTo;
 
     @Column(name = "working_place")
     private String workingPlace;
@@ -241,14 +241,14 @@ public class OfferEntity {
     @Column(name = "lodging_cost", scale = 12, precision = 2)
     private BigDecimal lodgingCost;
 
-    @Column(name = "lodging_payment_frequency", length = 1)
-    private PaymentFrequency lodgingPaymentFrequency;
+    @Column(name = "lodging_cost_frequency", length = 1)
+    private PaymentFrequency lodgingCostFrequency;
 
     @Column(name = "living_cost", scale = 12, precision = 2)
     private BigDecimal livingCost;
 
-    @Column(name = "living_payment_frequency", length = 1)
-    private PaymentFrequency livingPaymentFrequency;
+    @Column(name = "living_cost_frequency", length = 1)
+    private PaymentFrequency livingCostFrequency;
 
     @Column(name = "canteen")
     private Boolean canteen;
@@ -365,20 +365,20 @@ public class OfferEntity {
         this.gender = gender;
     }
 
-    public Date getHolidaysFrom() {
-        return holidaysFrom;
+    public Date getUnavailableFrom() {
+        return unavailableFrom;
     }
 
-    public void setHolidaysFrom(final Date holidaysFrom) {
-        this.holidaysFrom = holidaysFrom;
+    public void setUnavailableFrom(final Date unavailableFrom) {
+        this.unavailableFrom = unavailableFrom;
     }
 
-    public Date getHolidaysTo() {
-        return holidaysTo;
+    public Date getUnavailableTo() {
+        return unavailableTo;
     }
 
-    public void setHolidaysTo(final Date holidaysTo) {
-        this.holidaysTo = holidaysTo;
+    public void setUnavailableTo(final Date unavailableTo) {
+        this.unavailableTo = unavailableTo;
     }
 
     public Long getId() {
@@ -461,12 +461,12 @@ public class OfferEntity {
         this.livingCost = livingCost;
     }
 
-    public PaymentFrequency getLivingPaymentFrequency() {
-        return livingPaymentFrequency;
+    public PaymentFrequency getLivingCostFrequency() {
+        return livingCostFrequency;
     }
 
-    public void setLivingPaymentFrequency(final PaymentFrequency livingPaymentFrequency) {
-        this.livingPaymentFrequency = livingPaymentFrequency;
+    public void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
+        this.livingCostFrequency = livingCostFrequency;
     }
 
     public String getLodgingBy() {
@@ -485,12 +485,12 @@ public class OfferEntity {
         this.lodgingCost = lodgingCost;
     }
 
-    public PaymentFrequency getLodgingPaymentFrequency() {
-        return lodgingPaymentFrequency;
+    public PaymentFrequency getLodgingCostFrequency() {
+        return lodgingCostFrequency;
     }
 
-    public void setLodgingPaymentFrequency(final PaymentFrequency lodgingPaymentFrequency) {
-        this.lodgingPaymentFrequency = lodgingPaymentFrequency;
+    public void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
+        this.lodgingCostFrequency = lodgingCostFrequency;
     }
 
     public Integer getMaximumWeeks() {

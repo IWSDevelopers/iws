@@ -16,8 +16,8 @@ create table offers (
         from_date_2               date,
         to_date_2                 date,
         gender                    varchar(1)    NOT NULL,
-        holidays_from             date,
-        holidays_to               date,
+        unavailable_from          date,
+        unavailable_to            date,
         language_1                varchar(255)  NOT NULL,
         language_1_level          varchar(1)    NOT NULL,
         language_1_op             varchar(1),
@@ -27,10 +27,10 @@ create table offers (
         language_3                varchar(255),
         language_3_level          varchar(1),
         living_cost               decimal(12,2),
-        living_payment_frequency  integer,
+        living_cost_frequency     integer,
         lodging_by                varchar(255),
         lodging_cost              decimal(12,2),
-        lodging_payment_frequency integer,
+        lodging_cost_frequency    integer,
         max_weeks                 integer       NOT NULL,
         min_weeks                 integer       NOT NULL,
         nearest_airport           varchar(255),
@@ -47,3 +47,17 @@ create table offers (
         primary key (id),
         unique (ref_no)
     );
+
+CREATE TRIGGER offers_frequency_dependency_on_insert BEFORE INSERT ON offers
+REFERENCING NEW AS newrow FOR EACH ROW
+  WHEN((newrow.lodging_cost IS NOT NULL AND newrow.lodging_cost_frequency IS NULL)
+    OR (newrow.living_cost IS NOT NULL AND newrow.living_cost_frequency IS NULL)
+    OR (newrow.payment IS NOT NULL AND newrow.payment_frequency IS NULL))
+    SIGNAL SQLSTATE '45000';
+
+CREATE TRIGGER offers_frequency_dependency_on_update BEFORE UPDATE ON offers
+REFERENCING NEW AS newrow OLD AS oldrow FOR EACH ROW
+  WHEN((newrow.lodging_cost IS NOT NULL AND newrow.lodging_cost_frequency IS NULL)
+    OR (newrow.living_cost IS NOT NULL AND newrow.living_cost_frequency IS NULL)
+    OR (newrow.payment IS NOT NULL AND newrow.payment_frequency IS NULL))
+    SIGNAL SQLSTATE '45000';

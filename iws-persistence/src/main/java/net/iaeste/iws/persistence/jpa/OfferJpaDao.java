@@ -18,14 +18,15 @@ import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public class OfferJpaDao implements OfferDao {
+public final class OfferJpaDao implements OfferDao {
 
     private final EntityManager entityManager;
 
@@ -38,7 +39,6 @@ public class OfferJpaDao implements OfferDao {
         this.entityManager = entityManager;
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -47,46 +47,71 @@ public class OfferJpaDao implements OfferDao {
         entityManager.persist(offer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<OfferEntity> findAll() {
-        return entityManager.createNamedQuery("OfferEntity.findAll", OfferEntity.class).getResultList();
+        final Query query = entityManager.createNamedQuery("OfferEntity.findAll", OfferEntity.class);
+
+        return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OfferEntity findOffer(final Long offerId) {
-        if (offerId == null) {
-            return null;
-        }
-        final List<OfferEntity> offers = entityManager.createNamedQuery("OfferEntity.findById", OfferEntity.class)
-                .setParameter("id", offerId).getResultList();
-        if (offers.size() != 1) {
-            return null;
-        }
-        return offers.get(0);
+        OfferEntity entity = null;
 
+        if (offerId != null) {
+            final Query query = entityManager.createNamedQuery("OfferEntity.findById", OfferEntity.class);
+            query.setParameter("id", offerId);
+
+            final List<OfferEntity> found = query.getResultList();
+            if (found.size() == 1) {
+                entity = found.get(0);
+            }
+        }
+
+        return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<OfferEntity> findOffers(final List<Long> offerIds) {
-        final List<OfferEntity> offers = entityManager.createNamedQuery("OfferEntity.findByIds", OfferEntity.class)
-                .setParameter("ids", offerIds).getResultList();
-        return offers;
+        final Query query = entityManager.createNamedQuery("OfferEntity.findByIds", OfferEntity.class);
+        query.setParameter("ids", offerIds);
+
+        return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean delete(final Long offerId) {
         final OfferEntity offer = findOffer(offerId);
-        if (offer == null) {
-            return false;
-        } else {
+        boolean result = false;
+
+        if (offer != null) {
             entityManager.remove(offer);
-            return true;
+            result = true;
         }
+
+        return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Integer delete(final List<Long> offerIds) {
-        return entityManager.createNamedQuery("OfferEntity.deleteByIds").setParameter("ids", offerIds).executeUpdate();
-    }
+        final Query query = entityManager.createNamedQuery("OfferEntity.deleteByIds");
+        query.setParameter("ids", offerIds);
 
+        return query.executeUpdate();
+    }
 }

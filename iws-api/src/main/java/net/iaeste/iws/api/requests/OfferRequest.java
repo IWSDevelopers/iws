@@ -20,7 +20,6 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,12 +62,10 @@ public final class OfferRequest extends AbstractRequest {
     }
 
     public List<Offer> getEditOffers() {
-        // ToDo Kim; @Michael, as I've already told you - please DO NOT use the unmodifialbleList, they give us other problems!
-        return Collections.unmodifiableList(editOffers);
+        return Copier.copy(editOffers);
     }
 
     public List<Long> getDeleteOfferIDs() {
-        // ToDo Kim; @Michael, as I've already told you - please DO NOT use the unmodifialbleList, they give us other problems!
-        return Collections.unmodifiableList(deleteOfferIDs);
+        return Copier.copy(deleteOfferIDs);
     }
 }

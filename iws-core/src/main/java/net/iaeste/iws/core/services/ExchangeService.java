@@ -51,7 +51,6 @@ public class ExchangeService {
     public ExchangeService(final EntityManager entityManager) {
         this.entityManager = entityManager;
         this.offerDao = new OfferJpaDao(entityManager);
-        // TODO Michal: @Kim: is there any better place for the factory? should ConverterFactory be changed into singleton?
         this.offerConverter = new OfferConverter();
     }
 

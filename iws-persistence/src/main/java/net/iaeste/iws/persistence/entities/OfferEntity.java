@@ -61,7 +61,7 @@ import java.util.List;
         @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM OfferEntity o WHERE o.id IN :ids")
 })
-public class OfferEntity {
+public class OfferEntity implements Mergeable<OfferEntity> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -635,5 +635,13 @@ public class OfferEntity {
 
     public void setWorkingPlace(final String workingPlace) {
         this.workingPlace = workingPlace;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void merge(final OfferEntity obj) {
+        // TODO Kim; @Michal, please use this method to merge offers.
     }
 }

@@ -44,13 +44,15 @@ import java.util.regex.Pattern;
 /**
  * Standard IAESTE Offer.
  *
- * @author  Michael Pickelbauer / last $Author:$
+ * @author Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class Offer extends AbstractResponse implements Verifiable {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
@@ -70,10 +72,8 @@ public final class Offer extends AbstractResponse implements Verifiable {
         copyFields(offer, this);
     }
 
-    public Offer(final Offer offer, final EntityIdentificationException e) {
-        // ToDo Kim; @Michal, Invalid Constructor, an Object cannot both have an error AND a result object!
+    public Offer(final EntityIdentificationException e) {
         super(e.getError(), e.getMessage());
-        copyFields(offer, this);
     }
 
     private Long id;
@@ -527,6 +527,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
     }
 
     // ToDo Kim; @Michal, an Offer always contain a *uniqie* RefNo, this can be used
+
     /**
      * first thought was that id should be sufficient, but what if two
      * NOT PRESISTED offers want to be compared, then there is no ID

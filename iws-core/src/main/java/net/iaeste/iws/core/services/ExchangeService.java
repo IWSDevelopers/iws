@@ -33,6 +33,7 @@ import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,26 +62,43 @@ public class ExchangeService {
      */
     public OfferResponse processOffers(final AuthenticationToken token, final OfferRequest request) {
         final List<Offer> offers = new ArrayList<>(request.getEditOffers().size() + request.getDeleteOfferIDs().size());
+        final EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            // If DTO objects has an id, we're trying to update the database.
+            // If DTO has an id and there is no such entity, an exception is thrown.
+            for (final Offer offer : request.getEditOffers()) {
+                final OfferEntity unmanagedEntity = offerConverter.toEntity(offer);
 
-        // If DTO objects has an id, we're trying to update the database.
-        // If DTO has an id and there is no such entity, an exception is thrown.
-        for (final Offer offer : request.getEditOffers()) {
-            try {
-                final OfferEntity offerEntity = offerConverter.toEntity(offer);
-                offerDao.persist(offerEntity);
-            } catch (EntityIdentificationException e) {
-                offers.add(new Offer(offer, e));
+                if (offer.getId() == null) { // new offer
+                    offerDao.persist(unmanagedEntity);
+                } else { // update offer
+                    final OfferEntity existingOffer = offerDao.findOffer(offer.getId());
+                    if (existingOffer != null && existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
+                        existingOffer.merge(unmanagedEntity);
+                        offerDao.persist(existingOffer);
+                    } else {
+                        offers.add(new Offer(new EntityIdentificationException(offer.getId())));
+                    }
+                }
             }
-        }
-        for (final Long offer : request.getDeleteOfferIDs()) {
-            if (!offerDao.delete(offer)) {
-                final Offer o = new Offer();
-                o.setId(offer);
-                offers.add(new Offer(o, new EntityIdentificationException("No entity for given Id.")));
+            for (final Long offer : request.getDeleteOfferIDs()) {
+                if (!offerDao.delete(offer)) { // collect all inexistent offers
+                    offers.add(new Offer(new EntityIdentificationException(offer)));
+                }
+            }
+        } finally {
+            if (transaction != null) {
+                if (offers.isEmpty()) {
+                    transaction.commit();
+                } else {
+                    transaction.rollback();
+                }
             }
         }
         return new OfferResponse(offers);
     }
+
 
     public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         final OfferJpaDao dao = new OfferJpaDao(entityManager);

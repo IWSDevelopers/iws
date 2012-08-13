@@ -16,41 +16,57 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.utils.Copier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class OfferResponse extends AbstractResponse {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private List<Offer> offers;
+    private final List<Offer> offers;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public OfferResponse() {
+        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
+        this.offers = new ArrayList<>();
     }
 
     /**
      * Error Constructor.
      *
-     * @param error    IWS Error Object
-     * @param message  Error Message
+     * @param error   IWS Error Object
+     * @param message Error Message
      */
     public OfferResponse(final IWSError error, final String message) {
         super(error, message);
+        this.offers = new ArrayList<>();
     }
 
+    /**
+     * Response is created when the request was fine but some of the entities could not be processed.
+     * <p/>
+     * In case of providing empty list as a parameter, response is correct.
+     *
+     * @param offers list of offers for which something went wrong
+     */
     public OfferResponse(final List<Offer> offers) {
+        super(offers.isEmpty() ? IWSErrors.SUCCESS : IWSErrors.PERSISTENCE_ERROR,
+                offers.isEmpty() ? IWSConstants.SUCCESS : "Some of the offers could not be pesisted");
         this.offers = Copier.copy(offers);
     }
 

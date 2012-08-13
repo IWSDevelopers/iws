@@ -15,6 +15,9 @@
 
 package net.iaeste.iws.api.dtos;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.FieldOfStudy;
@@ -34,9 +37,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -122,7 +122,7 @@ public class OfferTest {
         offer.setId(1L);
         final String msg = "Id does not exists.";
         final EntityIdentificationException e = new EntityIdentificationException(msg);
-        final Offer fallenOffer = new Offer(offer, e);
+        final Offer fallenOffer = new Offer(e);
         Assert.assertThat(fallenOffer.isOk(), is(false));
         Assert.assertThat(fallenOffer.getMessage(), is(msg));
         Assert.assertThat(fallenOffer.getError(), is(e.getError()));

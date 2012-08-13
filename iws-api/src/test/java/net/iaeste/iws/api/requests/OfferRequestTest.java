@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
+import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.Copier;
 import org.junit.Assert;
@@ -137,6 +138,14 @@ public class OfferRequestTest {
     @Test
     public void testVerifyValidCreateRequest() {
         final List<Offer> createOffers = Copier.copy(validCreateOffers);
+        final OfferRequest requestWithInvalidOffer = new OfferRequest(createOffers, emptyIdList);
+        requestWithInvalidOffer.verify();
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testRequestWithFallibleOffer() {
+        final List<Offer> createOffers = Copier.copy(validCreateOffers);
+        createOffers.add(new Offer(new EntityIdentificationException("")));
         final OfferRequest requestWithInvalidOffer = new OfferRequest(createOffers, emptyIdList);
         requestWithInvalidOffer.verify();
     }

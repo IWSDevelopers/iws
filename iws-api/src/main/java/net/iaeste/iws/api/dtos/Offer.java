@@ -820,6 +820,10 @@ public final class Offer extends AbstractResponse implements Verifiable {
      */
     @Override
     public void verify() throws VerificationException {
+        if (!isOk()) {
+            throw new VerificationException(getMessage());
+        }
+
         final Collection<String> errors = new ArrayList<>();
         verifyNotNullableFields(errors);
         if (!verifyRefNo()) {

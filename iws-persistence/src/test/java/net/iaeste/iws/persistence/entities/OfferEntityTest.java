@@ -442,7 +442,7 @@ public class OfferEntityTest {
 
     @Transactional
     @Test(expected = PersistenceException.class)
-    @Ignore("Is this test suppose to work ?")
+    @Ignore("TODO: test is fine, fix the db schema")
     public void testNullPaymentFrequencyWhenPaymentNotNullOnUpdate() {
         dao.persist(offer);
         offer.setPayment(PAYMENT);
@@ -468,7 +468,7 @@ public class OfferEntityTest {
 
     @Test(expected = PersistenceException.class)
     @Transactional
-    @Ignore("TODO: Test is fine, fix the db schema.")
+    @Ignore("TODO: test is fine, fix the db schema")
     public void testNullLodgingCostFrequencyWhenLodgingCostNotNullOnUpdate() {
         dao.persist(offer);
         offer.setLodgingCostFrequency(null);
@@ -495,7 +495,7 @@ public class OfferEntityTest {
 
     @Test(expected = PersistenceException.class)
     @Transactional
-    @Ignore("TODO: is fine, fix the db schema.")
+    @Ignore("TODO: test is fine, fix the db schema")
     public void testNullLivingCostFrequencyWhenLivingCostNotNullOnUpdate() {
         dao.persist(offer);
         offer.setLivingCostFrequency(null);

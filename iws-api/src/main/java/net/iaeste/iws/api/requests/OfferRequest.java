@@ -21,6 +21,8 @@ import net.iaeste.iws.api.utils.Copier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -35,7 +37,7 @@ public final class OfferRequest extends AbstractRequest {
      */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private final List<Offer> editOffers;
+    private final List<Offer> updateOffers;
     private final List<Long> deleteOfferIDs;
 
     /**
@@ -46,8 +48,8 @@ public final class OfferRequest extends AbstractRequest {
         this(new ArrayList<Offer>(), new ArrayList<Long>());
     }
 
-    public OfferRequest(final List<Offer> editOffers, final List<Long> deleteOfferIDs) {
-        this.editOffers = Copier.copy(editOffers);
+    public OfferRequest(final List<Offer> updateOffers, final List<Long> deleteOfferIDs) {
+        this.updateOffers = Copier.copy(updateOffers);
         this.deleteOfferIDs = Copier.copy(deleteOfferIDs);
     }
 
@@ -56,13 +58,43 @@ public final class OfferRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        for (final Offer offer : editOffers) {
+        final Set<String> refNoSet = new TreeSet<>();
+        final Set<Long> idSet = new TreeSet<>();
+        final Set<Long> deleteIdSet = new TreeSet<>();
+
+        for (final Offer offer : updateOffers) {
+            if (offer == null) {
+                throw new VerificationException("DTO cannot be null.");
+            }
             offer.verify();
+
+            if (offer.getId() != null) { // check for duplicated Ids
+                if (idSet.contains(offer.getId())) {
+                    throw new VerificationException("Duplicated DTOs' ids in the request.");
+                }
+                idSet.add(offer.getId());
+            }
+            if (refNoSet.contains(offer.getRefNo())) { // check for duplicated refNos
+                throw new VerificationException("Duplicated DTOs' refNos in the request.");
+            }
+            refNoSet.add(offer.getRefNo());
+        }
+        for (final Long offerId : deleteOfferIDs) {
+            if (offerId == null) {
+                throw new VerificationException("Id cannot be null.");
+            }
+            if (idSet.contains(offerId)) {
+                throw new VerificationException("Cannot edit and delete same entity in one request.");
+            }
+            if (deleteIdSet.contains(offerId)) {
+                throw new VerificationException("Duplicated ids for deletion.");
+            }
+            deleteIdSet.add(offerId);
         }
     }
 
-    public List<Offer> getEditOffers() {
-        return Copier.copy(editOffers);
+    public List<Offer> getUpdateOffers() {
+        return Copier.copy(updateOffers);
     }
 
     public List<Long> getDeleteOfferIDs() {

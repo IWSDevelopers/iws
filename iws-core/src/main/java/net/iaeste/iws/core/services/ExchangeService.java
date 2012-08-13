@@ -61,13 +61,13 @@ public class ExchangeService {
      * @return OfferResponse contains list of Fallible Offers for which processing failed.
      */
     public OfferResponse processOffers(final AuthenticationToken token, final OfferRequest request) {
-        final List<Offer> offers = new ArrayList<>(request.getEditOffers().size() + request.getDeleteOfferIDs().size());
+        final List<Offer> offers = new ArrayList<>(request.getUpdateOffers().size() + request.getDeleteOfferIDs().size());
         final EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
             // If DTO objects has an id, we're trying to update the database.
             // If DTO has an id and there is no such entity, an exception is thrown.
-            for (final Offer offer : request.getEditOffers()) {
+            for (final Offer offer : request.getUpdateOffers()) {
                 final OfferEntity unmanagedEntity = offerConverter.toEntity(offer);
 
                 if (offer.getId() == null) { // new offer

@@ -15,6 +15,7 @@
 
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.dtos.OfferTestUtility.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 
@@ -32,7 +33,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,18 +44,6 @@ import java.util.Random;
  * @since 1.7
  */
 public class OfferTest {
-    private static final String REF_NO = "AT-2012-1234-AB";
-    private static final Date NOMINATION_DEADLINE = new Date();
-    private static final String EMPLOYER_NAME = "Test_Employer_1";
-    private static final String WORK_DESCRIPTION = "nothing";
-    private static final Integer MAXIMUM_WEEKS = 12;
-    private static final Integer MINIMUM_WEEKS = 12;
-    private static final Float WEEKLY_HOURS = 40.0f;
-    private static final Date FROM_DATE = new Date();
-    private static final Date TO_DATE = new Date(new Date().getTime() + 3600 * 24 * 90);
-    private static final BigDecimal PAYMENT = new BigDecimal(3000);
-    private static final BigDecimal LODGING_COST = new BigDecimal(1000);
-    private static final BigDecimal LIVING_COST = new BigDecimal(2000);
     private Offer offer = getMinimalOffer();
     /**
      * field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method
@@ -88,32 +76,6 @@ public class OfferTest {
     public void before() {
         setUpDates();
         offer = getMinimalOffer();
-    }
-
-    public static Offer getEmptyOffer() {
-        return new Offer();
-    }
-
-    public static Offer getMinimalOffer() {
-        final Offer minimalOffer = new Offer();
-        minimalOffer.setRefNo(REF_NO);
-        minimalOffer.setEmployerName(EMPLOYER_NAME);
-        final List<StudyLevel> list = new ArrayList<StudyLevel>(1);
-        list.add(StudyLevel.E);
-        final List<FieldOfStudy> fieldOfStudies = new ArrayList<FieldOfStudy>();
-        fieldOfStudies.add(FieldOfStudy.IT);
-        minimalOffer.setFieldOfStudies(fieldOfStudies);
-        minimalOffer.setStudyLevels(list);
-        minimalOffer.setGender(Gender.E);
-        minimalOffer.setLanguage1(Language.ENGLISH);
-        minimalOffer.setLanguage1Level(LanguageLevel.E);
-        minimalOffer.setWorkDescription(WORK_DESCRIPTION);
-        minimalOffer.setMaximumWeeks(MAXIMUM_WEEKS);
-        minimalOffer.setMinimumWeeks(MINIMUM_WEEKS);
-        minimalOffer.setWeeklyHours(WEEKLY_HOURS);
-        minimalOffer.setFromDate(d[1]);
-        minimalOffer.setToDate(d[2]);
-        return minimalOffer;
     }
 
     @Test
@@ -154,8 +116,8 @@ public class OfferTest {
         Assert.assertThat("MaximumWeeks", MAXIMUM_WEEKS, is(offer.getMaximumWeeks()));
         Assert.assertThat("MinimumWeeks", MINIMUM_WEEKS, is(offer.getMinimumWeeks()));
         Assert.assertThat("WeeklyHours", WEEKLY_HOURS, is(offer.getWeeklyHours()));
-        Assert.assertThat("fromDate", d[1], is(offer.getFromDate()));
-        Assert.assertThat("toDate", d[2], is(offer.getToDate()));
+        Assert.assertThat("fromDate", FROM_DATE, is(offer.getFromDate()));
+        Assert.assertThat("toDate", TO_DATE, is(offer.getToDate()));
     }
 
     @Test

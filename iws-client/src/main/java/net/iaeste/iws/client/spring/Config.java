@@ -48,12 +48,13 @@ public class Config {
     private DataSource prepareHSQLDataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.HSQL)
-                .addScript("classpath:/hsqldb/init_tables.sql")
-                .addScript("classpath:/hsqldb/init_views.sql")
-                .addScript("classpath:/hsqldb/init_data.sql")
-                .addScript("classpath:/hsqldb/exchange-init.sql")
-                .addScript("classpath:/hsqldb/exchange-views.sql")
-                .addScript("classpath:/hsqldb/exchange-data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/offers-init.sql")
+//                .addScript("classpath:/hsqldb/exchange-init.sql")
+//                .addScript("classpath:/hsqldb/exchange-views.sql")
+//                .addScript("classpath:/hsqldb/exchange-data.sql")
                 .build();
     }
 

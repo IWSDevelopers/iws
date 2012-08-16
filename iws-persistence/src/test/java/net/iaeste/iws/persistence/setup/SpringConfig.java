@@ -32,7 +32,7 @@ import javax.sql.DataSource;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.6
+ * @since   1.7
  */
 @Configuration
 @EnableTransactionManagement
@@ -42,14 +42,14 @@ public class SpringConfig {
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.HSQL)
-                .addScript("hsqldb/init_tables.sql")
-                .addScript("hsqldb/init_views.sql")
-                .addScript("hsqldb/init_data.sql")
-                .addScript("hsqldb/offers-init.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/offers-init.sql")
                 // Commented, until Theis & Michal learn how to write HSQL scripts.
-                //.addScript("hsqldb/exchange-init.sql")
-                //.addScript("hsqldb/exchange-views.sql")
-                //.addScript("hsqldb/exchange-data.sql")
+                //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
+                //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
+                //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
                 .build();
     }
 

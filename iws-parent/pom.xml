@@ -154,7 +154,7 @@
             <dependency>
                 <groupId>javax.persistence</groupId>
                 <artifactId>persistence-api</artifactId>
-                <version>1.0</version>
+                <version>1.0.2</version>
             </dependency>
             <dependency>
                 <groupId>postgresql</groupId>
@@ -174,32 +174,37 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>3.1.1.RELEASE</version>
+                <version>3.1.2.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>3.1.1.RELEASE</version>
+                <version>3.1.2.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>3.1.1.RELEASE</version>
+                <version>3.1.2.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>3.1.1.RELEASE</version>
+                <version>3.1.2.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>3.1.1.RELEASE</version>
+                <version>3.1.2.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.javaconfig</groupId>
+                <artifactId>spring-javaconfig</artifactId>
+                <version>1.0.0.m3</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
                 <artifactId>hibernate-jpa-2.0-api</artifactId>
-                <version>1.0.0.Final</version>
+                <version>1.0.1.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
@@ -214,7 +219,7 @@
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
-                <version>1.2.16</version>
+                <version>1.2.17</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.callers.AdministrationCaller
+ * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.SpringAdministrationclient
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.fitnesse.callers;
+package net.iaeste.iws.fitnesse.spring;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -27,103 +27,89 @@ import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
-import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+import net.iaeste.iws.core.AdministrationController;
+import net.iaeste.iws.core.services.ServiceFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 /**
- * The IWS FitNesse implementation of the API logic. The Class will attempt to
- * invoke the IWS Client module, and wrap all calls with an Exception check that
- * will throw a new {@code StopTestException} if an error occured - this is the
- * expected behaviour for the FitNesse tests.
- *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class AdministrationCaller implements Administration {
+public final class SpringAdministrationclient implements Administration {
 
-    private final Administration administration = null;//new AdministrationClient();
+    private final Administration administration;
+
+    /**
+     * Default Constructor, initializes the Core Service Factory with the Spring
+     * based EntityManager instance.
+     */
+    public SpringAdministrationclient(final EntityManager entityManager) {
+        final ServiceFactory factory = new ServiceFactory(entityManager);
+        administration = new AdministrationController(factory);
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public Fallible processUsers(final AuthenticationToken token, final UserRequest request) {
-        try {
-            return administration.processUsers(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return administration.processUsers(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public UserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
-        try {
-            return administration.fetchUsers(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return administration.fetchUsers(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Fallible processGroups(final AuthenticationToken token, final GroupRequest request) {
-        try {
-            return administration.processGroups(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return administration.processGroups(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public GroupResponse fetchGroups(final AuthenticationToken token, final FetchGroupRequest request) {
-        try {
-            return administration.fetchGroups(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return administration.fetchGroups(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
-        try {
-            return administration.processCountries(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return administration.processCountries(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        try {
-            return administration.fetchCountries(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return administration.fetchCountries(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        try {
-            return administration.processUserGroupAssignment(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return administration.processUserGroupAssignment(token, request);
     }
 }

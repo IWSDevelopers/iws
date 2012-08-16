@@ -14,15 +14,22 @@
  */
 package net.iaeste.iws.client;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.Access;
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.PermissionResponse;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -34,12 +41,6 @@ public class AccessClientTest {
     private final Access access = new AccessClient();
 
     @Test
-    public void testDummy() {
-        assertThat(Boolean.TRUE, is(true));
-    }
-
-    @Test
-    //@Ignore("TYODO Kim; something is not working...")
     public void testInvalidGenerateSession() {
         final AuthenticationRequest request = new AuthenticationRequest();
 
@@ -48,6 +49,41 @@ public class AccessClientTest {
         assertThat(response.isOk(), is(false));
         assertThat(response.getToken(), is(nullValue()));
         assertThat(response.getError(), is(IWSErrors.VERIFICATION_ERROR));
-        assertThat(response.getMessage(), is("Username and Password must be defined, i.e. non-null."));
+        assertThat(response.getMessage(), is("User Credentials may not be null."));
+    }
+
+    @Test
+    public void testGeneratingSession() {
+        final String username = "Frodo";
+        final String password = "frodo";
+        final AuthenticationRequest request = new AuthenticationRequest(username, password);
+
+        final AuthenticationResponse response = access.generateSession(request);
+
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
+        assertThat(response.getToken(), is(not(nullValue())));
+        assertThat(response.getToken().getToken().length(), is(64));
+    }
+
+    @Test
+    public void testCrapValues() {
+        final AuthenticationToken token = new AuthenticationToken("9e107d9d372bb6826bd81d3542a419d6");
+
+        final PermissionResponse response = access.fetchPermissions(token);
+        final List<Authorization> permissions = response.getAuthorizations();
+
+        // Verify that the call went through :-)
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
+        assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
+
+        // Request went through, now we can check the response
+        assertThat(permissions.size(), is(2));
+        assertThat(permissions.get(0).getGroupType(), is("Half Size"));
+        assertThat(permissions.get(0).getPermission(), is("Daggers"));
+        assertThat(permissions.get(1).getGroupType(), is("Fellowship"));
+        assertThat(permissions.get(1).getPermission(), is("Daggers"));
     }
 }

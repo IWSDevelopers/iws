@@ -13,13 +13,14 @@
     <description>IntraWebService - FitNesse Module</description>
 
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>iws-fitnesse</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
             </resource>
         </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -53,6 +54,25 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--<plugin>-->
+                <!--<artifactId>maven-antrun-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>pre-integration-test</phase>-->
+                        <!--<configuration>-->
+                            <!--<tasks>-->
+                                <!--<copy file="target/${project.build.finalName}.jar"-->
+                                      <!--tofile="${basedir}/${project.build.finalName}.jar"/>-->
+                            <!--</tasks>-->
+                        <!--</configuration>-->
+                        <!--<goals>-->
+                            <!--<goal>run</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
             <!-- Shade is a helpful Maven Plugin, which allows the creation of
                  BIGJARS, i.e. Jar's with all required libs. -->
             <plugin>
@@ -82,7 +102,36 @@
         </dependency>
         <dependency>
             <groupId>net.iaeste.iws</groupId>
-            <artifactId>iws-client</artifactId>
+            <artifactId>iws-core</artifactId>
+        </dependency>
+        <dependency>
+            <!-- Needed to build the data sources -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.javaconfig</groupId>
+            <artifactId>spring-javaconfig</artifactId>
+        </dependency>
+        <dependency>
+             <groupId>org.hibernate</groupId>
+             <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
         </dependency>
         <dependency>
             <groupId>gsbase</groupId>
@@ -100,4 +149,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>

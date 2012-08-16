@@ -15,8 +15,12 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.utils.Check;
+import net.iaeste.iws.api.utils.Copier;
+
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -28,6 +32,25 @@ public final class UserRequest extends AbstractRequest {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private List<User> usersForPersisting = null;
+    private List<User> usersToDelete = null;
+
+    public void setUsersForPersisting(final List<User> usersForPersisting) {
+        this.usersForPersisting = Copier.copy(usersForPersisting);
+    }
+
+    public List<User> getUsersForPersisting() {
+        return Copier.copy(usersForPersisting);
+    }
+
+    public void setUsersToDelete(final List<User> usersToDelete) {
+        this.usersToDelete = Copier.copy(usersToDelete);
+    }
+
+    public List<User> getUsersToDelete() {
+        return Copier.copy(usersToDelete);
+    }
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -41,6 +64,12 @@ public final class UserRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        throw new NotImplementedException("TBD");
+        if (usersForPersisting != null) {
+            Check.valid(usersForPersisting, "usersForPersisting");
+        }
+
+        if (usersToDelete != null) {
+            Check.valid(usersToDelete, "usersForDeleting");
+        }
     }
 }

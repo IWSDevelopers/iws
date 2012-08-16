@@ -14,10 +14,13 @@
  */
 package net.iaeste.iws.fitnesse;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -28,16 +31,79 @@ import static org.junit.Assert.assertThat;
 public class IsAliveTest {
 
     @Test
-    public void testCall() {
-        final IsAlive isAlive = new IsAlive();
+    public void testInvalidCall() {
+        final IsAlive cut = new IsAlive();
 
         // First we reset the object, and then we invoke the call
-        isAlive.reset();
-        isAlive.execute();
+        cut.reset();
+        cut.execute();
 
         // Verify that the result is the expected
-        assertThat(isAlive.isRequestOk(), is(false));
-        assertThat(isAlive.errorCode(), is(IWSErrors.VERIFICATION_ERROR.getError()));
-        assertThat(isAlive.errorMessage(), is("Username and Password must be defined, i.e. non-null."));
+        assertThat(cut.isRequestOk(), is(false));
+        assertThat(cut.errorCode(), is(IWSErrors.VERIFICATION_ERROR.getError()));
+        assertThat(cut.errorMessage(), is("User Credentials may not be null."));
+    }
+
+    @Test
+    public void testCallMissingUsername() {
+        final IsAlive cut = new IsAlive();
+        cut.reset();
+        cut.setPassword("frodo");
+
+        // Execute the test
+        cut.execute();
+
+        // Verify that the result is the expected
+        assertThat(cut.isRequestOk(), is(false));
+        assertThat(cut.errorCode(), is(IWSErrors.VERIFICATION_ERROR.getError()));
+        assertThat(cut.errorMessage(), is("User Credentials may not be null."));
+    }
+
+    @Test
+    public void testCallMissingPassword() {
+        final IsAlive cut = new IsAlive();
+        cut.reset();
+        cut.setUsername("Frodo");
+
+        // Execute the test
+        cut.execute();
+
+        // Verify that the result is the expected
+        assertThat(cut.isRequestOk(), is(false));
+        assertThat(cut.errorCode(), is(IWSErrors.VERIFICATION_ERROR.getError()));
+        assertThat(cut.errorMessage(), is("User Credentials may not be null."));
+    }
+
+    @Test
+    public void testInvalidCredentials() {
+        final IsAlive cut = new IsAlive();
+        cut.reset();
+        cut.setUsername("Bilbo");
+        cut.setPassword("Baggins");
+
+        // Execute the test
+        cut.execute();
+
+        // Verify that the result is the expected
+        assertThat(cut.isRequestOk(), is(false));
+        assertThat(cut.errorCode(), is(IWSErrors.AUTHORIZATION_ERROR.getError()));
+        assertThat(cut.errorMessage(), is("No account for the user 'Bilbo' was found."));
+    }
+
+    @Test
+    public void testValidCredentials() {
+        final IsAlive cut = new IsAlive();
+        cut.reset();
+        cut.setUsername("Frodo");
+        cut.setPassword("frodo");
+
+        // Execute the test
+        cut.execute();
+
+        assertThat(cut.isRequestOk(), is(true));
+        assertThat(cut.errorCode(), is(IWSErrors.SUCCESS.getError()));
+        assertThat(cut.errorMessage(), is(IWSConstants.SUCCESS));
+        assertThat(cut.token(), is(not(nullValue())));
+        assertThat(cut.token().length(), is(64));
     }
 }

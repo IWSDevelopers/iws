@@ -33,8 +33,8 @@ public class Authorization implements Serializable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Permission permission;
-    private GroupType groupType;
+    private String permission;
+    private String groupType;
 
     /**
      * Empty Constructor, required for some communication frameworks.
@@ -51,23 +51,35 @@ public class Authorization implements Serializable {
      * @param groupType   Group Type
      */
     public Authorization(final Permission permission, final GroupType groupType) {
+        this.permission = permission.name();
+        this.groupType = groupType.name();
+    }
+
+    /**
+     * String Constructor, for our initial testing, we just need something that
+     * works.
+     *
+     * @param permission  Authorization
+     * @param groupType   Group Type
+     */
+    public Authorization(final String permission, final String groupType) {
         this.permission = permission;
         this.groupType = groupType;
     }
 
     public void setPermission(final Permission permission) {
-        this.permission = permission;
+        this.permission = permission.name();
     }
 
-    public Permission getPermission() {
+    public String getPermission() {
         return permission;
     }
 
     public void setGroupType(final GroupType groupType) {
-        this.groupType = groupType;
+        this.groupType = groupType.name();
     }
 
-    public GroupType getGroupType() {
+    public String getGroupType() {
         return groupType;
     }
 
@@ -86,11 +98,11 @@ public class Authorization implements Serializable {
         //noinspection CastToConcreteClass
         final Authorization that = (Authorization) obj;
 
-        if (groupType != null ? groupType != that.groupType : that.groupType != null) {
+        if (groupType != null ? !groupType.equals(that.groupType) : that.groupType != null) {
             return false;
         }
 
-        return !(permission != null ? permission != that.permission : that.permission != null);
+        return !(permission != null ? !permission.equals(that.permission) : that.permission != null);
     }
 
     /**

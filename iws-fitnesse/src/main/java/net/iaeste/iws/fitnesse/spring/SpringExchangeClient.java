@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.callers.ExchangeCaller
+ * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.SpringExchangeClient
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.fitnesse.callers;
+package net.iaeste.iws.fitnesse.spring;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -32,139 +32,117 @@ import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
-import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+import net.iaeste.iws.core.ExchangeController;
+import net.iaeste.iws.core.services.ServiceFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 /**
- * The IWS FitNesse implementation of the API logic. The Class will attempt to
- * invoke the IWS Client module, and wrap all calls with an Exception check that
- * will throw a new {@code StopTestException} if an error occured - this is the
- * expected behaviour for the FitNesse tests.
- *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class ExchangeCaller implements Exchange {
+public final class SpringExchangeClient implements Exchange {
 
-    private final Exchange exchange = null;// = new ExchangeClient();
+    private final Exchange exchange;
+
+    /**
+     * Default Constructor, initializes the Core Service Factory with the Spring
+     * based EntityManager instance.
+     */
+    public SpringExchangeClient(final EntityManager entityManager) {
+        final ServiceFactory factory = new ServiceFactory(entityManager);
+        exchange = new ExchangeController(factory);
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Fallible processFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        try {
-            return exchange.processFaculties(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.processFaculties(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
-        try {
-            return exchange.fetchFaculties(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.fetchFaculties(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Fallible processOffers(final AuthenticationToken token, final OfferRequest request) {
-        try {
-            return exchange.processOffers(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.processOffers(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        try {
-            return exchange.fetchOffers(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.fetchOffers(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Fallible processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
-        try {
-            return exchange.processOfferTemplates(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.processOfferTemplates(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
-        try {
-            return exchange.fetchOfferTemplates(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.fetchOfferTemplates(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Fallible processPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
-        try {
-            return exchange.processPublishGroups(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.processPublishGroups(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
-        try {
-            return exchange.fetchPublishGroups(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.fetchPublishGroups(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Fallible processStudents(final AuthenticationToken token, final StudentRequest request) {
-        try {
-            return exchange.processStudents(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.processStudents(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        try {
-            return exchange.fetchStudents(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return exchange.fetchStudents(token, request);
     }
 }

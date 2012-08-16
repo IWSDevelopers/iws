@@ -35,7 +35,8 @@ public interface AccessDao {
      */
     void persist(Object entity);
 
-    UserEntity findActiveSession(final AuthenticationToken token);
+    UserEntity findUserByCredentials(String username, String passwordHashcode);
+    UserEntity findActiveSession(AuthenticationToken token);
 
     List<UserPermissionView> findPermissions(Integer userId);
 }

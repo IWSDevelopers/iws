@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.utils.Check;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -73,9 +74,8 @@ public final class AuthenticationRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        if ((username == null) || username.isEmpty() || (password == null) || password.isEmpty()) {
-            throw new VerificationException("Username and Password must be defined, i.e. non-null.");
-        }
+        Check.notEmpty(username, "User Credentials");
+        Check.notEmpty(password, "User Credentials");
     }
 
     /**

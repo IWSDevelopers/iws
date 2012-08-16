@@ -17,8 +17,9 @@ package net.iaeste.iws.fitnesse;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.fitnesse.callers.AccessCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+import net.iaeste.iws.fitnesse.spring.EntityManagerProvider;
+import net.iaeste.iws.fitnesse.spring.SpringAccessClient;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -27,7 +28,37 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  */
 public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
 
-    private final Access access = new AccessCaller();
+    private final Access access = new SpringAccessClient(EntityManagerProvider.getInstance().getEntityManager());
+    private String username = null;
+    private String password = null;
+
+    // ========================================================================
+    // FitNesse Setters
+    // ========================================================================
+
+    public void setUsername(final String username) {
+        this.username = username;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    // ========================================================================
+    // FitNesse Display methods
+    // ========================================================================
+
+    public String token() {
+        final String token;
+
+        if ((response != null) && (response.getToken() != null)) {
+            token = response.getToken().getToken();
+        } else {
+            token = "";
+        }
+
+        return token;
+    }
 
     // ========================================================================
     // Standard FitNesse methods
@@ -38,7 +69,7 @@ public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
      */
     @Override
     public void execute() throws StopTestException {
-        final AuthenticationRequest request = new AuthenticationRequest();
+        final AuthenticationRequest request = buildRequest();
         response = access.generateSession(request);
     }
 
@@ -48,5 +79,21 @@ public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
     @Override
     public void reset() {
         response = null;
+        username = null;
+        password = null;
     }
+
+    // ========================================================================
+    // Internal methods
+    // ========================================================================
+
+    private AuthenticationRequest buildRequest() {
+        final AuthenticationRequest request = new AuthenticationRequest();
+
+        request.setUsername(username);
+        request.setPassword(password);
+
+        return request;
+    }
+
 }

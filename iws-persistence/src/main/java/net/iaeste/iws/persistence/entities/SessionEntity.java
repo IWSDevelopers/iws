@@ -36,9 +36,9 @@ import java.util.Date;
  * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
-        @NamedQuery(name = "findAllSessions",
+        @NamedQuery(name = "session.findAll",
                 query = "SELECT s FROM SessionEntity s"),
-        @NamedQuery(name = "findActiveSession",
+        @NamedQuery(name = "session.findActive",
                 query = "select s from SessionEntity s where s.sessionKey = :key")
 })
 @Table(name = "sessions")
@@ -68,11 +68,12 @@ public class SessionEntity {
         created = new Date();
     }
 
-    public SessionEntity(final Long id, final String sessionKey) {
-        this.id = id;
+    public SessionEntity(final UserEntity user, final String sessionKey) {
         this.sessionKey = sessionKey;
-        user = null;
-        created = null;
+        this.user = user;
+
+        id = null;
+        created = new Date();
     }
 
     public Long getId() {

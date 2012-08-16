@@ -70,10 +70,8 @@ public final class AccessController extends CommonController implements Access {
         try {
             verify(request, AUTHENTICATION_REQUEST_ERROR);
 
-            final String username = request.getUsername();
-            final String password = request.getPassword();
             final AccessService service = factory.prepareAuthenticationService();
-            final AuthenticationToken token = service.generateSession(username, password);
+            final AuthenticationToken token = service.generateSession(request);
             response = new AuthenticationResponse(token);
         } catch (IWSException e) {
             response = new AuthenticationResponse(e.getError(), e.getMessage());

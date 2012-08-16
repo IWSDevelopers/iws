@@ -20,9 +20,9 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 /**
  * Abstract FitNesse Methods.
  *
- * @author Kim Jensen / last $Author: RuehlM $
- * @version $Revision: #1 $ / $Date: 2010/10/26 $
- * @since 1.5
+ * @author  Kim Jensen / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since   1.7
  */
 public abstract class AbstractFitNesse<T extends Fallible> {
 

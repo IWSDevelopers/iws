@@ -14,7 +14,9 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.SessionEntity;
@@ -55,8 +57,25 @@ public class AccessJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public UserEntity findUserByCredentials(final String username, final String passwordHashcode) {
+        final Query query = entityManager.createNamedQuery("user.loginCredentials");
+        query.setParameter("username", username);
+        query.setParameter("password", passwordHashcode);
+        final List<UserEntity> result = query.getResultList();
+
+        if (result.size() != 1) {
+            throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "No account for the user '" + username + "' was found.");
+        }
+
+        return result.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserEntity findActiveSession(final AuthenticationToken token) {
-        final Query query = entityManager.createNamedQuery("findActiveSession");
+        final Query query = entityManager.createNamedQuery("session.findActive");
         query.setParameter("key", token.getToken());
         final List<SessionEntity> entities = query.getResultList();
         if (entities.isEmpty()) {

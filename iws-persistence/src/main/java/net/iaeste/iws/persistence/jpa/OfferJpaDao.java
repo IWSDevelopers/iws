@@ -52,7 +52,7 @@ public final class OfferJpaDao implements OfferDao {
      */
     @Override
     public List<OfferEntity> findAll() {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findAll", OfferEntity.class);
+        final Query query = entityManager.createNamedQuery("OfferEntity.findAll");
 
         return query.getResultList();
     }
@@ -65,7 +65,7 @@ public final class OfferJpaDao implements OfferDao {
         OfferEntity entity = null;
 
         if (offerId != null) {
-            final Query query = entityManager.createNamedQuery("OfferEntity.findById", OfferEntity.class);
+            final Query query = entityManager.createNamedQuery("OfferEntity.findById");
             query.setParameter("id", offerId);
 
             final List<OfferEntity> found = query.getResultList();
@@ -82,7 +82,7 @@ public final class OfferJpaDao implements OfferDao {
      */
     @Override
     public List<OfferEntity> findOffers(final List<Long> offerIds) {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findByIds", OfferEntity.class);
+        final Query query = entityManager.createNamedQuery("OfferEntity.findByIds");
         query.setParameter("ids", offerIds);
 
         return query.getResultList();

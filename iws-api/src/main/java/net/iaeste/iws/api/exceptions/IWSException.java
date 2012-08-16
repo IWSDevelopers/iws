@@ -38,7 +38,7 @@ public class IWSException extends RuntimeException {
      * and the only information available is the type of error, and a message
      * describing the error.
      *
-     * @param error    IW-Base Error
+     * @param error    IWS Error
      * @param message  Specific message, regarding the problem
      */
     public IWSException(final IWSError error, final String message) {

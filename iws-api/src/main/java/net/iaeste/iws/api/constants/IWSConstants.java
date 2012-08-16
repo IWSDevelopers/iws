@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.constants;
 
+import java.util.Locale;
+
 /**
  * Generic constants, for the IW Services.
  *
@@ -42,6 +44,11 @@ public interface IWSConstants {
      * The default encoding used for all processing of strings.
      */
     String DEFAULT_ENCODING = "ISO-8859-15";
+
+    /**
+     * As IAESTE is an English organization, the default locale is also English.
+     */
+    Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     /**
      * A non-zero, odd number used as the initial value, when generating

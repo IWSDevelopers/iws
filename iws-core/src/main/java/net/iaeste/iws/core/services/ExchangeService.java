@@ -61,7 +61,7 @@ public class ExchangeService {
      * @return OfferResponse contains list of Fallible Offers for which processing failed.
      */
     public OfferResponse processOffers(final AuthenticationToken token, final OfferRequest request) {
-        final List<Offer> offers = new ArrayList<>(request.getUpdateOffers().size() + request.getDeleteOfferIDs().size());
+        final List<Offer> offers = new ArrayList<>(request.getUpdateOffers().size() + request.getDeleteOfferIds().size());
         final EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
@@ -82,7 +82,7 @@ public class ExchangeService {
                     }
                 }
             }
-            for (final Long offer : request.getDeleteOfferIDs()) {
+            for (final Long offer : request.getDeleteOfferIds()) {
                 if (!offerDao.delete(offer)) { // collect all inexistent offers
                     offers.add(new Offer(new EntityIdentificationException(offer)));
                 }

@@ -38,7 +38,7 @@ public final class OfferRequest extends AbstractRequest {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private final List<Offer> updateOffers;
-    private final List<Long> deleteOfferIDs;
+    private final List<Long> deleteOfferIds;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -50,7 +50,7 @@ public final class OfferRequest extends AbstractRequest {
 
     public OfferRequest(final List<Offer> updateOffers, final List<Long> deleteOfferIDs) {
         this.updateOffers = Copier.copy(updateOffers);
-        this.deleteOfferIDs = Copier.copy(deleteOfferIDs);
+        this.deleteOfferIds = Copier.copy(deleteOfferIDs);
     }
 
     /**
@@ -79,7 +79,7 @@ public final class OfferRequest extends AbstractRequest {
             }
             refNoSet.add(offer.getRefNo());
         }
-        for (final Long offerId : deleteOfferIDs) {
+        for (final Long offerId : deleteOfferIds) {
             if (offerId == null) {
                 throw new VerificationException("Id cannot be null.");
             }
@@ -97,7 +97,7 @@ public final class OfferRequest extends AbstractRequest {
         return Copier.copy(updateOffers);
     }
 
-    public List<Long> getDeleteOfferIDs() {
-        return Copier.copy(deleteOfferIDs);
+    public List<Long> getDeleteOfferIds() {
+        return Copier.copy(deleteOfferIds);
     }
 }

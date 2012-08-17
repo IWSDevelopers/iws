@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 
 import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.Copier;
@@ -45,56 +44,14 @@ public class OfferRequestTest {
     private List<Long> idList;
     private ArrayList<Long> emptyIdList;
 
-
-    private static OfferRequest getEmptyRequest() {
-        return new OfferRequest();
-    }
-
-    private static OfferRequest getValidRequest() {
-        final List<Offer> validList = getValidUpdateOffersList();
-        validList.addAll(getValidCreateOffersList());
-        return new OfferRequest(validList, getUniqueIdList());
-
-    }
-
-    private static List<Long> getUniqueIdList() {
-        final List<Long> ids = new ArrayList<Long>();
-        ids.add(1L);
-        ids.add(2L);
-        ids.add(3L);
-        return ids;
-    }
-
-    private static List<Offer> getValidCreateOffersList() {
-        final String[] refNos = { "GB-2012-2000", "GB-2012-2001", "GB-2012-2002", "GB-2012-2003", "GB-2012-2004" };
-        final List<Offer> createList = getValidUpdateOffersList();
-        long i = 0;
-        for (final Offer offer : createList) {
-            offer.setRefNo(refNos[(int) i]);
-            offer.setId(++i);
-        }
-        return createList;
-    }
-
-    private static List<Offer> getValidUpdateOffersList() {
-        final String[] refNos = { "AT-2012-1000", "AT-2012-1001", "AT-2012-1002", "AT-2012-1003", "AT-2012-1004" };
-        final List<Offer> validEditOffers = new ArrayList<>(refNos.length);
-        for (final String refNo : refNos) {
-            final Offer minimalOffer = OfferTestUtility.getMinimalOffer();
-            minimalOffer.setRefNo(refNo);
-            validEditOffers.add(minimalOffer);
-        }
-        return validEditOffers;
-    }
-
     @Before
     public void setUp() {
-        this.validRequest = getValidRequest();
+        this.validRequest = OfferRequestTestUtility.getValidRequest();
         this.validUpdateOffers = validRequest.getUpdateOffers();
-        this.validCreateOffers = getValidCreateOffersList();
+        this.validCreateOffers = OfferRequestTestUtility.getValidCreateOffersList();
         this.emptyIdList = new ArrayList<>();
         this.emptyUpdateList = new ArrayList<>();
-        this.idList = getUniqueIdList();
+        this.idList = OfferRequestTestUtility.getUniqueIdList();
     }
 
     @SuppressWarnings("JUnitTestMethodWithNoAssertions")
@@ -114,7 +71,7 @@ public class OfferRequestTest {
     @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testVerifyEmptyUpdateRequest() {
-        final OfferRequest requestWithInvalidOffer = new OfferRequest(emptyUpdateList, validRequest.getDeleteOfferIDs());
+        final OfferRequest requestWithInvalidOffer = new OfferRequest(emptyUpdateList, validRequest.getDeleteOfferIds());
         requestWithInvalidOffer.verify();
     }
 
@@ -185,17 +142,22 @@ public class OfferRequestTest {
 
     @Test
     public void testGetters() {
+        final List<Offer> initialUpdateOffers = validRequest.getUpdateOffers();
+        final List<Long> initialDeleteOfferIds = validRequest.getDeleteOfferIds();
+
         final List<Offer> editOffers = validRequest.getUpdateOffers();
-        final List<Long> deleteOfferIDs = validRequest.getDeleteOfferIDs();
+        final List<Long> deleteOfferIDs = validRequest.getDeleteOfferIds();
         editOffers.remove(0);
         editOffers.remove(editOffers.size() - 1);
         deleteOfferIDs.add(5L);
         deleteOfferIDs.add(10L);
+
         Assert.assertThat(editOffers, is(not(nullValue())));
+        Assert.assertThat(deleteOfferIDs, is(not(nullValue())));
         Assert.assertThat(validRequest, is(not(nullValue())));
         Assert.assertThat(validRequest.getUpdateOffers(), is(not(nullValue())));
-        Assert.assertThat(validRequest.getUpdateOffers().size(), is(not(editOffers.size())));
-        Assert.assertNotSame(validRequest.getUpdateOffers().get(0), editOffers.get(0));
-        Assert.assertNotSame(validRequest.getUpdateOffers(), editOffers);
+        Assert.assertThat(validRequest.getUpdateOffers(), is(initialUpdateOffers));
+        Assert.assertThat(validRequest.getDeleteOfferIds(), is(not(nullValue())));
+        Assert.assertThat(validRequest.getDeleteOfferIds(), is(initialDeleteOfferIds));
     }
 }

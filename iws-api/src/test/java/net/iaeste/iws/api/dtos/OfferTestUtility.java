@@ -45,6 +45,9 @@ public class OfferTestUtility {
     public static final BigDecimal LODGING_COST = new BigDecimal(1000);
     public static final BigDecimal LIVING_COST = new BigDecimal(2000);
 
+    private OfferTestUtility() {
+    }
+
     public static Offer getEmptyOffer() {
         return new Offer();
     }

@@ -54,6 +54,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
      * {@link IWSConstants#SERIAL_VERSION_UID}.
      */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+    private static final String refNoFormat = "(%s)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?"; // %s - country codes
 
     /**
      * Empty Constructor, required for some communication frameworks.
@@ -69,7 +70,51 @@ public final class Offer extends AbstractResponse implements Verifiable {
      * @param offer Offer to copy
      */
     public Offer(final Offer offer) {
-        copyFields(offer, this);
+        this.setId(offer.getId());
+        this.setRefNo(offer.getRefNo());
+        this.setNominationDeadline(offer.getNominationDeadline());
+        this.setEmployerName(offer.getEmployerName());
+        this.setEmployerAddress(offer.getEmployerAddress());
+        this.setEmployerAddress2(offer.getEmployerAddress2());
+        this.setEmployerBusiness(offer.getEmployerBusiness());
+        this.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
+        this.setEmployerWebsite(offer.getEmployerWebsite());
+        this.setPrevTrainingRequired(offer.getPrevTrainingRequired());
+        this.setOtherRequirements(offer.getOtherRequirements());
+        this.setGender(offer.getGender());
+        this.setLanguage1(offer.getLanguage1());
+        this.setLanguage1Level(offer.getLanguage1Level());
+        this.setLanguage1Operator(offer.getLanguage1Operator());
+        this.setLanguage2(offer.getLanguage2());
+        this.setLanguage2Level(offer.getLanguage2Level());
+        this.setLanguage2Operator(offer.getLanguage2Operator());
+        this.setLanguage3(offer.getLanguage3());
+        this.setLanguage3Level(offer.getLanguage3Level());
+        this.setWorkDescription(offer.getWorkDescription());
+        this.setTypeOfWork(offer.getTypeOfWork());
+        this.setMinimumWeeks(offer.getMinimumWeeks());
+        this.setMaximumWeeks(offer.getMaximumWeeks());
+        this.setFromDate(offer.getFromDate());
+        this.setToDate(offer.getToDate());
+        this.setFromDate2(offer.getFromDate2());
+        this.setToDate2(offer.getToDate2());
+        this.setUnavailableFrom(offer.getUnavailableFrom());
+        this.setUnavailableTo(offer.getUnavailableTo());
+        this.setWorkingPlace(offer.getWorkingPlace());
+        this.setNearestAirport(offer.getNearestAirport());
+        this.setNearestPubTransport(offer.getNearestPubTransport());
+        this.setWeeklyHours(offer.getWeeklyHours());
+        this.setDailyHours(offer.getDailyHours());
+        this.setPayment(offer.getPayment());
+        this.setCurrency(offer.getCurrency());
+        this.setPaymentFrequency(offer.getPaymentFrequency());
+        this.setDeduction(offer.getDeduction());
+        this.setLodgingBy(offer.getLodgingBy());
+        this.setLodgingCost(offer.getLodgingCost());
+        this.setLodgingCostFrequency(offer.getLodgingCostFrequency());
+        this.setLivingCost(offer.getLivingCost());
+        this.setLivingCostFrequency(offer.getLivingCostFrequency());
+        this.setCanteen(offer.getCanteen());
     }
 
     public Offer(final EntityIdentificationException e) {
@@ -825,7 +870,8 @@ public final class Offer extends AbstractResponse implements Verifiable {
         }
 
         final Collection<String> errors = new ArrayList<>();
-        verifyNotNullableFields(errors);
+
+        errors.addAll(verifyNotNullableFields());
         if (!verifyRefNo()) {
             errors.add("refNo: reference number has incorrect format");
         }
@@ -835,13 +881,19 @@ public final class Offer extends AbstractResponse implements Verifiable {
         if (!verifyNumberOfWeeks()) {
             errors.add("weeks are not set correctly");
         }
-        verifyFieldDependencies(errors);
+        errors.addAll(verifyFieldDependencies());
         if (!errors.isEmpty()) {
             throw new VerificationException(errors.toString());
         }
     }
 
-    private void verifyFieldDependencies(Collection<String> errors) {
+    /**
+     * Checks if field dependencies are fulfilled.
+     *
+     * @return collection of errors. If dependencies are valid, method returns empty collection.
+     */
+    private Collection<String> verifyFieldDependencies() {
+        final Collection<String> errors = new ArrayList<>();
         if (livingCost != null && livingCostFrequency == null) {
             errors.add("'livingCostFrequency' is required if 'livingCost' is not null");
         }
@@ -851,9 +903,16 @@ public final class Offer extends AbstractResponse implements Verifiable {
         if (lodgingCost != null && lodgingCostFrequency == null) {
             errors.add("'lodgingCostFrequency' is required if 'lodgingCost' is not null");
         }
+        return errors;
     }
 
-    private void verifyNotNullableFields(Collection<String> errors) {
+    /**
+     * Checks for nulls in required fields.
+     *
+     * @return collection of errors. If all required fields are provided, method returns empty collection.
+     */
+    private Collection<String> verifyNotNullableFields() {
+        final Collection<String> errors = new ArrayList<>();
         if (fieldOfStudies == null || fieldOfStudies.isEmpty()) {
             errors.add("'fieldOfStudies' is missing");
         }
@@ -893,8 +952,14 @@ public final class Offer extends AbstractResponse implements Verifiable {
         if (maximumWeeks == null) {
             errors.add("'minimumWeeks' is missing");
         }
+        return errors;
     }
 
+    /**
+     * Checks if minimum and maximum weeks values are correct.
+     *
+     * @return true if minimumWeeks and maximumWeeks are valid.
+     */
     boolean verifyNumberOfWeeks() {
         if (minimumWeeks == null || maximumWeeks == null) {
             return false;
@@ -906,9 +971,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
      * verifies reference number format
      * [ISO_3166-2 country code]-[exchange year]-[identification number]-[additional code (optional)]
      *
-     * @return true if refNo is correct
-     *         TODO Michal: check in the spec if "identification number" should  be exactly 4 characters long
-     *         E.g: UK-2011-0001-01, IN-2011-0001-KU
+     * @return true if refNo is valid
      */
     boolean verifyRefNo() {
         if (refNo == null) {
@@ -916,13 +979,14 @@ public final class Offer extends AbstractResponse implements Verifiable {
         }
         final String[] codes = Locale.getISOCountries();
         // for each country code 3 bytes are needed: "CC|"
-        final StringBuilder countryCodes = new StringBuilder(codes.length * 3 - 1);
+        final StringBuilder countryCodes = new StringBuilder(3 * codes.length - 1);
         for (final String code : codes) {
             countryCodes.append(code);
             countryCodes.append('|');
         }
         countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
-        final Pattern refNoPattern = Pattern.compile("(" + countryCodes.toString().toUpperCase() + ")-\\d{4}-\\d{4}(-[A-Z0-9]{2})?");
+
+        final Pattern refNoPattern = Pattern.compile(String.format(refNoFormat, countryCodes.toString().toUpperCase()));
         final Matcher matcher = refNoPattern.matcher(refNo);
         return matcher.matches();
     }
@@ -931,19 +995,25 @@ public final class Offer extends AbstractResponse implements Verifiable {
      * verifies dates
      * <p/>
      * <ul>
-     * <li>nominationDeadline must be before from and from2</li>
-     * <li>dateTo > dateFrom</li>
-     * <li>either 'from' either 'to' have to be present</li>
-     * <li>'from' has to have an adequate 'to'</li>
+     * <li>{@code nominationDeadline} must be before {@code fromDate} and {@code fromDate2}</li>
+     * <li>{@code fromDate} < {@code toDate}</li>
+     * <li>{@code fromDate} and {@code toDate} are required</li>
+     * <li>{@code fromDate} has to have an adequate {@code toDate}</li>
      * <li>dates from different groups (1,2) cannot interwise</li>
-     * <li>holidays must be inside date group</li>
+     * <li>unavailable dates must be inside date group</li>
      * </ul>
      */
     boolean verifyDates() {
         // the order of invoking verifyDates*** methods is important!
-        return verifyDatesPresence() && verifyDatesOrder() && verifyDatesNominationDeadline() && verifyDatesGroupsOrder() && verifyDatesHolidaysOrder();
+        return verifyDatesPresence() && verifyDatesOrder() && verifyDatesNominationDeadline()
+                && verifyDatesGroupsOrder() && verifyUnavailableDatesOrder();
     }
 
+    /**
+     * Checks for presence of date fields.
+     *
+     * @return true if all required fields are provided.
+     */
     @SuppressWarnings("OverlyComplexBooleanExpression")
     private boolean verifyDatesPresence() {
         // either 'from' date either 'from2' date must be present
@@ -961,6 +1031,12 @@ public final class Offer extends AbstractResponse implements Verifiable {
         return true;
     }
 
+    /**
+     * Verifies order of related dates ({@code fromDate} < {@code toDate}, {@code fromDate2} < {@code toDate2},
+     * {@code unavailableFrom} < {@code unavalilableTo}).
+     *
+     * @return true if order of related dates is valid.
+     */
     private boolean verifyDatesOrder() {
         // 'from' date can't be after 'to' date
         if (fromDate != null && fromDate.compareTo(toDate) > 0) {
@@ -975,98 +1051,65 @@ public final class Offer extends AbstractResponse implements Verifiable {
         return true;
     }
 
-    @SuppressWarnings("OverlyComplexBooleanExpression")
+    /**
+     * Checks if {@code nominationDeadline} if before {@code fromDate} and {@code fromDate2}
+     *
+     * @return true if {@code nominationDeadline} is valid.
+     */
     private boolean verifyDatesNominationDeadline() {
         if (nominationDeadline != null) {
             // "nominationDeadline" must be before start of an internship
-            if ((fromDate != null && nominationDeadline.compareTo(fromDate) > 0)
-                    || (fromDate2 != null && nominationDeadline.compareTo(fromDate2) > 0)) {
+            if ((fromDate != null && nominationDeadline.after(fromDate))
+                    || (fromDate2 != null && nominationDeadline.after(fromDate2))) {
                 return false;
             }
         }
         return true;
     }
 
+    /**
+     * Checks if date from one group is not inside another group.
+     *
+     * @return true if order of date groups is valid.
+     */
     private boolean verifyDatesGroupsOrder() {
         // dates from groups 1 and 2 cannot intertwine
         if (fromDate != null && fromDate2 != null) {
+            // to != null and to2 != null is already verified but checking for nulls for safety
+            if (toDate == null || toDate2 == null) {
+                return false;
+            }
             // from < to and from2 < to is already checked
-            // to != null and to2 != null is already checked
-            if (!(fromDate.compareTo(toDate2) > 0 || fromDate2.compareTo(toDate) > 0)) {
+            if (!(fromDate.after(toDate2) || fromDate2.after(toDate))) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean verifyDatesHolidaysOrder() {
+    /**
+     * @return true if halidays order is valid.
+     * @todo verify requirements
+     */
+    private boolean verifyUnavailableDatesOrder() {
         if (unavailableFrom != null) {
-            // holidays "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
+            // unavailable "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
             //      (otherwise the period of the internship can be shown unambiguously by changing "from" and "to" dates
             if (fromDate != null) {
-                if (!(unavailableFrom.compareTo(fromDate) > 0 && unavailableFrom.compareTo(toDate) < 0
-                        && unavailableTo.compareTo(fromDate) > 0 && unavailableTo.compareTo(toDate) < 0)) {
+                if (!(unavailableFrom.after(fromDate) && unavailableFrom.before(toDate)
+                        && unavailableTo.after(fromDate) && unavailableTo.before(toDate))) {
                     return false;
                 }
             }
             if (fromDate2 != null) {
-                if (!(unavailableFrom.compareTo(fromDate2) > 0 && unavailableFrom.compareTo(toDate2) < 0
-                        && unavailableTo.compareTo(fromDate2) > 0 && unavailableTo.compareTo(toDate2) < 0)) {
+                if (!(unavailableFrom.after(fromDate2) && unavailableFrom.before(toDate2)
+                        && unavailableTo.after(fromDate2) && unavailableTo.before(toDate2))) {
                     return false;
                 }
             }
 
         }
         return true;
-    }
-
-    @SuppressWarnings("OverlyLongMethod")
-    private static void copyFields(final Offer from, final Offer to) {
-        to.setId(from.getId());
-        to.setRefNo(from.getRefNo());
-        to.setNominationDeadline(from.getNominationDeadline());
-        to.setEmployerName(from.getEmployerName());
-        to.setEmployerAddress(from.getEmployerAddress());
-        to.setEmployerAddress2(from.getEmployerAddress2());
-        to.setEmployerBusiness(from.getEmployerBusiness());
-        to.setEmployerEmployeesCount(from.getEmployerEmployeesCount());
-        to.setEmployerWebsite(from.getEmployerWebsite());
-        to.setPrevTrainingRequired(from.getPrevTrainingRequired());
-        to.setOtherRequirements(from.getOtherRequirements());
-        to.setGender(from.getGender());
-        to.setLanguage1(from.getLanguage1());
-        to.setLanguage1Level(from.getLanguage1Level());
-        to.setLanguage1Operator(from.getLanguage1Operator());
-        to.setLanguage2(from.getLanguage2());
-        to.setLanguage2Level(from.getLanguage2Level());
-        to.setLanguage2Operator(from.getLanguage2Operator());
-        to.setLanguage3(from.getLanguage3());
-        to.setLanguage3Level(from.getLanguage3Level());
-        to.setWorkDescription(from.getWorkDescription());
-        to.setTypeOfWork(from.getTypeOfWork());
-        to.setMinimumWeeks(from.getMinimumWeeks());
-        to.setMaximumWeeks(from.getMaximumWeeks());
-        to.setFromDate(from.getFromDate());
-        to.setToDate(from.getToDate());
-        to.setFromDate2(from.getFromDate2());
-        to.setToDate2(from.getToDate2());
-        to.setUnavailableFrom(from.getUnavailableFrom());
-        to.setUnavailableTo(from.getUnavailableTo());
-        to.setWorkingPlace(from.getWorkingPlace());
-        to.setNearestAirport(from.getNearestAirport());
-        to.setNearestPubTransport(from.getNearestPubTransport());
-        to.setWeeklyHours(from.getWeeklyHours());
-        to.setDailyHours(from.getDailyHours());
-        to.setPayment(from.getPayment());
-        to.setCurrency(from.getCurrency());
-        to.setPaymentFrequency(from.getPaymentFrequency());
-        to.setDeduction(from.getDeduction());
-        to.setLodgingBy(from.getLodgingBy());
-        to.setLodgingCost(from.getLodgingCost());
-        to.setLodgingCostFrequency(from.getLodgingCostFrequency());
-        to.setLivingCost(from.getLivingCost());
-        to.setLivingCostFrequency(from.getLivingCostFrequency());
-        to.setCanteen(from.getCanteen());
     }
 
 }

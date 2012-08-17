@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
+
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
@@ -56,8 +59,8 @@ public class OfferEntityTest {
     private static final String WORK_DESCRIPTION = "nothing";
     private static final Integer MAXIMUM_WEEKS = 12;
     private static final Integer MINIMUM_WEEKS = 12;
-    private static final Float WEEKLY_HOURS = 40f;
-    private static final Float DAILY_HOURS = 8f;
+    private static final Float WEEKLY_HOURS = 40.0f;
+    private static final Float DAILY_HOURS = 8.0f;
     private static final Date FROM_DATE = new Date();
     private static final Date TO_DATE = new Date(new Date().getTime() + 3600 * 24 * 90);
     private static final BigDecimal PAYMENT = new BigDecimal(3000);
@@ -76,7 +79,7 @@ public class OfferEntityTest {
     }
 
     private OfferEntity getMinimalOffer() {
-        OfferEntity offer = new OfferEntity();
+        final OfferEntity offer = new OfferEntity();
         offer.setRefNo(REF_NO);
         offer.setEmployerName(EMPLOYER_NAME);
         offer.getStudyLevels().add(StudyLevel.E);
@@ -423,13 +426,17 @@ public class OfferEntityTest {
         dao.persist(offer);
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     @Transactional
     public void testNullPaymentFrequency() {
         offer.setPayment(null);
         offer.setPaymentFrequency(null);
         dao.persist(offer);
+
+        final OfferEntity persistedOffer = dao.findOffer(offer.getId());
+        Assert.assertThat(persistedOffer, is(offer));
+        Assert.assertThat(persistedOffer.getPayment(), is(nullValue()));
+        Assert.assertThat(persistedOffer.getPaymentFrequency(), is(nullValue()));
     }
 
     @Transactional
@@ -456,6 +463,11 @@ public class OfferEntityTest {
         offer.setLodgingCostFrequency(null);
         offer.setLodgingCost(null);
         dao.persist(offer);
+
+        final OfferEntity persistedOffer = dao.findOffer(offer.getId());
+        Assert.assertThat(persistedOffer, is(offer));
+        Assert.assertThat(persistedOffer.getLodgingCostFrequency(), is(nullValue()));
+        Assert.assertThat(persistedOffer.getLodgingCost(), is(nullValue()));
     }
 
     @Transactional
@@ -476,13 +488,17 @@ public class OfferEntityTest {
         dao.persist(offer);
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     @Transactional
     public void testNullLivingCostFrequency() {
         offer.setLivingCostFrequency(null);
         offer.setLivingCost(null);
         dao.persist(offer);
+
+        final OfferEntity persistedOffer = dao.findOffer(offer.getId());
+        Assert.assertThat(persistedOffer, is(offer));
+        Assert.assertThat(persistedOffer.getLivingCostFrequency(), is(nullValue()));
+        Assert.assertThat(persistedOffer.getLivingCost(), is(nullValue()));
     }
 
     @Test(expected = PersistenceException.class)

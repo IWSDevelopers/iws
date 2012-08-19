@@ -14,11 +14,6 @@
 */
 package net.iaeste.iws.core.services;
 
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Offer;
@@ -34,6 +29,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -62,7 +62,7 @@ public class ExchangeServiceTest {
         List<Offer> invalidOfferList = new ArrayList<Offer>();
         invalidOfferList.add(new Offer(new EntityIdentificationException("id does not exist")));
 
-        assert emptyRequest.getDeleteOfferIDs().isEmpty();
+//        assert emptyRequest.getDeleteOfferIDs().isEmpty();
         assert emptyRequest.getUpdateOffers().isEmpty();
 
     }

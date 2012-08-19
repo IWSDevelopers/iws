@@ -26,15 +26,15 @@ import net.iaeste.iws.fitnesse.spring.SpringAccessClient;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
+public class IsAlive extends AbstractFixture<AuthenticationResponse> {
 
     private final Access access = new SpringAccessClient(EntityManagerProvider.getInstance().getEntityManager());
     private String username = null;
     private String password = null;
 
-    // ========================================================================
-    // FitNesse Setters
-    // ========================================================================
+    // =========================================================================
+    // Fixture Setters
+    // =========================================================================
 
     public void setUsername(final String username) {
         this.username = username;
@@ -44,9 +44,9 @@ public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
         this.password = password;
     }
 
-    // ========================================================================
-    // FitNesse Display methods
-    // ========================================================================
+    // =========================================================================
+    // Fixture Display methods
+    // =========================================================================
 
     public String token() {
         final String token;
@@ -60,9 +60,9 @@ public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
         return token;
     }
 
-    // ========================================================================
-    // Standard FitNesse methods
-    // ========================================================================
+    // =========================================================================
+    // Standard Fixture methods
+    // =========================================================================
 
     /**
      * {@inheritDoc}
@@ -70,6 +70,7 @@ public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
     @Override
     public void execute() throws StopTestException {
         final AuthenticationRequest request = buildRequest();
+
         response = access.generateSession(request);
     }
 
@@ -78,14 +79,15 @@ public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
      */
     @Override
     public void reset() {
-        response = null;
+        super.reset();
+
         username = null;
         password = null;
     }
 
-    // ========================================================================
+    // =========================================================================
     // Internal methods
-    // ========================================================================
+    // =========================================================================
 
     private AuthenticationRequest buildRequest() {
         final AuthenticationRequest request = new AuthenticationRequest();
@@ -95,5 +97,4 @@ public class IsAlive extends AbstractFitNesse<AuthenticationResponse> {
 
         return request;
     }
-
 }

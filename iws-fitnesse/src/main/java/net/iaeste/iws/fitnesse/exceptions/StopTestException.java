@@ -17,11 +17,11 @@ package net.iaeste.iws.fitnesse.exceptions;
 import net.iaeste.iws.api.constants.IWSConstants;
 
 /**
- * FitNesse will stop running, if an exception with the "StopTest" as part of
+ * Fixture will stop running, if an exception with the "StopTest" as part of
  * the name. Hence, this exception is called "StopTestException", and should
- * be thrown within the ZObEL FitNesse environment, to ensure proper handling
+ * be thrown within the ZObEL Fixture environment, to ensure proper handling
  * of problems.<br />
- * @see <a href="http://fitnesse.org/FitNesse.UserGuide.SliM.ExceptionHandling">FitNesse.org</a>
+ * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.ExceptionHandling">Fixture.org</a>
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$

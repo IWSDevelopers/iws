@@ -15,6 +15,7 @@
         <module>../iws-persistence</module>
         <module>../iws-core</module>
         <module>../iws-client</module>
+        <module>../iws-fitnesse</module>
     </modules>
 
     <organization>

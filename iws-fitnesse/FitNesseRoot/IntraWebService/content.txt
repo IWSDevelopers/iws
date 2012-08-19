@@ -1,6 +1,6 @@
 !path iws-fitnesse.jar
 !define TEST_SYSTEM {slim}
 
-|!- IsAlive -!                                                        |
-|username|password|is request ok?|result code?|result message?|token  |
-|Frodo   |frodo   |true          |100         |OK             |=~.{64}|
+|Is alive                                                             |
+|username|password|is request ok?|error code?|error message?|token?   |
+|Frodo   |frodo   |true          |0          |OK            |=~/.{64}/|

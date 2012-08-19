@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>iws-parent</artifactId>
@@ -7,10 +6,10 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../iws-parent/pom.xml</relativePath>
     </parent>
-    <groupId>net.iaeste.iws</groupId>
     <artifactId>iws-fitnesse</artifactId>
     <name>IWS - FitNesse</name>
-    <description>IntraWebService - FitNesse Module</description>
+    <description>IntraWebService FitNesse Module, for Acceptance Testing
+    </description>
 
     <build>
         <finalName>iws-fitnesse</finalName>
@@ -20,61 +19,27 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
-
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>1.6-SNAPSHOT</version>
+                <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
+                        <phase>pre-integration-test</phase>
                         <configuration>
-                            <outputDirectory>target/lib</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <stripVersion>true</stripVersion>
+                            <tasks>
+                                <copy file="target/${project.build.finalName}.jar"
+                                      tofile="${project.basedir}/${project.build.finalName}.jar"/>
+                            </tasks>
                         </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
 
-            <!--<plugin>-->
-                <!--<artifactId>maven-antrun-plugin</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>pre-integration-test</phase>-->
-                        <!--<configuration>-->
-                            <!--<tasks>-->
-                                <!--<copy file="target/${project.build.finalName}.jar"-->
-                                      <!--tofile="${basedir}/${project.build.finalName}.jar"/>-->
-                            <!--</tasks>-->
-                        <!--</configuration>-->
-                        <!--<goals>-->
-                            <!--<goal>run</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-
-            <!-- Shade is a helpful Maven Plugin, which allows the creation of
-                 BIGJARS, i.e. Jar's with all required libs. -->
+            <!-- Shade ist ein nutzliches Maven Plugin, mit dem man sogenannte BIGJARs bauen kann,
+               also JARs die alle notwendigen Libs enthalten. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -88,6 +53,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 
@@ -95,10 +61,6 @@
         <dependency>
             <groupId>net.iaeste.iws</groupId>
             <artifactId>iws-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.iaeste.iws</groupId>
-            <artifactId>iws-common</artifactId>
         </dependency>
         <dependency>
             <groupId>net.iaeste.iws</groupId>
@@ -116,6 +78,10 @@
         <dependency>
              <groupId>org.hibernate</groupId>
              <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hsqldb</groupId>
@@ -149,5 +115,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>

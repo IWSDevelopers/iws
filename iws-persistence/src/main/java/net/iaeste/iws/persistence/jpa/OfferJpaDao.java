@@ -22,9 +22,9 @@ import javax.persistence.Query;
 import java.util.List;
 
 /**
- * @author  Matej Kosco / last $Author:$
+ * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class OfferJpaDao implements OfferDao {
 
@@ -74,6 +74,22 @@ public final class OfferJpaDao implements OfferDao {
             }
         }
 
+        return entity;
+    }
+
+    @Override
+    public OfferEntity findOffer(final String refNo) {
+        OfferEntity entity = null;
+
+        if (refNo != null) {
+            final Query query = entityManager.createNamedQuery("OfferEntity.findByRefNo");
+            query.setParameter("refNo", refNo);
+
+            final List<OfferEntity> found = query.getResultList();
+            if (found.size() == 1) {
+                entity = found.get(0);
+            }
+        }
         return entity;
     }
 

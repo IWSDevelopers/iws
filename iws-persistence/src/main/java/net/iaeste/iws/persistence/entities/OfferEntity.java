@@ -56,7 +56,7 @@ import java.util.List;
         @NamedQuery(name = "OfferEntity.findAll", query = "SELECT o FROM OfferEntity o"),
         @NamedQuery(name = "OfferEntity.findById", query = "SELECT o FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM OfferEntity o WHERE o.id IN :ids"),
-        @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM OfferEntity o WHERE o.refNo= :refNo"),
+        @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM OfferEntity o WHERE o.refNo = :refNo"),
         @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.employerName= :employerName"),
         @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM OfferEntity o WHERE o.id IN :ids")

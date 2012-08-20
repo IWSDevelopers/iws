@@ -20,9 +20,9 @@ import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import java.util.List;
 
 /**
- * @author  Matej Kosco / last $Author:$
+ * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public interface OfferDao {
 
@@ -35,18 +35,28 @@ public interface OfferDao {
 
     /**
      * Get all offers from the database.
+     *
      * @return list of {@code OfferEntity}
      */
-    List<OfferEntity> findAll();
+    List findAll();
 
     /**
      * Finds the entity in the database.
      *
-     * @param offerId
+     * @param offerId primary key for offers
      * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
     OfferEntity findOffer(final Long offerId);
+
+    /**
+     * Finds the entity in the database.
+     *
+     * @param refNo unique offer reference number
+     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
+     * @throws PersistenceException
+     */
+    OfferEntity findOffer(final String refNo);
 
     /**
      * @param offerIds

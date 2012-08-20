@@ -49,38 +49,75 @@ public class ExchangeService {
     }
 
     /**
+     * For each {@code Offer} from {@code getUpdateOffers()},
+     * if {@code id = null} then new {@code Offer} should be created.
+     * Otherwise, the {@code Offer} for the specified {@code id} is updated.
+     * <p/>
+     * If {@code id = null} and {@code refNo} exists, then the request is invalid.
+     * If (@code id != null} and {@code refNo} in the database and request doesn't match, then the request is invalid.
+     *
      * @param token
      * @param request
      * @return OfferResponse contains list of Fallible Offers for which processing failed.
+     * @ToDo: do we want to update refNo?
      */
     public OfferResponse processOffers(final AuthenticationToken token, final OfferRequest request) {
-        final List<Offer> offers = new ArrayList<>(request.getUpdateOffers().size() + request.getDeleteOfferIds().size());
+        final List<Offer> offersWithError = new ArrayList<>(request.getUpdateOffers().size() + request.getDeleteOfferIds().size());
+        final List<OfferEntity> offersToPersist = new ArrayList<>();
+        final List<Long> offersToDelete = new ArrayList<>();
+        OfferResponse response = null;
 
         // If DTO objects has an id, we're trying to update the database.
         // If DTO has an id and there is no such entity, an exception is thrown.
         for (final Offer offer : request.getUpdateOffers()) {
             final OfferEntity unmanagedEntity = OfferTransformer.transform(offer);
 
-            if (offer.getId() == null) { // new offer
-                dao.persist(unmanagedEntity);
-            } else { // update offer
+            if (offer.getId() == null) {
+                // collect new offers to persist
+                final OfferEntity offerByRefNo = dao.findOffer(offer.getRefNo());
+                if (offerByRefNo == null) {
+                    offersToPersist.add(unmanagedEntity);
+                } else {
+                    // user can't create new Offer for existing refNo
+                    offersWithError.add(new Offer(new EntityIdentificationException(
+                            "Offer with refNo=" + offer.getRefNo() + " already exists.")));
+                }
+            } else {
+                // collect offer to update to persist
                 final OfferEntity existingOffer = dao.findOffer(offer.getId());
                 if (existingOffer != null && existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
                     existingOffer.merge(unmanagedEntity);
-                    dao.persist(existingOffer);
+                    offersToPersist.add(existingOffer);
                 } else {
-                    offers.add(new Offer(new EntityIdentificationException(offer.getId())));
+                    // trying to update nonexistent Entity or refNo doesn't match
+                    offersWithError.add(new Offer(new EntityIdentificationException(offer.getId())));
                 }
             }
         }
 
-        for (final Long offer : request.getDeleteOfferIds()) {
-            if (!dao.delete(offer)) { // collect all inexistent offers
-                offers.add(new Offer(new EntityIdentificationException(offer)));
+        for (final Long offerId : request.getDeleteOfferIds()) {
+            final OfferEntity offer = dao.findOffer(offerId);
+            if (offer != null) {
+                offersToDelete.add(offerId);
+            } else {
+                // trying to delete nonexistent Entity
+                offersWithError.add(new Offer(new EntityIdentificationException(offerId)));
             }
         }
 
-        return new OfferResponse(offers);
+        if (offersWithError.isEmpty()) {
+            for (final OfferEntity offerEntity : offersToPersist) {
+                dao.persist(offerEntity);
+            }
+            for (final Long offerId : offersToDelete) {
+                dao.delete(offerId);
+            }
+            response = new OfferResponse();
+        } else {
+            response = new OfferResponse(offersWithError);
+        }
+
+        return response;
     }
 
     public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {

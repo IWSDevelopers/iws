@@ -23,10 +23,8 @@ import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,8 +39,8 @@ public class AccessService {
 
     private final AccessDao dao;
 
-    public AccessService(final EntityManager entityManager) {
-        dao  = new AccessJpaDao(entityManager);
+    public AccessService(final AccessDao dao) {
+        this.dao = dao;
     }
 
     public AuthenticationToken generateSession(final AuthenticationRequest request) {

@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.EntityIdentificationException;
@@ -27,13 +28,10 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
-import net.iaeste.iws.core.converters.OfferConverter;
+import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
-import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,15 +42,10 @@ import java.util.List;
  */
 public class ExchangeService {
 
-    private final EntityManager entityManager;
-    private final OfferDao offerDao;
-    private final OfferConverter offerConverter;
+    private final OfferDao dao;
 
-
-    public ExchangeService(final EntityManager entityManager) {
-        this.entityManager = entityManager;
-        this.offerDao = new OfferJpaDao(entityManager);
-        this.offerConverter = new OfferConverter();
+    public ExchangeService(final OfferDao dao) {
+        this.dao = dao;
     }
 
     /**
@@ -62,60 +55,80 @@ public class ExchangeService {
      */
     public OfferResponse processOffers(final AuthenticationToken token, final OfferRequest request) {
         final List<Offer> offers = new ArrayList<>(request.getUpdateOffers().size() + request.getDeleteOfferIds().size());
-        final EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            transaction.begin();
-            // If DTO objects has an id, we're trying to update the database.
-            // If DTO has an id and there is no such entity, an exception is thrown.
-            for (final Offer offer : request.getUpdateOffers()) {
-                final OfferEntity unmanagedEntity = offerConverter.toEntity(offer);
 
-                if (offer.getId() == null) { // new offer
-                    offerDao.persist(unmanagedEntity);
-                } else { // update offer
-                    final OfferEntity existingOffer = offerDao.findOffer(offer.getId());
-                    if (existingOffer != null && existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
-                        existingOffer.merge(unmanagedEntity);
-                        offerDao.persist(existingOffer);
-                    } else {
-                        offers.add(new Offer(new EntityIdentificationException(offer.getId())));
-                    }
-                }
-            }
-            for (final Long offer : request.getDeleteOfferIds()) {
-                if (!offerDao.delete(offer)) { // collect all inexistent offers
-                    offers.add(new Offer(new EntityIdentificationException(offer)));
-                }
-            }
-        } finally {
-            if (transaction != null) {
-                if (offers.isEmpty()) {
-                    transaction.commit();
+        // If DTO objects has an id, we're trying to update the database.
+        // If DTO has an id and there is no such entity, an exception is thrown.
+        for (final Offer offer : request.getUpdateOffers()) {
+            final OfferEntity unmanagedEntity = OfferTransformer.transform(offer);
+
+            if (offer.getId() == null) { // new offer
+                dao.persist(unmanagedEntity);
+            } else { // update offer
+                final OfferEntity existingOffer = dao.findOffer(offer.getId());
+                if (existingOffer != null && existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
+                    existingOffer.merge(unmanagedEntity);
+                    dao.persist(existingOffer);
                 } else {
-                    transaction.rollback();
+                    offers.add(new Offer(new EntityIdentificationException(offer.getId())));
                 }
             }
         }
+
+        for (final Long offer : request.getDeleteOfferIds()) {
+            if (!dao.delete(offer)) { // collect all inexistent offers
+                offers.add(new Offer(new EntityIdentificationException(offer)));
+            }
+        }
+
         return new OfferResponse(offers);
     }
 
-
     public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        final OfferJpaDao dao = new OfferJpaDao(entityManager);
+        final OfferResponse response;
+
         switch (request.getFetchType()) {
             case ALL:
-                return new OfferResponse(offerConverter.toDTO(dao.findAll()));
+                response = new OfferResponse(findAllOffers());
+                break;
             case NONE:
-                throw new NotImplementedException("TBD");
+                response = new OfferResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+                break;
             case BY_ID:
-                return new OfferResponse(offerConverter.toDTO(dao.findOffers(request.getOffers())));
+                response = new OfferResponse(findOffers(request.getOffers()));
+                break;
             case LIMIT:
-                // return offers from 'a' to 'b' using SQL's LIMIT, used for pagination
-                throw new NotImplementedException("TBD");
+                response = new OfferResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+                break;
             case PROTOTYPE:
-                throw new NotImplementedException("TBD");
+                response = new OfferResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+                break;
+            default:
+                response = new OfferResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
         }
-        return new OfferResponse();
+
+        return response;
+    }
+
+    private List<Offer> findAllOffers() {
+        final List<OfferEntity> found = dao.findAll();
+
+        return convertEntityList(found);
+    }
+
+    private List<Offer> findOffers(final List<Long> ids) {
+        final List<OfferEntity> found = dao.findOffers(ids);
+
+        return convertEntityList(found);
+    }
+
+    private List<Offer> convertEntityList(final List<OfferEntity> found) {
+        final List<Offer> result = new ArrayList<>(found.size());
+
+        for (final OfferEntity entity : found) {
+            result.add(OfferTransformer.transform(entity));
+        }
+
+        return result;
     }
 
     public void processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {

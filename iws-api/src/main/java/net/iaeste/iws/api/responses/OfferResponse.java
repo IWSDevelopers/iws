@@ -21,13 +21,12 @@ import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.utils.Copier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class OfferResponse extends AbstractResponse {
 
@@ -43,7 +42,7 @@ public final class OfferResponse extends AbstractResponse {
      */
     public OfferResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        this.offers = new ArrayList<>();
+        offers = null;
     }
 
     /**
@@ -54,7 +53,7 @@ public final class OfferResponse extends AbstractResponse {
      */
     public OfferResponse(final IWSError error, final String message) {
         super(error, message);
-        this.offers = new ArrayList<>();
+        offers = null;
     }
 
     /**
@@ -65,8 +64,11 @@ public final class OfferResponse extends AbstractResponse {
      * @param offers list of offers for which something went wrong
      */
     public OfferResponse(final List<Offer> offers) {
-        super(offers.isEmpty() ? IWSErrors.SUCCESS : IWSErrors.PERSISTENCE_ERROR,
-                offers.isEmpty() ? IWSConstants.SUCCESS : "Some of the offers could not be pesisted");
+        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
+        // The following is just wrong - When we wish to return a list, we get an error!
+//        super(offers.isEmpty() ? IWSErrors.SUCCESS : IWSErrors.PERSISTENCE_ERROR,
+//                offers.isEmpty() ? IWSConstants.SUCCESS : "Some of the offers could not be pesisted");
+
         this.offers = Copier.copy(offers);
     }
 

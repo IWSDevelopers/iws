@@ -14,13 +14,20 @@
  */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.jpa.AccessJpaDao;
+import net.iaeste.iws.persistence.jpa.OfferJpaDao;
+
 import javax.persistence.EntityManager;
 
 /**
- * Service Factory, to prepare the different Service instances, before being
- * used. Since the individual services may have different pre-requisites, then
- * the purpose of this class is to abstract the usage of the individual
- * services.
+ * The ServiceFactory class is here to ensure that we follow the Law of Demeter
+ * (Principle of Least Knowledge). Since the this class is injected into this
+ * module as the external dependency, we hereby have a way of upholding
+ * this.<br />
+ *   The factory will ensure that each service is prepared with the required
+ * dependencies, in a way to uphold this principle.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -39,7 +46,9 @@ public class ServiceFactory {
     }
 
     public AccessService prepareAuthenticationService() {
-        return new AccessService(entityManager);
+        final AccessDao dao = new AccessJpaDao(entityManager);
+
+        return new AccessService(dao);
     }
 
     public FacultyService prepareFacultyService() {
@@ -47,7 +56,9 @@ public class ServiceFactory {
     }
 
     public ExchangeService prepareOfferService() {
-        return new ExchangeService(entityManager);
+        final OfferDao dao = new OfferJpaDao(entityManager);
+
+        return new ExchangeService(dao);
     }
 
     public StudentService prepareStudentService() {

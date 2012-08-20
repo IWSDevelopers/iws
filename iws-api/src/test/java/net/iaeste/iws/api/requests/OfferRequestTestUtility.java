@@ -72,4 +72,12 @@ public class OfferRequestTestUtility {
         }
         return validEditOffers;
     }
+
+    public static List<Long> getEmptyIdsList() {
+        return new ArrayList<>(0);
+    }
+
+    public static List<Offer> getEmptyOfferList() {
+        return new ArrayList<>(0);
+    }
 }

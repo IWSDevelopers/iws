@@ -116,18 +116,29 @@ public class OfferRequestTest {
     }
 
     @Test(expected = VerificationException.class)
-    public void testVerifyEditRequestWithDuplicatedRefNo() {
-        final List<Offer> editOffers = Copier.copy(validUpdateOffers);
-        editOffers.get(0).setRefNo(editOffers.get(1).getRefNo()); // trying to update same entity twice
-        final OfferRequest requestWithInvalidOffer = new OfferRequest(editOffers, emptyIdList);
+    public void testVerifyUpdateRequestWithDuplicatedId() {
+        final List<Offer> updateOffers = Copier.copy(validUpdateOffers);
+        updateOffers.get(0).setId(updateOffers.get(1).getId());
+        // trying to update the same entity twice
+        final OfferRequest requestWithInvalidOffer = new OfferRequest(updateOffers, emptyIdList);
         requestWithInvalidOffer.verify();
     }
 
     @Test(expected = VerificationException.class)
-    public void testVerifyCreateRequestWithDuplicatedId() {
+    public void testVerifyCreateRequestWithDuplicatedRefNo() {
         final List<Offer> createOffers = Copier.copy(validCreateOffers);
-        createOffers.get(0).setId(createOffers.get(1).getId()); // trying to update same entity twice
+        createOffers.get(0).setRefNo(createOffers.get(1).getRefNo());
+        // trying to create the same entity twice
         final OfferRequest requestWithInvalidOffer = new OfferRequest(createOffers, emptyIdList);
+        requestWithInvalidOffer.verify();
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testVerifyUpdateRequestWithDuplicatedRefNo() {
+        final List<Offer> updateOffers = Copier.copy(validUpdateOffers);
+        updateOffers.get(0).setRefNo(updateOffers.get(1).getRefNo());
+        // trying to update the same entity twice
+        final OfferRequest requestWithInvalidOffer = new OfferRequest(updateOffers, emptyIdList);
         requestWithInvalidOffer.verify();
     }
 

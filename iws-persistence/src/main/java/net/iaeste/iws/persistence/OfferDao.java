@@ -38,7 +38,7 @@ public interface OfferDao {
      *
      * @return list of {@code OfferEntity}
      */
-    List findAll();
+    List<OfferEntity> findAll();
 
     /**
      * Finds the entity in the database.

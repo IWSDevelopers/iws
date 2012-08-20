@@ -60,7 +60,7 @@ public class ExchangeServiceTest {
     }
 
     @Test
-    public void testProcessingOffersEmptyRequest() {
+    public void testProcessingOffersEmpty() {
         // First, the test setup
         final OfferRequest request = OfferRequestTestUtility.getEmptyRequest();
         request.verify();
@@ -73,7 +73,7 @@ public class ExchangeServiceTest {
     }
 
     @Test
-    public void testProcessingOffersCreateRequest() {
+    public void testProcessingOffersCreate() {
         // First, the test setup
         final List<Offer> offersList = OfferRequestTestUtility.getValidCreateOffersList().subList(0, 1);
         final List<Long> emptyIdsList = OfferRequestTestUtility.getEmptyIdsList();
@@ -95,7 +95,7 @@ public class ExchangeServiceTest {
      * to create Offer when there is an Offer with that id in the database.
      */
     @Test
-    public void testProcessingOffersCreateRequestForExistingRefNo() {
+    public void testProcessingOffersCreateForExistingRefNo() {
         // First, the test setup
         final List<Offer> offersList = OfferRequestTestUtility.getValidCreateOffersList().subList(0, 1);
         final List<Long> emptyIdsList = OfferRequestTestUtility.getEmptyIdsList();
@@ -119,7 +119,7 @@ public class ExchangeServiceTest {
      * Correct update request with one offer.
      */
     @Test
-    public void testProcessingOffersUpdateRequest() {
+    public void testProcessingOffersUpdate() {
         // First, the test setup
         final List<Offer> offersList = OfferRequestTestUtility.getValidUpdateOffersList().subList(0, 1);
         final List<Long> emptyIdsList = OfferRequestTestUtility.getEmptyIdsList();
@@ -143,7 +143,7 @@ public class ExchangeServiceTest {
      * Checks if processing is going to fail if {@code refNo} in request does not match the one in the database.
      */
     @Test
-    public void testProcessingOffersUpdateRequestWithDifferentRefNos() {
+    public void testProcessingOffersUpdateWithDifferentRefNos() {
         // First, the test setup
         final List<Offer> offersList = OfferRequestTestUtility.getValidUpdateOffersList().subList(0, 1);
         final List<Long> emptyIdsList = OfferRequestTestUtility.getEmptyIdsList();
@@ -170,17 +170,17 @@ public class ExchangeServiceTest {
      * in the database for given {@code Offer.id} in the {@code OfferRequest}
      */
     @Test
-    public void testProcessingOffersUpdateRequestForNonexistentId() {
+    public void testProcessingOffersUpdateForNonexistentId() {
         // First, the test setup
-        final List<Offer> validUpdateOffersList = OfferRequestTestUtility.getValidUpdateOffersList().subList(0, 1);
+        final List<Offer> offersList = OfferRequestTestUtility.getValidUpdateOffersList().subList(0, 1);
         final List<Long> emptyIdsList = OfferRequestTestUtility.getEmptyIdsList();
 
-        final Offer offer = validUpdateOffersList.get(0);
+        final Offer offer = offersList.get(0);
         final OfferEntity existingOffer = OfferTransformer.transform(offer);
         when(dao.findOffer(offer.getRefNo())).thenReturn(existingOffer);
         when(dao.findOffer(offer.getId())).thenReturn(null);
 
-        final OfferRequest request = new OfferRequest(validUpdateOffersList, emptyIdsList);
+        final OfferRequest request = new OfferRequest(offersList, emptyIdsList);
         request.verify(); // make sure that request is valid
 
         // Execute the test
@@ -233,5 +233,66 @@ public class ExchangeServiceTest {
 
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffers().size(), is(3)); // expecting 3 problems
+    }
+
+
+    @Test
+    public void testProcessingOffersDelete() {
+        // First, the test setup
+        final List<Offer> emptyOffersList = OfferRequestTestUtility.getEmptyOfferList();
+        final List<Offer> offersList = OfferRequestTestUtility.getValidUpdateOffersList();
+        final List<Long> offerIdsList = OfferRequestTestUtility.getUniqueIdList().subList(0, 1);
+
+
+        OfferEntity existingEntity = OfferTransformer.transform(offersList.get(0));
+        when(dao.findOffer(offerIdsList.get(0))).thenReturn(existingEntity);
+
+        final OfferRequest request = new OfferRequest(emptyOffersList, offerIdsList);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = cut.processOffers(null, request);
+
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getOffers().size(), is(0));
+    }
+
+    @Test
+    public void testProcessingOffersDeleteForNonexistentOffer() {
+        // First, the test setup
+        final List<Offer> emptyOffersList = OfferRequestTestUtility.getEmptyOfferList();
+        final List<Long> offerIdsList = OfferRequestTestUtility.getUniqueIdList().subList(0, 1);
+
+        when(dao.findOffer(offerIdsList.get(0))).thenReturn(null);
+
+        final OfferRequest request = new OfferRequest(emptyOffersList, offerIdsList);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = cut.processOffers(null, request);
+
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getOffers().size(), is(1));
+        assertThat(result.getOffers().get(0).isOk(), is(false));
+    }
+
+    @Test
+    public void testProcessingOffersDeleteCountErrors() {
+        // First, the test setup
+        final List<Offer> emptyOffersList = OfferRequestTestUtility.getEmptyOfferList();
+        final List<Long> offerIdsList = OfferRequestTestUtility.getUniqueIdList().subList(0, 3);
+
+        when(dao.findOffer(offerIdsList.get(0))).thenReturn(null);
+        when(dao.findOffer(offerIdsList.get(1))).thenReturn(new OfferEntity());
+        when(dao.findOffer(offerIdsList.get(2))).thenReturn(null);
+
+        final OfferRequest request = new OfferRequest(emptyOffersList, offerIdsList);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = cut.processOffers(null, request);
+
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getOffers().size(), is(2));
     }
 }

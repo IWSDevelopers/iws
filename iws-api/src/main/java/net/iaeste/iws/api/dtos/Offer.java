@@ -861,7 +861,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
     }
 
     /**
-     * @throws VerificationException if object is not valid
+     * @throws {@code VerificationException} if object is not valid
      */
     @Override
     public void verify() throws VerificationException {
@@ -958,7 +958,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
     /**
      * Checks if minimum and maximum weeks values are correct.
      *
-     * @return true if minimumWeeks and maximumWeeks are valid.
+     * @return true if {@code minimumWeeks} and {@code maximumWeeks} are valid.
      */
     boolean verifyNumberOfWeeks() {
         if (minimumWeeks == null || maximumWeeks == null) {
@@ -971,7 +971,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
      * verifies reference number format
      * [ISO_3166-2 country code]-[exchange year]-[identification number]-[additional code (optional)]
      *
-     * @return true if refNo is valid
+     * @return true if {@code refNo} is valid
      */
     boolean verifyRefNo() {
         if (refNo == null) {
@@ -1012,7 +1012,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
     /**
      * Checks for presence of date fields.
      *
-     * @return true if all required fields are provided.
+     * @return true if all required date fields are provided.
      */
     @SuppressWarnings("OverlyComplexBooleanExpression")
     private boolean verifyDatesPresence() {

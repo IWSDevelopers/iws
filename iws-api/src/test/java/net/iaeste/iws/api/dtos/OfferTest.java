@@ -128,25 +128,31 @@ public class OfferTest {
         Assert.assertThat(nominationDeadline, is(not(offer.getNominationDeadline())));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAddingToUnmodificableFieldOfStudyList() {
+    @Test
+    public void testAddingToFieldOfStudyList() {
         final List<FieldOfStudy> fieldOfStudies = offer.getFieldOfStudies();
+        final List<FieldOfStudy> primaryFieldOfStudies = offer.getFieldOfStudies();
         fieldOfStudies.add(FieldOfStudy.AERONAUTIC_ENGINEERING);
         Assert.assertThat(fieldOfStudies, is(not(offer.getFieldOfStudies())));
+        Assert.assertThat(primaryFieldOfStudies, is(offer.getFieldOfStudies()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAddingToUnmodificableSpecializationList() {
+    @Test
+    public void testAddingToSpecializationList() {
         final List<Specialization> specializations = offer.getSpecializations();
+        final List<Specialization> primarySpecializations = offer.getSpecializations();
         specializations.add(Specialization.ASTROPHYSICS);
         Assert.assertThat(specializations, is(not(offer.getSpecializations())));
+        Assert.assertThat(primarySpecializations, is(offer.getSpecializations()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAddingToUnmodificableStudyLevelList() {
+    @Test
+    public void testAddingToStudyLevelList() {
         final List<StudyLevel> studyLevels = offer.getStudyLevels();
+        final List<StudyLevel> primaryStudyLevels = offer.getStudyLevels();
         studyLevels.add(StudyLevel.B);
         Assert.assertThat(studyLevels, is(not(offer.getStudyLevels())));
+        Assert.assertThat(primaryStudyLevels, is(offer.getStudyLevels()));
     }
 
     @Test

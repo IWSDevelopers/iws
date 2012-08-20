@@ -34,7 +34,6 @@ import net.iaeste.iws.api.utils.Copier;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -267,7 +266,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
     }
 
     public List<FieldOfStudy> getFieldOfStudies() {
-        return Collections.unmodifiableList(fieldOfStudies);
+        return Copier.copy(fieldOfStudies);
     }
 
     public void setFieldOfStudies(final List<FieldOfStudy> fieldOfStudies) {
@@ -508,7 +507,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
     }
 
     public List<Specialization> getSpecializations() {
-        return Collections.unmodifiableList(specializations);
+        return Copier.copy(specializations);
     }
 
     public void setSpecializations(final List<Specialization> specializations) {
@@ -516,7 +515,7 @@ public final class Offer extends AbstractResponse implements Verifiable {
     }
 
     public List<StudyLevel> getStudyLevels() {
-        return Collections.unmodifiableList(studyLevels);
+        return Copier.copy(studyLevels);
     }
 
     public void setStudyLevels(final List<StudyLevel> studyLevels) {

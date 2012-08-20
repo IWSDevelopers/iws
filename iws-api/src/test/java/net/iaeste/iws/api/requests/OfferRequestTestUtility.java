@@ -50,9 +50,9 @@ public class OfferRequestTestUtility {
         return ids;
     }
 
-    public static List<Offer> getValidCreateOffersList() {
-        final String[] refNos = { "GB-2012-2000", "GB-2012-2001", "GB-2012-2002", "GB-2012-2003", "GB-2012-2004" };
-        final List<Offer> createList = getValidUpdateOffersList();
+    public static List<Offer> getValidUpdateOffersList() {
+        final String[] refNos = { "AT-2012-1000", "AT-2012-1001", "AT-2012-1002", "AT-2012-1003", "AT-2012-1004" };
+        final List<Offer> createList = getValidCreateOffersList();
         long i = 0;
         for (final Offer offer : createList) {
             offer.setRefNo(refNos[(int) i]);
@@ -62,8 +62,8 @@ public class OfferRequestTestUtility {
         return createList;
     }
 
-    public static List<Offer> getValidUpdateOffersList() {
-        final String[] refNos = { "AT-2012-1000", "AT-2012-1001", "AT-2012-1002", "AT-2012-1003", "AT-2012-1004" };
+    public static List<Offer> getValidCreateOffersList() {
+        final String[] refNos = { "GB-2012-2000", "GB-2012-2001", "GB-2012-2002", "GB-2012-2003", "GB-2012-2004" };
         final List<Offer> validEditOffers = new ArrayList<>(refNos.length);
         for (final String refNo : refNos) {
             final Offer minimalOffer = OfferTestUtility.getMinimalOffer();

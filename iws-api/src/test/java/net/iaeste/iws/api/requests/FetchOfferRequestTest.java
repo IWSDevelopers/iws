@@ -7,7 +7,7 @@ import junit.framework.TestCase;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class FetchOffersRequestTest extends TestCase {
+public class FetchOfferRequestTest extends TestCase {
     public void testVerify() throws Exception {
 
     }

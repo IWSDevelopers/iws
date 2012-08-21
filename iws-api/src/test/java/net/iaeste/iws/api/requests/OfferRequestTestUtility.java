@@ -36,9 +36,7 @@ public class OfferRequestTestUtility {
     }
 
     public static OfferRequest getValidRequest() {
-        final List<Offer> validList = getValidUpdateOffersList();
-        validList.addAll(getValidCreateOffersList());
-        return new OfferRequest(validList, getUniqueIdList());
+        return new OfferRequest(getValidUpdateOffersList().get(0));
 
     }
 

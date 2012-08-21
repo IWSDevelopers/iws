@@ -17,12 +17,6 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.utils.Copier;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -37,67 +31,69 @@ public final class OfferRequest extends AbstractRequest {
      */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private final List<Offer> updateOffers;
-    private final List<Long> deleteOfferIds;
+    private final Offer offer;
+    private final boolean forDeletion;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public OfferRequest() {
-        this(new ArrayList<Offer>(), new ArrayList<Long>());
-    }
-
-    public OfferRequest(final List<Offer> updateOffers, final List<Long> deleteOfferIDs) {
-        this.updateOffers = Copier.copy(updateOffers);
-        this.deleteOfferIds = Copier.copy(deleteOfferIDs);
+        this.offer = null;
+        this.forDeletion = false;
     }
 
     /**
+     * If the ID in the offer DTO is null, it is an insert operation otherwise it is an update.
+     *
+     * @param offer object to create or update
+     */
+    public OfferRequest(final Offer offer) {
+        this.offer = new Offer(offer);
+        this.forDeletion = false;
+    }
+
+    /**
+     * @param deleteOfferId id for Offer to delete
+     */
+    public OfferRequest(final Long deleteOfferId) {
+        final Offer offerForDeletion = new Offer();
+        offerForDeletion.setId(deleteOfferId);
+
+        this.offer = offerForDeletion;
+        this.forDeletion = true;
+    }
+
+    /**
+     * <li>If the flag {@code forDeletion = true},
+     * only the ID is retrieved from the offer DTO and it is not checked for validity.</li>
+     * <li>
+     * In these two cases, the offer DTO is checked for validity.</li>
+     * <p/>
      * {@inheritDoc}
      */
     @Override
     public void verify() throws VerificationException {
-        final Set<String> refNoSet = new TreeSet<>();
-        final Set<Long> idSet = new TreeSet<>();
-        final Set<Long> deleteIdSet = new TreeSet<>();
-
-        for (final Offer offer : updateOffers) {
-            if (offer == null) {
-                throw new VerificationException("DTO cannot be null.");
+        if (offer == null) {
+            throw new VerificationException("no offer to update or delete");
+        }
+        if (forDeletion) {
+            if (offer.getId() == null) {
+                throw new VerificationException("id of Offer for deletion was not passed");
             }
+            if (offer.getId() <= 0) {
+                throw new VerificationException("primary keys start from 1");
+            }
+        } else {
             offer.verify();
-
-            if (offer.getId() != null) { // check for duplicated Ids
-                if (idSet.contains(offer.getId())) {
-                    throw new VerificationException("Duplicated DTOs' ids in the request.");
-                }
-                idSet.add(offer.getId());
-            }
-            if (refNoSet.contains(offer.getRefNo())) { // check for duplicated refNos
-                throw new VerificationException("Duplicated DTOs' refNos in the request.");
-            }
-            refNoSet.add(offer.getRefNo());
-        }
-        for (final Long offerId : deleteOfferIds) {
-            if (offerId == null) {
-                throw new VerificationException("Id cannot be null.");
-            }
-            if (idSet.contains(offerId)) {
-                throw new VerificationException("Cannot edit and delete same entity in one request.");
-            }
-            if (deleteIdSet.contains(offerId)) {
-                throw new VerificationException("Duplicated ids for deletion.");
-            }
-            deleteIdSet.add(offerId);
         }
     }
 
-    public List<Offer> getUpdateOffers() {
-        return Copier.copy(updateOffers);
+    public Offer getOffer() {
+        return new Offer(offer);
     }
 
-    public List<Long> getDeleteOfferIds() {
-        return Copier.copy(deleteOfferIds);
+    public boolean isForDeletion() {
+        return forDeletion;
     }
 }

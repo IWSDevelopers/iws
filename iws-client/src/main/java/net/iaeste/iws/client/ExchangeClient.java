@@ -28,15 +28,15 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
-import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class ExchangeClient implements Exchange {
 
@@ -78,7 +78,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return exchange.fetchOffers(token, request);
     }
 

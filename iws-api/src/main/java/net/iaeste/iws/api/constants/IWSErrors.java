@@ -88,4 +88,7 @@ public interface IWSErrors {
      * The current method is not yet implemented.
      */
     IWSError NOT_IMPLEMENTED = new IWSError(999, "Not Implemented");
+
+    // TODO
+    IWSError PROCESSING_FAILURE = new IWSError(1000, "delete me");
 }

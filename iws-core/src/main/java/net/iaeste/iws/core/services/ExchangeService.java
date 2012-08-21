@@ -17,7 +17,6 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
@@ -25,6 +24,7 @@ import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.OfferRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
@@ -49,98 +49,88 @@ public class ExchangeService {
     }
 
     /**
-     * For each {@code Offer} from {@code getUpdateOffers()},
      * if {@code id = null} then new {@code Offer} should be created.
      * Otherwise, the {@code Offer} for the specified {@code id} is updated.
      * <p/>
      * If {@code id = null} and {@code refNo} exists, then the request is invalid.
      * If (@code id != null} and {@code refNo} in the database and request doesn't match, then the request is invalid.
      *
-     * @param token
+     * @param token   TODO
      * @param request
      * @return OfferResponse contains list of Fallible Offers for which processing failed.
-     * @ToDo: do we want to update refNo?
      */
-    public OfferResponse processOffers(final AuthenticationToken token, final OfferRequest request) {
-        final List<Offer> offersWithError = new ArrayList<>(request.getUpdateOffers().size() + request.getDeleteOfferIds().size());
-        final List<OfferEntity> offersToPersist = new ArrayList<>();
-        final List<Long> offersToDelete = new ArrayList<>();
+    public OfferResponse processOffer(final AuthenticationToken token, final OfferRequest request) {
         OfferResponse response = null;
+        final List<String> processingErrors = new ArrayList<>();
 
-        // If DTO objects has an id, we're trying to update the database.
-        // If DTO has an id and there is no such entity, an exception is thrown.
-        for (final Offer offer : request.getUpdateOffers()) {
+        final Offer offer = request.getOffer();
+        if (request.isForDeletion()) {
+            final OfferEntity foundOffer = dao.findOffer(offer.getId());
+            if (foundOffer != null) {
+                dao.delete(foundOffer.getId());
+            } else {
+                // trying to delete nonexistent Entity
+                processingErrors.add("entity for given id=" + foundOffer.getId() + " does not exist");
+            }
+        } else {
+            // If DTO objects has an id, we're trying to update the database.
+            // If DTO has an id and there is no such entity, an exception is thrown.
             final OfferEntity unmanagedEntity = OfferTransformer.transform(offer);
 
             if (offer.getId() == null) {
                 // collect new offers to persist
                 final OfferEntity offerByRefNo = dao.findOffer(offer.getRefNo());
                 if (offerByRefNo == null) {
-                    offersToPersist.add(unmanagedEntity);
+                    dao.persist(unmanagedEntity);
                 } else {
                     // user can't create new Offer for existing refNo
-                    offersWithError.add(new Offer(new EntityIdentificationException(
-                            "Offer with refNo=" + offer.getRefNo() + " already exists.")));
+                    processingErrors.add("Offer with refNo=" + offer.getRefNo() + " already exists.");
                 }
             } else {
                 // collect offer to update to persist
                 final OfferEntity existingOffer = dao.findOffer(offer.getId());
-                if (existingOffer != null && existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
-                    existingOffer.merge(unmanagedEntity);
-                    offersToPersist.add(existingOffer);
-                } else {
+                if (existingOffer == null) {
+                    processingErrors.add("cannot update offer: there is no offer for given id=" + offer.getId());
+                } else if (!existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
                     // trying to update nonexistent Entity or refNo doesn't match
-                    offersWithError.add(new Offer(new EntityIdentificationException(offer.getId())));
+                    processingErrors.add("cannot change refNo");
+                } else {
+                    existingOffer.merge(unmanagedEntity);
+                    dao.persist(existingOffer);
                 }
             }
         }
-
-        for (final Long offerId : request.getDeleteOfferIds()) {
-            final OfferEntity offer = dao.findOffer(offerId);
-            if (offer != null) {
-                offersToDelete.add(offerId);
-            } else {
-                // trying to delete nonexistent Entity
-                offersWithError.add(new Offer(new EntityIdentificationException(offerId)));
-            }
-        }
-
-        if (offersWithError.isEmpty()) {
-            for (final OfferEntity offerEntity : offersToPersist) {
-                dao.persist(offerEntity);
-            }
-            for (final Long offerId : offersToDelete) {
-                dao.delete(offerId);
-            }
+        if (processingErrors.isEmpty()) {
             response = new OfferResponse();
         } else {
-            response = new OfferResponse(offersWithError);
+            response = new OfferResponse(offer, processingErrors);
         }
 
         return response;
     }
 
-    public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        final OfferResponse response;
+    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+        final FetchOffersResponse response;
 
         switch (request.getFetchType()) {
             case ALL:
-                response = new OfferResponse(findAllOffers());
+                response = new FetchOffersResponse(findAllOffers());
                 break;
             case NONE:
-                response = new OfferResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+                response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
                 break;
             case BY_ID:
-                response = new OfferResponse(findOffers(request.getOffers()));
+                final List<Offer> offers = findOffers(request.getOffers());
+                response = new FetchOffersResponse(offers);
                 break;
             case LIMIT:
-                response = new OfferResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+                response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
                 break;
             case PROTOTYPE:
-                response = new OfferResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+                response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
                 break;
             default:
-                response = new OfferResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+                response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
         }
 
         return response;

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.OfferResponse
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.FetchOfferResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -19,6 +19,7 @@ import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.utils.Copier;
 
 import java.util.List;
 
@@ -27,22 +28,23 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public final class OfferResponse extends AbstractResponse {
+public final class FetchOffersResponse extends AbstractResponse {
 
     /**
-     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
      */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private final Offer offer;
+    private final List<Offer> offers;
+    // TODO: To Be Discussed
     private final List<String> errors;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public OfferResponse() {
+    public FetchOffersResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        offer = null;
+        offers = null;
         errors = null;
     }
 
@@ -52,39 +54,20 @@ public final class OfferResponse extends AbstractResponse {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public OfferResponse(final IWSError error, final String message) {
+    public FetchOffersResponse(final IWSError error, final String message) {
         super(error, message);
-        offer = null;
+        offers = null;
         errors = null;
     }
 
-    /**
-     * Response is created when the request was fine and processing offer succedeed.
-     * <p/>
-     * Incorrect Offer should never be passed to this constructor. Instead use constructor with list of errors parameter.
-     *
-     * @param offer list of offer for which something went wrong
-     */
-    public OfferResponse(final Offer offer) {
-        this(offer, null);
+    public FetchOffersResponse(List<Offer> offers) {
+        this.offers = offers;
+        this.errors = null;
     }
 
-    /**
-     * Response is created when processing the offer failed.
-     * <p/>
-     * Incorrect Offer should never be passed to this constructor. Instead use constructor without list of errors parameter.
-     *
-     * @param offer list of offer for which something went wrong
-     */
-    public OfferResponse(final Offer offer, final List<String> errors) {
-        // TODO: constructors should be more obvious to use, get rid of ?: below
-        super(offer.isOk() ? IWSErrors.SUCCESS : IWSErrors.PROCESSING_FAILURE, "processing of the Offer failed");
-        this.offer = new Offer(offer);
-        this.errors = errors;
-    }
 
-    public Offer getOffer() {
-        return new Offer(offer);
+    public List<Offer> getOffers() {
+        return Copier.copy(offers);
     }
 
     /**

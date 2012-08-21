@@ -15,33 +15,47 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.requests.FacultyRequest;
+import net.iaeste.iws.api.requests.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.FetchOffersRequest;
+import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.OfferRequest;
+import net.iaeste.iws.api.requests.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.PublishGroupRequest;
+import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
-import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public interface Exchange {
 
     Fallible processFaculties(AuthenticationToken token, FacultyRequest request);
+
     FacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
 
     Fallible processOffers(AuthenticationToken token, OfferRequest request);
-    OfferResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
+
+    FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
     Fallible processOfferTemplates(AuthenticationToken token, OfferTemplateRequest request);
+
     OfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
 
     Fallible processPublishGroups(AuthenticationToken token, PublishGroupRequest request);
+
     PublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
     Fallible processStudents(AuthenticationToken token, StudentRequest request);
+
     StudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
 }

@@ -28,7 +28,7 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
-import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
@@ -39,9 +39,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class SpringExchangeClient implements Exchange {
 
@@ -88,7 +88,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     @Transactional
-    public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return exchange.fetchOffers(token, request);
     }
 

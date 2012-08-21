@@ -30,6 +30,7 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
@@ -42,9 +43,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public class ExchangeController extends CommonController implements Exchange {
 
@@ -111,7 +112,7 @@ public class ExchangeController extends CommonController implements Exchange {
      */
     @Override
     public Fallible processOffers(final AuthenticationToken token, final OfferRequest request) {
-        LOG.trace("Starting processOffers()");
+        LOG.trace("Starting processOffer()");
         Fallible response;
 
         try {
@@ -119,13 +120,13 @@ public class ExchangeController extends CommonController implements Exchange {
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            service.processOffers(token, request);
+            service.processOffer(token, request);
             response = new OfferResponse();
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processOffers()");
+        LOG.trace("Finished processOffer()");
         return response;
     }
 
@@ -133,9 +134,9 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         LOG.trace("Starting fetchOffers()");
-        OfferResponse response;
+        FetchOffersResponse response;
 
         try {
             verifyAccess(token, Permission.LOOKUP_OFFERS);
@@ -144,7 +145,7 @@ public class ExchangeController extends CommonController implements Exchange {
             final ExchangeService service = factory.prepareOfferService();
             response = service.fetchOffers(token, request);
         } catch (IWSException e) {
-            response = new OfferResponse(e.getError(), e.getMessage());
+            response = new FetchOffersResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchOffers()");

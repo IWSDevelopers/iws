@@ -18,7 +18,6 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 
 import java.util.List;
 
@@ -75,29 +74,55 @@ public final class OfferResponse extends AbstractResponse {
         return new Offer(offer);
     }
 
+
     /**
+     * TODO
      * {@inheritDoc}
      */
-    @Override
-    public boolean equals(final Object obj) {
-        throw new NotImplementedException("TBD");
-
+    public String toString() {
+        return "OfferResponse{" +
+                "offer=" + offer +
+                ", errors=" + errors +
+                '}';
     }
 
     /**
-     * {@inheritDoc}
+     * TODO
+     *
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        OfferResponse that = (OfferResponse) o;
+
+        if (errors != null ? !errors.equals(that.errors) : that.errors != null) {
+            return false;
+        }
+        if (offer != null ? !offer.equals(that.offer) : that.offer != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * TODO
+     *
+     * @return
      */
     @Override
     public int hashCode() {
-        throw new NotImplementedException("TBD");
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        throw new NotImplementedException("TBD");
+        int result = super.hashCode();
+        result = 31 * result + (offer != null ? offer.hashCode() : 0);
+        result = 31 * result + (errors != null ? errors.hashCode() : 0);
+        return result;
     }
 }

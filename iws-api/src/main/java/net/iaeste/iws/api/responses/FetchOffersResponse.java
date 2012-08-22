@@ -71,6 +71,7 @@ public final class FetchOffersResponse extends AbstractResponse {
     }
 
     /**
+     * TODO
      * {@inheritDoc}
      */
     @Override
@@ -79,10 +80,27 @@ public final class FetchOffersResponse extends AbstractResponse {
     }
 
     /**
+     * TODO
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        throw new NotImplementedException("TBD");
+        return "FetchOffersResponse{" +
+                "offers=" + offers +
+                ", errors=" + errors +
+                '}';
+    }
+
+    /**
+     * TODO
+     *
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (offers != null ? offers.hashCode() : 0);
+        result = 31 * result + (errors != null ? errors.hashCode() : 0);
+        return result;
     }
 }

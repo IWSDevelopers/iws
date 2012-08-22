@@ -20,6 +20,6 @@ package net.iaeste.iws.api.requests;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class OfferRequestTest {
+public class ProcessOfferRequestTest {
 
 }

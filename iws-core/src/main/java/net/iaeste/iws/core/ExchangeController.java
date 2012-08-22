@@ -18,14 +18,15 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.OfferRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
@@ -111,7 +112,7 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOffers(final AuthenticationToken token, final OfferRequest request) {
+    public Fallible processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         LOG.trace("Starting processOffer()");
         Fallible response;
 
@@ -121,6 +122,29 @@ public class ExchangeController extends CommonController implements Exchange {
 
             final ExchangeService service = factory.prepareOfferService();
             service.processOffer(token, request);
+            response = new OfferResponse();
+        } catch (IWSException e) {
+            response = new OfferResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished processOffer()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+        LOG.trace("Starting deleteOffer()");
+        Fallible response;
+
+        try {
+            verifyAccess(token, Permission.PROCESS_OFFERS);
+            verify(request, "To be clarified.");
+
+            final ExchangeService service = factory.prepareOfferService();
+            service.deleteOffer(token, request);
             response = new OfferResponse();
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());

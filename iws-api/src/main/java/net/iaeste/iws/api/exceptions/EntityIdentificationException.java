@@ -34,7 +34,7 @@ public class EntityIdentificationException extends IWSException {
      * @see net.iaeste.iws.api.constants.IWSErrors#VERIFICATION_ERROR
      */
     public EntityIdentificationException(final String message) {
-        super(IWSErrors.ID_ERROR, message);
+        super(IWSErrors.ENTITY_IDENTIFICATION_ERROR, message);
     }
 
     /**
@@ -45,6 +45,6 @@ public class EntityIdentificationException extends IWSException {
      * @see net.iaeste.iws.api.constants.IWSErrors#VERIFICATION_ERROR
      */
     public EntityIdentificationException(final Long entityId) {
-        super(IWSErrors.ID_ERROR, "No entity for id=" + entityId);
+        super(IWSErrors.ENTITY_IDENTIFICATION_ERROR, "No entity for id=" + entityId);
     }
 }

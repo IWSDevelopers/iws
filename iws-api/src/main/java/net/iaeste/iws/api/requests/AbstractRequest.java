@@ -50,6 +50,23 @@ abstract class AbstractRequest implements Verifiable {
     }
 
     /**
+     * The method takes a value of type {@code Verifiable}, and verifies that
+     * this value is not null, and then invokes the verification on it. If the
+     * given value is null, then a {@code VerificationException} is thrown.
+     *
+     * @param field    The name of the field (value) to be verified
+     * @param value    The value to verify
+     * @throws VerificationException if the value is null
+     */
+    protected <T> void verify(final String field, final Verifiable value) throws VerificationException {
+        if (value == null) {
+            throw new VerificationException(format("The field %s may not be null.", field));
+        }
+
+        value.verify();
+    }
+
+    /**
      * The method takes a value, and verifies that this value is neither null,
      * nor that the value is outside of the provided range of allowed values.
      * If the given value is either null, or outside of the allowed range, then

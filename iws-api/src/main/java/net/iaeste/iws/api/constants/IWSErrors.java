@@ -82,7 +82,7 @@ public interface IWSErrors {
     /**
      * The Identification Error is passed when trying to edit unexisting {@code Entity}.
      */
-    IWSError ID_ERROR = new IWSError(503, "Entity Identification Error");
+    IWSError ENTITY_IDENTIFICATION_ERROR = new IWSError(503, "Entity Identification Error");
 
     /**
      * The current method is not yet implemented.

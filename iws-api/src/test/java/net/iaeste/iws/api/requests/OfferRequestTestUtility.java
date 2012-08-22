@@ -31,12 +31,12 @@ public class OfferRequestTestUtility {
     private OfferRequestTestUtility() {
     }
 
-    public static OfferRequest getEmptyRequest() {
-        return new OfferRequest();
+    public static ProcessOfferRequest getEmptyRequest() {
+        return new ProcessOfferRequest();
     }
 
-    public static OfferRequest getValidRequest() {
-        return new OfferRequest(getValidUpdateOffersList().get(0));
+    public static ProcessOfferRequest getValidRequest() {
+        return new ProcessOfferRequest(getValidUpdateOffersList().get(0));
 
     }
 

@@ -15,13 +15,14 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.OfferRequest;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
@@ -43,7 +44,8 @@ public interface Exchange {
 
     FacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
 
-    Fallible processOffers(AuthenticationToken token, OfferRequest request);
+    Fallible processOffer(AuthenticationToken token, ProcessOfferRequest request);
+    Fallible deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 

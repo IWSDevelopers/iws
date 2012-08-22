@@ -17,11 +17,13 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.OfferRequest;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
@@ -59,47 +61,38 @@ public class ExchangeService {
      * @param request
      * @return OfferResponse contains list of Fallible Offers for which processing failed.
      */
-    public OfferResponse processOffer(final AuthenticationToken token, final OfferRequest request) {
+    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         OfferResponse response = null;
         final List<String> processingErrors = new ArrayList<>();
 
         final Offer offer = request.getOffer();
-        if (request.isForDeletion()) {
-            final OfferEntity foundOffer = dao.findOffer(offer.getId());
-            if (foundOffer != null) {
-                dao.delete(foundOffer.getId());
+        // If DTO objects has an id, we're trying to update the database.
+        // If DTO has an id and there is no such entity, an exception is thrown.
+        final OfferEntity unmanagedEntity = OfferTransformer.transform(offer);
+
+        if (offer.getId() == null) {
+            // collect new offers to persist
+            final OfferEntity offerByRefNo = dao.findOffer(offer.getRefNo());
+            if (offerByRefNo == null) {
+                dao.persist(unmanagedEntity);
             } else {
-                // trying to delete nonexistent Entity
-                processingErrors.add("entity for given id=" + foundOffer.getId() + " does not exist");
+                // user can't create new Offer for existing refNo
+                processingErrors.add("Offer with refNo=" + offer.getRefNo() + " already exists.");
             }
         } else {
-            // If DTO objects has an id, we're trying to update the database.
-            // If DTO has an id and there is no such entity, an exception is thrown.
-            final OfferEntity unmanagedEntity = OfferTransformer.transform(offer);
-
-            if (offer.getId() == null) {
-                // collect new offers to persist
-                final OfferEntity offerByRefNo = dao.findOffer(offer.getRefNo());
-                if (offerByRefNo == null) {
-                    dao.persist(unmanagedEntity);
-                } else {
-                    // user can't create new Offer for existing refNo
-                    processingErrors.add("Offer with refNo=" + offer.getRefNo() + " already exists.");
-                }
+            // collect offer to update to persist
+            final OfferEntity existingOffer = dao.findOffer(offer.getId());
+            if (existingOffer == null) {
+                processingErrors.add("cannot update offer: there is no offer for given id=" + offer.getId());
+            } else if (!existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
+                // trying to update nonexistent Entity or refNo doesn't match
+                processingErrors.add("cannot change refNo");
             } else {
-                // collect offer to update to persist
-                final OfferEntity existingOffer = dao.findOffer(offer.getId());
-                if (existingOffer == null) {
-                    processingErrors.add("cannot update offer: there is no offer for given id=" + offer.getId());
-                } else if (!existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
-                    // trying to update nonexistent Entity or refNo doesn't match
-                    processingErrors.add("cannot change refNo");
-                } else {
-                    existingOffer.merge(unmanagedEntity);
-                    dao.persist(existingOffer);
-                }
+                existingOffer.merge(unmanagedEntity);
+                dao.persist(existingOffer);
             }
         }
+
         if (processingErrors.isEmpty()) {
             response = new OfferResponse();
         } else {
@@ -107,6 +100,16 @@ public class ExchangeService {
         }
 
         return response;
+    }
+
+    public void deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+        final OfferEntity foundOffer = dao.findOffer(request.getOfferId());
+
+        if (foundOffer != null) {
+            dao.delete(foundOffer.getId());
+        } else {
+            throw new IWSException(IWSErrors.ENTITY_IDENTIFICATION_ERROR, "Cannot delete Offer with Id " + request.getOfferId());
+        }
     }
 
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {

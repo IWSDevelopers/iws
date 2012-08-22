@@ -21,7 +21,6 @@ import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.PaymentFrequency;
-import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 
@@ -115,7 +114,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
      */
     @ElementCollection
     @Column(name = "specialization")
-    private List<Specialization> specializations;
+    private List<String> specializations;
 
     @ElementCollection
     @Enumerated(value = EnumType.STRING)
@@ -573,11 +572,11 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         this.refNo = refNo;
     }
 
-    public List<Specialization> getSpecializations() {
+    public List<String> getSpecializations() {
         return specializations;
     }
 
-    public void setSpecializations(final List<Specialization> specializations) {
+    public void setSpecializations(final List<String> specializations) {
         this.specializations = specializations;
     }
 

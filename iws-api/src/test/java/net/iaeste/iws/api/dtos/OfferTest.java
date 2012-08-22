@@ -122,9 +122,9 @@ public class OfferTest {
 
     @Test
     public void testAddingToSpecializationList() {
-        final List<Specialization> specializations = offer.getSpecializations();
-        final List<Specialization> primarySpecializations = offer.getSpecializations();
-        specializations.add(Specialization.ASTROPHYSICS);
+        final List<String> specializations = offer.getSpecializations();
+        final List<String> primarySpecializations = offer.getSpecializations();
+        specializations.add(Specialization.ASTROPHYSICS.toString());
         Assert.assertThat(specializations, is(not(offer.getSpecializations())));
         Assert.assertThat(primarySpecializations, is(offer.getSpecializations()));
     }

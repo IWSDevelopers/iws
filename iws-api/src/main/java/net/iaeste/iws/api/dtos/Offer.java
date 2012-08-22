@@ -22,7 +22,6 @@ import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.PaymentFrequency;
-import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.exceptions.VerificationException;
@@ -139,7 +138,7 @@ public final class Offer implements Verifiable {
      * the user should be able to add custom
      * specializations in addition to the predefined ones.
      */
-    private List<Specialization> specializations = new ArrayList<>();
+    private List<String> specializations = new ArrayList<>();
     private List<StudyLevel> studyLevels = new ArrayList<>();
     private Boolean prevTrainingRequired;
     private String otherRequirements;
@@ -506,11 +505,11 @@ public final class Offer implements Verifiable {
         this.refNo = refNo;
     }
 
-    public List<Specialization> getSpecializations() {
+    public List<String> getSpecializations() {
         return Copier.copy(specializations);
     }
 
-    public void setSpecializations(final List<Specialization> specializations) {
+    public void setSpecializations(final List<String> specializations) {
         this.specializations = specializations;
     }
 

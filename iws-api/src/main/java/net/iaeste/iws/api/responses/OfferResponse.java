@@ -57,18 +57,6 @@ public final class OfferResponse extends AbstractResponse {
         offer = null;
         errors = null;
     }
-//    TODO michal: we don't need that anymore, do we?
-//    /**
-//     * Response is created when the request was fine and processing offer succedeed.
-//     * <p/>
-//     * Incorrect Offer should never be passed to this constructor. Instead use constructor with list of errors parameter.
-//     *
-//     * @param offer
-//     */
-//    public OfferResponse(final Offer offer) {
-//        this.offer = new Offer(offer);
-//        this.errors = null;
-//    }
 
     /**
      * Response is created when processing the offer failed.

@@ -40,6 +40,7 @@ import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -642,5 +643,272 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     @Override
     public void merge(final OfferEntity obj) {
         // TODO Kim; @Michal, please use this method to merge offers.
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        OfferEntity entity = (OfferEntity) o;
+
+        if (canteen != null ? !canteen.equals(entity.canteen) : entity.canteen != null) {
+            return false;
+        }
+        if (currency != entity.currency) {
+            return false;
+        }
+        if (dailyHours != null ? !dailyHours.equals(entity.dailyHours) : entity.dailyHours != null) {
+            return false;
+        }
+        if (deduction != null ? !deduction.equals(entity.deduction) : entity.deduction != null) {
+            return false;
+        }
+        if (employerAddress != null ? !employerAddress.equals(entity.employerAddress) : entity.employerAddress != null) {
+            return false;
+        }
+        if (employerAddress2 != null ? !employerAddress2.equals(entity.employerAddress2) : entity.employerAddress2 != null) {
+            return false;
+        }
+        if (employerBusiness != null ? !employerBusiness.equals(entity.employerBusiness) : entity.employerBusiness != null) {
+            return false;
+        }
+        if (employerEmployeesCount != null ? !employerEmployeesCount.equals(entity.employerEmployeesCount) : entity.employerEmployeesCount != null) {
+            return false;
+        }
+        if (employerName != null ? !employerName.equals(entity.employerName) : entity.employerName != null) {
+            return false;
+        }
+        if (employerWebsite != null ? !employerWebsite.equals(entity.employerWebsite) : entity.employerWebsite != null) {
+            return false;
+        }
+        if (fieldOfStudies != null ? !fieldOfStudies.equals(entity.fieldOfStudies) : entity.fieldOfStudies != null) {
+            return false;
+        }
+        if (fromDate != null ? !fromDate.equals(entity.fromDate) : entity.fromDate != null) {
+            return false;
+        }
+        if (fromDate2 != null ? !fromDate2.equals(entity.fromDate2) : entity.fromDate2 != null) {
+            return false;
+        }
+        if (gender != entity.gender) {
+            return false;
+        }
+        if (id != null ? !id.equals(entity.id) : entity.id != null) {
+            return false;
+        }
+        if (language1 != entity.language1) {
+            return false;
+        }
+        if (language1Level != entity.language1Level) {
+            return false;
+        }
+        if (language1Operator != entity.language1Operator) {
+            return false;
+        }
+        if (language2 != entity.language2) {
+            return false;
+        }
+        if (language2Level != entity.language2Level) {
+            return false;
+        }
+        if (language2Operator != entity.language2Operator) {
+            return false;
+        }
+        if (language3 != entity.language3) {
+            return false;
+        }
+        if (language3Level != entity.language3Level) {
+            return false;
+        }
+        if (livingCost != null ? !livingCost.equals(entity.livingCost) : entity.livingCost != null) {
+            return false;
+        }
+        if (livingCostFrequency != entity.livingCostFrequency) {
+            return false;
+        }
+        if (lodgingBy != null ? !lodgingBy.equals(entity.lodgingBy) : entity.lodgingBy != null) {
+            return false;
+        }
+        if (lodgingCost != null ? !lodgingCost.equals(entity.lodgingCost) : entity.lodgingCost != null) {
+            return false;
+        }
+        if (lodgingCostFrequency != entity.lodgingCostFrequency) {
+            return false;
+        }
+        if (maximumWeeks != null ? !maximumWeeks.equals(entity.maximumWeeks) : entity.maximumWeeks != null) {
+            return false;
+        }
+        if (minimumWeeks != null ? !minimumWeeks.equals(entity.minimumWeeks) : entity.minimumWeeks != null) {
+            return false;
+        }
+        if (nearestAirport != null ? !nearestAirport.equals(entity.nearestAirport) : entity.nearestAirport != null) {
+            return false;
+        }
+        if (nearestPubTransport != null ? !nearestPubTransport.equals(entity.nearestPubTransport) : entity.nearestPubTransport != null) {
+            return false;
+        }
+        if (nominationDeadline != null ? !nominationDeadline.equals(entity.nominationDeadline) : entity.nominationDeadline != null) {
+            return false;
+        }
+        if (otherRequirements != null ? !otherRequirements.equals(entity.otherRequirements) : entity.otherRequirements != null) {
+            return false;
+        }
+        if (payment != null ? !payment.equals(entity.payment) : entity.payment != null) {
+            return false;
+        }
+        if (paymentFrequency != entity.paymentFrequency) {
+            return false;
+        }
+        if (prevTrainingRequired != null ? !prevTrainingRequired.equals(entity.prevTrainingRequired) : entity.prevTrainingRequired != null) {
+            return false;
+        }
+        if (refNo != null ? !refNo.equals(entity.refNo) : entity.refNo != null) {
+            return false;
+        }
+        if (!(specializations == null ? Collections.emptyList() : specializations).equals(
+                entity.specializations == null ? Collections.emptyList() : entity.specializations)) {
+            return false;
+        }
+        if (studyLevels != null ? !studyLevels.equals(entity.studyLevels) : entity.studyLevels != null) {
+            return false;
+        }
+        if (toDate != null ? !toDate.equals(entity.toDate) : entity.toDate != null) {
+            return false;
+        }
+        if (toDate2 != null ? !toDate2.equals(entity.toDate2) : entity.toDate2 != null) {
+            return false;
+        }
+        if (typeOfWork != entity.typeOfWork) {
+            return false;
+        }
+        if (unavailableFrom != null ? !unavailableFrom.equals(entity.unavailableFrom) : entity.unavailableFrom != null) {
+            return false;
+        }
+        if (unavailableTo != null ? !unavailableTo.equals(entity.unavailableTo) : entity.unavailableTo != null) {
+            return false;
+        }
+        if (weeklyHours != null ? !weeklyHours.equals(entity.weeklyHours) : entity.weeklyHours != null) {
+            return false;
+        }
+        if (workDescription != null ? !workDescription.equals(entity.workDescription) : entity.workDescription != null) {
+            return false;
+        }
+        if (workingPlace != null ? !workingPlace.equals(entity.workingPlace) : entity.workingPlace != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (refNo != null ? refNo.hashCode() : 0);
+        result = 31 * result + (nominationDeadline != null ? nominationDeadline.hashCode() : 0);
+        result = 31 * result + (employerName != null ? employerName.hashCode() : 0);
+        result = 31 * result + (employerAddress != null ? employerAddress.hashCode() : 0);
+        result = 31 * result + (employerAddress2 != null ? employerAddress2.hashCode() : 0);
+        result = 31 * result + (employerBusiness != null ? employerBusiness.hashCode() : 0);
+        result = 31 * result + (employerEmployeesCount != null ? employerEmployeesCount.hashCode() : 0);
+        result = 31 * result + (employerWebsite != null ? employerWebsite.hashCode() : 0);
+        result = 31 * result + (fieldOfStudies != null ? fieldOfStudies.hashCode() : 0);
+        result = 31 * result + (specializations != null ? specializations.hashCode() : 0);
+        result = 31 * result + (studyLevels != null ? studyLevels.hashCode() : 0);
+        result = 31 * result + (prevTrainingRequired != null ? prevTrainingRequired.hashCode() : 0);
+        result = 31 * result + (otherRequirements != null ? otherRequirements.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (language1 != null ? language1.hashCode() : 0);
+        result = 31 * result + (language1Level != null ? language1Level.hashCode() : 0);
+        result = 31 * result + (language1Operator != null ? language1Operator.hashCode() : 0);
+        result = 31 * result + (language2 != null ? language2.hashCode() : 0);
+        result = 31 * result + (language2Level != null ? language2Level.hashCode() : 0);
+        result = 31 * result + (language2Operator != null ? language2Operator.hashCode() : 0);
+        result = 31 * result + (language3 != null ? language3.hashCode() : 0);
+        result = 31 * result + (language3Level != null ? language3Level.hashCode() : 0);
+        result = 31 * result + (workDescription != null ? workDescription.hashCode() : 0);
+        result = 31 * result + (typeOfWork != null ? typeOfWork.hashCode() : 0);
+        result = 31 * result + (minimumWeeks != null ? minimumWeeks.hashCode() : 0);
+        result = 31 * result + (maximumWeeks != null ? maximumWeeks.hashCode() : 0);
+        result = 31 * result + (fromDate != null ? fromDate.hashCode() : 0);
+        result = 31 * result + (toDate != null ? toDate.hashCode() : 0);
+        result = 31 * result + (fromDate2 != null ? fromDate2.hashCode() : 0);
+        result = 31 * result + (toDate2 != null ? toDate2.hashCode() : 0);
+        result = 31 * result + (unavailableFrom != null ? unavailableFrom.hashCode() : 0);
+        result = 31 * result + (unavailableTo != null ? unavailableTo.hashCode() : 0);
+        result = 31 * result + (workingPlace != null ? workingPlace.hashCode() : 0);
+        result = 31 * result + (nearestAirport != null ? nearestAirport.hashCode() : 0);
+        result = 31 * result + (nearestPubTransport != null ? nearestPubTransport.hashCode() : 0);
+        result = 31 * result + (weeklyHours != null ? weeklyHours.hashCode() : 0);
+        result = 31 * result + (dailyHours != null ? dailyHours.hashCode() : 0);
+        result = 31 * result + (payment != null ? payment.hashCode() : 0);
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (paymentFrequency != null ? paymentFrequency.hashCode() : 0);
+        result = 31 * result + (deduction != null ? deduction.hashCode() : 0);
+        result = 31 * result + (lodgingBy != null ? lodgingBy.hashCode() : 0);
+        result = 31 * result + (lodgingCost != null ? lodgingCost.hashCode() : 0);
+        result = 31 * result + (lodgingCostFrequency != null ? lodgingCostFrequency.hashCode() : 0);
+        result = 31 * result + (livingCost != null ? livingCost.hashCode() : 0);
+        result = 31 * result + (livingCostFrequency != null ? livingCostFrequency.hashCode() : 0);
+        result = 31 * result + (canteen != null ? canteen.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OfferEntity{" +
+                "id=" + id +
+                ", refNo='" + refNo + '\'' +
+                ", nominationDeadline=" + nominationDeadline +
+                ", employerName='" + employerName + '\'' +
+                ", employerAddress='" + employerAddress + '\'' +
+                ", employerAddress2='" + employerAddress2 + '\'' +
+                ", employerBusiness='" + employerBusiness + '\'' +
+                ", employerEmployeesCount=" + employerEmployeesCount +
+                ", employerWebsite='" + employerWebsite + '\'' +
+                ", fieldOfStudies=" + fieldOfStudies +
+                ", specializations=" + specializations +
+                ", studyLevels=" + studyLevels +
+                ", prevTrainingRequired=" + prevTrainingRequired +
+                ", otherRequirements='" + otherRequirements + '\'' +
+                ", gender=" + gender +
+                ", language1=" + language1 +
+                ", language1Level=" + language1Level +
+                ", language1Operator=" + language1Operator +
+                ", language2=" + language2 +
+                ", language2Level=" + language2Level +
+                ", language2Operator=" + language2Operator +
+                ", language3=" + language3 +
+                ", language3Level=" + language3Level +
+                ", workDescription='" + workDescription + '\'' +
+                ", typeOfWork=" + typeOfWork +
+                ", minimumWeeks=" + minimumWeeks +
+                ", maximumWeeks=" + maximumWeeks +
+                ", fromDate=" + fromDate +
+                ", toDate=" + toDate +
+                ", fromDate2=" + fromDate2 +
+                ", toDate2=" + toDate2 +
+                ", unavailableFrom=" + unavailableFrom +
+                ", unavailableTo=" + unavailableTo +
+                ", workingPlace='" + workingPlace + '\'' +
+                ", nearestAirport='" + nearestAirport + '\'' +
+                ", nearestPubTransport='" + nearestPubTransport + '\'' +
+                ", weeklyHours=" + weeklyHours +
+                ", dailyHours=" + dailyHours +
+                ", payment=" + payment +
+                ", currency=" + currency +
+                ", paymentFrequency=" + paymentFrequency +
+                ", deduction=" + deduction +
+                ", lodgingBy='" + lodgingBy + '\'' +
+                ", lodgingCost=" + lodgingCost +
+                ", lodgingCostFrequency=" + lodgingCostFrequency +
+                ", livingCost=" + livingCost +
+                ", livingCostFrequency=" + livingCostFrequency +
+                ", canteen=" + canteen +
+                '}';
     }
 }

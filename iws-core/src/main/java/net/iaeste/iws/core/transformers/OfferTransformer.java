@@ -21,11 +21,13 @@ import net.iaeste.iws.persistence.entities.OfferEntity;
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
  *
- * @author  Michal Knapik / last $Author:$
+ * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class OfferTransformer {
+    private OfferTransformer() {
+    }
 
     public static OfferEntity transform(final Offer offer) {
         OfferEntity result = null;
@@ -80,6 +82,8 @@ public final class OfferTransformer {
             result.setLivingCost(offer.getLivingCost());
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
+            result.setStudyLevels(offer.getStudyLevels());
+            result.setSpecializations(offer.getSpecializations());
         }
 
         return result;
@@ -138,6 +142,8 @@ public final class OfferTransformer {
             result.setLivingCost(offer.getLivingCost());
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
+            result.setStudyLevels(offer.getStudyLevels());
+            result.setSpecializations(offer.getSpecializations());
         }
 
         return result;

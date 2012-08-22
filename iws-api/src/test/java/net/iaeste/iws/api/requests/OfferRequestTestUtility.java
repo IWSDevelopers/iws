@@ -35,9 +35,12 @@ public class OfferRequestTestUtility {
         return new ProcessOfferRequest();
     }
 
-    public static ProcessOfferRequest getValidRequest() {
+    public static ProcessOfferRequest getValidUpdateRequest() {
         return new ProcessOfferRequest(getValidUpdateOffersList().get(0));
+    }
 
+    public static ProcessOfferRequest getValidCreateRequest() {
+        return new ProcessOfferRequest(getValidCreateOffersList().get(0));
     }
 
     public static List<Long> getUniqueIdList() {

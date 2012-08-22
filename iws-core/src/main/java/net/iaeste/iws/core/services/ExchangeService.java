@@ -23,8 +23,8 @@ import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
@@ -34,6 +34,7 @@ import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
+import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,8 @@ public class ExchangeService {
      * Otherwise, the {@code Offer} for the specified {@code id} is updated.
      * <p/>
      * If {@code id = null} and {@code refNo} exists, then the request is invalid.
-     * If (@code id != null} and {@code refNo} in the database and request doesn't match, then the request is invalid.
+     * If (@code id != null} and {@code refNo} in the database and request don't match, then the request is invalid.
+     * TODO michal: method too long
      *
      * @param token   TODO
      * @param request
@@ -70,26 +72,35 @@ public class ExchangeService {
         // If DTO has an id and there is no such entity, an exception is thrown.
         final OfferEntity unmanagedEntity = OfferTransformer.transform(offer);
 
-        if (offer.getId() == null) {
-            // collect new offers to persist
+        if (request.isCreateRequest()) {
             final OfferEntity offerByRefNo = dao.findOffer(offer.getRefNo());
             if (offerByRefNo == null) {
-                dao.persist(unmanagedEntity);
+                try {
+                    dao.persist(unmanagedEntity);
+                } catch (PersistenceException e) {
+                    // some constraints have been violated, this shouldn't ever happened!
+                    processingErrors.add(e.toString());
+                }
             } else {
                 // user can't create new Offer for existing refNo
-                processingErrors.add("Offer with refNo=" + offer.getRefNo() + " already exists.");
+                processingErrors.add(String.format("create error: Offer with refNo=%s already exists.", offer.getRefNo()));
             }
         } else {
-            // collect offer to update to persist
             final OfferEntity existingOffer = dao.findOffer(offer.getId());
             if (existingOffer == null) {
-                processingErrors.add("cannot update offer: there is no offer for given id=" + offer.getId());
+                // trying to update nonexistent Entity
+                processingErrors.add(String.format("update error: there is no offer for given id=%d", offer.getId()));
             } else if (!existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
-                // trying to update nonexistent Entity or refNo doesn't match
-                processingErrors.add("cannot change refNo");
+                // trying to update and refNos don't match
+                processingErrors.add("update error: cannot change refNo");
             } else {
                 existingOffer.merge(unmanagedEntity);
-                dao.persist(existingOffer);
+                try {
+                    dao.persist(existingOffer);
+                } catch (PersistenceException e) {
+                    // some constraints have been violated, this shouldn't ever happened!
+                    processingErrors.add(e.toString());
+                }
             }
         }
 

@@ -25,10 +25,8 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
-import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
-import net.iaeste.iws.api.responses.AbstractResponse;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.math.BigDecimal;
@@ -47,7 +45,7 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public final class Offer extends AbstractResponse implements Verifiable {
+public final class Offer implements Verifiable {
 
     /**
      * {@link IWSConstants#SERIAL_VERSION_UID}.
@@ -69,55 +67,57 @@ public final class Offer extends AbstractResponse implements Verifiable {
      * @param offer Offer to copy
      */
     public Offer(final Offer offer) {
-        this.setId(offer.getId());
-        this.setRefNo(offer.getRefNo());
-        this.setNominationDeadline(offer.getNominationDeadline());
-        this.setEmployerName(offer.getEmployerName());
-        this.setEmployerAddress(offer.getEmployerAddress());
-        this.setEmployerAddress2(offer.getEmployerAddress2());
-        this.setEmployerBusiness(offer.getEmployerBusiness());
-        this.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
-        this.setEmployerWebsite(offer.getEmployerWebsite());
-        this.setPrevTrainingRequired(offer.getPrevTrainingRequired());
-        this.setOtherRequirements(offer.getOtherRequirements());
-        this.setGender(offer.getGender());
-        this.setLanguage1(offer.getLanguage1());
-        this.setLanguage1Level(offer.getLanguage1Level());
-        this.setLanguage1Operator(offer.getLanguage1Operator());
-        this.setLanguage2(offer.getLanguage2());
-        this.setLanguage2Level(offer.getLanguage2Level());
-        this.setLanguage2Operator(offer.getLanguage2Operator());
-        this.setLanguage3(offer.getLanguage3());
-        this.setLanguage3Level(offer.getLanguage3Level());
-        this.setWorkDescription(offer.getWorkDescription());
-        this.setTypeOfWork(offer.getTypeOfWork());
-        this.setMinimumWeeks(offer.getMinimumWeeks());
-        this.setMaximumWeeks(offer.getMaximumWeeks());
-        this.setFromDate(offer.getFromDate());
-        this.setToDate(offer.getToDate());
-        this.setFromDate2(offer.getFromDate2());
-        this.setToDate2(offer.getToDate2());
-        this.setUnavailableFrom(offer.getUnavailableFrom());
-        this.setUnavailableTo(offer.getUnavailableTo());
-        this.setWorkingPlace(offer.getWorkingPlace());
-        this.setNearestAirport(offer.getNearestAirport());
-        this.setNearestPubTransport(offer.getNearestPubTransport());
-        this.setWeeklyHours(offer.getWeeklyHours());
-        this.setDailyHours(offer.getDailyHours());
-        this.setPayment(offer.getPayment());
-        this.setCurrency(offer.getCurrency());
-        this.setPaymentFrequency(offer.getPaymentFrequency());
-        this.setDeduction(offer.getDeduction());
-        this.setLodgingBy(offer.getLodgingBy());
-        this.setLodgingCost(offer.getLodgingCost());
-        this.setLodgingCostFrequency(offer.getLodgingCostFrequency());
-        this.setLivingCost(offer.getLivingCost());
-        this.setLivingCostFrequency(offer.getLivingCostFrequency());
-        this.setCanteen(offer.getCanteen());
-    }
+        if (offer != null) {
+            this.setId(offer.getId());
+            this.setRefNo(offer.getRefNo());
+            this.setNominationDeadline(offer.getNominationDeadline());
+            this.setEmployerName(offer.getEmployerName());
+            this.setEmployerAddress(offer.getEmployerAddress());
+            this.setEmployerAddress2(offer.getEmployerAddress2());
+            this.setEmployerBusiness(offer.getEmployerBusiness());
+            this.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
+            this.setEmployerWebsite(offer.getEmployerWebsite());
+            this.setPrevTrainingRequired(offer.getPrevTrainingRequired());
+            this.setOtherRequirements(offer.getOtherRequirements());
+            this.setGender(offer.getGender());
+            this.setLanguage1(offer.getLanguage1());
+            this.setLanguage1Level(offer.getLanguage1Level());
+            this.setLanguage1Operator(offer.getLanguage1Operator());
+            this.setLanguage2(offer.getLanguage2());
+            this.setLanguage2Level(offer.getLanguage2Level());
+            this.setLanguage2Operator(offer.getLanguage2Operator());
+            this.setLanguage3(offer.getLanguage3());
+            this.setLanguage3Level(offer.getLanguage3Level());
+            this.setWorkDescription(offer.getWorkDescription());
+            this.setTypeOfWork(offer.getTypeOfWork());
+            this.setMinimumWeeks(offer.getMinimumWeeks());
+            this.setMaximumWeeks(offer.getMaximumWeeks());
+            this.setFromDate(offer.getFromDate());
+            this.setToDate(offer.getToDate());
+            this.setFromDate2(offer.getFromDate2());
+            this.setToDate2(offer.getToDate2());
+            this.setUnavailableFrom(offer.getUnavailableFrom());
+            this.setUnavailableTo(offer.getUnavailableTo());
+            this.setWorkingPlace(offer.getWorkingPlace());
+            this.setNearestAirport(offer.getNearestAirport());
+            this.setNearestPubTransport(offer.getNearestPubTransport());
+            this.setWeeklyHours(offer.getWeeklyHours());
+            this.setDailyHours(offer.getDailyHours());
+            this.setPayment(offer.getPayment());
+            this.setCurrency(offer.getCurrency());
+            this.setPaymentFrequency(offer.getPaymentFrequency());
+            this.setDeduction(offer.getDeduction());
+            this.setLodgingBy(offer.getLodgingBy());
+            this.setLodgingCost(offer.getLodgingCost());
+            this.setLodgingCostFrequency(offer.getLodgingCostFrequency());
+            this.setLivingCost(offer.getLivingCost());
+            this.setLivingCostFrequency(offer.getLivingCostFrequency());
+            this.setCanteen(offer.getCanteen());
 
-    public Offer(final EntityIdentificationException e) {
-        super(e.getError(), e.getMessage());
+            this.setFieldOfStudies(offer.getFieldOfStudies());
+            this.setSpecializations(offer.getSpecializations());
+            this.setStudyLevels(offer.getStudyLevels());
+        }
     }
 
     private Long id;
@@ -596,8 +596,14 @@ public final class Offer extends AbstractResponse implements Verifiable {
 
         final Offer offer = (Offer) o;
 
-        if (!id.equals(offer.id)) {
-            return false;
+        if (id == null) {
+            if (offer.id != null) {
+                return false;
+            }
+        } else {
+            if (!id.equals(offer.id)) {
+                return false;
+            }
         }
         if (livingCostFrequency != offer.livingCostFrequency) {
             return false;
@@ -864,10 +870,6 @@ public final class Offer extends AbstractResponse implements Verifiable {
      */
     @Override
     public void verify() throws VerificationException {
-        if (!isOk()) {
-            throw new VerificationException(getMessage());
-        }
-
         final Collection<String> errors = new ArrayList<>();
 
         errors.addAll(verifyNotNullableFields());

@@ -85,10 +85,13 @@ public interface IWSErrors {
     IWSError ENTITY_IDENTIFICATION_ERROR = new IWSError(503, "Entity Identification Error");
 
     /**
+     * The processing of the request failed.
+     */
+    IWSError PROCESSING_FAILURE = new IWSError(504, "Request cannot be processed");
+
+    /**
      * The current method is not yet implemented.
      */
     IWSError NOT_IMPLEMENTED = new IWSError(999, "Not Implemented");
 
-    // TODO
-    IWSError PROCESSING_FAILURE = new IWSError(1000, "delete me");
 }

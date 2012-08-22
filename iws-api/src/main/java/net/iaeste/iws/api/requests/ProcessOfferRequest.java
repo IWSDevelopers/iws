@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.OfferRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.ProcessOfferRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -19,17 +19,21 @@ import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection CastToConcreteClass
+ * @since 1.7
  */
 public final class ProcessOfferRequest extends AbstractRequest {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The Offer Object to process. */
+    /**
+     * The Offer Object to process.
+     */
     private Offer offer;
 
     /**
@@ -47,7 +51,7 @@ public final class ProcessOfferRequest extends AbstractRequest {
      * @param offer object to create or update
      */
     public ProcessOfferRequest(final Offer offer) {
-        this.offer = new Offer(offer);
+        setOffer(offer);
     }
 
     public void setOffer(final Offer offer) {
@@ -56,6 +60,20 @@ public final class ProcessOfferRequest extends AbstractRequest {
 
     public Offer getOffer() {
         return new Offer(offer);
+    }
+
+    public boolean isCreateRequest() {
+        if (offer == null) {
+            return false;
+        }
+        return offer.getId() == null;
+    }
+
+    public boolean isUpdateRequest() {
+        if (offer == null) {
+            return false;
+        }
+        return offer.getId() != null;
     }
 
     /**

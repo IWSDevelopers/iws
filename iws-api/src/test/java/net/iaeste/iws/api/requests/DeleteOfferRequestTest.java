@@ -14,19 +14,19 @@
  */
 package net.iaeste.iws.api.requests;
 
-import com.gargoylesoftware.base.testing.EqualsTester;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
+import com.gargoylesoftware.base.testing.EqualsTester;
+import net.iaeste.iws.api.exceptions.VerificationException;
+import org.junit.Test;
+
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection ResultOfObjectAllocationIgnored
+ * @since 1.7
  */
 public final class DeleteOfferRequestTest {
 

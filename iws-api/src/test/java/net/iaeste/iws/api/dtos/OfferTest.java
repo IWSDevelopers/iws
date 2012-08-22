@@ -18,16 +18,14 @@ package net.iaeste.iws.api.dtos;
 import static net.iaeste.iws.api.dtos.OfferTestUtility.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
-import net.iaeste.iws.api.exceptions.EntityIdentificationException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.Copier;
 import org.junit.Assert;
@@ -79,27 +77,12 @@ public class OfferTest {
     }
 
     @Test
-    public void testFallibleOffer() {
-        offer = new Offer();
-        offer.setId(1L);
-        final String msg = "Id does not exists.";
-        final EntityIdentificationException e = new EntityIdentificationException(msg);
-        final Offer fallenOffer = new Offer(e);
-        Assert.assertThat(fallenOffer.isOk(), is(false));
-        Assert.assertThat(fallenOffer.getMessage(), is(msg));
-        Assert.assertThat(fallenOffer.getError(), is(e.getError()));
-    }
-
-    @Test
-    public void testFallibleOfferOk() {
-        offer = getMinimalOffer();
-        Assert.assertThat(offer.isOk(), is(true));
-        Assert.assertThat(offer.getMessage(), is(IWSConstants.SUCCESS));
-        Assert.assertThat(offer.getError(), is(IWSErrors.SUCCESS));
-        offer = getEmptyOffer();
-        Assert.assertThat(offer.isOk(), is(true));
-        Assert.assertThat(offer.getMessage(), is(IWSConstants.SUCCESS));
-        Assert.assertThat(offer.getError(), is(IWSErrors.SUCCESS));
+    public void testCopyConstructor() {
+        final Offer offer = getMinimalOffer();
+        final Offer copy = new Offer(offer);
+        Assert.assertThat(offer, is(not(nullValue())));
+        Assert.assertThat(copy, is(not(nullValue())));
+        Assert.assertThat(offer, is(copy));
     }
 
     @Test

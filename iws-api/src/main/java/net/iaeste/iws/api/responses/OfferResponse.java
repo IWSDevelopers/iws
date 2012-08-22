@@ -57,29 +57,29 @@ public final class OfferResponse extends AbstractResponse {
         offer = null;
         errors = null;
     }
-
-    /**
-     * Response is created when the request was fine and processing offer succedeed.
-     * <p/>
-     * Incorrect Offer should never be passed to this constructor. Instead use constructor with list of errors parameter.
-     *
-     * @param offer list of offer for which something went wrong
-     */
-    public OfferResponse(final Offer offer) {
-        this(offer, null);
-    }
+//    TODO michal: we don't need that anymore, do we?
+//    /**
+//     * Response is created when the request was fine and processing offer succedeed.
+//     * <p/>
+//     * Incorrect Offer should never be passed to this constructor. Instead use constructor with list of errors parameter.
+//     *
+//     * @param offer
+//     */
+//    public OfferResponse(final Offer offer) {
+//        this.offer = new Offer(offer);
+//        this.errors = null;
+//    }
 
     /**
      * Response is created when processing the offer failed.
      * <p/>
      * Incorrect Offer should never be passed to this constructor. Instead use constructor without list of errors parameter.
      *
-     * @param offer list of offer for which something went wrong
+     * @param failedOffer list of offer for which something went wrong
      */
-    public OfferResponse(final Offer offer, final List<String> errors) {
-        // TODO: constructors should be more obvious to use, get rid of ?: below
-        super(offer.isOk() ? IWSErrors.SUCCESS : IWSErrors.PROCESSING_FAILURE, "processing of the Offer failed");
-        this.offer = new Offer(offer);
+    public OfferResponse(final Offer failedOffer, final List<String> errors) {
+        super(IWSErrors.PROCESSING_FAILURE, "processing of the Offer failed");
+        this.offer = new Offer(failedOffer);
         this.errors = errors;
     }
 
@@ -93,7 +93,17 @@ public final class OfferResponse extends AbstractResponse {
     @Override
     public boolean equals(final Object obj) {
         throw new NotImplementedException("TBD");
+
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        throw new NotImplementedException("TBD");
+    }
+
 
     /**
      * {@inheritDoc}

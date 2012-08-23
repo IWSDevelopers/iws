@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.entities;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 
 import net.iaeste.iws.api.enums.FieldOfStudy;
@@ -66,6 +67,7 @@ public class OfferEntityTest {
     private static final BigDecimal PAYMENT = new BigDecimal(3000);
     private static final BigDecimal LODGING_COST = new BigDecimal(1000);
     private static final BigDecimal LIVING_COST = new BigDecimal(2000);
+
     private OfferDao dao;
     @PersistenceContext
     private EntityManager entityManager;
@@ -102,7 +104,9 @@ public class OfferEntityTest {
         dao.persist(offer);
         Assert.assertNotNull(offer.getId());
 
-        offer = entityManager.find(OfferEntity.class, offer.getId());
+//        offer = entityManager.find(OfferEntity.class, offer.getId());
+//        offer = dao.findOffer(offer.getId());
+        offer = dao.findOffer(offer.getRefNo());
         Assert.assertEquals(REF_NO, offer.getRefNo());
         Assert.assertEquals(EMPLOYER_NAME, offer.getEmployerName());
         Assert.assertEquals(1, offer.getStudyLevels().size());
@@ -517,5 +521,18 @@ public class OfferEntityTest {
         offer.setLivingCostFrequency(null);
         offer.setLivingCost(LIVING_COST);
         dao.persist(offer);
+    }
+
+    @Test
+    @Transactional
+    public void testFind() {
+        Assert.assertThat(dao.findAll().size(), is(0));
+        dao.persist(offer);
+        OfferEntity offerFoundByRefNo = dao.findOffer(offer.getRefNo());
+        Assert.assertThat(offerFoundByRefNo, is(notNullValue()));
+        Assert.assertThat(offerFoundByRefNo, is(offer));
+        final OfferEntity offerFoundById = dao.findOffer(offer.getId());
+        Assert.assertThat(offerFoundById, is(notNullValue()));
+        Assert.assertThat(offerFoundById, is(offer));
     }
 }

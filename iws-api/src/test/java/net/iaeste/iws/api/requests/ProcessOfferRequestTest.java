@@ -89,7 +89,14 @@ public class ProcessOfferRequestTest {
     @Test
     public void testGettersNullOffer() {
         final Offer setNullOffer = null;
-        final ProcessOfferRequest request = new ProcessOfferRequest(setNullOffer);
+        ProcessOfferRequest request = new ProcessOfferRequest(setNullOffer);
+
+        Assert.assertThat(request, is(not(nullValue())));
+        Assert.assertThat(setNullOffer, is(nullValue()));
+        Assert.assertThat(request.getOffer(), is(not(nullValue())));
+
+        request = new ProcessOfferRequest();
+        request.setOffer(setNullOffer);
 
         Assert.assertThat(request, is(not(nullValue())));
         Assert.assertThat(setNullOffer, is(nullValue()));

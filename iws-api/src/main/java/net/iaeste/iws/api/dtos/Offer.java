@@ -718,7 +718,7 @@ public final class Offer implements Verifiable {
         if (prevTrainingRequired != null ? !prevTrainingRequired.equals(offer.prevTrainingRequired) : offer.prevTrainingRequired != null) {
             return false;
         }
-        if (!refNo.equals(offer.refNo)) {
+        if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
             return false;
         }
         if (specializations != null ? !specializations.equals(offer.specializations) : offer.specializations != null) {

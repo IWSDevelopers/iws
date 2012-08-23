@@ -14,6 +14,26 @@
 */
 package net.iaeste.iws.core.services;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.FetchOffersRequest;
+import net.iaeste.iws.api.requests.OfferRequestTestUtility;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.core.transformers.OfferTransformer;
+import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.entities.OfferEntity;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -21,5 +41,132 @@ package net.iaeste.iws.core.services;
  * @since 1.7
  */
 public class ExchangeServiceTest {
+
+    private final OfferDao dao = mock(OfferDao.class);
+    private final ExchangeService client = new ExchangeService(dao);
+    private final List<Offer> offers = OfferRequestTestUtility.getValidCreateOffersList();
+
+    @Test
+    public void testFetchOffers() {
+        final List<OfferEntity> entities = new ArrayList<>(2);
+        entities.add(null);
+        entities.add(null);
+        when(dao.findAll()).thenReturn(entities);
+
+        final FetchOffersRequest request = new FetchOffersRequest();
+
+        final FetchOffersResponse result = client.fetchOffers(null, request);
+
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getOffers().size(), is(entities.size()));
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testProcessingOffersEmptyRequest() {
+        final ProcessOfferRequest request = new ProcessOfferRequest();
+        request.verify();
+    }
+
+    @Test
+    public void testProcessingOffersCreateRequest() {
+        final Offer offer = offers.get(0);
+        when(dao.findOffer(offer.getRefNo())).thenReturn(null);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = client.processOffer(null, request);
+
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getOffer(), is(new Offer()));
+    }
+
+    /**
+     * Checks if processing is going to fail if the request is trying
+     * to create Offer when there is an Offer with that id in the database.
+     */
+    @Test
+    public void testProcessingOffersCreateRequestForExistingRefNo() {
+        final Offer offer = offers.get(0);
+        final Offer offerInDatabase = new Offer(offer);
+        offerInDatabase.setId(543L);
+        final OfferEntity existingEntity = OfferTransformer.transform(offerInDatabase);
+        when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offerInDatabase);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = client.processOffer(null, request);
+
+        assertThat(result.isOk(), is(false));
+        assertThat(result.getOffer(), is(offerInDatabase));
+    }
+
+    /**
+     * Correct update request with one offer.
+     */
+    @Test
+    public void testProcessingOffersUpdateRequest() {
+        final Offer offer = offers.get(0);
+        offer.setId(234L);
+        final OfferEntity existingEntity = OfferTransformer.transform(offer);
+        when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
+        when(dao.findOffer(offer.getId())).thenReturn(existingEntity);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = client.processOffer(null, request);
+
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getOffer(), is(new Offer()));
+    }
+
+    /**
+     * Checks if processing is going to fail if {@code refNo} in request does not match the one in the database.
+     */
+    @Test
+    public void testProcessingOffersUpdateRequestWithDifferentRefNos() {
+        final Offer offer = offers.get(0);
+        offer.setId(234L);
+        final Offer offerInDatabase = new Offer(offer);
+        offerInDatabase.setRefNo("CZ-2012-1004");
+        final OfferEntity existingOfferEntity = OfferTransformer.transform(offerInDatabase);
+        offer.setRefNo("PL-2012-1004");
+        when(dao.findOffer(offer.getId())).thenReturn(existingOfferEntity);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = client.processOffer(null, request);
+
+        assertThat(result.isOk(), is(false));
+        assertThat(result.getOffer(), is(offer)); // one offer is invalid
+    }
+
+    /**
+     * Checks if processing is going to fail if there is no {@code OfferEntity}
+     * in the database for given {@code Offer.id} in the {@code OfferRequest}
+     */
+    @Test
+    public void testProcessingOffersUpdateRequestForNonexistentId() {
+        final Offer offer = offers.get(0);
+        final OfferEntity existingOffer = OfferTransformer.transform(offer);
+        when(dao.findOffer(offer.getRefNo())).thenReturn(existingOffer);
+        when(dao.findOffer(offer.getId())).thenReturn(null);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = client.processOffer(null, request);
+
+        assertThat(result.isOk(), is(false));
+        assertThat(result.getOffer(), is(offer));
+    }
 
 }

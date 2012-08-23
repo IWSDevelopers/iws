@@ -17,10 +17,13 @@ package net.iaeste.iws.core.services;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.OfferRequestTestUtility;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
@@ -167,6 +170,32 @@ public class ExchangeServiceTest {
 
         assertThat(result.isOk(), is(false));
         assertThat(result.getOffer(), is(offer));
+    }
+
+    @Test
+    public void testDeleteOffer() {
+        final long offerId = 1L;
+        final OfferEntity offerForDeletion = new OfferEntity();
+        offerForDeletion.setId(offerId);
+
+        when(dao.findOffer(offerId)).thenReturn(offerForDeletion);
+        final DeleteOfferRequest request = new DeleteOfferRequest(offerId);
+        request.verify(); // make sure that request is valid
+
+        client.deleteOffer(null, request);
+
+        verify(dao).delete(offerId);
+    }
+
+    @Test(expected = IWSException.class)
+    public void testDeleteNonexistentOffer() {
+        final long offerId = 1L;
+        when(dao.findOffer(offerId)).thenReturn(null);
+
+        final DeleteOfferRequest request = new DeleteOfferRequest(offerId);
+        request.verify(); // make sure that request is valid
+
+        client.deleteOffer(null, request);
     }
 
 }

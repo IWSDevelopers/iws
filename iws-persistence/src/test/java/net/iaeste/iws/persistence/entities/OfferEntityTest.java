@@ -104,9 +104,7 @@ public class OfferEntityTest {
         dao.persist(offer);
         Assert.assertNotNull(offer.getId());
 
-//        offer = entityManager.find(OfferEntity.class, offer.getId());
-//        offer = dao.findOffer(offer.getId());
-        offer = dao.findOffer(offer.getRefNo());
+        offer = entityManager.find(OfferEntity.class, offer.getId());
         Assert.assertEquals(REF_NO, offer.getRefNo());
         Assert.assertEquals(EMPLOYER_NAME, offer.getEmployerName());
         Assert.assertEquals(1, offer.getStudyLevels().size());

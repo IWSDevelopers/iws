@@ -14,10 +14,25 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertThat;
+
+import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.dtos.OfferTestUtility;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
+import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.client.spring.EntityManagerProvider;
+import net.iaeste.iws.core.transformers.OfferTransformer;
+import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.jpa.OfferJpaDao;
+import org.junit.Assert;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -26,8 +41,27 @@ import static org.junit.Assert.assertThat;
  */
 public class ExchangeClientTest {
 
+    private final ExchangeClient client = new ExchangeClient();
+    private final AuthenticationToken token = new AuthenticationToken("md5_5678901234567890123456789012");
+
     @Test
-    public void testInvoking() {
-        assertThat(Boolean.TRUE, is(true));
+    public void testProcessOfferCreate() {
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setId(null); // create offer
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final Fallible response = client.processOffer(token, offerRequest);
+        Assert.assertThat(response.isOk(), is(true));
+
+        final EntityManager em = EntityManagerProvider.getInstance().getEntityManager();
+        final OfferDao dao = new OfferJpaDao(em);
+        final List<OfferEntity> offers = dao.findAll();
+
+        assertThat(offers.size(), is(1));
+        final OfferEntity actual = offers.get(0);
+        assertThat(actual.getId(), is(notNullValue()));
+        actual.setId(null);
+        assertThat(actual, is(OfferTransformer.transform(offer)));
+        assertThat(actual.getFieldOfStudies().size(), is(1));
+        assertThat(actual.getFieldOfStudies().get(0), is(offer.getFieldOfStudies().get(0)));
     }
 }

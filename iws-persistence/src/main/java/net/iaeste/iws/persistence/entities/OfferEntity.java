@@ -104,10 +104,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     @Column(name = "employer_website")
     private String employerWebsite;
 
-    @ElementCollection
-    @CollectionTable(name = "study_fields", joinColumns = @JoinColumn(name = "offer_id"))
-    private List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
-
     /**
      * Has to be defined as a List of Strings because
      * the user should be able to add custom
@@ -115,11 +111,18 @@ public class OfferEntity implements Mergeable<OfferEntity> {
      */
     @ElementCollection
     @CollectionTable(name = "specializations", joinColumns = @JoinColumn(name = "offer_id"))
+    @Column(name = "name", nullable = false)
     private List<String> specializations;
 
     @ElementCollection
     @CollectionTable(name = "study_levels", joinColumns = @JoinColumn(name = "offer_id"))
+    @Column(name = "name", nullable = false)
     private List<StudyLevel> studyLevels = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "study_fields", joinColumns = @JoinColumn(name = "offer_id"))
+    @Column(name = "name", nullable = false)
+    private List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
 
     @Column(name = "prev_training_req")
     private Boolean prevTrainingRequired;

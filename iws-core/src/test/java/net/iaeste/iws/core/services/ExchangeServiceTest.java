@@ -15,6 +15,7 @@
 package net.iaeste.iws.core.services;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -50,7 +51,7 @@ public class ExchangeServiceTest {
     private final List<Offer> offers = OfferRequestTestUtility.getValidCreateOffersList();
 
     @Test
-    public void testFetchOffers() {
+    public void testFetchOffersAll() {
         final List<OfferEntity> entities = new ArrayList<>(2);
         entities.add(null);
         entities.add(null);
@@ -62,6 +63,31 @@ public class ExchangeServiceTest {
 
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffers().size(), is(entities.size()));
+    }
+
+    @Test
+    public void testFetchOffers() {
+        final Long offerId = 123L;
+        final OfferEntity offer = new OfferEntity();
+        final List<OfferEntity> offerEntityList = new ArrayList<>();
+        offer.setId(offerId);
+        offerEntityList.add(offer);
+        final List<Long> offerList = new ArrayList<Long>();
+        offerList.add(offerId);
+
+        when(dao.findOffer(offerId)).thenReturn(offer);
+        when(dao.findOffers(offerList)).thenReturn(offerEntityList);
+
+        final FetchOffersRequest request = new FetchOffersRequest(offerList);
+
+        final FetchOffersResponse result = client.fetchOffers(null, request);
+
+        verify(dao).findOffers(offerList);
+
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getOffers(), is(notNullValue()));
+        assertThat(result.getOffers().size(), is(1));
+        assertThat(result.getOffers().get(0), is(OfferTransformer.transform(offer)));
     }
 
     @Test(expected = VerificationException.class)
@@ -115,6 +141,7 @@ public class ExchangeServiceTest {
         final Offer offer = offers.get(0);
         offer.setId(234L);
         final OfferEntity existingEntity = OfferTransformer.transform(offer);
+        offer.setId(567L);
         when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
         when(dao.findOffer(offer.getId())).thenReturn(existingEntity);
 
@@ -126,6 +153,7 @@ public class ExchangeServiceTest {
 
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffer(), is(new Offer()));
+        verify(dao).persist(OfferTransformer.transform(offer));
     }
 
     /**

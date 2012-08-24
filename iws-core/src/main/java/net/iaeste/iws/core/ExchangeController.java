@@ -121,8 +121,7 @@ public class ExchangeController extends CommonController implements Exchange {
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            service.processOffer(token, request);
-            response = new OfferResponse();
+            response = service.processOffer(token, request);
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());
         }

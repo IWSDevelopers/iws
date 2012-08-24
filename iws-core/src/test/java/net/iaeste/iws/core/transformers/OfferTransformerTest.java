@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class OfferTransformerTest {
     @Test
-    public void testCopingMinimalOfferToEntity() {
+    public void testCopyingMinimalOfferToEntity() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         final OfferEntity entity = OfferTransformer.transform(offer);
         // TODO: check field by field
@@ -51,7 +51,7 @@ public class OfferTransformerTest {
     }
 
     @Test
-    public void testCopingMinimalOfferToDto() {
+    public void testCopyingMinimalOfferToDto() {
         final OfferEntity entity = getMinimalOfferEntity();
         final Offer offer = OfferTransformer.transform(entity);
         // TODO: check field by field
@@ -64,7 +64,7 @@ public class OfferTransformerTest {
     }
 
     @Test
-    public void testCopingBackAndForthFromDto() {
+    public void testCopyingBackAndForthFromDto() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         final OfferEntity entity = OfferTransformer.transform(offer);
         final Offer newOffer = OfferTransformer.transform(entity);
@@ -73,7 +73,7 @@ public class OfferTransformerTest {
     }
 
     @Test
-    public void testCopingBackAndForthFromEntity() {
+    public void testCopyingBackAndForthFromEntity() {
         final OfferEntity entity = getMinimalOfferEntity();
         final Offer offer = OfferTransformer.transform(entity);
         final OfferEntity newEntity = OfferTransformer.transform(offer);
@@ -85,9 +85,9 @@ public class OfferTransformerTest {
         final OfferEntity minimalOffer = new OfferEntity();
         minimalOffer.setRefNo(OfferTestUtility.REF_NO);
         minimalOffer.setEmployerName(OfferTestUtility.EMPLOYER_NAME);
-        final List<StudyLevel> list = new ArrayList<StudyLevel>(1);
+        final List<StudyLevel> list = new ArrayList<>(1);
         list.add(StudyLevel.E);
-        final List<FieldOfStudy> fieldOfStudies = new ArrayList<FieldOfStudy>();
+        final List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
         fieldOfStudies.add(FieldOfStudy.IT);
         minimalOffer.setFieldOfStudies(fieldOfStudies);
         minimalOffer.setStudyLevels(list);

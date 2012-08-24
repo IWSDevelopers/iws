@@ -132,7 +132,7 @@ public final class Offer implements Verifiable {
     private String employerWebsite;
 
     //Student Information
-    private List<FieldOfStudy> fieldOfStudies = new ArrayList<FieldOfStudy>();
+    private List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
     /**
      * Has to be defined as a List of Strings because
      * the user should be able to add custom
@@ -919,7 +919,7 @@ public final class Offer implements Verifiable {
         if (studyLevels == null || studyLevels.isEmpty()) {
             errors.add("'studyLevels' is missing");
         }
-        if (workDescription == null) {
+        if (workDescription == null || workDescription.isEmpty()) {
             errors.add("'workDescription' is missing");
         }
         if (language1 == null) {
@@ -928,7 +928,7 @@ public final class Offer implements Verifiable {
         if (language1Level == null) {
             errors.add("'language1Level' is missing");
         }
-        if (employerName == null) {
+        if (employerName == null || employerName.isEmpty()) {
             errors.add("'employerName' is missing");
         }
         if (gender == null) {
@@ -937,7 +937,7 @@ public final class Offer implements Verifiable {
         if (weeklyHours == null) {
             errors.add("'weeklyHours' is missing");
         }
-        if (refNo == null) {
+        if (refNo == null || refNo.isEmpty()) {
             errors.add("'refNo' is missing");
         }
         if (fromDate == null) {
@@ -1088,8 +1088,9 @@ public final class Offer implements Verifiable {
     }
 
     /**
+     * TODO verify requirements
+     *
      * @return true if halidays order is valid.
-     * @todo verify requirements
      */
     private boolean verifyUnavailableDatesOrder() {
         if (unavailableFrom != null) {

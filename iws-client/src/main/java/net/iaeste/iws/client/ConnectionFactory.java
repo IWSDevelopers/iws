@@ -30,9 +30,9 @@ import javax.persistence.EntityManager;
  * Class is made package private, since it is only suppose to be used by the
  * actual Client Classes in this package.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 final class ConnectionFactory {
 
@@ -48,5 +48,10 @@ final class ConnectionFactory {
 
     public Exchange getExchangeImplementation() {
         return new SpringExchangeClient(entityManager);
+    }
+
+    //TODO remove if transactions work
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

@@ -30,9 +30,9 @@ import javax.sql.DataSource;
 /**
  * Spring JavaConfig, for the Unit testing of the Persistence layer.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 @Configuration
 @EnableTransactionManagement
@@ -46,10 +46,10 @@ public class SpringConfig {
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/offers-init.sql")
-                // Commented, until Theis & Michal learn how to write HSQL scripts.
-                //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
-                //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
-                //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/offers-triggers.sql")
+                        //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
+                        //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
                 .build();
     }
 

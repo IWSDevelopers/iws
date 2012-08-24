@@ -72,7 +72,12 @@ public final class ExchangeClient implements Exchange {
      */
     @Override
     public Fallible processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
-        return exchange.processOffer(token, request);
+        // TODO: remove if transactions work
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.getEntityManager().getTransaction().begin();
+        Fallible response = exchange.processOffer(token, request);
+        factory.getEntityManager().getTransaction().commit();
+        return response;
     }
 
     /**

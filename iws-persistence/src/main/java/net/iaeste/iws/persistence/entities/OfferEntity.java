@@ -23,7 +23,9 @@ import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
+import net.iaeste.iws.api.utils.Copier;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -32,6 +34,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -39,7 +42,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -102,10 +104,8 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     @Column(name = "employer_website")
     private String employerWebsite;
 
-    //Student Information
     @ElementCollection
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "field_of_studies", nullable = false)
+    @CollectionTable(name = "study_fields", joinColumns = @JoinColumn(name = "offer_id"))
     private List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
 
     /**
@@ -114,12 +114,11 @@ public class OfferEntity implements Mergeable<OfferEntity> {
      * specializations in addition to the predefined ones.
      */
     @ElementCollection
-    @Column(name = "specialization")
+    @CollectionTable(name = "specializations", joinColumns = @JoinColumn(name = "offer_id"))
     private List<String> specializations;
 
     @ElementCollection
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "study_levels", nullable = false)
+    @CollectionTable(name = "study_levels", joinColumns = @JoinColumn(name = "offer_id"))
     private List<StudyLevel> studyLevels = new ArrayList<>();
 
     @Column(name = "prev_training_req")
@@ -342,19 +341,19 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     public Date getFromDate2() {
-        return fromDate2;
+        return Copier.copy(fromDate2);
     }
 
     public void setFromDate2(final Date fromDate2) {
-        this.fromDate2 = fromDate2;
+        this.fromDate2 = Copier.copy(fromDate2);
     }
 
     public Date getFromDate() {
-        return fromDate;
+        return Copier.copy(fromDate);
     }
 
     public void setFromDate(final Date fromDate) {
-        this.fromDate = fromDate;
+        this.fromDate = Copier.copy(fromDate);
     }
 
     public Gender getGender() {
@@ -366,19 +365,19 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     public Date getUnavailableFrom() {
-        return unavailableFrom;
+        return Copier.copy(unavailableFrom);
     }
 
     public void setUnavailableFrom(final Date unavailableFrom) {
-        this.unavailableFrom = unavailableFrom;
+        this.unavailableFrom = Copier.copy(unavailableFrom);
     }
 
     public Date getUnavailableTo() {
-        return unavailableTo;
+        return Copier.copy(unavailableTo);
     }
 
     public void setUnavailableTo(final Date unavailableTo) {
-        this.unavailableTo = unavailableTo;
+        this.unavailableTo = Copier.copy(unavailableTo);
     }
 
     public Long getId() {
@@ -526,11 +525,11 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     public Date getNominationDeadline() {
-        return nominationDeadline;
+        return Copier.copy(nominationDeadline);
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
-        this.nominationDeadline = nominationDeadline;
+        this.nominationDeadline = Copier.copy(nominationDeadline);
     }
 
     public String getOtherRequirements() {
@@ -574,35 +573,35 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     public List<String> getSpecializations() {
-        return specializations;
+        return Copier.copy(specializations);
     }
 
     public void setSpecializations(final List<String> specializations) {
-        this.specializations = specializations;
+        this.specializations = Copier.copy(specializations);
     }
 
     public List<StudyLevel> getStudyLevels() {
-        return studyLevels;
+        return Copier.copy(studyLevels);
     }
 
-    public void setStudyLevels(final Collection<StudyLevel> studyLevels) {
-        this.studyLevels.addAll(studyLevels);
+    public void setStudyLevels(final List<StudyLevel> studyLevels) {
+        this.studyLevels = Copier.copy(studyLevels);
     }
 
     public Date getToDate2() {
-        return toDate2;
+        return Copier.copy(toDate2);
     }
 
     public void setToDate2(final Date toDate2) {
-        this.toDate2 = toDate2;
+        this.toDate2 = Copier.copy(toDate2);
     }
 
     public Date getToDate() {
-        return toDate;
+        return Copier.copy(toDate);
     }
 
     public void setToDate(final Date toDate) {
-        this.toDate = toDate;
+        this.toDate = Copier.copy(toDate);
     }
 
     public TypeOfWork getTypeOfWork() {
@@ -641,8 +640,57 @@ public class OfferEntity implements Mergeable<OfferEntity> {
      * {@inheritDoc}
      */
     @Override
-    public void merge(final OfferEntity obj) {
-        // TODO Kim; @Michal, please use this method to merge offers.
+    public void merge(final OfferEntity offer) {
+        // TODO: keep in sync with transformers and Offer copy constructor
+        this.setId(offer.getId());
+        this.setRefNo(offer.getRefNo());
+        this.setNominationDeadline(offer.getNominationDeadline());
+        this.setEmployerName(offer.getEmployerName());
+        this.setEmployerAddress(offer.getEmployerAddress());
+        this.setEmployerAddress2(offer.getEmployerAddress2());
+        this.setEmployerBusiness(offer.getEmployerBusiness());
+        this.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
+        this.setEmployerWebsite(offer.getEmployerWebsite());
+        this.setFieldOfStudies(offer.getFieldOfStudies());
+        this.setSpecializations(offer.getSpecializations());
+        this.setPrevTrainingRequired(offer.getPrevTrainingRequired());
+        this.setOtherRequirements(offer.getOtherRequirements());
+        this.setGender(offer.getGender());
+        this.setLanguage1(offer.getLanguage1());
+        this.setLanguage1Level(offer.getLanguage1Level());
+        this.setLanguage1Operator(offer.getLanguage1Operator());
+        this.setLanguage2(offer.getLanguage2());
+        this.setLanguage2Level(offer.getLanguage2Level());
+        this.setLanguage2Operator(offer.getLanguage2Operator());
+        this.setLanguage3(offer.getLanguage3());
+        this.setLanguage3Level(offer.getLanguage3Level());
+        this.setWorkDescription(offer.getWorkDescription());
+        this.setTypeOfWork(offer.getTypeOfWork());
+        this.setMinimumWeeks(offer.getMinimumWeeks());
+        this.setMaximumWeeks(offer.getMaximumWeeks());
+        this.setFromDate(offer.getFromDate());
+        this.setToDate(offer.getToDate());
+        this.setFromDate2(offer.getFromDate2());
+        this.setToDate2(offer.getToDate2());
+        this.setUnavailableFrom(offer.getUnavailableFrom());
+        this.setUnavailableTo(offer.getUnavailableTo());
+        this.setWorkingPlace(offer.getWorkingPlace());
+        this.setNearestAirport(offer.getNearestAirport());
+        this.setNearestPubTransport(offer.getNearestPubTransport());
+        this.setWeeklyHours(offer.getWeeklyHours());
+        this.setDailyHours(offer.getDailyHours());
+        this.setPayment(offer.getPayment());
+        this.setCurrency(offer.getCurrency());
+        this.setPaymentFrequency(offer.getPaymentFrequency());
+        this.setDeduction(offer.getDeduction());
+        this.setLodgingBy(offer.getLodgingBy());
+        this.setLodgingCost(offer.getLodgingCost());
+        this.setLodgingCostFrequency(offer.getLodgingCostFrequency());
+        this.setLivingCost(offer.getLivingCost());
+        this.setLivingCostFrequency(offer.getLivingCostFrequency());
+        this.setCanteen(offer.getCanteen());
+        this.setStudyLevels(offer.getStudyLevels());
+        this.setSpecializations(offer.getSpecializations());
     }
 
     @Override

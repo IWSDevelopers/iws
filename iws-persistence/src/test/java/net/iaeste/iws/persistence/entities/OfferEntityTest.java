@@ -27,6 +27,7 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -41,7 +42,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Contains tests for OfferEntity and OfferJpaDao
@@ -52,6 +56,7 @@ import java.util.Date;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
+//@TransactionConfiguration(defaultRollback = false)
 public class OfferEntityTest {
 
     private static final String REF_NO = "AT-2012-1234-AB";
@@ -84,8 +89,12 @@ public class OfferEntityTest {
         final OfferEntity offer = new OfferEntity();
         offer.setRefNo(REF_NO);
         offer.setEmployerName(EMPLOYER_NAME);
-        offer.getStudyLevels().add(StudyLevel.E);
-        offer.getFieldOfStudies().add(FieldOfStudy.AERONAUTIC_ENGINEERING);
+        final List<StudyLevel> studyLevels = new ArrayList<>();
+        studyLevels.add(StudyLevel.E);
+        offer.setStudyLevels(studyLevels);
+        final List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
+        fieldOfStudies.add(FieldOfStudy.AERONAUTIC_ENGINEERING);
+        offer.setFieldOfStudies(fieldOfStudies);
         offer.setGender(Gender.E);
         offer.setLanguage1(Language.ENGLISH);
         offer.setLanguage1Level(LanguageLevel.E);
@@ -99,27 +108,42 @@ public class OfferEntityTest {
     }
 
     @Test
-    @Transactional
+    @Transactional //(noRollbackFor = Exception.class)
     public void testMinimalOffer() {
         dao.persist(offer);
-        Assert.assertNotNull(offer.getId());
+        Assert.assertThat(offer.getId(), is(notNullValue()));
 
         offer = entityManager.find(OfferEntity.class, offer.getId());
-        Assert.assertEquals(REF_NO, offer.getRefNo());
-        Assert.assertEquals(EMPLOYER_NAME, offer.getEmployerName());
-        Assert.assertEquals(1, offer.getStudyLevels().size());
-        Assert.assertEquals(StudyLevel.E, offer.getStudyLevels().get(0));
-        Assert.assertEquals(1, offer.getFieldOfStudies().size());
-        Assert.assertEquals(FieldOfStudy.AERONAUTIC_ENGINEERING, offer.getFieldOfStudies().get(0));
-        Assert.assertEquals(Gender.E, offer.getGender());
-        Assert.assertEquals(Language.ENGLISH, offer.getLanguage1());
-        Assert.assertEquals(LanguageLevel.E, offer.getLanguage1Level());
-        Assert.assertEquals(WORK_DESCRIPTION, offer.getWorkDescription());
-        Assert.assertEquals(MAXIMUM_WEEKS, offer.getMaximumWeeks());
-        Assert.assertEquals(MINIMUM_WEEKS, offer.getMinimumWeeks());
-        Assert.assertEquals(WEEKLY_HOURS, offer.getWeeklyHours());
-        Assert.assertEquals(FROM_DATE, offer.getFromDate());
-        Assert.assertEquals(TO_DATE, offer.getToDate());
+        Assert.assertThat(offer.getRefNo(), is(REF_NO));
+        Assert.assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
+        Assert.assertThat(offer.getStudyLevels().size(), is(1));
+        Assert.assertThat(offer.getStudyLevels().get(0), is(StudyLevel.E));
+        Assert.assertThat(offer.getFieldOfStudies().size(), is(1));
+        Assert.assertThat(offer.getFieldOfStudies().get(0), is(FieldOfStudy.AERONAUTIC_ENGINEERING));
+        Assert.assertThat(offer.getGender(), is(Gender.E));
+        Assert.assertThat(offer.getLanguage1(), is(Language.ENGLISH));
+        Assert.assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
+        Assert.assertThat(offer.getWorkDescription(), is(WORK_DESCRIPTION));
+        Assert.assertThat(offer.getMaximumWeeks(), is(MAXIMUM_WEEKS));
+        Assert.assertThat(offer.getMinimumWeeks(), is(MINIMUM_WEEKS));
+        Assert.assertThat(offer.getWeeklyHours(), is(WEEKLY_HOURS));
+        Assert.assertThat(offer.getFromDate(), is(FROM_DATE));
+        Assert.assertThat(offer.getToDate(), is(TO_DATE));
+    }
+
+    @Test(expected = PersistenceException.class)
+    @Transactional
+    public void testUniqueRefNo() {
+        final String refNo = "CZ-2012-1001";
+        offer.setRefNo(refNo);
+        offer.setId(null);
+        dao.persist(offer);
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+
+        offer = getMinimalOffer();
+        offer.setRefNo(refNo);
+        offer.setId(null);
+        dao.persist(offer);
     }
 
     @Test(expected = PersistenceException.class)
@@ -142,6 +166,9 @@ public class OfferEntityTest {
     public void testNullNominationDeadline() {
         offer.setNominationDeadline(null);
         dao.persist(offer);
+
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -151,29 +178,39 @@ public class OfferEntityTest {
         dao.persist(offer);
     }
 
-    /* TODO does not work for @ElementCollection without a separate table
     @Test(expected = PersistenceException.class)
+    @Ignore("TODO does not work for @ElementCollection without a separate table")
     @Transactional
     public void testNullStudyLevel() {
         offer.setStudyLevels(null);
         dao.persist(offer);
-    }*/
+    }
 
-    /* TODO does not work for @ElementCollection without a separate table
+
     @Test(expected = PersistenceException.class)
+    @Ignore("TODO does not work for @ElementCollection without a separate table")
     @Transactional
     public void testEmptyStudyLevel() {
         offer.setStudyLevels(Collections.<StudyLevel>emptyList());
         dao.persist(offer);
     }
-    */
-    /* TODO: at least one field of studies
+
+
     @Test(expected = PersistenceException.class)
+    @Ignore("TODO: at least one field of studies")
     @Transactional
     public void testNullFieldOfStudies() {
-
+        offer.setFieldOfStudies(null);
+        dao.persist(offer);
     }
-    */
+
+    @Test(expected = PersistenceException.class)
+    @Ignore("TODO: at least one field of studies")
+    @Transactional
+    public void testEmptyFieldOfStudies() {
+        offer.setFieldOfStudies(Collections.<FieldOfStudy>emptyList());
+        dao.persist(offer);
+    }
 
     @Test(expected = PersistenceException.class)
     @Transactional
@@ -229,26 +266,33 @@ public class OfferEntityTest {
     public void testNullDailyHours() {
         offer.setDailyHours(null);
         dao.persist(offer);
+
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        final OfferEntity foundOffer = dao.findOffer(offer.getId());
+        Assert.assertThat(foundOffer, is(offer));
     }
 
     @Test
     @Transactional
     public void testOtherRequirements() {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder(500);
         for (int i = 0; i < 500; i++) {
-            sb.append("a");
+            sb.append('a');
         }
 
         offer.setOtherRequirements(sb.toString());
         dao.persist(offer);
+
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testTooLongOtherRequirements() {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder(501);
         for (int i = 0; i < 501; i++) {
-            sb.append("a");
+            sb.append('a');
         }
 
         offer.setOtherRequirements(sb.toString());
@@ -258,21 +302,24 @@ public class OfferEntityTest {
     @Test
     @Transactional
     public void testWorkDescription() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder(1000);
         for (int i = 0; i < 1000; i++) {
-            sb.append("a");
+            sb.append('a');
         }
 
         offer.setWorkDescription(sb.toString());
         dao.persist(offer);
+
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testTooLongWorkDescription() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder(1001);
         for (int i = 0; i < 1001; i++) {
-            sb.append("a");
+            sb.append('a');
         }
 
         offer.setWorkDescription(sb.toString());
@@ -285,7 +332,8 @@ public class OfferEntityTest {
         offer.setWeeklyHours(0.999f);
         dao.persist(offer);
         offer = entityManager.find(OfferEntity.class, offer.getId());
-        Assert.assertEquals(Float.valueOf("0.999"), offer.getWeeklyHours());
+
+        Assert.assertThat(offer.getWeeklyHours(), is(Float.valueOf("0.999")));
     }
 
     /* TODO for some reason the precision does not work with hsqldb
@@ -301,7 +349,7 @@ public class OfferEntityTest {
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testWeeklyHoursPrecision3() {
-        offer.setWeeklyHours(100f);
+        offer.setWeeklyHours(100.0f);
         dao.persist(offer);
     }
 
@@ -311,7 +359,7 @@ public class OfferEntityTest {
         offer.setDailyHours(0.999f);
         dao.persist(offer);
         offer = entityManager.find(OfferEntity.class, offer.getId());
-        Assert.assertEquals(Float.valueOf("0.999"), offer.getDailyHours());
+        Assert.assertThat(offer.getDailyHours(), is(Float.valueOf("0.999")));
     }
 
     /* TODO for some reason the precision does not work with hsqldb
@@ -327,7 +375,7 @@ public class OfferEntityTest {
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testDailyHoursPrecision3() {
-        offer.setDailyHours(100f);
+        offer.setDailyHours(100.0f);
         dao.persist(offer);
     }
 
@@ -337,6 +385,9 @@ public class OfferEntityTest {
         offer.setPayment(BigDecimal.valueOf(1234567890.12));
         offer.setPaymentFrequency(PaymentFrequency.M);
         dao.persist(offer);
+
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -359,6 +410,9 @@ public class OfferEntityTest {
     public void testDecuction() {
         offer.setDeduction(99);
         dao.persist(offer);
+
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -374,6 +428,9 @@ public class OfferEntityTest {
         offer.setLodgingCost(BigDecimal.valueOf(1234567890.12));
         offer.setLodgingCostFrequency(PaymentFrequency.M);
         dao.persist(offer);
+
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -397,6 +454,9 @@ public class OfferEntityTest {
         offer.setLivingCost(BigDecimal.valueOf(1234567890.12));
         offer.setLivingCostFrequency(PaymentFrequency.M);
         dao.persist(offer);
+
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -526,11 +586,16 @@ public class OfferEntityTest {
     public void testFind() {
         Assert.assertThat(dao.findAll().size(), is(0));
         dao.persist(offer);
-        OfferEntity offerFoundByRefNo = dao.findOffer(offer.getRefNo());
+        final OfferEntity offerFoundByRefNo = dao.findOffer(offer.getRefNo());
         Assert.assertThat(offerFoundByRefNo, is(notNullValue()));
         Assert.assertThat(offerFoundByRefNo, is(offer));
         final OfferEntity offerFoundById = dao.findOffer(offer.getId());
         Assert.assertThat(offerFoundById, is(notNullValue()));
         Assert.assertThat(offerFoundById, is(offer));
+    }
+
+    @After
+    public void cleanUp() {
+//        transaction.commit();
     }
 }

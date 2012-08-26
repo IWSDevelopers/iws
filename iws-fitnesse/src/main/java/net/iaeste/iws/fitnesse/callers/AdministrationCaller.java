@@ -17,17 +17,22 @@ package net.iaeste.iws.fitnesse.callers;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.DeleteUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.PersistUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+import net.iaeste.iws.fitnesse.spring.EntityManagerProvider;
+import net.iaeste.iws.fitnesse.spring.SpringAdministrationclient;
+
+import javax.persistence.EntityManager;
 
 /**
  * The IWS FitNesse implementation of the API logic. The Class will attempt to
@@ -41,18 +46,36 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  */
 public final class AdministrationCaller implements Administration {
 
-    private final Administration administration = null;//new AdministrationClient();
+    private final Administration administration;
+
+    public AdministrationCaller() {
+        final EntityManager entityManager = EntityManagerProvider.getInstance().getEntityManager();
+        administration = new SpringAdministrationclient(entityManager);
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Fallible processUsers(final AuthenticationToken token, final UserRequest request) {
+    public Fallible persistUser(final AuthenticationToken token, final PersistUserRequest request) {
         try {
-            return administration.processUsers(token, request);
+            return administration.persistUser(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible deleteUser(final AuthenticationToken token, final DeleteUserRequest request) {
+        try {
+            return administration.deleteUser(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+
     }
 
     /**

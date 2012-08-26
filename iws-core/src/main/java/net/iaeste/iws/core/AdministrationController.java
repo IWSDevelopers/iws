@@ -19,12 +19,13 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.DeleteUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.PersistUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
@@ -60,7 +61,7 @@ public class AdministrationController extends CommonController implements Admini
      * {@inheritDoc}
      */
     @Override
-    public Fallible processUsers(final AuthenticationToken token, final UserRequest request) {
+    public Fallible persistUser(final AuthenticationToken token, final PersistUserRequest request) {
         LOG.trace("Starting processUsers()");
         Fallible response;
 
@@ -70,6 +71,29 @@ public class AdministrationController extends CommonController implements Admini
 
             final AdministrationService service = factory.prepareAdministrationService();
             service.processUsers(token, request);
+            response = new FacultyResponse();
+        } catch (IWSException e) {
+            response = new UserResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished processUsers()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible deleteUser(final AuthenticationToken token, final DeleteUserRequest request) {
+        LOG.trace("Starting processUsers()");
+        Fallible response;
+
+        try {
+            verifyAccess(token, Permission.PROCESS_USERS);
+            verify(request, "To be clarified.");
+
+            final AdministrationService service = factory.prepareAdministrationService();
+            service.deleteUser(token, request);
             response = new FacultyResponse();
         } catch (IWSException e) {
             response = new UserResponse(e.getError(), e.getMessage());

@@ -17,12 +17,13 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.DeleteUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.PersistUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
@@ -42,7 +43,7 @@ public class AdministrationService {
         this.entityManager = entityManager;
     }
 
-    public void processUsers(final AuthenticationToken token, final UserRequest request) {
+    public void processUsers(final AuthenticationToken token, final PersistUserRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
@@ -67,6 +68,10 @@ public class AdministrationService {
     }
 
     public void processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public void deleteUser(final AuthenticationToken token, final DeleteUserRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

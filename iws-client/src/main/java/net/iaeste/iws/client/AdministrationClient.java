@@ -17,12 +17,13 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.DeleteUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.PersistUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
@@ -49,8 +50,16 @@ public final class AdministrationClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processUsers(final AuthenticationToken token, final UserRequest request) {
-        return administration.processUsers(token, request);
+    public Fallible persistUser(final AuthenticationToken token, final PersistUserRequest request) {
+        return administration.persistUser(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible deleteUser(final AuthenticationToken token, final DeleteUserRequest request) {
+        return administration.deleteUser(token, request);
     }
 
     /**

@@ -28,7 +28,7 @@ import java.util.List;
  * @since   1.7
  * @noinspection RedundantNoArgConstructor
  */
-public final class UserRequest extends AbstractRequest {
+public final class PersistUserRequest extends AbstractRequest {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -56,7 +56,7 @@ public final class UserRequest extends AbstractRequest {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public UserRequest() {
+    public PersistUserRequest() {
     }
 
     /**

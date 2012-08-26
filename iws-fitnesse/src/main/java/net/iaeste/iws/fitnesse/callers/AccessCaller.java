@@ -21,6 +21,10 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+import net.iaeste.iws.fitnesse.spring.EntityManagerProvider;
+import net.iaeste.iws.fitnesse.spring.SpringAccessClient;
+
+import javax.persistence.EntityManager;
 
 /**
  * The IWS FitNesse implementation of the API logic. The Class will attempt to
@@ -34,7 +38,12 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  */
 public final class AccessCaller implements Access {
 
-    private final Access access = null;//new AccessClient();
+    private final Access access;
+
+    public AccessCaller() {
+        final EntityManager entityManager = EntityManagerProvider.getInstance().getEntityManager();
+        access = new SpringAccessClient(entityManager);
+    }
 
     /**
      * {@inheritDoc}

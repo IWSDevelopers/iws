@@ -17,9 +17,8 @@ package net.iaeste.iws.fitnesse;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.fitnesse.callers.AccessCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
-import net.iaeste.iws.fitnesse.spring.EntityManagerProvider;
-import net.iaeste.iws.fitnesse.spring.SpringAccessClient;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -28,7 +27,8 @@ import net.iaeste.iws.fitnesse.spring.SpringAccessClient;
  */
 public class IsAlive extends AbstractFixture<AuthenticationResponse> {
 
-    private final Access access = new SpringAccessClient(EntityManagerProvider.getInstance().getEntityManager());
+    //private final Access access = new SpringAccessClient(EntityManagerProvider.getInstance().getEntityManager());
+    private final Access access = new AccessCaller();
     private String username = null;
     private String password = null;
 

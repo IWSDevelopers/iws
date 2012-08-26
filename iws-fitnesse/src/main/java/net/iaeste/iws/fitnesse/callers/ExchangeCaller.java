@@ -34,6 +34,10 @@ import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+import net.iaeste.iws.fitnesse.spring.EntityManagerProvider;
+import net.iaeste.iws.fitnesse.spring.SpringExchangeClient;
+
+import javax.persistence.EntityManager;
 
 /**
  * The IWS FitNesse implementation of the API logic. The Class will attempt to
@@ -41,13 +45,18 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * will throw a new {@code StopTestException} if an error occured - this is the
  * expected behaviour for the FitNesse tests.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class ExchangeCaller implements Exchange {
 
-    private final Exchange exchange = null;// = new ExchangeClient();
+    private final Exchange exchange;
+
+    public ExchangeCaller() {
+        final EntityManager entityManager = EntityManagerProvider.getInstance().getEntityManager();
+        exchange = new SpringExchangeClient(entityManager);
+    }
 
     /**
      * {@inheritDoc}

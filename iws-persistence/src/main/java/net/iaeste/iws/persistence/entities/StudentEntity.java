@@ -18,7 +18,6 @@ import net.iaeste.iws.api.enums.FieldOfStudy;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,7 +56,7 @@ public class StudentEntity {
     @Column(nullable = false, name = "lastname")
     private String lastname;
     @ManyToOne
-    @JoinColumn(name = "adress_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private AddressEntity address;
     @ManyToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)

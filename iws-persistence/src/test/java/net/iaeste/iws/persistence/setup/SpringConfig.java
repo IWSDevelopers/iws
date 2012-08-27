@@ -26,13 +26,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * Spring JavaConfig, for the Unit testing of the Persistence layer.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 @Configuration
 @EnableTransactionManagement
@@ -61,6 +62,7 @@ public class SpringConfig {
         factoryBean.setPackagesToScan("net.iaeste.iws.persistence");
         factoryBean.setDataSource(dataSource());
         factoryBean.setJpaVendorAdapter(vendorAdapter);
+        factoryBean.setJpaProperties(jpaProperties());
 
         return factoryBean;
     }
@@ -71,5 +73,16 @@ public class SpringConfig {
         transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
 
         return transactionManager;
+    }
+
+    @Bean
+    public Properties jpaProperties() {
+        final Properties properties = new Properties();
+
+        properties.setProperty("hibernate.show_sql", "false");
+        properties.setProperty("hibernate.format_sql", "false");
+        properties.setProperty("hibernate.connection.autocommit", "false");
+
+        return properties;
     }
 }

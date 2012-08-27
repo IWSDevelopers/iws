@@ -1094,23 +1094,7 @@ public final class Offer implements Verifiable {
      * @return true if halidays order is valid.
      */
     private boolean verifyUnavailableDatesOrder() {
-        if (unavailableFrom != null) {
-            // unavailable "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
-            //      (otherwise the period of the internship can be shown unambiguously by changing "from" and "to" dates
-            if (fromDate != null) {
-                if (!(unavailableFrom.after(fromDate) && unavailableFrom.before(toDate)
-                        && unavailableTo.after(fromDate) && unavailableTo.before(toDate))) {
-                    return false;
-                }
-            }
-            if (fromDate2 != null) {
-                if (!(unavailableFrom.after(fromDate2) && unavailableFrom.before(toDate2)
-                        && unavailableTo.after(fromDate2) && unavailableTo.before(toDate2))) {
-                    return false;
-                }
-            }
-
-        }
+        // TODO: discuss validations for unavailablity dates
         return true;
     }
 

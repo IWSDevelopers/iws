@@ -45,27 +45,31 @@ public class OfferTestUtility {
     public static final Integer MINIMUM_WEEKS = 12;
     public static final Float WEEKLY_HOURS = 40.0f;
     public static final Date FROM_DATE = new Date();
-    public static final Date TO_DATE = new Date(new Date().getTime() + 3600 * 24 * 90);
+    public static final Date TO_DATE = new Date(FROM_DATE.getTime() + 3600 * 24 * 90);
+    public static final Date FROM_DATE2 = new Date(TO_DATE.getTime() + 3600 * 24 * 90);
+    public static final Date TO_DATE2 = new Date(FROM_DATE2.getTime() + 3600 * 24 * 90);
+    public static final Date UNAVAIABLE_FROM = new Date(TO_DATE.getTime());
+    public static final Date UNAVAIABLE_TO = new Date(FROM_DATE2.getTime());
     public static final BigDecimal PAYMENT = new BigDecimal(3000);
     public static final BigDecimal LODGING_COST = new BigDecimal(1000);
     public static final BigDecimal LIVING_COST = new BigDecimal(2000);
-    private static final String EMPLOYER_ADDRESS = "test address 30";
-    private static final String EMPLOYER_ADDRESS2 = "test address 31";
-    private static final String EMPLOYER_BUSINESS = "test business";
-    private static final Integer EMPLOYER_EMPLOYEES_COUNT = 10;
-    private static final String EMPLOYER_WEBSITE = "www.website.at";
-    private static final String OTHER_REQUIREMENTS = "cooking";
-    private static final String WORKING_PLACE = "Vienna";
-    private static final String NEAREST_AIRPORT = "VIE";
-    private static final String NEAREST_PUBLIC_TRANSPORT = "U4";
-    private static final Float DAILY_HOURS = WEEKLY_HOURS / 5;
-    private static final Currency CURRENCY = Currency.EUR;
-    private static final PaymentFrequency PAYMENT_FREQUENCY = PaymentFrequency.W;
-    private static final Integer DEDUCTION = 20;
-    private static final String LODGING_BY = "IAESTE";
-    private static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.M;
-    private static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.M;
-    private static final Boolean CANTEEN = true;
+    public static final String EMPLOYER_ADDRESS = "test address 30";
+    public static final String EMPLOYER_ADDRESS2 = "test address 31";
+    public static final String EMPLOYER_BUSINESS = "test business";
+    public static final Integer EMPLOYER_EMPLOYEES_COUNT = 10;
+    public static final String EMPLOYER_WEBSITE = "www.website.at";
+    public static final String OTHER_REQUIREMENTS = "cooking";
+    public static final String WORKING_PLACE = "Vienna";
+    public static final String NEAREST_AIRPORT = "VIE";
+    public static final String NEAREST_PUBLIC_TRANSPORT = "U4";
+    public static final Float DAILY_HOURS = WEEKLY_HOURS / 5;
+    public static final Currency CURRENCY = Currency.EUR;
+    public static final PaymentFrequency PAYMENT_FREQUENCY = PaymentFrequency.W;
+    public static final Integer DEDUCTION = 20;
+    public static final String LODGING_BY = "IAESTE";
+    public static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.M;
+    public static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.M;
+    public static final Boolean CANTEEN = true;
 
     private OfferTestUtility() {
     }
@@ -97,11 +101,13 @@ public class OfferTestUtility {
         minimalOffer.setWeeklyHours(WEEKLY_HOURS);
         minimalOffer.setFromDate(FROM_DATE);
         minimalOffer.setToDate(TO_DATE);
+        minimalOffer.setPayment(null);
         return minimalOffer;
     }
 
     public static Offer getFullOffer() {
         final Offer offer = getMinimalOffer();
+        offer.setRefNo("GB-2012-1234-AB");
         offer.setNominationDeadline(NOMINATION_DEADLINE);
         offer.setEmployerAddress(EMPLOYER_ADDRESS);
         offer.setEmployerAddress2(EMPLOYER_ADDRESS2);
@@ -122,15 +128,16 @@ public class OfferTestUtility {
             typesOfWork.add(TypeOfWork.N);
             offer.setTypeOfWork(typesOfWork);
         }
-        offer.setFromDate2(FROM_DATE);
-        offer.setToDate2(TO_DATE);
-        offer.setUnavailableFrom(FROM_DATE);
-        offer.setUnavailableTo(TO_DATE);
+        offer.setFromDate2(FROM_DATE2);
+        offer.setToDate2(TO_DATE2);
+        offer.setUnavailableFrom(UNAVAIABLE_FROM);
+        offer.setUnavailableTo(UNAVAIABLE_TO);
         offer.setWorkingPlace(WORKING_PLACE);
         offer.setNearestAirport(NEAREST_AIRPORT);
         offer.setNearestPubTransport(NEAREST_PUBLIC_TRANSPORT);
         offer.setDailyHours(DAILY_HOURS);
         offer.setCurrency(CURRENCY);
+        offer.setPayment(PAYMENT);
         offer.setPaymentFrequency(PAYMENT_FREQUENCY);
         offer.setDeduction(DEDUCTION);
         offer.setLodgingBy(LODGING_BY);

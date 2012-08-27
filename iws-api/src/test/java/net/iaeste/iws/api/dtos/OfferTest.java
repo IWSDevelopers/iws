@@ -413,34 +413,8 @@ public class OfferTest {
     }
 
     @Test
-    public void testVerifyOrderOfHolidaysDates() {
-        final String error = "holidays dates must be inside from-to or from2-to2";
-        offer = getMinimalOffer();
-        offer.setNominationDeadline(dates[0]);
-        // --deadline-----------from--------holidaysFrom---to------holidaysTo---------->
-        offer.setFromDate(dates[1]);
-        offer.setUnavailableFrom(dates[2]);
-        offer.setToDate(dates[3]);
-        offer.setUnavailableTo(dates[4]);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline--------holidaysFrom-----------from------holidaysTo---to---------->
-        offer.setUnavailableFrom(dates[1]);
-        offer.setFromDate(dates[2]);
-        offer.setUnavailableTo(dates[3]);
-        offer.setToDate(dates[4]);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline-----------holidaysFrom------holidaysTo------from--------to------->
-        offer.setUnavailableFrom(dates[1]);
-        offer.setUnavailableTo(dates[2]);
-        offer.setFromDate(dates[3]);
-        offer.setToDate(dates[4]);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
-        // --deadline-----------from--------to------holidaysTo-----holidaysFrom-------->
-        offer.setFromDate(dates[1]);
-        offer.setToDate(dates[2]);
-        offer.setUnavailableFrom(dates[3]);
-        offer.setUnavailableTo(dates[4]);
-        Assert.assertThat(error, offer.verifyDates(), is(false));
+    public void testVerifyOrderOfUnavailableDates() {
+        // TODO: requirements for Unavailable dates
     }
 
     @Test

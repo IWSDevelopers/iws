@@ -43,10 +43,10 @@ create table offers (
         ref_no                    varchar(255)  not null,
         work_description          varchar(1000) not null,
         working_place             varchar(255),
-        work_type                 char(4)                 CHECK(work_type IS NULL OR length(work_type) > 0),
+        work_type                 char(4)                 ,
         study_levels              char(3)       NOT NULL  CHECK(length(study_levels) > 0),
         study_fields              varchar(1000) NOT NULL  CHECK(length(study_fields) > 0),
-        specializations           varchar(1000)           CHECK(specializations IS NULL OR length(specializations) > 0),
+        specializations           varchar(1000)           ,
         primary key (id),
         unique (ref_no)
     );

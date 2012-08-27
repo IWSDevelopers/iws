@@ -15,11 +15,8 @@
 package net.iaeste.iws.persistence.entities;
 
 /**
- * Classes implementing this interface, are capable updating the current
- * content, with the content of a second Object of the same type.<br />
- *   The primary reason for having this, is to allow a merge of the information
- * that has been persisted with the EDA logic. This is needed, to ensure that
- * the Objects themselves remain the same, but have the updated information.
+ * Classes implementing this interface, are capable of updating the current
+ * content, with the content of a second Object of the same type (and Id).
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -29,7 +26,10 @@ public interface Mergeable<T> {
 
     /**
      * Allows a merge between two objects of the same type. The method updates
-     * the current object with the changes from the second.
+     * the current object with the changes from the second.<br />
+     *   Both Objects must be persisted beforehand, i.e. have Id values, and
+     * these Id's differ, no merge will take place. Merging is purely intended
+     * for updating Objects, where we wish to control which fields are updated.
      */
     void merge(T obj);
 }

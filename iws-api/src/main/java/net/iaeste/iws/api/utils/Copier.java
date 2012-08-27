@@ -17,8 +17,10 @@ package net.iaeste.iws.api.utils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Utility Class, containing a single method called "copy". This method is
@@ -26,9 +28,9 @@ import java.util.Map;
  * reason for using this, is to ensure that object, which is not immutable is
  * properly copied - to avoid leaking internal data references.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class Copier {
 
@@ -50,7 +52,7 @@ public final class Copier {
      * references. If the given list is null, then a new empty list is returned,
      * to avoid a potential {@code NullPointerException}.
      *
-     * @param  original  The List to copy
+     * @param original The List to copy
      * @return Copy of the given List, or an empty List
      */
     public static <T> List<T> copy(final List<T> original) {
@@ -69,11 +71,34 @@ public final class Copier {
     }
 
     /**
+     * Copies the given Set, to ensure that the new set is not exposing any
+     * references. If the given set is null, then a new empty set is returned,
+     * to avoid a potential {@code NullPointerException}.
+     *
+     * @param original The Set to copy
+     * @return Copy of the given Set, or an empty Set
+     */
+    public static <T> Set<T> copy(final Set<T> original) {
+        final Set<T> copy;
+
+        if (original != null) {
+            copy = new HashSet<>();
+            for (final T t : original) {
+                copy.add(t);
+            }
+        } else {
+            copy = new HashSet<>(0);
+        }
+
+        return copy;
+    }
+
+    /**
      * Copies the given Map, to ensure that the new Map is not exposing any
      * references. If the given Map is null, then a new empty Map is returned,
      * to avoid a potential {@code NullPointerException}.
      *
-     * @param  original  The Map to copy
+     * @param original The Map to copy
      * @return Copy of the given Map, or an empty Map
      */
     public static <T, V> Map<T, V> copy(final Map<T, V> original) {
@@ -96,7 +121,7 @@ public final class Copier {
      * references. If the given Array is null, then a new empty Array is
      * returned, to avoid a potential {@code NullPointerException}.
      *
-     * @param  original  The Array to copy
+     * @param original The Array to copy
      * @return Copy of the given Array, or an empty Array
      */
     public static String[] copy(final String[] original) {
@@ -117,7 +142,7 @@ public final class Copier {
      * references. If the given Array is null, then a new empty Array is
      * returned, to avoid a potential {@code NullPointerException}.
      *
-     * @param  original  The Array to copy
+     * @param original The Array to copy
      * @return Copy of the given Array, or an empty Array
      */
     public static byte[] copy(final byte[] original) {
@@ -138,7 +163,7 @@ public final class Copier {
      * immutable. If the given Date is null, then a null value is returned,
      * since it makes little sense to return a new Date object.
      *
-     * @param  original  The Date to copy
+     * @param original The Date to copy
      * @return Copy of the given Date, or null
      */
     public static Date copy(final Date original) {

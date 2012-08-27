@@ -46,11 +46,12 @@ public class SpringConfig {
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
+                // TODO Kim; Please merge the scripts properly (correct name is exchange-xxx.sql), also ensure that the trigger & table checks are implemented in the verify methods!
                 .addScript("net/iaeste/iws/persistence/hsqldb/offers-init.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/offers-triggers.sql")
-                        //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
-                        //.addScript("classpath:net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
+                //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
+                //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
                 .build();
     }
 
@@ -79,8 +80,12 @@ public class SpringConfig {
     public Properties jpaProperties() {
         final Properties properties = new Properties();
 
+        // For testing the result, it is helpful to be able to see the queries
+        // executed against the database, preferably formatted as well :-)
         properties.setProperty("hibernate.show_sql", "false");
         properties.setProperty("hibernate.format_sql", "false");
+        // For some braindead reason - someone thought it was a good idea to
+        // have the default behaviour being true for the autocommit setting!
         properties.setProperty("hibernate.connection.autocommit", "false");
 
         return properties;

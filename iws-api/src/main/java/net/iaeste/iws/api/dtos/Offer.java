@@ -31,6 +31,7 @@ import net.iaeste.iws.api.utils.Copier;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -154,7 +155,7 @@ public final class Offer implements Verifiable {
 
     // Work offered
     private String workDescription;
-    private TypeOfWork typeOfWork;
+    private List<TypeOfWork> typeOfWork;
     private Integer minimumWeeks;
     private Integer maximumWeeks;
     private Date fromDate;
@@ -537,12 +538,12 @@ public final class Offer implements Verifiable {
         this.toDate = Copier.copy(toDate);
     }
 
-    public TypeOfWork getTypeOfWork() {
-        return typeOfWork;
+    public List<TypeOfWork> getTypeOfWork() {
+        return Copier.copy(typeOfWork);
     }
 
-    public void setTypeOfWork(final TypeOfWork typeOfWork) {
-        this.typeOfWork = typeOfWork;
+    public void setTypeOfWork(final List<TypeOfWork> typeOfWork) {
+        this.typeOfWork = Copier.copy(typeOfWork);
     }
 
     public Float getWeeklyHours() {
@@ -733,7 +734,7 @@ public final class Offer implements Verifiable {
         if (toDate2 != null ? !toDate2.equals(offer.toDate2) : offer.toDate2 != null) {
             return false;
         }
-        if (typeOfWork != offer.typeOfWork) {
+        if (!(typeOfWork == null ? Collections.emptyList() : typeOfWork).equals((typeOfWork == null ? Collections.emptyList() : typeOfWork))) {
             return false;
         }
         if (weeklyHours != null ? !weeklyHours.equals(offer.weeklyHours) : offer.weeklyHours != null) {

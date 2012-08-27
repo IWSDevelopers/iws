@@ -22,7 +22,7 @@ import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.StudyLevel;
-import net.iaeste.iws.api.utils.Copier;
+import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,12 +42,11 @@ public class OfferTransformerTest {
         final OfferEntity entity = OfferTransformer.transform(offer);
         // TODO: check field by field
         Assert.assertThat(offer.getId(), is(entity.getId()));
-        Assert.assertThat(offer.getTypeOfWork(), is(entity.getTypeOfWork()));
+        Assert.assertThat(offer.getTypeOfWork(), is(ListTransformer.explodeEnumList(TypeOfWork.class, entity.getTypeOfWork())));
 
-        Assert.assertThat(offer.getStudyLevels(), is(entity.getStudyLevels()));
-        Assert.assertThat(offer.getSpecializations(), is(entity.getSpecializations()));
-        Assert.assertThat(offer.getFieldOfStudies(), is(entity.getFieldOfStudies()));
-
+        Assert.assertThat(offer.getStudyLevels(), is(ListTransformer.explodeEnumList(StudyLevel.class, entity.getStudyLevels())));
+        Assert.assertThat(offer.getSpecializations(), is(ListTransformer.explodeStringList(entity.getSpecializations())));
+        Assert.assertThat(offer.getFieldOfStudies(), is(ListTransformer.explodeEnumList(FieldOfStudy.class, entity.getFieldOfStudies())));
     }
 
     @Test
@@ -55,12 +54,12 @@ public class OfferTransformerTest {
         final OfferEntity entity = getMinimalOfferEntity();
         final Offer offer = OfferTransformer.transform(entity);
         // TODO: check field by field
-        Assert.assertThat(offer.getId(), is(entity.getId()));
-        Assert.assertThat(offer.getTypeOfWork(), is(entity.getTypeOfWork()));
+        Assert.assertThat(offer.getTypeOfWork(), is(ListTransformer.explodeEnumList(TypeOfWork.class, entity.getTypeOfWork())));
 
-        Assert.assertThat(offer.getStudyLevels(), is(entity.getStudyLevels()));
-        Assert.assertThat(offer.getSpecializations(), is(Copier.copy(entity.getSpecializations()))); // Copier to get rid of null
-        Assert.assertThat(offer.getFieldOfStudies(), is(entity.getFieldOfStudies()));
+        Assert.assertThat(offer.getStudyLevels(), is(ListTransformer.explodeEnumList(StudyLevel.class, entity.getStudyLevels())));
+        Assert.assertThat(offer.getSpecializations(), is(ListTransformer.explodeStringList(entity.getSpecializations())));
+        Assert.assertThat(offer.getFieldOfStudies(), is(ListTransformer.explodeEnumList(FieldOfStudy.class, entity.getFieldOfStudies())));
+
     }
 
     @Test
@@ -81,6 +80,24 @@ public class OfferTransformerTest {
         Assert.assertThat(entity, is(newEntity));
     }
 
+    @Test
+    public void testCopyingBackAndForthFromEmptyEntity() {
+        final OfferEntity entity = new OfferEntity();
+        final Offer offer = OfferTransformer.transform(entity);
+        final OfferEntity newEntity = OfferTransformer.transform(offer);
+        // we rely on equals method
+        Assert.assertThat(entity, is(newEntity));
+    }
+
+    @Test
+    public void testCopyingBackAndForthFromEmptyDto() {
+        final Offer offer = new Offer();
+        final OfferEntity entity = OfferTransformer.transform(offer);
+        final Offer newOffer = OfferTransformer.transform(entity);
+        // we rely on equals method
+        Assert.assertThat(offer, is(newOffer));
+    }
+
     private OfferEntity getMinimalOfferEntity() {
         final OfferEntity minimalOffer = new OfferEntity();
         minimalOffer.setRefNo(OfferTestUtility.REF_NO);
@@ -89,8 +106,8 @@ public class OfferTransformerTest {
         list.add(StudyLevel.E);
         final List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
         fieldOfStudies.add(FieldOfStudy.IT);
-        minimalOffer.setFieldOfStudies(fieldOfStudies);
-        minimalOffer.setStudyLevels(list);
+        minimalOffer.setFieldOfStudies(ListTransformer.concatEnumList(fieldOfStudies));
+        minimalOffer.setStudyLevels(ListTransformer.concatEnumList(list));
         minimalOffer.setGender(Gender.E);
         minimalOffer.setLanguage1(Language.ENGLISH);
         minimalOffer.setLanguage1Level(LanguageLevel.E);

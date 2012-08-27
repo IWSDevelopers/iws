@@ -24,6 +24,7 @@ import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.client.spring.EntityManagerProvider;
+import net.iaeste.iws.core.transformers.ListTransformer;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
@@ -45,7 +46,7 @@ public class ExchangeClientTest {
     private final AuthenticationToken token = new AuthenticationToken("md5_5678901234567890123456789012");
 
     @Test
-    public void testProcessOfferCreate() {
+    public void testProcessOfferCreateMinimalOffer() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setId(null); // create offer
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
@@ -60,8 +61,31 @@ public class ExchangeClientTest {
         final OfferEntity actual = offers.get(0);
         assertThat(actual.getId(), is(notNullValue()));
         actual.setId(null);
+        assertThat(actual.getFieldOfStudies(), is(ListTransformer.concatEnumList(offer.getFieldOfStudies())));
+        assertThat(actual.getStudyLevels(), is(ListTransformer.concatEnumList(offer.getStudyLevels())));
+        assertThat(actual.getSpecializations(), is(ListTransformer.concatStringList(offer.getSpecializations())));
         assertThat(actual, is(OfferTransformer.transform(offer)));
-        assertThat(actual.getFieldOfStudies().size(), is(1));
-        assertThat(actual.getFieldOfStudies().get(0), is(offer.getFieldOfStudies().get(0)));
+    }
+
+    @Test
+    public void testProcessOfferCreateFullOffer() {
+        final Offer offer = OfferTestUtility.getFullOffer();
+        offer.setId(null); // create offer
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final Fallible response = client.processOffer(token, offerRequest);
+        Assert.assertThat(response.isOk(), is(true));
+
+        final EntityManager em = EntityManagerProvider.getInstance().getEntityManager();
+        final OfferDao dao = new OfferJpaDao(em);
+        final List<OfferEntity> offers = dao.findAll();
+
+        assertThat(offers.size(), is(1));
+        final OfferEntity actual = offers.get(0);
+        assertThat(actual.getId(), is(notNullValue()));
+        actual.setId(null);
+        assertThat(actual, is(OfferTransformer.transform(offer)));
+        assertThat(actual.getFieldOfStudies(), is(ListTransformer.concatEnumList(offer.getFieldOfStudies())));
+        assertThat(actual.getStudyLevels(), is(ListTransformer.concatEnumList(offer.getStudyLevels())));
+        assertThat(actual.getSpecializations(), is(ListTransformer.concatStringList(offer.getSpecializations())));
     }
 }

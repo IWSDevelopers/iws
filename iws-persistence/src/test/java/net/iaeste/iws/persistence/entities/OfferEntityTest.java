@@ -18,12 +18,16 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 
+import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.PaymentFrequency;
+import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
@@ -42,10 +46,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Contains tests for OfferEntity and OfferJpaDao
@@ -56,9 +57,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
-//@TransactionConfiguration(defaultRollback = false)
 public class OfferEntityTest {
-
     private static final String REF_NO = "AT-2012-1234-AB";
     private static final Date NOMINATION_DEADLINE = new Date();
     private static final String EMPLOYER_NAME = "Test_Employer_1";
@@ -72,6 +71,27 @@ public class OfferEntityTest {
     private static final BigDecimal PAYMENT = new BigDecimal(3000);
     private static final BigDecimal LODGING_COST = new BigDecimal(1000);
     private static final BigDecimal LIVING_COST = new BigDecimal(2000);
+    private static final String FIELDS_OF_STUDY = String.format("%s|%s", FieldOfStudy.IT, FieldOfStudy.CHEMISTRY);
+    private static final String SPECIALIZATIONS = String.format("%s|%s", Specialization.INFORMATION_TECHNOLOGY, "Custom");
+    private static final String STUDY_LEVELS = String.format("%s|%s", StudyLevel.E, StudyLevel.M);
+    private static final String TYPE_OF_WORK = String.format("|", TypeOfWork.N, TypeOfWork.P);
+
+    private static final String EMPLOYER_ADDRESS = "test address 30";
+    private static final String EMPLOYER_ADDRESS2 = "test address 31";
+    private static final String EMPLOYER_BUSINESS = "test business";
+    private static final Integer EMPLOYER_EMPLOYEES_COUNT = 10;
+    private static final String EMPLOYER_WEBSITE = "www.website.at";
+    private static final String OTHER_REQUIREMENTS = "cooking";
+    private static final String WORKING_PLACE = "Vienna";
+    private static final String NEAREST_AIRPORT = "VIE";
+    private static final String NEAREST_PUBLIC_TRANSPORT = "U4";
+    private static final Currency CURRENCY = Currency.EUR;
+    private static final PaymentFrequency PAYMENT_FREQUENCY = PaymentFrequency.W;
+    private static final Integer DEDUCTION = 20;
+    private static final String LODGING_BY = "IAESTE";
+    private static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.M;
+    private static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.M;
+    private static final Boolean CANTEEN = true;
 
     private OfferDao dao;
     @PersistenceContext
@@ -85,16 +105,12 @@ public class OfferEntityTest {
         offer = getMinimalOffer();
     }
 
-    private OfferEntity getMinimalOffer() {
+    private static OfferEntity getMinimalOffer() {
         final OfferEntity offer = new OfferEntity();
         offer.setRefNo(REF_NO);
         offer.setEmployerName(EMPLOYER_NAME);
-        final List<StudyLevel> studyLevels = new ArrayList<>();
-        studyLevels.add(StudyLevel.E);
-        offer.setStudyLevels(studyLevels);
-        final List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
-        fieldOfStudies.add(FieldOfStudy.AERONAUTIC_ENGINEERING);
-        offer.setFieldOfStudies(fieldOfStudies);
+        offer.setStudyLevels(STUDY_LEVELS);
+        offer.setFieldOfStudies(FIELDS_OF_STUDY);
         offer.setGender(Gender.E);
         offer.setLanguage1(Language.ENGLISH);
         offer.setLanguage1Level(LanguageLevel.E);
@@ -107,8 +123,47 @@ public class OfferEntityTest {
         return offer;
     }
 
+
+    public static OfferEntity getFullOffer() {
+        final OfferEntity offer = getMinimalOffer();
+        offer.setNominationDeadline(NOMINATION_DEADLINE);
+        offer.setEmployerAddress(EMPLOYER_ADDRESS);
+        offer.setEmployerAddress2(EMPLOYER_ADDRESS2);
+        offer.setEmployerBusiness(EMPLOYER_BUSINESS);
+        offer.setEmployerEmployeesCount(EMPLOYER_EMPLOYEES_COUNT);
+        offer.setEmployerWebsite(EMPLOYER_WEBSITE);
+        offer.setPrevTrainingRequired(true);
+        offer.setOtherRequirements(OTHER_REQUIREMENTS);
+        offer.setLanguage1Operator(LanguageOperator.A);
+        offer.setLanguage2(Language.FRENCH);
+        offer.setLanguage2Level(LanguageLevel.E);
+        offer.setLanguage2Operator(LanguageOperator.O);
+        offer.setLanguage3(Language.GERMAN);
+        offer.setLanguage3Level(LanguageLevel.E);
+        offer.setTypeOfWork(TYPE_OF_WORK);
+        offer.setFromDate2(FROM_DATE);
+        offer.setToDate2(TO_DATE);
+        offer.setUnavailableFrom(FROM_DATE);
+        offer.setUnavailableTo(TO_DATE);
+        offer.setWorkingPlace(WORKING_PLACE);
+        offer.setNearestAirport(NEAREST_AIRPORT);
+        offer.setNearestPubTransport(NEAREST_PUBLIC_TRANSPORT);
+        offer.setDailyHours(DAILY_HOURS);
+        offer.setCurrency(CURRENCY);
+        offer.setPaymentFrequency(PAYMENT_FREQUENCY);
+        offer.setDeduction(DEDUCTION);
+        offer.setLodgingBy(LODGING_BY);
+        offer.setLodgingCost(LODGING_COST);
+        offer.setLodgingCostFrequency(LODGING_COST_FREQUENCY);
+        offer.setLivingCost(LIVING_COST);
+        offer.setLivingCostFrequency(LIVING_COST_FREQUENCY);
+        offer.setCanteen(CANTEEN);
+        offer.setSpecializations(SPECIALIZATIONS);
+        return offer;
+    }
+
     @Test
-    @Transactional //(noRollbackFor = Exception.class)
+    @Transactional
     public void testMinimalOffer() {
         dao.persist(offer);
         Assert.assertThat(offer.getId(), is(notNullValue()));
@@ -116,10 +171,8 @@ public class OfferEntityTest {
         offer = entityManager.find(OfferEntity.class, offer.getId());
         Assert.assertThat(offer.getRefNo(), is(REF_NO));
         Assert.assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
-        Assert.assertThat(offer.getStudyLevels().size(), is(1));
-        Assert.assertThat(offer.getStudyLevels().get(0), is(StudyLevel.E));
-        Assert.assertThat(offer.getFieldOfStudies().size(), is(1));
-        Assert.assertThat(offer.getFieldOfStudies().get(0), is(FieldOfStudy.AERONAUTIC_ENGINEERING));
+        Assert.assertThat(offer.getStudyLevels(), is(STUDY_LEVELS));
+        Assert.assertThat(offer.getFieldOfStudies(), is(FIELDS_OF_STUDY));
         Assert.assertThat(offer.getGender(), is(Gender.E));
         Assert.assertThat(offer.getLanguage1(), is(Language.ENGLISH));
         Assert.assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
@@ -129,6 +182,69 @@ public class OfferEntityTest {
         Assert.assertThat(offer.getWeeklyHours(), is(WEEKLY_HOURS));
         Assert.assertThat(offer.getFromDate(), is(FROM_DATE));
         Assert.assertThat(offer.getToDate(), is(TO_DATE));
+
+        final OfferEntity persisted = dao.findOffer(offer.getId());
+        Assert.assertThat(offer, is(persisted));
+    }
+
+    @Test
+    @Transactional
+    public void testFullOffer() {
+        offer = getFullOffer();
+        dao.persist(offer);
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+
+        offer = entityManager.find(OfferEntity.class, offer.getId());
+        Assert.assertThat(offer.getRefNo(), is(REF_NO));
+        Assert.assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
+        Assert.assertThat(offer.getStudyLevels(), is(STUDY_LEVELS));
+        Assert.assertThat(offer.getFieldOfStudies(), is(FIELDS_OF_STUDY));
+        Assert.assertThat(offer.getGender(), is(Gender.E));
+        Assert.assertThat(offer.getLanguage1(), is(Language.ENGLISH));
+        Assert.assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
+        Assert.assertThat(offer.getWorkDescription(), is(WORK_DESCRIPTION));
+        Assert.assertThat(offer.getMaximumWeeks(), is(MAXIMUM_WEEKS));
+        Assert.assertThat(offer.getMinimumWeeks(), is(MINIMUM_WEEKS));
+        Assert.assertThat(offer.getWeeklyHours(), is(WEEKLY_HOURS));
+        Assert.assertThat(offer.getFromDate(), is(FROM_DATE));
+        Assert.assertThat(offer.getToDate(), is(TO_DATE));
+
+        Assert.assertThat(offer.getNominationDeadline(), is(NOMINATION_DEADLINE));
+        Assert.assertThat(offer.getEmployerAddress(), is(EMPLOYER_ADDRESS));
+        Assert.assertThat(offer.getEmployerAddress2(), is(EMPLOYER_ADDRESS2));
+        Assert.assertThat(offer.getEmployerBusiness(), is(EMPLOYER_BUSINESS));
+        Assert.assertThat(offer.getEmployerEmployeesCount(), is(EMPLOYER_EMPLOYEES_COUNT));
+        Assert.assertThat(offer.getEmployerWebsite(), is(EMPLOYER_WEBSITE));
+        Assert.assertThat(offer.getPrevTrainingRequired(), is(true));
+        Assert.assertThat(offer.getOtherRequirements(), is(OTHER_REQUIREMENTS));
+        Assert.assertThat(offer.getLanguage1Operator(), is(LanguageOperator.A));
+        Assert.assertThat(offer.getLanguage2(), is(Language.FRENCH));
+        Assert.assertThat(offer.getLanguage2Level(), is(LanguageLevel.E));
+        Assert.assertThat(offer.getLanguage2Operator(), is(LanguageOperator.O));
+        Assert.assertThat(offer.getLanguage3(), is(Language.GERMAN));
+        Assert.assertThat(offer.getLanguage3Level(), is(LanguageLevel.E));
+        Assert.assertThat(offer.getTypeOfWork(), is(TYPE_OF_WORK));
+        Assert.assertThat(offer.getFromDate2(), is(FROM_DATE));
+        Assert.assertThat(offer.getToDate2(), is(TO_DATE));
+        Assert.assertThat(offer.getUnavailableFrom(), is(FROM_DATE));
+        Assert.assertThat(offer.getUnavailableTo(), is(TO_DATE));
+        Assert.assertThat(offer.getWorkingPlace(), is(WORKING_PLACE));
+        Assert.assertThat(offer.getNearestAirport(), is(NEAREST_AIRPORT));
+        Assert.assertThat(offer.getNearestPubTransport(), is(NEAREST_PUBLIC_TRANSPORT));
+        Assert.assertThat(offer.getDailyHours(), is(DAILY_HOURS));
+        Assert.assertThat(offer.getCurrency(), is(CURRENCY));
+        Assert.assertThat(offer.getPaymentFrequency(), is(PAYMENT_FREQUENCY));
+        Assert.assertThat(offer.getDeduction(), is(DEDUCTION));
+        Assert.assertThat(offer.getLodgingBy(), is(LODGING_BY));
+        Assert.assertThat(offer.getLodgingCost(), is(LODGING_COST));
+        Assert.assertThat(offer.getLodgingCostFrequency(), is(LODGING_COST_FREQUENCY));
+        Assert.assertThat(offer.getLivingCost(), is(LIVING_COST));
+        Assert.assertThat(offer.getLivingCostFrequency(), is(LIVING_COST_FREQUENCY));
+        Assert.assertThat(offer.getCanteen(), is(CANTEEN));
+        Assert.assertThat(offer.getSpecializations(), is(SPECIALIZATIONS));
+
+        final OfferEntity persisted = dao.findOffer(offer.getId());
+        Assert.assertThat(offer, is(persisted));
     }
 
     @Test(expected = PersistenceException.class)
@@ -153,14 +269,6 @@ public class OfferEntityTest {
         dao.persist(offer);
     }
 
-    @Test(expected = PersistenceException.class)
-    @Transactional
-    public void testDuplicateRefNo() {
-        dao.persist(offer);
-        final OfferEntity o2 = getMinimalOffer();
-        dao.persist(o2);
-    }
-
     @Test
     @Transactional
     public void testNullNominationDeadline() {
@@ -175,40 +283,6 @@ public class OfferEntityTest {
     @Transactional
     public void testNullEmployerName() {
         offer.setEmployerName(null);
-        dao.persist(offer);
-    }
-
-    @Test(expected = PersistenceException.class)
-    @Ignore("TODO does not work for @ElementCollection without a separate table")
-    @Transactional
-    public void testNullStudyLevel() {
-        offer.setStudyLevels(null);
-        dao.persist(offer);
-    }
-
-
-    @Test(expected = PersistenceException.class)
-    @Ignore("TODO does not work for @ElementCollection without a separate table")
-    @Transactional
-    public void testEmptyStudyLevel() {
-        offer.setStudyLevels(Collections.<StudyLevel>emptyList());
-        dao.persist(offer);
-    }
-
-
-    @Test(expected = PersistenceException.class)
-    @Ignore("TODO: at least one field of studies")
-    @Transactional
-    public void testNullFieldOfStudies() {
-        offer.setFieldOfStudies(null);
-        dao.persist(offer);
-    }
-
-    @Test(expected = PersistenceException.class)
-    @Ignore("TODO: at least one field of studies")
-    @Transactional
-    public void testEmptyFieldOfStudies() {
-        offer.setFieldOfStudies(Collections.<FieldOfStudy>emptyList());
         dao.persist(offer);
     }
 
@@ -583,6 +657,19 @@ public class OfferEntityTest {
 
     @Test
     @Transactional
+    public void testTypeOfWork() {
+        offer.setTypeOfWork(TYPE_OF_WORK);
+
+        offer.setId(null);
+        dao.persist(offer);
+
+        Assert.assertThat(offer, is(notNullValue()));
+        Assert.assertThat(offer.getId(), is(notNullValue()));
+        Assert.assertThat(offer.getTypeOfWork(), is(TYPE_OF_WORK));
+    }
+
+    @Test
+    @Transactional
     public void testFind() {
         Assert.assertThat(dao.findAll().size(), is(0));
         dao.persist(offer);
@@ -596,6 +683,5 @@ public class OfferEntityTest {
 
     @After
     public void cleanUp() {
-//        transaction.commit();
     }
 }

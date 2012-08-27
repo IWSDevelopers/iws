@@ -15,6 +15,9 @@
 package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
 /**
@@ -44,8 +47,8 @@ public final class OfferTransformer {
             result.setEmployerBusiness(offer.getEmployerBusiness());
             result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
             result.setEmployerWebsite(offer.getEmployerWebsite());
-            result.setFieldOfStudies(offer.getFieldOfStudies());
-            result.setSpecializations(offer.getSpecializations());
+            result.setFieldOfStudies(ListTransformer.concatEnumList(offer.getFieldOfStudies()));
+            result.setSpecializations(ListTransformer.concatStringList(offer.getSpecializations()));
             result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
             result.setOtherRequirements(offer.getOtherRequirements());
             result.setGender(offer.getGender());
@@ -58,7 +61,7 @@ public final class OfferTransformer {
             result.setLanguage3(offer.getLanguage3());
             result.setLanguage3Level(offer.getLanguage3Level());
             result.setWorkDescription(offer.getWorkDescription());
-            result.setTypeOfWork(offer.getTypeOfWork());
+            result.setTypeOfWork(ListTransformer.concatEnumList(offer.getTypeOfWork()));
             result.setMinimumWeeks(offer.getMinimumWeeks());
             result.setMaximumWeeks(offer.getMaximumWeeks());
             result.setFromDate(offer.getFromDate());
@@ -82,8 +85,7 @@ public final class OfferTransformer {
             result.setLivingCost(offer.getLivingCost());
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
-            result.setStudyLevels(offer.getStudyLevels());
-            result.setSpecializations(offer.getSpecializations());
+            result.setStudyLevels(ListTransformer.concatEnumList(offer.getStudyLevels()));
         }
 
         return result;
@@ -104,8 +106,8 @@ public final class OfferTransformer {
             result.setEmployerBusiness(offer.getEmployerBusiness());
             result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
             result.setEmployerWebsite(offer.getEmployerWebsite());
-            result.setFieldOfStudies(offer.getFieldOfStudies());
-            result.setSpecializations(offer.getSpecializations());
+            result.setFieldOfStudies(ListTransformer.explodeEnumList(FieldOfStudy.class, offer.getFieldOfStudies()));
+            result.setSpecializations(ListTransformer.explodeStringList(offer.getSpecializations()));
             result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
             result.setOtherRequirements(offer.getOtherRequirements());
             result.setGender(offer.getGender());
@@ -118,7 +120,7 @@ public final class OfferTransformer {
             result.setLanguage3(offer.getLanguage3());
             result.setLanguage3Level(offer.getLanguage3Level());
             result.setWorkDescription(offer.getWorkDescription());
-            result.setTypeOfWork(offer.getTypeOfWork());
+            result.setTypeOfWork(ListTransformer.explodeEnumList(TypeOfWork.class, offer.getTypeOfWork()));
             result.setMinimumWeeks(offer.getMinimumWeeks());
             result.setMaximumWeeks(offer.getMaximumWeeks());
             result.setFromDate(offer.getFromDate());
@@ -142,8 +144,7 @@ public final class OfferTransformer {
             result.setLivingCost(offer.getLivingCost());
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
-            result.setStudyLevels(offer.getStudyLevels());
-            result.setSpecializations(offer.getSpecializations());
+            result.setStudyLevels(ListTransformer.explodeEnumList(StudyLevel.class, offer.getStudyLevels()));
         }
 
         return result;

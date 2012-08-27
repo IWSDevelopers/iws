@@ -14,7 +14,11 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,8 +30,8 @@ import java.util.List;
  * @since 1.7
  */
 public class ListTransformer {
-    public final static String delimiter = "|";
-    private static String delimiterRegExp = "\\|";
+    public static final String delimiter = "|";
+    private static final String delimiterRegExp = "\\|";
 
     private ListTransformer() {
     }
@@ -35,14 +39,14 @@ public class ListTransformer {
     /**
      * Concatenates a list of enum values into the one string
      *
-     * @param list   List of values to be concatenated
+     * @param list List of values to be concatenated
      * @return concatenated String
      */
-    public static <T extends Enum> String concatEnumList(final List<T> list) {
-        StringBuilder sb = new StringBuilder();
-        if(list.size() > 0) {
+    public static <T extends Enum<T>> String concatEnumList(final List<T> list) {
+        final StringBuilder sb = new StringBuilder();
+        if (list != null && !list.isEmpty()) {
             sb.append(list.get(0).name());
-            for(int i=1;i<list.size();i++) {
+            for (int i = 1; i < list.size(); i++) {
                 sb.append(delimiter);
                 sb.append(list.get(i).name());
             }
@@ -53,21 +57,45 @@ public class ListTransformer {
     /**
      * Concatenates a list of enum values into the one string
      *
-     * @param enumType   The Class object of the enum type from which to return a constant
-     * @param value      String which is splited into the list of enum values
-     * @return           List of enum values
+     * @param enumType The Class object of the enum type from which to return a constant
+     * @param value    String which is splited into the list of enum values
+     * @return List of enum values
      */
-    public static <T extends Enum<T>> List<T> explodeEnumList(Class<T> enumType, String value) {
-        String[] array = value.split(delimiterRegExp);
-        List<T> result = new ArrayList<>();
-        for(String s : array) {
-            try {
-                T v = T.valueOf(enumType, s);
-                result.add(v);
+    public static <T extends Enum<T>> List<T> explodeEnumList(final Class<T> enumType, final String value) {
+        final List<T> result = new ArrayList<>();
+        if (value != null) {
+            final String[] array = value.split(delimiterRegExp);
+            for (final String s : array) {
+                try {
+                    final T v = Enum.valueOf(enumType, s);
+                    result.add(v);
+                } catch (IllegalArgumentException ignored) {
+                }
             }
-            catch (IllegalArgumentException e) { }
         }
-
         return result;
+    }
+
+    /**
+     * Concatenates a list of String values into the one String
+     *
+     * @param list List of Strings to be concatenated
+     * @return concatenated String
+     */
+    public static String concatStringList(final List<String> list) {
+        return StringUtils.join(list, delimiter);
+    }
+
+    /**
+     * Concatenates a list of String values into the one string
+     *
+     * @param value String which is splited into the list of String values
+     * @return List of Strings values
+     */
+    public static List<String> explodeStringList(final String value) {
+        if (value == null) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(StringUtils.split(value, delimiter));
     }
 }

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.jpa.SessionJpaDao
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.BasicDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,35 +12,28 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence.jpa;
-
-import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.persistence.SessionDao;
-import net.iaeste.iws.persistence.entities.SessionEntity;
-
-import javax.persistence.EntityManager;
+package net.iaeste.iws.persistence;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * Contains the most basic database functionality, perstisting and deleting.
+ *
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
-public class SessionJpaDao extends BasicJpaDao implements SessionDao {
+public interface BasicDao {
 
     /**
-     * Default Constructor.
+     * Persist the given Entity into the database.
      *
-     * @param entityManager  Entity Manager instance to use
+     * @param entity  Entity to persist
      */
-    public SessionJpaDao(final EntityManager entityManager) {
-        super(entityManager);
-    }
+    void persist(Object entity);
 
     /**
-     * {@inheritDoc}
+     * Deletes the given Entity from the database.
+     *
+     * @param entity    Entity to delete
      */
-    @Override
-    public SessionEntity findSession(final String key) {
-        throw new NotImplementedException("Missing :-(");
-    }
+    void delete(Object entity);
 }

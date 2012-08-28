@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.CountryEntityTest
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.BasicDaoTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,8 +12,10 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence.entities;
+package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.jpa.BasicJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +31,6 @@ import javax.persistence.Query;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -40,43 +41,26 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
 @TransactionConfiguration(defaultRollback = true)
-public class CountryEntityTest {
+public class BasicDaoTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Test
     @Transactional
-    public void testClassflow() {
-        final String countryName = "myLand";
-        final CountryEntity entity = new CountryEntity(countryName);
-
-        entityManager.persist(entity);
+    public void testSimpleFunctionality() {
+        final CountryEntity entity = new CountryEntity("Name");
         final Query query = entityManager.createNamedQuery("country.findByName");
-        query.setParameter("name", countryName);
-        final List<CountryEntity> found = query.getResultList();
+        query.setParameter("name", "Name");
 
-        assertThat(found.size(), is(1));
-        assertThat(found.get(0), is(entity));
-    }
+        final BasicDao dao = new BasicJpaDao(entityManager);
+        dao.persist(entity);
+        final List<CountryEntity> found1 = query.getResultList ();
 
-    @Test
-    public void testMerging() {
-        final String countryName = "myLand";
-        final Integer id = 1;
+        dao.delete(entity);
+        final List<CountryEntity> found2 = query.getResultList ();
 
-        final CountryEntity original = new CountryEntity();
-        final CountryEntity merged = new CountryEntity();
-        final CountryEntity failed = new CountryEntity();
-        original.setId(id);
-        merged.setId(id);
-        original.setCountryName(countryName);
-        merged.merge(original);
-        failed.merge(original);
-
-        assertThat(merged.getId(), is(original.getId()));
-        assertThat(merged.getCountryName(), is(original.getCountryName()));
-        assertThat(failed.getId(), is(nullValue()));
-        assertThat(failed.getCountryName(), is(nullValue()));
+        assertThat(found1.size(), is(1));
+        assertThat(found2.size(), is(0));
     }
 }

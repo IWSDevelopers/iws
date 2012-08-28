@@ -26,9 +26,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public final class OfferJpaDao implements OfferDao {
-
-    private final EntityManager entityManager;
+public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
 
     /**
      * Default Constructor.
@@ -36,15 +34,7 @@ public final class OfferJpaDao implements OfferDao {
      * @param entityManager Entity Manager instance to use
      */
     public OfferJpaDao(final EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void persist(final OfferEntity offer) {
-        entityManager.persist(offer);
+        super(entityManager);
     }
 
     /**

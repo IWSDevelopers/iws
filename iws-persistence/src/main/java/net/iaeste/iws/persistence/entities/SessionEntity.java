@@ -41,8 +41,8 @@ import java.util.Date;
         @NamedQuery(name = "session.findActive",
                 query = "select s from SessionEntity s where s.sessionKey = :key")
 })
-@Table(name = "sessions")
 @Entity
+@Table(name = "sessions")
 public class SessionEntity {
 
     @Id

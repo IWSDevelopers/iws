@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,7 +42,6 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id = null;
 
-    @Basic
     @Column(nullable = false, name = "country_name")
     private String countryName = null;
 
@@ -83,9 +81,7 @@ public class CountryEntity implements Mergeable<CountryEntity> {
      */
     @Override
     public void merge(final CountryEntity obj) {
-        if (obj != null) {
-            // Only update the Id, if this is null (not persisted)
-            id = id != null ? id : obj.id;
+        if ((obj != null) && (id != null) && id.equals(obj.id)) {
             countryName = obj.countryName;
         }
     }

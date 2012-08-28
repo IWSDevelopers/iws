@@ -92,3 +92,5 @@ insert into user_to_group (user_id, group_id, role_id) values ( 6, 6, 1);
 insert into user_to_group (user_id, group_id, role_id) values ( 7, 6, 1);
 insert into user_to_group (user_id, group_id, role_id) values ( 8, 6, 4);
 insert into user_to_group (user_id, group_id, role_id) values ( 9, 6, 5);
+
+insert into countries (country_name) values ('Freedonia');

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.jpa.SessionJpaDao
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.jpa.BasicJpaDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,9 +14,7 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
-import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.persistence.SessionDao;
-import net.iaeste.iws.persistence.entities.SessionEntity;
+import net.iaeste.iws.persistence.BasicDao;
 
 import javax.persistence.EntityManager;
 
@@ -25,22 +23,32 @@ import javax.persistence.EntityManager;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class SessionJpaDao extends BasicJpaDao implements SessionDao {
+public class BasicJpaDao implements BasicDao {
+
+    protected EntityManager entityManager;
 
     /**
      * Default Constructor.
      *
      * @param entityManager  Entity Manager instance to use
      */
-    public SessionJpaDao(final EntityManager entityManager) {
-        super(entityManager);
+    public BasicJpaDao(final EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public SessionEntity findSession(final String key) {
-        throw new NotImplementedException("Missing :-(");
+    public void persist(final Object entity) {
+        entityManager.persist(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(final Object entity) {
+        entityManager.remove(entity);
     }
 }

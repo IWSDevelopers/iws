@@ -22,7 +22,7 @@ import net.iaeste.iws.persistence.exceptions.PersistenceException;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface SessionDao {
+public interface SessionDao extends BasicDao {
 
     /**
      * Finds the entity in the database, with the specified key. If no entity
@@ -34,10 +34,4 @@ public interface SessionDao {
      *
      */
     SessionEntity findSession(String key) throws PersistenceException;
-
-    /**
-     *
-     * @param entity
-     */
-    void persist(SessionEntity entity);
 }

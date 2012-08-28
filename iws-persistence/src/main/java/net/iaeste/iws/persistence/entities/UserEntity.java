@@ -43,8 +43,8 @@ import javax.persistence.Table;
                 query = "select u from UserEntity u " +
                         "where u.id = :id")
 })
-@Table(name = "users")
 @Entity
+@Table(name = "users")
 public class UserEntity {
 
     @Id

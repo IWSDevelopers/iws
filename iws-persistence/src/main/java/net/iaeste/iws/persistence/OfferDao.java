@@ -24,14 +24,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public interface OfferDao {
-
-    /**
-     * Persist the given {@code OfferEntity} into the database.
-     *
-     * @param offer {@code OfferEntity} instance to persist
-     */
-    void persist(OfferEntity offer);
+public interface OfferDao extends BasicDao {
 
     /**
      * Get all offers from the database.

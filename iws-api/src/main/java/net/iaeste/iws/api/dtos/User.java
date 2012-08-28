@@ -140,6 +140,13 @@ public final class User extends AbstractResponse implements Verifiable {
         // 2. Update user personal details (userid, person)
         // 3. Delete user (userId)
 
+        if (userId != null) {
+            if (person != null) {
+                person.verify();
+            }
+        } else if ((username == null) || firstname == null || lastname == null) {
+
+        }
         if ((username != null) && (firstname != null) && (lastname != null)) {
 
         } else if (userId != null) {
@@ -173,6 +180,7 @@ public final class User extends AbstractResponse implements Verifiable {
         if (this == obj) {
             return true;
         }
+
         if (!(obj instanceof User)) {
             return false;
         }

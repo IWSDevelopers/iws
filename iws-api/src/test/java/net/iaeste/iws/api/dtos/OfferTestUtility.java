@@ -27,9 +27,10 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -82,16 +83,8 @@ public class OfferTestUtility {
         final Offer minimalOffer = new Offer();
         minimalOffer.setRefNo(REF_NO);
         minimalOffer.setEmployerName(EMPLOYER_NAME);
-        {
-            final List<StudyLevel> list = new ArrayList<StudyLevel>(1);
-            list.add(StudyLevel.E);
-            minimalOffer.setStudyLevels(list);
-        }
-        {
-            final List<FieldOfStudy> fieldOfStudies = new ArrayList<FieldOfStudy>();
-            fieldOfStudies.add(FieldOfStudy.IT);
-            minimalOffer.setFieldOfStudies(fieldOfStudies);
-        }
+        minimalOffer.setStudyLevels(EnumSet.of(StudyLevel.E));
+        minimalOffer.setFieldOfStudies(EnumSet.of(FieldOfStudy.IT));
         minimalOffer.setGender(Gender.E);
         minimalOffer.setLanguage1(Language.ENGLISH);
         minimalOffer.setLanguage1Level(LanguageLevel.E);
@@ -122,12 +115,7 @@ public class OfferTestUtility {
         offer.setLanguage2Operator(LanguageOperator.O);
         offer.setLanguage3(Language.GERMAN);
         offer.setLanguage3Level(LanguageLevel.E);
-        {
-            List<TypeOfWork> typesOfWork = new ArrayList<>(2);
-            typesOfWork.add(TypeOfWork.R);
-            typesOfWork.add(TypeOfWork.N);
-            offer.setTypeOfWork(typesOfWork);
-        }
+        offer.setTypeOfWork(EnumSet.of(TypeOfWork.R, TypeOfWork.N));
         offer.setFromDate2(FROM_DATE2);
         offer.setToDate2(TO_DATE2);
         offer.setUnavailableFrom(UNAVAIABLE_FROM);
@@ -147,10 +135,10 @@ public class OfferTestUtility {
         offer.setLivingCostFrequency(LIVING_COST_FREQUENCY);
         offer.setCanteen(CANTEEN);
         {
-            final List<String> list = new ArrayList<>(2);
-            list.add(Specialization.INFORMATION_TECHNOLOGY.toString());
-            list.add("some specialization");
-            offer.setSpecializations(list);
+            final Set<String> specializations = new HashSet<>(2);
+            specializations.add(Specialization.INFORMATION_TECHNOLOGY.toString());
+            specializations.add("some custom specialization");
+            offer.setSpecializations(specializations);
         }
         return offer;
     }

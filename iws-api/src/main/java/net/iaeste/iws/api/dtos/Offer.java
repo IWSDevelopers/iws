@@ -33,8 +33,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -133,14 +135,14 @@ public final class Offer implements Verifiable {
     private String employerWebsite;
 
     //Student Information
-    private List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
+    private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
     /**
      * Has to be defined as a List of Strings because
      * the user should be able to add custom
      * specializations in addition to the predefined ones.
      */
-    private List<String> specializations = new ArrayList<>();
-    private List<StudyLevel> studyLevels = new ArrayList<>();
+    private Set<String> specializations = new HashSet<>();
+    private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
     private Boolean prevTrainingRequired;
     private String otherRequirements;
     private Gender gender;
@@ -155,7 +157,7 @@ public final class Offer implements Verifiable {
 
     // Work offered
     private String workDescription;
-    private List<TypeOfWork> typeOfWork;
+    private Set<TypeOfWork> typeOfWork = EnumSet.noneOf(TypeOfWork.class);
     private Integer minimumWeeks;
     private Integer maximumWeeks;
     private Date fromDate;
@@ -265,11 +267,11 @@ public final class Offer implements Verifiable {
         this.employerWebsite = employerWebsite;
     }
 
-    public List<FieldOfStudy> getFieldOfStudies() {
+    public Set<FieldOfStudy> getFieldOfStudies() {
         return Copier.copy(fieldOfStudies);
     }
 
-    public void setFieldOfStudies(final List<FieldOfStudy> fieldOfStudies) {
+    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
         this.fieldOfStudies = Copier.copy(fieldOfStudies);
     }
 
@@ -506,19 +508,19 @@ public final class Offer implements Verifiable {
         this.refNo = refNo;
     }
 
-    public List<String> getSpecializations() {
+    public Set<String> getSpecializations() {
         return Copier.copy(specializations);
     }
 
-    public void setSpecializations(final List<String> specializations) {
+    public void setSpecializations(final Set<String> specializations) {
         this.specializations = specializations;
     }
 
-    public List<StudyLevel> getStudyLevels() {
+    public Set<StudyLevel> getStudyLevels() {
         return Copier.copy(studyLevels);
     }
 
-    public void setStudyLevels(final List<StudyLevel> studyLevels) {
+    public void setStudyLevels(final Set<StudyLevel> studyLevels) {
         this.studyLevels = Copier.copy(studyLevels);
     }
 
@@ -538,11 +540,11 @@ public final class Offer implements Verifiable {
         this.toDate = Copier.copy(toDate);
     }
 
-    public List<TypeOfWork> getTypeOfWork() {
+    public Set<TypeOfWork> getTypeOfWork() {
         return Copier.copy(typeOfWork);
     }
 
-    public void setTypeOfWork(final List<TypeOfWork> typeOfWork) {
+    public void setTypeOfWork(final Set<TypeOfWork> typeOfWork) {
         this.typeOfWork = Copier.copy(typeOfWork);
     }
 

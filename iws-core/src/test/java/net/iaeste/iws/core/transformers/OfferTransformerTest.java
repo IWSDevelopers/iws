@@ -42,11 +42,11 @@ public class OfferTransformerTest {
         final OfferEntity entity = OfferTransformer.transform(offer);
         // TODO: check field by field
         Assert.assertThat(offer.getId(), is(entity.getId()));
-        Assert.assertThat(offer.getTypeOfWork(), is(ListTransformer.explodeEnumList(TypeOfWork.class, entity.getTypeOfWork())));
+        Assert.assertThat(offer.getTypeOfWork(), is(CollectionTransformer.explodeEnumSet(TypeOfWork.class, entity.getTypeOfWork())));
 
-        Assert.assertThat(offer.getStudyLevels(), is(ListTransformer.explodeEnumList(StudyLevel.class, entity.getStudyLevels())));
-        Assert.assertThat(offer.getSpecializations(), is(ListTransformer.explodeStringList(entity.getSpecializations())));
-        Assert.assertThat(offer.getFieldOfStudies(), is(ListTransformer.explodeEnumList(FieldOfStudy.class, entity.getFieldOfStudies())));
+        Assert.assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
+        Assert.assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
+        Assert.assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
     }
 
     @Test
@@ -54,11 +54,11 @@ public class OfferTransformerTest {
         final OfferEntity entity = getMinimalOfferEntity();
         final Offer offer = OfferTransformer.transform(entity);
         // TODO: check field by field
-        Assert.assertThat(offer.getTypeOfWork(), is(ListTransformer.explodeEnumList(TypeOfWork.class, entity.getTypeOfWork())));
+        Assert.assertThat(offer.getTypeOfWork(), is(CollectionTransformer.explodeEnumSet(TypeOfWork.class, entity.getTypeOfWork())));
 
-        Assert.assertThat(offer.getStudyLevels(), is(ListTransformer.explodeEnumList(StudyLevel.class, entity.getStudyLevels())));
-        Assert.assertThat(offer.getSpecializations(), is(ListTransformer.explodeStringList(entity.getSpecializations())));
-        Assert.assertThat(offer.getFieldOfStudies(), is(ListTransformer.explodeEnumList(FieldOfStudy.class, entity.getFieldOfStudies())));
+        Assert.assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
+        Assert.assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
+        Assert.assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
 
     }
 
@@ -106,8 +106,8 @@ public class OfferTransformerTest {
         list.add(StudyLevel.E);
         final List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
         fieldOfStudies.add(FieldOfStudy.IT);
-        minimalOffer.setFieldOfStudies(ListTransformer.concatEnumList(fieldOfStudies));
-        minimalOffer.setStudyLevels(ListTransformer.concatEnumList(list));
+        minimalOffer.setFieldOfStudies(CollectionTransformer.concatEnumCollection(fieldOfStudies));
+        minimalOffer.setStudyLevels(CollectionTransformer.concatEnumCollection(list));
         minimalOffer.setGender(Gender.E);
         minimalOffer.setLanguage1(Language.ENGLISH);
         minimalOffer.setLanguage1Level(LanguageLevel.E);

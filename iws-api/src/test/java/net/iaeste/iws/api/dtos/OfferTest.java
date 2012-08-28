@@ -32,9 +32,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -91,7 +91,7 @@ public class OfferTest {
         Assert.assertThat("RefNo", REF_NO, is(offer.getRefNo()));
         Assert.assertThat("EmployerName", EMPLOYER_NAME, is(offer.getEmployerName()));
         Assert.assertThat("size of Study Levels collection should be 1", 1, is(offer.getStudyLevels().size()));
-        Assert.assertThat("first Study Level should be E", StudyLevel.E, is(offer.getStudyLevels().get(0)));
+        Assert.assertThat("first Study Level should be E", offer.getStudyLevels().contains(StudyLevel.E), is(true));
         Assert.assertThat("Gender", Gender.E, is(offer.getGender()));
         Assert.assertThat("Language", Language.ENGLISH, is(offer.getLanguage1()));
         Assert.assertThat("LanguageLevel", LanguageLevel.E, is(offer.getLanguage1Level()));
@@ -113,8 +113,8 @@ public class OfferTest {
 
     @Test
     public void testAddingToFieldOfStudyList() {
-        final List<FieldOfStudy> fieldOfStudies = offer.getFieldOfStudies();
-        final List<FieldOfStudy> primaryFieldOfStudies = offer.getFieldOfStudies();
+        final Set<FieldOfStudy> fieldOfStudies = offer.getFieldOfStudies();
+        final Set<FieldOfStudy> primaryFieldOfStudies = offer.getFieldOfStudies();
         fieldOfStudies.add(FieldOfStudy.AERONAUTIC_ENGINEERING);
         Assert.assertThat(fieldOfStudies, is(not(offer.getFieldOfStudies())));
         Assert.assertThat(primaryFieldOfStudies, is(offer.getFieldOfStudies()));
@@ -122,8 +122,8 @@ public class OfferTest {
 
     @Test
     public void testAddingToSpecializationList() {
-        final List<String> specializations = offer.getSpecializations();
-        final List<String> primarySpecializations = offer.getSpecializations();
+        final Set<String> specializations = offer.getSpecializations();
+        final Set<String> primarySpecializations = offer.getSpecializations();
         specializations.add(Specialization.ASTROPHYSICS.toString());
         Assert.assertThat(specializations, is(not(offer.getSpecializations())));
         Assert.assertThat(primarySpecializations, is(offer.getSpecializations()));
@@ -131,8 +131,8 @@ public class OfferTest {
 
     @Test
     public void testAddingToStudyLevelList() {
-        final List<StudyLevel> studyLevels = offer.getStudyLevels();
-        final List<StudyLevel> primaryStudyLevels = offer.getStudyLevels();
+        final Set<StudyLevel> studyLevels = offer.getStudyLevels();
+        final Set<StudyLevel> primaryStudyLevels = offer.getStudyLevels();
         studyLevels.add(StudyLevel.B);
         Assert.assertThat(studyLevels, is(not(offer.getStudyLevels())));
         Assert.assertThat(primaryStudyLevels, is(offer.getStudyLevels()));
@@ -474,7 +474,7 @@ public class OfferTest {
     @Test
     public void testNotEmptyStudyLevels() {
         offer = getMinimalOffer();
-        offer.setStudyLevels(new ArrayList<StudyLevel>(0));
+        offer.setStudyLevels(EnumSet.noneOf(StudyLevel.class));
         Assert.assertThat("studyLevels list cannot be empty", isVerificationExceptionThrown(), is(true));
 
     }

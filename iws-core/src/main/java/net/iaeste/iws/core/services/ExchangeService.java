@@ -130,18 +130,13 @@ public class ExchangeService {
             case ALL:
                 response = new FetchOffersResponse(findAllOffers());
                 break;
-            case NONE:
-                response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+            case OWNED:
+                // TODO: select only owned offers
+                response = new FetchOffersResponse(findAllOffers());
                 break;
-            case BY_ID:
-                final List<Offer> offers = findOffers(request.getOffers());
-                response = new FetchOffersResponse(offers);
-                break;
-            case LIMIT:
-                response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
-                break;
-            case PROTOTYPE:
-                response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+            case SHARED:
+                // TODO: select only shared offers
+                response = new FetchOffersResponse(findAllOffers());
                 break;
             default:
                 response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");

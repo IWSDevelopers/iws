@@ -22,7 +22,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.EnumSet;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -31,44 +31,13 @@ import java.util.ArrayList;
  */
 public class FetchOfferRequestTest {
     @Test
-    public void testEmptyConstructor() {
-        final FetchOffersRequest request = new FetchOffersRequest();
-        Assert.assertThat(request, is(not(nullValue())));
-        Assert.assertThat(request.getFetchType(), is(not(nullValue())));
-        Assert.assertThat(request.getFetchType(), is(FetchOffersRequest.FetchType.ALL));
-        Assert.assertThat(request.getOffers(), is(not(nullValue())));
-        Assert.assertThat(request.getOffers().size(), is(0));
-    }
-
-    @Test
-    public void testConstructorEmptyList() {
-        final FetchOffersRequest request = new FetchOffersRequest(new ArrayList<Long>(0));
-        Assert.assertThat(request, is(not(nullValue())));
-        Assert.assertThat(request.getFetchType(), is(not(nullValue())));
-        Assert.assertThat(request.getFetchType(), is(FetchOffersRequest.FetchType.BY_ID));
-        Assert.assertThat(request.getOffers(), is(not(nullValue())));
-        Assert.assertThat(request.getOffers().size(), is(0));
-    }
-
-    @Test
-    public void testConstructorList() {
-        final ArrayList<Long> offerIds = new ArrayList<>(0);
-        offerIds.add(1L);
-        offerIds.add(2L);
-        final FetchOffersRequest request = new FetchOffersRequest(offerIds);
-        Assert.assertThat(request, is(not(nullValue())));
-        Assert.assertThat(request.getFetchType(), is(not(nullValue())));
-        Assert.assertThat(request.getFetchType(), is(FetchOffersRequest.FetchType.BY_ID));
-        Assert.assertThat(request.getOffers(), is(not(nullValue())));
-        Assert.assertThat(request.getOffers().size(), is(offerIds.size()));
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testModifingOfferList() {
-        final ArrayList<Long> offerIds = new ArrayList<>(0);
-        offerIds.add(1L);
-        offerIds.add(2L);
-        final FetchOffersRequest request = new FetchOffersRequest(offerIds);
-        request.getOffers().add(3L);
+    public void testConstructor() {
+        final Iterable<FetchOffersRequest.FetchType> fetchTypes = EnumSet.allOf(FetchOffersRequest.FetchType.class);
+        for (final FetchOffersRequest.FetchType fetchType : fetchTypes) {
+            final FetchOffersRequest request = new FetchOffersRequest(fetchType);
+            Assert.assertThat(request, is(not(nullValue())));
+            Assert.assertThat(request.getFetchType(), is(not(nullValue())));
+            Assert.assertThat(request.getFetchType(), is(fetchType));
+        }
     }
 }

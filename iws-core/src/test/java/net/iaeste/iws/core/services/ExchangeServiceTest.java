@@ -15,7 +15,6 @@
 package net.iaeste.iws.core.services;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -57,37 +56,12 @@ public class ExchangeServiceTest {
         entities.add(null);
         when(dao.findAll()).thenReturn(entities);
 
-        final FetchOffersRequest request = new FetchOffersRequest();
+        final FetchOffersRequest request = new FetchOffersRequest(FetchOffersRequest.FetchType.ALL);
 
         final FetchOffersResponse result = client.fetchOffers(null, request);
 
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffers().size(), is(entities.size()));
-    }
-
-    @Test
-    public void testFetchOffers() {
-        final Long offerId = 123L;
-        final OfferEntity offer = new OfferEntity();
-        final List<OfferEntity> offerEntityList = new ArrayList<>();
-        offer.setId(offerId);
-        offerEntityList.add(offer);
-        final List<Long> offerList = new ArrayList<Long>();
-        offerList.add(offerId);
-
-        when(dao.findOffer(offerId)).thenReturn(offer);
-        when(dao.findOffers(offerList)).thenReturn(offerEntityList);
-
-        final FetchOffersRequest request = new FetchOffersRequest(offerList);
-
-        final FetchOffersResponse result = client.fetchOffers(null, request);
-
-        verify(dao).findOffers(offerList);
-
-        assertThat(result.isOk(), is(true));
-        assertThat(result.getOffers(), is(notNullValue()));
-        assertThat(result.getOffers().size(), is(1));
-        assertThat(result.getOffers().get(0), is(OfferTransformer.transform(offer)));
     }
 
     @Test(expected = VerificationException.class)

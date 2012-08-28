@@ -640,9 +640,6 @@ public final class Offer implements Verifiable {
         if (employerWebsite != null ? !employerWebsite.equals(offer.employerWebsite) : offer.employerWebsite != null) {
             return false;
         }
-        if (fieldOfStudies != null ? !fieldOfStudies.equals(offer.fieldOfStudies) : offer.fieldOfStudies != null) {
-            return false;
-        }
         if (fromDate != null ? !fromDate.equals(offer.fromDate) : offer.fromDate != null) {
             return false;
         }
@@ -724,19 +721,10 @@ public final class Offer implements Verifiable {
         if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
             return false;
         }
-        if (specializations != null ? !specializations.equals(offer.specializations) : offer.specializations != null) {
-            return false;
-        }
-        if (studyLevels != null ? !studyLevels.equals(offer.studyLevels) : offer.studyLevels != null) {
-            return false;
-        }
         if (toDate != null ? !toDate.equals(offer.toDate) : offer.toDate != null) {
             return false;
         }
         if (toDate2 != null ? !toDate2.equals(offer.toDate2) : offer.toDate2 != null) {
-            return false;
-        }
-        if (!(typeOfWork == null ? Collections.emptyList() : typeOfWork).equals((typeOfWork == null ? Collections.emptyList() : typeOfWork))) {
             return false;
         }
         if (weeklyHours != null ? !weeklyHours.equals(offer.weeklyHours) : offer.weeklyHours != null) {
@@ -746,6 +734,22 @@ public final class Offer implements Verifiable {
             return false;
         }
         if (workingPlace != null ? !workingPlace.equals(offer.workingPlace) : offer.workingPlace != null) {
+            return false;
+        }
+        if (!(typeOfWork == null ? EnumSet.noneOf(TypeOfWork.class) : typeOfWork).equals(
+                offer.typeOfWork == null ? EnumSet.noneOf(TypeOfWork.class) : offer.typeOfWork)) {
+            return false;
+        }
+        if (!(fieldOfStudies == null ? EnumSet.noneOf(FieldOfStudy.class) : fieldOfStudies).equals(
+                offer.fieldOfStudies == null ? EnumSet.noneOf(FieldOfStudy.class) : offer.fieldOfStudies)) {
+            return false;
+        }
+        if (!(studyLevels == null ? EnumSet.noneOf(StudyLevel.class) : studyLevels).equals(
+                offer.studyLevels == null ? EnumSet.noneOf(StudyLevel.class) : offer.studyLevels)) {
+            return false;
+        }
+        if (!(specializations == null ? Collections.emptySet() : specializations).equals(
+                offer.specializations == null ? Collections.emptySet() : offer.specializations)) {
             return false;
         }
 

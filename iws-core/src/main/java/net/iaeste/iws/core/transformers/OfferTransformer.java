@@ -15,9 +15,6 @@
 package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.enums.FieldOfStudy;
-import net.iaeste.iws.api.enums.StudyLevel;
-import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
 /**
@@ -47,8 +44,8 @@ public final class OfferTransformer {
             result.setEmployerBusiness(offer.getEmployerBusiness());
             result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
             result.setEmployerWebsite(offer.getEmployerWebsite());
-            result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies()));
-            result.setSpecializations(CollectionTransformer.join(offer.getSpecializations()));
+            result.setFieldOfStudies(offer.getFieldOfStudies());
+            result.setSpecializations(offer.getSpecializations());
             result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
             result.setOtherRequirements(offer.getOtherRequirements());
             result.setGender(offer.getGender());
@@ -61,7 +58,7 @@ public final class OfferTransformer {
             result.setLanguage3(offer.getLanguage3());
             result.setLanguage3Level(offer.getLanguage3Level());
             result.setWorkDescription(offer.getWorkDescription());
-            result.setTypeOfWork(CollectionTransformer.concatEnumCollection(offer.getTypeOfWork()));
+            result.setTypeOfWork(offer.getTypeOfWork());
             result.setMinimumWeeks(offer.getMinimumWeeks());
             result.setMaximumWeeks(offer.getMaximumWeeks());
             result.setFromDate(offer.getFromDate());
@@ -85,7 +82,7 @@ public final class OfferTransformer {
             result.setLivingCost(offer.getLivingCost());
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
-            result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
+            result.setStudyLevels(offer.getStudyLevels());
         }
 
         return result;
@@ -106,8 +103,8 @@ public final class OfferTransformer {
             result.setEmployerBusiness(offer.getEmployerBusiness());
             result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
             result.setEmployerWebsite(offer.getEmployerWebsite());
-            result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, offer.getFieldOfStudies()));
-            result.setSpecializations(CollectionTransformer.explodeStringSet(offer.getSpecializations()));
+            result.setFieldOfStudies(offer.getFieldOfStudies());
+            result.setSpecializations(offer.getSpecializations());
             result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
             result.setOtherRequirements(offer.getOtherRequirements());
             result.setGender(offer.getGender());
@@ -120,7 +117,7 @@ public final class OfferTransformer {
             result.setLanguage3(offer.getLanguage3());
             result.setLanguage3Level(offer.getLanguage3Level());
             result.setWorkDescription(offer.getWorkDescription());
-            result.setTypeOfWork(CollectionTransformer.explodeEnumSet(TypeOfWork.class, offer.getTypeOfWork()));
+            result.setTypeOfWork(offer.getTypeOfWork());
             result.setMinimumWeeks(offer.getMinimumWeeks());
             result.setMaximumWeeks(offer.getMaximumWeeks());
             result.setFromDate(offer.getFromDate());
@@ -144,7 +141,7 @@ public final class OfferTransformer {
             result.setLivingCost(offer.getLivingCost());
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
-            result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, offer.getStudyLevels()));
+            result.setStudyLevels(offer.getStudyLevels());
         }
 
         return result;

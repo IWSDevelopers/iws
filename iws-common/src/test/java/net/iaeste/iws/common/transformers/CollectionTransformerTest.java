@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.core.transformers;
+package net.iaeste.iws.common.transformers;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

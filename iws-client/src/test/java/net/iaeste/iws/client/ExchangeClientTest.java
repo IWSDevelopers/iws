@@ -24,7 +24,6 @@ import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.client.spring.EntityManagerProvider;
-import net.iaeste.iws.core.transformers.CollectionTransformer;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
@@ -62,9 +61,9 @@ public class ExchangeClientTest {
         final OfferEntity actual = offers.get(0);
         assertThat(actual.getId(), is(notNullValue()));
         actual.setId(null);
-        assertThat(actual.getFieldOfStudies(), is(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies())));
-        assertThat(actual.getStudyLevels(), is(CollectionTransformer.concatEnumCollection(offer.getStudyLevels())));
-        assertThat(actual.getSpecializations(), is(CollectionTransformer.join(offer.getSpecializations())));
+        assertThat(actual.getFieldOfStudies(), is(offer.getFieldOfStudies()));
+        assertThat(actual.getStudyLevels(), is(offer.getStudyLevels()));
+        assertThat(actual.getSpecializations(), is(offer.getSpecializations()));
         assertThat(actual, is(OfferTransformer.transform(offer)));
     }
 
@@ -86,8 +85,8 @@ public class ExchangeClientTest {
         assertThat(actual.getId(), is(notNullValue()));
         actual.setId(null);
         assertThat(actual, is(OfferTransformer.transform(offer)));
-        assertThat(actual.getFieldOfStudies(), is(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies())));
-        assertThat(actual.getStudyLevels(), is(CollectionTransformer.concatEnumCollection(offer.getStudyLevels())));
-        assertThat(actual.getSpecializations(), is(CollectionTransformer.join(offer.getSpecializations())));
+        assertThat(actual.getFieldOfStudies(), is(offer.getFieldOfStudies()));
+        assertThat(actual.getStudyLevels(), is(offer.getStudyLevels()));
+        assertThat(actual.getSpecializations(), is(offer.getSpecializations()));
     }
 }

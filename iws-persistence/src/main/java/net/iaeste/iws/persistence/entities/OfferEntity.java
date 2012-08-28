@@ -15,27 +15,36 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.Currency;
+import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.PaymentFrequency;
+import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.utils.Copier;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -95,18 +104,25 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     @Column(name = "employer_website")
     private String employerWebsite;
 
-    // TODO: add length to limit String/Lists
-    @Column(name = "specializations")
-    private String specializations;
+    /**
+     * Has to be defined as a List of Strings because
+     * the user should be able to add custom
+     * specializations in addition to the predefined ones.
+     */
+    @ElementCollection
+    @CollectionTable(name = "specializations", joinColumns = @JoinColumn(name = "offer_id"))
+    @Column(name = "name", nullable = false)
+    private List<String> specializations;
 
-    @Column(name = "study_levels", nullable = false)
-    private String studyLevels;
+    @ElementCollection
+    @CollectionTable(name = "study_levels", joinColumns = @JoinColumn(name = "offer_id"))
+    @Column(name = "name", nullable = false)
+    private List<StudyLevel> studyLevels = new ArrayList<>();
 
-    @Column(name = "study_fields", nullable = false)
-    private String fieldOfStudies;
-
-    @Column(name = "work_type")
-    private String typeOfWork;
+    @ElementCollection
+    @CollectionTable(name = "study_fields", joinColumns = @JoinColumn(name = "offer_id"))
+    @Column(name = "name", nullable = false)
+    private List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
 
     @Column(name = "prev_training_req")
     private Boolean prevTrainingRequired;
@@ -153,6 +169,10 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     // Work offered
     @Column(name = "work_description", nullable = false, length = 1000)
     private String workDescription;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "work_type", length = 1)
+    private TypeOfWork typeOfWork;
 
     @Column(name = "min_weeks", nullable = false)
     private Integer minimumWeeks;
@@ -315,11 +335,11 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         this.employerWebsite = employerWebsite;
     }
 
-    public String getFieldOfStudies() {
+    public List<FieldOfStudy> getFieldOfStudies() {
         return fieldOfStudies;
     }
 
-    public void setFieldOfStudies(final String fieldOfStudies) {
+    public void setFieldOfStudies(final List<FieldOfStudy> fieldOfStudies) {
         this.fieldOfStudies = fieldOfStudies;
     }
 
@@ -555,20 +575,20 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         this.refNo = refNo;
     }
 
-    public String getSpecializations() {
-        return specializations;
+    public List<String> getSpecializations() {
+        return Copier.copy(specializations);
     }
 
-    public void setSpecializations(final String specializations) {
-        this.specializations = specializations;
+    public void setSpecializations(final List<String> specializations) {
+        this.specializations = Copier.copy(specializations);
     }
 
-    public String getStudyLevels() {
-        return studyLevels;
+    public List<StudyLevel> getStudyLevels() {
+        return Copier.copy(studyLevels);
     }
 
-    public void setStudyLevels(final String studyLevels) {
-        this.studyLevels = studyLevels;
+    public void setStudyLevels(final List<StudyLevel> studyLevels) {
+        this.studyLevels = Copier.copy(studyLevels);
     }
 
     public Date getToDate2() {
@@ -587,12 +607,12 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         this.toDate = Copier.copy(toDate);
     }
 
-    public void setTypeOfWork(String typeOfWork) {
-        this.typeOfWork = typeOfWork;
+    public TypeOfWork getTypeOfWork() {
+        return typeOfWork;
     }
 
-    public String getTypeOfWork() {
-        return typeOfWork;
+    public void setTypeOfWork(final TypeOfWork typeOfWork) {
+        this.typeOfWork = typeOfWork;
     }
 
     public Float getWeeklyHours() {
@@ -677,7 +697,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -685,7 +705,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
             return false;
         }
 
-        final OfferEntity entity = (OfferEntity) o;
+        OfferEntity entity = (OfferEntity) o;
 
         if (canteen != null ? !canteen.equals(entity.canteen) : entity.canteen != null) {
             return false;
@@ -715,6 +735,9 @@ public class OfferEntity implements Mergeable<OfferEntity> {
             return false;
         }
         if (employerWebsite != null ? !employerWebsite.equals(entity.employerWebsite) : entity.employerWebsite != null) {
+            return false;
+        }
+        if (fieldOfStudies != null ? !fieldOfStudies.equals(entity.fieldOfStudies) : entity.fieldOfStudies != null) {
             return false;
         }
         if (fromDate != null ? !fromDate.equals(entity.fromDate) : entity.fromDate != null) {
@@ -798,10 +821,20 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         if (refNo != null ? !refNo.equals(entity.refNo) : entity.refNo != null) {
             return false;
         }
+        if (!(specializations == null ? Collections.emptyList() : specializations).equals(
+                entity.specializations == null ? Collections.emptyList() : entity.specializations)) {
+            return false;
+        }
+        if (studyLevels != null ? !studyLevels.equals(entity.studyLevels) : entity.studyLevels != null) {
+            return false;
+        }
         if (toDate != null ? !toDate.equals(entity.toDate) : entity.toDate != null) {
             return false;
         }
         if (toDate2 != null ? !toDate2.equals(entity.toDate2) : entity.toDate2 != null) {
+            return false;
+        }
+        if (typeOfWork != entity.typeOfWork) {
             return false;
         }
         if (unavailableFrom != null ? !unavailableFrom.equals(entity.unavailableFrom) : entity.unavailableFrom != null) {
@@ -817,22 +850,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
             return false;
         }
         if (workingPlace != null ? !workingPlace.equals(entity.workingPlace) : entity.workingPlace != null) {
-            return false;
-        }
-        if (!(fieldOfStudies != null ? fieldOfStudies : "").equals(
-                entity.fieldOfStudies != null ? entity.fieldOfStudies : "")) {
-            return false;
-        }
-        if (!(specializations != null ? specializations : "").equals(
-                entity.specializations != null ? entity.specializations : "")) {
-            return false;
-        }
-        if (!(studyLevels != null ? studyLevels : "").equals(
-                entity.studyLevels != null ? entity.studyLevels : "")) {
-            return false;
-        }
-        if (!(typeOfWork != null ? typeOfWork : "").equals(
-                entity.typeOfWork != null ? entity.typeOfWork : "")) {
             return false;
         }
 

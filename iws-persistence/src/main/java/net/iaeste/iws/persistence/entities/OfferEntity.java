@@ -49,6 +49,12 @@ import java.util.Date;
  *    problems for Instrumented interfaces, since they cannot track when the
  *    Objects are the same as in the database.
  * 3. Please add JavaDoc, it is very confusing to read the code.
+ * 4. The Merge should only be for "identical" objects, i.e. Objects where both
+ *    have the same verified Id, or refno. Additionally, only those fields that
+ *    are allowed to be updated, should be so - the rest should stay the same.
+ * 5. IntelliJ have tons of inspection rules that freak out, please look at them
+ *    and apply them - for example, internally, you should not use the setters
+ *    and getters.
  * </pre>
  *
  * @author  Michal Knapik / last $Author:$

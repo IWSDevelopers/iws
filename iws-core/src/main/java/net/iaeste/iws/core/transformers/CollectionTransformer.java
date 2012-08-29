@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.common.transformers;
+package net.iaeste.iws.core.transformers;
 
 import org.apache.commons.lang3.StringUtils;
 

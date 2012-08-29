@@ -47,9 +47,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Contains tests for OfferEntity and OfferJpaDao
@@ -78,13 +75,10 @@ public class OfferEntityTest {
     private static final BigDecimal PAYMENT = new BigDecimal(3000);
     private static final BigDecimal LODGING_COST = new BigDecimal(1000);
     private static final BigDecimal LIVING_COST = new BigDecimal(2000);
-    private static final Set<FieldOfStudy> FIELDS_OF_STUDY = EnumSet.of(FieldOfStudy.IT, FieldOfStudy.CHEMISTRY);
-    private static final Set<String> SPECIALIZATIONS = new HashSet<String>() {{
-        this.add(Specialization.INFORMATION_TECHNOLOGY.toString());
-        this.add("Custom");
-    }};
-    private static final Set<StudyLevel> STUDY_LEVELS = EnumSet.of(StudyLevel.E, StudyLevel.M);
-    private static final Set<TypeOfWork> TYPE_OF_WORK = EnumSet.of(TypeOfWork.N, TypeOfWork.P);
+    private static final String FIELDS_OF_STUDY = String.format("%s|%s", FieldOfStudy.IT, FieldOfStudy.CHEMISTRY);
+    private static final String SPECIALIZATIONS = String.format("%s|%s", Specialization.INFORMATION_TECHNOLOGY, "Custom");
+    private static final String STUDY_LEVELS = String.format("%s|%s", StudyLevel.E, StudyLevel.M);
+    private static final String TYPE_OF_WORK = String.format("|", TypeOfWork.N, TypeOfWork.P);
 
     private static final String EMPLOYER_ADDRESS = "test address 30";
     private static final String EMPLOYER_ADDRESS2 = "test address 31";

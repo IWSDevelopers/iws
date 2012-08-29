@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,8 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Tranformer for the List or Set of values, handles various transformations
- * of the list
+ * Tranformer for the Collections of values, handles various transformations
+ * to/from a string value
  *
  * @author Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -42,7 +41,7 @@ public class CollectionTransformer {
     }
 
     /**
-     * Concatenates a list of enum values into the one string
+     * Concatenates a collection of enum values into the one string
      *
      * @param collection Collection of values to be concatenated
      * @return concatenated String
@@ -64,7 +63,7 @@ public class CollectionTransformer {
 
 
     /**
-     * Split a string value into  a list of enum values
+     * Split a string value into a list of enum values
      *
      * @param enumType The Class object of the enum type from which to return a constant
      * @param value    String which is splited into the list of enum values
@@ -89,7 +88,7 @@ public class CollectionTransformer {
      * Split a string value into a set of enum values
      *
      * @param enumType The Class object of the enum type from which to return a constant
-     * @param value    String which is splited into the list of enum values
+     * @param value    String which is split into the list of enum values
      * @return Set of enum values
      */
     public static <T extends Enum<T>> Set<T> explodeEnumSet(final Class<T> enumType, final String value) {
@@ -114,23 +113,24 @@ public class CollectionTransformer {
     /**
      * Splits a string into a list of String values
      *
-     * @param value String which is splited into the list of String values
+     * @param value String which is split into the list of String values
      * @return List of Strings values
      */
     public static List<String> explodeStringList(final String value) {
-        if (value == null) {
-            return Collections.emptyList();
+        List<String> result = new ArrayList<>();
+        if (value != null) {
+            result = Arrays.asList(StringUtils.split(value, delimiter));
         }
-        return Arrays.asList(StringUtils.split(value, delimiter));
+        return result;
     }
 
     /**
      * Splits a string into a set of String values
      *
-     * @param value String which is splited into the list of String values
+     * @param value String which is split into the set of String values
      * @return Set of Strings values
      */
     public static Set<String> explodeStringSet(final String value) {
-        return new HashSet<String>(explodeStringList(value));
+        return new HashSet<>(explodeStringList(value));
     }
 }

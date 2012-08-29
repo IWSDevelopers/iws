@@ -606,7 +606,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         this.toDate = Copier.copy(toDate);
     }
 
-    public void setTypeOfWork(String typeOfWork) {
+    public void setTypeOfWork(final String typeOfWork) {
         this.typeOfWork = typeOfWork;
     }
 

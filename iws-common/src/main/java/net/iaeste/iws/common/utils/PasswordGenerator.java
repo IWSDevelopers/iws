@@ -22,9 +22,9 @@ import java.util.Random;
  * a Password, the first is a list of allowed characters (letters, numbers,
  * etc.), the second is the length.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class PasswordGenerator {
 
@@ -34,7 +34,9 @@ public final class PasswordGenerator {
      */
     public static final String ALLOWED_CHARS = "abcdefghjkmnpqrstuvwxzy23456789";
 
-    /** Default Password Length. */
+    /**
+     * Default Password Length.
+     */
     public static final int DEFAULT_LENGTH = 8;
 
     /**
@@ -51,24 +53,31 @@ public final class PasswordGenerator {
      * Generates a simple Password, of a given length, with the characters all
      * taken from the list of allowed characters.
      *
-     * @param length             The password length
-     * @param allowedCharacters  List of allowed Characters
+     * @param length            The password length
+     * @param allowedCharacters List of allowed Characters
      * @return New password
      */
     public static String generatePassword(final int length, final String allowedCharacters) {
+        final String allowedChars = allowedCharacters == null ? ALLOWED_CHARS : allowedCharacters;
+        if (length <= 0) {
+            throw new IllegalArgumentException("password length must be a possitive number");
+        }
+        if (allowedChars.length() <= 1) {
+            throw new IllegalArgumentException("allowedCharacters length must be greater than 1");
+        }
         final char[] password = new char[length];
         final Random random = new SecureRandom();
         int current = 0; // We start at the first position
 
         // Generate first random number, so we have something to start with
-        int lastRandom = random.nextInt(allowedCharacters.length());
-        password[0] = allowedCharacters.charAt(lastRandom);
+        int lastRandom = random.nextInt(allowedChars.length());
+        password[0] = allowedChars.charAt(lastRandom);
 
         // Iterate over the characters, until we have a complete password
         while (current < length) {
-            final int next = random.nextInt(allowedCharacters.length());
+            final int next = random.nextInt(allowedChars.length());
             if (next != lastRandom) {
-                password[current] = allowedCharacters.charAt(next);
+                password[current] = allowedChars.charAt(next);
                 lastRandom = next;
                 current++;
             }

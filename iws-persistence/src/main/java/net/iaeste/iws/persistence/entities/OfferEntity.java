@@ -38,10 +38,23 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * Okay, I'm seriously pissed at Git! a merge dropped all my todo's, and
+ * replaced the correct implementation with the previous incorrect! Seriously,
+ * I thought that Git was suppose to be a good tool!!!
+ *   Adding my comments from memory...
+ * <pre>
+ * 1. Please remove the "standard" methods; equals, hashCode & toString - they
+ *    are irrelevant in the Entity, but required in the DTO.
+ * 2. Please don't use defensive copying in the getters & setters. It can cause
+ *    problems for Instrumented interfaces, since they cannot track when the
+ *    Objects are the same as in the database.
+ * 3. Please add JavaDoc, it is very confusing to read the code.
+ * </pre>
+ *
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection AssignmentToDateFieldFromParameter
- * @since 1.7
  */
 @Table(name = "offers")
 @Entity

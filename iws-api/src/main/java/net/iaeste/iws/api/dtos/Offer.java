@@ -924,32 +924,14 @@ public final class Offer implements Verifiable {
      */
     private Collection<String> verifyNotNullableFields() {
         final Collection<String> errors = new ArrayList<>();
-        if (fieldOfStudies == null || fieldOfStudies.isEmpty()) {
-            errors.add("'fieldOfStudies' is missing");
-        }
-        if (studyLevels == null || studyLevels.isEmpty()) {
-            errors.add("'studyLevels' is missing");
-        }
-        if (workDescription == null || workDescription.isEmpty()) {
-            errors.add("'workDescription' is missing");
-        }
-        if (language1 == null) {
-            errors.add("'language1' is missing");
-        }
-        if (language1Level == null) {
-            errors.add("'language1Level' is missing");
-        }
-        if (employerName == null || employerName.isEmpty()) {
-            errors.add("'employerName' is missing");
-        }
-        if (gender == null) {
-            errors.add("'gender' is missing");
+        if (refNo == null || refNo.isEmpty()) {
+            errors.add("'refNo' is missing");
         }
         if (weeklyHours == null) {
             errors.add("'weeklyHours' is missing");
         }
-        if (refNo == null || refNo.isEmpty()) {
-            errors.add("'refNo' is missing");
+        if (employerName == null || employerName.isEmpty()) {
+            errors.add("'employerName' is missing");
         }
         if (fromDate == null) {
             errors.add("'fromDate' is missing");
@@ -957,11 +939,29 @@ public final class Offer implements Verifiable {
         if (toDate == null) {
             errors.add("'toDate' is missing");
         }
-        if (minimumWeeks == null) {
-            errors.add("'minimumWeeks' is missing");
+        if (gender == null) {
+            errors.add("'gender' is missing");
+        }
+        if (language1 == null) {
+            errors.add("'language1' is missing");
+        }
+        if (language1Level == null) {
+            errors.add("'language1Level' is missing");
         }
         if (maximumWeeks == null) {
             errors.add("'minimumWeeks' is missing");
+        }
+        if (minimumWeeks == null) {
+            errors.add("'minimumWeeks' is missing");
+        }
+        if (workDescription == null || workDescription.isEmpty()) {
+            errors.add("'workDescription' is missing");
+        }
+        if (fieldOfStudies == null || fieldOfStudies.isEmpty()) {
+            errors.add("'fieldOfStudies' is missing");
+        }
+        if (studyLevels == null || studyLevels.isEmpty()) {
+            errors.add("'studyLevels' is missing");
         }
         return errors;
     }

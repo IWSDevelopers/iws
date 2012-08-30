@@ -31,9 +31,9 @@ import java.util.Properties;
 /**
  * Spring JavaConfig, for the Unit testing of the Persistence layer.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 @Configuration
 @EnableTransactionManagement
@@ -46,12 +46,10 @@ public class SpringConfig {
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
-                // TODO Kim; Please merge the scripts properly (correct name is exchange-xxx.sql), also ensure that the trigger & table checks are implemented in the verify methods!
-                .addScript("net/iaeste/iws/persistence/hsqldb/offers-init.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/offers-triggers.sql")
-                //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
-                //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-triggers.sql")
+                        //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
+                        //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
                 .build();
     }
 

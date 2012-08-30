@@ -15,50 +15,32 @@
 
 package net.iaeste.iws.common.utils;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import org.junit.Test;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Test;
-
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class PasswordGeneratorTest {
-    @Test(timeout = 1000)
+
+    /**
+     * The Password Generator, is an independent function, that takes known and
+     * valid input data and provides a random password with a simple collision
+     * check. This is a simple positive test of this functionality.
+     */
+    @Test
     public void testGeneratePassword() {
         final String password = PasswordGenerator.generatePassword();
-        assertThat(password.length(), is(PasswordGenerator.DEFAULT_LENGTH));
+        assertThat(password.length(), is(IWSConstants.DEFAULT_PASSWORD_LENGTH));
+
         final char[] chars = password.toCharArray();
         for (final char c : chars) {
-            assertThat(PasswordGenerator.ALLOWED_CHARS.contains(Character.toString(c)), is(true));
+            assertThat(IWSConstants.PASSWORD_GENERATOR_CHARACTERS.contains(Character.toString(c)), is(true));
         }
     }
-
-    @Test(timeout = 1000)
-    public void testGeneratePasswordNullArgument() {
-        final String password = PasswordGenerator.generatePassword(PasswordGenerator.DEFAULT_LENGTH, null);
-        final char[] chars = password.toCharArray();
-        for (final char c : chars) {
-            assertThat(PasswordGenerator.ALLOWED_CHARS.contains(Character.toString(c)), is(true));
-        }
-    }
-
-    @Test(expected = IllegalArgumentException.class, timeout = 1000)
-    public void testGeneratePasswordEmptyCharSet() {
-        PasswordGenerator.generatePassword(10, "");
-    }
-
-    @Test(expected = IllegalArgumentException.class, timeout = 1000)
-    public void testGeneratePasswordOneElementCharSet() {
-        PasswordGenerator.generatePassword(PasswordGenerator.DEFAULT_LENGTH, "a");
-    }
-
-    @Test(expected = IllegalArgumentException.class, timeout = 1000)
-    public void testGeneratePasswordNonpositiveLength() {
-        PasswordGenerator.generatePassword(0, PasswordGenerator.ALLOWED_CHARS);
-    }
-
-
 }

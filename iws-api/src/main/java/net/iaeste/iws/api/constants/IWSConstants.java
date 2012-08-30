@@ -78,4 +78,17 @@ public interface IWSConstants {
      * The e-mail compliance regular expression.
      */
     String EMAIL_REGEX = "^[a-z0-9_\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|eu|mobi)$";
+
+    /**
+     * For the automatic password generator, we need a list of characters, that
+     * cannot be misinterpreted when read, i.e. l and 1 should not be in the
+     * list, since they can too easily be misstaten for eachother.
+     */
+    String PASSWORD_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
+
+    /**
+     * The default length to use for the automatically generated passwords.
+     */
+    int DEFAULT_PASSWORD_LENGTH = 8;
+
 }

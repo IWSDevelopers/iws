@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.common.utils;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -22,22 +24,11 @@ import java.util.Random;
  * a Password, the first is a list of allowed characters (letters, numbers,
  * etc.), the second is the length.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class PasswordGenerator {
-
-    /**
-     * List of all allowed Characters, without those that can be misinterpreted,
-     * like i/l, o/0, etc.
-     */
-    public static final String ALLOWED_CHARS = "abcdefghjkmnpqrstuvwxzy23456789";
-
-    /**
-     * Default Password Length.
-     */
-    public static final int DEFAULT_LENGTH = 8;
 
     /**
      * Private Constructor, this is a utility class.
@@ -45,39 +36,31 @@ public final class PasswordGenerator {
     private PasswordGenerator() {
     }
 
-    public static String generatePassword() {
-        return generatePassword(DEFAULT_LENGTH, ALLOWED_CHARS);
-    }
-
     /**
-     * Generates a simple Password, of a given length, with the characters all
-     * taken from the list of allowed characters.
+     * Generates a new random password. This should be used for all new
+     * accounts, and accounts where a reset password has been requested.
      *
-     * @param length            The password length
-     * @param allowedCharacters List of allowed Characters
-     * @return New password
+     * @return New random password
+     * @see IWSConstants#PASSWORD_GENERATOR_CHARACTERS
+     * @see IWSConstants#DEFAULT_PASSWORD_LENGTH
      */
-    public static String generatePassword(final int length, final String allowedCharacters) {
-        final String allowedChars = allowedCharacters == null ? ALLOWED_CHARS : allowedCharacters;
-        if (length <= 0) {
-            throw new IllegalArgumentException("password length must be a possitive number");
-        }
-        if (allowedChars.length() <= 1) {
-            throw new IllegalArgumentException("allowedCharacters length must be greater than 1");
-        }
+    public static String generatePassword() {
+        final String allowedCharacters = IWSConstants.PASSWORD_GENERATOR_CHARACTERS;
+        final int length = IWSConstants.DEFAULT_PASSWORD_LENGTH;
+
         final char[] password = new char[length];
         final Random random = new SecureRandom();
         int current = 0; // We start at the first position
 
         // Generate first random number, so we have something to start with
-        int lastRandom = random.nextInt(allowedChars.length());
-        password[0] = allowedChars.charAt(lastRandom);
+        int lastRandom = random.nextInt(allowedCharacters.length());
+        password[0] = allowedCharacters.charAt(lastRandom);
 
         // Iterate over the characters, until we have a complete password
         while (current < length) {
-            final int next = random.nextInt(allowedChars.length());
+            final int next = random.nextInt(allowedCharacters.length());
             if (next != lastRandom) {
-                password[current] = allowedChars.charAt(next);
+                password[current] = allowedCharacters.charAt(next);
                 lastRandom = next;
                 current++;
             }

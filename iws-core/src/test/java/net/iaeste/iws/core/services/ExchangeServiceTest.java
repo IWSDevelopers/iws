@@ -115,7 +115,6 @@ public class ExchangeServiceTest {
         final Offer offer = offers.get(0);
         offer.setId(234L);
         final OfferEntity existingEntity = OfferTransformer.transform(offer);
-        offer.setId(567L);
         when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
         when(dao.findOffer(offer.getId())).thenReturn(existingEntity);
 

@@ -41,7 +41,7 @@ import java.util.Date;
  * Okay, I'm seriously pissed at Git! a merge dropped all my todo's, and
  * replaced the correct implementation with the previous incorrect! Seriously,
  * I thought that Git was suppose to be a good tool!!!
- *   Adding my comments from memory...
+ * Adding my comments from memory...
  * <pre>
  * 1. Please remove the "standard" methods; equals, hashCode & toString - they
  *    are irrelevant in the Entity, but required in the DTO.
@@ -49,18 +49,15 @@ import java.util.Date;
  *    problems for Instrumented interfaces, since they cannot track when the
  *    Objects are the same as in the database.
  * 3. Please add JavaDoc, it is very confusing to read the code.
- * 4. The Merge should only be for "identical" objects, i.e. Objects where both
- *    have the same verified Id, or refno. Additionally, only those fields that
- *    are allowed to be updated, should be so - the rest should stay the same.
  * 5. IntelliJ have tons of inspection rules that freak out, please look at them
  *    and apply them - for example, internally, you should not use the setters
  *    and getters.
  * </pre>
  *
- * @author  Michal Knapik / last $Author:$
+ * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
- * @noinspection AssignmentToDateFieldFromParameter
+ * @noinspection AssignmentToDateFieldFromParameter, ReturnOfDateField
+ * @since 1.7
  */
 @Table(name = "offers")
 @Entity
@@ -343,19 +340,19 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     public Date getFromDate2() {
-        return Copier.copy(fromDate2);
+        return fromDate2;
     }
 
     public void setFromDate2(final Date fromDate2) {
-        this.fromDate2 = Copier.copy(fromDate2);
+        this.fromDate2 = fromDate2;
     }
 
     public Date getFromDate() {
-        return Copier.copy(fromDate);
+        return fromDate;
     }
 
     public void setFromDate(final Date fromDate) {
-        this.fromDate = Copier.copy(fromDate);
+        this.fromDate = fromDate;
     }
 
     public Gender getGender() {
@@ -367,19 +364,19 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     public Date getUnavailableFrom() {
-        return Copier.copy(unavailableFrom);
+        return unavailableFrom;
     }
 
     public void setUnavailableFrom(final Date unavailableFrom) {
-        this.unavailableFrom = Copier.copy(unavailableFrom);
+        this.unavailableFrom = unavailableFrom;
     }
 
     public Date getUnavailableTo() {
-        return Copier.copy(unavailableTo);
+        return unavailableTo;
     }
 
     public void setUnavailableTo(final Date unavailableTo) {
-        this.unavailableTo = Copier.copy(unavailableTo);
+        this.unavailableTo = unavailableTo;
     }
 
     public Long getId() {
@@ -527,11 +524,11 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     public Date getNominationDeadline() {
-        return Copier.copy(nominationDeadline);
+        return nominationDeadline;
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
-        this.nominationDeadline = Copier.copy(nominationDeadline);
+        this.nominationDeadline = nominationDeadline;
     }
 
     public String getOtherRequirements() {
@@ -591,19 +588,19 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     }
 
     public Date getToDate2() {
-        return Copier.copy(toDate2);
+        return toDate2;
     }
 
     public void setToDate2(final Date toDate2) {
-        this.toDate2 = Copier.copy(toDate2);
+        this.toDate2 = toDate2;
     }
 
     public Date getToDate() {
-        return Copier.copy(toDate);
+        return toDate;
     }
 
     public void setToDate(final Date toDate) {
-        this.toDate = Copier.copy(toDate);
+        this.toDate = toDate;
     }
 
     public void setTypeOfWork(final String typeOfWork) {
@@ -641,58 +638,63 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("OverlyLongMethod")
     @Override
     public void merge(final OfferEntity offer) {
-        // TODO: keep in sync with transformers and Offer copy constructor
-        this.setId(offer.getId());
-        this.setRefNo(offer.getRefNo());
-        this.setNominationDeadline(offer.getNominationDeadline());
-        this.setEmployerName(offer.getEmployerName());
-        this.setEmployerAddress(offer.getEmployerAddress());
-        this.setEmployerAddress2(offer.getEmployerAddress2());
-        this.setEmployerBusiness(offer.getEmployerBusiness());
-        this.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
-        this.setEmployerWebsite(offer.getEmployerWebsite());
-        this.setFieldOfStudies(offer.getFieldOfStudies());
-        this.setSpecializations(offer.getSpecializations());
-        this.setPrevTrainingRequired(offer.getPrevTrainingRequired());
-        this.setOtherRequirements(offer.getOtherRequirements());
-        this.setGender(offer.getGender());
-        this.setLanguage1(offer.getLanguage1());
-        this.setLanguage1Level(offer.getLanguage1Level());
-        this.setLanguage1Operator(offer.getLanguage1Operator());
-        this.setLanguage2(offer.getLanguage2());
-        this.setLanguage2Level(offer.getLanguage2Level());
-        this.setLanguage2Operator(offer.getLanguage2Operator());
-        this.setLanguage3(offer.getLanguage3());
-        this.setLanguage3Level(offer.getLanguage3Level());
-        this.setWorkDescription(offer.getWorkDescription());
-        this.setTypeOfWork(offer.getTypeOfWork());
-        this.setMinimumWeeks(offer.getMinimumWeeks());
-        this.setMaximumWeeks(offer.getMaximumWeeks());
-        this.setFromDate(offer.getFromDate());
-        this.setToDate(offer.getToDate());
-        this.setFromDate2(offer.getFromDate2());
-        this.setToDate2(offer.getToDate2());
-        this.setUnavailableFrom(offer.getUnavailableFrom());
-        this.setUnavailableTo(offer.getUnavailableTo());
-        this.setWorkingPlace(offer.getWorkingPlace());
-        this.setNearestAirport(offer.getNearestAirport());
-        this.setNearestPubTransport(offer.getNearestPubTransport());
-        this.setWeeklyHours(offer.getWeeklyHours());
-        this.setDailyHours(offer.getDailyHours());
-        this.setPayment(offer.getPayment());
-        this.setCurrency(offer.getCurrency());
-        this.setPaymentFrequency(offer.getPaymentFrequency());
-        this.setDeduction(offer.getDeduction());
-        this.setLodgingBy(offer.getLodgingBy());
-        this.setLodgingCost(offer.getLodgingCost());
-        this.setLodgingCostFrequency(offer.getLodgingCostFrequency());
-        this.setLivingCost(offer.getLivingCost());
-        this.setLivingCostFrequency(offer.getLivingCostFrequency());
-        this.setCanteen(offer.getCanteen());
-        this.setStudyLevels(offer.getStudyLevels());
-        this.setSpecializations(offer.getSpecializations());
+        // don't merge if objects are not the same entity
+        if ((this.id == null) || !id.equals(offer.id)) {
+            return;
+        }
+        this.id = offer.id;
+        this.refNo = offer.refNo;
+        this.employerName = offer.employerName;
+        this.employerAddress = offer.employerAddress;
+        this.employerAddress2 = offer.employerAddress2;
+        this.employerBusiness = offer.employerBusiness;
+        this.employerEmployeesCount = offer.employerEmployeesCount;
+        this.employerWebsite = offer.employerWebsite;
+        this.prevTrainingRequired = offer.prevTrainingRequired;
+        this.otherRequirements = offer.otherRequirements;
+        this.gender = offer.gender;
+        this.language1 = offer.language1;
+        this.language1Level = offer.language1Level;
+        this.language1Operator = offer.language1Operator;
+        this.language2 = offer.language2;
+        this.language2Level = offer.language2Level;
+        this.language2Operator = offer.language2Operator;
+        this.language3 = offer.language3;
+        this.language3Level = offer.language3Level;
+        this.workDescription = offer.workDescription;
+        this.minimumWeeks = offer.minimumWeeks;
+        this.maximumWeeks = offer.maximumWeeks;
+        this.workingPlace = offer.workingPlace;
+        this.nearestAirport = offer.nearestAirport;
+        this.nearestPubTransport = offer.nearestPubTransport;
+        this.weeklyHours = offer.weeklyHours;
+        this.dailyHours = offer.dailyHours;
+        this.payment = offer.payment;
+        this.currency = offer.currency;
+        this.paymentFrequency = offer.paymentFrequency;
+        this.deduction = offer.deduction;
+        this.lodgingBy = offer.lodgingBy;
+        this.lodgingCost = offer.lodgingCost;
+        this.lodgingCostFrequency = offer.lodgingCostFrequency;
+        this.livingCost = offer.livingCost;
+        this.livingCostFrequency = offer.livingCostFrequency;
+        this.canteen = offer.canteen;
+
+        this.nominationDeadline = Copier.copy(offer.nominationDeadline);
+        this.fromDate = Copier.copy(offer.fromDate);
+        this.toDate = Copier.copy(offer.toDate);
+        this.fromDate2 = Copier.copy(offer.fromDate2);
+        this.toDate2 = Copier.copy(offer.toDate2);
+        this.unavailableFrom = Copier.copy(offer.unavailableFrom);
+        this.unavailableTo = Copier.copy(offer.unavailableTo);
+
+        this.typeOfWork = offer.typeOfWork;
+        this.fieldOfStudies = offer.fieldOfStudies;
+        this.specializations = offer.specializations;
+        this.studyLevels = offer.studyLevels;
     }
 
     @Override
@@ -706,6 +708,9 @@ public class OfferEntity implements Mergeable<OfferEntity> {
 
         final OfferEntity entity = (OfferEntity) o;
 
+        if (id != null ? !id.equals(entity.id) : entity.id != null) {
+            return false;
+        }
         if (canteen != null ? !canteen.equals(entity.canteen) : entity.canteen != null) {
             return false;
         }
@@ -743,9 +748,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
             return false;
         }
         if (gender != entity.gender) {
-            return false;
-        }
-        if (id != null ? !id.equals(entity.id) : entity.id != null) {
             return false;
         }
         if (language1 != entity.language1) {

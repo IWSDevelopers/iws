@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.setup;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -26,7 +27,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Spring JavaConfig, for the Unit testing of the Persistence layer.
@@ -38,10 +41,11 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 public class SpringConfig {
+    private EmbeddedDatabase dataSource = null;
 
     @Bean
     public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder()
+        dataSource = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.HSQL)
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
@@ -51,6 +55,7 @@ public class SpringConfig {
                         //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
                         //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
                 .build();
+        return dataSource;
     }
 
     @Bean
@@ -71,6 +76,19 @@ public class SpringConfig {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
 
+        final Set<String> includeList = new HashSet<>();
+        includeList.add("offers");
+        final AuditBuilder auditBuilder = new AuditBuilder(dataSource).
+                setTableIncludeMode(AuditBuilder.TableIncludeMode.NONE).
+                setIncludeList(includeList);
+        System.out.println(auditBuilder.getDdlScript());
+        auditBuilder.execute();
+
+        System.out.println(new AuditBuilder(dataSource).
+                setTableIncludeMode(AuditBuilder.TableIncludeMode.NONE).
+                setIncludeList(includeList).
+                setSchema("PUBLIC_AUDIT").getDdlScript());
+
         return transactionManager;
     }
 
@@ -88,4 +106,5 @@ public class SpringConfig {
 
         return properties;
     }
+
 }

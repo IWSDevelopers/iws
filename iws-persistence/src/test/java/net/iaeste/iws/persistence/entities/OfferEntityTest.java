@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.entities;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
@@ -47,6 +48,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Contains tests for OfferEntity and OfferJpaDao
@@ -59,8 +61,11 @@ import java.util.Date;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 public class OfferEntityTest {
     private static final String REF_NO = "AT-2012-1234-AB";
+    private static final String REF_NO_2 = "AT-2012-5678-AB";
     private static final Date NOMINATION_DEADLINE = new Date();
     private static final String EMPLOYER_NAME = "Test_Employer_1";
+    private static final String EMPLOYER_NAME_LIKE = EMPLOYER_NAME.substring(3,3);
+    private static final String EMPLOYER_NAME_LIKE_NONEXISTING = "XxXxX";
     private static final String WORK_DESCRIPTION = "nothing";
     private static final Integer MAXIMUM_WEEKS = 12;
     private static final Integer MINIMUM_WEEKS = 12;
@@ -683,6 +688,23 @@ public class OfferEntityTest {
         final OfferEntity offerFoundById = dao.findOffer(offer.getId());
         Assert.assertThat(offerFoundById, is(notNullValue()));
         Assert.assertThat(offerFoundById, is(offer));
+        Assert.assertThat(dao.findOffersByEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
+        final List<OfferEntity> offersFoundByEmployerName = dao.findOffersByEmployerName(offer.getEmployerName());
+        if(offersFoundByEmployerName==null || offersFoundByEmployerName.isEmpty()) {
+            fail("This should not happen!");
+        }
+        final OfferEntity offerFoundByEmployerName = offersFoundByEmployerName.get(0);
+        Assert.assertThat(offerFoundByEmployerName, is(offer));
+        final OfferEntity offer2 = getFullOffer();
+        offer2.setRefNo(REF_NO_2);
+        dao.persist(offer2);
+        Assert.assertThat(dao.findAll().size(), is(2));
+        final List<OfferEntity> offersFoundByLikeEmployerName = dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE);
+        if(offersFoundByLikeEmployerName==null || offersFoundByLikeEmployerName.isEmpty()) {
+            fail("This should not happen!");
+        }
+        Assert.assertThat(offersFoundByLikeEmployerName.size(), is(2));
+        Assert.assertThat(dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
     }
 
     @After

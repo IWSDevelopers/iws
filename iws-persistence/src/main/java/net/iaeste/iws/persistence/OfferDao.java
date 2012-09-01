@@ -52,10 +52,28 @@ public interface OfferDao extends BasicDao {
     OfferEntity findOffer(final String refNo);
 
     /**
-     * @param offerIds
-     * @return
+     * @param offerIds list of primary keys for offers
+     * @return list of {@code }OfferEntity}
      */
     List<OfferEntity> findOffers(final List<Long> offerIds);
+
+    /**
+     * Finds the entity in the database.
+     *
+     * @param employerName employer name to search for
+     * @return list of {@code }OfferEntity}
+     * @throws PersistenceException
+     */
+    List<OfferEntity> findOffersByEmployerName(final String employerName);
+
+    /**
+     * Finds the entity in the database.
+     *
+     * @param employerName employer name to search for
+     * @return list of {@code }OfferEntity}
+     * @throws PersistenceException
+     */
+    List<OfferEntity> findOffersByLikeEmployerName(final String employerName);
 
     /**
      * Deletes an offer from database.

@@ -98,6 +98,28 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
+    public List<OfferEntity> findOffersByEmployerName(final String employerName) {
+        final Query query = entityManager.createNamedQuery("OfferEntity.findByEmployerName");
+        query.setParameter("employerName", employerName);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<OfferEntity> findOffersByLikeEmployerName(final String employerName) {
+        final Query query = entityManager.createNamedQuery("OfferEntity.findByLikeEmployerName");
+        query.setParameter("employerName", employerName);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean delete(final Long offerId) {
         final OfferEntity offer = findOffer(offerId);
         boolean result = false;

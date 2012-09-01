@@ -47,6 +47,7 @@ public class OfferTestUtility {
     public static final Float WEEKLY_HOURS = 40.0f;
     public static final Date FROM_DATE = new Date();
     public static final Date TO_DATE = new Date(FROM_DATE.getTime() + 3600 * 24 * 90);
+    public static final Set<TypeOfWork> TYPE_OF_WORK = EnumSet.of(TypeOfWork.R, TypeOfWork.N);
     public static final Date FROM_DATE2 = new Date(TO_DATE.getTime() + 3600 * 24 * 90);
     public static final Date TO_DATE2 = new Date(FROM_DATE2.getTime() + 3600 * 24 * 90);
     public static final Date UNAVAIABLE_FROM = new Date(TO_DATE.getTime());
@@ -115,7 +116,7 @@ public class OfferTestUtility {
         offer.setLanguage2Operator(LanguageOperator.O);
         offer.setLanguage3(Language.GERMAN);
         offer.setLanguage3Level(LanguageLevel.E);
-        offer.setTypeOfWork(EnumSet.of(TypeOfWork.R, TypeOfWork.N));
+        offer.setTypeOfWork(TYPE_OF_WORK);
         offer.setFromDate2(FROM_DATE2);
         offer.setToDate2(TO_DATE2);
         offer.setUnavailableFrom(UNAVAIABLE_FROM);

@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import net.iaeste.iws.api.dtos.Employer;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.StudyLevel;
@@ -145,6 +146,35 @@ public final class OfferTransformer {
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
             result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, offer.getStudyLevels()));
+        }
+
+        return result;
+    }
+
+    /**
+     * Transform OfferEntity employer into the Employer DTO
+     *
+     * @param t            The Class object to overloading transform method
+     * @param offer        Source OfferEntity which is to be transformed
+     * @return Employer Object
+     */
+    public static Employer transform(final Class<Employer> t, final OfferEntity offer) {
+        Employer result = null;
+
+        if (offer != null) {
+            result = new Employer();
+
+            result.setName(offer.getEmployerName());
+            result.setAddress(offer.getEmployerAddress());
+            result.setAddress2(offer.getEmployerAddress2());
+            result.setBusiness(offer.getEmployerBusiness());
+            result.setEmployeesCount(offer.getEmployerEmployeesCount());
+            result.setWebsite(offer.getEmployerWebsite());
+            result.setWorkingPlace(offer.getWorkingPlace());
+            result.setNearestAirport(offer.getNearestAirport());
+            result.setNearestPubTransport(offer.getNearestPubTransport());
+            result.setWeeklyHours(offer.getWeeklyHours());
+            result.setDailyHours(offer.getDailyHours());
         }
 
         return result;

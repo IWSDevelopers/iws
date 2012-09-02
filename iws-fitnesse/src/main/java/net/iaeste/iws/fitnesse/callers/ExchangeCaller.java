@@ -18,6 +18,7 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
+import net.iaeste.iws.api.requests.FetchEmployersRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
@@ -29,6 +30,7 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.responses.FetchEmployersResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
@@ -56,6 +58,18 @@ public final class ExchangeCaller implements Exchange {
     public ExchangeCaller() {
         final EntityManager entityManager = EntityManagerProvider.getInstance().getEntityManager();
         exchange = new SpringExchangeClient(entityManager);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchEmployersResponse fetchEmployers(final AuthenticationToken token, final FetchEmployersRequest request) {
+        try {
+            return exchange.fetchEmployers(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
     }
 
     /**

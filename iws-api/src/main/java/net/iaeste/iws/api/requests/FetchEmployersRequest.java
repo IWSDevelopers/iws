@@ -54,6 +54,9 @@ public final class FetchEmployersRequest extends AbstractRequest {
         if (fetchType == null) {
             throw new VerificationException("Unexpected null value for fetchType");
         }
+        if (name.isEmpty()) {
+            throw new VerificationException("Unexpected empty string value for name");
+        }
     }
 
     public FetchType getFetchType() {

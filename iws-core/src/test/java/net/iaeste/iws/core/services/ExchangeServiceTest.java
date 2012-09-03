@@ -21,12 +21,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.FetchEmployersRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.OfferRequestTestUtility;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
+import net.iaeste.iws.api.responses.FetchEmployersResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
@@ -197,6 +200,38 @@ public class ExchangeServiceTest {
         request.verify(); // make sure that request is valid
 
         client.deleteOffer(null, request);
+    }
+
+    @Test
+    public void testFetchOffersByLikeEmployerName() {
+        final List<OfferEntity> entities = new ArrayList<>(2);
+        entities.add(null);
+        entities.add(null);
+
+        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME)).thenReturn(entities);
+
+        final FetchEmployersRequest request = new FetchEmployersRequest(FetchEmployersRequest.FetchType.OWNED, OfferTestUtility.EMPLOYER_NAME);
+        request.verify(); // make sure that request is valid
+
+        final FetchEmployersResponse result = client.fetchEmployers(null, request);
+
+        assertThat(result.getEmployers().size(), is(entities.size()));
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testFetchOffersByLikeEmployerName_2() {
+        final List<OfferEntity> entities = new ArrayList<>(2);
+        entities.add(null);
+        entities.add(null);
+
+        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME)).thenReturn(entities);
+
+        final FetchEmployersRequest request = new FetchEmployersRequest(FetchEmployersRequest.FetchType.OWNED, "");
+        request.verify(); // make sure that request is valid
+
+        final FetchEmployersResponse result = client.fetchEmployers(null, request);
+
+        assertThat(result.getEmployers().size(), is(entities.size()));
     }
 
 }

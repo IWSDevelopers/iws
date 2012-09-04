@@ -51,6 +51,12 @@ CREATE TABLE offers (
     study_levels              char(3)       NOT NULL  CHECK(length(study_levels) > 0),
     study_fields              varchar(1000) NOT NULL  CHECK(length(study_fields) > 0),
     specializations           varchar(1000),
+
+    changed_on                TIMESTAMP     NULL,
+    changed_by                INTEGER       NULL REFERENCES users (id) ON DELETE SET NULL,
+    created_on                TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
+    created_by                INTEGER       NULL REFERENCES users (id) ON DELETE SET NULL,
+
     primary key (id),
     unique (ref_no)
 );

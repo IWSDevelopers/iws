@@ -11,8 +11,3 @@ REFERENCING NEW AS newrow OLD AS oldrow FOR EACH ROW
     OR (newrow.living_cost IS NOT NULL AND newrow.living_cost_frequency IS NULL)
     OR (newrow.payment IS NOT NULL AND newrow.payment_frequency IS NULL))
     SIGNAL SQLSTATE '45000';
-
--- CREATE TRIGGER study_level_at_least_one BEFORE INSERT ON offers
--- REFERENCING NEW AS newrow FOR EACH ROW
---   WHEN ((SELECT COUNT(*) FROM study_levels WHERE offer_id = newrow.id) = 0)
---     SIGNAL SQLSTATE '45000';

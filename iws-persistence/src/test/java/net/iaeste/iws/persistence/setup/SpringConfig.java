@@ -79,15 +79,9 @@ public class SpringConfig {
         final Set<String> includeList = new HashSet<>();
         includeList.add("offers");
         final AuditBuilder auditBuilder = new AuditBuilder(dataSource).
-                setTableIncludeMode(AuditBuilder.TableIncludeMode.NONE).
-                setIncludeList(includeList);
-        System.out.println(auditBuilder.getDdlScript());
+                setIncludeMode(AuditBuilder.IncludeMode.NONE).
+                setIncludeTable(includeList);
         auditBuilder.execute();
-
-        System.out.println(new AuditBuilder(dataSource).
-                setTableIncludeMode(AuditBuilder.TableIncludeMode.NONE).
-                setIncludeList(includeList).
-                setSchema("PUBLIC_AUDIT").getDdlScript());
 
         return transactionManager;
     }

@@ -22,40 +22,328 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
+ * Class provides interface to fetch current database schemaName
+ * and create auditing tables according to configuration.
+ *
  * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
 @SuppressWarnings("ReturnOfThis")
 public class AuditBuilder {
-    public enum TableIncludeMode {
+    /**
+     * With {@code Database} class {@code AuditBuilder} stores the structure of the database.
+     */
+    private class Database {
+        private List<Schema> schemas = new ArrayList<>();
+
+        /**
+         * Builds SQL for created database.
+         *
+         * @return SQL code for creation of auditing tables.
+         */
+        public String getTablesSchema() {
+            final StringBuffer tableSchema = new StringBuffer();
+            try {
+                for (final Schema schema : schemas) {
+                    final String auditSchema = schema.getSchemaName() + "_AUDIT";
+                    tableSchema.append(String.format("CREATE SCHEMA %s;\n", auditSchema));
+                    for (final Table table : schema.getTables()) {
+                        tableSchema.append(String.format("CREATE TABLE %s.%s (\n", auditSchema, table.getTableName()));
+                        final StringBuffer tableCode = new StringBuffer();
+                        for (final Column column : table.getColumns()) {
+                            tableCode.append(String.format("%s,\n", column.generateFieldString()));
+                        }
+                        tableCode.delete(tableCode.length() - 2, tableCode.length());
+                        tableCode.append("\n);\n");
+                        tableSchema.append(tableCode);
+                    }
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return tableSchema.toString();
+        }
+
+        public String getTriggersSchema() {
+            final StringBuffer triggersSchema = new StringBuffer();
+            for (final Schema schema : schemas) {
+                final String auditSchema = schema.getSchemaName() + "_AUDIT";
+                for (final Table table : schema.getTables()) {
+                    StringBuffer commaSeparatedColumns = new StringBuffer();
+                    StringBuffer commaSeparatedOldColumns = new StringBuffer();
+
+                    for (Iterator<Column> iterator = table.getColumns().iterator(); iterator.hasNext(); ) {
+                        final Column column = iterator.next();
+                        commaSeparatedColumns.append("    ").append(column.getColumnName());
+                        commaSeparatedOldColumns.append("    oldrow.").append(column.getColumnName());
+                        if (iterator.hasNext()) {
+                            commaSeparatedColumns.append(", \n");
+                            commaSeparatedOldColumns.append(", \n");
+                        }
+                    }
+                    final String createTriggerStatement = "SET SCHEMA %s;\n" +
+                            "CREATE TRIGGER TRIGGER_AUDIT_%s_%s\n" +
+                            "AFTER %s ON %s.%s\n" +
+                            "REFERENCING OLD AS oldrow %s\n" +
+                            "FOR EACH ROW\n" +
+                            "BEGIN ATOMIC\n" +
+                            "  INSERT INTO %s.%s\n" +
+                            "  (\n" +
+                            "    %s\n" +
+                            "  )\n" +
+                            "  VALUES\n" +
+                            "  (\n" +
+                            "    %s\n" +
+                            "  );\n" +
+                            "  %s\n" + // OPTIONAL
+                            "END;\n";
+
+                    final String additionalUpdateCode = "SET newrow.changed_on = CURRENT_TIMESTAMP;\n";
+                    triggersSchema.append(String.format(
+                            createTriggerStatement, schema.getSchemaName(), "UPDATE", table.getTableName(), "UPDATE", schema.getSchemaName(),
+                            table.getTableName(), "NEW AS newrow", auditSchema, table.getTableName(), commaSeparatedColumns, commaSeparatedOldColumns,
+                            additionalUpdateCode));
+                    triggersSchema.append(String.format(
+                            createTriggerStatement, schema.getSchemaName(), "DELETE", table.getTableName(), "DELETE", schema.getSchemaName(),
+                            table.getTableName(), "", auditSchema, table.getTableName(), commaSeparatedColumns, commaSeparatedOldColumns, ""));
+                }
+
+            }
+            return triggersSchema.toString();
+        }
+
+        public List<Schema> getSchemas() {
+            return schemas;
+        }
+
+        public void addSchema(final Schema schema) {
+            schemas.add(schema);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Database{%s}", schemas);
+        }
+    }
+
+    private class Schema {
+        private List<Table> tables = new ArrayList<>();
+        private String catalogName;
+        private String schemaName;
+
+        public Schema(final ResultSet schema) throws SQLException {
+            this.schemaName = schema.getString(1);
+            this.catalogName = schema.getString(2);
+        }
+
+        public List<Table> getTables() {
+            return tables;
+        }
+
+        public String getCatalogName() {
+            return catalogName;
+        }
+
+        public String getSchemaName() {
+            return schemaName;
+        }
+
+        public void addTable(final Table table) {
+            tables.add(table);
+        }
+
+        @Override
+        public String toString() {
+            return "Schema{" +
+                    "catalog='" + catalogName + '\'' +
+                    ", schema='" + schemaName + '\'' +
+                    ", tables=" + tables +
+                    '}';
+        }
+    }
+
+    private class Table {
+        private List<Column> columns = new ArrayList<>();
+        private String schemaName;
+        private String catalogName;
+        final String tableName;
+
+        Table(final ResultSet table) throws SQLException {
+            this.schemaName = table.getString(1);
+            this.catalogName = table.getString(2);
+            this.tableName = table.getString(3);
+
+        }
+
+        public String getTableName() {
+            return tableName;
+        }
+
+        public void addColumn(final Column column) {
+            columns.add(column);
+        }
+
+        public List<Column> getColumns() {
+            return columns;
+        }
+
+        @Override
+        public String toString() {
+            return "Table{" +
+                    "schema='" + schemaName + '\'' +
+                    ", catalog='" + catalogName + '\'' +
+                    ", table='" + tableName + '\'' +
+                    ", columns=" + columns +
+                    '}';
+        }
+    }
+
+    private class Column {
+        private String columnName;
+        private int dataType;
+        private boolean nullable;
+        private int decimalDigits;
+        private int columnSize;
+        private String typeName;
+        private String schemaName;
+        private String catalogName;
+        private String tableName;
+
+        Column(final ResultSet column) throws SQLException {
+            schemaName = column.getString(1);    // "TABLE_SCHEM"
+            catalogName = column.getString(2); //"TABLE_CATALOG"
+            tableName = column.getString(2); //"TABLE_CATALOG"
+            columnName = column.getString(4); // String => column name
+            dataType = column.getInt(5); // int => SQL type from java.sql.Types
+            typeName = column.getString(6); // String => Data source dependent type name,
+            columnSize = column.getInt(7); // int => column size.
+            decimalDigits = column.getInt(9); // int => the number of fractional digits. Null is returned for data types where
+            nullable = column.getInt(11) == 1; // is NULL allowed.
+        }
+
+        @Override
+        public String toString() {
+            return "Column{" + columnName + ' ' + dataType + '(' + columnSize + ")}";
+        }
+
+        /**
+         * Helper function to generate SQL line for creation field tableName.
+         *
+         * @return
+         * @throws SQLException
+         */
+        private String generateFieldString() throws SQLException {
+            // all %-x is for creating the line of constant length
+            final StringBuilder result = new StringBuilder(2 + 24 + 10 + 8 + 8);
+            result.append("  ");
+            result.append(String.format("%-24s", columnName));
+            result.append(String.format("%-10s", typeName));
+            final String dataTypeString;
+            switch (dataType) {
+                case Types.CHAR:
+                case Types.VARCHAR:
+                case Types.VARBINARY:
+                    dataTypeString = String.format("(%d)", columnSize);
+                    break;
+                case Types.DECIMAL:
+                case Types.NUMERIC:
+                    dataTypeString = String.format("(%d, %d)", columnSize, decimalDigits);
+                    break;
+                default:
+                    dataTypeString = "";
+            }
+            result.append(String.format("%-8s", dataTypeString));
+            if (nullable) {
+                result.append("        ");
+            } else {
+                result.append("NOT NULL");
+            }
+            return result.toString();
+        }
+
+        public String getColumnName() {
+            return columnName;
+        }
+
+        public String getTableName() {
+            return tableName;
+        }
+
+        public String getCatalogName() {
+            return catalogName;
+        }
+
+        public String getSchemaName() {
+            return schemaName;
+        }
+
+    }
+
+    /**
+     * Include all columns/tables for auditing.
+     */
+    public enum IncludeMode {
         ALL, NONE
     }
 
-    private TableIncludeMode tableIncludeMode;
+    private IncludeMode includeMode;
     private String catalog;
     private String schema;
-    private Set<String> includeList = Collections.emptySet();
-    private Set<String> excludeList = Collections.emptySet();
+    /**
+     * List of tables which should be included for auditing (only for {@code includeMode = NONE}.
+     */
+    private Set<String> includeTable;
+    /**
+     * List of tables which should be excluded from auditing (only for {@code includeMode = ALL}.
+     */
+    private Set<String> excludeTable;
+    private Map<String, Set<String>> includeColumn;
+    private Map<String, Set<String>> excludeColumn;
+    private Map<String, IncludeMode> columnIncludeMode;
+
+    public Map<String, Set<String>> getIncludeColumn() {
+        return includeColumn;
+    }
+
+    public Map<String, Set<String>> getExcludeColumn() {
+        return excludeColumn;
+    }
+
+    public void setIncludeColumn(final String tableName, final Set<String> includeColumn) {
+        this.includeColumn.put(tableName, includeColumn);
+        this.columnIncludeMode.put(tableName, IncludeMode.NONE);
+    }
+
+    public void setExcludeColumn(final String tableName, final Set<String> excludeColumn) {
+        this.excludeColumn.put(tableName, excludeColumn);
+        this.columnIncludeMode.put(tableName, IncludeMode.NONE);
+    }
+
+
     private DataSource dataSource;
 
-
     public AuditBuilder(final DataSource dataSource) {
-        this.tableIncludeMode = TableIncludeMode.NONE;
+        this.includeMode = IncludeMode.NONE;
         this.dataSource = dataSource;
         this.catalog = "PUBLIC";
         this.schema = "PUBLIC";
-
-    }
-
-    public AuditBuilder(final AuditBuilder auditBuilder) {
-        this.dataSource = auditBuilder.dataSource;
+        this.includeTable = Collections.emptySet();
+        this.excludeTable = Collections.emptySet();
+        this.includeColumn = Collections.emptyMap();
+        this.excludeColumn = Collections.emptyMap();
+        this.columnIncludeMode = Collections.emptyMap();
     }
 
     public AuditBuilder setCatalog(final String catalog) {
@@ -68,215 +356,44 @@ public class AuditBuilder {
         return this;
     }
 
-    public AuditBuilder setTableIncludeMode(final TableIncludeMode tableIncludeMode) {
-        this.tableIncludeMode = tableIncludeMode;
+    public AuditBuilder setIncludeMode(final IncludeMode includeMode) {
+        this.includeMode = includeMode;
         return this;
     }
 
-    public AuditBuilder setExcludeList(final Set<String> excludeList) {
-        this.excludeList = excludeList;
-        return this;
-
-    }
-
-    public AuditBuilder setIncludeList(final Set<String> includeList) {
-        this.includeList = new HashSet<>();
-        for (final String table : includeList) {
-            this.includeList.add(table.toUpperCase());
+    public AuditBuilder setExcludeTable(final Set<String> excludeTable) {
+        this.excludeTable = new HashSet<>();
+        for (final String table : excludeTable) {
+            this.excludeTable.add(table.toUpperCase());
         }
         return this;
+
     }
 
-    public String getDdlScript() {
-        final HashMap<String, ResultSet> tablesMap = new HashMap<String, ResultSet>();
-        final StringBuilder result = new StringBuilder();
-        final StringBuilder tablesCode = new StringBuilder();
-        final StringBuilder triggersCode = new StringBuilder();
-
-        Connection connection = null;
-        try {
-            connection = dataSource.getConnection();
-            final DatabaseMetaData metaData = connection.getMetaData();
-            System.out.println(metaData);
-            final ResultSet schemas = metaData.getSchemas(catalog, schema);
-            while (schemas.next()) {
-                final String tableSchema = schemas.getString(1);    // "TABLE_SCHEM"
-                final String tableCatalog = schemas.getString(2); //"TABLE_CATALOG"
-
-                final String auditSchema = tableSchema + "_audit";
-                result.append(String.format("CREATE SCHEMA %s;\n", auditSchema));
-
-                final ResultSet tables = metaData.getTables(tableCatalog, tableSchema, null, null);
-
-                // for each table create triggers and audit table
-                while (tables.next()) {
-                    final String table = tables.getString(3);
-                    if (isTableIncluded(table)) {
-                        final StringBuffer tableCode = getTableDdl(metaData, tableSchema, tableCatalog, table, auditSchema);
-                        tablesCode.append(tableCode);
-
-                    }
-                }
-//                for (Annotation annotation : OfferEntity.class.getAnnotations()) {
-//                    if (annotation instanceof Table) {
-//                        System.out.println(((Table) annotation).name());
-//                    }
-//                    System.out.println();
-//                }
-            }
-            return result.append(tablesCode).append(triggersCode).toString();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+    public AuditBuilder setIncludeTable(final Set<String> includeTable) {
+        this.includeTable = new HashSet<>();
+        for (final String table : includeTable) {
+            this.includeTable.add(table.toUpperCase());
         }
-        return null;
+        return this;
     }
 
-    final private StringBuffer getTableDdl(final DatabaseMetaData metaData,
-                                           final String tableSchema,
-                                           final String tableCatalog,
-                                           final String table,
-                                           final String auditSchema) throws SQLException {
-        final StringBuffer tableCode = new StringBuffer();
 
-        tableCode.append(String.format("CREATE TABLE %s.%s (\n", auditSchema, table));
-        final ResultSet columns = metaData.getColumns(tableCatalog, tableSchema, table, null);
-        while (columns.next()) {
-            tableCode.append(String.format("%s,\n", generateFieldString(columns)));
-        }
-        tableCode.delete(tableCode.length() - 2, tableCode.length());
-        tableCode.append("\n);\n");
-        return tableCode;
-    }
-
-    private boolean isTableIncluded(final String table) {
-        if ((this.tableIncludeMode == TableIncludeMode.ALL) && !excludeList.contains(table)) {
-            return true;
-        }
-        if ((this.tableIncludeMode == TableIncludeMode.NONE) && includeList.contains(table)) {
-            return true;
-        }
-        return false;
-    }
-
-    private String generateFieldString(final ResultSet column) throws SQLException {
-        final String columnName = column.getString(4).toLowerCase(); // String => column name
-        final int dataType = column.getInt(5); // int => SQL type from java.sql.Types
-        final String typeName = column.getString(6); // String => Data source dependent type name,
-        final int columnSize = column.getInt(7); // int => column size.
-        final int decimalDigits = column.getInt(9); // int => the number of fractional digits. Null is returned for data types where
-//        final int numPrecRadix = column.getInt(10); // int => Radix (typically either 10 or 2)
-        final int nullable = column.getInt(11); // is NULL allowed.
-//        final String remarks = column.getString(11); // String => comment describing column (may be <code>null</code>)
-//        final String columnDefinition = column.getString(12); // String => default value for the column, which should be interpreted as a string when the value is enclosed in single quotes (may be <code>null</code>)
-
-        final StringBuilder result = new StringBuilder(2 + 24 + 10 + 8 + 8);
-        result.append("  ");
-        result.append(String.format("%-24s", columnName));
-        result.append(String.format("%-10s", typeName));
-        final String dataTypeString;
-        switch (dataType) {
-            case Types.CHAR:
-            case Types.VARCHAR:
-            case Types.VARBINARY:
-                dataTypeString = String.format("(%d)", columnSize);
-                break;
-            case Types.DECIMAL:
-            case Types.NUMERIC:
-                dataTypeString = String.format("(%d, %d)", columnSize, decimalDigits);
-                break;
-            default:
-                dataTypeString = "";
-        }
-        result.append(String.format("%-8s", dataTypeString));
-        if (nullable == 0) {
-            result.append("NOT NULL");
-        } else {
-            result.append("        ");
-        }
-        return result.toString();
-        /**
-         *      <UL>
-         *      <LI> columnNoNulls - might not allow <code>NULL</code> values
-         *      <LI> columnNullable - definitely allows <code>NULL</code> values
-         *      <LI> columnNullableUnknown - nullability unknown
-         *      </UL>
-         */
-        /**
-         *  <LI><B>SQL_DATA_TYPE</B> int => unused
-         *  <LI><B>SQL_DATETIME_SUB</B> int => unused
-         *  <LI><B>CHAR_OCTET_LENGTH</B> int => for char types the
-         *       maximum number of bytes in the column
-         *  <LI><B>ORDINAL_POSITION</B> int => index of column in table
-         *      (starting at 1)
-         *  <LI><B>IS_NULLABLE</B> String  => ISO rules are used to determine the nullability for a column.
-         *       <UL>
-         *       <LI> YES           --- if the column can include NULLs
-         *       <LI> NO            --- if the column cannot include NULLs
-         *       <LI> empty string  --- if the nullability for the
-         * column is unknown
-         *       </UL>
-         *  <LI><B>SCOPE_CATALOG</B> String => catalog of table that is the scope
-         *      of a reference attribute (<code>null</code> if DATA_TYPE isn't REF)
-         *  <LI><B>SCOPE_SCHEMA</B> String => schema of table that is the scope
-         *      of a reference attribute (<code>null</code> if the DATA_TYPE isn't REF)
-         *  <LI><B>SCOPE_TABLE</B> String => table name that this the scope
-         *      of a reference attribute (<code>null</code> if the DATA_TYPE isn't REF)
-         *  <LI><B>SOURCE_DATA_TYPE</B> short => source type of a distinct type or user-generated
-         *      Ref type, SQL type from java.sql.Types (<code>null</code> if DATA_TYPE
-         *      isn't DISTINCT or user-generated REF)
-         *   <LI><B>IS_AUTOINCREMENT</B> String  => Indicates whether this column is auto incremented
-         *       <UL>
-         *       <LI> YES           --- if the column is auto incremented
-         *       <LI> NO            --- if the column is not auto incremented
-         *       <LI> empty string  --- if it cannot be determined whether the column is auto incremented
-         *       </UL>
-         *   <LI><B>IS_GENERATEDCOLUMN</B> String  => Indicates whether this is a generated column
-         *       <UL>
-         *       <LI> YES           --- if this a generated column
-         *       <LI> NO            --- if this not a generated column
-         *       <LI> empty string  --- if it cannot be determined whether this is a generated column
-         *       </UL>
-         *  </OL>
-         *
-         * <p>The COLUMN_SIZE column specifies the column size for the given column.
-         * For numeric data, this is the maximum precision.  For character data, this is the length in characters.
-         * For datetime datatypes, this is the length in characters of the String representation (assuming the
-         * maximum allowed precision of the fractional seconds component). For binary data, this is the length in bytes.  For the ROWID datatype,
-         * this is the length in bytes. Null is returned for data types where the
-         * column size is not applicable.
-         *
-         * @param catalog a catalog name; must match the catalog name as it
-         *        is stored in the database; "" retrieves those without a catalog;
-         *        <code>null</code> means that the catalog name should not be used to narrow
-         *        the search
-         * @param schemaPattern a schema name pattern; must match the schema name
-         *        as it is stored in the database; "" retrieves those without a schema;
-         *        <code>null</code> means that the schema name should not be used to narrow
-         *        the search
-         * @param tableNamePattern a table name pattern; must match the
-         *        table name as it is stored in the database
-         * @param columnNamePattern a column name pattern; must match the column
-         *        name as it is stored in the database
-         * @return <code>ResultSet</code> - each row is a column description
-         * @exception SQLException if a database access error occurs
-         * @see #getSearchStringEscape
-         */
-    }
-
+    /**
+     * Execute SQL statements to create tables and triggers for auditing.
+     */
     public void execute() {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
             final Statement statement = connection.createStatement();
-            statement.execute(getDdlScript());
+            final String tablesCode = getDdlScript(true);
+            final String triggersCode = getDdlScript(false);
+            // TODO: debug only, remove after testing
+            System.out.println(tablesCode);
+            System.out.println(triggersCode);
+            statement.execute(tablesCode);
+            statement.execute(triggersCode);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -288,6 +405,114 @@ public class AuditBuilder {
                 }
             }
         }
+    }
+
+    /**
+     * Connects with database and creates auditing tables initialization script.
+     *
+     * @return valid CREATE TABLE statements
+     */
+    public String getTablesSQL() {
+        return getDdlScript(true);
+    }
+
+    /**
+     * Connects with database and creates trigger initialization script.
+     *
+     * @return valid CREATE TRIGGER statements
+     */
+    public String getTriggersSQL() {
+        return getDdlScript(false);
+    }
+
+    /**
+     * helper method created due to problems with executing creation of tables and triggers at once
+     *
+     * @param tablesSchema if true, tableName schemaName should be returned, otherwise triggers schemaName should be returned
+     * @return schemaName of either tables or triggers
+     */
+    private String getDdlScript(final boolean tablesSchema) {
+        final HashMap<String, ResultSet> tablesMap = new HashMap<String, ResultSet>();
+
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            final DatabaseMetaData metaData = connection.getMetaData();
+            final Database database = fetchDatabaseSchema(metaData);
+            return tablesSchema ? database.getTablesSchema() : database.getTriggersSchema();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return "";
+    }
+
+    private Database fetchDatabaseSchema(final DatabaseMetaData metaData) throws SQLException {
+        final Database database = new Database();
+        final ResultSet schemasSet = metaData.getSchemas(catalog, schema);
+        while (schemasSet.next()) {
+            final Schema schema = new Schema(schemasSet);
+            final ResultSet tablesSet = metaData.getTables(schema.getCatalogName(), schema.getSchemaName(), null, null);
+            // for each tableName we fetch db schemaName
+            while (tablesSet.next()) {
+                final Table table = new Table(tablesSet);
+                if (isTableIncluded(table.getTableName())) {
+                    final ResultSet columnsSet = metaData.getColumns(schema.getCatalogName(), schema.getSchemaName(), table.getTableName(), null);
+                    while (columnsSet.next()) {
+                        final Column column = new Column(columnsSet);
+                        if (isColumnIncluded(table.getTableName(), column.getColumnName())) {
+                            table.addColumn(column);
+                        }
+                    }
+                    schema.addTable(table);
+                }
+            }
+            database.addSchema(schema);
+        }
+        return database;
+    }
+
+    private boolean isColumnIncluded(final String tableName, final String columnName) {
+        if (!columnIncludeMode.containsKey(tableName)) {
+            // if inc/exl not specified then all columns should be audited
+            return true;
+        }
+        switch (columnIncludeMode.get(tableName)) {
+            case ALL:
+                if (!excludeColumn.containsKey(tableName)) {
+                    // if exl set for given key does not exist then all columns should be audited
+                    return true;
+                } else {
+                    // audit column if it doesn't exist on the list
+                    return !excludeColumn.get(tableName).contains(columnName);
+                }
+            case NONE:
+                if (!includeColumn.containsKey(tableName)) {
+                    // if inc set for given key does not exist then no columns should be audited
+                    return false;
+                } else {
+                    // audit column if it exists on the list
+                    return includeColumn.get(tableName).contains(columnName);
+                }
+        }
+        return false;
+    }
+
+    private boolean isTableIncluded(final String table) {
+        if ((this.includeMode == IncludeMode.ALL) && !excludeTable.contains(table)) {
+            return true;
+        }
+        if ((this.includeMode == IncludeMode.NONE) && includeTable.contains(table)) {
+            return true;
+        }
+        return false;
     }
 
 }

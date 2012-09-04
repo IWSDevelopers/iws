@@ -24,7 +24,6 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -44,80 +43,88 @@ public class AuditBuilder {
     /**
      * With {@code Database} class {@code AuditBuilder} stores the structure of the database.
      */
-    private class Database {
+    private static class Database {
         private List<Schema> schemas = new ArrayList<>();
 
         /**
-         * Builds SQL for created database.
+         * Builds SQL tables schema for created database.
          *
          * @return SQL code for creation of auditing tables.
          */
         public String getTablesSchema() {
             final StringBuffer tableSchema = new StringBuffer();
-            try {
-                for (final Schema schema : schemas) {
-                    final String auditSchema = schema.getSchemaName() + "_AUDIT";
-                    tableSchema.append(String.format("CREATE SCHEMA %s;\n", auditSchema));
-                    for (final Table table : schema.getTables()) {
-                        tableSchema.append(String.format("CREATE TABLE %s.%s (\n", auditSchema, table.getTableName()));
-                        final StringBuffer tableCode = new StringBuffer();
-                        for (final Column column : table.getColumns()) {
-                            tableCode.append(String.format("%s,\n", column.generateFieldString()));
-                        }
-                        tableCode.delete(tableCode.length() - 2, tableCode.length());
-                        tableCode.append("\n);\n");
-                        tableSchema.append(tableCode);
+            for (final Schema schema : schemas) {
+                final String auditSchema = schema.getSchemaName() + "_AUDIT";
+                tableSchema.append(String.format("CREATE SCHEMA %s;\n", auditSchema));
+                for (final Table table : schema.getTables()) {
+                    tableSchema.append(String.format("CREATE TABLE %s.%s (\n", auditSchema, table.getTableName()));
+                    final StringBuffer tableCode = new StringBuffer();
+                    for (final Column column : table.getColumns()) {
+                        tableCode.append(String.format("%s,\n", column.generateFieldString()));
                     }
-
+                    tableCode.delete(tableCode.length() - 2, tableCode.length());
+                    tableCode.append("\n);\n");
+                    tableSchema.append(tableCode);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+
             }
+
             return tableSchema.toString();
         }
 
+        /**
+         * Builds SQL triggers schema for created database.
+         *
+         * @return SQL code for creation of auditing triggers.
+         */
         public String getTriggersSchema() {
             final StringBuffer triggersSchema = new StringBuffer();
             for (final Schema schema : schemas) {
                 final String auditSchema = schema.getSchemaName() + "_AUDIT";
+                triggersSchema.append(String.format("SET SCHEMA %s;\n", schema.getSchemaName()));     // `schema`
                 for (final Table table : schema.getTables()) {
-                    StringBuffer commaSeparatedColumns = new StringBuffer();
-                    StringBuffer commaSeparatedOldColumns = new StringBuffer();
+                    final StringBuffer commaSeparatedColumns = new StringBuffer();
+                    final StringBuffer commaSeparatedOldColumns = new StringBuffer();
+                    final StringBuffer hasColumnChanged = new StringBuffer();
 
                     for (Iterator<Column> iterator = table.getColumns().iterator(); iterator.hasNext(); ) {
                         final Column column = iterator.next();
                         commaSeparatedColumns.append("    ").append(column.getColumnName());
                         commaSeparatedOldColumns.append("    oldrow.").append(column.getColumnName());
+                        hasColumnChanged.append(" OR newrow.").append(column.getColumnName())
+                                .append(" != oldrow.").append(column.getColumnName());
                         if (iterator.hasNext()) {
                             commaSeparatedColumns.append(", \n");
                             commaSeparatedOldColumns.append(", \n");
                         }
                     }
-                    final String createTriggerStatement = "SET SCHEMA %s;\n" +
-                            "CREATE TRIGGER TRIGGER_AUDIT_%s_%s\n" +
-                            "AFTER %s ON %s.%s\n" +
-                            "REFERENCING OLD AS oldrow %s\n" +
-                            "FOR EACH ROW\n" +
-                            "BEGIN ATOMIC\n" +
-                            "  INSERT INTO %s.%s\n" +
-                            "  (\n" +
-                            "    %s\n" +
-                            "  )\n" +
-                            "  VALUES\n" +
-                            "  (\n" +
-                            "    %s\n" +
-                            "  );\n" +
-                            "  %s\n" + // OPTIONAL
-                            "END;\n";
+                    final String createTriggerStatement =
+                            "CREATE TRIGGER TRIGGER_AUDIT_%s_%s\n" +            // `UPDATE` or `DELETE` and `table`
+                                    "AFTER %s ON %s.%s\n" +                             // `UPDATE` or `DELETE` and `schema`.`table`
+                                    "REFERENCING OLD AS oldrow %s\n" +                  // optional `NEW as newrow`
+                                    "FOR EACH ROW\n" +
+                                    "%s\n" +                    // condition, when to store value (when not all columns should be audited
+                                    "BEGIN ATOMIC\n" +
+                                    "  INSERT INTO %s.%s\n" +   // table and schema
+                                    "  (\n" +
+                                    "%s\n" +                // list of columns
+                                    "  )\n" +
+                                    "  VALUES\n" +
+                                    "  (\n" +
+                                    "%s\n" +                // list of columns
+                                    "  );\n" +
+                                    "  %s\n" +                  // OPTIONAL
+                                    "END;\n";
 
+                    final String whenStatement = String.format("WHEN (1 = 1)\n");
                     final String additionalUpdateCode = "SET newrow.changed_on = CURRENT_TIMESTAMP;\n";
                     triggersSchema.append(String.format(
-                            createTriggerStatement, schema.getSchemaName(), "UPDATE", table.getTableName(), "UPDATE", schema.getSchemaName(),
-                            table.getTableName(), "NEW AS newrow", auditSchema, table.getTableName(), commaSeparatedColumns, commaSeparatedOldColumns,
+                            createTriggerStatement, "UPDATE", table.getTableName(), "UPDATE", schema.getSchemaName(),
+                            table.getTableName(), "NEW AS newrow", whenStatement, auditSchema, table.getTableName(), commaSeparatedColumns, commaSeparatedOldColumns,
                             additionalUpdateCode));
                     triggersSchema.append(String.format(
-                            createTriggerStatement, schema.getSchemaName(), "DELETE", table.getTableName(), "DELETE", schema.getSchemaName(),
-                            table.getTableName(), "", auditSchema, table.getTableName(), commaSeparatedColumns, commaSeparatedOldColumns, ""));
+                            createTriggerStatement, "DELETE", table.getTableName(), "DELETE", schema.getSchemaName(),
+                            table.getTableName(), "", whenStatement, auditSchema, table.getTableName(), commaSeparatedColumns, commaSeparatedOldColumns, ""));
                 }
 
             }
@@ -125,7 +132,7 @@ public class AuditBuilder {
         }
 
         public List<Schema> getSchemas() {
-            return schemas;
+            return Collections.unmodifiableList(schemas);
         }
 
         public void addSchema(final Schema schema) {
@@ -138,18 +145,21 @@ public class AuditBuilder {
         }
     }
 
-    private class Schema {
+    /**
+     * Used by {@code Database} class to represend the structure of the database.
+     */
+    private static class Schema {
         private List<Table> tables = new ArrayList<>();
         private String catalogName;
         private String schemaName;
 
-        public Schema(final ResultSet schema) throws SQLException {
+        Schema(final ResultSet schema) throws SQLException {
             this.schemaName = schema.getString(1);
             this.catalogName = schema.getString(2);
         }
 
         public List<Table> getTables() {
-            return tables;
+            return Collections.unmodifiableList(tables);
         }
 
         public String getCatalogName() {
@@ -174,7 +184,10 @@ public class AuditBuilder {
         }
     }
 
-    private class Table {
+    /**
+     * Used by {@code Database} class to represend the structure of the database.
+     */
+    private static class Table {
         private List<Column> columns = new ArrayList<>();
         private String schemaName;
         private String catalogName;
@@ -196,7 +209,7 @@ public class AuditBuilder {
         }
 
         public List<Column> getColumns() {
-            return columns;
+            return Collections.unmodifiableList(columns);
         }
 
         @Override
@@ -210,7 +223,10 @@ public class AuditBuilder {
         }
     }
 
-    private class Column {
+    /**
+     * Used by {@code Database} class to represend the structure of the database.
+     */
+    private static class Column {
         private String columnName;
         private int dataType;
         private boolean nullable;
@@ -241,10 +257,9 @@ public class AuditBuilder {
         /**
          * Helper function to generate SQL line for creation field tableName.
          *
-         * @return
-         * @throws SQLException
+         * @return SQL code for single column for usage inside CREATE TABLE statement
          */
-        private String generateFieldString() throws SQLException {
+        private String generateFieldString() {
             // all %-x is for creating the line of constant length
             final StringBuilder result = new StringBuilder(2 + 24 + 10 + 8 + 8);
             result.append("  ");
@@ -299,8 +314,8 @@ public class AuditBuilder {
     }
 
     private IncludeMode includeMode;
-    private String catalog;
-    private String schema;
+    private String catalogName;
+    private String schemaName;
     /**
      * List of tables which should be included for auditing (only for {@code includeMode = NONE}.
      */
@@ -314,11 +329,11 @@ public class AuditBuilder {
     private Map<String, IncludeMode> columnIncludeMode;
 
     public Map<String, Set<String>> getIncludeColumn() {
-        return includeColumn;
+        return Collections.unmodifiableMap(includeColumn);
     }
 
     public Map<String, Set<String>> getExcludeColumn() {
-        return excludeColumn;
+        return Collections.unmodifiableMap(excludeColumn);
     }
 
     public void setIncludeColumn(final String tableName, final Set<String> includeColumn) {
@@ -337,8 +352,8 @@ public class AuditBuilder {
     public AuditBuilder(final DataSource dataSource) {
         this.includeMode = IncludeMode.NONE;
         this.dataSource = dataSource;
-        this.catalog = "PUBLIC";
-        this.schema = "PUBLIC";
+        this.catalogName = "PUBLIC";
+        this.schemaName = "PUBLIC";
         this.includeTable = Collections.emptySet();
         this.excludeTable = Collections.emptySet();
         this.includeColumn = Collections.emptyMap();
@@ -346,13 +361,13 @@ public class AuditBuilder {
         this.columnIncludeMode = Collections.emptyMap();
     }
 
-    public AuditBuilder setCatalog(final String catalog) {
-        this.catalog = catalog;
+    public AuditBuilder setCatalogName(final String catalogName) {
+        this.catalogName = catalogName;
         return this;
     }
 
-    public AuditBuilder setSchema(final String schema) {
-        this.schema = schema;
+    public AuditBuilder setSchemaName(final String schemaName) {
+        this.schemaName = schemaName;
         return this;
     }
 
@@ -382,6 +397,7 @@ public class AuditBuilder {
     /**
      * Execute SQL statements to create tables and triggers for auditing.
      */
+    @SuppressWarnings("JDBCExecuteWithNonConstantString")
     public void execute() {
         Connection connection = null;
         try {
@@ -432,8 +448,6 @@ public class AuditBuilder {
      * @return schemaName of either tables or triggers
      */
     private String getDdlScript(final boolean tablesSchema) {
-        final HashMap<String, ResultSet> tablesMap = new HashMap<String, ResultSet>();
-
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
@@ -454,9 +468,16 @@ public class AuditBuilder {
         return "";
     }
 
+    /**
+     * Extracts data from {@code DatabaseMetaData} and stores them in internal structure {@code Database}
+     *
+     * @param metaData of current database
+     * @return schema represented by {@code Database} class
+     * @throws SQLException
+     */
     private Database fetchDatabaseSchema(final DatabaseMetaData metaData) throws SQLException {
         final Database database = new Database();
-        final ResultSet schemasSet = metaData.getSchemas(catalog, schema);
+        final ResultSet schemasSet = metaData.getSchemas(catalogName, schemaName);
         while (schemasSet.next()) {
             final Schema schema = new Schema(schemasSet);
             final ResultSet tablesSet = metaData.getTables(schema.getCatalogName(), schema.getSchemaName(), null, null);
@@ -486,20 +507,20 @@ public class AuditBuilder {
         }
         switch (columnIncludeMode.get(tableName)) {
             case ALL:
-                if (!excludeColumn.containsKey(tableName)) {
-                    // if exl set for given key does not exist then all columns should be audited
-                    return true;
-                } else {
+                if (excludeColumn.containsKey(tableName)) {
                     // audit column if it doesn't exist on the list
                     return !excludeColumn.get(tableName).contains(columnName);
+                } else {
+                    // if exl set for given key does not exist then all columns should be audited
+                    return true;
                 }
             case NONE:
-                if (!includeColumn.containsKey(tableName)) {
-                    // if inc set for given key does not exist then no columns should be audited
-                    return false;
-                } else {
+                if (includeColumn.containsKey(tableName)) {
                     // audit column if it exists on the list
                     return includeColumn.get(tableName).contains(columnName);
+                } else {
+                    // if inc set for given key does not exist then no columns should be audited
+                    return false;
                 }
         }
         return false;

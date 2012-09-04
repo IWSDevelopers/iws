@@ -40,12 +40,15 @@ import net.iaeste.iws.api.responses.AbstractResponse;
  */
 public final class User extends AbstractResponse implements Verifiable {
 
-    private Integer userId;
-    private String username;
-    private String password;
-    private String firstname;
-    private String lastname;
-    private Person person;
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private Integer userId = null;
+    private String username = null;
+    private String password = null;
+    private String firstname = null;
+    private String lastname = null;
+    private Person person = null;
 
     /**
      * Constructor to be used to create a new User account. The username must
@@ -72,6 +75,17 @@ public final class User extends AbstractResponse implements Verifiable {
     public User(final Integer userId, final Person person) {
         this.userId = userId;
         this.person = person;
+    }
+
+    public User(final User user) {
+        if (user != null) {
+            userId = user.userId;
+            username = user.username;
+            password = user.password;
+            firstname = user.firstname;
+            lastname = user.lastname;
+            person = new Person(user.person);
+        }
     }
 
     // =========================================================================

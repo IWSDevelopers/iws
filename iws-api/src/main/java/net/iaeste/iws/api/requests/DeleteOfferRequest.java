@@ -47,6 +47,10 @@ public final class DeleteOfferRequest extends AbstractRequest {
         this.offerId = offerId;
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
     public void setOfferId(final Long offerId) {
         this.offerId = offerId;
     }
@@ -55,12 +59,16 @@ public final class DeleteOfferRequest extends AbstractRequest {
         return offerId;
     }
 
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void verify() throws VerificationException {
-        verify("OfferId", offerId, 1, Integer.MAX_VALUE);
+        verifyLimits("OfferId", offerId, 1, Integer.MAX_VALUE);
     }
 
     /**

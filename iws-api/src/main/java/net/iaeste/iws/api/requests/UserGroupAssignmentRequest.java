@@ -36,6 +36,14 @@ public final class UserGroupAssignmentRequest extends AbstractRequest {
     public UserGroupAssignmentRequest() {
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

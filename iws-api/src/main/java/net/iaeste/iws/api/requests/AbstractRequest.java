@@ -43,9 +43,9 @@ abstract class AbstractRequest implements Verifiable {
      * @param value    The value to verify
      * @throws VerificationException if the value is null
      */
-    protected <T> void verify(final String field, final T value) throws VerificationException {
+    protected <T> void verifyNotNull(final String field, final T value) throws VerificationException {
         if (value == null) {
-            throw new VerificationException(format("The field %s may not be null.", field));
+            throw new VerificationException(format("The field '%s' may not be null.", field));
         }
     }
 
@@ -58,12 +58,27 @@ abstract class AbstractRequest implements Verifiable {
      * @param value    The value to verify
      * @throws VerificationException if the value is null
      */
-    protected <T> void verify(final String field, final Verifiable value) throws VerificationException {
-        if (value == null) {
-            throw new VerificationException(format("The field %s may not be null.", field));
-        }
+    protected <T> void verifyObject(final String field, final Verifiable value) throws VerificationException {
+        verifyNotNull(field, value);
 
         value.verify();
+    }
+
+    /**
+     * The method takes a value, and verifies that this value is neither null,
+     * nor empty. If the given value is either null or empty, then a
+     * {@code VerificationException} is thrown.
+     *
+     * @param field    The name of the field (value) to be verified
+     * @param value    The value to verify
+     * @throws VerificationException if the value is null or empty
+     */
+    protected void verifyNotEmpty(final String field, final String value) throws VerificationException {
+        verifyNotNull(field, value);
+
+        if (value.isEmpty()) {
+            throw new VerificationException(format("The field '%s' may not be null or empty.", field));
+        }
     }
 
     /**
@@ -78,13 +93,13 @@ abstract class AbstractRequest implements Verifiable {
      * @param maximum  The Maximal allowed value
      * @throws VerificationException if the value is null or outside given range
      */
-    protected <T extends Number> void verify(final String field, final T value, final T minimum, final T maximum) throws VerificationException {
-        verify(field, value);
+    protected <T extends Number> void verifyLimits(final String field, final T value, final T minimum, final T maximum) throws VerificationException {
+        verifyNotNull(field, value);
 
         // Since the Number is an Abstract type, we need to convert the number
         // to something, which we can then actually check against
         if ((value .doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
-            throw new VerificationException(format("The field %s must be within the range %d to %d, the given value is %d.", field, minimum, maximum, value));
+            throw new VerificationException(format("The field '%s' must be within the range %d to %d, the given value is %d.", field, minimum, maximum, value));
         }
     }
 
@@ -97,10 +112,10 @@ abstract class AbstractRequest implements Verifiable {
      * @throws VerificationException if the value is null or too long
      */
     protected void verify(final String field, final String value, final int maxLength) {
-        verify(field, value);
+        verifyNotNull(field, value);
 
         if (value.length() > maxLength) {
-            throw new VerificationException(format("The field %s may noy be longer than %d", field, maxLength));
+            throw new VerificationException(format("The field '%s' may noy be longer than %d", field, maxLength));
         }
     }
 
@@ -119,8 +134,10 @@ abstract class AbstractRequest implements Verifiable {
      * @throws VerificationException if the e-mail addresss isn't compliant
      */
     protected void verifyEmail(final String field, final String value) throws VerificationException {
-        if (value == null || !EMAIL_PATTERN.matcher(value).matches()) {
-            throw new VerificationException(format("The field %s isn't compliant with the allowed format for e-mail's: %s.", field, IWSConstants.EMAIL_REGEX));
+        verifyNotNull(field, value);
+
+        if (!EMAIL_PATTERN.matcher(value).matches()) {
+            throw new VerificationException(format("The field '%s' isn't compliant with the allowed format for e-mail's: %s.", field, IWSConstants.EMAIL_REGEX));
         }
     }
 

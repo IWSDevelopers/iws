@@ -23,9 +23,10 @@ import net.iaeste.iws.api.responses.AbstractResponse;
  * The Person Object contains the non-system specific information or private
  * information for a person. Although the Person is a core part of the User
  * Object, it is meant for all-round purposes.
- * @author Kim Jensen / last $Author:$
+ *
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  * @noinspection CastToConcreteClass
  */
 public final class Person extends AbstractResponse implements Verifiable {
@@ -33,12 +34,23 @@ public final class Person extends AbstractResponse implements Verifiable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String alternateEmail;
+    private String alternateEmail = null;
 
     /**
-     * Default Constructor.
+     * Emprty Constructor.
      */
     public Person() {
+    }
+
+    /**
+     * Copy Constructor.
+     *
+     * @param person  Person Object to copy
+     */
+    public Person(final Person person) {
+        if (person != null) {
+            alternateEmail = person.alternateEmail;
+        }
     }
 
     public void setAlternateEmail(final String alternateEmail) {

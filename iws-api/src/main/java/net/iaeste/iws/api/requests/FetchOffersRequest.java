@@ -15,46 +15,57 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection RedundantNoArgConstructor
- * @since 1.7
+ * @since   1.7
  */
 public final class FetchOffersRequest extends AbstractRequest {
-    private final FetchType fetchType;
 
-    public enum FetchType {
-        OWNED, SHARED, ALL
-    }
+    private FetchType fetchType;
 
-    /**
-     * {@link IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchOffersRequest(FetchType fetchType) {
+    public FetchOffersRequest() {
+        fetchType = null;
+    }
+
+    /**
+     * Default Constructor.
+     */
+    public FetchOffersRequest(final FetchType fetchType) {
         this.fetchType = fetchType;
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    public void setFetchType(final FetchType fetchType) {
+        this.fetchType = fetchType;
+    }
+
+    public FetchType getFetchType() {
+        return fetchType;
+    }
+
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void verify() throws VerificationException {
-        if (fetchType == null) {
-            throw new VerificationException("Unexpected null value for fetchType");
-        }
-    }
-
-    public FetchType getFetchType() {
-        return fetchType;
+        verifyNotNull("fetchType", fetchType);
     }
 }

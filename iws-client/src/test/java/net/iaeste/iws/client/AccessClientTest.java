@@ -49,7 +49,7 @@ public class AccessClientTest {
         assertThat(response.isOk(), is(false));
         assertThat(response.getToken(), is(nullValue()));
         assertThat(response.getError(), is(IWSErrors.VERIFICATION_ERROR));
-        assertThat(response.getMessage(), is("User Credentials may not be null."));
+        assertThat(response.getMessage(), is("The field 'User Credentials' may not be null."));
     }
 
     @Test

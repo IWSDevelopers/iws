@@ -36,6 +36,14 @@ public final class FetchPublishGroupsRequest extends AbstractRequest {
     public FetchPublishGroupsRequest() {
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

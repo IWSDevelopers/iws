@@ -36,6 +36,14 @@ public final class FetchOfferTemplatesRequest extends AbstractRequest {
     public FetchOfferTemplatesRequest() {
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

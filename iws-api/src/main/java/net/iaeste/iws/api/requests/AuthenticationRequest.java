@@ -16,7 +16,6 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.utils.Check;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -53,6 +52,10 @@ public final class AuthenticationRequest extends AbstractRequest {
         this.password = password;
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
     public void setUsername(final String username) {
         this.username = username;
     }
@@ -69,13 +72,22 @@ public final class AuthenticationRequest extends AbstractRequest {
         return password;
     }
 
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void verify() throws VerificationException {
-        Check.notEmpty(username, "User Credentials");
-        Check.notEmpty(password, "User Credentials");
+        // Sharing the exact value that fails is not a good idea, hence we try
+        // to anonymize it a bit. From a security perspective, it is called
+        // "Security through Obscurity" - and it is not our only mechanism, but
+        // limitting the information that hackers may get, is always a good
+        // idea :-)
+        verifyNotEmpty("User Credentials", username);
+        verifyNotEmpty("User Credentials", password);
     }
 
     /**

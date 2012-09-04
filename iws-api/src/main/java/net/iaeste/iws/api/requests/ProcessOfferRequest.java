@@ -19,21 +19,17 @@ import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @noinspection CastToConcreteClass
- * @since 1.7
+ * @since   1.7
  */
 public final class ProcessOfferRequest extends AbstractRequest {
 
-    /**
-     * {@link IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /**
-     * The Offer Object to process.
-     */
+    /** The Offer Object to process. */
     private Offer offer;
 
     /**
@@ -45,14 +41,18 @@ public final class ProcessOfferRequest extends AbstractRequest {
     }
 
     /**
-     * Sets the Offer to be processed. If the Offer exists, it will be updated
-     * otherwise a new Offer will be created.
+     * Default Constructor, sets the Offer to be processed. If the Offer exists,
+     * it will be updated otherwise a new Offer will be created.
      *
      * @param offer object to create or update
      */
     public ProcessOfferRequest(final Offer offer) {
-        setOffer(offer);
+        this.offer = new Offer(offer);
     }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
 
     public void setOffer(final Offer offer) {
         this.offer = new Offer(offer);
@@ -62,6 +62,7 @@ public final class ProcessOfferRequest extends AbstractRequest {
         return new Offer(offer);
     }
 
+    // Todo Kim; @Michal, The following should not be part of this Object, this is business Logic decisions
     public boolean isCreateRequest() {
         if (offer == null) {
             return false;
@@ -76,14 +77,19 @@ public final class ProcessOfferRequest extends AbstractRequest {
         return offer.getId() != null;
     }
 
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void verify() throws VerificationException {
-        verify("Offer", offer);
+        verifyObject("Offer", offer);
     }
 
+    // ToDo Kim; @Michael, The following methods are not requied or needed for Request Objects, only for DTO objects
     /**
      * {@inheritDoc}
      */

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services ($module.name) - $file.qualifiedClassName
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchEmployersRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -15,55 +15,73 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection RedundantNoArgConstructor
- * @since 1.7
  */
 public final class FetchEmployersRequest extends AbstractRequest {
-    private final FetchType fetchType;
-    private final String name;
 
-    public enum FetchType {
-        OWNED
-    }
-
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private FetchType fetchType;
+    private String name;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
+     */
+    public FetchEmployersRequest() {
+        fetchType = null;
+        name = null;
+    }
+
+    /**
+     * Default Constructor, for setting all values.
+     *
+     * @param fetchType The Employer Fetch Type
+     * @param name      The Employer Name
      */
     public FetchEmployersRequest(final FetchType fetchType, final String name) {
         this.fetchType = fetchType;
         this.name = name;
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void verify() throws VerificationException {
-        if (fetchType == null) {
-            throw new VerificationException("Unexpected null value for fetchType");
-        }
-        if (name.isEmpty()) {
-            throw new VerificationException("Unexpected empty string value for name");
-        }
+    public void setFetchType(final FetchType fetchType) {
+        this.fetchType = fetchType;
     }
 
     public FetchType getFetchType() {
         return fetchType;
     }
 
+    public void setName(final String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
+    }
+
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void verify() throws VerificationException {
+        verifyNotNull("fetchType", fetchType);
+        verifyNotEmpty("name", name);
     }
 }

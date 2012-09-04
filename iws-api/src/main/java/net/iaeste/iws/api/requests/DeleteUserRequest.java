@@ -27,10 +27,18 @@ public class DeleteUserRequest  extends AbstractRequest {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Integer userId;
+    private Integer userId = null;
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
 
     @Override
     public void verify() throws VerificationException {
-        verify("userId", userId, 1, Integer.MAX_VALUE);
+        verifyLimits("userId", userId, 1, Integer.MAX_VALUE);
     }
 }

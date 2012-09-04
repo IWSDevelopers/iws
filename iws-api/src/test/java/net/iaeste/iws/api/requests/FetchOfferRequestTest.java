@@ -15,29 +15,33 @@
 
 package net.iaeste.iws.api.requests;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-
-import org.junit.Assert;
+import net.iaeste.iws.api.enums.FetchType;
 import org.junit.Test;
 
 import java.util.EnumSet;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection ObjectAllocationInLoop
  */
 public class FetchOfferRequestTest {
+
     @Test
     public void testConstructor() {
-        final Iterable<FetchOffersRequest.FetchType> fetchTypes = EnumSet.allOf(FetchOffersRequest.FetchType.class);
-        for (final FetchOffersRequest.FetchType fetchType : fetchTypes) {
+        final Iterable<FetchType> fetchTypes = EnumSet.allOf(FetchType.class);
+
+        for (final FetchType fetchType : fetchTypes) {
             final FetchOffersRequest request = new FetchOffersRequest(fetchType);
-            Assert.assertThat(request, is(not(nullValue())));
-            Assert.assertThat(request.getFetchType(), is(not(nullValue())));
-            Assert.assertThat(request.getFetchType(), is(fetchType));
+            assertThat(request, is(not(nullValue())));
+            assertThat(request.getFetchType(), is(not(nullValue())));
+            assertThat(request.getFetchType(), is(fetchType));
         }
     }
 }

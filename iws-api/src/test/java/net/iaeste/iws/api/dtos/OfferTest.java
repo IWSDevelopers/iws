@@ -21,7 +21,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import net.iaeste.iws.api.enums.FieldOfStudy;
-import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.Specialization;
@@ -92,7 +91,6 @@ public class OfferTest {
         Assert.assertThat("EmployerName", EMPLOYER_NAME, is(offer.getEmployerName()));
         Assert.assertThat("size of Study Levels collection should be 1", 1, is(offer.getStudyLevels().size()));
         Assert.assertThat("first Study Level should be E", offer.getStudyLevels().contains(StudyLevel.E), is(true));
-        Assert.assertThat("Gender", Gender.E, is(offer.getGender()));
         Assert.assertThat("Language", Language.ENGLISH, is(offer.getLanguage1()));
         Assert.assertThat("LanguageLevel", LanguageLevel.E, is(offer.getLanguage1Level()));
         Assert.assertThat("WorkDescription", WORK_DESCRIPTION, is(offer.getWorkDescription()));
@@ -161,7 +159,7 @@ public class OfferTest {
     }
 
     /**
-     * @todo which fields are not important for the equality of an offer?
+     * TODO: which fields are not important for the equality of an offer?
      */
     @Test
     public void testEqualityOfSimilarOffers() {
@@ -476,14 +474,6 @@ public class OfferTest {
         offer = getMinimalOffer();
         offer.setStudyLevels(EnumSet.noneOf(StudyLevel.class));
         Assert.assertThat("studyLevels list cannot be empty", isVerificationExceptionThrown(), is(true));
-
-    }
-
-    @Test
-    public void testNotNullableGender() {
-        offer = getMinimalOffer();
-        offer.setGender(null);
-        Assert.assertThat(String.format("gender%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
     }
 

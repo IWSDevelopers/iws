@@ -21,7 +21,6 @@ import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
-import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
@@ -57,6 +56,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
+@SuppressWarnings("ClassWithTooManyFields")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 public class OfferEntityTest {
@@ -64,7 +64,7 @@ public class OfferEntityTest {
     private static final String REF_NO_2 = "AT-2012-5678-AB";
     private static final Date NOMINATION_DEADLINE = new Date();
     private static final String EMPLOYER_NAME = "Test_Employer_1";
-    private static final String EMPLOYER_NAME_LIKE = EMPLOYER_NAME.substring(3,3);
+    private static final String EMPLOYER_NAME_LIKE = EMPLOYER_NAME.substring(3, 3);
     private static final String EMPLOYER_NAME_LIKE_NONEXISTING = "XxXxX";
     private static final String WORK_DESCRIPTION = "nothing";
     private static final Integer MAXIMUM_WEEKS = 12;
@@ -83,7 +83,7 @@ public class OfferEntityTest {
     private static final String FIELDS_OF_STUDY = String.format("%s|%s", FieldOfStudy.IT, FieldOfStudy.CHEMISTRY);
     private static final String SPECIALIZATIONS = String.format("%s|%s", Specialization.INFORMATION_TECHNOLOGY, "Custom");
     private static final String STUDY_LEVELS = String.format("%s|%s", StudyLevel.E, StudyLevel.M);
-    private static final String TYPE_OF_WORK = String.format("|", TypeOfWork.N, TypeOfWork.P);
+    private static final String TYPE_OF_WORK = TypeOfWork.R.toString();
 
     private static final String EMPLOYER_ADDRESS = "test address 30";
     private static final String EMPLOYER_ADDRESS2 = "test address 31";
@@ -120,7 +120,6 @@ public class OfferEntityTest {
         offer.setEmployerName(EMPLOYER_NAME);
         offer.setStudyLevels(STUDY_LEVELS);
         offer.setFieldOfStudies(FIELDS_OF_STUDY);
-        offer.setGender(Gender.E);
         offer.setLanguage1(Language.ENGLISH);
         offer.setLanguage1Level(LanguageLevel.E);
         offer.setWorkDescription(WORK_DESCRIPTION);
@@ -182,7 +181,6 @@ public class OfferEntityTest {
         Assert.assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
         Assert.assertThat(offer.getStudyLevels(), is(STUDY_LEVELS));
         Assert.assertThat(offer.getFieldOfStudies(), is(FIELDS_OF_STUDY));
-        Assert.assertThat(offer.getGender(), is(Gender.E));
         Assert.assertThat(offer.getLanguage1(), is(Language.ENGLISH));
         Assert.assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
         Assert.assertThat(offer.getWorkDescription(), is(WORK_DESCRIPTION));
@@ -196,6 +194,7 @@ public class OfferEntityTest {
         Assert.assertThat(offer, is(persisted));
     }
 
+    @SuppressWarnings("OverlyLongMethod")
     @Test
     @Transactional
     public void testFullOffer() {
@@ -208,7 +207,6 @@ public class OfferEntityTest {
         Assert.assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
         Assert.assertThat(offer.getStudyLevels(), is(STUDY_LEVELS));
         Assert.assertThat(offer.getFieldOfStudies(), is(FIELDS_OF_STUDY));
-        Assert.assertThat(offer.getGender(), is(Gender.E));
         Assert.assertThat(offer.getLanguage1(), is(Language.ENGLISH));
         Assert.assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
         Assert.assertThat(offer.getWorkDescription(), is(WORK_DESCRIPTION));
@@ -292,13 +290,6 @@ public class OfferEntityTest {
     @Transactional
     public void testNullEmployerName() {
         offer.setEmployerName(null);
-        dao.persist(offer);
-    }
-
-    @Test(expected = PersistenceException.class)
-    @Transactional
-    public void testNullGender() {
-        offer.setGender(null);
         dao.persist(offer);
     }
 
@@ -690,7 +681,7 @@ public class OfferEntityTest {
         Assert.assertThat(offerFoundById, is(offer));
         Assert.assertThat(dao.findOffersByEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
         final List<OfferEntity> offersFoundByEmployerName = dao.findOffersByEmployerName(offer.getEmployerName());
-        if(offersFoundByEmployerName==null || offersFoundByEmployerName.isEmpty()) {
+        if (offersFoundByEmployerName == null || offersFoundByEmployerName.isEmpty()) {
             fail("This should not happen!");
         }
         final OfferEntity offerFoundByEmployerName = offersFoundByEmployerName.get(0);
@@ -700,7 +691,7 @@ public class OfferEntityTest {
         dao.persist(offer2);
         Assert.assertThat(dao.findAll().size(), is(2));
         final List<OfferEntity> offersFoundByLikeEmployerName = dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE);
-        if(offersFoundByLikeEmployerName==null || offersFoundByLikeEmployerName.isEmpty()) {
+        if (offersFoundByLikeEmployerName == null || offersFoundByLikeEmployerName.isEmpty()) {
             fail("This should not happen!");
         }
         Assert.assertThat(offersFoundByLikeEmployerName.size(), is(2));

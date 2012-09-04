@@ -15,7 +15,6 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.Currency;
-import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
@@ -67,7 +66,7 @@ import java.util.Date;
         @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM OfferEntity o WHERE o.id IN :ids"),
         @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM OfferEntity o WHERE o.refNo = :refNo"),
         @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.employerName= :employerName"),
-        @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.employerName LIKE CONCAT ('%', :employerName, '%')"),
+        @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.employerName LIKE CONCAT('%', :employerName, '%')"),
         @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM OfferEntity o WHERE o.id IN :ids")
 })
@@ -130,10 +129,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
 
     @Column(name = "other_requirements", length = 500)
     private String otherRequirements;
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "gender", nullable = false, length = 1)
-    private Gender gender;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "language_1", nullable = false)
@@ -354,14 +349,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
 
     public void setFromDate(final Date fromDate) {
         this.fromDate = fromDate;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(final Gender gender) {
-        this.gender = gender;
     }
 
     public Date getUnavailableFrom() {
@@ -656,7 +643,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         this.employerWebsite = offer.employerWebsite;
         this.prevTrainingRequired = offer.prevTrainingRequired;
         this.otherRequirements = offer.otherRequirements;
-        this.gender = offer.gender;
         this.language1 = offer.language1;
         this.language1Level = offer.language1Level;
         this.language1Operator = offer.language1Operator;
@@ -746,9 +732,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
             return false;
         }
         if (fromDate2 != null ? !fromDate2.equals(entity.fromDate2) : entity.fromDate2 != null) {
-            return false;
-        }
-        if (gender != entity.gender) {
             return false;
         }
         if (language1 != entity.language1) {
@@ -877,7 +860,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         result = 31 * result + (studyLevels != null ? studyLevels.hashCode() : 0);
         result = 31 * result + (prevTrainingRequired != null ? prevTrainingRequired.hashCode() : 0);
         result = 31 * result + (otherRequirements != null ? otherRequirements.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (language1 != null ? language1.hashCode() : 0);
         result = 31 * result + (language1Level != null ? language1Level.hashCode() : 0);
         result = 31 * result + (language1Operator != null ? language1Operator.hashCode() : 0);
@@ -931,7 +913,6 @@ public class OfferEntity implements Mergeable<OfferEntity> {
                 ", studyLevels=" + studyLevels +
                 ", prevTrainingRequired=" + prevTrainingRequired +
                 ", otherRequirements='" + otherRequirements + '\'' +
-                ", gender=" + gender +
                 ", language1=" + language1 +
                 ", language1Level=" + language1Level +
                 ", language1Operator=" + language1Operator +

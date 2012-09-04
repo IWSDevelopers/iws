@@ -17,7 +17,6 @@ package net.iaeste.iws.api.dtos;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
-import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
@@ -80,7 +79,6 @@ public final class Offer implements Verifiable {
             this.employerWebsite = offer.employerWebsite;
             this.prevTrainingRequired = offer.prevTrainingRequired;
             this.otherRequirements = offer.otherRequirements;
-            this.gender = offer.gender;
             this.language1 = offer.language1;
             this.language1Level = offer.language1Level;
             this.language1Operator = offer.language1Operator;
@@ -116,7 +114,7 @@ public final class Offer implements Verifiable {
             this.unavailableFrom = Copier.copy(offer.unavailableFrom);
             this.unavailableTo = Copier.copy(offer.unavailableTo);
 
-            this.typeOfWork = Copier.copy(offer.typeOfWork);
+            this.typeOfWork = offer.typeOfWork;
             this.fieldOfStudies = Copier.copy(offer.fieldOfStudies);
             this.specializations = Copier.copy(offer.specializations);
             this.studyLevels = Copier.copy(offer.studyLevels);
@@ -146,7 +144,6 @@ public final class Offer implements Verifiable {
     private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
     private Boolean prevTrainingRequired;
     private String otherRequirements;
-    private Gender gender;
     private Language language1;
     private LanguageLevel language1Level;
     private LanguageOperator language1Operator;
@@ -158,7 +155,7 @@ public final class Offer implements Verifiable {
 
     // Work offered
     private String workDescription;
-    private Set<TypeOfWork> typeOfWork = EnumSet.noneOf(TypeOfWork.class);
+    private TypeOfWork typeOfWork;
     private Integer minimumWeeks;
     private Integer maximumWeeks;
     private Date fromDate;
@@ -291,14 +288,6 @@ public final class Offer implements Verifiable {
 
     public void setFromDate(final Date fromDate2) {
         this.fromDate = Copier.copy(fromDate2);
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(final Gender gender) {
-        this.gender = gender;
     }
 
     public Date getUnavailableFrom() {
@@ -541,12 +530,12 @@ public final class Offer implements Verifiable {
         this.toDate = Copier.copy(toDate);
     }
 
-    public Set<TypeOfWork> getTypeOfWork() {
-        return Copier.copy(typeOfWork);
+    public TypeOfWork getTypeOfWork() {
+        return typeOfWork;
     }
 
-    public void setTypeOfWork(final Set<TypeOfWork> typeOfWork) {
-        this.typeOfWork = Copier.copy(typeOfWork);
+    public void setTypeOfWork(final TypeOfWork typeOfWork) {
+        this.typeOfWork = typeOfWork;
     }
 
     public Float getWeeklyHours() {
@@ -647,9 +636,6 @@ public final class Offer implements Verifiable {
         if (fromDate2 != null ? !fromDate2.equals(offer.fromDate2) : offer.fromDate2 != null) {
             return false;
         }
-        if (gender != offer.gender) {
-            return false;
-        }
         if (unavailableFrom != null ? !unavailableFrom.equals(offer.unavailableFrom) : offer.unavailableFrom != null) {
             return false;
         }
@@ -740,8 +726,7 @@ public final class Offer implements Verifiable {
         if (workingPlace != null ? !workingPlace.equals(offer.workingPlace) : offer.workingPlace != null) {
             return false;
         }
-        if (!(typeOfWork == null ? EnumSet.noneOf(TypeOfWork.class) : typeOfWork).equals(
-                offer.typeOfWork == null ? EnumSet.noneOf(TypeOfWork.class) : offer.typeOfWork)) {
+        if (typeOfWork != null ? !typeOfWork.equals(offer.typeOfWork) : offer.typeOfWork != null) {
             return false;
         }
         if (!(fieldOfStudies == null ? EnumSet.noneOf(FieldOfStudy.class) : fieldOfStudies).equals(
@@ -781,7 +766,6 @@ public final class Offer implements Verifiable {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (studyLevels != null ? studyLevels.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (prevTrainingRequired != null ? prevTrainingRequired.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (otherRequirements != null ? otherRequirements.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (gender != null ? gender.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language1 != null ? language1.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language1Level != null ? language1Level.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language1Operator != null ? language1Operator.hashCode() : 0);
@@ -838,7 +822,6 @@ public final class Offer implements Verifiable {
                 ", studyLevels=" + studyLevels +
                 ", prevTrainingRequired=" + prevTrainingRequired +
                 ", otherRequirements='" + otherRequirements + '\'' +
-                ", gender=" + gender +
                 ", language1=" + language1 +
                 ", language1Level=" + language1Level +
                 ", language1Operator=" + language1Operator +
@@ -938,9 +921,6 @@ public final class Offer implements Verifiable {
         }
         if (toDate == null) {
             errors.add("'toDate' is missing");
-        }
-        if (gender == null) {
-            errors.add("'gender' is missing");
         }
         if (language1 == null) {
             errors.add("'language1' is missing");

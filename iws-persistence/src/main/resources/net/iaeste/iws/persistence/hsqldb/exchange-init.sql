@@ -22,7 +22,6 @@ CREATE TABLE offers (
     to_date_2                 date,
     unavailable_from          date,
     unavailable_to            date,
-    gender                    varchar(1)    NOT NULL,
     language_1                varchar(255)  NOT NULL,
     language_1_level          varchar(1)    NOT NULL,
     language_1_op             varchar(1),

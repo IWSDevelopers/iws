@@ -17,7 +17,6 @@ package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
-import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
@@ -47,7 +46,7 @@ public class OfferTestUtility {
     public static final Float WEEKLY_HOURS = 40.0f;
     public static final Date FROM_DATE = new Date();
     public static final Date TO_DATE = new Date(FROM_DATE.getTime() + 3600 * 24 * 90);
-    public static final Set<TypeOfWork> TYPE_OF_WORK = EnumSet.of(TypeOfWork.R, TypeOfWork.N);
+    public static final TypeOfWork TYPE_OF_WORK = TypeOfWork.R;
     public static final Date FROM_DATE2 = new Date(TO_DATE.getTime() + 3600 * 24 * 90);
     public static final Date TO_DATE2 = new Date(FROM_DATE2.getTime() + 3600 * 24 * 90);
     public static final Date UNAVAIABLE_FROM = new Date(TO_DATE.getTime());
@@ -72,6 +71,7 @@ public class OfferTestUtility {
     public static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.M;
     public static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.M;
     public static final Boolean CANTEEN = true;
+    public static final String SPECIALIZATIONS = String.format("%s|%s", Specialization.INFORMATION_TECHNOLOGY, "Custom");
 
     private OfferTestUtility() {
     }
@@ -86,7 +86,6 @@ public class OfferTestUtility {
         minimalOffer.setEmployerName(EMPLOYER_NAME);
         minimalOffer.setStudyLevels(EnumSet.of(StudyLevel.E));
         minimalOffer.setFieldOfStudies(EnumSet.of(FieldOfStudy.IT));
-        minimalOffer.setGender(Gender.E);
         minimalOffer.setLanguage1(Language.ENGLISH);
         minimalOffer.setLanguage1Level(LanguageLevel.E);
         minimalOffer.setWorkDescription(WORK_DESCRIPTION);

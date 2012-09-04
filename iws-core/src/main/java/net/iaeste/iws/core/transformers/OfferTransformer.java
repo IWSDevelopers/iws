@@ -52,7 +52,6 @@ public final class OfferTransformer {
             result.setSpecializations(CollectionTransformer.join(offer.getSpecializations()));
             result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
             result.setOtherRequirements(offer.getOtherRequirements());
-            result.setGender(offer.getGender());
             result.setLanguage1(offer.getLanguage1());
             result.setLanguage1Level(offer.getLanguage1Level());
             result.setLanguage1Operator(offer.getLanguage1Operator());
@@ -62,7 +61,7 @@ public final class OfferTransformer {
             result.setLanguage3(offer.getLanguage3());
             result.setLanguage3Level(offer.getLanguage3Level());
             result.setWorkDescription(offer.getWorkDescription());
-            result.setTypeOfWork(CollectionTransformer.concatEnumCollection(offer.getTypeOfWork()));
+            result.setTypeOfWork(offer.getTypeOfWork() != null ? offer.getTypeOfWork().toString() : null);
             result.setMinimumWeeks(offer.getMinimumWeeks());
             result.setMaximumWeeks(offer.getMaximumWeeks());
             result.setFromDate(offer.getFromDate());
@@ -111,7 +110,6 @@ public final class OfferTransformer {
             result.setSpecializations(CollectionTransformer.explodeStringSet(offer.getSpecializations()));
             result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
             result.setOtherRequirements(offer.getOtherRequirements());
-            result.setGender(offer.getGender());
             result.setLanguage1(offer.getLanguage1());
             result.setLanguage1Level(offer.getLanguage1Level());
             result.setLanguage1Operator(offer.getLanguage1Operator());
@@ -121,7 +119,7 @@ public final class OfferTransformer {
             result.setLanguage3(offer.getLanguage3());
             result.setLanguage3Level(offer.getLanguage3Level());
             result.setWorkDescription(offer.getWorkDescription());
-            result.setTypeOfWork(CollectionTransformer.explodeEnumSet(TypeOfWork.class, offer.getTypeOfWork()));
+            result.setTypeOfWork(TypeOfWork.toValue(offer.getTypeOfWork()));
             result.setMinimumWeeks(offer.getMinimumWeeks());
             result.setMaximumWeeks(offer.getMaximumWeeks());
             result.setFromDate(offer.getFromDate());
@@ -154,8 +152,8 @@ public final class OfferTransformer {
     /**
      * Transform OfferEntity employer into the Employer DTO
      *
-     * @param t            The Class object to overloading transform method
-     * @param offer        Source OfferEntity which is to be transformed
+     * @param t     The Class object to overloading transform method
+     * @param offer Source OfferEntity which is to be transformed
      * @return Employer Object
      */
     public static Employer transform(final Class<Employer> t, final OfferEntity offer) {

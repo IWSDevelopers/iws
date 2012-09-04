@@ -15,12 +15,12 @@
 package net.iaeste.iws.api.enums;
 
 /**
-* All types of work that can be selected in the system
-*
-* @author Marko Cilimkovic / last $Author:$
-* @version $Revision:$ / $Date:$
-* @since 1.7
-*/
+ * All types of work that can be selected in the system
+ *
+ * @author Marko Cilimkovic / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since 1.7
+ */
 public enum TypeOfWork {
     R("Research and Development"),
     P("Professional"),
@@ -35,5 +35,15 @@ public enum TypeOfWork {
 
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Same as valueOf but for when an argument is null then null is returned.
+     *
+     * @param typeOfWork String which should be value of TypeOfWork
+     * @return null or enum value
+     */
+    public static TypeOfWork toValue(final String typeOfWork) {
+        return typeOfWork == null ? null : TypeOfWork.valueOf(typeOfWork);
     }
 }

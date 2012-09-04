@@ -18,12 +18,18 @@ import static org.hamcrest.core.Is.is;
 import net.iaeste.iws.api.dtos.Employer;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
-import net.iaeste.iws.api.enums.*;
+import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.enums.LanguageOperator;
+import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -37,7 +43,7 @@ public class OfferTransformerTest {
         final OfferEntity entity = OfferTransformer.transform(offer);
         // TODO: check field by field
         Assert.assertThat(offer.getId(), is(entity.getId()));
-        Assert.assertThat(offer.getTypeOfWork(), is(CollectionTransformer.explodeEnumSet(TypeOfWork.class, entity.getTypeOfWork())));
+        Assert.assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
 
         Assert.assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
         Assert.assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
@@ -49,7 +55,7 @@ public class OfferTransformerTest {
         final OfferEntity entity = getMinimalOfferEntity();
         final Offer offer = OfferTransformer.transform(entity);
         // TODO: check field by field
-        Assert.assertThat(offer.getTypeOfWork(), is(CollectionTransformer.explodeEnumSet(TypeOfWork.class, entity.getTypeOfWork())));
+        Assert.assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
 
         Assert.assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
         Assert.assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
@@ -125,7 +131,6 @@ public class OfferTransformerTest {
         fieldOfStudies.add(FieldOfStudy.IT);
         minimalOffer.setFieldOfStudies(CollectionTransformer.concatEnumCollection(fieldOfStudies));
         minimalOffer.setStudyLevels(CollectionTransformer.concatEnumCollection(list));
-        minimalOffer.setGender(Gender.E);
         minimalOffer.setLanguage1(Language.ENGLISH);
         minimalOffer.setLanguage1Level(LanguageLevel.E);
         minimalOffer.setWorkDescription(OfferTestUtility.WORK_DESCRIPTION);
@@ -137,6 +142,7 @@ public class OfferTransformerTest {
         return minimalOffer;
     }
 
+    @SuppressWarnings("OverlyLongMethod")
     private OfferEntity getFullOfferEntity() {
         final OfferEntity offer = getMinimalOfferEntity();
         offer.setNominationDeadline(OfferTestUtility.NOMINATION_DEADLINE);
@@ -153,7 +159,7 @@ public class OfferTransformerTest {
         offer.setLanguage2Operator(LanguageOperator.O);
         offer.setLanguage3(Language.GERMAN);
         offer.setLanguage3Level(LanguageLevel.E);
-        offer.setTypeOfWork(CollectionTransformer.concatEnumCollection(OfferTestUtility.TYPE_OF_WORK));
+        offer.setTypeOfWork(OfferTestUtility.TYPE_OF_WORK.toString());
         offer.setFromDate2(OfferTestUtility.FROM_DATE2);
         offer.setToDate2(OfferTestUtility.TO_DATE2);
         offer.setUnavailableFrom(OfferTestUtility.UNAVAIABLE_FROM);
@@ -171,8 +177,7 @@ public class OfferTransformerTest {
         offer.setLivingCost(OfferTestUtility.LIVING_COST);
         offer.setLivingCostFrequency(OfferTestUtility.LIVING_COST_FREQUENCY);
         offer.setCanteen(OfferTestUtility.CANTEEN);
-        final String SPECIALIZATIONS = String.format("%s|%s", Specialization.INFORMATION_TECHNOLOGY, "Custom");
-        offer.setSpecializations(SPECIALIZATIONS);
+        offer.setSpecializations(OfferTestUtility.SPECIALIZATIONS);
 
         return offer;
     }

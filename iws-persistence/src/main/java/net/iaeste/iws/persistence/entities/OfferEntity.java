@@ -19,7 +19,6 @@ import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.PaymentFrequency;
-import net.iaeste.iws.api.utils.Copier;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,26 +36,17 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Okay, I'm seriously pissed at Git! a merge dropped all my todo's, and
- * replaced the correct implementation with the previous incorrect! Seriously,
- * I thought that Git was suppose to be a good tool!!!
- * Adding my comments from memory...
  * <pre>
- * 1. Please remove the "standard" methods; equals, hashCode & toString - they
- *    are irrelevant in the Entity, but required in the DTO.
- * 2. Please don't use defensive copying in the getters & setters. It can cause
- *    problems for Instrumented interfaces, since they cannot track when the
- *    Objects are the same as in the database.
  * 3. Please add JavaDoc, it is very confusing to read the code.
- * 5. IntelliJ have tons of inspection rules that freak out, please look at them
- *    and apply them - for example, internally, you should not use the setters
- *    and getters.
  * </pre>
+ * As written in mails and Trac - please start adding JavaDoc, to clarify what
+ * is what. If you document the things in the DTO's (where it should be
+ * regardlessly), you can simply refer to the information there with an @see.
  *
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection AssignmentToDateFieldFromParameter, ReturnOfDateField
- * @since 1.7
+ * @since   1.7
+ * @noinspection OverlyComplexClass, AssignmentToDateFieldFromParameter, OverlyLongMethod
  */
 @Table(name = "offers")
 @Entity
@@ -66,7 +56,7 @@ import java.util.Date;
         @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM OfferEntity o WHERE o.id IN :ids"),
         @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM OfferEntity o WHERE o.refNo = :refNo"),
         @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.employerName= :employerName"),
-        @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.employerName LIKE CONCAT('%', :employerName, '%')"),
+        @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.employerName LIKE :employerName"),
         @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM OfferEntity o WHERE o.id IN :ids")
 })
@@ -74,14 +64,14 @@ public class OfferEntity implements Mergeable<OfferEntity> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long id = null;
 
     @Column(name = "ref_no", nullable = false, unique = true)
-    private String refNo;
+    private String refNo = null;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "nomination_deadline")
-    private Date nominationDeadline;
+    private Date nominationDeadline = null;
 
     /**
      * Employer information should be duplicated in each offer for several reasons:
@@ -94,158 +84,158 @@ public class OfferEntity implements Mergeable<OfferEntity> {
 
     // Employer information
     @Column(name = "employer_name", nullable = false)
-    private String employerName;
+    private String employerName = null;
 
     @Column(name = "employer_address")
-    private String employerAddress;
+    private String employerAddress = null;
 
     @Column(name = "employer_address_2")
-    private String employerAddress2;
+    private String employerAddress2 = null;
 
     @Column(name = "employer_business")
-    private String employerBusiness;
+    private String employerBusiness = null;
 
     @Column(name = "employer_employees_cnt")
-    private Integer employerEmployeesCount;
+    private Integer employerEmployeesCount = null;
 
     @Column(name = "employer_website")
-    private String employerWebsite;
+    private String employerWebsite = null;
 
     // TODO: add length to limit String/Lists
     @Column(name = "specializations")
-    private String specializations;
+    private String specializations = null;
 
     @Column(name = "study_levels", nullable = false)
-    private String studyLevels;
+    private String studyLevels = null;
 
     @Column(name = "study_fields", nullable = false)
-    private String fieldOfStudies;
+    private String fieldOfStudies = null;
 
     @Column(name = "work_type")
-    private String typeOfWork;
+    private String typeOfWork = null;
 
     @Column(name = "prev_training_req")
-    private Boolean prevTrainingRequired;
+    private Boolean prevTrainingRequired = null;
 
     @Column(name = "other_requirements", length = 500)
-    private String otherRequirements;
+    private String otherRequirements = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "language_1", nullable = false)
-    private Language language1;
+    private Language language1 = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "language_1_level", nullable = false, length = 1)
-    private LanguageLevel language1Level;
+    private LanguageLevel language1Level = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "language_1_op", length = 1)
-    private LanguageOperator language1Operator;
+    private LanguageOperator language1Operator = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "language_2")
-    private Language language2;
+    private Language language2 = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "language_2_level", length = 1)
-    private LanguageLevel language2Level;
+    private LanguageLevel language2Level = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "language_2_op", length = 1)
-    private LanguageOperator language2Operator;
+    private LanguageOperator language2Operator = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "language_3")
-    private Language language3;
+    private Language language3 = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "language_3_level", length = 1)
-    private LanguageLevel language3Level;
+    private LanguageLevel language3Level = null;
 
     // Work offered
     @Column(name = "work_description", nullable = false, length = 1000)
-    private String workDescription;
+    private String workDescription = null;
 
     @Column(name = "min_weeks", nullable = false)
-    private Integer minimumWeeks;
+    private Integer minimumWeeks = null;
 
     @Column(name = "max_weeks", nullable = false)
-    private Integer maximumWeeks;
+    private Integer maximumWeeks = null;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @Column(name = "from_date", nullable = false)
-    private Date fromDate;
+    private Date fromDate = null;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @Column(name = "to_date", nullable = false)
-    private Date toDate;
+    private Date toDate = null;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @Column(name = "from_date_2")
-    private Date fromDate2;
+    private Date fromDate2 = null;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @Column(name = "to_date_2")
-    private Date toDate2;
+    private Date toDate2 = null;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @Column(name = "unavailable_from")
-    private Date unavailableFrom;
+    private Date unavailableFrom = null;
 
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @Column(name = "unavailable_to")
-    private Date unavailableTo;
+    private Date unavailableTo = null;
 
     @Column(name = "working_place")
-    private String workingPlace;
+    private String workingPlace = null;
 
     @Column(name = "nearest_airport")
-    private String nearestAirport;
+    private String nearestAirport = null;
 
     @Column(name = "nearest_pub_transport")
-    private String nearestPubTransport;
+    private String nearestPubTransport = null;
 
     @Column(name = "weekly_hours", nullable = false, scale = 5, precision = 3)
-    private Float weeklyHours;
+    private Float weeklyHours = null;
 
     @Column(name = "daily_hours", scale = 5, precision = 3)
-    private Float dailyHours;
+    private Float dailyHours = null;
 
     /**
      * need big numbers, e.g. 1 EUR = 26.435,00 VND
      */
     @Column(name = "payment", scale = 12, precision = 2)
-    private BigDecimal payment;
+    private BigDecimal payment = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "currency", length = 3)
-    private Currency currency;
+    private Currency currency = null;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment_frequency", length = 1)
-    private PaymentFrequency paymentFrequency;
+    private PaymentFrequency paymentFrequency = null;
 
     @Column(name = "deduction", scale = 2, precision = 0)
-    private Integer deduction;
+    private Integer deduction = null;
 
     // Accommodation
     @Column(name = "lodging_by")
-    private String lodgingBy;
+    private String lodgingBy = null;
 
     @Column(name = "lodging_cost", scale = 12, precision = 2)
-    private BigDecimal lodgingCost;
+    private BigDecimal lodgingCost = null;
 
     @Column(name = "lodging_cost_frequency", length = 1)
-    private PaymentFrequency lodgingCostFrequency;
+    private PaymentFrequency lodgingCostFrequency = null;
 
     @Column(name = "living_cost", scale = 12, precision = 2)
-    private BigDecimal livingCost;
+    private BigDecimal livingCost = null;
 
     @Column(name = "living_cost_frequency", length = 1)
-    private PaymentFrequency livingCostFrequency;
+    private PaymentFrequency livingCostFrequency = null;
 
     @Column(name = "canteen")
-    private Boolean canteen;
+    private Boolean canteen = null;
 
     public Boolean getCanteen() {
         return canteen;
@@ -626,326 +616,61 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("OverlyLongMethod")
     @Override
-    public void merge(final OfferEntity offer) {
+    public void merge(final OfferEntity obj) {
         // don't merge if objects are not the same entity
-        if ((this.id == null) || !id.equals(offer.id)) {
-            return;
+        if ((id != null) && (obj != null) && id.equals(obj.id)) {
+            // first comparing that the Id's are identical, and then
+            // updating - please stop smoking funny weed!
+            //id = obj.id;
+            // Question is, if we at all should allow that this field is being
+            // updated - if so, then we should do it in a separate call.
+            //refNo = obj.refNo;
+            employerName = obj.employerName;
+            employerAddress = obj.employerAddress;
+            employerAddress2 = obj.employerAddress2;
+            employerBusiness = obj.employerBusiness;
+            employerEmployeesCount = obj.employerEmployeesCount;
+            employerWebsite = obj.employerWebsite;
+            prevTrainingRequired = obj.prevTrainingRequired;
+            otherRequirements = obj.otherRequirements;
+            language1 = obj.language1;
+            language1Level = obj.language1Level;
+            language1Operator = obj.language1Operator;
+            language2 = obj.language2;
+            language2Level = obj.language2Level;
+            language2Operator = obj.language2Operator;
+            language3 = obj.language3;
+            language3Level = obj.language3Level;
+            workDescription = obj.workDescription;
+            minimumWeeks = obj.minimumWeeks;
+            maximumWeeks = obj.maximumWeeks;
+            workingPlace = obj.workingPlace;
+            nearestAirport = obj.nearestAirport;
+            nearestPubTransport = obj.nearestPubTransport;
+            weeklyHours = obj.weeklyHours;
+            dailyHours = obj.dailyHours;
+            payment = obj.payment;
+            currency = obj.currency;
+            paymentFrequency = obj.paymentFrequency;
+            deduction = obj.deduction;
+            lodgingBy = obj.lodgingBy;
+            lodgingCost = obj.lodgingCost;
+            lodgingCostFrequency = obj.lodgingCostFrequency;
+            livingCost = obj.livingCost;
+            livingCostFrequency = obj.livingCostFrequency;
+            canteen = obj.canteen;
+            nominationDeadline = obj.nominationDeadline;
+            fromDate = obj.fromDate;
+            toDate = obj.toDate;
+            fromDate2 = obj.fromDate2;
+            toDate2 = obj.toDate2;
+            unavailableFrom = obj.unavailableFrom;
+            unavailableTo = obj.unavailableTo;
+            typeOfWork = obj.typeOfWork;
+            fieldOfStudies = obj.fieldOfStudies;
+            specializations = obj.specializations;
+            studyLevels = obj.studyLevels;
         }
-        this.id = offer.id;
-        this.refNo = offer.refNo;
-        this.employerName = offer.employerName;
-        this.employerAddress = offer.employerAddress;
-        this.employerAddress2 = offer.employerAddress2;
-        this.employerBusiness = offer.employerBusiness;
-        this.employerEmployeesCount = offer.employerEmployeesCount;
-        this.employerWebsite = offer.employerWebsite;
-        this.prevTrainingRequired = offer.prevTrainingRequired;
-        this.otherRequirements = offer.otherRequirements;
-        this.language1 = offer.language1;
-        this.language1Level = offer.language1Level;
-        this.language1Operator = offer.language1Operator;
-        this.language2 = offer.language2;
-        this.language2Level = offer.language2Level;
-        this.language2Operator = offer.language2Operator;
-        this.language3 = offer.language3;
-        this.language3Level = offer.language3Level;
-        this.workDescription = offer.workDescription;
-        this.minimumWeeks = offer.minimumWeeks;
-        this.maximumWeeks = offer.maximumWeeks;
-        this.workingPlace = offer.workingPlace;
-        this.nearestAirport = offer.nearestAirport;
-        this.nearestPubTransport = offer.nearestPubTransport;
-        this.weeklyHours = offer.weeklyHours;
-        this.dailyHours = offer.dailyHours;
-        this.payment = offer.payment;
-        this.currency = offer.currency;
-        this.paymentFrequency = offer.paymentFrequency;
-        this.deduction = offer.deduction;
-        this.lodgingBy = offer.lodgingBy;
-        this.lodgingCost = offer.lodgingCost;
-        this.lodgingCostFrequency = offer.lodgingCostFrequency;
-        this.livingCost = offer.livingCost;
-        this.livingCostFrequency = offer.livingCostFrequency;
-        this.canteen = offer.canteen;
-
-        this.nominationDeadline = Copier.copy(offer.nominationDeadline);
-        this.fromDate = Copier.copy(offer.fromDate);
-        this.toDate = Copier.copy(offer.toDate);
-        this.fromDate2 = Copier.copy(offer.fromDate2);
-        this.toDate2 = Copier.copy(offer.toDate2);
-        this.unavailableFrom = Copier.copy(offer.unavailableFrom);
-        this.unavailableTo = Copier.copy(offer.unavailableTo);
-
-        this.typeOfWork = offer.typeOfWork;
-        this.fieldOfStudies = offer.fieldOfStudies;
-        this.specializations = offer.specializations;
-        this.studyLevels = offer.studyLevels;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final OfferEntity entity = (OfferEntity) o;
-
-        if (id != null ? !id.equals(entity.id) : entity.id != null) {
-            return false;
-        }
-        if (canteen != null ? !canteen.equals(entity.canteen) : entity.canteen != null) {
-            return false;
-        }
-        if (currency != entity.currency) {
-            return false;
-        }
-        if (dailyHours != null ? !dailyHours.equals(entity.dailyHours) : entity.dailyHours != null) {
-            return false;
-        }
-        if (deduction != null ? !deduction.equals(entity.deduction) : entity.deduction != null) {
-            return false;
-        }
-        if (employerAddress != null ? !employerAddress.equals(entity.employerAddress) : entity.employerAddress != null) {
-            return false;
-        }
-        if (employerAddress2 != null ? !employerAddress2.equals(entity.employerAddress2) : entity.employerAddress2 != null) {
-            return false;
-        }
-        if (employerBusiness != null ? !employerBusiness.equals(entity.employerBusiness) : entity.employerBusiness != null) {
-            return false;
-        }
-        if (employerEmployeesCount != null ? !employerEmployeesCount.equals(entity.employerEmployeesCount) : entity.employerEmployeesCount != null) {
-            return false;
-        }
-        if (employerName != null ? !employerName.equals(entity.employerName) : entity.employerName != null) {
-            return false;
-        }
-        if (employerWebsite != null ? !employerWebsite.equals(entity.employerWebsite) : entity.employerWebsite != null) {
-            return false;
-        }
-        if (fromDate != null ? !fromDate.equals(entity.fromDate) : entity.fromDate != null) {
-            return false;
-        }
-        if (fromDate2 != null ? !fromDate2.equals(entity.fromDate2) : entity.fromDate2 != null) {
-            return false;
-        }
-        if (language1 != entity.language1) {
-            return false;
-        }
-        if (language1Level != entity.language1Level) {
-            return false;
-        }
-        if (language1Operator != entity.language1Operator) {
-            return false;
-        }
-        if (language2 != entity.language2) {
-            return false;
-        }
-        if (language2Level != entity.language2Level) {
-            return false;
-        }
-        if (language2Operator != entity.language2Operator) {
-            return false;
-        }
-        if (language3 != entity.language3) {
-            return false;
-        }
-        if (language3Level != entity.language3Level) {
-            return false;
-        }
-        if (livingCost != null ? !livingCost.equals(entity.livingCost) : entity.livingCost != null) {
-            return false;
-        }
-        if (livingCostFrequency != entity.livingCostFrequency) {
-            return false;
-        }
-        if (lodgingBy != null ? !lodgingBy.equals(entity.lodgingBy) : entity.lodgingBy != null) {
-            return false;
-        }
-        if (lodgingCost != null ? !lodgingCost.equals(entity.lodgingCost) : entity.lodgingCost != null) {
-            return false;
-        }
-        if (lodgingCostFrequency != entity.lodgingCostFrequency) {
-            return false;
-        }
-        if (maximumWeeks != null ? !maximumWeeks.equals(entity.maximumWeeks) : entity.maximumWeeks != null) {
-            return false;
-        }
-        if (minimumWeeks != null ? !minimumWeeks.equals(entity.minimumWeeks) : entity.minimumWeeks != null) {
-            return false;
-        }
-        if (nearestAirport != null ? !nearestAirport.equals(entity.nearestAirport) : entity.nearestAirport != null) {
-            return false;
-        }
-        if (nearestPubTransport != null ? !nearestPubTransport.equals(entity.nearestPubTransport) : entity.nearestPubTransport != null) {
-            return false;
-        }
-        if (nominationDeadline != null ? !nominationDeadline.equals(entity.nominationDeadline) : entity.nominationDeadline != null) {
-            return false;
-        }
-        if (otherRequirements != null ? !otherRequirements.equals(entity.otherRequirements) : entity.otherRequirements != null) {
-            return false;
-        }
-        if (payment != null ? !payment.equals(entity.payment) : entity.payment != null) {
-            return false;
-        }
-        if (paymentFrequency != entity.paymentFrequency) {
-            return false;
-        }
-        if (prevTrainingRequired != null ? !prevTrainingRequired.equals(entity.prevTrainingRequired) : entity.prevTrainingRequired != null) {
-            return false;
-        }
-        if (refNo != null ? !refNo.equals(entity.refNo) : entity.refNo != null) {
-            return false;
-        }
-        if (toDate != null ? !toDate.equals(entity.toDate) : entity.toDate != null) {
-            return false;
-        }
-        if (toDate2 != null ? !toDate2.equals(entity.toDate2) : entity.toDate2 != null) {
-            return false;
-        }
-        if (unavailableFrom != null ? !unavailableFrom.equals(entity.unavailableFrom) : entity.unavailableFrom != null) {
-            return false;
-        }
-        if (unavailableTo != null ? !unavailableTo.equals(entity.unavailableTo) : entity.unavailableTo != null) {
-            return false;
-        }
-        if (weeklyHours != null ? !weeklyHours.equals(entity.weeklyHours) : entity.weeklyHours != null) {
-            return false;
-        }
-        if (workDescription != null ? !workDescription.equals(entity.workDescription) : entity.workDescription != null) {
-            return false;
-        }
-        if (workingPlace != null ? !workingPlace.equals(entity.workingPlace) : entity.workingPlace != null) {
-            return false;
-        }
-        if (!(fieldOfStudies != null ? fieldOfStudies : "").equals(
-                entity.fieldOfStudies != null ? entity.fieldOfStudies : "")) {
-            return false;
-        }
-        if (!(specializations != null ? specializations : "").equals(
-                entity.specializations != null ? entity.specializations : "")) {
-            return false;
-        }
-        if (!(studyLevels != null ? studyLevels : "").equals(
-                entity.studyLevels != null ? entity.studyLevels : "")) {
-            return false;
-        }
-        if (!(typeOfWork != null ? typeOfWork : "").equals(
-                entity.typeOfWork != null ? entity.typeOfWork : "")) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (refNo != null ? refNo.hashCode() : 0);
-        result = 31 * result + (nominationDeadline != null ? nominationDeadline.hashCode() : 0);
-        result = 31 * result + (employerName != null ? employerName.hashCode() : 0);
-        result = 31 * result + (employerAddress != null ? employerAddress.hashCode() : 0);
-        result = 31 * result + (employerAddress2 != null ? employerAddress2.hashCode() : 0);
-        result = 31 * result + (employerBusiness != null ? employerBusiness.hashCode() : 0);
-        result = 31 * result + (employerEmployeesCount != null ? employerEmployeesCount.hashCode() : 0);
-        result = 31 * result + (employerWebsite != null ? employerWebsite.hashCode() : 0);
-        result = 31 * result + (fieldOfStudies != null ? fieldOfStudies.hashCode() : 0);
-        result = 31 * result + (specializations != null ? specializations.hashCode() : 0);
-        result = 31 * result + (studyLevels != null ? studyLevels.hashCode() : 0);
-        result = 31 * result + (prevTrainingRequired != null ? prevTrainingRequired.hashCode() : 0);
-        result = 31 * result + (otherRequirements != null ? otherRequirements.hashCode() : 0);
-        result = 31 * result + (language1 != null ? language1.hashCode() : 0);
-        result = 31 * result + (language1Level != null ? language1Level.hashCode() : 0);
-        result = 31 * result + (language1Operator != null ? language1Operator.hashCode() : 0);
-        result = 31 * result + (language2 != null ? language2.hashCode() : 0);
-        result = 31 * result + (language2Level != null ? language2Level.hashCode() : 0);
-        result = 31 * result + (language2Operator != null ? language2Operator.hashCode() : 0);
-        result = 31 * result + (language3 != null ? language3.hashCode() : 0);
-        result = 31 * result + (language3Level != null ? language3Level.hashCode() : 0);
-        result = 31 * result + (workDescription != null ? workDescription.hashCode() : 0);
-        result = 31 * result + (typeOfWork != null ? typeOfWork.hashCode() : 0);
-        result = 31 * result + (minimumWeeks != null ? minimumWeeks.hashCode() : 0);
-        result = 31 * result + (maximumWeeks != null ? maximumWeeks.hashCode() : 0);
-        result = 31 * result + (fromDate != null ? fromDate.hashCode() : 0);
-        result = 31 * result + (toDate != null ? toDate.hashCode() : 0);
-        result = 31 * result + (fromDate2 != null ? fromDate2.hashCode() : 0);
-        result = 31 * result + (toDate2 != null ? toDate2.hashCode() : 0);
-        result = 31 * result + (unavailableFrom != null ? unavailableFrom.hashCode() : 0);
-        result = 31 * result + (unavailableTo != null ? unavailableTo.hashCode() : 0);
-        result = 31 * result + (workingPlace != null ? workingPlace.hashCode() : 0);
-        result = 31 * result + (nearestAirport != null ? nearestAirport.hashCode() : 0);
-        result = 31 * result + (nearestPubTransport != null ? nearestPubTransport.hashCode() : 0);
-        result = 31 * result + (weeklyHours != null ? weeklyHours.hashCode() : 0);
-        result = 31 * result + (dailyHours != null ? dailyHours.hashCode() : 0);
-        result = 31 * result + (payment != null ? payment.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (paymentFrequency != null ? paymentFrequency.hashCode() : 0);
-        result = 31 * result + (deduction != null ? deduction.hashCode() : 0);
-        result = 31 * result + (lodgingBy != null ? lodgingBy.hashCode() : 0);
-        result = 31 * result + (lodgingCost != null ? lodgingCost.hashCode() : 0);
-        result = 31 * result + (lodgingCostFrequency != null ? lodgingCostFrequency.hashCode() : 0);
-        result = 31 * result + (livingCost != null ? livingCost.hashCode() : 0);
-        result = 31 * result + (livingCostFrequency != null ? livingCostFrequency.hashCode() : 0);
-        result = 31 * result + (canteen != null ? canteen.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "OfferEntity{" +
-                "id=" + id +
-                ", refNo='" + refNo + '\'' +
-                ", nominationDeadline=" + nominationDeadline +
-                ", employerName='" + employerName + '\'' +
-                ", employerAddress='" + employerAddress + '\'' +
-                ", employerAddress2='" + employerAddress2 + '\'' +
-                ", employerBusiness='" + employerBusiness + '\'' +
-                ", employerEmployeesCount=" + employerEmployeesCount +
-                ", employerWebsite='" + employerWebsite + '\'' +
-                ", fieldOfStudies=" + fieldOfStudies +
-                ", specializations=" + specializations +
-                ", studyLevels=" + studyLevels +
-                ", prevTrainingRequired=" + prevTrainingRequired +
-                ", otherRequirements='" + otherRequirements + '\'' +
-                ", language1=" + language1 +
-                ", language1Level=" + language1Level +
-                ", language1Operator=" + language1Operator +
-                ", language2=" + language2 +
-                ", language2Level=" + language2Level +
-                ", language2Operator=" + language2Operator +
-                ", language3=" + language3 +
-                ", language3Level=" + language3Level +
-                ", workDescription='" + workDescription + '\'' +
-                ", typeOfWork=" + typeOfWork +
-                ", minimumWeeks=" + minimumWeeks +
-                ", maximumWeeks=" + maximumWeeks +
-                ", fromDate=" + fromDate +
-                ", toDate=" + toDate +
-                ", fromDate2=" + fromDate2 +
-                ", toDate2=" + toDate2 +
-                ", unavailableFrom=" + unavailableFrom +
-                ", unavailableTo=" + unavailableTo +
-                ", workingPlace='" + workingPlace + '\'' +
-                ", nearestAirport='" + nearestAirport + '\'' +
-                ", nearestPubTransport='" + nearestPubTransport + '\'' +
-                ", weeklyHours=" + weeklyHours +
-                ", dailyHours=" + dailyHours +
-                ", payment=" + payment +
-                ", currency=" + currency +
-                ", paymentFrequency=" + paymentFrequency +
-                ", deduction=" + deduction +
-                ", lodgingBy='" + lodgingBy + '\'' +
-                ", lodgingCost=" + lodgingCost +
-                ", lodgingCostFrequency=" + lodgingCostFrequency +
-                ", livingCost=" + livingCost +
-                ", livingCostFrequency=" + livingCostFrequency +
-                ", canteen=" + canteen +
-                '}';
     }
 }

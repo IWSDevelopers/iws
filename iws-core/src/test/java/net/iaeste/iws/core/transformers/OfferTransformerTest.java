@@ -13,8 +13,6 @@ package net.iaeste.iws.core.transformers;/*
  * =============================================================================
  */
 
-import static org.hamcrest.core.Is.is;
-
 import net.iaeste.iws.api.dtos.Employer;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -30,6 +28,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.core.Is.is;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -72,23 +72,25 @@ public class OfferTransformerTest {
         Assert.assertThat(offer, is(newOffer));
     }
 
-    @Test
-    public void testCopyingBackAndForthFromEntity() {
-        final OfferEntity entity = getMinimalOfferEntity();
-        final Offer offer = OfferTransformer.transform(entity);
-        final OfferEntity newEntity = OfferTransformer.transform(offer);
-        // we rely on equals method
-        Assert.assertThat(entity, is(newEntity));
-    }
+// Please don't add production code for your tests. Add tests for your
+// production code!
+//    @Test
+//    public void testCopyingBackAndForthFromEntity() {
+//        final OfferEntity entity = getMinimalOfferEntity();
+//        final Offer offer = OfferTransformer.transform(entity);
+//        final OfferEntity newEntity = OfferTransformer.transform(offer);
+//        // we rely on equals method
+//        Assert.assertThat(entity, is(newEntity));
+//    }
 
-    @Test
-    public void testCopyingBackAndForthFromEmptyEntity() {
-        final OfferEntity entity = new OfferEntity();
-        final Offer offer = OfferTransformer.transform(entity);
-        final OfferEntity newEntity = OfferTransformer.transform(offer);
-        // we rely on equals method
-        Assert.assertThat(entity, is(newEntity));
-    }
+//    @Test
+//    public void testCopyingBackAndForthFromEmptyEntity() {
+//        final OfferEntity entity = new OfferEntity();
+//        final Offer offer = OfferTransformer.transform(entity);
+//        final OfferEntity newEntity = OfferTransformer.transform(offer);
+//        // we rely on equals method
+//        Assert.assertThat(entity, is(newEntity));
+//    }
 
     @Test
     public void testCopyingBackAndForthFromEmptyDto() {

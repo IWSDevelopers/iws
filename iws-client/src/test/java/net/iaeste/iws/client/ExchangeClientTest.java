@@ -14,10 +14,6 @@
  */
 package net.iaeste.iws.client;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -29,12 +25,15 @@ import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -52,7 +51,7 @@ public class ExchangeClientTest {
         offer.setId(null); // create offer
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final Fallible response = client.processOffer(token, offerRequest);
-        Assert.assertThat(response.isOk(), is(true));
+        assertThat(response.isOk(), is(true));
 
         final EntityManager em = EntityManagerProvider.getInstance().getEntityManager();
         final OfferDao dao = new OfferJpaDao(em);
@@ -65,7 +64,10 @@ public class ExchangeClientTest {
         assertThat(actual.getFieldOfStudies(), is(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies())));
         assertThat(actual.getStudyLevels(), is(CollectionTransformer.concatEnumCollection(offer.getStudyLevels())));
         assertThat(actual.getSpecializations(), is(CollectionTransformer.join(offer.getSpecializations())));
-        assertThat(actual, is(OfferTransformer.transform(offer)));
+        // The purpose of the client, is to test the API implementation, which
+        // only shows the DTO's, not the Entities. The entities are internal
+        // Objects, and should *never* be exposed!
+        //assertThat(actual, is(OfferTransformer.transform(offer)));
     }
 
     @Test
@@ -75,7 +77,7 @@ public class ExchangeClientTest {
         offer.setId(null); // create offer
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final Fallible response = client.processOffer(token, offerRequest);
-        Assert.assertThat(response.isOk(), is(true));
+        assertThat(response.isOk(), is(true));
 
         final EntityManager em = EntityManagerProvider.getInstance().getEntityManager();
         final OfferDao dao = new OfferJpaDao(em);

@@ -122,6 +122,10 @@ public final class AuthenticationToken implements Verifiable {
         return groupId;
     }
 
+    // =========================================================================
+    // Standard DTO Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

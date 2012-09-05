@@ -75,7 +75,8 @@ public class ExchangeService {
         // If DTO has an id and there is no such entity, an exception is thrown.
         final OfferEntity unmanagedEntity = OfferTransformer.transform(offer);
 
-        if (request.isCreateRequest()) {
+        if (offer.getId() == null) {
+//        if (request.isCreateRequest()) {
             final OfferEntity offerByRefNo = dao.findOffer(offer.getRefNo());
             if (offerByRefNo == null) {
                 try {

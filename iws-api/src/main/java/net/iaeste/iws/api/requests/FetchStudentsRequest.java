@@ -24,7 +24,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  * @since   1.7
  * @noinspection RedundantNoArgConstructor
  */
-public final class FetchStudentsRequest extends AbstractRequest {
+public final class FetchStudentsRequest implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

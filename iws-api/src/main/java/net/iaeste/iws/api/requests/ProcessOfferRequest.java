@@ -18,13 +18,15 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
+import static net.iaeste.iws.api.utils.CheckVerification.verifyVerifiable;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @noinspection CastToConcreteClass
  * @since   1.7
  */
-public final class ProcessOfferRequest extends AbstractRequest {
+public final class ProcessOfferRequest implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -62,20 +64,20 @@ public final class ProcessOfferRequest extends AbstractRequest {
         return new Offer(offer);
     }
 
-    // Todo Kim; @Michal, The following should not be part of this Object, this is business Logic decisions
-    public boolean isCreateRequest() {
-        if (offer == null) {
-            return false;
-        }
-        return offer.getId() == null;
-    }
-
-    public boolean isUpdateRequest() {
-        if (offer == null) {
-            return false;
-        }
-        return offer.getId() != null;
-    }
+//    // Todo Kim; @Michal, The following should not be part of this Object, this is business Logic decisions
+//    public boolean isCreateRequest() {
+//        if (offer == null) {
+//            return false;
+//        }
+//        return offer.getId() == null;
+//    }
+//
+//    public boolean isUpdateRequest() {
+//        if (offer == null) {
+//            return false;
+//        }
+//        return offer.getId() != null;
+//    }
 
     // =========================================================================
     // Standard Request Methods
@@ -86,42 +88,42 @@ public final class ProcessOfferRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        verifyObject("Offer", offer);
+        verifyVerifiable("Offer", offer);
     }
-
-    // ToDo Kim; @Michael, The following methods are not requied or needed for Request Objects, only for DTO objects
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof ProcessOfferRequest)) {
-            return false;
-        }
-
-        final ProcessOfferRequest that = (ProcessOfferRequest) obj;
-        return !(offer != null ? !offer.equals(that.offer) : that.offer != null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return offer != null ? offer.hashCode() : 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "ProcessOfferRequest{" +
-                "offer=" + offer +
-                '}';
-    }
+//
+//    // ToDo Kim; @Michael, The following methods are not requied or needed for Request Objects, only for DTO objects
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public boolean equals(final Object obj) {
+//        if (this == obj) {
+//            return true;
+//        }
+//
+//        if (!(obj instanceof ProcessOfferRequest)) {
+//            return false;
+//        }
+//
+//        final ProcessOfferRequest that = (ProcessOfferRequest) obj;
+//        return !(offer != null ? !offer.equals(that.offer) : that.offer != null);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public int hashCode() {
+//        return offer != null ? offer.hashCode() : 0;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public String toString() {
+//        return "ProcessOfferRequest{" +
+//                "offer=" + offer +
+//                '}';
+//    }
 }

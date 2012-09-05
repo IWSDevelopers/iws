@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.utils.CheckVerification;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -23,7 +24,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public final class DeleteOfferRequest extends AbstractRequest {
+public final class DeleteOfferRequest implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -68,7 +69,7 @@ public final class DeleteOfferRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        verifyLimits("OfferId", offerId, 1, Integer.MAX_VALUE);
+        CheckVerification.verifyLimits("OfferId", offerId, 1, Integer.MAX_VALUE);
     }
 
     /**

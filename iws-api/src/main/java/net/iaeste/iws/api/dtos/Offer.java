@@ -39,12 +39,16 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
+
 /**
  * Standard IAESTE Offer.
  *
  * @author Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
+ * @noinspection CastToConcreteClass, OverlyLongMethod, OverlyComplexMethod
  */
 public final class Offer implements Verifiable {
 
@@ -562,7 +566,11 @@ public final class Offer implements Verifiable {
         this.workingPlace = workingPlace;
     }
 
-    // ToDo Kim; @Michal, an Offer always contain a *uniqie* RefNo, this can be used
+    // =========================================================================
+    // Standard DTO Methods
+    // =========================================================================
+
+    // ToDo Kim; @Michal, an Offer always contain a *unique* RefNo, this can be used
 
     /**
      * first thought was that id should be sufficient, but what if two
@@ -573,20 +581,19 @@ public final class Offer implements Verifiable {
      * <p/>
      * {@inheritDoc}
      *
-     * @param o
+     * @param obj
      * @return
      */
-    @SuppressWarnings("OverlyLongMethod")
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        final Offer offer = (Offer) o;
+        final Offer offer = (Offer) obj;
 
         if (id == null) {
             if (offer.id != null) {
@@ -748,7 +755,6 @@ public final class Offer implements Verifiable {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("OverlyLongMethod")
     @Override
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
@@ -799,6 +805,7 @@ public final class Offer implements Verifiable {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (livingCost != null ? livingCost.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (livingCostFrequency != null ? livingCostFrequency.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (canteen != null ? canteen.hashCode() : 0);
+
         return hash;
     }
 
@@ -863,7 +870,7 @@ public final class Offer implements Verifiable {
      */
     @Override
     public void verify() throws VerificationException {
-        final Collection<String> errors = new ArrayList<>();
+        final Collection<String> errors = new ArrayList<>(0);
 
         errors.addAll(verifyNotNullableFields());
         if (!verifyRefNo()) {
@@ -887,16 +894,20 @@ public final class Offer implements Verifiable {
      * @return collection of errors. If dependencies are valid, method returns empty collection.
      */
     private Collection<String> verifyFieldDependencies() {
-        final Collection<String> errors = new ArrayList<>();
+        final Collection<String> errors = new ArrayList<>(0);
+
         if (livingCost != null && livingCostFrequency == null) {
             errors.add("'livingCostFrequency' is required if 'livingCost' is not null");
         }
+
         if (payment != null && paymentFrequency == null) {
             errors.add("'paymentFrequency' is required if 'payment' is not null");
         }
+
         if (lodgingCost != null && lodgingCostFrequency == null) {
             errors.add("'lodgingCostFrequency' is required if 'lodgingCost' is not null");
         }
+
         return errors;
     }
 
@@ -906,43 +917,21 @@ public final class Offer implements Verifiable {
      * @return collection of errors. If all required fields are provided, method returns empty collection.
      */
     private Collection<String> verifyNotNullableFields() {
-        final Collection<String> errors = new ArrayList<>();
-        if (refNo == null || refNo.isEmpty()) {
-            errors.add("'refNo' is missing");
-        }
-        if (weeklyHours == null) {
-            errors.add("'weeklyHours' is missing");
-        }
-        if (employerName == null || employerName.isEmpty()) {
-            errors.add("'employerName' is missing");
-        }
-        if (fromDate == null) {
-            errors.add("'fromDate' is missing");
-        }
-        if (toDate == null) {
-            errors.add("'toDate' is missing");
-        }
-        if (language1 == null) {
-            errors.add("'language1' is missing");
-        }
-        if (language1Level == null) {
-            errors.add("'language1Level' is missing");
-        }
-        if (maximumWeeks == null) {
-            errors.add("'minimumWeeks' is missing");
-        }
-        if (minimumWeeks == null) {
-            errors.add("'minimumWeeks' is missing");
-        }
-        if (workDescription == null || workDescription.isEmpty()) {
-            errors.add("'workDescription' is missing");
-        }
-        if (fieldOfStudies == null || fieldOfStudies.isEmpty()) {
-            errors.add("'fieldOfStudies' is missing");
-        }
-        if (studyLevels == null || studyLevels.isEmpty()) {
-            errors.add("'studyLevels' is missing");
-        }
+        final Collection<String> errors = new ArrayList<>(0);
+
+        addNullErrorToCollection(errors, "refno", refNo);
+        addNullErrorToCollection(errors, "weeklyhours", weeklyHours);
+        addEmptyErrorToCollection(errors, "employerName", employerName);
+        addNullErrorToCollection(errors, "fromDate", fromDate);
+        addNullErrorToCollection(errors, "toDate", toDate);
+        addNullErrorToCollection(errors, "language1", language1);
+        addNullErrorToCollection(errors, "language1Level", language1Level);
+        addNullErrorToCollection(errors, "maximumWeeks", maximumWeeks);
+        addNullErrorToCollection(errors, "minimumWeeks", minimumWeeks);
+        addEmptyErrorToCollection(errors, "workDescription", workDescription);
+        addEmptyErrorToCollection(errors, "fieldOfStudies", fieldOfStudies);
+        addEmptyErrorToCollection(errors, "studyLevels", studyLevels);
+
         return errors;
     }
 

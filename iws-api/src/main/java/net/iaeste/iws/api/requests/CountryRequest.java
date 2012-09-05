@@ -24,7 +24,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  * @since 1.6
  * @noinspection RedundantNoArgConstructor
  */
-public final class CountryRequest extends AbstractRequest {
+public final class CountryRequest implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

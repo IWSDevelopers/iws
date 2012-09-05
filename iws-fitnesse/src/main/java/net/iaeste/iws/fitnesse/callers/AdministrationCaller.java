@@ -17,12 +17,11 @@ package net.iaeste.iws.fitnesse.callers;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
-import net.iaeste.iws.api.requests.DeleteUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.PersistUserRequest;
+import net.iaeste.iws.api.requests.ProcessUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
@@ -57,25 +56,12 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible persistUser(final AuthenticationToken token, final PersistUserRequest request) {
+    public Fallible processUser(final AuthenticationToken token, final ProcessUserRequest request) {
         try {
-            return administration.persistUser(token, request);
+            return administration.processUser(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible deleteUser(final AuthenticationToken token, final DeleteUserRequest request) {
-        try {
-            return administration.deleteUser(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
-
     }
 
     /**

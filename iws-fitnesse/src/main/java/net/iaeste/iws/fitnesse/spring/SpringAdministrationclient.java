@@ -17,12 +17,11 @@ package net.iaeste.iws.fitnesse.spring;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
-import net.iaeste.iws.api.requests.DeleteUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.PersistUserRequest;
+import net.iaeste.iws.api.requests.ProcessUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
@@ -56,16 +55,8 @@ public final class SpringAdministrationclient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible persistUser(final AuthenticationToken token, final PersistUserRequest request) {
-        return administration.persistUser(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible deleteUser(final AuthenticationToken token, final DeleteUserRequest request) {
-        return administration.deleteUser(token, request);
+    public Fallible processUser(final AuthenticationToken token, final ProcessUserRequest request) {
+        return administration.processUser(token, request);
     }
 
     /**

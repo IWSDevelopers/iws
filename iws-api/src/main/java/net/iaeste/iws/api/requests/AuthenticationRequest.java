@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.utils.CheckVerification;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -23,7 +24,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  * @since   1.7
  * @noinspection SuppressionAnnotation
  */
-public final class AuthenticationRequest extends AbstractRequest {
+public final class AuthenticationRequest implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -86,8 +87,8 @@ public final class AuthenticationRequest extends AbstractRequest {
         // "Security through Obscurity" - and it is not our only mechanism, but
         // limitting the information that hackers may get, is always a good
         // idea :-)
-        verifyNotEmpty("User Credentials", username);
-        verifyNotEmpty("User Credentials", password);
+        CheckVerification.verifyNotEmpty("User Credentials", username);
+        CheckVerification.verifyNotEmpty("User Credentials", password);
     }
 
     /**

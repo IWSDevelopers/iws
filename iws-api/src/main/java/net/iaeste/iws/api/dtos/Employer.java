@@ -21,19 +21,33 @@ import net.iaeste.iws.api.responses.AbstractResponse;
 
 import java.util.*;
 
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
+
 /**
  * The Employer Object contains all information about the employer.
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection CastToConcreteClass, RefusedBequest, VariableNotUsedInsideIf
  */
 public final class Employer extends AbstractResponse implements Verifiable {
 
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private String name = null;
+    private String address = null;
+    private String address2 = null;
+    private String business = null;
+    private Integer employeesCount = null;
+    private String website = null;
+    private String workingPlace = null;
+    private String nearestAirport = null;
+    private String nearestPubTransport = null;
+    private Float weeklyHours = null;
+    private Float dailyHours = null;
 
     /**
      * Empty Constructor, required for some communication frameworks.
@@ -48,31 +62,23 @@ public final class Employer extends AbstractResponse implements Verifiable {
      */
     public Employer(final Employer employer) {
         if (employer != null) {
-            this.setName(employer.getName());
-            this.setAddress(employer.getAddress());
-            this.setAddress2(employer.getAddress2());
-            this.setBusiness(employer.getBusiness());
-            this.setEmployeesCount(employer.getEmployeesCount());
-            this.setWebsite(employer.getWebsite());
-            this.setWorkingPlace(employer.getWorkingPlace());
-            this.setNearestAirport(employer.getNearestAirport());
-            this.setNearestPubTransport(employer.getNearestPubTransport());
-            this.setWeeklyHours(employer.getWeeklyHours());
-            this.setDailyHours(employer.getDailyHours());
+            name = employer.name;
+            address = employer.address;
+            address2 = employer.address2;
+            business = employer.business;
+            employeesCount = employer.employeesCount;
+            website = employer.website;
+            workingPlace = employer.workingPlace;
+            nearestAirport = employer.nearestAirport;
+            nearestPubTransport = employer.nearestPubTransport;
+            weeklyHours = employer.weeklyHours;
+            dailyHours = employer.dailyHours;
         }
     }
 
-    private String name;
-    private String address;
-    private String address2;
-    private String business;
-    private Integer employeesCount;
-    private String website;
-    private String workingPlace;
-    private String nearestAirport;
-    private String nearestPubTransport;
-    private Float weeklyHours;
-    private Float dailyHours;
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
 
     public String getName() {
         return name;
@@ -162,23 +168,38 @@ public final class Employer extends AbstractResponse implements Verifiable {
         this.dailyHours = dailyHours;
     }
 
+    // =========================================================================
+    // Standard DTO Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
-     *
-     * @param o
-     * @return
      */
-    @SuppressWarnings("OverlyLongMethod")
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public void verify() throws VerificationException {
+        final Collection<String> errors = new ArrayList<>(0);
+
+        addNullErrorToCollection(errors, "weeklyHours", weeklyHours);
+        addEmptyErrorToCollection(errors, "name", name);
+
+        if (!errors.isEmpty()) {
+            throw new VerificationException(errors.toString());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        final Employer employer = (Employer) o;
+        final Employer employer = (Employer) obj;
 
         if (name != null ? !name.equals(employer.name) : employer.name != null) {
             return false;
@@ -210,17 +231,13 @@ public final class Employer extends AbstractResponse implements Verifiable {
         if (workingPlace != null ? !workingPlace.equals(employer.workingPlace) : employer.workingPlace != null) {
             return false;
         }
-        if (dailyHours != null ? !dailyHours.equals(employer.dailyHours) : employer.dailyHours != null) {
-            return false;
-        }
 
-        return true;
+        return !(dailyHours != null ? !dailyHours.equals(employer.dailyHours) : employer.dailyHours != null);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("OverlyLongMethod")
     @Override
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
@@ -236,6 +253,7 @@ public final class Employer extends AbstractResponse implements Verifiable {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nearestPubTransport != null ? nearestPubTransport.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (weeklyHours != null ? weeklyHours.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (dailyHours != null ? dailyHours.hashCode() : 0);
+
         return hash;
     }
 
@@ -258,34 +276,4 @@ public final class Employer extends AbstractResponse implements Verifiable {
                 ", dailyHours=" + dailyHours +
                 '}';
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void verify() throws VerificationException {
-        final Collection<String> errors = new ArrayList<>();
-
-        errors.addAll(verifyNotNullableFields());
-        if (!errors.isEmpty()) {
-            throw new VerificationException(errors.toString());
-        }
-    }
-
-    /**
-     * Checks for nulls in required fields.
-     *
-     * @return collection of errors. If all required fields are provided, method returns empty collection.
-     */
-    private Collection<String> verifyNotNullableFields() {
-        final Collection<String> errors = new ArrayList<>();
-        if (weeklyHours == null) {
-            errors.add("'weeklyHours' is missing");
-        }
-        if (name == null || name.length() == 0) {
-            errors.add("'name' is missing");
-        }
-        return errors;
-    }
-
 }

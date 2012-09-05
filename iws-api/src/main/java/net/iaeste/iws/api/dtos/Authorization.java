@@ -83,6 +83,10 @@ public class Authorization implements Serializable {
         return groupType;
     }
 
+    // =========================================================================
+    // Standard DTO Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

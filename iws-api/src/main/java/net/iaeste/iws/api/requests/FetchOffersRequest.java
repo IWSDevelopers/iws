@@ -17,13 +17,14 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.utils.CheckVerification;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchOffersRequest extends AbstractRequest {
+public final class FetchOffersRequest implements Verifiable {
 
     private FetchType fetchType;
 
@@ -66,6 +67,6 @@ public final class FetchOffersRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        verifyNotNull("fetchType", fetchType);
+        CheckVerification.verifyNotNull("fetchType", fetchType);
     }
 }

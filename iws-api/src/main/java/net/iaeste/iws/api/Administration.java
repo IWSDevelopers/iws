@@ -16,12 +16,11 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
-import net.iaeste.iws.api.requests.DeleteUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.PersistUserRequest;
+import net.iaeste.iws.api.requests.ProcessUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
@@ -35,8 +34,7 @@ import net.iaeste.iws.api.responses.UserResponse;
  */
 public interface Administration {
 
-    Fallible persistUser(AuthenticationToken token, PersistUserRequest request);
-    Fallible deleteUser(AuthenticationToken token, DeleteUserRequest request);
+    Fallible processUser(AuthenticationToken token, ProcessUserRequest request);
     UserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
 
     Fallible processGroups(AuthenticationToken token, GroupRequest request);

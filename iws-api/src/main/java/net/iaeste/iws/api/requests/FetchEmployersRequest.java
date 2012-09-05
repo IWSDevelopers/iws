@@ -17,6 +17,7 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.utils.CheckVerification;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -24,7 +25,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  * @since   1.7
  * @noinspection RedundantNoArgConstructor
  */
-public final class FetchEmployersRequest extends AbstractRequest {
+public final class FetchEmployersRequest implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -81,7 +82,7 @@ public final class FetchEmployersRequest extends AbstractRequest {
      */
     @Override
     public void verify() throws VerificationException {
-        verifyNotNull("fetchType", fetchType);
-        verifyNotEmpty("name", name);
+        CheckVerification.verifyNotNull("fetchType", fetchType);
+        CheckVerification.verifyNotEmpty("name", name);
     }
 }

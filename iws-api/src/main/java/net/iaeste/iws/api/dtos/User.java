@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
 import net.iaeste.iws.api.responses.AbstractResponse;
@@ -43,7 +44,8 @@ public final class User extends AbstractResponse implements Verifiable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Integer userId = null;
+    private Long userId = null;
+    private UserStatus status = UserStatus.ACTIVE;
     private String username = null;
     private String password = null;
     private String firstname = null;
@@ -72,14 +74,20 @@ public final class User extends AbstractResponse implements Verifiable {
      * @param userId  The internal Id of the user
      * @param person  The personal details
      */
-    public User(final Integer userId, final Person person) {
+    public User(final Long userId, final Person person) {
         this.userId = userId;
         this.person = person;
     }
 
+    /**
+     * Copy Constructor.
+     *
+     * @param user User Object to copy
+     */
     public User(final User user) {
         if (user != null) {
             userId = user.userId;
+            status = user.status;
             username = user.username;
             password = user.password;
             firstname = user.firstname;
@@ -92,12 +100,20 @@ public final class User extends AbstractResponse implements Verifiable {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUserId(final Integer userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
+    }
+
+    public void setStatus(final UserStatus status) {
+        this.status = status;
+    }
+
+    public UserStatus getStatus() {
+        return status;
     }
 
     public void setUsername(final String username) {
@@ -179,6 +195,7 @@ public final class User extends AbstractResponse implements Verifiable {
         int result = super.hashCode();
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + userId.hashCode();
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + status.hashCode();
         result = IWSConstants.HASHCODE_MULTIPLIER * result + username.hashCode();
         result = IWSConstants.HASHCODE_MULTIPLIER * result + firstname.hashCode();
         result = IWSConstants.HASHCODE_MULTIPLIER * result + lastname.hashCode();
@@ -215,6 +232,7 @@ public final class User extends AbstractResponse implements Verifiable {
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
+                "status='" + status + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 '}';

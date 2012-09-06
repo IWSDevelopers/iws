@@ -64,21 +64,6 @@ public final class ProcessOfferRequest implements Verifiable {
         return new Offer(offer);
     }
 
-//    // Todo Kim; @Michal, The following should not be part of this Object, this is business Logic decisions
-//    public boolean isCreateRequest() {
-//        if (offer == null) {
-//            return false;
-//        }
-//        return offer.getId() == null;
-//    }
-//
-//    public boolean isUpdateRequest() {
-//        if (offer == null) {
-//            return false;
-//        }
-//        return offer.getId() != null;
-//    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -90,40 +75,4 @@ public final class ProcessOfferRequest implements Verifiable {
     public void verify() throws VerificationException {
         verifyVerifiable("Offer", offer);
     }
-//
-//    // ToDo Kim; @Michael, The following methods are not requied or needed for Request Objects, only for DTO objects
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public boolean equals(final Object obj) {
-//        if (this == obj) {
-//            return true;
-//        }
-//
-//        if (!(obj instanceof ProcessOfferRequest)) {
-//            return false;
-//        }
-//
-//        final ProcessOfferRequest that = (ProcessOfferRequest) obj;
-//        return !(offer != null ? !offer.equals(that.offer) : that.offer != null);
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public int hashCode() {
-//        return offer != null ? offer.hashCode() : 0;
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public String toString() {
-//        return "ProcessOfferRequest{" +
-//                "offer=" + offer +
-//                '}';
-//    }
 }

@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.entities;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.enums.Currency;
@@ -32,7 +33,6 @@ import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -174,24 +174,24 @@ public class OfferEntityTest {
     @Transactional
     public void testMinimalOffer() {
         dao.persist(offer);
-        Assert.assertThat(offer.getId(), is(notNullValue()));
+        assertThat(offer.getId(), is(notNullValue()));
 
         offer = entityManager.find(OfferEntity.class, offer.getId());
-        Assert.assertThat(offer.getRefNo(), is(REF_NO));
-        Assert.assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
-        Assert.assertThat(offer.getStudyLevels(), is(STUDY_LEVELS));
-        Assert.assertThat(offer.getFieldOfStudies(), is(FIELDS_OF_STUDY));
-        Assert.assertThat(offer.getLanguage1(), is(Language.ENGLISH));
-        Assert.assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
-        Assert.assertThat(offer.getWorkDescription(), is(WORK_DESCRIPTION));
-        Assert.assertThat(offer.getMaximumWeeks(), is(MAXIMUM_WEEKS));
-        Assert.assertThat(offer.getMinimumWeeks(), is(MINIMUM_WEEKS));
-        Assert.assertThat(offer.getWeeklyHours(), is(WEEKLY_HOURS));
-        Assert.assertThat(offer.getFromDate(), is(FROM_DATE));
-        Assert.assertThat(offer.getToDate(), is(TO_DATE));
+        assertThat(offer.getRefNo(), is(REF_NO));
+        assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
+        assertThat(offer.getStudyLevels(), is(STUDY_LEVELS));
+        assertThat(offer.getFieldOfStudies(), is(FIELDS_OF_STUDY));
+        assertThat(offer.getLanguage1(), is(Language.ENGLISH));
+        assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
+        assertThat(offer.getWorkDescription(), is(WORK_DESCRIPTION));
+        assertThat(offer.getMaximumWeeks(), is(MAXIMUM_WEEKS));
+        assertThat(offer.getMinimumWeeks(), is(MINIMUM_WEEKS));
+        assertThat(offer.getWeeklyHours(), is(WEEKLY_HOURS));
+        assertThat(offer.getFromDate(), is(FROM_DATE));
+        assertThat(offer.getToDate(), is(TO_DATE));
 
         final OfferEntity persisted = dao.findOffer(offer.getId());
-        Assert.assertThat(offer, is(persisted));
+        assertThat(offer, is(persisted));
     }
 
     @SuppressWarnings("OverlyLongMethod")
@@ -200,58 +200,58 @@ public class OfferEntityTest {
     public void testFullOffer() {
         offer = getFullOffer();
         dao.persist(offer);
-        Assert.assertThat(offer.getId(), is(notNullValue()));
+        assertThat(offer.getId(), is(notNullValue()));
 
         offer = entityManager.find(OfferEntity.class, offer.getId());
-        Assert.assertThat(offer.getRefNo(), is(REF_NO));
-        Assert.assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
-        Assert.assertThat(offer.getStudyLevels(), is(STUDY_LEVELS));
-        Assert.assertThat(offer.getFieldOfStudies(), is(FIELDS_OF_STUDY));
-        Assert.assertThat(offer.getLanguage1(), is(Language.ENGLISH));
-        Assert.assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
-        Assert.assertThat(offer.getWorkDescription(), is(WORK_DESCRIPTION));
-        Assert.assertThat(offer.getMaximumWeeks(), is(MAXIMUM_WEEKS));
-        Assert.assertThat(offer.getMinimumWeeks(), is(MINIMUM_WEEKS));
-        Assert.assertThat(offer.getWeeklyHours(), is(WEEKLY_HOURS));
-        Assert.assertThat(offer.getFromDate(), is(FROM_DATE));
-        Assert.assertThat(offer.getToDate(), is(TO_DATE));
+        assertThat(offer.getRefNo(), is(REF_NO));
+        assertThat(offer.getEmployerName(), is(EMPLOYER_NAME));
+        assertThat(offer.getStudyLevels(), is(STUDY_LEVELS));
+        assertThat(offer.getFieldOfStudies(), is(FIELDS_OF_STUDY));
+        assertThat(offer.getLanguage1(), is(Language.ENGLISH));
+        assertThat(offer.getLanguage1Level(), is(LanguageLevel.E));
+        assertThat(offer.getWorkDescription(), is(WORK_DESCRIPTION));
+        assertThat(offer.getMaximumWeeks(), is(MAXIMUM_WEEKS));
+        assertThat(offer.getMinimumWeeks(), is(MINIMUM_WEEKS));
+        assertThat(offer.getWeeklyHours(), is(WEEKLY_HOURS));
+        assertThat(offer.getFromDate(), is(FROM_DATE));
+        assertThat(offer.getToDate(), is(TO_DATE));
 
-        Assert.assertThat(offer.getNominationDeadline(), is(NOMINATION_DEADLINE));
-        Assert.assertThat(offer.getEmployerAddress(), is(EMPLOYER_ADDRESS));
-        Assert.assertThat(offer.getEmployerAddress2(), is(EMPLOYER_ADDRESS2));
-        Assert.assertThat(offer.getEmployerBusiness(), is(EMPLOYER_BUSINESS));
-        Assert.assertThat(offer.getEmployerEmployeesCount(), is(EMPLOYER_EMPLOYEES_COUNT));
-        Assert.assertThat(offer.getEmployerWebsite(), is(EMPLOYER_WEBSITE));
-        Assert.assertThat(offer.getPrevTrainingRequired(), is(true));
-        Assert.assertThat(offer.getOtherRequirements(), is(OTHER_REQUIREMENTS));
-        Assert.assertThat(offer.getLanguage1Operator(), is(LanguageOperator.A));
-        Assert.assertThat(offer.getLanguage2(), is(Language.FRENCH));
-        Assert.assertThat(offer.getLanguage2Level(), is(LanguageLevel.E));
-        Assert.assertThat(offer.getLanguage2Operator(), is(LanguageOperator.O));
-        Assert.assertThat(offer.getLanguage3(), is(Language.GERMAN));
-        Assert.assertThat(offer.getLanguage3Level(), is(LanguageLevel.E));
-        Assert.assertThat(offer.getTypeOfWork(), is(TYPE_OF_WORK));
-        Assert.assertThat(offer.getFromDate2(), is(FROM_DATE2));
-        Assert.assertThat(offer.getToDate2(), is(TO_DATE2));
-        Assert.assertThat(offer.getUnavailableFrom(), is(UNAVAIABLE_FROM));
-        Assert.assertThat(offer.getUnavailableTo(), is(UNAVAIABLE_TO));
-        Assert.assertThat(offer.getWorkingPlace(), is(WORKING_PLACE));
-        Assert.assertThat(offer.getNearestAirport(), is(NEAREST_AIRPORT));
-        Assert.assertThat(offer.getNearestPubTransport(), is(NEAREST_PUBLIC_TRANSPORT));
-        Assert.assertThat(offer.getDailyHours(), is(DAILY_HOURS));
-        Assert.assertThat(offer.getCurrency(), is(CURRENCY));
-        Assert.assertThat(offer.getPaymentFrequency(), is(PAYMENT_FREQUENCY));
-        Assert.assertThat(offer.getDeduction(), is(DEDUCTION));
-        Assert.assertThat(offer.getLodgingBy(), is(LODGING_BY));
-        Assert.assertThat(offer.getLodgingCost(), is(LODGING_COST));
-        Assert.assertThat(offer.getLodgingCostFrequency(), is(LODGING_COST_FREQUENCY));
-        Assert.assertThat(offer.getLivingCost(), is(LIVING_COST));
-        Assert.assertThat(offer.getLivingCostFrequency(), is(LIVING_COST_FREQUENCY));
-        Assert.assertThat(offer.getCanteen(), is(CANTEEN));
-        Assert.assertThat(offer.getSpecializations(), is(SPECIALIZATIONS));
+        assertThat(offer.getNominationDeadline(), is(NOMINATION_DEADLINE));
+        assertThat(offer.getEmployerAddress(), is(EMPLOYER_ADDRESS));
+        assertThat(offer.getEmployerAddress2(), is(EMPLOYER_ADDRESS2));
+        assertThat(offer.getEmployerBusiness(), is(EMPLOYER_BUSINESS));
+        assertThat(offer.getEmployerEmployeesCount(), is(EMPLOYER_EMPLOYEES_COUNT));
+        assertThat(offer.getEmployerWebsite(), is(EMPLOYER_WEBSITE));
+        assertThat(offer.getPrevTrainingRequired(), is(true));
+        assertThat(offer.getOtherRequirements(), is(OTHER_REQUIREMENTS));
+        assertThat(offer.getLanguage1Operator(), is(LanguageOperator.A));
+        assertThat(offer.getLanguage2(), is(Language.FRENCH));
+        assertThat(offer.getLanguage2Level(), is(LanguageLevel.E));
+        assertThat(offer.getLanguage2Operator(), is(LanguageOperator.O));
+        assertThat(offer.getLanguage3(), is(Language.GERMAN));
+        assertThat(offer.getLanguage3Level(), is(LanguageLevel.E));
+        assertThat(offer.getTypeOfWork(), is(TYPE_OF_WORK));
+        assertThat(offer.getFromDate2(), is(FROM_DATE2));
+        assertThat(offer.getToDate2(), is(TO_DATE2));
+        assertThat(offer.getUnavailableFrom(), is(UNAVAIABLE_FROM));
+        assertThat(offer.getUnavailableTo(), is(UNAVAIABLE_TO));
+        assertThat(offer.getWorkingPlace(), is(WORKING_PLACE));
+        assertThat(offer.getNearestAirport(), is(NEAREST_AIRPORT));
+        assertThat(offer.getNearestPubTransport(), is(NEAREST_PUBLIC_TRANSPORT));
+        assertThat(offer.getDailyHours(), is(DAILY_HOURS));
+        assertThat(offer.getCurrency(), is(CURRENCY));
+        assertThat(offer.getPaymentFrequency(), is(PAYMENT_FREQUENCY));
+        assertThat(offer.getDeduction(), is(DEDUCTION));
+        assertThat(offer.getLodgingBy(), is(LODGING_BY));
+        assertThat(offer.getLodgingCost(), is(LODGING_COST));
+        assertThat(offer.getLodgingCostFrequency(), is(LODGING_COST_FREQUENCY));
+        assertThat(offer.getLivingCost(), is(LIVING_COST));
+        assertThat(offer.getLivingCostFrequency(), is(LIVING_COST_FREQUENCY));
+        assertThat(offer.getCanteen(), is(CANTEEN));
+        assertThat(offer.getSpecializations(), is(SPECIALIZATIONS));
 
         final OfferEntity persisted = dao.findOffer(offer.getId());
-        Assert.assertThat(offer, is(persisted));
+        assertThat(offer, is(persisted));
     }
 
     @Test(expected = PersistenceException.class)
@@ -261,7 +261,7 @@ public class OfferEntityTest {
         offer.setRefNo(refNo);
         offer.setId(null);
         dao.persist(offer);
-        Assert.assertThat(offer.getId(), is(notNullValue()));
+        assertThat(offer.getId(), is(notNullValue()));
 
         offer = getMinimalOffer();
         offer.setRefNo(refNo);
@@ -282,8 +282,8 @@ public class OfferEntityTest {
         offer.setNominationDeadline(null);
         dao.persist(offer);
 
-        Assert.assertThat(offer.getId(), is(notNullValue()));
-        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
+        assertThat(offer.getId(), is(notNullValue()));
+        assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -341,9 +341,9 @@ public class OfferEntityTest {
         offer.setDailyHours(null);
         dao.persist(offer);
 
-        Assert.assertThat(offer.getId(), is(notNullValue()));
+        assertThat(offer.getId(), is(notNullValue()));
         final OfferEntity foundOffer = dao.findOffer(offer.getId());
-        Assert.assertThat(foundOffer, is(offer));
+        assertThat(foundOffer, is(offer));
     }
 
     @Test
@@ -357,8 +357,8 @@ public class OfferEntityTest {
         offer.setOtherRequirements(sb.toString());
         dao.persist(offer);
 
-        Assert.assertThat(offer.getId(), is(notNullValue()));
-        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
+        assertThat(offer.getId(), is(notNullValue()));
+        assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -384,8 +384,8 @@ public class OfferEntityTest {
         offer.setWorkDescription(sb.toString());
         dao.persist(offer);
 
-        Assert.assertThat(offer.getId(), is(notNullValue()));
-        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
+        assertThat(offer.getId(), is(notNullValue()));
+        assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -407,7 +407,7 @@ public class OfferEntityTest {
         dao.persist(offer);
         offer = entityManager.find(OfferEntity.class, offer.getId());
 
-        Assert.assertThat(offer.getWeeklyHours(), is(Float.valueOf("0.999")));
+        assertThat(offer.getWeeklyHours(), is(Float.valueOf("0.999")));
     }
 
     /* TODO for some reason the precision does not work with hsqldb
@@ -433,7 +433,7 @@ public class OfferEntityTest {
         offer.setDailyHours(0.999f);
         dao.persist(offer);
         offer = entityManager.find(OfferEntity.class, offer.getId());
-        Assert.assertThat(offer.getDailyHours(), is(Float.valueOf("0.999")));
+        assertThat(offer.getDailyHours(), is(Float.valueOf("0.999")));
     }
 
     /* TODO for some reason the precision does not work with hsqldb
@@ -460,8 +460,8 @@ public class OfferEntityTest {
         offer.setPaymentFrequency(PaymentFrequency.M);
         dao.persist(offer);
 
-        Assert.assertThat(offer.getId(), is(notNullValue()));
-        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
+        assertThat(offer.getId(), is(notNullValue()));
+        assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -485,8 +485,8 @@ public class OfferEntityTest {
         offer.setDeduction(99);
         dao.persist(offer);
 
-        Assert.assertThat(offer.getId(), is(notNullValue()));
-        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
+        assertThat(offer.getId(), is(notNullValue()));
+        assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -503,8 +503,8 @@ public class OfferEntityTest {
         offer.setLodgingCostFrequency(PaymentFrequency.M);
         dao.persist(offer);
 
-        Assert.assertThat(offer.getId(), is(notNullValue()));
-        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
+        assertThat(offer.getId(), is(notNullValue()));
+        assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -529,8 +529,8 @@ public class OfferEntityTest {
         offer.setLivingCostFrequency(PaymentFrequency.M);
         dao.persist(offer);
 
-        Assert.assertThat(offer.getId(), is(notNullValue()));
-        Assert.assertThat(dao.findOffer(offer.getId()), is(offer));
+        assertThat(offer.getId(), is(notNullValue()));
+        assertThat(dao.findOffer(offer.getId()), is(offer));
     }
 
     @Test(expected = PersistenceException.class)
@@ -570,9 +570,9 @@ public class OfferEntityTest {
         dao.persist(offer);
 
         final OfferEntity persistedOffer = dao.findOffer(offer.getId());
-        Assert.assertThat(persistedOffer, is(offer));
-        Assert.assertThat(persistedOffer.getPayment(), is(nullValue()));
-        Assert.assertThat(persistedOffer.getPaymentFrequency(), is(nullValue()));
+        assertThat(persistedOffer, is(offer));
+        assertThat(persistedOffer.getPayment(), is(nullValue()));
+        assertThat(persistedOffer.getPaymentFrequency(), is(nullValue()));
     }
 
     @Transactional
@@ -601,9 +601,9 @@ public class OfferEntityTest {
         dao.persist(offer);
 
         final OfferEntity persistedOffer = dao.findOffer(offer.getId());
-        Assert.assertThat(persistedOffer, is(offer));
-        Assert.assertThat(persistedOffer.getLodgingCostFrequency(), is(nullValue()));
-        Assert.assertThat(persistedOffer.getLodgingCost(), is(nullValue()));
+        assertThat(persistedOffer, is(offer));
+        assertThat(persistedOffer.getLodgingCostFrequency(), is(nullValue()));
+        assertThat(persistedOffer.getLodgingCost(), is(nullValue()));
     }
 
     @Transactional
@@ -632,9 +632,9 @@ public class OfferEntityTest {
         dao.persist(offer);
 
         final OfferEntity persistedOffer = dao.findOffer(offer.getId());
-        Assert.assertThat(persistedOffer, is(offer));
-        Assert.assertThat(persistedOffer.getLivingCostFrequency(), is(nullValue()));
-        Assert.assertThat(persistedOffer.getLivingCost(), is(nullValue()));
+        assertThat(persistedOffer, is(offer));
+        assertThat(persistedOffer.getLivingCostFrequency(), is(nullValue()));
+        assertThat(persistedOffer.getLivingCost(), is(nullValue()));
     }
 
     @Test(expected = PersistenceException.class)
@@ -663,39 +663,39 @@ public class OfferEntityTest {
         offer.setId(null);
         dao.persist(offer);
 
-        Assert.assertThat(offer, is(notNullValue()));
-        Assert.assertThat(offer.getId(), is(notNullValue()));
-        Assert.assertThat(offer.getTypeOfWork(), is(TYPE_OF_WORK));
+        assertThat(offer, is(notNullValue()));
+        assertThat(offer.getId(), is(notNullValue()));
+        assertThat(offer.getTypeOfWork(), is(TYPE_OF_WORK));
     }
 
     @Test
     @Transactional
     public void testFind() {
-        Assert.assertThat(dao.findAll().size(), is(0));
+        assertThat(dao.findAll().size(), is(0));
         dao.persist(offer);
         final OfferEntity offerFoundByRefNo = dao.findOffer(offer.getRefNo());
-        Assert.assertThat(offerFoundByRefNo, is(notNullValue()));
-        Assert.assertThat(offerFoundByRefNo, is(offer));
+        assertThat(offerFoundByRefNo, is(notNullValue()));
+        assertThat(offerFoundByRefNo, is(offer));
         final OfferEntity offerFoundById = dao.findOffer(offer.getId());
-        Assert.assertThat(offerFoundById, is(notNullValue()));
-        Assert.assertThat(offerFoundById, is(offer));
-        Assert.assertThat(dao.findOffersByEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
+        assertThat(offerFoundById, is(notNullValue()));
+        assertThat(offerFoundById, is(offer));
+        assertThat(dao.findOffersByEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
         final List<OfferEntity> offersFoundByEmployerName = dao.findOffersByEmployerName(offer.getEmployerName());
         if (offersFoundByEmployerName == null || offersFoundByEmployerName.isEmpty()) {
             fail("This should not happen!");
         }
         final OfferEntity offerFoundByEmployerName = offersFoundByEmployerName.get(0);
-        Assert.assertThat(offerFoundByEmployerName, is(offer));
+        assertThat(offerFoundByEmployerName, is(offer));
         final OfferEntity offer2 = getFullOffer();
         offer2.setRefNo(REF_NO_2);
         dao.persist(offer2);
-        Assert.assertThat(dao.findAll().size(), is(2));
+        assertThat(dao.findAll().size(), is(2));
         final List<OfferEntity> offersFoundByLikeEmployerName = dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE);
         if (offersFoundByLikeEmployerName == null || offersFoundByLikeEmployerName.isEmpty()) {
             fail("This should not happen!");
         }
-        Assert.assertThat(offersFoundByLikeEmployerName.size(), is(2));
-        Assert.assertThat(dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
+        assertThat(offersFoundByLikeEmployerName.size(), is(2));
+        assertThat(dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
     }
 
     @After

@@ -13,6 +13,9 @@ package net.iaeste.iws.core.transformers;/*
  * =============================================================================
  */
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.dtos.Employer;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -23,13 +26,10 @@ import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.persistence.entities.OfferEntity;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hamcrest.core.Is.is;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -42,12 +42,12 @@ public class OfferTransformerTest {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         final OfferEntity entity = OfferTransformer.transform(offer);
         // TODO: check field by field
-        Assert.assertThat(offer.getId(), is(entity.getId()));
-        Assert.assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
+        assertThat(offer.getId(), is(entity.getId()));
+        assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
 
-        Assert.assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
-        Assert.assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
-        Assert.assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
+        assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
+        assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
+        assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
     }
 
     @Test
@@ -55,11 +55,11 @@ public class OfferTransformerTest {
         final OfferEntity entity = getMinimalOfferEntity();
         final Offer offer = OfferTransformer.transform(entity);
         // TODO: check field by field
-        Assert.assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
+        assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
 
-        Assert.assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
-        Assert.assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
-        Assert.assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
+        assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
+        assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
+        assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
 
     }
 
@@ -69,28 +69,8 @@ public class OfferTransformerTest {
         final OfferEntity entity = OfferTransformer.transform(offer);
         final Offer newOffer = OfferTransformer.transform(entity);
         // we rely on equals method
-        Assert.assertThat(offer, is(newOffer));
+        assertThat(offer, is(newOffer));
     }
-
-// Please don't add production code for your tests. Add tests for your
-// production code!
-//    @Test
-//    public void testCopyingBackAndForthFromEntity() {
-//        final OfferEntity entity = getMinimalOfferEntity();
-//        final Offer offer = OfferTransformer.transform(entity);
-//        final OfferEntity newEntity = OfferTransformer.transform(offer);
-//        // we rely on equals method
-//        Assert.assertThat(entity, is(newEntity));
-//    }
-
-//    @Test
-//    public void testCopyingBackAndForthFromEmptyEntity() {
-//        final OfferEntity entity = new OfferEntity();
-//        final Offer offer = OfferTransformer.transform(entity);
-//        final OfferEntity newEntity = OfferTransformer.transform(offer);
-//        // we rely on equals method
-//        Assert.assertThat(entity, is(newEntity));
-//    }
 
     @Test
     public void testCopyingBackAndForthFromEmptyDto() {
@@ -98,7 +78,7 @@ public class OfferTransformerTest {
         final OfferEntity entity = OfferTransformer.transform(offer);
         final Offer newOffer = OfferTransformer.transform(entity);
         // we rely on equals method
-        Assert.assertThat(offer, is(newOffer));
+        assertThat(offer, is(newOffer));
     }
 
     @Test
@@ -120,7 +100,7 @@ public class OfferTransformerTest {
 
         final Employer newEmployer = OfferTransformer.transform(Employer.class, entity);
 
-        Assert.assertThat(newEmployer, is(employer));
+        assertThat(newEmployer, is(employer));
     }
 
     private OfferEntity getMinimalOfferEntity() {

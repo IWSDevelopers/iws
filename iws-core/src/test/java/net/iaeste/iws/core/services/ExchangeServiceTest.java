@@ -14,6 +14,15 @@
 */
 package net.iaeste.iws.core.services;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FetchType;
@@ -30,16 +39,12 @@ import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -111,29 +116,34 @@ public class ExchangeServiceTest {
         assertThat(result.getOffer(), is(offerInDatabase));
     }
 
-// Either write your mocking correctly, or use the database for your test. This
-// is a crap test
-//    /**
-//     * Correct update request with one offer.
-//     */
-//    @Test
-//    public void testProcessingOffersUpdateRequest() {
-//        final Offer offer = offers.get(0);
-//        offer.setId(234L);
-//        final OfferEntity existingEntity = OfferTransformer.transform(offer);
-//        when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
-//        when(dao.findOffer(offer.getId())).thenReturn(existingEntity);
-//
-//        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
-//        request.verify(); // make sure that request is valid
-//
-//        // Execute the test
-//        final OfferResponse result = client.processOffer(null, request);
-//
-//        assertThat(result.isOk(), is(true));
-//        assertThat(result.getOffer(), is(new Offer()));
-//        verify(dao).persist(OfferTransformer.transform(offer));
-//    }
+    /**
+     * Correct update request with one offer.
+     */
+    @Test
+    public void testProcessingOffersUpdateRequest() {
+        final Offer offer = offers.get(0);
+        offer.setId(234L);
+        // offer which currently exist in db
+        offer.setCanteen(true);
+        final OfferEntity existingEntity = OfferTransformer.transform(offer);
+        // offer which is to be written
+        offer.setCanteen(false);
+        final OfferEntity entityToPersist = OfferTransformer.transform(offer);
+
+        when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
+        when(dao.findOffer(offer.getId())).thenReturn(existingEntity);
+
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+        request.verify(); // make sure that request is valid
+
+        // Execute the test
+        final OfferResponse result = client.processOffer(null, request);
+
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getOffer(), is(new Offer()));
+        verify(dao, times(1)).persist(any(OfferEntity.class));
+        verify(dao).persist(argThat(new OfferEntityMatcher(entityToPersist)));
+    }
 
     /**
      * Checks if processing is going to fail if {@code refNo} in request does not match the one in the database.
@@ -237,4 +247,25 @@ public class ExchangeServiceTest {
         assertThat(result.getEmployers().size(), is(entities.size()));
     }
 
+    private static class OfferEntityMatcher extends BaseMatcher<OfferEntity> {
+        private final OfferEntity entity;
+
+        OfferEntityMatcher(final OfferEntity entity) {
+            this.entity = entity;
+        }
+
+        @Override
+        public boolean matches(final Object o) {
+            if (o instanceof OfferEntity) {
+                final OfferEntity entity = (OfferEntity) o;
+                return entity.getId().equals(this.entity.getId()) && entity.getCanteen().equals(this.entity.getCanteen());
+            }
+            return false;
+        }
+
+        @Override
+        public void describeTo(final Description description) {
+            description.appendText(String.format("Offer{id=%s}", entity.getId().toString()));
+        }
+    }
 }

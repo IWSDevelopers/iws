@@ -28,13 +28,12 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
+ * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
 public final class PermissionResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-
     private List<Authorization> authorizations;
 
     /**
@@ -65,6 +64,10 @@ public final class PermissionResponse extends AbstractResponse {
         authorizations = null;
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
     public void setAuthorizations(final List<Authorization> authorizations) {
         this.authorizations = Copier.copy(authorizations);
     }
@@ -72,6 +75,10 @@ public final class PermissionResponse extends AbstractResponse {
     public List<Authorization> getAuthorizations() {
         return Copier.copy(authorizations);
     }
+
+    // =========================================================================
+    // Standard Response Methods
+    // =========================================================================
 
     /**
      * {@inheritDoc}
@@ -81,11 +88,11 @@ public final class PermissionResponse extends AbstractResponse {
         if (this == obj) {
             return true;
         }
+
         if (!(obj instanceof PermissionResponse)) {
             return false;
         }
 
-        //noinspection CastToConcreteClass
         final PermissionResponse that = (PermissionResponse) obj;
         return !(authorizations != null ? !authorizations.equals(that.authorizations) : that.authorizations != null);
     }

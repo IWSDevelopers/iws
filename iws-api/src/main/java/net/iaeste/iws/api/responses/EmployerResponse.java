@@ -18,19 +18,22 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.utils.Copier;
 
 import java.util.List;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * ToDo Kim; Pavel, there is no way to create a positive response, i.e. without error
+ * ToDo Kim; Pavel, we need both setters and getters, including for the errors
+ *
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection CastToConcreteClass
  */
 public final class EmployerResponse extends AbstractResponse {
 
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
     private final Employer employer;
     private final List<String> errors;
@@ -60,69 +63,73 @@ public final class EmployerResponse extends AbstractResponse {
     /**
      * Response is created when processing the employer failed.
      * <p/>
-     * Incorrect Employer should never be passed to this constructor. Instead use constructor without list of errors parameter.
+     * Incorrect Employer should never be passed to this constructor. Instead
+     * use constructor without list of errors parameter.
      *
-     * @param failedEmployer list of employer for which something went wrong
+     * @param failedEmployer Employer Object, which could not be processed
+     * @param errors         List of processing errors
      */
     public EmployerResponse(final Employer failedEmployer, final List<String> errors) {
         super(IWSErrors.PROCESSING_FAILURE, "processing of the Offer failed");
-        this.employer = new Employer(failedEmployer);
-        this.errors = errors;
+        employer = new Employer(failedEmployer);
+        this.errors = Copier.copy(errors);
     }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
 
     public Employer getEmployer() {
         return new Employer(employer);
     }
 
+    // =========================================================================
+    // Standard Response Methods
+    // =========================================================================
 
     /**
-     * TODO
      * {@inheritDoc}
      */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final EmployerResponse that = (EmployerResponse) obj;
+
+        if (errors != null ? !errors.equals(that.errors) : that.errors != null) {
+            return false;
+        }
+
+        return !(employer != null ? !employer.equals(that.employer) : that.employer != null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (errors != null ? errors.hashCode() : 0);
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+     @Override
     public String toString() {
         return "EmployerResponse{" +
                 "employer=" + employer +
                 ", errors=" + errors +
                 '}';
-    }
-
-    /**
-     * TODO
-     *
-     * @param o
-     * @return
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final EmployerResponse that = (EmployerResponse) o;
-
-        if (errors != null ? !errors.equals(that.errors) : that.errors != null) {
-            return false;
-        }
-        if (employer != null ? !employer.equals(that.employer) : that.employer != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * TODO
-     *
-     * @return
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (employer != null ? employer.hashCode() : 0);
-        result = 31 * result + (errors != null ? errors.hashCode() : 0);
-        return result;
     }
 }

@@ -26,7 +26,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
+ * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
 public final class AuthenticationResponse extends AbstractResponse {
 
@@ -64,6 +64,10 @@ public final class AuthenticationResponse extends AbstractResponse {
         token = null;
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
     /**
      * Sets the users Authentication Token.
      *
@@ -82,6 +86,10 @@ public final class AuthenticationResponse extends AbstractResponse {
         return token;
     }
 
+    // =========================================================================
+    // Standard Response Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */
@@ -95,7 +103,6 @@ public final class AuthenticationResponse extends AbstractResponse {
             return false;
         }
 
-        //noinspection CastToConcreteClass
         final AuthenticationResponse that = (AuthenticationResponse) obj;
         return !(token != null ? !token.equals(that.token) : that.token != null);
     }

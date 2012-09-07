@@ -18,25 +18,21 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.util.List;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection CastToConcreteClass
  */
 public final class FetchOffersResponse extends AbstractResponse {
 
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private final List<Offer> offers;
-    // TODO: To Be Discussed
-    private final List<String> errors;
+    private List<Offer> offers;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -45,7 +41,15 @@ public final class FetchOffersResponse extends AbstractResponse {
     public FetchOffersResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
         offers = null;
-        errors = null;
+    }
+
+    /**
+     * Default Constructor.
+     *
+     * @param offers List of Offers found
+     */
+    public FetchOffersResponse(final List<Offer> offers) {
+        this.offers = Copier.copy(offers);
     }
 
     /**
@@ -57,50 +61,60 @@ public final class FetchOffersResponse extends AbstractResponse {
     public FetchOffersResponse(final IWSError error, final String message) {
         super(error, message);
         offers = null;
-        errors = null;
     }
 
-    public FetchOffersResponse(List<Offer> offers) {
-        this.offers = offers;
-        this.errors = null;
-    }
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
 
+    public void setOffers(final List<Offer> offers) {
+        this.offers = Copier.copy(offers);
+    }
 
     public List<Offer> getOffers() {
         return Copier.copy(offers);
     }
 
+    // =========================================================================
+    // Standard Response Methods
+    // =========================================================================
+
     /**
-     * TODO
      * {@inheritDoc}
      */
     @Override
     public boolean equals(final Object obj) {
-        throw new NotImplementedException("TBD");
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof FetchOffersResponse)) {
+            return false;
+        }
+
+        final FetchOffersResponse that = (FetchOffersResponse) obj;
+        return !(offers != null ? !offers.equals(that.offers) : that.offers != null);
     }
 
     /**
-     * TODO
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offers != null ? offers.hashCode() : 0);
+
+        return result;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
         return "FetchOffersResponse{" +
                 "offers=" + offers +
-                ", errors=" + errors +
                 '}';
-    }
-
-    /**
-     * TODO
-     *
-     * @return
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (offers != null ? offers.hashCode() : 0);
-        result = 31 * result + (errors != null ? errors.hashCode() : 0);
-        return result;
     }
 }

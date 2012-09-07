@@ -45,11 +45,27 @@ public final class GroupResponse extends AbstractResponse {
         super(error, message);
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    // =========================================================================
+    // Standard Response Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean equals(final Object obj) {
+        throw new NotImplementedException("TBD");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
         throw new NotImplementedException("TBD");
     }
 

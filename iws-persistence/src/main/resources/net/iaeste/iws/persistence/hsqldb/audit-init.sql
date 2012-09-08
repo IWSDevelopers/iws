@@ -1,13 +1,4 @@
 CREATE SCHEMA PUBLIC_AUDIT;
-CREATE TABLE PUBLIC_AUDIT.USERS (
-  ID                      INTEGER           NOT NULL,
-  USERNAME                VARCHAR   (50)            ,
-  PASSWORD                VARCHAR   (128)           ,
-  CHANGED_ON              TIMESTAMP                 ,
-  CHANGED_BY              INTEGER                   ,
-  CREATED_ON              TIMESTAMP                 ,
-  CREATED_BY              INTEGER
-);
 CREATE TABLE PUBLIC_AUDIT.OFFERS (
   ID                      BIGINT            NOT NULL,
   REF_NO                  VARCHAR   (255)   NOT NULL,

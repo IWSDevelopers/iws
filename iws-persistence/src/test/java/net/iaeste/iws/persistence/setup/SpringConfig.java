@@ -35,14 +35,16 @@ import java.util.Set;
 /**
  * Spring JavaConfig, for the Unit testing of the Persistence layer.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 @Configuration
 @EnableTransactionManagement
 public class SpringConfig {
+
     private EmbeddedDatabase dataSource = null;
+
     /**
      * if set to {@code true} then instead of executing {@code audit-init.sql} script
      * the generic build of auditing table will be used
@@ -58,15 +60,15 @@ public class SpringConfig {
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange-triggers.sql");
-        //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
-        //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql");
+                //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
+                //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql");
         if (!useGenericSqlForAuditing) {
             databaseBuilder.addScript("net/iaeste/iws/persistence/hsqldb/audit-init.sql");
             databaseBuilder.addScript("net/iaeste/iws/persistence/hsqldb/audit-triggers.sql");
         }
-        this.dataSource = databaseBuilder.build();
+        dataSource = databaseBuilder.build();
 
-        return this.dataSource;
+        return dataSource;
     }
 
     @Bean
@@ -89,7 +91,6 @@ public class SpringConfig {
 
         if (useGenericSqlForAuditing) {
             getAuditTablesAndTriggers().execute();
-            ;
         }
 
         return transactionManager;
@@ -118,10 +119,8 @@ public class SpringConfig {
         // by default do not log changes for all tables
         final AuditBuilder.IncludeMode includeMode = AuditBuilder.IncludeMode.NONE;
         // add tables for auditing
-        final Set<String> includedTables = new HashSet<String>() {{
-            add("offers");
-            add("users");
-        }};
+        final Set<String> includedTables = new HashSet<>(1);
+        includedTables.add("offers");
         final Set<String> excludedTables = Collections.emptySet();
         // by default all columns for audited tables will be saved
 

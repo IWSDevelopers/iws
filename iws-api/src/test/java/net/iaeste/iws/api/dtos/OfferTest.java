@@ -158,16 +158,6 @@ public class OfferTest {
         Assert.assertThat("NominationDeadline", oldDate, is(offer.getNominationDeadline()));
     }
 
-    /**
-     * TODO: which fields are not important for the equality of an offer?
-     */
-    @Test
-    public void testEqualityOfSimilarOffers() {
-//        final Offer offer2 = new Offer(offer);
-//        offer2.setWorkDescription("@#$#@");
-//        Assert.assertThat(offer, is(equalTo(offer2)));
-    }
-
     @Test
     public void testVerifyValidRefNo() {
         for (final String correctRefNo : getValidRefNos()) {
@@ -412,7 +402,7 @@ public class OfferTest {
 
     @Test
     public void testVerifyOrderOfUnavailableDates() {
-        // TODO: requirements for Unavailable dates
+        // TODO: requirements for Unavailable dates, see #84
     }
 
     @Test

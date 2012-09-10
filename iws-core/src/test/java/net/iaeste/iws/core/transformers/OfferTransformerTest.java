@@ -41,8 +41,51 @@ public class OfferTransformerTest {
     public void testCopyingMinimalOfferToEntity() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         final OfferEntity entity = OfferTransformer.transform(offer);
-        // TODO: check field by field
+
         assertThat(offer.getId(), is(entity.getId()));
+        assertThat(offer.getRefNo(), is(entity.getRefNo()));
+        assertThat(offer.getEmployerName(), is(entity.getEmployerName()));
+        assertThat(offer.getEmployerAddress(), is(entity.getEmployerAddress()));
+        assertThat(offer.getEmployerAddress2(), is(entity.getEmployerAddress2()));
+        assertThat(offer.getEmployerBusiness(), is(entity.getEmployerBusiness()));
+        assertThat(offer.getEmployerEmployeesCount(), is(entity.getEmployerEmployeesCount()));
+        assertThat(offer.getEmployerWebsite(), is(entity.getEmployerWebsite()));
+        assertThat(offer.getPrevTrainingRequired(), is(entity.getPrevTrainingRequired()));
+        assertThat(offer.getOtherRequirements(), is(entity.getOtherRequirements()));
+        assertThat(offer.getLanguage1(), is(entity.getLanguage1()));
+        assertThat(offer.getLanguage1Level(), is(entity.getLanguage1Level()));
+        assertThat(offer.getLanguage1Operator(), is(entity.getLanguage1Operator()));
+        assertThat(offer.getLanguage2(), is(entity.getLanguage2()));
+        assertThat(offer.getLanguage2Level(), is(entity.getLanguage2Level()));
+        assertThat(offer.getLanguage2Operator(), is(entity.getLanguage2Operator()));
+        assertThat(offer.getLanguage3(), is(entity.getLanguage3()));
+        assertThat(offer.getLanguage3Level(), is(entity.getLanguage3Level()));
+        assertThat(offer.getWorkDescription(), is(entity.getWorkDescription()));
+        assertThat(offer.getMinimumWeeks(), is(entity.getMinimumWeeks()));
+        assertThat(offer.getMaximumWeeks(), is(entity.getMaximumWeeks()));
+        assertThat(offer.getWorkingPlace(), is(entity.getWorkingPlace()));
+        assertThat(offer.getNearestAirport(), is(entity.getNearestAirport()));
+        assertThat(offer.getNearestPubTransport(), is(entity.getNearestPubTransport()));
+        assertThat(offer.getWeeklyHours(), is(entity.getWeeklyHours()));
+        assertThat(offer.getDailyHours(), is(entity.getDailyHours()));
+        assertThat(offer.getPayment(), is(entity.getPayment()));
+        assertThat(offer.getCurrency(), is(entity.getCurrency()));
+        assertThat(offer.getPaymentFrequency(), is(entity.getPaymentFrequency()));
+        assertThat(offer.getDeduction(), is(entity.getDeduction()));
+        assertThat(offer.getLodgingBy(), is(entity.getLodgingBy()));
+        assertThat(offer.getLodgingCost(), is(entity.getLodgingCost()));
+        assertThat(offer.getLodgingCostFrequency(), is(entity.getLodgingCostFrequency()));
+        assertThat(offer.getLivingCost(), is(entity.getLivingCost()));
+        assertThat(offer.getLivingCostFrequency(), is(entity.getLivingCostFrequency()));
+        assertThat(offer.getCanteen(), is(entity.getCanteen()));
+        assertThat(offer.getNominationDeadline(), is(entity.getNominationDeadline()));
+        assertThat(offer.getFromDate(), is(entity.getFromDate()));
+        assertThat(offer.getToDate(), is(entity.getToDate()));
+        assertThat(offer.getFromDate2(), is(entity.getFromDate2()));
+        assertThat(offer.getToDate2(), is(entity.getToDate2()));
+        assertThat(offer.getUnavailableFrom(), is(entity.getUnavailableFrom()));
+        assertThat(offer.getUnavailableTo(), is(entity.getUnavailableTo()));
+
         assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
 
         assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
@@ -54,7 +97,51 @@ public class OfferTransformerTest {
     public void testCopyingMinimalOfferToDto() {
         final OfferEntity entity = getMinimalOfferEntity();
         final Offer offer = OfferTransformer.transform(entity);
-        // TODO: check field by field
+
+        assertThat(offer.getId(), is(entity.getId()));
+        assertThat(offer.getRefNo(), is(entity.getRefNo()));
+        assertThat(offer.getEmployerName(), is(entity.getEmployerName()));
+        assertThat(offer.getEmployerAddress(), is(entity.getEmployerAddress()));
+        assertThat(offer.getEmployerAddress2(), is(entity.getEmployerAddress2()));
+        assertThat(offer.getEmployerBusiness(), is(entity.getEmployerBusiness()));
+        assertThat(offer.getEmployerEmployeesCount(), is(entity.getEmployerEmployeesCount()));
+        assertThat(offer.getEmployerWebsite(), is(entity.getEmployerWebsite()));
+        assertThat(offer.getPrevTrainingRequired(), is(entity.getPrevTrainingRequired()));
+        assertThat(offer.getOtherRequirements(), is(entity.getOtherRequirements()));
+        assertThat(offer.getLanguage1(), is(entity.getLanguage1()));
+        assertThat(offer.getLanguage1Level(), is(entity.getLanguage1Level()));
+        assertThat(offer.getLanguage1Operator(), is(entity.getLanguage1Operator()));
+        assertThat(offer.getLanguage2(), is(entity.getLanguage2()));
+        assertThat(offer.getLanguage2Level(), is(entity.getLanguage2Level()));
+        assertThat(offer.getLanguage2Operator(), is(entity.getLanguage2Operator()));
+        assertThat(offer.getLanguage3(), is(entity.getLanguage3()));
+        assertThat(offer.getLanguage3Level(), is(entity.getLanguage3Level()));
+        assertThat(offer.getWorkDescription(), is(entity.getWorkDescription()));
+        assertThat(offer.getMinimumWeeks(), is(entity.getMinimumWeeks()));
+        assertThat(offer.getMaximumWeeks(), is(entity.getMaximumWeeks()));
+        assertThat(offer.getWorkingPlace(), is(entity.getWorkingPlace()));
+        assertThat(offer.getNearestAirport(), is(entity.getNearestAirport()));
+        assertThat(offer.getNearestPubTransport(), is(entity.getNearestPubTransport()));
+        assertThat(offer.getWeeklyHours(), is(entity.getWeeklyHours()));
+        assertThat(offer.getDailyHours(), is(entity.getDailyHours()));
+        assertThat(offer.getPayment(), is(entity.getPayment()));
+        assertThat(offer.getCurrency(), is(entity.getCurrency()));
+        assertThat(offer.getPaymentFrequency(), is(entity.getPaymentFrequency()));
+        assertThat(offer.getDeduction(), is(entity.getDeduction()));
+        assertThat(offer.getLodgingBy(), is(entity.getLodgingBy()));
+        assertThat(offer.getLodgingCost(), is(entity.getLodgingCost()));
+        assertThat(offer.getLodgingCostFrequency(), is(entity.getLodgingCostFrequency()));
+        assertThat(offer.getLivingCost(), is(entity.getLivingCost()));
+        assertThat(offer.getLivingCostFrequency(), is(entity.getLivingCostFrequency()));
+        assertThat(offer.getCanteen(), is(entity.getCanteen()));
+        assertThat(offer.getNominationDeadline(), is(entity.getNominationDeadline()));
+        assertThat(offer.getFromDate(), is(entity.getFromDate()));
+        assertThat(offer.getToDate(), is(entity.getToDate()));
+        assertThat(offer.getFromDate2(), is(entity.getFromDate2()));
+        assertThat(offer.getToDate2(), is(entity.getToDate2()));
+        assertThat(offer.getUnavailableFrom(), is(entity.getUnavailableFrom()));
+        assertThat(offer.getUnavailableTo(), is(entity.getUnavailableTo()));
+
         assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
 
         assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));

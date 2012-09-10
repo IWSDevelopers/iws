@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
@@ -39,16 +42,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
-
 /**
  * Standard IAESTE Offer.
  *
  * @author Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
  * @noinspection CastToConcreteClass, OverlyLongMethod, OverlyComplexMethod
+ * @since 1.7
  */
 public final class Offer implements Verifiable {
 
@@ -570,8 +570,6 @@ public final class Offer implements Verifiable {
     // Standard DTO Methods
     // =========================================================================
 
-    // ToDo Kim; @Michal, an Offer always contain a *unique* RefNo, this can be used
-
     /**
      * first thought was that id should be sufficient, but what if two
      * NOT PRESISTED offers want to be compared, then there is no ID
@@ -594,15 +592,11 @@ public final class Offer implements Verifiable {
         }
 
         final Offer offer = (Offer) obj;
-
-        if (id == null) {
-            if (offer.id != null) {
-                return false;
-            }
-        } else {
-            if (!id.equals(offer.id)) {
-                return false;
-            }
+        if (id != null ? !id.equals(offer.id) : offer.id != null) {
+            return false;
+        }
+        if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
+            return false;
         }
         if (livingCostFrequency != offer.livingCostFrequency) {
             return false;
@@ -710,9 +704,6 @@ public final class Offer implements Verifiable {
             return false;
         }
         if (prevTrainingRequired != null ? !prevTrainingRequired.equals(offer.prevTrainingRequired) : offer.prevTrainingRequired != null) {
-            return false;
-        }
-        if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
             return false;
         }
         if (studyLevels != null ? !studyLevels.equals(offer.studyLevels) : offer.studyLevels != null) {
@@ -1068,12 +1059,12 @@ public final class Offer implements Verifiable {
     }
 
     /**
-     * TODO verify requirements
+     * TODO verify requirements, see #84
      *
      * @return true if halidays order is valid.
      */
     private boolean verifyUnavailableDatesOrder() {
-        // TODO: discuss validations for unavailablity dates
+        // TODO: discuss validations for unavailablity dates, see #84
         return true;
     }
 

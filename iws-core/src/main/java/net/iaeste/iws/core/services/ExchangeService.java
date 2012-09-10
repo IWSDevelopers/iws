@@ -21,8 +21,8 @@ import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchEmployersRequest;
+import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
@@ -60,7 +60,6 @@ public class ExchangeService {
      * <p/>
      * If {@code id = null} and {@code refNo} exists, then the request is invalid.
      * If (@code id != null} and {@code refNo} in the database and request don't match, then the request is invalid.
-     * TODO michal: method too long
      *
      * @param token   TODO
      * @param request

@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import net.iaeste.iws.api.constants.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
@@ -31,8 +32,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -449,7 +453,31 @@ public class OfferTest {
         offer = getMinimalOffer();
         offer.setFieldOfStudies(null);
         Assert.assertThat(String.format("fieldOfStudies%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+    }
 
+    @Test(expected = VerificationException.class)
+    public void testSizeOfFieldOfStudies() {
+        offer = getMinimalOffer();
+        final List<FieldOfStudy> fieldOfStudiesList = new ArrayList<>(
+                EnumSet.allOf(FieldOfStudy.class)).subList(0, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY + 1);
+
+        offer.setFieldOfStudies(EnumSet.copyOf(fieldOfStudiesList));
+        offer.verify();
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testSizeOfSpecializations() {
+        offer = getMinimalOffer();
+        final List<Specialization> specializationList = new ArrayList<>(
+                EnumSet.allOf(Specialization.class)).subList(0, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS + 1);
+        final Set<String> specializations = new HashSet<>();
+        for (final Specialization specialization : specializationList) {
+            specializations.add(specialization.toString());
+        }
+
+        offer.setSpecializations(specializations);
+
+        offer.verify();
     }
 
     @Test

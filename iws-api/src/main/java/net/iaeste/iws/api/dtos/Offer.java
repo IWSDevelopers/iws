@@ -18,6 +18,7 @@ import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollecti
 import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
@@ -873,10 +874,24 @@ public final class Offer implements Verifiable {
         if (!verifyNumberOfWeeks()) {
             errors.add("weeks are not set correctly");
         }
+        if (!verifySizeOfFieldsOfStudy()) {
+            errors.add(String.format("cannot have more than %s Fields of Study", IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY));
+        }
+        if (!verifySizeOfSpecializations()) {
+            errors.add(String.format("cannot have more than %s Specializations", IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS));
+        }
         errors.addAll(verifyFieldDependencies());
         if (!errors.isEmpty()) {
             throw new VerificationException(errors.toString());
         }
+    }
+
+    private boolean verifySizeOfSpecializations() {
+        return specializations == null || specializations.size() <= IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS;
+    }
+
+    private boolean verifySizeOfFieldsOfStudy() {
+        return fieldOfStudies == null || fieldOfStudies.size() <= IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY;
     }
 
     /**

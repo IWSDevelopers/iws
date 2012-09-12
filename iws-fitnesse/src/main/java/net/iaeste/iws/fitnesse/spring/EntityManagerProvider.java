@@ -21,9 +21,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
- * @author  Matej Kosco / last $Author:$
+ * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class EntityManagerProvider {
 

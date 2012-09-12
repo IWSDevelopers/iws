@@ -1,0 +1,12 @@
+!path iws-fitnesse.jar
+!define TEST_SYSTEM {slim}
+
+|Comment                   |
+|example OfferResponse test|
+
+!|process offers                                                                                                                                                 |
+|token                           |offer  |is request ok?|error code?|error message?                                                                              |
+|null                            |minimal|false         |401        |The Token is invalid, the content is an unsupported or unallowed cryptographical hash value.|
+|md5_5678901234567890123456789012|empty  |false         |401        |=~/^\[.*\]$/                                                                                |
+|md5_5678901234567890123456789012|minimal|true          |0          |OK                                                                                          |
+|md5_5678901234567890123456789012|full   |true          |0          |OK                                                                                          |

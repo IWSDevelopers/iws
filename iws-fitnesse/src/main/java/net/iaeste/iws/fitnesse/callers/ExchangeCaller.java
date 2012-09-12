@@ -32,6 +32,7 @@ import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.FetchEmployersResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
@@ -47,9 +48,9 @@ import javax.persistence.EntityManager;
  * will throw a new {@code StopTestException} if an error occured - this is the
  * expected behaviour for the FitNesse tests.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class ExchangeCaller implements Exchange {
 
@@ -100,7 +101,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         try {
             return exchange.processOffer(token, request);
         } catch (Exception e) {

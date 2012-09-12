@@ -31,6 +31,7 @@ import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.FetchEmployersResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
@@ -48,7 +49,7 @@ public interface Exchange {
 
     FacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
 
-    Fallible processOffer(AuthenticationToken token, ProcessOfferRequest request);
+    OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 
     Fallible deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 

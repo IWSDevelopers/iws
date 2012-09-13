@@ -22,6 +22,65 @@ package net.iaeste.iws.api.enums;
  * @since 1.7
  */
 public enum Language {
-    // TODO add more languages
-    ENGLISH, GERMAN, FRENCH, RUSSIAN
+    ENGLISH("English"),
+    ARABIC("Arabic"),
+    BELARUSIAN("Belarusian"),
+    BULGARIAN("Bulgarian"),
+    CANTONESE_YUE_CHINESE("Cantonese (Yue) Chinese"),
+    CROATIAN("Croatian"),
+    CZECH("Czech"),
+    DANISH("Danish"),
+    DUTCH("Dutch"),
+    ESTONIAN("Estonian"),
+    FINNISH("Finnish"),
+    FRENCH("French"),
+    GERMAN("German"),
+    GREEK("Greek"),
+    HUNGARIAN("Hungarian"),
+    INDONESIAN("Indonesian"),
+    ITALIAN("Italian"),
+    JAPANESE("Japanese"),
+    KOREAN("Korean"),
+    LATVIAN("Latvian"),
+    LITHUANIAN("Lithuanian"),
+    MANDARIN_CHINESE("Mandarin Chinese"),
+    NORWEGIAN("Norwegian"),
+    PERSIAN("Persian"),
+    POLISH("Polish"),
+    PORTUGUESE("Portuguese"),
+    ROMANIAN("Romanian"),
+    RUSSIAN("Russian"),
+    SERBIAN("Serbian"),
+    SLOVAKIAN("Slovakian"),
+    SLOVENIAN("Slovenian"),
+    SPANISH("Spanish"),
+    SWEDISH("Swedish"),
+    TAJIK("Tajik"),
+    THAI("Thai"),
+    TURKISH("Turkish"),
+    VIETNAMESE("Vietnamese"),
+    UKRAINIAN("Ukrainian"),
+    ANY("Any");
+
+
+    private final String description;
+
+    Language(final String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Same as valueOf but for when an argument is null then null is returned.
+     *
+     * @param language String which should be value of TypeOfWork
+     * @return null or enum value
+     */
+    public static Language toValue(final String language) {
+        return language == null ? null : Language.valueOf(language);
+    }
+
 }

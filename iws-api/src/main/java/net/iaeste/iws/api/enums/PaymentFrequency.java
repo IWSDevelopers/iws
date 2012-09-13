@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.Gender
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.PaymentFrequency
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -15,12 +15,12 @@
 package net.iaeste.iws.api.enums;
 
 /**
- * Gender Object for the Exchange Module.
+ * PaymentFrequency Object for the Exchange Module.
  *
- * @author  Pavel Fiala / last $Author:$
+ * @author Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection EnumeratedConstantNamingConvention
+ * @since 1.7
  */
 public enum PaymentFrequency {
 

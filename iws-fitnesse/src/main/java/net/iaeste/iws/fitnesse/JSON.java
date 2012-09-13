@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-common) - net.iaeste.iws.common.utils.JSON
+ * Project: IntraWeb Services (iws-common) - net.iaeste.iws.fitnesse.JSON
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -13,7 +13,7 @@
  * =============================================================================
  */
 
-package net.iaeste.iws.common.utils;
+package net.iaeste.iws.fitnesse;
 
 import com.google.gson.Gson;
 
@@ -31,6 +31,7 @@ public class JSON {
     public static <T> String serialize(final T object) {
         return GSON.toJson(object);
     }
+
     public static <T> T deserialize(final Class<T> clazz, final String json) {
         return GSON.fromJson(json, clazz);
     }

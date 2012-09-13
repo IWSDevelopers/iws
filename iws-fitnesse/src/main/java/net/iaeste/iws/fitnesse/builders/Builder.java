@@ -15,7 +15,7 @@
 
 package net.iaeste.iws.fitnesse.builders;
 
-import net.iaeste.iws.common.utils.JSON;
+import net.iaeste.iws.fitnesse.JSON;
 
 /**
  * Class helps in building objects for later use in other tests.

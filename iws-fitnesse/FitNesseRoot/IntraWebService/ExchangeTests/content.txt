@@ -4,13 +4,6 @@
 |Comment                   |
 |example OfferResponse test|
 
-!|process offers                                                                                                                                                 |
-|token                           |offer  |is request ok?|error code?|error message?                                                                              |
-|null                            |minimal|false         |401        |The Token is invalid, the content is an unsupported or unallowed cryptographical hash value.|
-|md5_5678901234567890123456789012|empty  |false         |401        |=~/^\[.*\]$/                                                                                |
-|md5_5678901234567890123456789012|minimal|true          |0          |OK                                                                                          |
-|md5_5678901234567890123456789012|full   |true          |0          |OK                                                                                          |
-
 !|build offer                                                 |
 |default offer|ref no      |work description|is valid?|result?|
 |empty        |AT-2012     |some desc       |false    |$o1=   |
@@ -18,6 +11,6 @@
 
 !|should save offer                                                                                                                    |
 |offer                                                                                                      |is request ok?|error code?|
-|$o1                                                                                                        |false         |0          |
+|$o1                                                                                                        |false         |401        |
 |{"refNo":"AT-2012","fieldOfStudies":[],"specializations":[],"studyLevels":[],"workDescription":"some desc"}|false         |401        |
 |$o2                                                                                                        |true          |0          |

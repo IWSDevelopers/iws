@@ -21,7 +21,6 @@ import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.common.utils.JSON;
 import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 

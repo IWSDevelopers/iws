@@ -26,7 +26,7 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.common.utils.JSON;
+import net.iaeste.iws.fitnesse.JSON;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,6 +41,7 @@ public class BuildOffer extends Builder<Offer> {
     private boolean valid;
 
     public void setDefaultOffer(final String offer) {
+        // TODO Michal: get rid of OfferTestUtility dependency
         switch (offer) {
             case "minimal":
                 product = OfferTestUtility.getMinimalOffer();
@@ -53,6 +54,7 @@ public class BuildOffer extends Builder<Offer> {
                 break;
         }
     }
+
     /**
      * Sets object in builder. Method discards all previous changes.
      *

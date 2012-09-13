@@ -15,6 +15,12 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>iws-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
+        </dependency>
     	<dependency>
         	<groupId>gsbase</groupId>
         	<artifactId>gsbase</artifactId>

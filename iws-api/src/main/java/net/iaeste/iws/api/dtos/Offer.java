@@ -127,10 +127,16 @@ public final class Offer implements Verifiable {
     }
 
     private Long id;
+    /**
+     * not null
+     */
     private String refNo;
     private Date nominationDeadline;
 
     // Employer information
+    /**
+     * not null
+     */
     private String employerName;
     private String employerAddress;
     private String employerAddress2;
@@ -139,6 +145,9 @@ public final class Offer implements Verifiable {
     private String employerWebsite;
 
     //Student Information
+    /**
+     * not null
+     */
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
     /**
      * Has to be defined as a List of Strings because
@@ -146,10 +155,19 @@ public final class Offer implements Verifiable {
      * specializations in addition to the predefined ones.
      */
     private Set<String> specializations = new HashSet<>();
+    /**
+     * not null
+     */
     private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
     private Boolean prevTrainingRequired;
     private String otherRequirements;
+    /**
+     * not null
+     */
     private Language language1;
+    /**
+     * not null
+     */
     private LanguageLevel language1Level;
     private LanguageOperator language1Operator;
     private Language language2;
@@ -159,12 +177,27 @@ public final class Offer implements Verifiable {
     private LanguageLevel language3Level;
 
     // Work offered
+    /**
+     * not null
+     */
     private String workDescription;
     private TypeOfWork typeOfWork;
+    /**
+     * not null
+     */
     private Integer minimumWeeks;
+    /**
+     * not null
+     */
     private Integer maximumWeeks;
+    /**
+     * not null
+     */
     private Date fromDate;
     private Date toDate;
+    /**
+     * not null
+     */
     private Date fromDate2;
     private Date toDate2;
     private Date unavailableFrom;
@@ -172,6 +205,9 @@ public final class Offer implements Verifiable {
     private String workingPlace;
     private String nearestAirport;
     private String nearestPubTransport;
+    /**
+     * not null
+     */
     private Float weeklyHours;
     private Float dailyHours;
     /**
@@ -918,7 +954,7 @@ public final class Offer implements Verifiable {
     }
 
     /**
-     * Checks for nulls in required fields.
+     * Checks for nulls, empty string and collections in required fields.
      *
      * @return collection of errors. If all required fields are provided, method returns empty collection.
      */

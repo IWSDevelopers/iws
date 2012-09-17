@@ -27,10 +27,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  * Spring JavaConfig, for the Unit testing of the Persistence layer.
@@ -45,30 +42,17 @@ public class SpringConfig {
 
     private EmbeddedDatabase dataSource = null;
 
-    /**
-     * if set to {@code true} then instead of executing {@code audit-init.sql} script
-     * the generic build of auditing table will be used
-     */
-    private static final boolean useGenericSqlForAuditing = true;
-
     @Bean
     public DataSource dataSource() {
-        final EmbeddedDatabaseBuilder databaseBuilder = new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.HSQL)
+        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-triggers.sql");
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-triggers.sql")
                 //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
                 //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql");
-        if (!useGenericSqlForAuditing) {
-            databaseBuilder.addScript("net/iaeste/iws/persistence/hsqldb/audit-init.sql");
-            databaseBuilder.addScript("net/iaeste/iws/persistence/hsqldb/audit-triggers.sql");
-        }
-        dataSource = databaseBuilder.build();
-
-        return dataSource;
+                .build();
     }
 
     @Bean
@@ -89,10 +73,6 @@ public class SpringConfig {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
 
-        if (useGenericSqlForAuditing) {
-            getAuditTablesAndTriggers().execute();
-        }
-
         return transactionManager;
     }
 
@@ -109,26 +89,5 @@ public class SpringConfig {
         properties.setProperty("hibernate.connection.autocommit", "false");
 
         return properties;
-    }
-
-    /**
-     * Configures AuditBuilder and generates auditing tables.
-     * Method is used only when {@code useGenericSqlForAuditing = true}.
-     */
-    private AuditBuilder getAuditTablesAndTriggers() {
-        // by default do not log changes for all tables
-        final AuditBuilder.IncludeMode includeMode = AuditBuilder.IncludeMode.NONE;
-        // add tables for auditing
-        final Set<String> includedTables = new HashSet<>(1);
-        includedTables.add("offers");
-        final Set<String> excludedTables = Collections.emptySet();
-        // by default all columns for audited tables will be saved
-
-        final AuditBuilder auditBuilder = new AuditBuilder(dataSource).
-                setIncludeMode(includeMode).
-                setIncludeTable(includedTables).
-                setExcludeTable(excludedTables);
-
-        return auditBuilder;
     }
 }

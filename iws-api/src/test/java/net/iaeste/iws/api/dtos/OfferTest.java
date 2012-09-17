@@ -19,6 +19,7 @@ import static net.iaeste.iws.api.dtos.OfferTestUtility.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.FieldOfStudy;
@@ -49,7 +50,7 @@ public class OfferTest {
     /**
      * field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method
      */
-    private static final Date[] dates = new Date[9];
+    private static final Date[] dates = new Date[10];
     private static final String[] validRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "AT-2012-1234-AB", "GB-2011-0001" };
 
     private static final String[] invalidRefNos = { "GB-2011-00001", "UK-2011-00001", "INE-2011-0001-KU", "GB-2011-w001", "PL-201w-0001", "GB-2011-0001-101",
@@ -405,8 +406,40 @@ public class OfferTest {
     }
 
     @Test
-    public void testVerifyOrderOfUnavailableDates() {
-        // TODO: requirements for Unavailable dates, see #84
+    public void testVerifyOrderOfUnavailableDatesValid() {
+        offer = getMinimalOffer();
+        offer.setNominationDeadline(dates[0]);
+        offer.setFromDate(dates[2]);
+        offer.setToDate(dates[4]);
+
+        // --deadline---unavailbleFrom----from---unavailbleTo------to------------------>
+        offer.setUnavailableFrom(dates[1]);
+        offer.setUnavailableFrom(dates[3]);
+        assertThat(offer.verifyDates(), is(false));
+        // --deadline---unavailbleFrom----from---------to----unavailbleTo-------------->
+        offer.setUnavailableFrom(dates[1]);
+        offer.setUnavailableFrom(dates[5]);
+        assertThat(offer.verifyDates(), is(false));
+        // --deadline---from--unavailbleFrom-----------to----unavailbleTo-------------->
+        offer.setUnavailableFrom(dates[3]);
+        offer.setUnavailableFrom(dates[5]);
+        assertThat(offer.verifyDates(), is(false));
+
+        offer.setFromDate2(dates[6]);
+        offer.setToDate2(dates[8]);
+        // --deadline---from---to---unavailbleFrom----from2---unavailbleTo----to2------>
+        offer.setUnavailableFrom(dates[5]);
+        offer.setUnavailableFrom(dates[7]);
+        assertThat(offer.verifyDates(), is(false));
+        // --deadline---from---to---unavailbleFrom----from2----to2---unavailbleTo------>
+        offer.setUnavailableFrom(dates[5]);
+        offer.setUnavailableFrom(dates[9]);
+        assertThat(offer.verifyDates(), is(false));
+        // --deadline---from---to-------from2--unavailbleFrom---to2----unavailbleTo---->
+        offer.setUnavailableFrom(dates[7]);
+        offer.setUnavailableFrom(dates[9]);
+        assertThat(offer.verifyDates(), is(false));
+
     }
 
     @Test

@@ -16,7 +16,6 @@ package net.iaeste.iws.persistence.setup;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -39,8 +38,6 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 public class SpringConfig {
-
-    private EmbeddedDatabase dataSource = null;
 
     @Bean
     public DataSource dataSource() {

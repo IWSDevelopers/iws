@@ -16,9 +16,11 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
@@ -31,10 +33,9 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection ReturnOfNull
  */
-public class AccessJpaDao implements AccessDao {
-
-    private final EntityManager entityManager;
+public class AccessJpaDao extends BasicJpaDao implements AccessDao {
 
     /**
      * Default Constructor.
@@ -42,15 +43,7 @@ public class AccessJpaDao implements AccessDao {
      * @param entityManager  Entity Manager instance to use
      */
     public AccessJpaDao(final EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void persist(final Object entity) {
-        entityManager.persist(entity);
+        super(entityManager);
     }
 
     /**
@@ -68,6 +61,18 @@ public class AccessJpaDao implements AccessDao {
         }
 
         return result.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserEntity findUser(final AuthenticationToken token) {
+        final Query query = entityManager.createNamedQuery("session.findUser");
+        query.setParameter("key", token.getToken());
+        final List<UserEntity> found = query.getResultList();
+
+        return found.size() == 1 ? found.get(0) : null;
     }
 
     /**
@@ -93,10 +98,19 @@ public class AccessJpaDao implements AccessDao {
      */
     @Override
     public List<UserPermissionView> findPermissions(final Integer userId) {
-        final Query query = entityManager.createNamedQuery("findAllUserPermissions");
+        final Query query = entityManager.createNamedQuery("view.findAllUserPermissions");
         query.setParameter("uid", userId);
         final List<UserPermissionView> permissions = query.getResultList();
 
         return permissions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findGroup(final AuthenticationToken token, final Permission permission) {
+
+        return null;
     }
 }

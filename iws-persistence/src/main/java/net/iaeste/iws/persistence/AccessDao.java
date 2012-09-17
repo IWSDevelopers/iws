@@ -15,6 +15,8 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
@@ -25,18 +27,13 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface AccessDao {
-
-    /**
-     * Facilitates persisting of a {@code Session}, which includes creating a
-     * new {@code Session}, altering and deprecating it.
-     *
-     * @param entity  User {@code Session} instance to persist
-     */
-    void persist(Object entity);
+public interface AccessDao extends BasicDao {
 
     UserEntity findUserByCredentials(String username, String passwordHashcode);
+    UserEntity findUser(final AuthenticationToken token);
     UserEntity findActiveSession(AuthenticationToken token);
 
     List<UserPermissionView> findPermissions(Integer userId);
+
+    GroupEntity findGroup(AuthenticationToken token, Permission permission);
 }

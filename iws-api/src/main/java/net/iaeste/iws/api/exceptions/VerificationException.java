@@ -32,7 +32,9 @@ public final class VerificationException extends IWSException {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
-     * Default Constructor.
+     * Default Constructor, for the case where an error condition has arisen,
+     * and the only information available is the type of error, and a message
+     * describing the error.
      *
      * @param message  Specific message, regarding the problem
      * @see IWSException
@@ -40,5 +42,17 @@ public final class VerificationException extends IWSException {
      */
     public VerificationException(final String message) {
         super(IWSErrors.VERIFICATION_ERROR, message);
+    }
+
+    /**
+     * Default Constructor, for the case where an error condition has arisen,
+     * caused by an underlying Exception. In this case, this Exception serves
+     * as a wrapper around the underlying Exception, to avoid that higher
+     * layers has to deal with more specific problems.
+     *
+     * @param cause    The specific cause of the problem
+     */
+    public VerificationException(final Throwable cause) {
+        super(IWSErrors.VERIFICATION_ERROR, cause);
     }
 }

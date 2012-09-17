@@ -31,12 +31,12 @@ import java.io.Serializable;
  * @since   1.7
  */
 @Entity
-@NamedQueries(@NamedQuery(name = "findAllUserPermissions",
-        query = "SELECT v FROM UserPermissionView v where id.userId = :uid"))
+@NamedQueries(@NamedQuery(name = "view.findAllUserPermissions",
+        query = "SELECT v FROM UserPermissionView v where v.id.userId = :uid"))
 @Table(name = "user_permissions")
 public class UserPermissionView extends AbstractView {
 
-    /** {@see IWBaseConstats#SERIAL_VERSION_UID}. */
+    /** {@see IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @EmbeddedId
@@ -167,7 +167,7 @@ public class UserPermissionView extends AbstractView {
     @Embeddable
     static class UserPermissionViewId implements Serializable {
 
-        /** {@see IWBaseConstats#SERIAL_VERSION_UID}. */
+        /** {@see IWSConstants#SERIAL_VERSION_UID}. */
         private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
         @Column(name = "uid") private Integer userId;

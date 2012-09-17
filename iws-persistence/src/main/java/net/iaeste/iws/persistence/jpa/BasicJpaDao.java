@@ -14,9 +14,19 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.dtos.Field;
 import net.iaeste.iws.persistence.BasicDao;
+import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.entities.IWSEntity;
+import net.iaeste.iws.persistence.entities.Mergeable;
+import net.iaeste.iws.persistence.entities.MonitoringEntity;
+import net.iaeste.iws.persistence.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -26,6 +36,7 @@ import javax.persistence.EntityManager;
 public class BasicJpaDao implements BasicDao {
 
     protected EntityManager entityManager;
+    protected MonitoringProcessor monitoringProcessor;
 
     /**
      * Default Constructor.
@@ -34,13 +45,14 @@ public class BasicJpaDao implements BasicDao {
      */
     public BasicJpaDao(final EntityManager entityManager) {
         this.entityManager = entityManager;
+        monitoringProcessor = new MonitoringProcessor();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void persist(final Object entity) {
+    public void persist(final IWSEntity entity) {
         entityManager.persist(entity);
     }
 
@@ -48,7 +60,78 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public void delete(final Object entity) {
+    public void persist(final Authentication authentication, final IWSEntity entity) {
+        final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entity);
+        if (level != MonitoringLevel.NONE) {
+            final List<Field> changes = monitoringProcessor.findChanges(level, entity);
+            persistMonitoredData(authentication, changes);
+        }
+
+        entityManager.persist(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Mergeable<T>> void persist(final Authentication authentication, final T oldEntity, final T newEntity) {
+        final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(oldEntity);
+        if (level != MonitoringLevel.NONE) {
+            final List<Field> changes = monitoringProcessor.findChanges (level, oldEntity, newEntity);
+            persistMonitoredData(authentication, changes);
+        }
+
+        oldEntity.merge(newEntity);
+        entityManager.persist(newEntity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(final IWSEntity entity) {
+        // First, let's drop all Objects matching the entity. Since the record
+        // Id in the history table cannot be set up as a foreign key, we must
+        // do this manually
+        final String tableName = monitoringProcessor.findClassMonitoringName(entity);
+        final Query query = entityManager.createNamedQuery("monitoring.deleteChanges");
+        query.setParameter("table", tableName);
+        query.setParameter("record", entity.getId());
+        query.executeUpdate();
+
         entityManager.remove(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<MonitoringEntity> findHistory(final IWSEntity entity) {
+        final String name = monitoringProcessor.findClassMonitoringName(entity);
+        final Long id = entity.getId();
+        final List<MonitoringEntity> result;
+
+        if ((name != null) && (id != null)) {
+            final Query query = entityManager.createNamedQuery("monitoring.findChanges");
+            query.setParameter("table", name);
+            query.setParameter("record", id);
+
+            result = query.getResultList();
+        } else {
+            result = new ArrayList<>(0);
+        }
+
+        return result;
+    }
+
+    private void persistMonitoredData(final Authentication authentication, final List<Field> fields) {
+        final MonitoringEntity monitoringEntity = new MonitoringEntity();
+        final byte[] data = monitoringProcessor.serialize(fields);
+
+        monitoringEntity.setUser(authentication.getUser());
+        monitoringEntity.setGroup(authentication.getGroup());
+        monitoringEntity.setFields(data);
+
+        entityManager.persist(monitoringEntity);
     }
 }

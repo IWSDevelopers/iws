@@ -1,0 +1,60 @@
+It was a feature request to have "Auditing" of the changes in certain fields.
+The idea was spawned (and named) after the Hibernate "Auditing" feature using
+Envers.
+  However, this had a few drawbacks - first of all, the Envers extension is a
+pure Hibernate, and as the IWS is using JPA2, then it is not that easy to
+migrate. True, it is possible to replace JPA, but this means that instead of
+using the default ORM framework for Java, we're binding the IWS against a
+specific ORM.
+  Since Envers works by creating a set of mirror tables, and simply write the
+same content twice, once in the primary table, and secondly in the mirror table,
+it seemed that this could easily be replaced by a Trigger solution, where the
+different tables had a trigger added, that would manage the writing in the
+mirror table. The idea was good - but there was a couple of drawbacks with the
+solution, the most critical was that Spring's EmbeddedDatabaseBuilder
+functionality didn't work well with the generated Triggers.
+
+The entire concept went back to the drawingboard, to be re-designed, and the
+following is the result of that.
+  First, the name "Auditing" was a poor choice, since "Auditing" has the same
+meaning as reviewing, or looking at things. The purpose was not to look at the
+changes, but provide a way to save the changes. Hence, the name "Monitoring" was
+chosen.
+  Secondly, the concept should both be generic, meaning that it can be applied
+to any table required, and work in a way, whereby it is transparent and clear
+what is being monitored. Data Protection mechanisms also have to be added, but
+they must be added as part of the Group setup, so Groups can choose if data
+belonging to them should be monitored or not. The Persists & Delete methods
+should take the moniting into account, but also checking the Group settings.
+
+The technical solution uses a combination of Annotations and Reflection. This
+means that the Entities which will be monitored, must use the "Monitored"
+annotation, together with a level. The same annotation and levels are used both
+for the Type (Class) and the Fields. Only those Types (Classes) and Fields,
+which have the annotation will be monitored. The level of monitoring will be
+either "NONE" (same as not marking with the annotation, but adding the
+annotation also means that the monitoring was considered and not forgotten),
+"MARKED" and "DETAILED".
+  The following is the table added to the MonitoringLevel enum:
+
+      +======================+===========+===========+==========+
+      | Type (Class) Level   | NONE      | MARKED    | DETAILED |
+      +----------------------+-----------+-----------+----------+
+      | Field Level NONE     | NONE      | NONE      | NONE     |
+      | Field Level MARKED   | NONE      | NONE      | MARKED   |
+      | Field Level DETAILED | NONE      | NONE      | DETAILED |
+      +======================+===========+===========+==========+
+
+To Changes that are a result of the monitoring, is a simple list of
+"MonitoredField" Objects. The MonitoredField, consists of the name of the field,
+as well as the old / new values. The list is then serialized and stored in the
+database, together with the userid of the person making the change and the date
+of the change. Additionally, the Table & Id are stored, so the same solution
+can be used generally without requiring database changes.
+  Processing the changes is done with the MonitoringProcessor, which contain
+functions to both find the changes between the old and new entity, as well as
+serialize/deserialize the data which can then be stored in the database. The
+processing is using the Java Reflection.
+
+Using the information externally, i.e. find a list of all changes, is then dealt
+with using standard JPA entities and DAO operations.

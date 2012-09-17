@@ -90,6 +90,11 @@ public interface IWSErrors {
     IWSError PROCESSING_FAILURE = new IWSError(504, "Request cannot be processed");
 
     /**
+     * Error reading or writing the monitoring data in serialized form.
+     */
+    IWSError MONITORING_FAILURE = new IWSError(505, "Monitoring Serialization Error");
+
+    /**
      * The current method is not yet implemented.
      */
     IWSError NOT_IMPLEMENTED = new IWSError(999, "Not Implemented");

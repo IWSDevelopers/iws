@@ -21,9 +21,9 @@ import net.iaeste.iws.fitnesse.callers.AccessCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public class IsAlive extends AbstractFixture<AuthenticationResponse> {
 

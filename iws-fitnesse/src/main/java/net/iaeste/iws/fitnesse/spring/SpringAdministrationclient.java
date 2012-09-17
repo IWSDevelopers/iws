@@ -34,9 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class SpringAdministrationclient implements Administration {
 

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.Gender
+ * Project: IntraWeb Services (iws-common) - net.iaeste.iws.fitnesse.JSON
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,40 +12,27 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.enums;
+
+package net.iaeste.iws.fitnesse;
+
+import com.google.gson.Gson;
 
 /**
- * Gender Object for the Exchange Module.
- *
- * @author  Kim Jensen / last $Author:$
+ * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
- * @noinspection EnumeratedConstantNamingConvention
+ * @since 1.7
  */
-public enum Gender {
+public class JSON {
+    private static final Gson GSON = new Gson();
 
-    /**
-     * When the Gender required is Female only.
-     */
-    F("Female"),
-
-    /**
-     * When the Gender required is Male only.
-     */
-    M("Male"),
-
-    /**
-     * When the Gender is irrelevant.
-     */
-    E("Either");
-
-    private final String description;
-
-    Gender(final String description) {
-        this.description = description;
+    private JSON() {
     }
 
-    public String getDescription() {
-        return description;
+    public static <T> String serialize(final T object) {
+        return GSON.toJson(object);
+    }
+
+    public static <T> T deserialize(final Class<T> clazz, final String json) {
+        return GSON.fromJson(json, clazz);
     }
 }

@@ -21,15 +21,17 @@ import net.iaeste.iws.api.constants.IWSConstants;
  * the name. Hence, this exception is called "StopTestException", and should
  * be thrown within the ZObEL Fixture environment, to ensure proper handling
  * of problems.<br />
- * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.ExceptionHandling">Fixture.org</a>
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.ExceptionHandling">Fixture.org</a>
+ * @since 1.7
  */
 public class StopTestException extends RuntimeException {
 
-    /** @see IWSConstants#SERIAL_VERSION_UID */
+    /**
+     * @see IWSConstants#SERIAL_VERSION_UID
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     public StopTestException(final String message) {

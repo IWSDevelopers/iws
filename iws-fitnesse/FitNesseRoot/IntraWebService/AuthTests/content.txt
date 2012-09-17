@@ -1,0 +1,7 @@
+!path iws-fitnesse.jar
+!define TEST_SYSTEM {slim}
+
+|Is alive                                                                                           |
+|username|password  |is request ok?|error code?|error message?                            |token?   |
+|Frodo   |wrong pass|false         |403        |No account for the user 'Frodo' was found.|         |
+|Frodo   |frodo     |true          |0          |OK                                        |=~/.{64}/|

@@ -39,9 +39,9 @@ import javax.persistence.EntityManager;
  * will throw a new {@code StopTestException} if an error occured - this is the
  * expected behaviour for the FitNesse tests.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class AdministrationCaller implements Administration {
 

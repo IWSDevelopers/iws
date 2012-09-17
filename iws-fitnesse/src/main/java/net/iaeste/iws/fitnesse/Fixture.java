@@ -21,9 +21,9 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * with error information cannot be extracted into an Abstract class, since the
  * Fixture implementation is using reflection, with some restrictions setup.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 interface Fixture {
 
@@ -72,7 +72,8 @@ interface Fixture {
      * (result & setFallible()). If an error occurred, then an exception of type
      * {@code StopTestException} will be thrown.
      *
-     * @throws net.iaeste.iws.fitnesse.exceptions.StopTestException if EJB problems occurrred
+     * @throws net.iaeste.iws.fitnesse.exceptions.StopTestException
+     *          if EJB problems occurrred
      * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.DecisionTable">Fixture.org</a>
      */
     void execute() throws StopTestException;

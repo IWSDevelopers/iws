@@ -54,6 +54,11 @@ public final class FetchEmployersResponse extends AbstractResponse {
         employers = null;
     }
 
+    /**
+     * Default Constructor.
+     *
+     * @param employers List of Employers
+     */
     public FetchEmployersResponse(final List<Employer> employers) {
         this.employers = Copier.copy(employers);
     }

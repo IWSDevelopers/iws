@@ -32,6 +32,7 @@ import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.FetchEmployersResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
@@ -81,11 +82,11 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         // TODO: remove if transactions work
         ConnectionFactory factory = new ConnectionFactory();
         factory.getEntityManager().getTransaction().begin();
-        Fallible response = exchange.processOffer(token, request);
+        OfferResponse response = exchange.processOffer(token, request);
         factory.getEntityManager().getTransaction().commit();
         return response;
     }

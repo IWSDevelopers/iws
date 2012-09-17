@@ -1,0 +1,16 @@
+!path iws-fitnesse.jar
+!define TEST_SYSTEM {slim}
+
+|Comment                   |
+|example OfferResponse test|
+
+!|build offer                                                 |
+|default offer|ref no      |work description|is valid?|result?|
+|empty        |AT-2012     |some desc       |false    |$o1=   |
+|full         |AT-2012-0001|some desc       |true     |$o2=   |
+
+!|should save offer                                                                                                                    |
+|offer                                                                                                      |is request ok?|error code?|
+|$o1                                                                                                        |false         |401        |
+|{"refNo":"AT-2012","fieldOfStudies":[],"specializations":[],"studyLevels":[],"workDescription":"some desc"}|false         |401        |
+|$o2                                                                                                        |true          |0          |

@@ -136,9 +136,9 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         LOG.trace("Starting processOffer()");
-        Fallible response;
+        OfferResponse response;
 
         try {
             verifyAccess(token, Permission.PROCESS_OFFERS);

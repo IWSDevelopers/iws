@@ -27,15 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 /**
- *
  * The spring based implementation uses the "Test" setup for Spring, to provide
  * a working IWS Library instance. As we're using JPA for our persistence layer,
  * it is important that all invocations is made transactional, hence the need
  * for the "@Transactional" annotation.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class SpringAccessClient implements Access {
 

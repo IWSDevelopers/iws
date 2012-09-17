@@ -18,6 +18,7 @@ import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollecti
 import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
@@ -126,10 +127,16 @@ public final class Offer implements Verifiable {
     }
 
     private Long id;
+    /**
+     * not null
+     */
     private String refNo;
     private Date nominationDeadline;
 
     // Employer information
+    /**
+     * not null
+     */
     private String employerName;
     private String employerAddress;
     private String employerAddress2;
@@ -138,6 +145,9 @@ public final class Offer implements Verifiable {
     private String employerWebsite;
 
     //Student Information
+    /**
+     * not null
+     */
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
     /**
      * Has to be defined as a List of Strings because
@@ -145,10 +155,19 @@ public final class Offer implements Verifiable {
      * specializations in addition to the predefined ones.
      */
     private Set<String> specializations = new HashSet<>();
+    /**
+     * not null
+     */
     private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
     private Boolean prevTrainingRequired;
     private String otherRequirements;
+    /**
+     * not null
+     */
     private Language language1;
+    /**
+     * not null
+     */
     private LanguageLevel language1Level;
     private LanguageOperator language1Operator;
     private Language language2;
@@ -158,12 +177,27 @@ public final class Offer implements Verifiable {
     private LanguageLevel language3Level;
 
     // Work offered
+    /**
+     * not null
+     */
     private String workDescription;
     private TypeOfWork typeOfWork;
+    /**
+     * not null
+     */
     private Integer minimumWeeks;
+    /**
+     * not null
+     */
     private Integer maximumWeeks;
+    /**
+     * not null
+     */
     private Date fromDate;
     private Date toDate;
+    /**
+     * not null
+     */
     private Date fromDate2;
     private Date toDate2;
     private Date unavailableFrom;
@@ -171,6 +205,9 @@ public final class Offer implements Verifiable {
     private String workingPlace;
     private String nearestAirport;
     private String nearestPubTransport;
+    /**
+     * not null
+     */
     private Float weeklyHours;
     private Float dailyHours;
     /**
@@ -873,10 +910,24 @@ public final class Offer implements Verifiable {
         if (!verifyNumberOfWeeks()) {
             errors.add("weeks are not set correctly");
         }
+        if (!verifySizeOfFieldsOfStudy()) {
+            errors.add(String.format("cannot have more than %s Fields of Study", IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY));
+        }
+        if (!verifySizeOfSpecializations()) {
+            errors.add(String.format("cannot have more than %s Specializations", IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS));
+        }
         errors.addAll(verifyFieldDependencies());
         if (!errors.isEmpty()) {
             throw new VerificationException(errors.toString());
         }
+    }
+
+    private boolean verifySizeOfSpecializations() {
+        return specializations == null || specializations.size() <= IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS;
+    }
+
+    private boolean verifySizeOfFieldsOfStudy() {
+        return fieldOfStudies == null || fieldOfStudies.size() <= IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY;
     }
 
     /**
@@ -903,7 +954,7 @@ public final class Offer implements Verifiable {
     }
 
     /**
-     * Checks for nulls in required fields.
+     * Checks for nulls, empty string and collections in required fields.
      *
      * @return collection of errors. If all required fields are provided, method returns empty collection.
      */
@@ -1059,12 +1110,33 @@ public final class Offer implements Verifiable {
     }
 
     /**
-     * TODO verify requirements, see #84
-     *
-     * @return true if halidays order is valid.
+     * @return true if unavailable dates order is valid.
      */
     private boolean verifyUnavailableDatesOrder() {
-        // TODO: discuss validations for unavailablity dates, see #84
+        if (unavailableFrom != null) {
+            // holidays "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
+            //      or between "to" and "from2" or "to2" and "from" (see #84 for requirements)
+            if (unavailableFrom.before(fromDate) && unavailableTo.after(fromDate)) {
+                return false;
+            }
+            if (unavailableFrom.after(toDate) && unavailableTo.before(toDate)) {
+                return false;
+            }
+            if (unavailableFrom.after(fromDate) && unavailableFrom.before(toDate) && unavailableTo.after(toDate)) {
+                return false;
+            }
+            if (fromDate2 != null) {
+                if (unavailableFrom.before(fromDate2) && unavailableTo.after(fromDate2)) {
+                    return false;
+                }
+                if (unavailableFrom.after(toDate2) && unavailableTo.before(toDate2)) {
+                    return false;
+                }
+                if (unavailableFrom.after(fromDate2) && unavailableFrom.before(toDate2) && unavailableTo.after(toDate2)) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 

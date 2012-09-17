@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-$today.year, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services ($module.name) - $file.qualifiedClassName
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.EmployerResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -23,9 +23,6 @@ import net.iaeste.iws.api.utils.Copier;
 import java.util.List;
 
 /**
- * ToDo Kim; Pavel, there is no way to create a positive response, i.e. without error
- * ToDo Kim; Pavel, we need both setters and getters, including for the errors
- *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -35,8 +32,8 @@ public final class EmployerResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private final Employer employer;
-    private final List<String> errors;
+    private Employer employer;
+    private List<String> errors;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -45,6 +42,16 @@ public final class EmployerResponse extends AbstractResponse {
     public EmployerResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
         employer = null;
+        errors = null;
+    }
+
+    /**
+     * Default Constructor.
+     *
+     * @param employer Employer
+     */
+    public EmployerResponse(final Employer employer) {
+        this.employer = new Employer(employer);
         errors = null;
     }
 
@@ -81,6 +88,18 @@ public final class EmployerResponse extends AbstractResponse {
 
     public Employer getEmployer() {
         return new Employer(employer);
+    }
+
+    public void setEmployer(final Employer employer) {
+        this.employer = new Employer(employer);
+    }
+
+    public List<String> getErrors() {
+        return Copier.copy(errors);
+    }
+
+    public void setErrors(final List<String> errors) {
+        this.errors = Copier.copy(errors);
     }
 
     // =========================================================================

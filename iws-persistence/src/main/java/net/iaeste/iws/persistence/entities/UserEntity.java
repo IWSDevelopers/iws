@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,17 +44,15 @@ import javax.persistence.Table;
 })
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements IWSEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Basic
     @Column(name = "username")
     private String userName;
 
-    @Basic
     @Column(name = "password")
     private String password;
 
@@ -68,6 +65,12 @@ public class UserEntity {
         password = null;
     }
 
+    /**
+     * Default Constructor, for creating new Entity.
+     *
+     * @param userName  User name (e-mail address)
+     * @param password  Password (hash value, not clear text)
+     */
     public UserEntity(final String userName, final String password) {
         id = null;
         this.userName = userName;
@@ -78,6 +81,7 @@ public class UserEntity {
         this.id = id;
     }
 
+    @Override
     public Long getId() {
         return id;
     }

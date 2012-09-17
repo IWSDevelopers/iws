@@ -61,7 +61,7 @@ public class AddressEntityTest {
         address.setCountry(country);
         entityManager.persist(address);
         final Query query = entityManager.createNamedQuery("address.findById");
-        query.setParameter("id", 1);
+        query.setParameter("id", 1L);
         final List<AddressEntity> found = query.getResultList();
 
         assertThat(found.size(), is(1));
@@ -85,9 +85,9 @@ public class AddressEntityTest {
         final AddressEntity merged = new AddressEntity();
         final AddressEntity failed = new AddressEntity();
 
-        original.setId(1);
-        merged.setId(1);
-        failed.setId(2);
+        original.setId(1L);
+        merged.setId(1L);
+        failed.setId(2L);
 
         merged.merge(original);
         failed.merge(original);

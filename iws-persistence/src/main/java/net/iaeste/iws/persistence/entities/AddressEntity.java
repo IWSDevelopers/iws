@@ -46,7 +46,7 @@ public class AddressEntity implements Mergeable<AddressEntity> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id = null;
+    private Long id = null;
 
     @Column(name = "street1")
     private String street1 = null;
@@ -86,11 +86,12 @@ public class AddressEntity implements Mergeable<AddressEntity> {
         this.country = country;
     }
 
-    public void setId(final Integer id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    @Override
+    public Long getId() {
         return id;
     }
 

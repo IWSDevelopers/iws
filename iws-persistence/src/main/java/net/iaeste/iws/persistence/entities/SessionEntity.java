@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,13 +42,12 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "sessions")
-public class SessionEntity {
+public class SessionEntity implements IWSEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Basic
     @Column(nullable = false, name = "session_key")
     private String sessionKey;
 
@@ -57,7 +55,6 @@ public class SessionEntity {
     @JoinColumn(nullable = false, name = "user_id")
     private UserEntity user;
 
-    @Basic
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
 
@@ -76,6 +73,7 @@ public class SessionEntity {
         created = new Date();
     }
 
+    @Override
     public Long getId() {
         return id;
     }

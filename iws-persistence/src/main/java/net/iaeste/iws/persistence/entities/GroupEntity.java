@@ -14,9 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import net.iaeste.iws.persistence.monitoring.Monitored;
-import net.iaeste.iws.persistence.monitoring.MonitoringLevel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,7 +39,6 @@ import javax.persistence.Table;
 })
 @Entity
 @Table(name = "groups")
-@Monitored(name = "groups", level = MonitoringLevel.MARKED)
 public class GroupEntity implements IWSEntity {
 
     @Id

@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.persistence.monitoring.Monitored;
+import net.iaeste.iws.persistence.monitoring.MonitoringLevel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,8 +43,9 @@ public class CountryEntity implements Mergeable<CountryEntity> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id = null;
+    private Long id = null;
 
+    @Monitored(name="country name", level = MonitoringLevel.MARKED)
     @Column(nullable = false, name = "country_name")
     private String countryName = null;
 
@@ -60,11 +64,12 @@ public class CountryEntity implements Mergeable<CountryEntity> {
         this.countryName = countryName;
     }
 
-    public void setId(final Integer id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    @Override
+    public Long getId() {
         return id;
     }
 

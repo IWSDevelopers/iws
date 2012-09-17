@@ -63,7 +63,7 @@ public class CountryEntityTest {
     @Test
     public void testMerging() {
         final String countryName = "myLand";
-        final Integer id = 1;
+        final Long id = 1L;
 
         final CountryEntity original = new CountryEntity();
         final CountryEntity merged = new CountryEntity();

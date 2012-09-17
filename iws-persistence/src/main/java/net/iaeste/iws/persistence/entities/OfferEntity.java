@@ -357,6 +357,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         this.unavailableTo = unavailableTo;
     }
 
+    @Override
     public Long getId() {
         return id;
     }

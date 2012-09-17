@@ -32,6 +32,7 @@ import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.core.services.AdministrationService;
 import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.persistence.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,8 @@ public class AdministrationController extends CommonController implements Admini
      * @param factory  The ServiceFactory
      */
     public AdministrationController(final ServiceFactory factory) {
+        super(factory.getAccessDao());
+
         this.factory = factory;
     }
 
@@ -65,11 +68,11 @@ public class AdministrationController extends CommonController implements Admini
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_USERS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_USERS);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            service.processUsers(token, request);
+            service.processUsers(authentication, request);
             response = new FacultyResponse();
         } catch (IWSException e) {
             response = new UserResponse(e.getError(), e.getMessage());
@@ -88,11 +91,11 @@ public class AdministrationController extends CommonController implements Admini
         UserResponse response;
 
         try {
-            verifyAccess(token, Permission.FETCH_USERS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_USERS);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            response = service.fetchUsers(token, request);
+            response = service.fetchUsers(authentication, request);
         } catch (IWSException e) {
             response = new UserResponse(e.getError(), e.getMessage());
         }
@@ -110,11 +113,11 @@ public class AdministrationController extends CommonController implements Admini
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_GROUPS);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            service.processGroups(token, request);
+            service.processGroups(authentication, request);
             response = new GroupResponse();
         } catch (IWSException e) {
             response = new GroupResponse(e.getError(), e.getMessage());
@@ -133,11 +136,11 @@ public class AdministrationController extends CommonController implements Admini
         GroupResponse response;
 
         try {
-            verifyAccess(token, Permission.FETCH_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            response = service.fetchGroups(token, request);
+            response = service.fetchGroups(authentication, request);
         } catch (IWSException e) {
             response = new GroupResponse(e.getError(), e.getMessage());
         }
@@ -155,11 +158,11 @@ public class AdministrationController extends CommonController implements Admini
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_COUNTRIES);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COUNTRIES);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            service.processCountries(token, request);
+            service.processCountries(authentication, request);
             response = new CountryResponse();
         } catch (IWSException e) {
             response = new CountryResponse(e.getError(), e.getMessage());
@@ -178,11 +181,11 @@ public class AdministrationController extends CommonController implements Admini
         CountryResponse response;
 
         try {
-            verifyAccess(token, Permission.FETCH_COUNTRIES);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_COUNTRIES);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            response = service.fetchCountries(token, request);
+            response = service.fetchCountries(authentication, request);
         } catch (IWSException e) {
             response = new CountryResponse(e.getError(), e.getMessage());
         }
@@ -200,11 +203,11 @@ public class AdministrationController extends CommonController implements Admini
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            service.processUserGroupAssignment(token, request);
+            service.processUserGroupAssignment(authentication, request);
             response = new GroupResponse();
         } catch (IWSException e) {
             response = new GroupResponse(e.getError(), e.getMessage());

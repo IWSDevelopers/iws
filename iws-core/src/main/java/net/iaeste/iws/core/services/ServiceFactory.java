@@ -36,9 +36,12 @@ import javax.persistence.EntityManager;
 public class ServiceFactory {
 
     private final EntityManager entityManager;
+    private final AccessDao accessDao;
 
     public ServiceFactory(final EntityManager entityManager) {
         this.entityManager = entityManager;
+
+        accessDao = new AccessJpaDao(entityManager);
     }
 
     public AdministrationService prepareAdministrationService() {
@@ -63,5 +66,9 @@ public class ServiceFactory {
 
     public StudentService prepareStudentService() {
         return new StudentService(entityManager);
+    }
+
+    public AccessDao getAccessDao() {
+        return accessDao;
     }
 }

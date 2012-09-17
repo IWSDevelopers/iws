@@ -56,6 +56,8 @@ public final class AccessController extends CommonController implements Access {
      * @param factory  The ServiceFactory
      */
     public AccessController(final ServiceFactory factory) {
+        super(factory.getAccessDao());
+
         this.factory = factory;
     }
 

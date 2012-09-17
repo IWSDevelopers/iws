@@ -14,11 +14,11 @@
  */
 package net.iaeste.iws.core.services;
 
-import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.StudentResponse;
+import net.iaeste.iws.persistence.Authentication;
 
 import javax.persistence.EntityManager;
 
@@ -35,11 +35,11 @@ public class StudentService {
         this.entityManager = entityManager;
     }
 
-    public void processStudents(final AuthenticationToken token, final StudentRequest request) {
+    public void processStudents(final Authentication authentication, final StudentRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+    public StudentResponse fetchStudents(final Authentication authenticationn, final FetchStudentsRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.core.services;
 
-import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -26,6 +25,7 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
+import net.iaeste.iws.persistence.Authentication;
 
 import javax.persistence.EntityManager;
 
@@ -42,31 +42,31 @@ public class AdministrationService {
         this.entityManager = entityManager;
     }
 
-    public void processUsers(final AuthenticationToken token, final ProcessUserRequest request) {
+    public void processUsers(final Authentication authentication, final ProcessUserRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public UserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
+    public UserResponse fetchUsers(final Authentication authentication, final FetchUserRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public void processGroups(final AuthenticationToken token, final GroupRequest request) {
+    public void processGroups(final Authentication authentication, final GroupRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public GroupResponse fetchGroups(final AuthenticationToken token, final FetchGroupRequest request) {
+    public GroupResponse fetchGroups(final Authentication authentication, final FetchGroupRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public void processCountries(final AuthenticationToken token, final CountryRequest request) {
+    public void processCountries(final Authentication authentication, final CountryRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
+    public CountryResponse fetchCountries(final Authentication authentication, final FetchCountryRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public void processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+    public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

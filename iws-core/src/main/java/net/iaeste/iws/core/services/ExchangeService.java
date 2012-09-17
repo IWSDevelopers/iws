@@ -15,7 +15,6 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Employer;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -34,6 +33,7 @@ import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
@@ -61,11 +61,11 @@ public class ExchangeService {
      * If {@code id = null} and {@code refNo} exists, then the request is invalid.
      * If (@code id != null} and {@code refNo} in the database and request don't match, then the request is invalid.
      *
-     * @param token   TODO
+     * @param authentication   TODO
      * @param request
      * @return OfferResponse contains list of Fallible Offers for which processing failed.
      */
-    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
         OfferResponse response = null;
         final List<String> processingErrors = new ArrayList<>();
 
@@ -116,7 +116,7 @@ public class ExchangeService {
         return response;
     }
 
-    public void deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+    public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {
         final OfferEntity foundOffer = dao.findOffer(request.getOfferId());
 
         if (foundOffer != null) {
@@ -126,7 +126,7 @@ public class ExchangeService {
         }
     }
 
-    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+    public FetchOffersResponse fetchOffers(final Authentication authentication, final FetchOffersRequest request) {
         final FetchOffersResponse response;
 
         switch (request.getFetchType()) {
@@ -148,7 +148,7 @@ public class ExchangeService {
         return response;
     }
 
-    public FetchEmployersResponse fetchEmployers(final AuthenticationToken token, final FetchEmployersRequest request) {
+    public FetchEmployersResponse fetchEmployers(final Authentication authentication, final FetchEmployersRequest request) {
         final FetchEmployersResponse response;
 
         switch (request.getFetchType()) {
@@ -207,19 +207,19 @@ public class ExchangeService {
         return result;
     }
 
-    public void processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public void processOfferTemplates(final Authentication authentication, final OfferTemplateRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
+    public OfferTemplateResponse fetchOfferTemplates(final Authentication authentication, final FetchOfferTemplatesRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public void processPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
+    public void processPublishGroups(final Authentication authentication, final PublishGroupRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    public PublishGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

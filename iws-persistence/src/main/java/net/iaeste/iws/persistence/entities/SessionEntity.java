@@ -38,7 +38,12 @@ import java.util.Date;
         @NamedQuery(name = "session.findAll",
                 query = "SELECT s FROM SessionEntity s"),
         @NamedQuery(name = "session.findActive",
-                query = "select s from SessionEntity s where s.sessionKey = :key")
+                query = "select s from SessionEntity s " +
+                        "where s.sessionKey = :key"),
+        @NamedQuery(name = "session.findUser",
+                query = "select u from SessionEntity s, UserEntity u " +
+                        "where s.user.id = u.id" +
+                        "  and s.sessionKey = :key")
 })
 @Entity
 @Table(name = "sessions")

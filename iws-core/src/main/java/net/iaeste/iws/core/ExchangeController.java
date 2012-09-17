@@ -42,13 +42,14 @@ import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.FacultyService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.core.services.StudentService;
+import net.iaeste.iws.persistence.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class ExchangeController extends CommonController implements Exchange {
 
@@ -62,6 +63,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * @param factory The ServiceFactory
      */
     public ExchangeController(final ServiceFactory factory) {
+        super(factory.getAccessDao());
+
         this.factory = factory;
     }
 
@@ -74,11 +77,11 @@ public class ExchangeController extends CommonController implements Exchange {
         FetchEmployersResponse response;
 
         try {
-            verifyAccess(token, Permission.LOOKUP_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFERS);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            response = service.fetchEmployers(token, request);
+            response = service.fetchEmployers(authentication, request);
         } catch (IWSException e) {
             response = new FetchEmployersResponse(e.getError(), e.getMessage());
         }
@@ -96,11 +99,11 @@ public class ExchangeController extends CommonController implements Exchange {
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_FACULTIES);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_FACULTIES);
             verify(request, "To be clarified.");
 
             final FacultyService service = factory.prepareFacultyService();
-            service.processFaculties(token, request);
+            service.processFaculties(authentication, request);
             response = new FacultyResponse();
         } catch (IWSException e) {
             response = new FacultyResponse(e.getError(), e.getMessage());
@@ -119,11 +122,11 @@ public class ExchangeController extends CommonController implements Exchange {
         FacultyResponse response;
 
         try {
-            verifyAccess(token, Permission.LOOKUP_FACULTIES);
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_FACULTIES);
             verify(request, "To be clarified.");
 
             final FacultyService service = factory.prepareFacultyService();
-            response = service.fetchFaculties(token, request);
+            response = service.fetchFaculties(authentication, request);
         } catch (IWSException e) {
             response = new FacultyResponse(e.getError(), e.getMessage());
         }
@@ -141,11 +144,11 @@ public class ExchangeController extends CommonController implements Exchange {
         OfferResponse response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFERS);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            response = service.processOffer(token, request);
+            response = service.processOffer(authentication, request);
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());
         }
@@ -163,11 +166,11 @@ public class ExchangeController extends CommonController implements Exchange {
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFERS);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            service.deleteOffer(token, request);
+            service.deleteOffer(authentication, request);
             response = new OfferResponse();
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());
@@ -186,11 +189,11 @@ public class ExchangeController extends CommonController implements Exchange {
         FetchOffersResponse response;
 
         try {
-            verifyAccess(token, Permission.LOOKUP_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFERS);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            response = service.fetchOffers(token, request);
+            response = service.fetchOffers(authentication, request);
         } catch (IWSException e) {
             response = new FetchOffersResponse(e.getError(), e.getMessage());
         }
@@ -208,11 +211,11 @@ public class ExchangeController extends CommonController implements Exchange {
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_OFFER_TEMPLATES);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_TEMPLATES);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            service.processOfferTemplates(token, request);
+            service.processOfferTemplates(authentication, request);
             response = new OfferTemplateResponse();
         } catch (IWSException e) {
             response = new OfferTemplateResponse(e.getError(), e.getMessage());
@@ -231,11 +234,11 @@ public class ExchangeController extends CommonController implements Exchange {
         OfferTemplateResponse response;
 
         try {
-            verifyAccess(token, Permission.LOOKUP_OFFER_TEMPLATES);
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFER_TEMPLATES);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            response = service.fetchOfferTemplates(token, request);
+            response = service.fetchOfferTemplates(authentication, request);
         } catch (IWSException e) {
             response = new OfferTemplateResponse(e.getError(), e.getMessage());
         }
@@ -253,11 +256,11 @@ public class ExchangeController extends CommonController implements Exchange {
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_OFFER_PUBLISH_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_PUBLISH_GROUPS);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            service.processPublishGroups(token, request);
+            service.processPublishGroups(authentication, request);
             response = new PublishGroupResponse();
         } catch (IWSException e) {
             response = new PublishGroupResponse(e.getError(), e.getMessage());
@@ -276,11 +279,11 @@ public class ExchangeController extends CommonController implements Exchange {
         PublishGroupResponse response;
 
         try {
-            verifyAccess(token, Permission.LOOKUP_OFFER_PUBLISH_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFER_PUBLISH_GROUPS);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            response = service.fetchPublishGroups(token, request);
+            response = service.fetchPublishGroups(authentication, request);
         } catch (IWSException e) {
             response = new PublishGroupResponse(e.getError(), e.getMessage());
         }
@@ -298,11 +301,11 @@ public class ExchangeController extends CommonController implements Exchange {
         Fallible response;
 
         try {
-            verifyAccess(token, Permission.PROCESS_STUDENTS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENTS);
             verify(request, "To be clarified.");
 
             final StudentService service = factory.prepareStudentService();
-            service.processStudents(token, request);
+            service.processStudents(authentication, request);
             response = new StudentResponse();
         } catch (IWSException e) {
             response = new StudentResponse(e.getError(), e.getMessage());
@@ -321,11 +324,11 @@ public class ExchangeController extends CommonController implements Exchange {
         StudentResponse response;
 
         try {
-            verifyAccess(token, Permission.LOOKUP_STUDENTS);
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_STUDENTS);
             verify(request, "To be clarified.");
 
             final StudentService service = factory.prepareStudentService();
-            response = service.fetchStudents(token, request);
+            response = service.fetchStudents(authentication, request);
         } catch (IWSException e) {
             response = new StudentResponse(e.getError(), e.getMessage());
         }

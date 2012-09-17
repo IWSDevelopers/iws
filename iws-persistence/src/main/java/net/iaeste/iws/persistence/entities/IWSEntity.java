@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.Mergeable
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.IWSEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -15,21 +15,17 @@
 package net.iaeste.iws.persistence.entities;
 
 /**
- * Classes implementing this interface, are capable of updating the current
- * content, with the content of a second Object of the same type (and Id).
- *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface Mergeable<T> extends IWSEntity {
+public interface IWSEntity {
 
     /**
-     * Allows a merge between two objects of the same type. The method updates
-     * the current object with the changes from the second.<br />
-     *   Both Objects must be persisted beforehand, i.e. have Id values, and
-     * these Id's differ, no merge will take place. Merging is purely intended
-     * for updating Objects, where we wish to control which fields are updated.
+     * The primary key in all our mergeable tables must always be retrievable
+     * with this method.
+     *
+     * @return  Entity Id
      */
-    void merge(T obj);
+    Long getId();
 }

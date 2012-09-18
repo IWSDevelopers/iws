@@ -148,7 +148,7 @@ public class ExchangeService {
         return response;
     }
 
-    public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
+    public FetchEmployerInformationResponse fetchEmployerInformation(final Authentication authentication, final FetchEmployerInformationRequest request) {
         final FetchEmployerInformationResponse response;
 
         //TODO: select only owned offers

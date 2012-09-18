@@ -226,7 +226,7 @@ public class ExchangeServiceTest {
         final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest(OfferTestUtility.EMPLOYER_NAME);
         request.verify(); // make sure that request is valid
 
-        final FetchEmployerInformationResponse result = client.fetchEmployers(null, request);
+        final FetchEmployerInformationResponse result = client.fetchEmployerInformation(null, request);
 
         assertThat(result.getEmployersInformation().size(), is(entities.size()));
     }

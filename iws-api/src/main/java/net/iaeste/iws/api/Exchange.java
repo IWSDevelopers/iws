@@ -43,7 +43,7 @@ import net.iaeste.iws.api.responses.StudentResponse;
  */
 public interface Exchange {
 
-    FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
+    FetchEmployerInformationResponse fetchEmployerInformation(AuthenticationToken token, FetchEmployerInformationRequest request);
 
     Fallible processFaculties(AuthenticationToken token, FacultyRequest request);
 

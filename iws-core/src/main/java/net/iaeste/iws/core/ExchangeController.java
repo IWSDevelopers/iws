@@ -72,8 +72,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
-        LOG.trace("Starting fetchEmployers()");
+    public FetchEmployerInformationResponse fetchEmployerInformation(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
+        LOG.trace("Starting fetchEmployerInformation()");
         FetchEmployerInformationResponse response;
 
         try {
@@ -81,12 +81,12 @@ public class ExchangeController extends CommonController implements Exchange {
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            response = service.fetchEmployers(authentication, request);
+            response = service.fetchEmployerInformation(authentication, request);
         } catch (IWSException e) {
             response = new FetchEmployerInformationResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchEmployers()");
+        LOG.trace("Finished fetchEmployerInformation()");
         return response;
     }
 

@@ -80,22 +80,6 @@ CREATE TABLE addresses (
     created            TIMESTAMP    DEFAULT now()
 );
 
-CREATE SEQUENCE employer_sequence START 1;
-CREATE TABLE employers (
-    id                     INTEGER      DEFAULT NextVal('employer_sequence'::TEXT) NOT NULL PRIMARY KEY,
-    name                   TEXT         DEFAULT '',
-    address_id             INTEGER      NOT NULL REFERENCES addresses (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    workplace              TEXT         DEFAULT '',
-    website                TEXT         DEFAULT '',
-    business               TEXT         DEFAULT '',
-    responsible_person     TEXT         DEFAULT '',
-    airport                TEXT         DEFAULT '',
-    transport              TEXT         DEFAULT '',
-    employees              TEXT         DEFAULT '',
-    modified               TIMESTAMP    DEFAULT now(),
-    created                TIMESTAMP    DEFAULT now()
-);
-
 CREATE SEQUENCE study_fields_sequence START 1;
 CREATE TABLE study_fields (
     id                     INTEGER      DEFAULT NextVal('study_fields_sequence'::TEXT) NOT NULL PRIMARY KEY,
@@ -124,7 +108,16 @@ CREATE TABLE offers (
     deadline               DATE,
     expire                 DATE,
 
-    employer_id            INTEGER      NOT NULL REFERENCES employers (id) ON DELETE CASCADE,
+    employer_name             varchar(255)  NOT NULL  CHECK(length(employer_name) > 0),
+    employer_address          varchar(255),
+    employer_address_2        varchar(255),
+    employer_business         varchar(255),
+    employer_employees_cnt    integer,
+    employer_website          varchar(255),
+    working_place             varchar(255),
+    nearest_airport           varchar(255),
+    nearest_pub_transport     varchar(255),
+
     hours_weekly           REAL,
     hours_daily            REAL,
 

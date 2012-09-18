@@ -2,72 +2,6 @@
 -- Note; The HSQLDB is for in-memory testing, hence it makes no sense to have
 --  drop the tables and sequences first!
 
-CREATE SEQUENCE studentfiles_sequence START 1;
--- TODO: student_files table is now the same as in the current version. I will look a bit more at this if I should change something
-CREATE TABLE student_files (
-  id                INTEGER DEFAULT NextVal('studentfiles_sequence'::TEXT) NOT NULL PRIMARY KEY,
-  studentid         INTEGER REFERENCES students(id) ON DELETE SET NULL,
-  filetype          CHARACTER VARYING(1) DEFAULT 'f',
-  filename          CHARACTER VARYING(100) NOT NULL,
-  systemname        CHARACTER VARYING(100) DEFAULT '',
-  filesize          INTEGER DEFAULT 0,
-  folderid          INTEGER DEFAULT 1,
-  mimetypeid        INTEGER DEFAULT 1,
-  description       CHARACTER VARYING(250) DEFAULT '',
-  keywords          CHARACTER VARYING(250) DEFAULT '',
-  checksum          CHARACTER VARYING(32) DEFAULT '',
-  modified          TIMESTAMP DEFAULT now(),
-  created           TIMESTAMP DEFAULT now()
-);
-
-CREATE SEQUENCE student_sequence START 1;
-CREATE TABLE students (
-  id                INTEGER DEFAULT NextVal('student_sequence'::TEXT) NOT NULL PRIMARY KEY,
-  firstname         TEXT NOT NULL,
-  lastname          TEXT NOT NULL,
-  addressid         INTEGER REFERENCES addresses(id) ON DELETE CASCADE,
-  countryid         INTEGER NOT NULL,
-  phone             TEXT,
-  termaddressid     INTEGER REFERENCES addresses(id) ON DELETE CASCADE,
-  termphone         TEXT,
-  termcountryid     INTEGER NOT NULL,
-  email             TEXT NOT NULL,
-  alternativemail   TEXT,
-  birthday          DATE,
-  birthplace        TEXT,
-  nationalityid     INTEGER,
-  passportnumber    TEXT,
-  passportissued    TEXT,
-  passportvalidity  DATE,
-  gender            character(1),
-  maritalstatus     character(1),
-  medicallyfit      character(1),
-  university        TEXT,
-  facultyid         INTEGER REFERENCES faculties(id) ON DELETE SET NULL, -- CHECK THIS AGAINST THE NEW ABOUT FACULTY
-  specialization    TEXT,
-  studycompleted    character(1),
-  studyrequired     character(1),
-  languages1id      INTEGER,
-  languages2id      INTEGER,
-  languages3id      INTEGER,
-  fromdate          DATE,
-  todate            DATE,
-  requireloding     BOOLEAN,
-  trainingreport    BOOLEAN,
-  comment           TEXT,
-  filepicture       INTEGER REFERENCES student_files(id) ON DELETE CASCADE,
-  filecv            INTEGER REFERENCES student_files(id) ON DELETE CASCADE,
-  filecover         INTEGER REFERENCES student_files(id) ON DELETE CASCADE,
-  fileother         INTEGER REFERENCES student_files(id) ON DELETE CASCADE,
-  status            CHARACTER(1),
-  modified          TIMESTAMP WITHOUT TIME ZONE,
-  modifiedby        INTEGER,
-  created           TIMESTAMP WITHOUT TIME ZONE,
-  createdby         INTEGER,
-  logincode         TEXT,
-  completed         BOOLEAN DEFAULT FALSE
-);
-
 CREATE SEQUENCE address_sequence START 1;
 CREATE TABLE addresses (
     id                 INTEGER      DEFAULT NextVal('address_sequence'::TEXT) NOT NULL PRIMARY KEY,
@@ -177,20 +111,4 @@ CREATE TABLE offers (
     created_by             INTEGER, --i'm not sure now whether this is reference to users TABLE, need have a look at the code afternoon
     country_id             INTEGER NOT NULL REFERENCES countries (id) ON DELETE RESTRICT,
     student_id             INTEGER REFERENCES students (id) ON DELETE SET NULL
-);
-
-CREATE TABLE offer2group (
-    offer_id           INTEGER    REFERENCES offers (id) ON DELETE CASCADE,
-    group_id           INTEGER    REFERENCES groups (id) ON DELETE CASCADE,
-    student_id         INTEGER    REFERENCES students (id) ON DELETE SET NULL, --TODO: duplicity - offers.student_id
-    status             VARCHAR(1) DEFAULT 'n',
-    visible            BOOLEAN    DEFAULT true,
-    comment            TEXT       DEFAULT '',
-    exchanged          BOOLEAN    DEFAULT false,
-    answered_by        INTEGER    REFERENCES users (id), --ON DELETE ???,
-    answered           TIMESTAMP,
-    modified           TIMESTAMP,
-    created_by         INTEGER    REFERENCES users (id), --ON DELETE ???
-    created            TIMESTAMP,
-    is_archived        BOOLEAN    DEFAULT false NOT NULL
 );

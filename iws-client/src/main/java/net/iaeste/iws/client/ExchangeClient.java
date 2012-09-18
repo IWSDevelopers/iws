@@ -18,7 +18,7 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
-import net.iaeste.iws.api.requests.FetchEmployersRequest;
+import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
@@ -58,7 +58,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchEmployersResponse fetchEmployers(final AuthenticationToken token, final FetchEmployersRequest request) {
+    public FetchEmployersResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         return exchange.fetchEmployers(token, request);
     }
 

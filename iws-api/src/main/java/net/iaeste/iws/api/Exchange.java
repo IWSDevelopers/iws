@@ -17,7 +17,7 @@ package net.iaeste.iws.api;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
-import net.iaeste.iws.api.requests.FetchEmployersRequest;
+import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
@@ -43,7 +43,7 @@ import net.iaeste.iws.api.responses.StudentResponse;
  */
 public interface Exchange {
 
-    FetchEmployersResponse fetchEmployers(AuthenticationToken token, FetchEmployersRequest request);
+    FetchEmployersResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 
     Fallible processFaculties(AuthenticationToken token, FacultyRequest request);
 

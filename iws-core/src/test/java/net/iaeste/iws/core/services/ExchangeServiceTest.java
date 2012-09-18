@@ -29,7 +29,7 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.FetchEmployersRequest;
+import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.OfferRequestTestUtility;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
@@ -223,23 +223,7 @@ public class ExchangeServiceTest {
 
         when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME)).thenReturn(entities);
 
-        final FetchEmployersRequest request = new FetchEmployersRequest(FetchType.OWNED, OfferTestUtility.EMPLOYER_NAME);
-        request.verify(); // make sure that request is valid
-
-        final FetchEmployersResponse result = client.fetchEmployers(null, request);
-
-        assertThat(result.getEmployersInformation().size(), is(entities.size()));
-    }
-
-    @Test(expected = VerificationException.class)
-    public void testFetchOffersByLikeEmployerName_2() {
-        final List<OfferEntity> entities = new ArrayList<>(2);
-        entities.add(null);
-        entities.add(null);
-
-        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME)).thenReturn(entities);
-
-        final FetchEmployersRequest request = new FetchEmployersRequest(FetchType.OWNED, "");
+        final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest(OfferTestUtility.EMPLOYER_NAME);
         request.verify(); // make sure that request is valid
 
         final FetchEmployersResponse result = client.fetchEmployers(null, request);

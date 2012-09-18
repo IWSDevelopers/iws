@@ -20,7 +20,7 @@ import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.FetchEmployersRequest;
+import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
@@ -148,17 +148,11 @@ public class ExchangeService {
         return response;
     }
 
-    public FetchEmployersResponse fetchEmployers(final Authentication authentication, final FetchEmployersRequest request) {
+    public FetchEmployersResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
         final FetchEmployersResponse response;
 
-        switch (request.getFetchType()) {
-            case OWNED:
-                // TODO: select only owned offers
-                response = new FetchEmployersResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName())));
-                break;
-            default:
-                response = new FetchEmployersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
-        }
+        //TODO: select only owned offers
+        response = new FetchEmployersResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName())));
 
         return response;
     }

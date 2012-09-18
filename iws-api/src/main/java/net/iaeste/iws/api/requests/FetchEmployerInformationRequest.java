@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchEmployersRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchEmployerInformationRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -25,45 +25,33 @@ import net.iaeste.iws.api.utils.CheckVerification;
  * @since   1.7
  * @noinspection RedundantNoArgConstructor
  */
-public final class FetchEmployersRequest implements Verifiable {
+public final class FetchEmployerInformationRequest implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private FetchType fetchType;
     private String name;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchEmployersRequest() {
-        fetchType = null;
+    public FetchEmployerInformationRequest() {
         name = null;
     }
 
     /**
      * Default Constructor, for setting all values.
      *
-     * @param fetchType The Employer Fetch Type
      * @param name      The Employer Name
      */
-    public FetchEmployersRequest(final FetchType fetchType, final String name) {
-        this.fetchType = fetchType;
+    public FetchEmployerInformationRequest(final String name) {
         this.name = name;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
-
-    public void setFetchType(final FetchType fetchType) {
-        this.fetchType = fetchType;
-    }
-
-    public FetchType getFetchType() {
-        return fetchType;
-    }
 
     public void setName(final String name) {
         this.name = name;
@@ -82,7 +70,6 @@ public final class FetchEmployersRequest implements Verifiable {
      */
     @Override
     public void verify() throws VerificationException {
-        CheckVerification.verifyNotNull("fetchType", fetchType);
-        CheckVerification.verifyNotEmpty("name", name);
+        //no check, name can be empty to receive all employers
     }
 }

@@ -33,7 +33,7 @@ import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.OfferRequestTestUtility;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
-import net.iaeste.iws.api.responses.FetchEmployersResponse;
+import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
@@ -226,7 +226,7 @@ public class ExchangeServiceTest {
         final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest(OfferTestUtility.EMPLOYER_NAME);
         request.verify(); // make sure that request is valid
 
-        final FetchEmployersResponse result = client.fetchEmployers(null, request);
+        final FetchEmployerInformationResponse result = client.fetchEmployers(null, request);
 
         assertThat(result.getEmployersInformation().size(), is(entities.size()));
     }

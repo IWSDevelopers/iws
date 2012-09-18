@@ -29,7 +29,7 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
-import net.iaeste.iws.api.responses.FetchEmployersResponse;
+import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
@@ -43,7 +43,7 @@ import net.iaeste.iws.api.responses.StudentResponse;
  */
 public interface Exchange {
 
-    FetchEmployersResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
+    FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 
     Fallible processFaculties(AuthenticationToken token, FacultyRequest request);
 

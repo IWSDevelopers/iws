@@ -30,7 +30,7 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
-import net.iaeste.iws.api.responses.FetchEmployersResponse;
+import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
@@ -58,7 +58,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchEmployersResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
+    public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         return exchange.fetchEmployers(token, request);
     }
 

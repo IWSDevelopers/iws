@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services ($module.name) - $file.qualifiedClassName
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.FetchEmployerInformationResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -28,7 +28,7 @@ import java.util.List;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public final class FetchEmployersResponse extends AbstractResponse {
+public final class FetchEmployerInformationResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -38,7 +38,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchEmployersResponse() {
+    public FetchEmployerInformationResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
         employersInformation = null;
     }
@@ -49,7 +49,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public FetchEmployersResponse(final IWSError error, final String message) {
+    public FetchEmployerInformationResponse(final IWSError error, final String message) {
         super(error, message);
         employersInformation = null;
     }
@@ -59,7 +59,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
      *
      * @param employersInformation List of EmployerInformation
      */
-    public FetchEmployersResponse(final List<EmployerInformation> employersInformation) {
+    public FetchEmployerInformationResponse(final List<EmployerInformation> employersInformation) {
         this.employersInformation = Copier.copy(employersInformation);
     }
 
@@ -86,11 +86,11 @@ public final class FetchEmployersResponse extends AbstractResponse {
             return true;
         }
 
-        if (!(obj instanceof FetchEmployersResponse)) {
+        if (!(obj instanceof FetchEmployerInformationResponse)) {
             return false;
         }
 
-        final FetchEmployersResponse that = (FetchEmployersResponse) obj;
+        final FetchEmployerInformationResponse that = (FetchEmployerInformationResponse) obj;
         return employersInformation.equals(that.employersInformation);
     }
 
@@ -111,7 +111,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
      */
     @Override
     public String toString() {
-        return "FetchEmployersResponse{" +
+        return "FetchEmployerInformationResponse{" +
                 "employersInformation=" + employersInformation +
                 '}';
     }

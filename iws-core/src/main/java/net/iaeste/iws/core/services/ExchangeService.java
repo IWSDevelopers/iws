@@ -27,7 +27,7 @@ import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
-import net.iaeste.iws.api.responses.FetchEmployersResponse;
+import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
@@ -148,11 +148,11 @@ public class ExchangeService {
         return response;
     }
 
-    public FetchEmployersResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
-        final FetchEmployersResponse response;
+    public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
+        final FetchEmployerInformationResponse response;
 
         //TODO: select only owned offers
-        response = new FetchEmployersResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName())));
+        response = new FetchEmployerInformationResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName())));
 
         return response;
     }

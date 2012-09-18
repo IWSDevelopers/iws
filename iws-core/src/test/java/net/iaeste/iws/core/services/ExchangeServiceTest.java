@@ -228,7 +228,7 @@ public class ExchangeServiceTest {
 
         final FetchEmployersResponse result = client.fetchEmployers(null, request);
 
-        assertThat(result.getEmployers().size(), is(entities.size()));
+        assertThat(result.getEmployersInformation().size(), is(entities.size()));
     }
 
     @Test(expected = VerificationException.class)
@@ -244,7 +244,7 @@ public class ExchangeServiceTest {
 
         final FetchEmployersResponse result = client.fetchEmployers(null, request);
 
-        assertThat(result.getEmployers().size(), is(entities.size()));
+        assertThat(result.getEmployersInformation().size(), is(entities.size()));
     }
 
     private static class OfferEntityMatcher extends BaseMatcher<OfferEntity> {

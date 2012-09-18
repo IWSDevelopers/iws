@@ -17,7 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private List<Employer> employers;
+    private List<EmployerInformation> employersInformation;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -40,7 +40,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
      */
     public FetchEmployersResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        employers = null;
+        employersInformation = null;
     }
 
     /**
@@ -51,28 +51,28 @@ public final class FetchEmployersResponse extends AbstractResponse {
      */
     public FetchEmployersResponse(final IWSError error, final String message) {
         super(error, message);
-        employers = null;
+        employersInformation = null;
     }
 
     /**
      * Default Constructor.
      *
-     * @param employers List of Employers
+     * @param employersInformation List of EmployerInformation
      */
-    public FetchEmployersResponse(final List<Employer> employers) {
-        this.employers = Copier.copy(employers);
+    public FetchEmployersResponse(final List<EmployerInformation> employersInformation) {
+        this.employersInformation = Copier.copy(employersInformation);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setEmployers(final List<Employer> employers) {
-        this.employers = Copier.copy(employers);
+    public void setEmployersInformation(final List<EmployerInformation> employersInformation) {
+        this.employersInformation = Copier.copy(employersInformation);
     }
 
-    public List<Employer> getEmployers() {
-        return Copier.copy(employers);
+    public List<EmployerInformation> getEmployersInformation() {
+        return Copier.copy(employersInformation);
     }
 
     // =========================================================================
@@ -91,7 +91,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
         }
 
         final FetchEmployersResponse that = (FetchEmployersResponse) obj;
-        return employers.equals(that.employers);
+        return employersInformation.equals(that.employersInformation);
     }
 
     /**
@@ -101,7 +101,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employers != null ? employers.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employersInformation != null ? employersInformation.hashCode() : 0);
 
         return result;
     }
@@ -112,7 +112,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
     @Override
     public String toString() {
         return "FetchEmployersResponse{" +
-                "employers=" + employers +
+                "employersInformation=" + employersInformation +
                 '}';
     }
 }

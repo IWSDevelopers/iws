@@ -16,7 +16,7 @@ package net.iaeste.iws.core.transformers;/*
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FieldOfStudy;
@@ -172,7 +172,7 @@ public class OfferTransformerTest {
     public void testCopyingFullOfferToEmployerDto() {
         final OfferEntity entity = getFullOfferEntity();
 
-        final Employer employer = new Employer();
+        final EmployerInformation employer = new EmployerInformation();
         employer.setAddress(entity.getEmployerAddress());
         employer.setAddress2(entity.getEmployerAddress2());
         employer.setBusiness(entity.getEmployerBusiness());
@@ -185,7 +185,7 @@ public class OfferTransformerTest {
         employer.setWeeklyHours(entity.getWeeklyHours());
         employer.setWorkingPlace(entity.getWorkingPlace());
 
-        final Employer newEmployer = OfferTransformer.transform(Employer.class, entity);
+        final EmployerInformation newEmployer = OfferTransformer.transform(EmployerInformation.class, entity);
 
         assertThat(newEmployer, is(employer));
     }

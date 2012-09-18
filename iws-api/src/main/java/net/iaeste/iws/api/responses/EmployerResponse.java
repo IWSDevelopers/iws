@@ -17,7 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public final class EmployerResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private Employer employer;
+    private EmployerInformation employerInformation;
     private List<String> errors;
 
     /**
@@ -41,17 +41,17 @@ public final class EmployerResponse extends AbstractResponse {
      */
     public EmployerResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        employer = null;
+        employerInformation = null;
         errors = null;
     }
 
     /**
      * Default Constructor.
      *
-     * @param employer Employer
+     * @param employerInformation Employer
      */
-    public EmployerResponse(final Employer employer) {
-        this.employer = new Employer(employer);
+    public EmployerResponse(final EmployerInformation employerInformation) {
+        this.employerInformation = new EmployerInformation(employerInformation);
         errors = null;
     }
 
@@ -63,22 +63,22 @@ public final class EmployerResponse extends AbstractResponse {
      */
     public EmployerResponse(final IWSError error, final String message) {
         super(error, message);
-        employer = null;
+        employerInformation = null;
         errors = null;
     }
 
     /**
-     * Response is created when processing the employer failed.
+     * Response is created when processing the employerInformation failed.
      * <p/>
-     * Incorrect Employer should never be passed to this constructor. Instead
+     * Incorrect EmployerInformation should never be passed to this constructor. Instead
      * use constructor without list of errors parameter.
      *
-     * @param failedEmployer Employer Object, which could not be processed
-     * @param errors         List of processing errors
+     * @param failedEmployerInformation  EmployerInformation Object, which could not be processed
+     * @param errors                     List of processing errors
      */
-    public EmployerResponse(final Employer failedEmployer, final List<String> errors) {
-        super(IWSErrors.PROCESSING_FAILURE, "processing of the Offer failed");
-        employer = new Employer(failedEmployer);
+    public EmployerResponse(final EmployerInformation failedEmployerInformation, final List<String> errors) {
+        super(IWSErrors.PROCESSING_FAILURE, "processing of the EmployerInformation failed");
+        employerInformation = new EmployerInformation(failedEmployerInformation);
         this.errors = Copier.copy(errors);
     }
 
@@ -86,12 +86,12 @@ public final class EmployerResponse extends AbstractResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public Employer getEmployer() {
-        return new Employer(employer);
+    public EmployerInformation getEmployerInformation() {
+        return new EmployerInformation(employerInformation);
     }
 
-    public void setEmployer(final Employer employer) {
-        this.employer = new Employer(employer);
+    public void setEmployerInformation(final EmployerInformation employerInformation) {
+        this.employerInformation = new EmployerInformation(employerInformation);
     }
 
     public List<String> getErrors() {
@@ -125,7 +125,7 @@ public final class EmployerResponse extends AbstractResponse {
             return false;
         }
 
-        return !(employer != null ? !employer.equals(that.employer) : that.employer != null);
+        return !(employerInformation != null ? !employerInformation.equals(that.employerInformation) : that.employerInformation != null);
     }
 
     /**
@@ -135,7 +135,7 @@ public final class EmployerResponse extends AbstractResponse {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employerInformation != null ? employerInformation.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (errors != null ? errors.hashCode() : 0);
 
         return result;
@@ -147,7 +147,7 @@ public final class EmployerResponse extends AbstractResponse {
      @Override
     public String toString() {
         return "EmployerResponse{" +
-                "employer=" + employer +
+                "employerInformation=" + employerInformation +
                 ", errors=" + errors +
                 '}';
     }

@@ -15,7 +15,7 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
@@ -154,7 +154,7 @@ public class ExchangeService {
         switch (request.getFetchType()) {
             case OWNED:
                 // TODO: select only owned offers
-                response = new FetchEmployersResponse(convertEntityList(Employer.class, dao.findOffersByLikeEmployerName(request.getName())));
+                response = new FetchEmployersResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName())));
                 break;
             default:
                 response = new FetchEmployersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
@@ -197,11 +197,11 @@ public class ExchangeService {
         return result;
     }
 
-    private List<Employer> convertEntityList(Class<Employer> t, final List<OfferEntity> found) {
-        final List<Employer> result = new ArrayList<>(found.size());
+    private List<EmployerInformation> convertEntityList(Class<EmployerInformation> t, final List<OfferEntity> found) {
+        final List<EmployerInformation> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
-            result.add(OfferTransformer.transform(Employer.class, entity));
+            result.add(OfferTransformer.transform(EmployerInformation.class, entity));
         }
 
         return result;

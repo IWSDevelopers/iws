@@ -1,16 +1,33 @@
 !path iws-fitnesse.jar
 !define TEST_SYSTEM {slim}
 
-|Comment                   |
-|example OfferResponse test|
+!|script         |should fetch offer        |
+|set request type|ALL                       |
+|fetch offer                                |
+|check           |number of fetched offers|0|
 
-!|build offer                                                 |
-|default offer|ref no      |work description|is valid?|result?|
-|empty        |AT-2012     |some desc       |false    |$o1=   |
-|full         |AT-2012-0001|some desc       |true     |$o2=   |
+!|script             |should save offer              |
+|set ref no          |AT-2012-0001                   |
+|set employer name   |test employer name             |
+|reject              |verify                         |
+|set study levels    |E                              |
+|set field of studies|IT!-            |-!ARCHITECTURE|
+|set language 1      |ENGLISH                        |
+|set language 1 level|E                              |
+|set work description|some description               |
+|set maximum weeks   |52                             |
+|set minimum weeks   |6                              |
+|set weekly hours    |40                             |
+|set from date       |2010-Jan-01                    |
+|set to date         |2012-Sep-04                    |
+|ensure              |verify                         |
+|save offer                                          |
+|ensure              |is request ok                  |
 
-!|should save offer                                                                                                                    |
-|offer                                                                                                      |is request ok?|error code?|
-|$o1                                                                                                        |false         |401        |
-|{"refNo":"AT-2012","fieldOfStudies":[],"specializations":[],"studyLevels":[],"workDescription":"some desc"}|false         |401        |
-|$o2                                                                                                        |true          |0          |
+
+!|comment                                   |
+|should offers be persisted for whole test? |
+|script          |should fetch offer        |
+|set request type|ALL                       |
+|execute                                    |
+|check           |number of fetched offers|1|

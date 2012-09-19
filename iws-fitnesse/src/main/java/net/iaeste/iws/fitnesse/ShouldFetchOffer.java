@@ -28,21 +28,30 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class ShouldFetchOffer extends AbstractFixture<FetchOffersResponse> {
+public final class ShouldFetchOffer extends AbstractFixture<FetchOffersResponse> {
     private static final String TOKEN = "12345678901234567890123456789012";
     private final Exchange exchange = new ExchangeCaller();
     private AuthenticationToken token;
     private FetchOffersRequest request;
 
+    public ShouldFetchOffer() {
+        reset();
+    }
+
     public void setRequestType(final String fetchType) {
         request = new FetchOffersRequest(FetchType.valueOf(fetchType));
     }
-
 
     public int numberOfFetchedOffers() {
         return response.getOffers().size();
     }
 
+    /**
+     * alias function for execute
+     */
+    public void fetchOffer() {
+        execute();
+    }
 
     @Override
     public void execute() throws StopTestException {
@@ -55,4 +64,5 @@ public class ShouldFetchOffer extends AbstractFixture<FetchOffersResponse> {
         request = null;
         response = null;
     }
+
 }

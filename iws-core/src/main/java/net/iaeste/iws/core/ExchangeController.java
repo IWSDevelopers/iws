@@ -20,7 +20,7 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
-import net.iaeste.iws.api.requests.FetchEmployersRequest;
+import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
@@ -32,7 +32,7 @@ import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
-import net.iaeste.iws.api.responses.FetchEmployersResponse;
+import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
@@ -72,9 +72,9 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchEmployersResponse fetchEmployers(final AuthenticationToken token, final FetchEmployersRequest request) {
+    public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         LOG.trace("Starting fetchFaculties()");
-        FetchEmployersResponse response;
+        FetchEmployerInformationResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFERS);
@@ -83,7 +83,7 @@ public class ExchangeController extends CommonController implements Exchange {
             final ExchangeService service = factory.prepareOfferService();
             response = service.fetchEmployers(authentication, request);
         } catch (IWSException e) {
-            response = new FetchEmployersResponse(e.getError(), e.getMessage());
+            response = new FetchEmployerInformationResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchEmployers()");

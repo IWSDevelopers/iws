@@ -74,7 +74,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     private Date nominationDeadline = null;
 
     /**
-     * Employer information should be duplicated in each offer for several reasons:
+     * EmployerInformation information should be duplicated in each offer for several reasons:
      * <ul>
      * <li>multiple locations for big companies</li>
      * <li>working hours can change from offer to offer</li>
@@ -82,7 +82,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
      * </ul>
      */
 
-    // Employer information
+    // EmployerInformation information
     @Column(name = "employer_name", nullable = false)
     private String employerName = null;
 

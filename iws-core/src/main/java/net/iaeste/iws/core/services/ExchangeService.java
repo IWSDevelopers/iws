@@ -168,7 +168,7 @@ public class ExchangeService extends CommonService {
         return response;
     }
 
-    public FetchEmployerInformationResponse fetchEmployerInformation(final Authentication authentication, final FetchEmployerInformationRequest request) {
+    public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
         final FetchEmployerInformationResponse response;
 
         //TODO: select only owned offers

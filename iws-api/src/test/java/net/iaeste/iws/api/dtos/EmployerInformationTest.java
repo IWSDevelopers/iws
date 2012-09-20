@@ -29,8 +29,8 @@ import static org.hamcrest.CoreMatchers.*;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class EmployerTest {
-    private Employer employer = getMinimalEmployer();
+public class EmployerInformationTest {
+    private EmployerInformation employer = getMinimalEmployer();
     static final String ERRMSG_NOT_NULL = " field cannot be null";
 
     @Before
@@ -40,8 +40,8 @@ public class EmployerTest {
 
     @Test
     public void testCopyConstructor() {
-        final Employer employer = getMinimalEmployer();
-        final Employer copy = new Employer(employer);
+        final EmployerInformation employer = getMinimalEmployer();
+        final EmployerInformation copy = new EmployerInformation(employer);
         Assert.assertThat(employer, is(not(nullValue())));
         Assert.assertThat(copy, is(not(nullValue())));
         Assert.assertThat(employer, is(copy));

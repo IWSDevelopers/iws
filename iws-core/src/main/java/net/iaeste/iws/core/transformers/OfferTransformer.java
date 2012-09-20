@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
-import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.StudyLevel;
@@ -150,17 +150,17 @@ public final class OfferTransformer {
     }
 
     /**
-     * Transform OfferEntity employer into the Employer DTO
+     * Transform OfferEntity employer into the EmployerInformation DTO
      *
      * @param t     The Class object to overloading transform method
      * @param offer Source OfferEntity which is to be transformed
-     * @return Employer Object
+     * @return EmployerInformation Object
      */
-    public static Employer transform(final Class<Employer> t, final OfferEntity offer) {
-        Employer result = null;
+    public static EmployerInformation transform(final Class<EmployerInformation> t, final OfferEntity offer) {
+        EmployerInformation result = null;
 
         if (offer != null) {
-            result = new Employer();
+            result = new EmployerInformation();
 
             result.setName(offer.getEmployerName());
             result.setAddress(offer.getEmployerAddress());

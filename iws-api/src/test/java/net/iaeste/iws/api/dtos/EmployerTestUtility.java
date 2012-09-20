@@ -36,19 +36,19 @@ public class EmployerTestUtility {
     private EmployerTestUtility() {
     }
 
-    public static Employer getEmptyEmployer() {
-        return new Employer();
+    public static EmployerInformation getEmptyEmployer() {
+        return new EmployerInformation();
     }
 
-    public static Employer getMinimalEmployer() {
-        final Employer minimalEmployer = new Employer();
+    public static EmployerInformation getMinimalEmployer() {
+        final EmployerInformation minimalEmployer = new EmployerInformation();
         minimalEmployer.setName(NAME);
         minimalEmployer.setWeeklyHours(WEEKLY_HOURS);
         return minimalEmployer;
     }
 
-    public static Employer getFullEmployer() {
-        final Employer employer = getMinimalEmployer();
+    public static EmployerInformation getFullEmployer() {
+        final EmployerInformation employer = getMinimalEmployer();
         employer.setAddress(ADDRESS);
         employer.setAddress2(ADDRESS2);
         employer.setBusiness(BUSINESS);

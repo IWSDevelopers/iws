@@ -17,7 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.util.List;
@@ -28,17 +28,17 @@ import java.util.List;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public final class FetchEmployersResponse extends AbstractResponse {
+public final class FetchEmployerInformationResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private List<Employer> employers;
+    private List<EmployerInformation> employers;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchEmployersResponse() {
+    public FetchEmployerInformationResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
         employers = null;
     }
@@ -49,7 +49,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public FetchEmployersResponse(final IWSError error, final String message) {
+    public FetchEmployerInformationResponse(final IWSError error, final String message) {
         super(error, message);
         employers = null;
     }
@@ -59,7 +59,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
      *
      * @param employers List of Employers
      */
-    public FetchEmployersResponse(final List<Employer> employers) {
+    public FetchEmployerInformationResponse(final List<EmployerInformation> employers) {
         this.employers = Copier.copy(employers);
     }
 
@@ -67,11 +67,11 @@ public final class FetchEmployersResponse extends AbstractResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setEmployers(final List<Employer> employers) {
+    public void setEmployers(final List<EmployerInformation> employers) {
         this.employers = Copier.copy(employers);
     }
 
-    public List<Employer> getEmployers() {
+    public List<EmployerInformation> getEmployers() {
         return Copier.copy(employers);
     }
 
@@ -86,11 +86,11 @@ public final class FetchEmployersResponse extends AbstractResponse {
             return true;
         }
 
-        if (!(obj instanceof FetchEmployersResponse)) {
+        if (!(obj instanceof FetchEmployerInformationResponse)) {
             return false;
         }
 
-        final FetchEmployersResponse that = (FetchEmployersResponse) obj;
+        final FetchEmployerInformationResponse that = (FetchEmployerInformationResponse) obj;
         return employers.equals(that.employers);
     }
 
@@ -111,7 +111,7 @@ public final class FetchEmployersResponse extends AbstractResponse {
      */
     @Override
     public String toString() {
-        return "FetchEmployersResponse{" +
+        return "FetchEmployerInformationResponse{" +
                 "employers=" + employers +
                 '}';
     }

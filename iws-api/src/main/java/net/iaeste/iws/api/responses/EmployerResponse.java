@@ -17,7 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public final class EmployerResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private Employer employer;
+    private EmployerInformation employer;
     private List<String> errors;
 
     /**
@@ -48,10 +48,10 @@ public final class EmployerResponse extends AbstractResponse {
     /**
      * Default Constructor.
      *
-     * @param employer Employer
+     * @param employer EmployerInformation
      */
-    public EmployerResponse(final Employer employer) {
-        this.employer = new Employer(employer);
+    public EmployerResponse(final EmployerInformation employer) {
+        this.employer = new EmployerInformation(employer);
         errors = null;
     }
 
@@ -70,15 +70,15 @@ public final class EmployerResponse extends AbstractResponse {
     /**
      * Response is created when processing the employer failed.
      * <p/>
-     * Incorrect Employer should never be passed to this constructor. Instead
+     * Incorrect EmployerInformation should never be passed to this constructor. Instead
      * use constructor without list of errors parameter.
      *
-     * @param failedEmployer Employer Object, which could not be processed
+     * @param failedEmployer EmployerInformation Object, which could not be processed
      * @param errors         List of processing errors
      */
-    public EmployerResponse(final Employer failedEmployer, final List<String> errors) {
+    public EmployerResponse(final EmployerInformation failedEmployer, final List<String> errors) {
         super(IWSErrors.PROCESSING_FAILURE, "processing of the Offer failed");
-        employer = new Employer(failedEmployer);
+        employer = new EmployerInformation(failedEmployer);
         this.errors = Copier.copy(errors);
     }
 
@@ -86,12 +86,12 @@ public final class EmployerResponse extends AbstractResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public Employer getEmployer() {
-        return new Employer(employer);
+    public EmployerInformation getEmployer() {
+        return new EmployerInformation(employer);
     }
 
-    public void setEmployer(final Employer employer) {
-        this.employer = new Employer(employer);
+    public void setEmployer(final EmployerInformation employer) {
+        this.employer = new EmployerInformation(employer);
     }
 
     public List<String> getErrors() {

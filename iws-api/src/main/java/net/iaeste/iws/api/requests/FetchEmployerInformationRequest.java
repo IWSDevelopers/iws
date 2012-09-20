@@ -25,7 +25,7 @@ import net.iaeste.iws.api.utils.CheckVerification;
  * @since   1.7
  * @noinspection RedundantNoArgConstructor
  */
-public final class FetchEmployersRequest implements Verifiable {
+public final class FetchEmployerInformationRequest implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -37,7 +37,7 @@ public final class FetchEmployersRequest implements Verifiable {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchEmployersRequest() {
+    public FetchEmployerInformationRequest() {
         fetchType = null;
         name = null;
     }
@@ -45,10 +45,10 @@ public final class FetchEmployersRequest implements Verifiable {
     /**
      * Default Constructor, for setting all values.
      *
-     * @param fetchType The Employer Fetch Type
-     * @param name      The Employer Name
+     * @param fetchType The EmployerInformation Fetch Type
+     * @param name      The EmployerInformation Name
      */
-    public FetchEmployersRequest(final FetchType fetchType, final String name) {
+    public FetchEmployerInformationRequest(final FetchType fetchType, final String name) {
         this.fetchType = fetchType;
         this.name = name;
     }

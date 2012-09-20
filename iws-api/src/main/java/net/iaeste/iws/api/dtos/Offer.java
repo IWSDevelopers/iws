@@ -133,7 +133,7 @@ public final class Offer implements Verifiable {
     private String refNo;
     private Date nominationDeadline;
 
-    // Employer information
+    // EmployerInformation information
     /**
      * not null
      */

@@ -14,25 +14,26 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
 import net.iaeste.iws.api.responses.AbstractResponse;
 
-import java.util.*;
-
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * The Employer Object contains all information about the employer.
+ * The EmployerInformation Object contains all information about the employer.
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection CastToConcreteClass, RefusedBequest, VariableNotUsedInsideIf
  */
-public final class Employer extends AbstractResponse implements Verifiable {
+public final class EmployerInformation extends AbstractResponse implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -52,15 +53,15 @@ public final class Employer extends AbstractResponse implements Verifiable {
     /**
      * Empty Constructor, required for some communication frameworks.
      */
-    public Employer() {
+    public EmployerInformation() {
     }
 
     /**
      * Copy constructor.
      *
-     * @param employer Employer to copy
+     * @param employer EmployerInformation to copy
      */
-    public Employer(final Employer employer) {
+    public EmployerInformation(final EmployerInformation employer) {
         if (employer != null) {
             name = employer.name;
             address = employer.address;
@@ -199,7 +200,7 @@ public final class Employer extends AbstractResponse implements Verifiable {
             return false;
         }
 
-        final Employer employer = (Employer) obj;
+        final EmployerInformation employer = (EmployerInformation) obj;
 
         if (name != null ? !name.equals(employer.name) : employer.name != null) {
             return false;
@@ -262,7 +263,7 @@ public final class Employer extends AbstractResponse implements Verifiable {
      */
     @Override
     public String toString() {
-        return "Employer{" +
+        return "EmployerInformation{" +
                 "name=" + name +
                 ", address='" + address + '\'' +
                 ", address2='" + address2 + '\'' +

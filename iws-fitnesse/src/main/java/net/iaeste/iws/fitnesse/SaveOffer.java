@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.CanSaveAndFetchOffers
+ * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.SaveOffer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -29,17 +29,23 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class ShouldSaveOffer extends AbstractFixture<OfferResponse> {
+public final class SaveOffer extends AbstractFixture<OfferResponse> {
     private static final String TOKEN = "12345678901234567890123456789012";
     private final Exchange exchange = new ExchangeCaller();
     private AuthenticationToken token;
     private Offer offer;
     private ProcessOfferRequest request;
 
-    public void setOffer(final String offer) {
-        this.offer = JSON.deserialize(Offer.class, offer);
+    public SaveOffer() {
+        reset();
     }
 
+    /**
+     * alias function for execute
+     */
+    public void save() {
+        execute();
+    }
 
     @Override
     public void execute() throws StopTestException {

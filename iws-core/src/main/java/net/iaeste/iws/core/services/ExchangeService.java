@@ -46,7 +46,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class ExchangeService {
+public class ExchangeService extends CommonService {
 
     private final OfferDao dao;
 
@@ -114,6 +114,27 @@ public class ExchangeService {
         }
 
         return response;
+    }
+
+    public OfferResponse processOffer_new(final Authentication authentication, final ProcessOfferRequest request) {
+        final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
+        final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
+
+        if (existingEntity == null) {
+            // Persist the Object with history
+            dao.persist(authentication, newEntity);
+        } else {
+            // Check if the user is allowed to work with the Object, if not -
+            // then a Permission Exception is thrown
+            permissionCheck(authentication, authentication.getGroup());
+
+            // Persist the changes, the method takes the existing and merges the
+            // new values into it, and finally it also writes an entry in the
+            // history table
+            dao.persist(authentication, existingEntity, newEntity);
+        }
+
+        return new OfferResponse();
     }
 
     public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {

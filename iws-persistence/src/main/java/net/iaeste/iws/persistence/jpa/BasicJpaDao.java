@@ -52,6 +52,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public void persist(final IWSEntity entity) {
         entityManager.persist(entity);
     }
@@ -61,13 +62,14 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public void persist(final Authentication authentication, final IWSEntity entity) {
+        // We have to start by persisting the entity, to have an Id
+        entityManager.persist(entity);
+
         final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entity);
         if (level != MonitoringLevel.NONE) {
             final List<Field> changes = monitoringProcessor.findChanges(level, entity);
             persistMonitoredData(authentication, changes);
         }
-
-        entityManager.persist(entity);
     }
 
     /**

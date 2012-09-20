@@ -33,7 +33,10 @@ public interface BasicDao {
      * Persist the given Entity into the database.
      *
      * @param entity Entity to persist
+     * @deprecated please use one of the other persist methods, this one cannot
+     *             work with the monitoring
      */
+    @Deprecated
     void persist(IWSEntity entity);
 
     /**

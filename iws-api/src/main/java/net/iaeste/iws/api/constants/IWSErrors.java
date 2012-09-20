@@ -70,6 +70,12 @@ public interface IWSErrors {
     IWSError AUTHORIZATION_ERROR = new IWSError(403, "User Authorization problem");
 
     /**
+     * If the user is attempting to access/process an Object, without being
+     * allowed to do so (missing Group ownership).
+     */
+    IWSError NOT_PERMITTED = new IWSError(404, "User is not permitted to process the requested Object");
+
+    /**
      * The database is inaccessible.
      */
     IWSError DATABASE_UNREACHABLE = new IWSError(501, "Database unreachable");
@@ -98,5 +104,4 @@ public interface IWSErrors {
      * The current method is not yet implemented.
      */
     IWSError NOT_IMPLEMENTED = new IWSError(999, "Not Implemented");
-
 }

@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.persistence.setup.SpringConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,6 +45,7 @@ public class AddressEntityTest {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Ignore
     @Test
     @Transactional
     public void testClassflow() {
@@ -73,6 +75,7 @@ public class AddressEntityTest {
         assertThat(found.get(0).getCountry(), is(country));
     }
 
+    @Ignore
     @Test
     public void testMerging() {
         final String street1 = "street1";

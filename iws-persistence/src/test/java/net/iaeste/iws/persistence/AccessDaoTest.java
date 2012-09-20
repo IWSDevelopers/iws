@@ -49,19 +49,20 @@ public class AccessDaoTest {
     @Transactional
     public void testAccess() {
         final AccessDao dao = new AccessJpaDao(entityManager);
+        //Michl: Nase, NC Member           in Austria
         final List<UserPermissionView> result = dao.findPermissions(1);
 
         assertThat(result, is(not(nullValue())));
-        assertThat(result.size(), is(2));
+        assertThat(result.size(), is(14));
 
         // Now, lets check the first permission
-        assertThat(result.get(0).getGroupName(), is("Hobbits"));
-        assertThat(result.get(0).getGroupType(), is("Half Size"));
-        assertThat(result.get(0).getPermission(), is("Daggers"));
+        assertThat(result.get(0).getGroupName(), is("Austria"));
+        assertThat(result.get(0).getGroupType(), is("Country"));
+        assertThat(result.get(0).getPermission(), is("PROCESS_USERS"));
 
         // Now, lets check the second permission
-        assertThat(result.get(1).getGroupName(), is("Fellowship"));
-        assertThat(result.get(1).getGroupType(), is("Fellowship"));
-        assertThat(result.get(1).getPermission(), is("Daggers"));
+        assertThat(result.get(1).getGroupName(), is("Austria"));
+        assertThat(result.get(1).getGroupType(), is("Country"));
+        assertThat(result.get(1).getPermission(), is("FETCH_USERS"));
     }
 }

@@ -15,19 +15,19 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Employer;
+import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.FetchEmployersRequest;
+import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
-import net.iaeste.iws.api.responses.FetchEmployersResponse;
+import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
@@ -42,9 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class ExchangeService extends CommonService {
 
@@ -117,26 +117,25 @@ public class ExchangeService extends CommonService {
     }
 
     public OfferResponse processOffer_new(final Authentication authentication, final ProcessOfferRequest request) {
-        final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
-        final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
+         final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
+         final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
 
-        if (existingEntity == null) {
-            // Persist the Object with history
-            dao.persist(authentication, newEntity);
-        } else {
-            // Check if the user is allowed to work with the Object, if not -
-            // then a Permission Exception is thrown
-            permissionCheck(authentication, authentication.getGroup());
+         if (existingEntity == null) {
+             // Persist the Object with history
+             dao.persist(authentication, newEntity);
+         } else {
+             // Check if the user is allowed to work with the Object, if not -
+             // then a Permission Exception is thrown
+             permissionCheck(authentication, authentication.getGroup());
 
-            // Persist the changes, the method takes the existing and merges the
-            // new values into it, and finally it also writes an entry in the
-            // history table
-            dao.persist(authentication, existingEntity, newEntity);
-        }
+             // Persist the changes, the method takes the existing and merges the
+             // new values into it, and finally it also writes an entry in the
+             // history table
+             dao.persist(authentication, existingEntity, newEntity);
+         }
 
-        return new OfferResponse();
-    }
-
+         return new OfferResponse();
+     }
     public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {
         final OfferEntity foundOffer = dao.findOffer(request.getOfferId());
 
@@ -169,17 +168,11 @@ public class ExchangeService extends CommonService {
         return response;
     }
 
-    public FetchEmployersResponse fetchEmployers(final Authentication authentication, final FetchEmployersRequest request) {
-        final FetchEmployersResponse response;
+    public FetchEmployerInformationResponse fetchEmployerInformation(final Authentication authentication, final FetchEmployerInformationRequest request) {
+        final FetchEmployerInformationResponse response;
 
-        switch (request.getFetchType()) {
-            case OWNED:
-                // TODO: select only owned offers
-                response = new FetchEmployersResponse(convertEntityList(Employer.class, dao.findOffersByLikeEmployerName(request.getName())));
-                break;
-            default:
-                response = new FetchEmployersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
-        }
+        //TODO: select only owned offers
+        response = new FetchEmployerInformationResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName())));
 
         return response;
     }
@@ -218,11 +211,11 @@ public class ExchangeService extends CommonService {
         return result;
     }
 
-    private List<Employer> convertEntityList(Class<Employer> t, final List<OfferEntity> found) {
-        final List<Employer> result = new ArrayList<>(found.size());
+    private List<EmployerInformation> convertEntityList(Class<EmployerInformation> t, final List<OfferEntity> found) {
+        final List<EmployerInformation> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
-            result.add(OfferTransformer.transform(Employer.class, entity));
+            result.add(OfferTransformer.transform(EmployerInformation.class, entity));
         }
 
         return result;

@@ -19,6 +19,9 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
 import net.iaeste.iws.api.responses.AbstractResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The Person Object contains the non-system specific information or private
  * information for a person. Although the Person is a core part of the User
@@ -66,6 +69,14 @@ public final class Person extends AbstractResponse implements Verifiable {
      */
     @Override
     public void verify() throws VerificationException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 
     /**

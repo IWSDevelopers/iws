@@ -18,6 +18,9 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.CheckVerification;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -70,6 +73,14 @@ public final class DeleteOfferRequest implements Verifiable {
     @Override
     public void verify() throws VerificationException {
         CheckVerification.verifyLimits("OfferId", offerId, 1, Integer.MAX_VALUE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 
     /**

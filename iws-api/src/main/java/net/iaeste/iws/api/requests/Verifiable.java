@@ -17,6 +17,7 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * All Input Object, or Request Objects, must have a common way to verify if
@@ -37,4 +38,15 @@ public interface Verifiable extends Serializable {
      * @throws VerificationException if the data is insufficient or invalid
      */
     void verify() throws VerificationException;
+
+    /**
+     * Validates that the required information is there for the processing to be
+     * able to successfully run.<br />
+     *   The method collects all errors, and returns a map with them, where the
+     * key is the name of the field in the Object, and the value is the error
+     * information.
+     *
+     * @return Map with all errors, if successful then the map is empty
+     */
+    Map<String, String> validate();
 }

@@ -18,6 +18,9 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * All requests (with the exception of the initial Authorization request) is
  * made with an Object if this type as the first parameter. The Token contains
@@ -146,6 +149,14 @@ public final class AuthenticationToken implements Verifiable {
             default:
                 throw new VerificationException("The Token is invalid, the content is an unsupported or unallowed cryptographical hash value.");
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 
     /**

@@ -15,8 +15,9 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.exceptions.VerificationException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -24,7 +25,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  * @since   1.7
  * @noinspection RedundantNoArgConstructor
  */
-public class FetchCountryRequest implements Verifiable {
+public class FetchCountryRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -48,7 +49,7 @@ public class FetchCountryRequest implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() throws VerificationException {
-        throw new NotImplementedException("TBD");
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 }

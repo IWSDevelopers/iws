@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.Employer
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.EmployerInformation
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,9 +14,6 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
@@ -24,6 +21,11 @@ import net.iaeste.iws.api.responses.AbstractResponse;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
 
 /**
  * The EmployerInformation Object contains all information about the employer.
@@ -186,6 +188,14 @@ public final class EmployerInformation extends AbstractResponse implements Verif
         if (!errors.isEmpty()) {
             throw new VerificationException(errors.toString());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 
     /**

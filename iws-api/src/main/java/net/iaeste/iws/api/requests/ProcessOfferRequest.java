@@ -18,6 +18,9 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static net.iaeste.iws.api.utils.CheckVerification.verifyVerifiable;
 
 /**
@@ -74,5 +77,13 @@ public final class ProcessOfferRequest implements Verifiable {
     @Override
     public void verify() throws VerificationException {
         verifyVerifiable("Offer", offer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 }

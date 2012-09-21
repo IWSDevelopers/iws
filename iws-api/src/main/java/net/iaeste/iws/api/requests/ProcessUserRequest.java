@@ -19,6 +19,9 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.CheckVerification;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -61,5 +64,13 @@ public final class ProcessUserRequest implements Verifiable {
     @Override
     public void verify() throws VerificationException {
         CheckVerification.verifyVerifiable("user", user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 }

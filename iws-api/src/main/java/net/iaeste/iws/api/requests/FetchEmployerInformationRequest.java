@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchEmployersRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchEmployerInformationRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -18,6 +18,9 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.CheckVerification;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -84,5 +87,13 @@ public final class FetchEmployerInformationRequest implements Verifiable {
     public void verify() throws VerificationException {
         CheckVerification.verifyNotNull("fetchType", fetchType);
         CheckVerification.verifyNotEmpty("name", name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 }

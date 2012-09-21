@@ -15,8 +15,9 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.utils.CheckVerification;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -24,7 +25,7 @@ import net.iaeste.iws.api.utils.CheckVerification;
  * @since   1.7
  * @noinspection SuppressionAnnotation
  */
-public final class AuthenticationRequest implements Verifiable {
+public final class AuthenticationRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -81,14 +82,19 @@ public final class AuthenticationRequest implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() throws VerificationException {
+    public Map<String, String> validate() {
+        final Map<String, String> validation = new HashMap<>(0);
+
         // Sharing the exact value that fails is not a good idea, hence we try
         // to anonymize it a bit. From a security perspective, it is called
         // "Security through Obscurity" - and it is not our only mechanism, but
         // limitting the information that hackers may get, is always a good
         // idea :-)
-        CheckVerification.verifyNotEmpty("User Credentials", username);
-        CheckVerification.verifyNotEmpty("User Credentials", password);
+        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+            validation.put("User Credentials", "Missing or invalid value.");
+        }
+
+        return validation;
     }
 
     /**

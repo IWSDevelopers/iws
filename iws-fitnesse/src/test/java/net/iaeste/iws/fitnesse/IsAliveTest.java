@@ -41,7 +41,7 @@ public class IsAliveTest {
         // Verify that the result is the expected
         assertThat(cut.isRequestOk(), is(false));
         assertThat(cut.errorCode(), is(IWSErrors.VERIFICATION_ERROR.getError()));
-        assertThat(cut.errorMessage(), is("The field 'User Credentials' may not be null."));
+        assertThat(cut.errorMessage(), is("Validation failed: {User Credentials=Missing or invalid value.}"));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class IsAliveTest {
         // Verify that the result is the expected
         assertThat(cut.isRequestOk(), is(false));
         assertThat(cut.errorCode(), is(IWSErrors.VERIFICATION_ERROR.getError()));
-        assertThat(cut.errorMessage(), is("The field 'User Credentials' may not be null."));
+        assertThat(cut.errorMessage(), is("Validation failed: {User Credentials=Missing or invalid value.}"));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class IsAliveTest {
         // Verify that the result is the expected
         assertThat(cut.isRequestOk(), is(false));
         assertThat(cut.errorCode(), is(IWSErrors.VERIFICATION_ERROR.getError()));
-        assertThat(cut.errorMessage(), is("The field 'User Credentials' may not be null."));
+        assertThat(cut.errorMessage(), is("Validation failed: {User Credentials=Missing or invalid value.}"));
     }
 
     @Test

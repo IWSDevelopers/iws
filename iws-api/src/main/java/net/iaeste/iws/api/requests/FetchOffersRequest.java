@@ -19,6 +19,9 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.CheckVerification;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -68,5 +71,13 @@ public final class FetchOffersRequest implements Verifiable {
     @Override
     public void verify() throws VerificationException {
         CheckVerification.verifyNotNull("fetchType", fetchType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 }

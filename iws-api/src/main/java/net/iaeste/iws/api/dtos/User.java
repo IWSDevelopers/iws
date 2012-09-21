@@ -20,6 +20,9 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
 import net.iaeste.iws.api.responses.AbstractResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * User Object, contain the system specific information related to a user, and
  * the personal details in the Person Object. Please note, that a user is
@@ -185,6 +188,14 @@ public final class User extends AbstractResponse implements Verifiable {
                 person.verify();
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        return new HashMap<String, String>(0);
     }
 
     /**

@@ -38,6 +38,7 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -91,7 +92,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         return exchange.processOffer(token, request);
     }

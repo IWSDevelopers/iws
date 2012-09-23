@@ -82,11 +82,11 @@ public class OfferTest {
 
     @Test
     public void testCopyConstructor() {
-        final Offer offer = getMinimalOffer();
-        final Offer copy = new Offer(offer);
-        Assert.assertThat(offer, is(not(nullValue())));
-        Assert.assertThat(copy, is(not(nullValue())));
-        Assert.assertThat(offer, is(copy));
+        final Offer offerToCopy = getMinimalOffer();
+        final Offer copiedOffer = new Offer(offerToCopy);
+        Assert.assertThat(offerToCopy, is(not(nullValue())));
+        Assert.assertThat(copiedOffer, is(not(nullValue())));
+        Assert.assertThat(offerToCopy, is(copiedOffer));
     }
 
     @Test
@@ -94,8 +94,9 @@ public class OfferTest {
         Assert.assertNotNull("reference not null", offer);
         Assert.assertThat("RefNo", REF_NO, is(offer.getRefNo()));
         Assert.assertThat("EmployerName", EMPLOYER_NAME, is(offer.getEmployerName()));
-        Assert.assertThat("size of Study Levels collection should be 1", 1, is(offer.getStudyLevels().size()));
-        Assert.assertThat("first Study Level should be E", offer.getStudyLevels().contains(StudyLevel.E), is(true));
+        Assert.assertThat("size of Study Levels collection should be 2", STUDY_LEVELS.size(), is(offer.getStudyLevels().size()));
+        Assert.assertThat("Study Levels should contain E",
+                STUDY_LEVELS.contains(StudyLevel.E) && offer.getStudyLevels().contains(StudyLevel.E), is(true));
         Assert.assertThat("Language", Language.ENGLISH, is(offer.getLanguage1()));
         Assert.assertThat("LanguageLevel", LanguageLevel.E, is(offer.getLanguage1Level()));
         Assert.assertThat("WorkDescription", WORK_DESCRIPTION, is(offer.getWorkDescription()));

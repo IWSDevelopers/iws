@@ -26,6 +26,7 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
+@SuppressWarnings("ClassWithTooManyFields")
 public class OfferTestUtility {
     public static final String REF_NO = "AT-2012-1234-AB";
     public static final Date NOMINATION_DEADLINE = new Date();
@@ -71,7 +73,23 @@ public class OfferTestUtility {
     public static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.M;
     public static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.M;
     public static final Boolean CANTEEN = true;
-    public static final String SPECIALIZATIONS = String.format("%s|%s", Specialization.INFORMATION_TECHNOLOGY, "Custom");
+    public static final Boolean PREV_TRAINING_REQUIRED = true;
+    @SuppressWarnings("PublicStaticCollectionField")
+    public static final Set<String> SPECIALIZATIONS;
+
+    static {
+        final Set<String> specializations = new HashSet<>(2);
+        specializations.add(Specialization.INFORMATION_TECHNOLOGY.toString());
+        specializations.add("some custom specialization");
+        SPECIALIZATIONS = Collections.unmodifiableSet(specializations);
+    }
+
+    @SuppressWarnings("PublicStaticCollectionField")
+    public static final Set<FieldOfStudy> FIELD_OF_STUDIES = Collections.unmodifiableSet(
+            EnumSet.of(FieldOfStudy.IT, FieldOfStudy.AGRICULTURE));
+    @SuppressWarnings("PublicStaticCollectionField")
+    public static final Set<StudyLevel> STUDY_LEVELS = Collections.unmodifiableSet(
+            EnumSet.of(StudyLevel.E, StudyLevel.M));
 
     private OfferTestUtility() {
     }
@@ -84,8 +102,8 @@ public class OfferTestUtility {
         final Offer minimalOffer = new Offer();
         minimalOffer.setRefNo(REF_NO);
         minimalOffer.setEmployerName(EMPLOYER_NAME);
-        minimalOffer.setStudyLevels(EnumSet.of(StudyLevel.E));
-        minimalOffer.setFieldOfStudies(EnumSet.of(FieldOfStudy.IT));
+        minimalOffer.setStudyLevels(STUDY_LEVELS);
+        minimalOffer.setFieldOfStudies(FIELD_OF_STUDIES);
         minimalOffer.setLanguage1(Language.ENGLISH);
         minimalOffer.setLanguage1Level(LanguageLevel.E);
         minimalOffer.setWorkDescription(WORK_DESCRIPTION);
@@ -98,6 +116,7 @@ public class OfferTestUtility {
         return minimalOffer;
     }
 
+    @SuppressWarnings("OverlyLongMethod")
     public static Offer getFullOffer() {
         final Offer offer = getMinimalOffer();
         offer.setRefNo("GB-2012-1234-AB");
@@ -134,12 +153,7 @@ public class OfferTestUtility {
         offer.setLivingCost(LIVING_COST);
         offer.setLivingCostFrequency(LIVING_COST_FREQUENCY);
         offer.setCanteen(CANTEEN);
-        {
-            final Set<String> specializations = new HashSet<>(2);
-            specializations.add(Specialization.INFORMATION_TECHNOLOGY.toString());
-            specializations.add("some custom specialization");
-            offer.setSpecializations(specializations);
-        }
+        offer.setSpecializations(SPECIALIZATIONS);
         return offer;
     }
 }

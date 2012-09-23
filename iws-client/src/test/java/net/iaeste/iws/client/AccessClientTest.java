@@ -54,7 +54,7 @@ public class AccessClientTest {
 
     @Test
     public void testGeneratingSession() {
-        final String username = "Frodo";
+        final String username = "Michl";
         final String password = "frodo";
         final AuthenticationRequest request = new AuthenticationRequest(username, password);
 
@@ -80,10 +80,10 @@ public class AccessClientTest {
         assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
 
         // Request went through, now we can check the response
-        assertThat(permissions.size(), is(2));
-        assertThat(permissions.get(0).getGroupType(), is("Half Size"));
-        assertThat(permissions.get(0).getPermission(), is("Daggers"));
-        assertThat(permissions.get(1).getGroupType(), is("Fellowship"));
-        assertThat(permissions.get(1).getPermission(), is("Daggers"));
+        assertThat(permissions.size(), is(14));
+        assertThat(permissions.get(0).getGroupType(), is("Country"));
+        assertThat(permissions.get(0).getPermission(), is("PROCESS_USERS"));
+        assertThat(permissions.get(1).getGroupType(), is("Country"));
+        assertThat(permissions.get(1).getPermission(), is("FETCH_USERS"));
     }
 }

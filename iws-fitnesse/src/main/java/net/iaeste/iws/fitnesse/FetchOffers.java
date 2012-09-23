@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.ShouldFetchOffer
+ * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.FetchOffers
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -28,21 +28,57 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class ShouldFetchOffer extends AbstractFixture<FetchOffersResponse> {
+public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
     private static final String TOKEN = "12345678901234567890123456789012";
     private final Exchange exchange = new ExchangeCaller();
     private AuthenticationToken token;
     private FetchOffersRequest request;
 
+    public FetchOffers() {
+        reset();
+    }
+
+    /**
+     * specify which offers should be fetched
+     *
+     * @param fetchType String value of FetchType enum
+     */
     public void setRequestType(final String fetchType) {
         request = new FetchOffersRequest(FetchType.valueOf(fetchType));
     }
 
-
+    /**
+     * @return number of offers fetched otherwise or -1 if there is no response
+     */
     public int numberOfFetchedOffers() {
+        if (response == null) {
+            return -1;
+        }
         return response.getOffers().size();
     }
 
+    /**
+     * prints offer
+     *
+     * @param pfferIndex index of offer to display
+     * @return String representation of offer or error message if offer does not exist for given number
+     */
+    public String printOffer(final int pfferIndex) {
+        if (response == null) {
+            return "no response";
+        }
+        if (pfferIndex < 1 || pfferIndex > numberOfFetchedOffers()) {
+            return "no offer for given index";
+        }
+        return response.getOffers().get(pfferIndex - 1).toString();
+    }
+
+    /**
+     * alias function for execute
+     */
+    public void fetch() {
+        execute();
+    }
 
     @Override
     public void execute() throws StopTestException {

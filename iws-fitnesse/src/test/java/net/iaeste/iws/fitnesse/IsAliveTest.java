@@ -63,7 +63,7 @@ public class IsAliveTest {
     public void testCallMissingPassword() {
         final IsAlive cut = new IsAlive();
         cut.reset();
-        cut.setUsername("Frodo");
+        cut.setUsername("Michl");
 
         // Execute the test
         cut.execute();
@@ -94,7 +94,7 @@ public class IsAliveTest {
     public void testValidCredentials() {
         final IsAlive cut = new IsAlive();
         cut.reset();
-        cut.setUsername("Frodo");
+        cut.setUsername("Michl");
         cut.setPassword("frodo");
 
         // Execute the test

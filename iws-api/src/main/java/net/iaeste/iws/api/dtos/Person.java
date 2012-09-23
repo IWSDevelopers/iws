@@ -76,7 +76,8 @@ public final class Person extends AbstractResponse implements Verifiable {
      */
     @Override
     public Map<String, String> validate() {
-        return new HashMap<String, String>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+        return validation;
     }
 
     /**

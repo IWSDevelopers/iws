@@ -15,8 +15,6 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.utils.CheckVerification;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +25,7 @@ import java.util.Map;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public final class DeleteOfferRequest implements Verifiable {
+public final class DeleteOfferRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -71,16 +69,13 @@ public final class DeleteOfferRequest implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() throws VerificationException {
-        CheckVerification.verifyLimits("OfferId", offerId, 1, Integer.MAX_VALUE);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, String> validate() {
-        return new HashMap<String, String>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+
+        // The list if checks
+        isWithinLimits(validation, "offerId", offerId,  1, Integer.MAX_VALUE);
+
+        return validation;
     }
 
     /**

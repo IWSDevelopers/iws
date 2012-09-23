@@ -16,8 +16,6 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.utils.CheckVerification;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +25,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchOffersRequest implements Verifiable {
+public final class FetchOffersRequest extends AbstractVerification {
 
     private FetchType fetchType;
 
@@ -69,15 +67,11 @@ public final class FetchOffersRequest implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() throws VerificationException {
-        CheckVerification.verifyNotNull("fetchType", fetchType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, String> validate() {
-        return new HashMap<String, String>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "fetchType", fetchType);
+
+        return validation;
     }
 }

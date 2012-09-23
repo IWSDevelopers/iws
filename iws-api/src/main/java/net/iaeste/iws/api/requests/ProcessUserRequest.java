@@ -16,8 +16,6 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.User;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.utils.CheckVerification;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +26,7 @@ import java.util.Map;
  * @since   1.7
  * @noinspection RedundantNoArgConstructor
  */
-public final class ProcessUserRequest implements Verifiable {
+public final class ProcessUserRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -62,15 +60,11 @@ public final class ProcessUserRequest implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() throws VerificationException {
-        CheckVerification.verifyVerifiable("user", user);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, String> validate() {
-        return new HashMap<String, String>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+
+        isNotVerifiable(validation, "user", user);
+
+        return validation;
     }
 }

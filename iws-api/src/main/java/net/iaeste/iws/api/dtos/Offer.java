@@ -14,9 +14,6 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.Currency;
@@ -44,6 +41,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
 
 /**
  * Standard IAESTE Offer.
@@ -929,7 +929,8 @@ public final class Offer implements Verifiable {
      */
     @Override
     public Map<String, String> validate() {
-        return new HashMap<String, String>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+        return validation;
     }
 
     private boolean verifySizeOfSpecializations() {

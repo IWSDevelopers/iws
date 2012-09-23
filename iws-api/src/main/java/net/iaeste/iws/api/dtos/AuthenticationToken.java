@@ -15,8 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.Verifiable;
+import net.iaeste.iws.api.requests.AbstractVerification;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,7 @@ import java.util.Map;
  * @since   1.7
  * @noinspection SuppressionAnnotation
  */
-public final class AuthenticationToken implements Verifiable {
+public final class AuthenticationToken extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -133,30 +132,26 @@ public final class AuthenticationToken implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() throws VerificationException {
-        if ((token == null) || token.isEmpty()) {
-            throw new VerificationException("The Token is undefined (null or empty).");
-        }
-
-        // The token should have a length, matching one of the allowed hashing
-        // algorithms. If not, then we'll throw an exception.
-        switch (token.length()) {
-            case LENGTH_SHA2_512:
-            case LENGTH_SHA2_384:
-            case LENGTH_SHA2_256:
-            case LENGTH_MD5:
-                break;
-            default:
-                throw new VerificationException("The Token is invalid, the content is an unsupported or unallowed cryptographical hash value.");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, String> validate() {
-        return new HashMap<String, String>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+
+        if (token == null) {
+            validation.put("token", "No token is present.");
+        } else {
+            // The token should have a length, matching one of the allowed hashing
+            // algorithms. If not, then we'll throw an exception.
+            switch (token.length()) {
+                case LENGTH_SHA2_512:
+                case LENGTH_SHA2_384:
+                case LENGTH_SHA2_256:
+                case LENGTH_MD5:
+                    break;
+                default:
+                    validation.put("token", "The Token is invalid, the content is an unsupported or unallowed cryptographical hash value.");
+            }
+        }
+
+        return validation;
     }
 
     /**

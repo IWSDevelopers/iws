@@ -16,8 +16,6 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.utils.CheckVerification;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +26,7 @@ import java.util.Map;
  * @since   1.7
  * @noinspection RedundantNoArgConstructor
  */
-public final class FetchEmployerInformationRequest implements Verifiable {
+public final class FetchEmployerInformationRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -84,16 +82,12 @@ public final class FetchEmployerInformationRequest implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() throws VerificationException {
-        CheckVerification.verifyNotNull("fetchType", fetchType);
-        CheckVerification.verifyNotEmpty("name", name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, String> validate() {
-        return new HashMap<String, String>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "fetchType", fetchType);
+        isNotEmpty(validation, "name", name);
+
+        return validation;
     }
 }

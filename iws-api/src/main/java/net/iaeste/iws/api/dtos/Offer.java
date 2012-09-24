@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - Offer
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.Offer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -13,6 +13,9 @@
  * =============================================================================
  */
 package net.iaeste.iws.api.dtos;
+
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
@@ -42,9 +45,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
-
 /**
  * Standard IAESTE Offer.
  *
@@ -55,15 +55,11 @@ import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollectio
  */
 public final class Offer implements Verifiable {
 
-    /**
-     * {@link IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
     private static final String refNoFormat = "(%s)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?"; // %s - country codes
 
-    /**
-     * Empty Constructor, required for some communication frameworks.
-     */
+    /** Empty Constructor, required for some communication frameworks. */
     public Offer() {
     }
 
@@ -130,14 +126,32 @@ public final class Offer implements Verifiable {
 
     private Long id;
     /**
-     * not null
+     * Format of reference number is: {@code [country code]-[exchange year]-[identification number]-[additional code (optional)]} <br/>
+     * {@code country code} should follow the {@link <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO_3166-1 Alpha 2 specification</a>}
+     * <p/>
+     * Example valid reference numbers: {@code GB-2011-0001-01}, {@code IN-2011-0001-KU}
+     * <p/>
+     * validations:
+     * <ul>
+     * <li>required if offer is valid, {@link #verifyNotNullableFields()}</li>
+     * <li>has to match the regular expression: {@code (CC)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?} (where {@code CC} is one of the country codes)</li>
+     * </ul>
      */
     private String refNo;
+    /**
+     * validations:
+     * <ul>
+     * <li>If set, it must be before {@code fromDate} and {@code fromDate2} (@link #verifyDatesNominationDeadline}.</li>
+     * </ul>
+     */
     private Date nominationDeadline;
 
     // EmployerInformation information
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid, {@link #verifyNotNullableFields()}</li>
+     * </ul>
      */
     private String employerName;
     private String employerAddress;
@@ -148,7 +162,11 @@ public final class Offer implements Verifiable {
 
     //Student Information
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>not null if offer is valid, {@link #verifyNotNullableFields()}</li>
+     * <li>from 1 up to net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY values</li>
+     * </ul>
      */
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
     /**
@@ -158,17 +176,27 @@ public final class Offer implements Verifiable {
      */
     private Set<String> specializations = new HashSet<>();
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * <li>from 1 up to net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_STUDY_LEVELS values</li>
+     * </ul>
      */
     private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
     private Boolean prevTrainingRequired;
     private String otherRequirements;
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * </ul>
      */
     private Language language1;
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * </ul>
      */
     private LanguageLevel language1Level;
     private LanguageOperator language1Operator;
@@ -180,26 +208,47 @@ public final class Offer implements Verifiable {
 
     // Work offered
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * <li>length between
+     * net.iaeste.iws.api.constants.IWSExchangeConstants#MIN_OFFER_WORK_DESCRIPTION_SIZE
+     * up to
+     * net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_WORK_DESCRIPTION_SIZE</li>
+     * </ul>
      */
     private String workDescription;
     private TypeOfWork typeOfWork;
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * </ul>
      */
     private Integer minimumWeeks;
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * </ul>
      */
     private Integer maximumWeeks;
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * <li>{@see #verifyDates()}</li>
+     * </ul>
      */
     private Date fromDate;
-    private Date toDate;
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * <li>{@see #verifyDates()}</li>
+     * </ul>
      */
+    private Date toDate;
     private Date fromDate2;
     private Date toDate2;
     private Date unavailableFrom;
@@ -208,13 +257,14 @@ public final class Offer implements Verifiable {
     private String nearestAirport;
     private String nearestPubTransport;
     /**
-     * not null
+     * validations:
+     * <ul>
+     * <li>required if offer is valid</li>
+     * </ul>
      */
     private Float weeklyHours;
     private Float dailyHours;
-    /**
-     * need big numbers, e.g. 1 EUR = 26.435,00 VND
-     */
+    /** need big numbers, e.g. 1 EUR = 26.435,00 VND */
     private BigDecimal payment;
     private Currency currency;
     private PaymentFrequency paymentFrequency;
@@ -321,7 +371,6 @@ public final class Offer implements Verifiable {
     }
 
     public void setFromDate2(final Date fromDate) {
-        this.fromDate2 = Copier.copy(fromDate);
         this.fromDate2 = Copier.copy(fromDate);
     }
 
@@ -782,9 +831,7 @@ public final class Offer implements Verifiable {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
@@ -839,9 +886,7 @@ public final class Offer implements Verifiable {
         return hash;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "Offer{" +
@@ -896,6 +941,18 @@ public final class Offer implements Verifiable {
     }
 
     /**
+     * validations performed:
+     * <ul>
+     * <li>required fields, {@see #verifyNotNullableFields()}</li>
+     * <li>refNo format, {@see #verifyRefNo()}</li>
+     * <li>order and presence of dates, {@see #verifyDates()}</li>
+     * <li>internship period, {@see #verifyNumberOfWeeks()}</li>
+     * <li>number of selected Fields of Studies, {@see #verifySizeOfFieldsOfStudy()}</li>
+     * <li>number of selected Specializations, {@see #verifySizeOfSpecializations()}</li>
+     * <li>length of work description, {@see #verifyLengthOfWorkDescription()}</li>
+     * <li>dependencies: fields required only if other fields are provided, {@see #verifyFieldDependencies}</li>
+     * </ul>
+     *
      * @throws {@code VerificationException} if object is not valid
      */
     @Override
@@ -918,15 +975,18 @@ public final class Offer implements Verifiable {
         if (!verifySizeOfSpecializations()) {
             errors.add(String.format("cannot have more than %s Specializations", IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS));
         }
+        if (!verifyLengthOfWorkDescription()) {
+            errors.add(String.format("work description length has to be between %s and %s",
+                    IWSExchangeConstants.MIN_OFFER_WORK_DESCRIPTION_SIZE,
+                    IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE));
+        }
         errors.addAll(verifyFieldDependencies());
         if (!errors.isEmpty()) {
             throw new VerificationException(errors.toString());
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
@@ -938,11 +998,22 @@ public final class Offer implements Verifiable {
     }
 
     private boolean verifySizeOfFieldsOfStudy() {
-        return fieldOfStudies == null || fieldOfStudies.size() <= IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY;
+        return fieldOfStudies != null && !fieldOfStudies.isEmpty() && fieldOfStudies.size() <= IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY;
+    }
+
+    private boolean verifyLengthOfWorkDescription() {
+        return workDescription != null &&
+                (IWSExchangeConstants.MIN_OFFER_WORK_DESCRIPTION_SIZE <= workDescription.length()) &&
+                (workDescription.length() <= IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE);
     }
 
     /**
      * Checks if field dependencies are fulfilled.
+     * If
+     * {@code livingCost}, {@code payment} or {@code lodgingCost}
+     * is present then the corresponding frequency period
+     * ({@code livingCostFrequency}, {@code paymentFrequency}, {@code lodgingCostFrequency})
+     * should be present.
      *
      * @return collection of errors. If dependencies are valid, method returns empty collection.
      */
@@ -1001,10 +1072,8 @@ public final class Offer implements Verifiable {
     }
 
     /**
-     * verifies reference number format
-     * [ISO_3166-2 country code]-[exchange year]-[identification number]-[additional code (optional)]
-     *
      * @return true if {@code refNo} is valid
+     * @see #refNo
      */
     boolean verifyRefNo() {
         if (refNo == null) {
@@ -1121,11 +1190,14 @@ public final class Offer implements Verifiable {
     }
 
     /**
+     * Unavailable period must be inside one of internship date ranges
+     * or between two ranges.
+     *
      * @return true if unavailable dates order is valid.
      */
     private boolean verifyUnavailableDatesOrder() {
         if (unavailableFrom != null) {
-            // holidays "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
+            // unavailable "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
             //      or between "to" and "from2" or "to2" and "from" (see #84 for requirements)
             if (unavailableFrom.before(fromDate) && unavailableTo.after(fromDate)) {
                 return false;

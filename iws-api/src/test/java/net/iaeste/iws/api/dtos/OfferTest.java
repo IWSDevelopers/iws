@@ -47,9 +47,7 @@ import java.util.Set;
  */
 public class OfferTest {
     private Offer offer = getMinimalOffer();
-    /**
-     * field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method
-     */
+    /** field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method */
     private static final Date[] dates = new Date[10];
     private static final String[] validRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "AT-2012-1234-AB", "GB-2011-0001" };
 
@@ -58,6 +56,7 @@ public class OfferTest {
             "XX-2011-0000-01" };
     static final String ERRMSG_NOT_NULL = " field cannot be null";
     static final String ERRMSG_PRESENCE = "if 'from(2)' is present then 'to(2)' should be present";
+    private static final String ERRMSG_LENGTH = " incorrect length";
 
     private static String[] getValidRefNos() {
         return Copier.copy(validRefNos);
@@ -550,8 +549,19 @@ public class OfferTest {
         offer = getMinimalOffer();
         offer.setWorkDescription(null);
         Assert.assertThat(String.format("workDescription%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
-
     }
+
+    @Test
+    public void testLengthOfWorkDescription() {
+        offer = getMinimalOffer();
+        final StringBuilder sb = new StringBuilder(IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE + 1);
+        for (int i = 0; i < IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE + 1; i++) {
+            sb.append('1');
+        }
+        offer.setWorkDescription(sb.toString());
+        Assert.assertThat(String.format("workDescription%s", ERRMSG_LENGTH), isVerificationExceptionThrown(), is(true));
+    }
+
 
     @Test
     public void testNotNullableMaximumWeeks() {

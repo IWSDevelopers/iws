@@ -586,7 +586,7 @@ public class OfferEntityTest {
         assertThat(persistedOffer.getLodgingCostFrequency(), is(nullValue()));
         assertThat(persistedOffer.getLodgingCost(), is(nullValue()));
     }
-    
+
     @Test
     @Transactional
     public void testNullLivingCostFrequency() {
@@ -641,6 +641,28 @@ public class OfferEntityTest {
         }
         assertThat(offersFoundByLikeEmployerName.size(), is(2));
         assertThat(dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
+    }
+
+    @Test
+    @Transactional
+    public void testDeleteOffer() {
+        final Long id = offer.getId();
+        final String refNo = offer.getRefNo();
+        assert id == null;
+        dao.persist(offer);
+        // make sure that offer was persisted
+        final Long newId = offer.getId();
+        assertThat(newId, is(notNullValue()));
+        final OfferEntity found = dao.findOffer(newId);
+        assertThat(found.getId(), is(newId));
+        assertThat(found.getRefNo(), is(refNo));
+
+        // try to delete offer
+        dao.delete(found.getId());
+
+        // make sure that offer was deleted
+        final OfferEntity notFound = dao.findOffer(newId);
+        assertThat(notFound, is(nullValue()));
     }
 
     @After

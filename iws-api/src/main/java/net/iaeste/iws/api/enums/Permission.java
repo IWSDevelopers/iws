@@ -22,8 +22,6 @@ package net.iaeste.iws.api.enums;
 public enum Permission {
 
     // Access Control
-    AUTHENTICATE,
-    AUTHORIZE,
     PROCESS_USERS,
     FETCH_USERS,
     PROCESS_GROUPS,

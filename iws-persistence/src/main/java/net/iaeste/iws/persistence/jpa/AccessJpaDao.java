@@ -72,7 +72,16 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("key", token.getToken());
         final List<UserEntity> found = query.getResultList();
 
-        return found.size() == 1 ? found.get(0) : null;
+        // Error handling, unless we find a single active session, then this is
+        // an error
+        if (found.isEmpty()) {
+            throw new AuthenticationException("No AuthenticationToken found.");
+        }
+        if (found.size() > 1) {
+            throw new AuthenticationException("Multiple AuthenticationToken found, please consult the DBA's.");
+        }
+
+        return found.get(0);
     }
 
     /**

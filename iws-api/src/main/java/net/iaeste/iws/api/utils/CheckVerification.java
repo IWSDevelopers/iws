@@ -26,11 +26,13 @@ import java.util.regex.Pattern;
 /**
  * Contains the functionality to properly verify given values.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection VariableNotUsedInsideIf
- * @since 1.7
+ * @deprecated Please use the functionality from the AbstractVerification class
  */
+@Deprecated
 public final class CheckVerification {
 
     /** The e-mail compliance regular expression. */
@@ -48,6 +50,7 @@ public final class CheckVerification {
      * @param value The value to verify
      * @throws VerificationException if the value is null
      */
+    @Deprecated
     public static void verifyNotNull(final String field, final Object value) throws VerificationException {
         if (value == null) {
             throw new VerificationException(format("The field '%s' may not be null.", field));
@@ -63,6 +66,7 @@ public final class CheckVerification {
      * @param value The value to verify
      * @throws VerificationException if the value is null
      */
+    @Deprecated
     public static void verifyVerifiable(final String field, final Verifiable value) throws VerificationException {
         verifyNotNull(field, value);
 
@@ -78,6 +82,7 @@ public final class CheckVerification {
      * @param value The value to verify
      * @throws VerificationException if the value is null or empty
      */
+    @Deprecated
     public static void verifyNotEmpty(final String field, final String value) throws VerificationException {
         verifyNotNull(field, value);
 
@@ -97,7 +102,9 @@ public final class CheckVerification {
      * @param minimum The Minimal allowed value
      * @param maximum The Maximal allowed value
      * @throws VerificationException if the value is null or outside given range
+     * @deprecated please use {@link net.iaeste.iws.api.requests.AbstractVerification}
      */
+    @Deprecated
     public static <T extends Number> void verifyLimits(final String field, final T value, final T minimum, final T maximum) throws VerificationException {
         verifyNotNull(field, value);
 
@@ -115,7 +122,9 @@ public final class CheckVerification {
      * @param value     The value to verify
      * @param maxLength The maximum allowed length for the value
      * @throws VerificationException if the value is null or too long
+     * @deprecated please use {@link net.iaeste.iws.api.requests.AbstractVerification}
      */
+    @Deprecated
     public static void verifyLength(final String field, final String value, final int maxLength) {
         verifyNotNull(field, value);
 
@@ -128,8 +137,7 @@ public final class CheckVerification {
      * The method takes a value, and verifies that this value is neither null,
      * nor that the value is outside of the provided range of allowed values.
      * If the given value is either null, or outside of the allowed range, then
-     * a {@code VerificationException} is thrown.
-     * <p/>
+     * a {@code VerificationException} is thrown.<br />
      * Verifies if a given e-mail address is valid or not. If the given value,
      * is not compliant with the e-mail format, then a
      * {@code VerificationException} is thrown.
@@ -137,7 +145,9 @@ public final class CheckVerification {
      * @param field The name of the field (value) to be verified
      * @param value The value to verify
      * @throws VerificationException if the e-mail addresss isn't compliant
+     * @deprecated please use {@link net.iaeste.iws.api.requests.AbstractVerification}
      */
+    @Deprecated
     public static void verifyEmail(final String field, final String value) throws VerificationException {
         verifyNotNull(field, value);
 
@@ -153,7 +163,9 @@ public final class CheckVerification {
      * @param errors Map with Error information
      * @param field  The name of the field (value) to be verified
      * @param value  The value to verify
+     * @deprecated please use {@link net.iaeste.iws.api.requests.AbstractVerification}
      */
+    @Deprecated
     public static void addNullErrorToMap(final Map<String, String> errors, final String field, final Object value) {
         if (value == null) {
             errors.put(field, "May not be null.");
@@ -168,7 +180,9 @@ public final class CheckVerification {
      * @param errors Map with Error information
      * @param field  The name of the field (value) to be verified
      * @param value  The value to verify
+     * @deprecated please use {@link net.iaeste.iws.api.requests.AbstractVerification}
      */
+    @Deprecated
     public static void addEmptyErrorToMap(final Map<String, String> errors, final String field, final String value) {
         if ((value == null) || value.isEmpty()) {
             errors.put(field, "May not be null or empty.");
@@ -183,7 +197,9 @@ public final class CheckVerification {
      * @param errors Map with Error information
      * @param field  The name of the field (value) to be verified
      * @param value  The value to verify
+     * @deprecated please use {@link net.iaeste.iws.api.requests.AbstractVerification}
      */
+    @Deprecated
     public static void addEmptyErrorToMap(final Map<String, String> errors, final String field, final Set<?> value) {
         if ((value == null) || value.isEmpty()) {
             errors.put(field, "May not be null or empty.");

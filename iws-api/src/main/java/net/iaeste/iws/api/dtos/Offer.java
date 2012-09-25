@@ -47,7 +47,8 @@ import java.util.regex.Pattern;
  *
  * @author Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @noinspection CastToConcreteClass, OverlyLongMethod, OverlyComplexMethod
+ * , RedundantIfStatement, ClassWithTooManyFields @since 1.7
  */
 public final class Offer extends AbstractVerification {
 
@@ -121,6 +122,7 @@ public final class Offer extends AbstractVerification {
     }
 
     private Long id;
+
     /**
      * Format of reference number is: {@code [country code]-[exchange year]-[identification number]-[additional code (optional)]} <br/>
      * {@code country code} should follow the {@link <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO_3166-1 Alpha 2 specification</a>}
@@ -129,11 +131,12 @@ public final class Offer extends AbstractVerification {
      * <p/>
      * validations:
      * <ul>
-     * <li>required if offer is valid, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #verifyNotNullableFields()}</li>
      * <li>has to match the regular expression: {@code (CC)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?} (where {@code CC} is one of the country codes)</li>
      * </ul>
      */
     private String refNo;
+
     /**
      * validations:
      * <ul>
@@ -145,9 +148,7 @@ public final class Offer extends AbstractVerification {
     // EmployerInformation information
     /**
      * validations:
-     * <ul>
-     * <li>required if offer is valid, {@link #verifyNotNullableFields()}</li>
-     * </ul>
+     * <ul><li>required, {@link #verifyNotNullableFields()}</li></ul>
      */
     private String employerName;
     private String employerAddress;
@@ -160,41 +161,55 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>not null if offer is valid, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #verifyNotNullableFields()}</li>
      * <li>from 1 up to net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY values</li>
      * </ul>
      */
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
+
     /**
-     * Has to be defined as a List of Strings because
+     * Most of specializations will be String values of {@code Specialization} enumeration
+     * but has to be defined as a Set of Strings because
      * the user should be able to add custom
      * specializations in addition to the predefined ones.
      */
     private Set<String> specializations = new HashSet<>();
+
     /**
      * validations:
      * <ul>
-     * <li>required if offer is valid</li>
+     * <li>required, {@link #verifyNotNullableFields()}</li>
      * <li>from 1 up to net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_STUDY_LEVELS values</li>
      * </ul>
      */
     private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
     private Boolean prevTrainingRequired;
     private String otherRequirements;
+
     /**
      * validations:
-     * <ul>
-     * <li>required if offer is valid</li>
-     * </ul>
+     * <ul><li>required, {@link #verifyNotNullableFields()}</li></ul>
      */
     private Language language1;
+
     /**
      * validations:
-     * <ul>
-     * <li>required if offer is valid</li>
-     * </ul>
+     * <ul><li>required, {@link #verifyNotNullableFields()}</li></ul>
      */
     private LanguageLevel language1Level;
+
+    /**
+     * #language1Operator and #language2Operator define
+     * if all languages are required
+     * or if some of them are optional.
+     * <p/>
+     * To evaluate if student fulfill the requirements
+     * we have to check the logical expression:
+     * {@code #language1 #language1Operator (#language2 #language2Operator #language3)}.
+     * <p/>
+     * Priority of the operators doesn't matter because
+     * {@code #language2 op #language3} are placed inside braces.
+     */
     private LanguageOperator language1Operator;
     private Language language2;
     private LanguageLevel language2Level;
@@ -206,7 +221,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required if offer is valid</li>
+     * <li>required, {@link #verifyNotNullableFields()}</li>
      * <li>length between
      * net.iaeste.iws.api.constants.IWSExchangeConstants#MIN_OFFER_WORK_DESCRIPTION_SIZE
      * up to
@@ -215,24 +230,29 @@ public final class Offer extends AbstractVerification {
      */
     private String workDescription;
     private TypeOfWork typeOfWork;
+
     /**
      * validations:
      * <ul>
-     * <li>required if offer is valid</li>
+     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>has to be less or equal than #maximumWeeks</li>
      * </ul>
      */
     private Integer minimumWeeks;
+
     /**
      * validations:
      * <ul>
-     * <li>required if offer is valid</li>
+     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>has to be greater or equal than #minimumWeeks</li>
      * </ul>
      */
     private Integer maximumWeeks;
+
     /**
      * validations:
      * <ul>
-     * <li>required if offer is valid</li>
+     * <li>required, {@link #verifyNotNullableFields()}</li>
      * <li>{@see #verifyDates()}</li>
      * </ul>
      */
@@ -240,27 +260,35 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required if offer is valid</li>
+     * <li>required, {@link #verifyNotNullableFields()}</li>
      * <li>{@see #verifyDates()}</li>
      * </ul>
      */
     private Date toDate;
     private Date fromDate2;
     private Date toDate2;
+
+    /**
+     * validations:
+     * <ul><li>{@see #verifyUnavailableDatesOrder()}</li></ul>
+     */
     private Date unavailableFrom;
+    /**
+     * validations:
+     * <ul><li>{@see #verifyUnavailableDatesOrder()}</li></ul>
+     */
     private Date unavailableTo;
     private String workingPlace;
     private String nearestAirport;
     private String nearestPubTransport;
+
     /**
      * validations:
-     * <ul>
-     * <li>required if offer is valid</li>
-     * </ul>
+     * <ul><li>required, {@link #verifyNotNullableFields()}</li></ul>
      */
     private Float weeklyHours;
     private Float dailyHours;
-    /** need big numbers, e.g. 1 EUR = 26.435,00 VND */
+    /* need big numbers, e.g. 1 EUR = 26.435,00 VND */
     private BigDecimal payment;
     private Currency currency;
     private PaymentFrequency paymentFrequency;
@@ -751,13 +779,13 @@ public final class Offer extends AbstractVerification {
         if (language3Level != offer.language3Level) {
             return false;
         }
-        if (livingCost != null ? !livingCost.equals(offer.livingCost) : offer.livingCost != null) {
+        if (livingCost != null ? !(livingCost.compareTo(offer.livingCost) == 0) : offer.livingCost != null) {
             return false;
         }
         if (lodgingBy != null ? !lodgingBy.equals(offer.lodgingBy) : offer.lodgingBy != null) {
             return false;
         }
-        if (lodgingCost != null ? !lodgingCost.equals(offer.lodgingCost) : offer.lodgingCost != null) {
+        if (lodgingCost != null ? !(lodgingCost.compareTo(offer.lodgingCost) == 0) : offer.lodgingCost != null) {
             return false;
         }
         if (lodgingCostFrequency != offer.lodgingCostFrequency) {
@@ -781,7 +809,7 @@ public final class Offer extends AbstractVerification {
         if (otherRequirements != null ? !otherRequirements.equals(offer.otherRequirements) : offer.otherRequirements != null) {
             return false;
         }
-        if (payment != null ? !payment.equals(offer.payment) : offer.payment != null) {
+        if (payment != null ? !(payment.compareTo(offer.payment) == 0) : offer.payment != null) {
             return false;
         }
         if (paymentFrequency != offer.paymentFrequency) {
@@ -828,6 +856,7 @@ public final class Offer extends AbstractVerification {
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("OverlyLongMethod")
     @Override
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
@@ -948,8 +977,6 @@ public final class Offer extends AbstractVerification {
      * <li>length of work description, {@see #verifyLengthOfWorkDescription()}</li>
      * <li>dependencies: fields required only if other fields are provided, {@see #verifyFieldDependencies}</li>
      * </ul>
-     *
-     * @throws {@code VerificationException} if object is not valid
      */
     @Override
     public Map<String, String> validate() {
@@ -1024,24 +1051,39 @@ public final class Offer extends AbstractVerification {
 
     /**
      * Checks for nulls, empty string and collections in required fields.
+     * Required fields are:
+     * <ul>
+     * <li>refNo</li>
+     * <li>employerName</li>
+     * <li>weeklyhours</li>
+     * <li>fieldOfStudies</li>
+     * <li>studyLevels</li>
+     * <li>language1</li>
+     * <li>language1Level</li>
+     * <li>workDescription</li>
+     * <li>minimumWeeks</li>
+     * <li>maximumWeeks</li>
+     * <li>fromDate</li>
+     * <li>toDate</li>
+     * </ul>
      *
-     * @return collection of errors. If all required fields are provided, method returns empty collection.
+     * @return map of errors. If all required fields are provided, method returns empty map.
      */
     private Map<String, String> verifyNotNullableFields() {
         final Map<String, String> errors = new HashMap<>(0);
 
         addNullErrorToMap(errors, "refno", refNo);
-        addNullErrorToMap(errors, "weeklyhours", weeklyHours);
         addEmptyErrorToMap(errors, "employerName", employerName);
-        addNullErrorToMap(errors, "fromDate", fromDate);
-        addNullErrorToMap(errors, "toDate", toDate);
-        addNullErrorToMap(errors, "language1", language1);
-        addNullErrorToMap(errors, "language1Level", language1Level);
-        addNullErrorToMap(errors, "maximumWeeks", maximumWeeks);
-        addNullErrorToMap(errors, "minimumWeeks", minimumWeeks);
-        addEmptyErrorToMap(errors, "workDescription", workDescription);
+        addNullErrorToMap(errors, "weeklyhours", weeklyHours);
         addEmptyErrorToMap(errors, "fieldOfStudies", fieldOfStudies);
         addEmptyErrorToMap(errors, "studyLevels", studyLevels);
+        addNullErrorToMap(errors, "language1", language1);
+        addNullErrorToMap(errors, "language1Level", language1Level);
+        addEmptyErrorToMap(errors, "workDescription", workDescription);
+        addNullErrorToMap(errors, "minimumWeeks", minimumWeeks);
+        addNullErrorToMap(errors, "maximumWeeks", maximumWeeks);
+        addNullErrorToMap(errors, "fromDate", fromDate);
+        addNullErrorToMap(errors, "toDate", toDate);
 
         return errors;
     }
@@ -1121,8 +1163,10 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
-     * Verifies order of related dates ({@code fromDate} < {@code toDate}, {@code fromDate2} < {@code toDate2},
-     * {@code unavailableFrom} < {@code unavalilableTo}).
+     * Verifies order of related dates
+     * ({@code fromDate} < {@code toDate},
+     * {@code fromDate2} < {@code toDate2},
+     * {@code #unavailableFrom} < {@code #unavalilableTo}).
      *
      * @return true if order of related dates is valid.
      */

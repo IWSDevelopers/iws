@@ -26,22 +26,21 @@ import java.io.Serializable;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
+ * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
 public class Authorization implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String permission;
-    private String groupType;
+    private String permission = null;
+    private String groupType = null;
 
     /**
-     * Empty Constructor, required for some communication frameworks.
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
      */
     public Authorization() {
-        permission = null;
-        groupType = null;
     }
 
     /**
@@ -56,16 +55,34 @@ public class Authorization implements Serializable {
     }
 
     /**
+     * Copy Constructor.
+     *
+     * @param authorization Authorization Object to copy
+     */
+    public Authorization(final Authorization authorization) {
+        if (authorization != null) {
+            permission = authorization.permission;
+            groupType = authorization.groupType;
+        }
+    }
+
+    /**
      * String Constructor, for our initial testing, we just need something that
      * works.
      *
      * @param permission  Authorization
      * @param groupType   Group Type
+     * @deprecated this was only added temporarily for testing
      */
+    @Deprecated
     public Authorization(final String permission, final String groupType) {
         this.permission = permission;
         this.groupType = groupType;
     }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
 
     public void setPermission(final Permission permission) {
         this.permission = permission.name();
@@ -95,11 +112,11 @@ public class Authorization implements Serializable {
         if (this == obj) {
             return true;
         }
+
         if (!(obj instanceof Authorization)) {
             return false;
         }
 
-        //noinspection CastToConcreteClass
         final Authorization that = (Authorization) obj;
 
         if (groupType != null ? !groupType.equals(that.groupType) : that.groupType != null) {

@@ -25,6 +25,7 @@ import java.io.Serializable;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection CastToConcreteClass
  */
 public final class Field implements Serializable {
 
@@ -32,9 +33,16 @@ public final class Field implements Serializable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     // The field information; Name of the field with the old and new values
-    private final String field;
-    private final String oldValue;
-    private final String newValue;
+    private String field = null;
+    private String oldValue = null;
+    private String newValue = null;
+
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
+    public Field() {
+    }
 
     /**
      * Marking Constructor for Fields, where the actual change (old & new)
@@ -62,16 +70,89 @@ public final class Field implements Serializable {
         this.newValue = newValue;
     }
 
+    /**
+     * Copy Constructor.
+     *
+     * @param field Field Object to copy
+     */
+    public Field(final Field field) {
+        if (field != null) {
+            this.field = field.field;
+            oldValue = field.oldValue;
+            newValue = field.newValue;
+        }
+    }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    public void setField(final String field) {
+        this.field = field;
+    }
+
     public String getField() {
         return field;
+    }
+
+    public void setOldValue(final String oldValue) {
+        this.oldValue = oldValue;
     }
 
     public String getOldValue() {
         return oldValue;
     }
 
+    public void setNewValue(final String newValue) {
+        this.newValue = newValue;
+    }
+
     public String getNewValue() {
         return newValue;
+    }
+
+    // =========================================================================
+    // DTO required methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Field)) {
+            return false;
+        }
+
+        final Field other = (Field) obj;
+
+        if (field != null ? !field.equals(other.field) : other.field != null) {
+            return false;
+        }
+
+        if (newValue != null ? !newValue.equals(other.newValue) : other.newValue != null) {
+            return false;
+        }
+
+        return !(oldValue != null ? !oldValue.equals(other.oldValue) : other.oldValue != null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (field != null ? field.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (oldValue != null ? oldValue.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (newValue != null ? newValue.hashCode() : 0);
+
+        return result;
     }
 
     /**

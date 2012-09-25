@@ -25,10 +25,10 @@ import java.util.Map;
  * information for a person. Although the Person is a core part of the User
  * Object, it is meant for all-round purposes.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection CastToConcreteClass
- * @since 1.7
  */
 public final class Person extends AbstractVerification {
 
@@ -37,7 +37,10 @@ public final class Person extends AbstractVerification {
 
     private String alternateEmail = null;
 
-    /** Emprty Constructor. */
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
     public Person() {
     }
 
@@ -52,6 +55,10 @@ public final class Person extends AbstractVerification {
         }
     }
 
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
     public void setAlternateEmail(final String alternateEmail) {
         this.alternateEmail = alternateEmail;
     }
@@ -60,14 +67,22 @@ public final class Person extends AbstractVerification {
         return alternateEmail;
     }
 
-    /** {@inheritDoc} */
+    // =========================================================================
+    // DTO required methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
         return validation;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -82,6 +97,9 @@ public final class Person extends AbstractVerification {
         return !(alternateEmail != null ? !alternateEmail.equals(person.alternateEmail) : person.alternateEmail != null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -89,6 +107,9 @@ public final class Person extends AbstractVerification {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "Person{" +

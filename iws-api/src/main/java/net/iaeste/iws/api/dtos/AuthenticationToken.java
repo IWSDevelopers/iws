@@ -29,7 +29,7 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
+ * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
 public final class AuthenticationToken extends AbstractVerification {
 
@@ -84,6 +84,10 @@ public final class AuthenticationToken extends AbstractVerification {
     public AuthenticationToken(final AuthenticationToken authenticationToken) {
         token = authenticationToken != null ? authenticationToken.token : null;
     }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
 
     /**
      * Sets the users Cryptographical Authentication Token.
@@ -167,7 +171,6 @@ public final class AuthenticationToken extends AbstractVerification {
             return false;
         }
 
-        //noinspection CastToConcreteClass
         final AuthenticationToken that = (AuthenticationToken) obj;
 
         return token != null ? token.equals(that.token) : that.token == null;

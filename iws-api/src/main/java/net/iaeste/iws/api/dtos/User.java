@@ -37,12 +37,10 @@ import java.util.Map;
  * by a different person, who may not have had anything to do with the original
  * user.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection CastToConcreteClass
- * <p/>
- * TODO: @Kim extend AbstractVerification
- * @since 1.7
  */
 public final class User extends AbstractResponse implements Verifiable {
 
@@ -56,6 +54,13 @@ public final class User extends AbstractResponse implements Verifiable {
     private String firstname = null;
     private String lastname = null;
     private Person person = null;
+
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
+    public User() {
+    }
 
     /**
      * Constructor to be used to create a new User account. The username must
@@ -165,7 +170,9 @@ public final class User extends AbstractResponse implements Verifiable {
     // DTO required methods
     // =========================================================================
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void verify() throws VerificationException {
         // Object is used for either of these requests:
@@ -190,14 +197,18 @@ public final class User extends AbstractResponse implements Verifiable {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
         return validation;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -211,7 +222,9 @@ public final class User extends AbstractResponse implements Verifiable {
         return result;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -231,7 +244,9 @@ public final class User extends AbstractResponse implements Verifiable {
         return !(username != null ? !username.equals(user.username) : user.username != null);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "User{" +

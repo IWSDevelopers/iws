@@ -14,10 +14,51 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.requests.AbstractVerification;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public class Group {
+public class Group extends AbstractVerification {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
+    public Group() {
+    }
+
+    /**
+     * Copy Constructor.
+     *
+     * @param group Group Object to copy
+     */
+    public Group(final Group group) {
+    }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    // =========================================================================
+    // DTO required methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        final Map<String, String> validation = new HashMap<>(0);
+        return validation;
+    }
 }

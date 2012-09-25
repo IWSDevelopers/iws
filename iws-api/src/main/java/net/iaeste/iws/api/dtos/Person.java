@@ -15,9 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.Verifiable;
-import net.iaeste.iws.api.responses.AbstractResponse;
+import net.iaeste.iws.api.requests.AbstractVerification;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,28 +25,26 @@ import java.util.Map;
  * information for a person. Although the Person is a core part of the User
  * Object, it is meant for all-round purposes.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection CastToConcreteClass
+ * @since 1.7
  */
-public final class Person extends AbstractResponse implements Verifiable {
+public final class Person extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String alternateEmail = null;
 
-    /**
-     * Emprty Constructor.
-     */
+    /** Emprty Constructor. */
     public Person() {
     }
 
     /**
      * Copy Constructor.
      *
-     * @param person  Person Object to copy
+     * @param person Person Object to copy
      */
     public Person(final Person person) {
         if (person != null) {
@@ -64,25 +60,14 @@ public final class Person extends AbstractResponse implements Verifiable {
         return alternateEmail;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void verify() throws VerificationException {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
         return validation;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {

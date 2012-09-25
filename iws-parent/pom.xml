@@ -55,6 +55,9 @@
                         </reports>
                     </reportSet>
                 </reportSets>
+                <configuration>
+                    <show>private</show>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

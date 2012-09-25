@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToMap;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToMap;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
@@ -27,13 +27,10 @@ import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.Verifiable;
+import net.iaeste.iws.api.requests.AbstractVerification;
 import net.iaeste.iws.api.utils.Copier;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
@@ -50,10 +47,9 @@ import java.util.regex.Pattern;
  *
  * @author Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection CastToConcreteClass, OverlyLongMethod, OverlyComplexMethod
  * @since 1.7
  */
-public final class Offer implements Verifiable {
+public final class Offer extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -956,40 +952,31 @@ public final class Offer implements Verifiable {
      * @throws {@code VerificationException} if object is not valid
      */
     @Override
-    public void verify() throws VerificationException {
-        final Collection<String> errors = new ArrayList<>(0);
+    public Map<String, String> validate() {
+        final Map<String, String> validation = new HashMap<>(0);
 
-        errors.addAll(verifyNotNullableFields());
+        validation.putAll(verifyNotNullableFields());
         if (!verifyRefNo()) {
-            errors.add("refNo: reference number has incorrect format");
+            validation.put("refNo", "reference number has incorrect format");
         }
         if (!verifyDates()) {
-            errors.add("dates are not set correctly");
+            validation.put("dates", "dates are not set correctly");
         }
         if (!verifyNumberOfWeeks()) {
-            errors.add("weeks are not set correctly");
+            validation.put("weeks", "weeks are not set correctly");
         }
         if (!verifySizeOfFieldsOfStudy()) {
-            errors.add(String.format("cannot have more than %s Fields of Study", IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY));
+            validation.put("fieldOfStudies", String.format("cannot have more than %s Fields of Study", IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY));
         }
         if (!verifySizeOfSpecializations()) {
-            errors.add(String.format("cannot have more than %s Specializations", IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS));
+            validation.put("specializations", String.format("cannot have more than %s Specializations", IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS));
         }
         if (!verifyLengthOfWorkDescription()) {
-            errors.add(String.format("work description length has to be between %s and %s",
+            validation.put("workDescription", String.format("work description length has to be between %s and %s",
                     IWSExchangeConstants.MIN_OFFER_WORK_DESCRIPTION_SIZE,
                     IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE));
         }
-        errors.addAll(verifyFieldDependencies());
-        if (!errors.isEmpty()) {
-            throw new VerificationException(errors.toString());
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+        validation.putAll(verifyFieldDependencies());
         return validation;
     }
 
@@ -1015,21 +1002,21 @@ public final class Offer implements Verifiable {
      * ({@code livingCostFrequency}, {@code paymentFrequency}, {@code lodgingCostFrequency})
      * should be present.
      *
-     * @return collection of errors. If dependencies are valid, method returns empty collection.
+     * @return map of errors. If dependencies are valid, method returns empty collection.
      */
-    private Collection<String> verifyFieldDependencies() {
-        final Collection<String> errors = new ArrayList<>(0);
+    private Map<String, String> verifyFieldDependencies() {
+        final Map<String, String> errors = new HashMap<>();
 
         if (livingCost != null && livingCostFrequency == null) {
-            errors.add("'livingCostFrequency' is required if 'livingCost' is not null");
+            errors.put("livingCostFrequency", "'livingCostFrequency' is required if 'livingCost' is not null");
         }
 
         if (payment != null && paymentFrequency == null) {
-            errors.add("'paymentFrequency' is required if 'payment' is not null");
+            errors.put("paymentFrequency", "'paymentFrequency' is required if 'payment' is not null");
         }
 
         if (lodgingCost != null && lodgingCostFrequency == null) {
-            errors.add("'lodgingCostFrequency' is required if 'lodgingCost' is not null");
+            errors.put("lodgingCostFrequency", "'lodgingCostFrequency' is required if 'lodgingCost' is not null");
         }
 
         return errors;
@@ -1040,21 +1027,21 @@ public final class Offer implements Verifiable {
      *
      * @return collection of errors. If all required fields are provided, method returns empty collection.
      */
-    private Collection<String> verifyNotNullableFields() {
-        final Collection<String> errors = new ArrayList<>(0);
+    private Map<String, String> verifyNotNullableFields() {
+        final Map<String, String> errors = new HashMap<>(0);
 
-        addNullErrorToCollection(errors, "refno", refNo);
-        addNullErrorToCollection(errors, "weeklyhours", weeklyHours);
-        addEmptyErrorToCollection(errors, "employerName", employerName);
-        addNullErrorToCollection(errors, "fromDate", fromDate);
-        addNullErrorToCollection(errors, "toDate", toDate);
-        addNullErrorToCollection(errors, "language1", language1);
-        addNullErrorToCollection(errors, "language1Level", language1Level);
-        addNullErrorToCollection(errors, "maximumWeeks", maximumWeeks);
-        addNullErrorToCollection(errors, "minimumWeeks", minimumWeeks);
-        addEmptyErrorToCollection(errors, "workDescription", workDescription);
-        addEmptyErrorToCollection(errors, "fieldOfStudies", fieldOfStudies);
-        addEmptyErrorToCollection(errors, "studyLevels", studyLevels);
+        addNullErrorToMap(errors, "refno", refNo);
+        addNullErrorToMap(errors, "weeklyhours", weeklyHours);
+        addEmptyErrorToMap(errors, "employerName", employerName);
+        addNullErrorToMap(errors, "fromDate", fromDate);
+        addNullErrorToMap(errors, "toDate", toDate);
+        addNullErrorToMap(errors, "language1", language1);
+        addNullErrorToMap(errors, "language1Level", language1Level);
+        addNullErrorToMap(errors, "maximumWeeks", maximumWeeks);
+        addNullErrorToMap(errors, "minimumWeeks", minimumWeeks);
+        addEmptyErrorToMap(errors, "workDescription", workDescription);
+        addEmptyErrorToMap(errors, "fieldOfStudies", fieldOfStudies);
+        addEmptyErrorToMap(errors, "studyLevels", studyLevels);
 
         return errors;
     }

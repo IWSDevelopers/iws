@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -29,17 +34,11 @@ import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -101,24 +100,24 @@ public class ExchangeClientTest {
 
     //@Test
     public void testDeleteOffer() {
-        Offer offer = OfferTestUtility.getMinimalOffer();
+        final Offer offer = OfferTestUtility.getMinimalOffer();
 
-        ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         client.processOffer(token, offerRequest);
 
-        FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
-        FetchOffersResponse response = client.fetchOffers(token, request);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse response = client.fetchOffers(token, request);
 
-        Assert.assertTrue(response.getOffers().size() > 0);
-        Offer offerToDelete = response.getOffers().get(0);
+        assertThat(response.getOffers().isEmpty(), is(false));
+        final Offer offerToDelete = response.getOffers().get(0);
 
-        DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getId());
+        final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getId());
         client.deleteOffer(token, deleteRequest);
 
-        FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.ALL);
-        FetchOffersResponse fetchResponse = client.fetchOffers(token, fetchRequest);
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse fetchResponse = client.fetchOffers(token, fetchRequest);
 
-        for (Offer o : fetchResponse.getOffers()) {
+        for (final Offer o : fetchResponse.getOffers()) {
             if (o.getId().equals(offerToDelete.getId())) {
                 fail("offer is supposed to be deleted");
             }

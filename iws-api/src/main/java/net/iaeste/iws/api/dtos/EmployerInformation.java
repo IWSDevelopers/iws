@@ -14,28 +14,24 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.Verifiable;
-import net.iaeste.iws.api.responses.AbstractResponse;
+import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToMap;
+import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToMap;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.requests.AbstractVerification;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToCollection;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToCollection;
 
 /**
  * The EmployerInformation Object contains all information about the employer.
  *
- * @author  Pavel Fiala / last $Author:$
+ * @author Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
- * @noinspection CastToConcreteClass, RefusedBequest, VariableNotUsedInsideIf
+ * @noinspection CastToConcreteClass, RefusedBequest, ClassWithTooManyFields
+ * @since 1.7
  */
-public final class EmployerInformation extends AbstractResponse implements Verifiable {
+public final class EmployerInformation extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -52,9 +48,7 @@ public final class EmployerInformation extends AbstractResponse implements Verif
     private Float weeklyHours = null;
     private Float dailyHours = null;
 
-    /**
-     * Empty Constructor, required for some communication frameworks.
-     */
+    /** Empty Constructor, required for some communication frameworks. */
     public EmployerInformation() {
     }
 
@@ -175,32 +169,18 @@ public final class EmployerInformation extends AbstractResponse implements Verif
     // Standard DTO Methods
     // =========================================================================
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void verify() throws VerificationException {
-        final Collection<String> errors = new ArrayList<>(0);
-
-        addNullErrorToCollection(errors, "weeklyHours", weeklyHours);
-        addEmptyErrorToCollection(errors, "name", name);
-
-        if (!errors.isEmpty()) {
-            throw new VerificationException(errors.toString());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Map<String, String> validate() {
-        return new HashMap<String, String>(0);
+        final Map<String, String> errors = new HashMap<>(0);
+
+        addNullErrorToMap(errors, "weeklyHours", weeklyHours);
+        addEmptyErrorToMap(errors, "name", name);
+
+        return errors;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -246,9 +226,7 @@ public final class EmployerInformation extends AbstractResponse implements Verif
         return !(dailyHours != null ? !dailyHours.equals(employer.dailyHours) : employer.dailyHours != null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
@@ -268,9 +246,7 @@ public final class EmployerInformation extends AbstractResponse implements Verif
         return hash;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "EmployerInformation{" +

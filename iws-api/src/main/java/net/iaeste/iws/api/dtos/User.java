@@ -28,7 +28,7 @@ import java.util.Map;
  * the personal details in the Person Object. Please note, that a user is
  * considered a vital Object in the system and cannot be deleted. The personal
  * details can be deleted.<br />
- *   Since the username is the e-mail of a user which is subject to changes, it
+ * Since the username is the e-mail of a user which is subject to changes, it
  * is, of course, possible to change it - just as it is possible to change the
  * password. However, the name of a user cannot be altered. The system is
  * designed as a multi-user system, where it is possible to assign rights to
@@ -37,10 +37,12 @@ import java.util.Map;
  * by a different person, who may not have had anything to do with the original
  * user.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection CastToConcreteClass
+ * <p/>
+ * TODO: @Kim extend AbstractVerification
+ * @since 1.7
  */
 public final class User extends AbstractResponse implements Verifiable {
 
@@ -60,9 +62,9 @@ public final class User extends AbstractResponse implements Verifiable {
      * be a valid e-mail address. Likewise, the first and last name must also
      * be valid, since these cannot be altered later!
      *
-     * @param username   Username (e-mail address)
-     * @param firstname  User First (Given) name
-     * @param lastname   User Last (Family) name
+     * @param username  Username (e-mail address)
+     * @param firstname User First (Given) name
+     * @param lastname  User Last (Family) name
      */
     public User(final String username, final String firstname, final String lastname) {
         this.username = username;
@@ -74,8 +76,8 @@ public final class User extends AbstractResponse implements Verifiable {
      * Constructor for an existing user, where the personal details should be
      * updated.
      *
-     * @param userId  The internal Id of the user
-     * @param person  The personal details
+     * @param userId The internal Id of the user
+     * @param person The personal details
      */
     public User(final Long userId, final Person person) {
         this.userId = userId;
@@ -163,9 +165,7 @@ public final class User extends AbstractResponse implements Verifiable {
     // DTO required methods
     // =========================================================================
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void verify() throws VerificationException {
         // Object is used for either of these requests:
@@ -190,18 +190,14 @@ public final class User extends AbstractResponse implements Verifiable {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
         return validation;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         int result = super.hashCode();
@@ -215,9 +211,7 @@ public final class User extends AbstractResponse implements Verifiable {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -237,9 +231,7 @@ public final class User extends AbstractResponse implements Verifiable {
         return !(username != null ? !username.equals(user.username) : user.username != null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return "User{" +

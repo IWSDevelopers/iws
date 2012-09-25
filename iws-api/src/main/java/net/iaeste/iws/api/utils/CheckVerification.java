@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.AbstractRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.utils.CheckVerification
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -18,27 +18,25 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
 
-import java.util.Collection;
 import java.util.IllegalFormatException;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
  * Contains the functionality to properly verify given values.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection VariableNotUsedInsideIf
+ * @since 1.7
  */
 public final class CheckVerification {
 
     /** The e-mail compliance regular expression. */
     private static final Pattern EMAIL_PATTERN = Pattern.compile(IWSConstants.EMAIL_REGEX);
 
-    /**
-     * Private Constructor, this is a utility class.
-     */
+    /** Private Constructor, this is a utility class. */
     private CheckVerification() {
     }
 
@@ -46,8 +44,8 @@ public final class CheckVerification {
      * The method takes a value, and verifies that this value is not null. If
      * the given value is null, then a {@code VerificationException} is thrown.
      *
-     * @param field    The name of the field (value) to be verified
-     * @param value    The value to verify
+     * @param field The name of the field (value) to be verified
+     * @param value The value to verify
      * @throws VerificationException if the value is null
      */
     public static void verifyNotNull(final String field, final Object value) throws VerificationException {
@@ -61,11 +59,11 @@ public final class CheckVerification {
      * this value is not null, and then invokes the verification on it. If the
      * given value is null, then a {@code VerificationException} is thrown.
      *
-     * @param field    The name of the field (value) to be verified
-     * @param value    The value to verify
+     * @param field The name of the field (value) to be verified
+     * @param value The value to verify
      * @throws VerificationException if the value is null
      */
-    public static  void verifyVerifiable(final String field, final Verifiable value) throws VerificationException {
+    public static void verifyVerifiable(final String field, final Verifiable value) throws VerificationException {
         verifyNotNull(field, value);
 
         value.verify();
@@ -76,8 +74,8 @@ public final class CheckVerification {
      * nor empty. If the given value is either null or empty, then a
      * {@code VerificationException} is thrown.
      *
-     * @param field    The name of the field (value) to be verified
-     * @param value    The value to verify
+     * @param field The name of the field (value) to be verified
+     * @param value The value to verify
      * @throws VerificationException if the value is null or empty
      */
     public static void verifyNotEmpty(final String field, final String value) throws VerificationException {
@@ -94,10 +92,10 @@ public final class CheckVerification {
      * If the given value is either null, or outside of the allowed range, then
      * a {@code VerificationException} is thrown.
      *
-     * @param field    The name of the field (value) to be verified
-     * @param value    The value to verify
-     * @param minimum  The Minimal allowed value
-     * @param maximum  The Maximal allowed value
+     * @param field   The name of the field (value) to be verified
+     * @param value   The value to verify
+     * @param minimum The Minimal allowed value
+     * @param maximum The Maximal allowed value
      * @throws VerificationException if the value is null or outside given range
      */
     public static <T extends Number> void verifyLimits(final String field, final T value, final T minimum, final T maximum) throws VerificationException {
@@ -131,13 +129,13 @@ public final class CheckVerification {
      * nor that the value is outside of the provided range of allowed values.
      * If the given value is either null, or outside of the allowed range, then
      * a {@code VerificationException} is thrown.
-     *
+     * <p/>
      * Verifies if a given e-mail address is valid or not. If the given value,
      * is not compliant with the e-mail format, then a
      * {@code VerificationException} is thrown.
      *
-     * @param field    The name of the field (value) to be verified
-     * @param value    The value to verify
+     * @param field The name of the field (value) to be verified
+     * @param value The value to verify
      * @throws VerificationException if the e-mail addresss isn't compliant
      */
     public static void verifyEmail(final String field, final String value) throws VerificationException {
@@ -150,45 +148,45 @@ public final class CheckVerification {
 
     /**
      * The method checks if the given value is null or not. If it is null, then
-     * the error is written to the provided Collection.
+     * the error is written to the provided Map.
      *
-     * @param errors  Collection with Error information
-     * @param field   The name of the field (value) to be verified
-     * @param value   The value to verify
+     * @param errors Map with Error information
+     * @param field  The name of the field (value) to be verified
+     * @param value  The value to verify
      */
-    public static void addNullErrorToCollection(final Collection<String> errors, final String field, final Object value) {
+    public static void addNullErrorToMap(final Map<String, String> errors, final String field, final Object value) {
         if (value == null) {
-            errors.add(format("The field '%s' may not be null.", field));
+            errors.put(field, "May not be null.");
         }
     }
 
     /**
      * The method takes a value, and verifies that this value is neither null,
      * nor empty. If the given value is either null or empty, the information is
-     * added to the provided error Collection
+     * added to the provided error Map
      *
-     * @param errors  Collection with Error information
-     * @param field   The name of the field (value) to be verified
-     * @param value   The value to verify
+     * @param errors Map with Error information
+     * @param field  The name of the field (value) to be verified
+     * @param value  The value to verify
      */
-    public static void addEmptyErrorToCollection(final Collection<String> errors, final String field, final String value) {
+    public static void addEmptyErrorToMap(final Map<String, String> errors, final String field, final String value) {
         if ((value == null) || value.isEmpty()) {
-            errors.add(format("The field '%s' may not be null or empty.", field));
+            errors.put(field, "May not be null or empty.");
         }
     }
 
     /**
      * The method takes a value, and verifies that this value is neither null,
      * nor empty. If the given value is either null or empty, the information is
-     * added to the provided error Collection
+     * added to the provided error Map
      *
-     * @param errors  Collection with Error information
-     * @param field   The name of the field (value) to be verified
-     * @param value   The value to verify
+     * @param errors Map with Error information
+     * @param field  The name of the field (value) to be verified
+     * @param value  The value to verify
      */
-    public static void addEmptyErrorToCollection(final Collection<String> errors, final String field, final Set<?> value) {
+    public static void addEmptyErrorToMap(final Map<String, String> errors, final String field, final Set<?> value) {
         if ((value == null) || value.isEmpty()) {
-            errors.add(format("The field '%s' may not be null or empty.", field));
+            errors.put(field, "May not be null or empty.");
         }
     }
 

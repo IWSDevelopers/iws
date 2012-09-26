@@ -21,8 +21,6 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.iaeste.iws.api.utils.CheckVerification.verifyVerifiable;
-
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -76,7 +74,10 @@ public final class ProcessOfferRequest implements Verifiable {
      */
     @Override
     public void verify() throws VerificationException {
-        verifyVerifiable("Offer", offer);
+        if(offer == null) {
+            throw new VerificationException("The Offer may not be null.");
+        }
+        offer.verify();
     }
 
     /**

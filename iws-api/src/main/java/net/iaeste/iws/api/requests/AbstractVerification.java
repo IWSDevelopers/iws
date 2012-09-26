@@ -17,15 +17,17 @@ package net.iaeste.iws.api.requests;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
+import java.util.Collection;
 import java.util.IllegalFormatException;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
  * @noinspection VariableNotUsedInsideIf
+ * @since 1.7
  */
 public abstract class AbstractVerification implements Verifiable {
 
@@ -35,9 +37,7 @@ public abstract class AbstractVerification implements Verifiable {
     /** The e-mail compliance regular expression. */
     private static final Pattern EMAIL_PATTERN = Pattern.compile(IWSConstants.EMAIL_REGEX);
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void verify() throws VerificationException {
         final Map<String, String> validationResult = validate();
@@ -55,7 +55,7 @@ public abstract class AbstractVerification implements Verifiable {
      * The method takes a value, and verifies that this value is not null. If an
      * error is found, then the information is added to the validation
      * Map.<br />
-     *   If an error was found, then a false is returned, otherwise the method
+     * If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -78,7 +78,7 @@ public abstract class AbstractVerification implements Verifiable {
      * The method takes a value, and verifies that this value is neither null,
      * nor empty. If an error is found, then the information is added to the
      * validation Map.<br />
-     *   If an error was found, then a false is returned, otherwise the method
+     * If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -98,11 +98,34 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * The method takes a value, and verifies that this value is neither null,
+     * nor empty. If an error is found, then the information is added to the
+     * validation Map.<br />
+     * If an error was found, then a false is returned, otherwise the method
+     * will return true.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     * @return True if field is valid, otherwise false
+     */
+    protected boolean isNotEmpty(final Map<String, String> validation, final String field, final Set<?> value) {
+        boolean check = true;
+
+        if ((value == null) || value.isEmpty()) {
+            validation.put(field, "The field may not be null or empty.");
+            check = false;
+        }
+
+        return check;
+    }
+
+    /**
      * The method takes a value of type {@code Verifiable}, and verifies that
      * this value is not null, and then invokes the validation on it. If an
      * error is found, then the information is added to the validation
      * Map.<br />
-     *   If an error was found, then a false is returned, otherwise the method
+     * If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -129,7 +152,7 @@ public abstract class AbstractVerification implements Verifiable {
      * The method checks that the value is neither null nor outside of the
      * required range of values. If an error is found, then the information is
      * added to the validation Map.<br />
-     *   If an error was found, then a false is returned, otherwise the method
+     * If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -155,10 +178,10 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
-     * The method checks that the value is neither null nor too long. If an
-     * error is found, then the information is added to the validation
-     * Map.<br />
-     *   If an error was found, then a false is returned, otherwise the method
+     * The method checks that the value is neither null nor outside of the
+     * required range of values. If an error is found, then the information is
+     * added to the validation Map.<br />
+     * If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -181,10 +204,90 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * The method checks that the value is neither null nor outside of the
+     * required range of values. If an error is found, then the information is
+     * added to the validation Map.<br />
+     * If an error was found, then a false is returned, otherwise the method
+     * will return true.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     * @param minLength  The minimally allowed length
+     * @param maxLength  The maximally allowed length
+     * @return True if field is valid, otherwise false
+     */
+    protected boolean isWithinLimits(final Map<String, String> validation, final String field, final String value, final int minLength, final int maxLength) {
+        boolean check = isNotNull(validation, field, value);
+
+        if (check) {
+            if (value.length() > maxLength || value.length() < minLength) {
+                addError(validation, field, format("The value is not within the range %d to %d.", minLength, maxLength));
+                check = false;
+            }
+        }
+
+        return check;
+    }
+
+    /**
+     * The method checks that the value is neither null nor too long. If an
+     * error is found, then the information is added to the validation
+     * Map.<br />
+     * If an error was found, then a false is returned, otherwise the method
+     * will return true.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     * @param maxSize  The maximally allowed length
+     * @return True if field is valid, otherwise false
+     */
+    protected boolean isWithinLimits(final Map<String, String> validation, final String field, final Collection<?> value, final int maxSize) {
+        boolean check = isNotNull(validation, field, value);
+
+        if (check) {
+            if (value.size() > maxSize) {
+                validation.put(field, format("the value size is bigger than %d.", maxSize));
+                check = false;
+            }
+        }
+
+        return check;
+    }
+
+    /**
+     * The method checks that the value is neither null nor outside of the
+     * required range of values. If an error is found, then the information is
+     * added to the validation Map.<br />
+     * If an error was found, then a false is returned, otherwise the method
+     * will return true.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     * @param maxSize  The maximally allowed length
+     * @return True if field is valid, otherwise false
+     */
+    protected boolean isWithinLimits(final Map<String, String> validation, final String field, final Collection<?> value, final int minSize,
+                                     final int maxSize) {
+        boolean check = isNotNull(validation, field, value);
+
+        if (check) {
+            if (value.size() > maxSize || value.size() < minSize) {
+                addError(validation, field, format("The value size is not within the range %d to %d.", minSize, maxSize));
+                check = false;
+            }
+        }
+
+        return check;
+    }
+
+    /**
      * The method checks that the value is neither null, nor incompliant with
      * the general form for e-mail addresses. If an error is found, then the
      * information is added to the validation Map.<br />
-     *   If an error was found, then a false is returned, otherwise the method
+     * If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -203,6 +306,44 @@ public abstract class AbstractVerification implements Verifiable {
         }
 
         return check;
+    }
+
+    /**
+     * The method adds error messages for fields
+     * with checks for existing messages. <br />
+     * If the field in validation Map already had an error,
+     * then the error messages are concatenated.
+     *
+     * @param validation   Map with Error information
+     * @param field        The name of the field to add error
+     * @param errorMessage The error message for the field
+     */
+    protected void addError(final Map<String, String> validation, final String field, final String errorMessage) {
+        final String message;
+
+        if (validation.containsKey(field)) {
+            message = format("%s\n%s", validation.get(field), errorMessage);
+        } else {
+            message = errorMessage;
+        }
+
+        validation.put(field, message);
+    }
+
+    /**
+     * The method add error messages from {@code errors} to
+     * validation Map. <br />
+     * If the field in validation Map already had an error,
+     * then the error messages are concatenated.
+     *
+     * @param validation Map with Error information to which errors will be added
+     * @param errors     Map with Error information to be added
+     * @see #addError(java.util.Map, String, String)
+     */
+    protected void addAllErrors(final Map<String, String> validation, final Map<String, String> errors) {
+        for (final Map.Entry<String, String> stringStringEntry : errors.entrySet()) {
+            addError(validation, stringStringEntry.getKey(), stringStringEntry.getValue());
+        }
     }
 
     /**

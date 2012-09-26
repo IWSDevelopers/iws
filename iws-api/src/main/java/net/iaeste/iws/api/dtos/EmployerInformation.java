@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToMap;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToMap;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.requests.AbstractVerification;
@@ -174,8 +172,8 @@ public final class EmployerInformation extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> errors = new HashMap<>(0);
 
-        addNullErrorToMap(errors, "weeklyHours", weeklyHours);
-        addEmptyErrorToMap(errors, "name", name);
+        isNotNull(errors, "weeklyHours", weeklyHours);
+        isNotEmpty(errors, "name", name);
 
         return errors;
     }

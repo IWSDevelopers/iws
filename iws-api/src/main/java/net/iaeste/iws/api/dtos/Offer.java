@@ -14,9 +14,6 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.utils.CheckVerification.addEmptyErrorToMap;
-import static net.iaeste.iws.api.utils.CheckVerification.addNullErrorToMap;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.Currency;
@@ -48,7 +45,7 @@ import java.util.regex.Pattern;
  * @author Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
  * @noinspection CastToConcreteClass, OverlyLongMethod, OverlyComplexMethod
- * , RedundantIfStatement, ClassWithTooManyFields @since 1.7
+ * , RedundantIfStatement, ClassWithTooManyFields @since 1.7, OverlyComplexClass
  */
 public final class Offer extends AbstractVerification {
 
@@ -131,7 +128,7 @@ public final class Offer extends AbstractVerification {
      * <p/>
      * validations:
      * <ul>
-     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #validateNotNullableFields}</li>
      * <li>has to match the regular expression: {@code (CC)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?} (where {@code CC} is one of the country codes)</li>
      * </ul>
      */
@@ -140,7 +137,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>If set, it must be before {@code fromDate} and {@code fromDate2} (@link #verifyDatesNominationDeadline}.</li>
+     * <li>If set, it must be before {@code fromDate} and {@code fromDate2} (@link #validateDatesNominationDeadline}.</li>
      * </ul>
      */
     private Date nominationDeadline;
@@ -148,7 +145,7 @@ public final class Offer extends AbstractVerification {
     // EmployerInformation information
     /**
      * validations:
-     * <ul><li>required, {@link #verifyNotNullableFields()}</li></ul>
+     * <ul><li>required, {@link #validateNotNullableFields}</li></ul>
      */
     private String employerName;
     private String employerAddress;
@@ -161,7 +158,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #validateNotNullableFields}</li>
      * <li>from 1 up to net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY values</li>
      * </ul>
      */
@@ -178,7 +175,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #validateNotNullableFields}</li>
      * <li>from 1 up to net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_STUDY_LEVELS values</li>
      * </ul>
      */
@@ -188,13 +185,13 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>required, {@link #verifyNotNullableFields()}</li></ul>
+     * <ul><li>required, {@link #validateNotNullableFields}</li></ul>
      */
     private Language language1;
 
     /**
      * validations:
-     * <ul><li>required, {@link #verifyNotNullableFields()}</li></ul>
+     * <ul><li>required, {@link #validateNotNullableFields}</li></ul>
      */
     private LanguageLevel language1Level;
 
@@ -221,7 +218,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #validateNotNullableFields}</li>
      * <li>length between
      * net.iaeste.iws.api.constants.IWSExchangeConstants#MIN_OFFER_WORK_DESCRIPTION_SIZE
      * up to
@@ -234,7 +231,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #validateNotNullableFields}</li>
      * <li>has to be less or equal than #maximumWeeks</li>
      * </ul>
      */
@@ -243,7 +240,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #validateNotNullableFields}</li>
      * <li>has to be greater or equal than #minimumWeeks</li>
      * </ul>
      */
@@ -252,7 +249,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #validateNotNullableFields}</li>
      * <li>{@see #verifyDates()}</li>
      * </ul>
      */
@@ -260,7 +257,7 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #verifyNotNullableFields()}</li>
+     * <li>required, {@link #validateNotNullableFields}</li>
      * <li>{@see #verifyDates()}</li>
      * </ul>
      */
@@ -270,12 +267,12 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>{@see #verifyUnavailableDatesOrder()}</li></ul>
+     * <ul><li>{@see #validateUnavailableDatesOrder()}</li></ul>
      */
     private Date unavailableFrom;
     /**
      * validations:
-     * <ul><li>{@see #verifyUnavailableDatesOrder()}</li></ul>
+     * <ul><li>{@see #validateUnavailableDatesOrder()}</li></ul>
      */
     private Date unavailableTo;
     private String workingPlace;
@@ -284,7 +281,7 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>required, {@link #verifyNotNullableFields()}</li></ul>
+     * <ul><li>required, {@link #validateNotNullableFields}</li></ul>
      */
     private Float weeklyHours;
     private Float dailyHours;
@@ -966,59 +963,98 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
-     * validations performed:
+     * validations:
      * <ul>
-     * <li>required fields, {@see #verifyNotNullableFields()}</li>
-     * <li>refNo format, {@see #verifyRefNo()}</li>
-     * <li>order and presence of dates, {@see #verifyDates()}</li>
-     * <li>internship period, {@see #verifyNumberOfWeeks()}</li>
-     * <li>number of selected Fields of Studies, {@see #verifySizeOfFieldsOfStudy()}</li>
-     * <li>number of selected Specializations, {@see #verifySizeOfSpecializations()}</li>
-     * <li>length of work description, {@see #verifyLengthOfWorkDescription()}</li>
-     * <li>dependencies: fields required only if other fields are provided, {@see #verifyFieldDependencies}</li>
+     * <li>required fields, {@see #validateNotNullableFields}</li>
+     * <li>refNo format, {@see #validateRefNo}</li>
+     * <li>order and presence of dates, {@see #validateDates}</li>
+     * <li>internship period, {@see #validateNumberOfWeeks}</li>
+     * <li>number of selected Fields of Studies, {@see #validateSizeOfFieldOfStudies}</li>
+     * <li>number of selected Specializations, {@see #validateSizeOfSpecializations}</li>
+     * <li>length of work description, {@see #validateLengthOfWorkDescription}</li>
+     * <li>dependencies: fields required only if other fields are provided, {@see #validateFieldDependencies}</li>
      * </ul>
      */
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        validation.putAll(verifyNotNullableFields());
-        if (!verifyRefNo()) {
-            validation.put("refNo", "reference number has incorrect format");
-        }
-        if (!verifyDates()) {
-            validation.put("dates", "dates are not set correctly");
-        }
-        if (!verifyNumberOfWeeks()) {
-            validation.put("weeks", "weeks are not set correctly");
-        }
-        if (!verifySizeOfFieldsOfStudy()) {
-            validation.put("fieldOfStudies", String.format("cannot have more than %s Fields of Study", IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY));
-        }
-        if (!verifySizeOfSpecializations()) {
-            validation.put("specializations", String.format("cannot have more than %s Specializations", IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS));
-        }
-        if (!verifyLengthOfWorkDescription()) {
-            validation.put("workDescription", String.format("work description length has to be between %s and %s",
-                    IWSExchangeConstants.MIN_OFFER_WORK_DESCRIPTION_SIZE,
-                    IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE));
-        }
-        validation.putAll(verifyFieldDependencies());
+        validateNotNullableFields(validation);
+        validateRefNo(validation);
+        validateDates(validation);
+        validateNumberOfWeeks(validation);
+        validateSizeOfFieldOfStudies(validation);
+        validateSizeOfSpecializations(validation);
+        validateLengthOfWorkDescription(validation);
+        validateFieldDependencies(validation);
+
         return validation;
     }
 
-    private boolean verifySizeOfSpecializations() {
-        return specializations == null || specializations.size() <= IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS;
+    /**
+     * validations:
+     * <ul><li>number of selected specialization should be below limit, {@see IWSExchangeConstants#MAX_OFFER_SPECIALIZATIONS}</li></ul>
+     *
+     * @param validation Map with Error information
+     * @return true if size of specializations is valid
+     */
+    private boolean validateSizeOfSpecializations(final Map<String, String> validation) {
+        return isWithinLimits(validation, "specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
     }
 
-    private boolean verifySizeOfFieldsOfStudy() {
-        return fieldOfStudies != null && !fieldOfStudies.isEmpty() && fieldOfStudies.size() <= IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY;
+    /**
+     * validations:
+     * <ul><li>number of selected specialization should be below limit, {@see IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY}</li></ul>
+     *
+     * @param validation Map with Error information
+     * @return true if size of field of studies is valid
+     */
+    private boolean validateSizeOfFieldOfStudies(final Map<String, String> validation) {
+        return isWithinLimits(validation, "fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
     }
 
-    private boolean verifyLengthOfWorkDescription() {
-        return workDescription != null &&
-                (IWSExchangeConstants.MIN_OFFER_WORK_DESCRIPTION_SIZE <= workDescription.length()) &&
-                (workDescription.length() <= IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE);
+    /**
+     * Checks if minimum and maximum weeks values are correct.
+     * <ul>
+     * <li>{@link #minimumWeeks} should be greater or equal to {@link IWSExchangeConstants#MIN_OFFER_MINIMUM_WEEKS}</li>
+     * <li>{@link #maximumWeeks} should be greater or equal to {@link IWSExchangeConstants#MIN_OFFER_MINIMUM_WEEKS}</li>
+     * <li>{@link #maximumWeeks} should be greater or equal to {@link #minimumWeeks}</li>
+     * </ul>
+     *
+     * @param validation Map with Error information
+     * @return true if {@code minimumWeeks} and {@code maximumWeeks} are valid
+     */
+    private boolean validateNumberOfWeeks(final Map<String, String> validation) {
+        final boolean check;
+
+        if (maximumWeeks != null) {
+            if (maximumWeeks < IWSExchangeConstants.MIN_OFFER_MINIMUM_WEEKS) {
+                addError(validation, "maximumWeeks", format("may be greater or equal to %s", IWSExchangeConstants.MIN_OFFER_MINIMUM_WEEKS));
+                check = false;
+            } else {
+                check = isWithinLimits(validation, "minimumWeeks", minimumWeeks, IWSExchangeConstants.MIN_OFFER_MINIMUM_WEEKS, maximumWeeks);
+            }
+        } else {
+            check = false;
+        }
+
+        return check;
+    }
+
+    /**
+     * Checks if minimum and maximum weeks values are correct.
+     * <ul>
+     * <li>length of {@link #workDescription} should be between
+     * {@link IWSExchangeConstants#MIN_OFFER_WORK_DESCRIPTION_SIZE}
+     * and {@link IWSExchangeConstants#MAX_OFFER_WORK_DESCRIPTION_SIZE}</li>
+     * </ul>
+     *
+     * @param validation Map with Error information
+     * @return true if {@link #workDescription} is valid
+     */
+    private boolean validateLengthOfWorkDescription(final Map<String, String> validation) {
+        return isWithinLimits(validation, "workDescription", workDescription, IWSExchangeConstants.MIN_OFFER_WORK_DESCRIPTION_SIZE,
+                IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE);
     }
 
     /**
@@ -1029,24 +1065,28 @@ public final class Offer extends AbstractVerification {
      * ({@code livingCostFrequency}, {@code paymentFrequency}, {@code lodgingCostFrequency})
      * should be present.
      *
-     * @return map of errors. If dependencies are valid, method returns empty collection.
+     * @param validation Map with Error information
+     * @return true if field dependencies are valid
      */
-    private Map<String, String> verifyFieldDependencies() {
-        final Map<String, String> errors = new HashMap<>();
+    private boolean validateFieldDependencies(final Map<String, String> validation) {
+        boolean check = true;
 
         if (livingCost != null && livingCostFrequency == null) {
-            errors.put("livingCostFrequency", "'livingCostFrequency' is required if 'livingCost' is not null");
+            addError(validation, "livingCostFrequency", "'livingCostFrequency' is required if 'livingCost' is not null");
+            check = false;
         }
 
         if (payment != null && paymentFrequency == null) {
-            errors.put("paymentFrequency", "'paymentFrequency' is required if 'payment' is not null");
+            addError(validation, "paymentFrequency", "'paymentFrequency' is required if 'payment' is not null");
+            check = false;
         }
 
         if (lodgingCost != null && lodgingCostFrequency == null) {
-            errors.put("lodgingCostFrequency", "'lodgingCostFrequency' is required if 'lodgingCost' is not null");
+            addError(validation, "lodgingCostFrequency", "'lodgingCostFrequency' is required if 'lodgingCost' is not null");
+            check = false;
         }
 
-        return errors;
+        return check;
     }
 
     /**
@@ -1067,59 +1107,55 @@ public final class Offer extends AbstractVerification {
      * <li>toDate</li>
      * </ul>
      *
-     * @return map of errors. If all required fields are provided, method returns empty map.
+     * @param validation Map with Error information
+     * @return true if all required fields are present
      */
-    private Map<String, String> verifyNotNullableFields() {
-        final Map<String, String> errors = new HashMap<>(0);
+    private boolean validateNotNullableFields(final Map<String, String> validation) {
+        boolean check = true;
 
-        addNullErrorToMap(errors, "refno", refNo);
-        addEmptyErrorToMap(errors, "employerName", employerName);
-        addNullErrorToMap(errors, "weeklyhours", weeklyHours);
-        addEmptyErrorToMap(errors, "fieldOfStudies", fieldOfStudies);
-        addEmptyErrorToMap(errors, "studyLevels", studyLevels);
-        addNullErrorToMap(errors, "language1", language1);
-        addNullErrorToMap(errors, "language1Level", language1Level);
-        addEmptyErrorToMap(errors, "workDescription", workDescription);
-        addNullErrorToMap(errors, "minimumWeeks", minimumWeeks);
-        addNullErrorToMap(errors, "maximumWeeks", maximumWeeks);
-        addNullErrorToMap(errors, "fromDate", fromDate);
-        addNullErrorToMap(errors, "toDate", toDate);
+        check &= isNotEmpty(validation, "refno", refNo);
+        check &= isNotEmpty(validation, "employerName", employerName);
+        check &= isNotNull(validation, "weeklyhours", weeklyHours);
+        check &= isNotEmpty(validation, "fieldOfStudies", fieldOfStudies);
+        check &= isNotEmpty(validation, "studyLevels", studyLevels);
+        check &= isNotNull(validation, "language1", language1);
+        check &= isNotNull(validation, "language1Level", language1Level);
+        check &= isNotEmpty(validation, "workDescription", workDescription);
+        check &= isNotNull(validation, "minimumWeeks", minimumWeeks);
+        check &= isNotNull(validation, "maximumWeeks", maximumWeeks);
+        check &= isNotNull(validation, "fromDate", fromDate);
+        check &= isNotNull(validation, "toDate", toDate);
 
-        return errors;
+        return check;
     }
 
     /**
-     * Checks if minimum and maximum weeks values are correct.
-     *
-     * @return true if {@code minimumWeeks} and {@code maximumWeeks} are valid.
-     */
-    boolean verifyNumberOfWeeks() {
-        if (minimumWeeks == null || maximumWeeks == null) {
-            return false;
-        }
-        return minimumWeeks > 0 && maximumWeeks >= minimumWeeks;
-    }
-
-    /**
-     * @return true if {@code refNo} is valid
+     * @param validation Map with Error information
+     * @return true if reference number is valid
      * @see #refNo
      */
-    boolean verifyRefNo() {
-        if (refNo == null) {
-            return false;
-        }
-        final String[] codes = Locale.getISOCountries();
-        // for each country code 3 bytes are needed: "CC|"
-        final StringBuilder countryCodes = new StringBuilder(3 * codes.length - 1);
-        for (final String code : codes) {
-            countryCodes.append(code);
-            countryCodes.append('|');
-        }
-        countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
+    private boolean validateRefNo(final Map<String, String> validation) {
+        boolean check = true;
 
-        final Pattern refNoPattern = Pattern.compile(String.format(refNoFormat, countryCodes.toString().toUpperCase()));
-        final Matcher matcher = refNoPattern.matcher(refNo);
-        return matcher.matches();
+        if (refNo != null) {
+            final String[] codes = Locale.getISOCountries();
+            // for each country code 3 bytes are needed: "CC|"
+            final StringBuilder countryCodes = new StringBuilder(3 * codes.length - 1);
+            for (final String code : codes) {
+                countryCodes.append(code);
+                countryCodes.append('|');
+            }
+            countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
+
+            final Pattern refNoPattern = Pattern.compile(String.format(refNoFormat, countryCodes.toString().toUpperCase()));
+            final Matcher matcher = refNoPattern.matcher(refNo);
+            if (!matcher.matches()) {
+                addError(validation, "refNo", "reference number has incorrect format");
+                check = false;
+            }
+        }
+
+        return check;
     }
 
     /**
@@ -1133,125 +1169,174 @@ public final class Offer extends AbstractVerification {
      * <li>dates from different groups (1,2) cannot interwise</li>
      * <li>unavailable dates must be inside date group</li>
      * </ul>
+     *
+     * @param validation Map with Error information
+     * @return true if all dates are valid
      */
-    boolean verifyDates() {
-        // the order of invoking verifyDates*** methods is important!
-        return verifyDatesPresence() && verifyDatesOrder() && verifyDatesNominationDeadline()
-                && verifyDatesGroupsOrder() && verifyUnavailableDatesOrder();
+    private boolean validateDates(final Map<String, String> validation) {
+        boolean check = true;
+
+        check &= validateDatesPresence(validation);
+        check &= validateDatesOrder(validation);
+        check &= validateDatesNominationDeadline(validation);
+        check &= validateDatesGroupsOrder(validation);
+        check &= validateUnavailableDatesOrder(validation);
+
+        return check;
     }
 
     /**
-     * Checks for presence of date fields.
+     * Validates date fields presence and dependencies.
      *
+     * @param validation Map with Error information
      * @return true if all required date fields are provided.
      */
-    @SuppressWarnings("OverlyComplexBooleanExpression")
-    private boolean verifyDatesPresence() {
-        // either 'from' date either 'from2' date must be present
-        if (fromDate == null || toDate == null) {
-            return false;
+    private boolean validateDatesPresence(final Map<String, String> validation) {
+        boolean check = true;
+
+        // no checks for 'from' and 'to' as it is already checkd in #validateNotNullableFields()
+        // if 'from2' is present then 'to2' is needed to
+        if (fromDate2 != null && toDate2 == null) {
+            addError(validation, "toDate2", "is not present");
+            check = false;
         }
-        // if 'from' is present then 'to' is needed to
-        if (fromDate2 != null && toDate2 == null || fromDate2 == null && toDate2 != null) {
-            return false;
+        if (fromDate2 == null && toDate2 != null) {
+            addError(validation, "fromDate2", "is not present");
+            check = false;
         }
         // if 'unavailableFrom' is present then 'unavailableTo' is needed to
-        if (unavailableFrom != null && unavailableTo == null || unavailableFrom == null && unavailableTo != null) {
-            return false;
+        if (unavailableFrom != null && unavailableTo == null) {
+            addError(validation, "unavailableTo", "is not present");
+            check = false;
         }
-        return true;
+        if (unavailableFrom == null && unavailableTo != null) {
+            addError(validation, "unavailableFrom", "is not present");
+            check = false;
+        }
+
+        return check;
     }
 
     /**
-     * Verifies order of related dates
-     * ({@code fromDate} < {@code toDate},
-     * {@code fromDate2} < {@code toDate2},
-     * {@code #unavailableFrom} < {@code #unavalilableTo}).
+     * Validates order of related dates
+     * <p/>
+     * validations:
+     * <ul>
+     * <li>{@code fromDate <= toDate}</li>
+     * <li>{@code fromDate2 <= toDate2}</li>
+     * <li>{@code unavailableFrom <= unavalilableTo}</li>
+     * </ul>
      *
-     * @return true if order of related dates is valid.
+     * @param validation Map with Error information
+     * @return true if dates order is valid.
      */
-    private boolean verifyDatesOrder() {
+    private boolean validateDatesOrder(final Map<String, String> validation) {
+        boolean check = true;
+
         // 'from' date can't be after 'to' date
-        if (fromDate != null && fromDate.compareTo(toDate) > 0) {
-            return false;
+        if (fromDate != null && toDate != null && fromDate.after(toDate)) {
+            addError(validation, "fromDate", "should be before toDate");
+            check = false;
         }
-        if (fromDate2 != null && fromDate2.compareTo(toDate2) > 0) {
-            return false;
+        if (fromDate2 != null && toDate2 != null && fromDate2.after(toDate2)) {
+            addError(validation, "fromDate2", "should be before toDate2");
+            check = false;
         }
-        if (unavailableFrom != null && unavailableFrom.compareTo(unavailableTo) > 0) {
-            return false;
+        if (unavailableFrom != null && unavailableTo != null && unavailableFrom.after(unavailableTo)) {
+            addError(validation, "unavailableFrom", "should be before unavailableTo");
+            check = false;
         }
-        return true;
+
+        return check;
+
     }
 
     /**
-     * Checks if {@code nominationDeadline} if before {@code fromDate} and {@code fromDate2}
+     * Checks if {@code nominationDeadline} if before {@code fromDate} and {@code fromDate2}.
      *
+     * @param validation Map with Error information
      * @return true if {@code nominationDeadline} is valid.
      */
-    private boolean verifyDatesNominationDeadline() {
+    private boolean validateDatesNominationDeadline(final Map<String, String> validation) {
+        boolean check = true;
         if (nominationDeadline != null) {
             // "nominationDeadline" must be before start of an internship
             if ((fromDate != null && nominationDeadline.after(fromDate))
                     || (fromDate2 != null && nominationDeadline.after(fromDate2))) {
-                return false;
+                addError(validation, "nominationDeadline", "should be before 'fromDate' and 'fromDate2'");
+                check = false;
             }
         }
-        return true;
+        return check;
     }
 
     /**
      * Checks if date from one group is not inside another group.
      *
+     * @param validation Map with Error information
      * @return true if order of date groups is valid.
      */
-    private boolean verifyDatesGroupsOrder() {
+    private boolean validateDatesGroupsOrder(final Map<String, String> validation) {
+        boolean check = true;
+
         // dates from groups 1 and 2 cannot intertwine
         if (fromDate != null && fromDate2 != null) {
             // to != null and to2 != null is already verified but checking for nulls for safety
             if (toDate == null || toDate2 == null) {
-                return false;
-            }
-            // from < to and from2 < to is already checked
-            if (!(fromDate.after(toDate2) || fromDate2.after(toDate))) {
-                return false;
+                check = false;
+            } else {
+                // from < to and from2 < to is already checked
+                // check if group 2 is outside group 1
+                if (!(fromDate.after(toDate2) || fromDate2.after(toDate))) {
+                    addError(validation, "fromDate", "fromDate-toDate and fromDate2-toDate2 periods overlap on each other");
+                    addError(validation, "fromDate2", "fromDate-toDate and fromDate2-toDate2 periods overlap on each other");
+                    check = false;
+                }
             }
         }
-        return true;
+
+        return check;
     }
 
     /**
      * Unavailable period must be inside one of internship date ranges
      * or between two ranges.
      *
+     * @param validation Map with Error information
      * @return true if unavailable dates order is valid.
      */
-    private boolean verifyUnavailableDatesOrder() {
-        if (unavailableFrom != null) {
+    private boolean validateUnavailableDatesOrder(final Map<String, String> validation) {
+        boolean check = true;
+        if (unavailableFrom != null && unavailableTo != null) {
             // unavailable "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
             //      or between "to" and "from2" or "to2" and "from" (see #84 for requirements)
             if (unavailableFrom.before(fromDate) && unavailableTo.after(fromDate)) {
-                return false;
+                check = false;
             }
             if (unavailableFrom.after(toDate) && unavailableTo.before(toDate)) {
-                return false;
+                check = false;
             }
             if (unavailableFrom.after(fromDate) && unavailableFrom.before(toDate) && unavailableTo.after(toDate)) {
-                return false;
+                check = false;
             }
             if (fromDate2 != null) {
                 if (unavailableFrom.before(fromDate2) && unavailableTo.after(fromDate2)) {
-                    return false;
+                    check = false;
                 }
                 if (unavailableFrom.after(toDate2) && unavailableTo.before(toDate2)) {
-                    return false;
+                    check = false;
                 }
                 if (unavailableFrom.after(fromDate2) && unavailableFrom.before(toDate2) && unavailableTo.after(toDate2)) {
-                    return false;
+                    check = false;
                 }
             }
+            if (!check) {
+                addError(validation, "unavailableFrom", "incorrect unavailable period");
+                addError(validation, "unavailableTo", "incorrect unavailable period");
+            }
         }
-        return true;
+
+        return check;
     }
 
 }

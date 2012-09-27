@@ -6,23 +6,27 @@
 |fetch                                      |
 |check           |number of fetched offers|0|
 
-!|script             |save offer         |
-|set ref no          |AT-2012-0001       |
-|set employer name   |test employer name |
-|reject              |verify             |
-|set study levels    |E                  |
-|set field of studies|IT!-|-!ARCHITECTURE|
-|set language 1      |ENGLISH            |
-|set language 1 level|E                  |
-|set work description|some description   |
-|set maximum weeks   |52                 |
-|set minimum weeks   |6                  |
-|set weekly hours    |40                 |
-|set from date       |2010-Jan-01        |
-|set to date         |2012-Sep-04        |
-|ensure              |verify             |
-|save                                    |
-|ensure              |is request ok      |
+!|comment                                     |
+|test doesn't pass and it should              |
+!|script              |save offer              |
+|set username        |Michl|and password|frodo|
+|set ref no          |AT-2012-0001            |
+|set employer name   |test employer name      |
+|reject              |verify                  |
+|set study levels    |E                       |
+|set field of studies|IT!- |-!ARCHITECTURE    |
+|set language 1      |ENGLISH                 |
+|set language 1 level|E                       |
+|set work description|some description        |
+|set maximum weeks   |52                      |
+|set minimum weeks   |6                       |
+|set weekly hours    |40                      |
+|set from date       |2010-Jan-01             |
+|set to date         |2012-Sep-04             |
+|ensure              |verify                  |
+|save                                         |
+|show                |error message           |
+|ensure              |is request ok           |
 
 !|comment                                   |
 |test doesn't pass and it should            |

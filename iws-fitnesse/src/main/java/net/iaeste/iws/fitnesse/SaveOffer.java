@@ -27,9 +27,12 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
+import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.core.transformers.CollectionTransformer;
+import net.iaeste.iws.fitnesse.callers.AccessCaller;
 import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -43,9 +46,12 @@ import java.util.HashSet;
  * @since 1.7
  */
 public final class SaveOffer extends AbstractFixture<OfferResponse> {
-    private static final String TOKEN = "12345678901234567890123456789012";
-    private final Exchange exchange = new ExchangeCaller();
+    private final AccessCaller ac = new AccessCaller();
     private AuthenticationToken token;
+    private String username;
+    private String password;
+
+    private final Exchange exchange = new ExchangeCaller();
     private Offer offer;
     private ProcessOfferRequest request;
 
@@ -62,6 +68,7 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
 
     @Override
     public void execute() throws StopTestException {
+        getToken();
         request = new ProcessOfferRequest(offer);
         response = exchange.processOffer(token, request);
     }
@@ -70,7 +77,7 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
     public void reset() {
         request = null;
         response = null;
-        token = new AuthenticationToken(TOKEN);
+        token = null;
         offer = new Offer();
     }
 
@@ -82,6 +89,39 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
             return false;
         }
     }
+
+
+    /**
+     * Sets username and password so the AuthenticationToken could be fetched.
+     *
+     * @param username
+     * @param password
+     */
+    public void setUsernameAndPassword(final String username, final String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public void setUsername(final String username) {
+        this.username = username;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    public void setToken(final String token) {
+        this.token = new AuthenticationToken(token);
+    }
+
+    private void getToken() {
+        if (token == null) {
+            final AuthenticationRequest authRequest = new AuthenticationRequest(username, password);
+            final AuthenticationResponse authResponse = ac.generateSession(authRequest);
+            token = authResponse.getToken();
+        }
+    }
+
 
     /**
      * not null

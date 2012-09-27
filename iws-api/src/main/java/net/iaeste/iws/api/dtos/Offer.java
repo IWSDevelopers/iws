@@ -249,8 +249,8 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #validateNotNullableFields}</li>
-     * <li>{@see #verifyDates()}</li>
+     * <li>required, {@link #validateNotNullableFields(java.util.Map)}</li>
+     * <li>{@link #validateDates(java.util.Map)}</li>
      * </ul>
      */
     private Date fromDate;
@@ -258,7 +258,7 @@ public final class Offer extends AbstractVerification {
      * validations:
      * <ul>
      * <li>required, {@link #validateNotNullableFields}</li>
-     * <li>{@see #verifyDates()}</li>
+     * <li>{@link #validateDates(java.util.Map)}</li>
      * </ul>
      */
     private Date toDate;
@@ -267,12 +267,12 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>{@see #validateUnavailableDatesOrder()}</li></ul>
+     * <ul><li>{@link #validateUnavailableDatesOrder(java.util.Map)}</li></ul>
      */
     private Date unavailableFrom;
     /**
      * validations:
-     * <ul><li>{@see #validateUnavailableDatesOrder()}</li></ul>
+     * <ul><li>{@link #validateUnavailableDatesOrder(java.util.Map)} )}</li></ul>
      */
     private Date unavailableTo;
     private String workingPlace;
@@ -281,7 +281,7 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>required, {@link #validateNotNullableFields}</li></ul>
+     * <ul><li>required, {@link #validateNotNullableFields(java.util.Map)}</li></ul>
      */
     private Float weeklyHours;
     private Float dailyHours;
@@ -965,14 +965,14 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required fields, {@see #validateNotNullableFields}</li>
-     * <li>refNo format, {@see #validateRefNo}</li>
-     * <li>order and presence of dates, {@see #validateDates}</li>
-     * <li>internship period, {@see #validateNumberOfWeeks}</li>
-     * <li>number of selected Fields of Studies, {@see #validateSizeOfFieldOfStudies}</li>
-     * <li>number of selected Specializations, {@see #validateSizeOfSpecializations}</li>
-     * <li>length of work description, {@see #validateLengthOfWorkDescription}</li>
-     * <li>dependencies: fields required only if other fields are provided, {@see #validateFieldDependencies}</li>
+     * <li>required fields, {@link #validateNotNullableFields(java.util.Map)}</li>
+     * <li>refNo format, {@link #validateRefNo(java.util.Map)}</li>
+     * <li>order and presence of dates, {@link #validateDates(java.util.Map)}</li>
+     * <li>internship period, {@link #validateNumberOfWeeks(java.util.Map)}</li>
+     * <li>number of selected Fields of Studies, {@link #validateSizeOfFieldOfStudies(java.util.Map)}</li>
+     * <li>number of selected Specializations, {@link #validateSizeOfSpecializations(java.util.Map)}</li>
+     * <li>length of work description, {@link #validateLengthOfWorkDescription(java.util.Map)}</li>
+     * <li>dependencies: fields required only if other fields are provided, {@link #validateFieldDependencies(java.util.Map)}</li>
      * </ul>
      */
     @Override
@@ -993,7 +993,7 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>number of selected specialization should be below limit, {@see IWSExchangeConstants#MAX_OFFER_SPECIALIZATIONS}</li></ul>
+     * <ul><li>number of selected specialization should be below limit, {@link IWSExchangeConstants#MAX_OFFER_SPECIALIZATIONS}</li></ul>
      *
      * @param validation Map with Error information
      * @return true if size of specializations is valid
@@ -1004,7 +1004,7 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>number of selected specialization should be below limit, {@see IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY}</li></ul>
+     * <ul><li>number of selected specialization should be below limit, {@link IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY}</li></ul>
      *
      * @param validation Map with Error information
      * @return true if size of field of studies is valid

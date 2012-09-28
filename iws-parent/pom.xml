@@ -64,8 +64,14 @@
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>2.5</version>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.5.10.201208310627</version>
+            </plugin>
         </plugins>
     </reporting>
+
 
     <build>
         <plugins>
@@ -75,13 +81,14 @@
                 <version>0.5.10.201208310627</version>
                 <executions>
                     <execution>
+                        <id>report</id>
+                        <phase>pre-site</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
+                        <phase>site</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>

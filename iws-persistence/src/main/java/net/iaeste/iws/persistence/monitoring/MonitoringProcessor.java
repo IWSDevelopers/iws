@@ -30,6 +30,11 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
+ * This processor is using the Java Reflection framework to read the Annotation
+ * information from the Classes that we wish to monitor.<br />
+ *   For more information about Monitoring, please see the document residing in
+ * the same package as this class.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -121,9 +126,11 @@ public final class MonitoringProcessor {
     }
 
     /**
-     * Finds the Monitorin
-     * @param entity
-     * @return
+     * Finds the {@code MonitoringLevel} for an Entity. If no
+     * {@code MonitoringLevel} is found, then a "None" is returned.
+     *
+     * @param entity  The Entity to find the {@code MonitoringLevel} for
+     * @return Either found {@code MonitoringLevel} or "None"
      */
     public MonitoringLevel findClassMonitoringLevel(final IWSEntity entity) {
         MonitoringLevel level = MonitoringLevel.NONE;
@@ -140,6 +147,13 @@ public final class MonitoringProcessor {
         return level;
     }
 
+    /**
+     * Finds the name to be used for a given Entity. If no name is found, then
+     * a null is returned.
+     *
+     * @param entity  The Entity to find the name for
+     * @return Entity Monitoring name or null
+     */
     public String findClassMonitoringName(final IWSEntity entity) {
         String name = null;
 
@@ -155,6 +169,17 @@ public final class MonitoringProcessor {
         return name;
     }
 
+    /**
+     * Finds a list the new values for a new Entity, that are monitored. If
+     * nothing is to be monitored, then a null is returned.<br />
+     *   Based on the value of the first parameter - the method will either add
+     * all information, or only "mark" the new values.
+     *
+     * @param classLevel  The {@code MonitoringLevel} to use
+     * @param entity      The Entity, that is being created
+     * @return List with all the monitored values or null
+     * @see MonitoringLevel
+     */
     public List<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity entity) {
         final List<Field> found;
 
@@ -189,6 +214,18 @@ public final class MonitoringProcessor {
         return found;
     }
 
+    /**
+     * Finds a list of changes between two Entities. If no changes is found,
+     * then a null is returned.<br />
+     *   Based on the value of the first parameter - the method will either add
+     * all information, or only "mark" fields that have been changed.
+     *
+     * @param classLevel  The {@code MonitoringLevel} to use
+     * @param oldEntity   The Old Entity, that is being updated
+     * @param newEntity   The New Entity, containing the new values
+     * @return List with all the monitored changes or null
+     * @see MonitoringLevel
+     */
     public List<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity oldEntity, final IWSEntity newEntity) {
         final List<Field> found;
 

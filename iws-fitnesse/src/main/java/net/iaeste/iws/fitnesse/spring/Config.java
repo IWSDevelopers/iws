@@ -28,9 +28,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 @Configuration
 @EnableTransactionManagement
@@ -44,9 +44,8 @@ public class Config {
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-triggers.sql")
-//                .addScript("classpath:/hsqldb/exchange-views.sql")
-//                .addScript("classpath:/hsqldb/exchange-data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
                 .build();
     }
 

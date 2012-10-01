@@ -1,3 +1,10 @@
+-- =============================================================================
+-- Default Views for the Core part of IWS
+-- =============================================================================
+
+-- =============================================================================
+-- List the Permissions for a User
+-- =============================================================================
 create view user_permissions as
   select
     u.id         as uid,
@@ -28,6 +35,9 @@ create view user_permissions as
     and p.id = p2t.permission_id
     and t.id = p2t.grouptype_id;
 
+-- =============================================================================
+-- List the Permissions for a Group
+-- =============================================================================
 create view group_permissions as
   select
     t.id   as tid,

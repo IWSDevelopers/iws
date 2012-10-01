@@ -46,9 +46,8 @@ public class SpringConfig {
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-triggers.sql")
-                //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
-                //.addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql");
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
                 .build();
     }
 

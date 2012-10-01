@@ -41,7 +41,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
      */
     @Override
     public void testCase(final String str) {
-
+        testCase = str;
     }
 
     /**

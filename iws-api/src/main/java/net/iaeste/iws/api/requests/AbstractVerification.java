@@ -24,10 +24,10 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection VariableNotUsedInsideIf
- * @since 1.7
  */
 public abstract class AbstractVerification implements Verifiable {
 
@@ -37,7 +37,9 @@ public abstract class AbstractVerification implements Verifiable {
     /** The e-mail compliance regular expression. */
     private static final Pattern EMAIL_PATTERN = Pattern.compile(IWSConstants.EMAIL_REGEX);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void verify() throws VerificationException {
         final Map<String, String> validationResult = validate();
@@ -187,32 +189,6 @@ public abstract class AbstractVerification implements Verifiable {
      * @param validation Map with Error information
      * @param field      The name of the field (value) to be verified
      * @param value      The value to verify
-     * @param maxLength  The maximally allowed length
-     * @return True if field is valid, otherwise false
-     */
-    protected boolean isWithinLimits(final Map<String, String> validation, final String field, final String value, final int maxLength) {
-        boolean check = isNotNull(validation, field, value);
-
-        if (check) {
-            if (value.length() > maxLength) {
-                validation.put(field, format("the value is longer than %d.", maxLength));
-                check = false;
-            }
-        }
-
-        return check;
-    }
-
-    /**
-     * The method checks that the value is neither null nor outside of the
-     * required range of values. If an error is found, then the information is
-     * added to the validation Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
-     * will return true.
-     *
-     * @param validation Map with Error information
-     * @param field      The name of the field (value) to be verified
-     * @param value      The value to verify
      * @param minLength  The minimally allowed length
      * @param maxLength  The maximally allowed length
      * @return True if field is valid, otherwise false
@@ -249,33 +225,6 @@ public abstract class AbstractVerification implements Verifiable {
         if (check) {
             if (value.size() > maxSize) {
                 validation.put(field, format("the value size is bigger than %d.", maxSize));
-                check = false;
-            }
-        }
-
-        return check;
-    }
-
-    /**
-     * The method checks that the value is neither null nor outside of the
-     * required range of values. If an error is found, then the information is
-     * added to the validation Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
-     * will return true.
-     *
-     * @param validation Map with Error information
-     * @param field      The name of the field (value) to be verified
-     * @param value      The value to verify
-     * @param maxSize  The maximally allowed length
-     * @return True if field is valid, otherwise false
-     */
-    protected boolean isWithinLimits(final Map<String, String> validation, final String field, final Collection<?> value, final int minSize,
-                                     final int maxSize) {
-        boolean check = isNotNull(validation, field, value);
-
-        if (check) {
-            if (value.size() > maxSize || value.size() < minSize) {
-                addError(validation, field, format("The value size is not within the range %d to %d.", minSize, maxSize));
                 check = false;
             }
         }

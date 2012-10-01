@@ -116,6 +116,18 @@ public class ExchangeService extends CommonService {
         return response;
     }
 
+    /**
+     * Will attempt to persist a new Offer, meaning that if the Offer already
+     * exists (check against the given refno) and the user is allowed to work
+     * with it, then it us updated. If no such Offer exists, then a new Offer
+     * is created and assigned to the given Group.<br />
+     *   The method returns an OfferResponse object with error information. No
+     * information about the Offer is returned.
+     *
+     * @param authentication  User & Group information
+     * @param request         Offer Request information, i.e. OfferDTO
+     * @return OfferResponse with error information
+     */
     public OfferResponse processOffer_new(final Authentication authentication, final ProcessOfferRequest request) {
          final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
          final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());

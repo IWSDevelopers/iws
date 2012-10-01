@@ -78,19 +78,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>gsbase</groupId>
-            <artifactId>gsbase</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>gsbase</groupId>
+            <artifactId>gsbase</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
-import org.apache.commons.lang3.StringUtils;
+import net.iaeste.iws.common.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,18 +24,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Tranformer for the Collections of values, handles various transformations
  * to/from a string value
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class CollectionTransformer {
-    public static final String delimiter = "|";
-    private static final String delimiterRegExp = "\\|";
+
+    public static final String DELIMITER = "|";
+    private static final String DELIMITER_REG_EXP = "\\|";
+    private static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
 
     private CollectionTransformer() {
     }
@@ -47,20 +50,22 @@ public class CollectionTransformer {
      * @return concatenated String
      */
     public static <T extends Enum<T>> String concatEnumCollection(final Collection<T> collection) {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder(10);
+
         if (collection != null && !collection.isEmpty()) {
-            //noinspection ForLoopWithMissingComponent
-            for (Iterator<T> iterator = collection.iterator(); iterator.hasNext(); ) {
+            final Iterator<T> iterator = collection.iterator();
+
+            while (iterator.hasNext()) {
                 final T item = iterator.next();
                 sb.append(item.name());
                 if (iterator.hasNext()) {
-                    sb.append(delimiter);
+                    sb.append(DELIMITER);
                 }
             }
         }
+
         return sb.toString();
     }
-
 
     /**
      * Split a string value into a list of enum values
@@ -70,9 +75,9 @@ public class CollectionTransformer {
      * @return List of enum values
      */
     public static <T extends Enum<T>> List<T> explodeEnumList(final Class<T> enumType, final String value) {
-        final List<T> result = new ArrayList<>();
+        final List<T> result = new ArrayList<>(10);
         if (value != null) {
-            final String[] array = value.split(delimiterRegExp);
+            final String[] array = SPLIT_PATTERN.split(value);
             for (final String s : array) {
                 try {
                     final T v = Enum.valueOf(enumType, s);
@@ -93,11 +98,15 @@ public class CollectionTransformer {
      */
     public static <T extends Enum<T>> Set<T> explodeEnumSet(final Class<T> enumType, final String value) {
         final List<T> list = explodeEnumList(enumType, value);
+        final Set<T> result;
+
         if (list.isEmpty()) {
-            return EnumSet.noneOf(enumType);
+            result = EnumSet.noneOf(enumType);
         } else {
-            return EnumSet.copyOf(list);
+            result = EnumSet.copyOf(list);
         }
+
+        return result;
     }
 
     /**
@@ -107,7 +116,7 @@ public class CollectionTransformer {
      * @return concatenated String
      */
     public static String join(final Collection<?> collection) {
-        return StringUtils.join(collection, delimiter);
+        return StringUtils.join(collection, DELIMITER);
     }
 
     /**
@@ -117,10 +126,12 @@ public class CollectionTransformer {
      * @return List of Strings values
      */
     public static List<String> explodeStringList(final String value) {
-        List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<>(10);
+
         if (value != null) {
-            result = Arrays.asList(StringUtils.split(value, delimiter));
+            result = Arrays.asList(StringUtils.split(value, DELIMITER));
         }
+
         return result;
     }
 

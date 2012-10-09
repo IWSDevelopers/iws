@@ -38,9 +38,9 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class ExchangeClient implements Exchange {
 
@@ -50,8 +50,7 @@ public final class ExchangeClient implements Exchange {
      * Default Constructor.
      */
     public ExchangeClient() {
-        final ConnectionFactory factory = new ConnectionFactory();
-        exchange = factory.getExchangeImplementation();
+        exchange = ClientFactory.getInstance().getExchangeImplementation();
     }
 
     /**
@@ -83,12 +82,7 @@ public final class ExchangeClient implements Exchange {
      */
     @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
-        // TODO: remove if transactions work
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.getEntityManager().getTransaction().begin();
-        OfferResponse response = exchange.processOffer(token, request);
-        factory.getEntityManager().getTransaction().commit();
-        return response;
+        return exchange.processOffer(token, request);
     }
 
     /**

@@ -38,8 +38,7 @@ public final class AccessClient implements Access {
      * Default Constructor.
      */
     public AccessClient() {
-        final ConnectionFactory factory = new ConnectionFactory();
-        access = factory.getAccessImplementation();
+        access = ClientFactory.getInstance().getAccessImplementation();
     }
 
     /**

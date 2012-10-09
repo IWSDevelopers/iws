@@ -38,16 +38,18 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
+@EnableTransactionManagement
 public final class SpringExchangeClient implements Exchange {
 
     private final Exchange exchange;
@@ -61,11 +63,15 @@ public final class SpringExchangeClient implements Exchange {
         exchange = new ExchangeController(factory);
     }
 
+    public SpringExchangeClient(final ServiceFactory factory) {
+        exchange = new ExchangeController(factory);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         return exchange.fetchEmployers(token, request);
     }
@@ -74,7 +80,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible processFaculties(final AuthenticationToken token, final FacultyRequest request) {
         return exchange.processFaculties(token, request);
     }
@@ -83,7 +89,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         return exchange.fetchFaculties(token, request);
     }
@@ -101,7 +107,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         return exchange.deleteOffer(token, request);
     }
@@ -110,7 +116,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return exchange.fetchOffers(token, request);
     }
@@ -119,7 +125,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
         return exchange.processOfferTemplates(token, request);
     }
@@ -128,7 +134,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         return exchange.fetchOfferTemplates(token, request);
     }
@@ -137,7 +143,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible processPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
         return exchange.processPublishGroups(token, request);
     }
@@ -146,7 +152,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         return exchange.fetchPublishGroups(token, request);
     }
@@ -155,7 +161,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible processStudents(final AuthenticationToken token, final StudentRequest request) {
         return exchange.processStudents(token, request);
     }
@@ -164,7 +170,7 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
         return exchange.fetchStudents(token, request);
     }

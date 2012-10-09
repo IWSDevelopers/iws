@@ -31,11 +31,11 @@ import java.util.Properties;
  * @since   1.7
  * @noinspection StaticNonFinalField
  */
-public class Configuration {
+public class Settings {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Settings.class);
     private static final Object INSTANCE_LOCK = new Object();
-    private static Configuration instance = null;
+    private static Settings instance = null;
 
     /** Internal Properties object, contains default and overridden settings. */
     private final Object propertyLock = new Object();
@@ -61,7 +61,7 @@ public class Configuration {
     private static final Integer DEFAULT_POSTGRESQL_PORT = 5432;
 
     // =========================================================================
-    // Object Instantiation Methods.
+    // Object Instantiation Methods
     // =========================================================================
 
     /**
@@ -69,7 +69,7 @@ public class Configuration {
      * Constructor will try to load the Properties, if it fails - the default
      * values will be used, and an error is logged.
      */
-    private Configuration() {
+    private Settings() {
         properties = new Properties();
 
         try (InputStream stream = getClass().getResourceAsStream('/' + PROPERTIES_FILE)) {
@@ -84,12 +84,12 @@ public class Configuration {
     /**
      * Singleton class instantiator.
      *
-     * @return Client Configuration instance
+     * @return Client Settings instance
      */
-    public static Configuration getInstance() {
+    public static Settings getInstance() {
         synchronized (INSTANCE_LOCK) {
             if (instance == null) {
-                instance = new Configuration();
+                instance = new Settings();
             }
 
             return instance;

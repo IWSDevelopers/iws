@@ -22,12 +22,13 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
 /**
- *
  * The spring based implementation uses the "Test" setup for Spring, to provide
  * a working IWS Library instance. As we're using JPA for our persistence layer,
  * it is important that all invocations is made transactional, hence the need
@@ -37,6 +38,7 @@ import javax.persistence.EntityManager;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@EnableTransactionManagement
 public final class SpringAccessClient implements Access {
 
     private final Access access;
@@ -50,11 +52,15 @@ public final class SpringAccessClient implements Access {
         access = new AccessController(factory);
     }
 
+    public SpringAccessClient(final ServiceFactory factory) {
+        access = new AccessController(factory);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         return access.generateSession(request);
     }
@@ -63,6 +69,7 @@ public final class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible deprecateSession(final AuthenticationToken token) {
         return access.deprecateSession(token);
     }
@@ -71,6 +78,7 @@ public final class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public PermissionResponse fetchPermissions(final AuthenticationToken token) {
         return access.fetchPermissions(token);
     }

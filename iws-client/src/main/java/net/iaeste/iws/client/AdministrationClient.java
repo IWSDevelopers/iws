@@ -41,8 +41,7 @@ public final class AdministrationClient implements Administration {
      * Default Constructor.
      */
     public AdministrationClient() {
-        final ConnectionFactory factory = new ConnectionFactory();
-        administration = factory.getAdministrationImplementation();
+        administration = ClientFactory.getInstance().getAdministrationImplementation();
     }
 
     /**

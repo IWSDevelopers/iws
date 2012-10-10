@@ -29,19 +29,21 @@ import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.services.ServiceFactory;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@EnableTransactionManagement
+@Transactional
 public final class SpringAdministrationclient implements Administration {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final Administration administration;
 
@@ -49,7 +51,7 @@ public final class SpringAdministrationclient implements Administration {
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringAdministrationclient(final EntityManager entityManager) {
+    public SpringAdministrationclient() {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         administration = new AdministrationController(factory);
     }
@@ -62,7 +64,6 @@ public final class SpringAdministrationclient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible processUser(final AuthenticationToken token, final ProcessUserRequest request) {
         return administration.processUser(token, request);
     }
@@ -71,7 +72,6 @@ public final class SpringAdministrationclient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public UserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
         return administration.fetchUsers(token, request);
     }
@@ -80,7 +80,6 @@ public final class SpringAdministrationclient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible processGroups(final AuthenticationToken token, final GroupRequest request) {
         return administration.processGroups(token, request);
     }
@@ -89,7 +88,6 @@ public final class SpringAdministrationclient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public GroupResponse fetchGroups(final AuthenticationToken token, final FetchGroupRequest request) {
         return administration.fetchGroups(token, request);
     }
@@ -98,7 +96,6 @@ public final class SpringAdministrationclient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
         return administration.processCountries(token, request);
     }
@@ -107,7 +104,6 @@ public final class SpringAdministrationclient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
         return administration.fetchCountries(token, request);
     }
@@ -116,7 +112,6 @@ public final class SpringAdministrationclient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         return administration.processUserGroupAssignment(token, request);
     }

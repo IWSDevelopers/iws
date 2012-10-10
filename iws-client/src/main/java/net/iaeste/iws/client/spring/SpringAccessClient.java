@@ -22,32 +22,32 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
- * The spring based implementation uses the "Test" setup for Spring, to provide
- * a working IWS Library instance. As we're using JPA for our persistence layer,
- * it is important that all invocations is made transactional, hence the need
- * for the "@Transactional" annotation.
+ * This Spring client is initialized as a Spring Bean. The purpose is to
+ * "emulate" a proper JEE based EJB.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@EnableTransactionManagement
+@Transactional
 public final class SpringAccessClient implements Access {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final Access access;
 
     /**
-     * Default Constructor, initializes the Core Service Factory with the Spring
-     * based EntityManager instance.
+     * The Constructor is initialized as a Spring Bean, meaning that
+     * prerequisites are initialized by Spring.
      */
-    public SpringAccessClient(final EntityManager entityManager) {
+    public SpringAccessClient() {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         access = new AccessController(factory);
     }
@@ -60,7 +60,6 @@ public final class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         return access.generateSession(request);
     }
@@ -69,7 +68,6 @@ public final class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public Fallible deprecateSession(final AuthenticationToken token) {
         return access.deprecateSession(token);
     }
@@ -78,7 +76,6 @@ public final class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public PermissionResponse fetchPermissions(final AuthenticationToken token) {
         return access.fetchPermissions(token);
     }

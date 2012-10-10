@@ -20,6 +20,7 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.client.spring.Beans;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * <p>The ClientFactory will use the provided Properties, to determine which
@@ -35,6 +36,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public final class ClientFactory {
 
+    private static final Boolean USE_XML_CONFIG = false;
     private static final Object LOCK = new Object();
     private static ClientFactory instance = null;
     private final ConfigurableApplicationContext context;
@@ -49,7 +51,11 @@ public final class ClientFactory {
      * based BeanConfiguration class, that emulates a primitive AppServer.
      */
     private ClientFactory() {
-        context = new AnnotationConfigApplicationContext(Beans.class);
+        if (USE_XML_CONFIG) {
+            context = new ClassPathXmlApplicationContext("/net/iaeste/iws/client/spring/beans.xml");
+        } else {
+            context = new AnnotationConfigApplicationContext(Beans.class);
+        }
     }
 
     /**

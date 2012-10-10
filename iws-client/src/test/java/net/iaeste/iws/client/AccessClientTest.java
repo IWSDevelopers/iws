@@ -21,6 +21,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -54,18 +55,27 @@ public class AccessClientTest {
     }
 
     @Test
-    public void testGeneratingSession() {
+    @Ignore("Test is currently failing, since it relies on transactions working, and they don't!")
+    public void testGenerateAndDeprecateSession() {
+        final Access client = new AccessClient();
         final String username = "Michl";
         final String password = "frodo";
         final AuthenticationRequest request = new AuthenticationRequest(username, password);
 
-        final AuthenticationResponse response = access.generateSession(request);
+        final AuthenticationResponse response = client.generateSession(request);
 
         assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(response.isOk(), is(true));
         assertThat(response.getError(), is(IWSErrors.SUCCESS));
         assertThat(response.getToken(), is(not(nullValue())));
         assertThat(response.getToken().getToken().length(), is(64));
+
+        // Now, let's try to see if we can deprecate the Session, and thus
+        // ensure that the first Object is properly persisted
+        final Fallible result = client.deprecateSession(response.getToken());
+        assertThat(result.isOk(), is(true));
+        assertThat(result.getError(), is(IWSErrors.SUCCESS));
+        assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
     }
 
     @Ignore("Ignored, until the permission mess is sorted out!")

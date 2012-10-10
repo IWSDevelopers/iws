@@ -26,8 +26,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -35,10 +35,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 /**
- * The purpose of the Client module is to provide a very simple self-configured
- * implementation of the IWS, that others can use. This class provides the
- * Spring based configuration options to enable this, and thus load the IWS
- * as a library, rather than via a real Application Server instance.
+ * The purpose of the Client module is to facilitate a very simple self
+ * configured implementation of the IWS, that others can use. This class
+ * provides the Spring based configuration options to enable this, and thus load
+ * the IWS as a library, rather than via a real Application Server instance.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -48,6 +48,9 @@ import javax.sql.DataSource;
 @ComponentScan("net.iaeste.iws.client.spring")
 @EnableTransactionManagement
 public class Beans {
+
+    // Need a JavaConfig equivalent for <tx:annotation-config/>
+    // see: http://blog.springsource.com/2011/02/17/spring-3-1-m1-featurespec/
 
     private final Settings settings = Settings.getInstance();
 
@@ -76,33 +79,38 @@ public class Beans {
 
     @Bean(name = "serviceFactory")
     public ServiceFactory serviceFactory() {
-        return new ServiceFactory(entityManagerFactoryBean().getObject().createEntityManager());
+        return new ServiceFactory(entityManagerFactory().getObject().createEntityManager());
     }
 
-    @Bean(name = "entityManagerFactoryBean")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    @Bean(name = "entityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
         factoryBean.setPackagesToScan("net.iaeste.iws.persistence");
+        factoryBean.setPersistenceUnitName("client");
         factoryBean.setDataSource(dataSource());
-        factoryBean.setJpaVendorAdapter(vendorAdapter);
+        factoryBean.setJpaDialect(new HibernateJpaDialect());
+        factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         return factoryBean;
+    }
+
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager transactionManager() {
+        final JpaTransactionManager transactionManager = new JpaTransactionManager();
+
+        transactionManager.setDataSource(dataSource());
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        transactionManager.setPersistenceUnitName("client");
+        transactionManager.afterPropertiesSet();
+
+        return transactionManager;
     }
 
     @Bean(name = "dataSource")
     public DataSource dataSource() {
         final Boolean usePG = settings.getUsePostgreSQLDatabase();
         return usePG ? preparePostgreSQLDataSource() : prepareHSQLDataSource();
-    }
-
-    @Bean(name = "transactionManager")
-    public PlatformTransactionManager transactionManager() {
-        final JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
-
-        return transactionManager;
     }
 
     // =========================================================================

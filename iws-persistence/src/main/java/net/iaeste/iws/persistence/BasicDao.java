@@ -30,13 +30,12 @@ import java.util.List;
 public interface BasicDao {
 
     /**
-     * Persist the given Entity into the database.
+     * Persist the given Entity into the database. Note, this method should be
+     * used only, if no monitoring is required. Examples, when creating a new
+     * session, changing password, etc.
      *
      * @param entity Entity to persist
-     * @deprecated please use one of the other persist methods, this one cannot
-     *             work with the monitoring
      */
-    @Deprecated
     void persist(IWSEntity entity);
 
     /**

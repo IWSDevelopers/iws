@@ -21,6 +21,7 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
@@ -67,39 +68,38 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public UserEntity findUser(final AuthenticationToken token) {
-        final Query query = entityManager.createNamedQuery("session.findUser");
-        query.setParameter("key", token.getToken());
-        final List<UserEntity> found = query.getResultList();
+    public SessionEntity findActiveSession(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("session.findByUser");
+        query.setParameter("id", user.getId());
+        final List<SessionEntity> found = query.getResultList();
 
-        // Error handling, unless we find a single active session, then this is
-        // an error
-        if (found.isEmpty()) {
-            throw new AuthenticationException("No AuthenticationToken found.");
-        }
         if (found.size() > 1) {
-            throw new AuthenticationException("Multiple AuthenticationToken found, please consult the DBA's.");
+            throw new AuthenticationException("Multiple Active sessions exists.");
         }
 
-        return found.get(0);
+        return found.isEmpty() ? null : found.get(0);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public UserEntity findActiveSession(final AuthenticationToken token) {
-        final Query query = entityManager.createNamedQuery("session.findActive");
+    public SessionEntity findActiveSession(final AuthenticationToken token) {
+        final Query query = entityManager.createNamedQuery("session.findByToken");
         query.setParameter("key", token.getToken());
-        final List<SessionEntity> entities = query.getResultList();
-        if (entities.isEmpty()) {
-            throw new AuthenticationException("No AuthenticationToken found.");
-        }
-        if (entities.size() > 1) {
-            throw new AuthenticationException("Multiple AuthenticationToken found, please consult the DBA's.");
-        }
 
-        return entities.get(0).getUser();
+        return findUniqueResult(query, "AuthenticationToken");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer deprecateSession(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("session.deprecate");
+        query.setParameter("id", user.getId());
+
+        return query.executeUpdate();
     }
 
     /**
@@ -119,7 +119,24 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public GroupEntity findGroup(final AuthenticationToken token, final Permission permission) {
-
         return null;
+    }
+
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
+
+    private <T extends IWSEntity> T findUniqueResult(final Query query, final String name) {
+        final List<T> found = query.getResultList();
+
+        if (found.isEmpty()) {
+            throw new AuthenticationException("No " + name + " was found.");
+        }
+
+        if (found.size() > 1) {
+            throw new AuthenticationException("Multiple " + name + "s were found.");
+        }
+
+        return found.get(0);
     }
 }

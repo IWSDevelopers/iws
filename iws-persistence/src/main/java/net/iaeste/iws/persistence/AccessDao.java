@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
@@ -30,8 +31,12 @@ import java.util.List;
 public interface AccessDao extends BasicDao {
 
     UserEntity findUserByCredentials(String username, String passwordHashcode);
-    UserEntity findUser(final AuthenticationToken token);
-    UserEntity findActiveSession(AuthenticationToken token);
+
+    SessionEntity findActiveSession(UserEntity user);
+
+    SessionEntity findActiveSession(AuthenticationToken token);
+
+    Integer deprecateSession(UserEntity user);
 
     List<UserPermissionView> findPermissions(Integer userId);
 

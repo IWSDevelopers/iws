@@ -17,8 +17,8 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.SessionEntity;
@@ -35,7 +35,7 @@ import java.util.UUID;
  * @since   1.7
  * @noinspection ObjectAllocationInLoop
  */
-public class AccessService {
+public final class AccessService {
 
     private final AccessDao dao;
 
@@ -44,38 +44,30 @@ public class AccessService {
     }
 
     public AuthenticationToken generateSession(final AuthenticationRequest request) {
+        // We will always get a result, since an exception is otherwise thrown
         final UserEntity user = findUserFromCredentials(request);
-        final String sessionKey = generateAndPersistSessionKey(user);
-        final AuthenticationToken token = new AuthenticationToken(sessionKey);
+        final SessionEntity activeSession = dao.findActiveSession(user);
 
-        return token;
-    }
+        final String key;
+        if (activeSession == null) {
+            key = generateAndPersistSessionKey(user);
+        } else {
+            key = activeSession.getSessionKey();
+        }
 
-    private UserEntity findUserFromCredentials(final AuthenticationRequest request) {
-        // First, let's read the Password in clear-text (lower cased), and
-        // generate the Hashcode value for it.
-        final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-        final String hashcode = HashcodeGenerator.generateSHA256(password);
-
-        // Now, let's find the user, based on the credentials
-        return dao.findUserByCredentials(request.getUsername(), hashcode);
-    }
-
-    private String generateAndPersistSessionKey(final UserEntity user) {
-        // Generate new Hashcode from the User Credentials, and some other entropy
-        final String entropy = UUID.randomUUID().toString() + user.getUserName();
-        final String sessionKey = HashcodeGenerator.generateSHA256(entropy);
-
-        // Generate the new Session, and persist it
-        final SessionEntity entity = new SessionEntity(user, sessionKey);
-        dao.persist(entity);
-
-        // Now, let's return the newly generated SessionKey
-        return sessionKey;
+        return new AuthenticationToken(key);
     }
 
     public void deprecateSession(final AuthenticationToken token) {
-        throw new NotImplementedException("The 'deprecateSession' method is not yet implemented");
+        final SessionEntity session = dao.findActiveSession(token);
+        final Integer updated = dao.deprecateSession(session.getUser());
+
+        // If zero records were updated, then the session was already
+        // deprecated. If one record was updated, then the currently
+        // active session has been successfully deprecated.
+        if (updated > 1) {
+            throw new AuthorizationException("Multiple Active Sessions was found.");
+        }
     }
 
     public List<Authorization> findPermissions(final AuthenticationToken token) {
@@ -91,5 +83,28 @@ public class AccessService {
         }
 
         return result;
+    }
+
+    private String generateAndPersistSessionKey(final UserEntity user) {
+        // Generate new Hashcode from the User Credentials, and some other entropy
+        final String entropy = UUID.randomUUID().toString() + user.getPassword();
+        final String sessionKey = HashcodeGenerator.generateSHA256(entropy);
+
+        // Generate the new Session, and persist it
+        final SessionEntity entity = new SessionEntity(user, sessionKey);
+        dao.persist(entity);
+
+        // Now, let's return the newly generated SessionKey
+        return sessionKey;
+    }
+
+    private UserEntity findUserFromCredentials(final AuthenticationRequest request) {
+        // First, let's read the Password in clear-text (lower cased), and
+        // generate the Hashcode value for it.
+        final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        final String hashcode = HashcodeGenerator.generateSHA256(password);
+
+        // Now, let's find the user, based on the credentials
+        return dao.findUserByCredentials(request.getUsername(), hashcode);
     }
 }

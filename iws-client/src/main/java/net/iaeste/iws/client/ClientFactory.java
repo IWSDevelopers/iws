@@ -18,9 +18,15 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.client.spring.Beans;
+import net.iaeste.iws.client.spring.SpringAccessClient;
+import net.iaeste.iws.client.spring.SpringAdministrationclient;
+import net.iaeste.iws.client.spring.SpringExchangeClient;
+import net.iaeste.iws.core.services.ServiceFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import javax.persistence.EntityManagerFactory;
 
 /**
  * <p>The ClientFactory will use the provided Properties, to determine which
@@ -36,13 +42,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public final class ClientFactory {
 
-    private static final Boolean USE_XML_CONFIG = false;
+    private static final Boolean USE_XML_CONFIG = true;
     private static final Object LOCK = new Object();
     private static ClientFactory instance = null;
-    private final ConfigurableApplicationContext context;
+    private final ServiceFactory serviceFactory;
 
     // =========================================================================
-    // Object Instantiation Methods
+    // Factory Instantiation Methods
     // =========================================================================
 
     /**
@@ -51,11 +57,15 @@ public final class ClientFactory {
      * based BeanConfiguration class, that emulates a primitive AppServer.
      */
     private ClientFactory() {
+        final ConfigurableApplicationContext context;
+
         if (USE_XML_CONFIG) {
             context = new ClassPathXmlApplicationContext("/net/iaeste/iws/client/spring/beans.xml");
         } else {
             context = new AnnotationConfigApplicationContext(Beans.class);
         }
+
+        serviceFactory = new ServiceFactory(context.getBean(EntityManagerFactory.class).createEntityManager());
     }
 
     /**
@@ -78,14 +88,14 @@ public final class ClientFactory {
     // =========================================================================
 
     public Access getAccessImplementation() {
-        return context.getBean(Access.class);
+        return new SpringAccessClient(serviceFactory);
     }
 
     public Administration getAdministrationImplementation() {
-        return context.getBean(Administration.class);
+        return new SpringAdministrationclient(serviceFactory);
     }
 
     public Exchange getExchangeImplementation() {
-        return context.getBean(Exchange.class);
+        return new SpringExchangeClient(serviceFactory);
     }
 }

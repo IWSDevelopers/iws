@@ -43,9 +43,9 @@ public class Config {
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange_tables.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange_views.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange_data.sql")
                 .build();
     }
 

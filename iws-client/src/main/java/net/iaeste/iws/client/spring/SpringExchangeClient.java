@@ -40,9 +40,6 @@ import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -51,19 +48,12 @@ import javax.persistence.PersistenceContext;
 @Transactional
 public final class SpringExchangeClient implements Exchange {
 
-    @PersistenceContext
-    private EntityManager entityManager;
     private final Exchange exchange;
 
     /**
      * Default Constructor, initializes the Core Service Factory with the Spring
      * based EntityManager instance.
      */
-    public SpringExchangeClient() {
-        final ServiceFactory factory = new ServiceFactory(entityManager);
-        exchange = new ExchangeController(factory);
-    }
-
     public SpringExchangeClient(final ServiceFactory factory) {
         exchange = new ExchangeController(factory);
     }

@@ -14,11 +14,7 @@
  */
 package net.iaeste.iws.client.spring;
 
-import net.iaeste.iws.api.Access;
-import net.iaeste.iws.api.Administration;
-import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.client.Settings;
-import net.iaeste.iws.core.services.ServiceFactory;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -55,32 +51,8 @@ public class Beans {
     private final Settings settings = Settings.getInstance();
 
     // =========================================================================
-    // IWS Controller Beans
-    // =========================================================================
-
-    @Bean(name = "access")
-    public Access access() {
-        return new SpringAccessClient(serviceFactory());
-    }
-
-    @Bean(name = "administration")
-    public Administration administration() {
-        return new SpringAdministrationclient(serviceFactory());
-    }
-
-    @Bean(name = "exchange")
-    public Exchange exchange() {
-        return new SpringExchangeClient(serviceFactory());
-    }
-
-    // =========================================================================
     // Database & Services Setup
     // =========================================================================
-
-    @Bean(name = "serviceFactory")
-    public ServiceFactory serviceFactory() {
-        return new ServiceFactory(entityManagerFactory().getObject().createEntityManager());
-    }
 
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -123,9 +95,9 @@ public class Beans {
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-init.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-data.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange-views.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange_tables.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange_data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/exchange_views.sql")
                 .build();
     }
 

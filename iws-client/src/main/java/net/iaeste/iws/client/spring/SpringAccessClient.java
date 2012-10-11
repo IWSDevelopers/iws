@@ -24,9 +24,6 @@ import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 /**
  * This Spring client is initialized as a Spring Bean. The purpose is to
  * "emulate" a proper JEE based EJB.
@@ -38,19 +35,7 @@ import javax.persistence.PersistenceContext;
 @Transactional
 public final class SpringAccessClient implements Access {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private final Access access;
-
-    /**
-     * The Constructor is initialized as a Spring Bean, meaning that
-     * prerequisites are initialized by Spring.
-     */
-    public SpringAccessClient() {
-        final ServiceFactory factory = new ServiceFactory(entityManager);
-        access = new AccessController(factory);
-    }
 
     public SpringAccessClient(final ServiceFactory factory) {
         access = new AccessController(factory);

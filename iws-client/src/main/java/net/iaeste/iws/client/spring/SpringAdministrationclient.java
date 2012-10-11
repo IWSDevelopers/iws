@@ -31,9 +31,6 @@ import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -42,19 +39,7 @@ import javax.persistence.PersistenceContext;
 @Transactional
 public final class SpringAdministrationclient implements Administration {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private final Administration administration;
-
-    /**
-     * Default Constructor, initializes the Core Service Factory with the Spring
-     * based EntityManager instance.
-     */
-    public SpringAdministrationclient() {
-        final ServiceFactory factory = new ServiceFactory(entityManager);
-        administration = new AdministrationController(factory);
-    }
 
     public SpringAdministrationclient(final ServiceFactory factory) {
         administration = new AdministrationController(factory);

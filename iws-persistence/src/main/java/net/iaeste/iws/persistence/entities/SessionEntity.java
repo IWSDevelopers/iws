@@ -43,12 +43,12 @@ import java.util.Date;
                         "where s.active = true " +
                         "  and s.sessionKey = :key"),
         @NamedQuery(name = "session.findByUser",
-                query = "select u from SessionEntity s, UserEntity u " +
+                query = "select s from SessionEntity s " +
                         "where s.active = true " +
                         "  and s.user.id = :id"),
         @NamedQuery(name = "session.deprecate",
                 query = "update SessionEntity s set " +
-                        "   s.active = false, " +
+                        "   s.active = :status, " +
                         "   s.modified = current_timestamp " +
                         "where s.active = true " +
                         "  and s.user.id = :id")

@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.persistence.entities.SessionEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import net.iaeste.iws.persistence.views.UserPermissionView;
@@ -39,6 +41,7 @@ import static org.junit.Assert.assertThat;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
 public class AccessDaoTest {
@@ -46,10 +49,35 @@ public class AccessDaoTest {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Test
+    @Transactional
+    public void testSession() {
+        final AccessDao dao = new AccessJpaDao(entityManager);
+        final String key = "12345678901234567890123456789012";
+        final UserEntity user = dao.findUserByCredentials("kim", "ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f");
+
+        // Create a new Session for a user, and save it in the database
+        final SessionEntity entity = new SessionEntity();
+        entity.setSessionKey(key);
+        entity.setUser(user);
+        entity.setActive(true);
+        dao.persist(entity);
+
+        // Find the newly created Session, deprecate it, and save it again
+        final SessionEntity found = dao.findActiveSession(user);
+        assertThat(found, is(not(nullValue())));
+        found.setActive(false);
+        dao.persist(found);
+
+        // Now, we should not be able to find it
+        final SessionEntity notFound = dao.findActiveSession(user);
+        assertThat(notFound, is(nullValue()));
+    }
+
     @Ignore("Ignored, until the permission mess is sorted out!")
     @Test
     @Transactional
-    public void testAccess() {
+    public void oldTestAccess() {
         final AccessDao dao = new AccessJpaDao(entityManager);
         //Michl: Nase, NC Member           in Austria
         final List<UserPermissionView> result = dao.findPermissions(1);

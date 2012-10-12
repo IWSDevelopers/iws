@@ -74,10 +74,14 @@ public class SessionEntityTest {
     public void testSessionJPAStorage() throws Exception {
         final String key = HashcodeGenerator.generateSHA512("This is the test string to build the SHA 512 on.");
         final SessionEntity entity = new SessionEntity();
+        final Query userQuery = entityManager.createNamedQuery("user.findById");
+        userQuery.setParameter("id", 1L);
+        final UserEntity user = (UserEntity) userQuery.getSingleResult();
         entity.setSessionKey(key);
+        entity.setUser(user);
         entityManager.persist(entity);
 
-        final Query query = entityManager.createQuery("select s from SessionEntity s where sessionKey = :key");
+        final Query query = entityManager.createNamedQuery("session.findByToken");
         query.setParameter("key", key);
         final List<SessionEntity> entities = (List<SessionEntity>) query.getResultList();
 

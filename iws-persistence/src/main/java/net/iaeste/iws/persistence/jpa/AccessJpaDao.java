@@ -97,6 +97,9 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     @Override
     public Integer deprecateSession(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("session.deprecate");
+        // Funny, setting the status to false directly in the query, causes an
+        // SQL Grammar Exception
+        query.setParameter("status", false);
         query.setParameter("id", user.getId());
 
         return query.executeUpdate();

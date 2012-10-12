@@ -35,7 +35,7 @@ import javax.persistence.Table;
         @NamedQuery(
                 name = "user.loginCredentials",
                 query = "select u from UserEntity u " +
-                        "where u.userName = :username" +
+                        "where lower(u.userName) = lower(:username)" +
                         "  and u.password = :password"),
         @NamedQuery(
                 name = "user.findById",

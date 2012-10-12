@@ -22,31 +22,40 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
- * This Spring client is initialized as a Spring Bean. The purpose is to
- * "emulate" a proper JEE based EJB.
+ * Spring based Access Client, which wraps the Access Controller from the
+ * IWS core module within a transactional layer.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 @Transactional
+@Repository("springAccessClient")
 public final class SpringAccessClient implements Access {
 
-    private final Access access;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public SpringAccessClient(final ServiceFactory factory) {
-        access = new AccessController(factory);
-    }
+    private final Object lock = new Object();
+    private Access access = null;
+
+    // =========================================================================
+    // IWS API Access Functionality
+    // =========================================================================
 
     /**
      * {@inheritDoc}
      */
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        return access.generateSession(request);
+        return getAccess().generateSession(request);
     }
 
     /**
@@ -54,7 +63,7 @@ public final class SpringAccessClient implements Access {
      */
     @Override
     public Fallible deprecateSession(final AuthenticationToken token) {
-        return access.deprecateSession(token);
+        return getAccess().deprecateSession(token);
     }
 
     /**
@@ -62,6 +71,33 @@ public final class SpringAccessClient implements Access {
      */
     @Override
     public PermissionResponse fetchPermissions(final AuthenticationToken token) {
-        return access.fetchPermissions(token);
+        return getAccess().fetchPermissions(token);
+    }
+
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
+
+    /**
+     * Since Spring only performs the injection of resources after class
+     * instantiation, we need a second place to actually create the Access
+     * Controller instance that we wish to use for our communication with the
+     * IWS. This is required to have a proper Transactional mechanism
+     * surrounding the calls, so we don't have to worry about the current
+     * state.<br />
+     *   The method uses synchronization to create the instance, to ensure that
+     * the creation of a new Instance is thread safe.
+     *
+     * @return Access Instance with Transactions
+     */
+    private Access getAccess() {
+        synchronized (lock) {
+            if (access == null) {
+                final ServiceFactory factory = new ServiceFactory(entityManager);
+                access = new AccessController(factory);
+            }
+
+            return access;
+        }
     }
 }

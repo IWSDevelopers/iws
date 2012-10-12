@@ -55,7 +55,7 @@ public class AccessClientTest {
     }
 
     @Test
-    @Ignore("Test is currently failing, since it relies on transactions working, and they don't!")
+    //@Ignore("Test is currently failing, since it relies on transactions working, and they don't!")
     public void testGenerateAndDeprecateSession() {
         final Access client = new AccessClient();
         final String username = "Michl";
@@ -73,9 +73,9 @@ public class AccessClientTest {
         // Now, let's try to see if we can deprecate the Session, and thus
         // ensure that the first Object is properly persisted
         final Fallible result = client.deprecateSession(response.getToken());
+        assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(result.isOk(), is(true));
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
-        assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
     }
 
     @Ignore("Ignored, until the permission mess is sorted out!")

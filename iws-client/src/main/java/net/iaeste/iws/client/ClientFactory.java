@@ -15,25 +15,16 @@
 package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Access;
-import net.iaeste.iws.api.Administration;
-import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.client.spring.Beans;
-import net.iaeste.iws.client.spring.SpringAccessClient;
 import net.iaeste.iws.client.spring.SpringAdministrationclient;
 import net.iaeste.iws.client.spring.SpringExchangeClient;
-import net.iaeste.iws.core.services.ServiceFactory;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.persistence.EntityManagerFactory;
-
 /**
- * <p>The ClientFactory will use the provided Properties, to determine which
- * instance or implementation of IWS to use for external testing.</p>
- *
- * <p>Class is made package private, since it is only suppose to be used by the
- * actual Client Classes in this package.</p>
+ * The ClientFactory will use the provided Properties, to determine which
+ * instance or implementation of IWS to use for external testing.<br />
+ *   Class is made package private, since it is only suppose to be used by the
+ * actual Client Classes in this package.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -42,34 +33,31 @@ import javax.persistence.EntityManagerFactory;
  */
 public final class ClientFactory {
 
-    private static final Boolean USE_XML_CONFIG = true;
     private static final Object LOCK = new Object();
     private static ClientFactory instance = null;
-    private final ServiceFactory serviceFactory;
+    private final ConfigurableApplicationContext context;
+
+    private Access access = null;
+    private SpringAdministrationclient administration = null;
+    private SpringExchangeClient exchange = null;
 
     // =========================================================================
     // Factory Instantiation Methods
     // =========================================================================
 
     /**
-     * Default Private Constructor for the class, as it is a Singleton. The
-     * Constructor will set the Application Context to the ones from the Spring
-     * based BeanConfiguration class, that emulates a primitive AppServer.
+     * Default Private Constructor for the class, as it is a Singleton. If we
+     * allow that multiple instances of this class exists, then we'll get
+     * problems with the Spring database configuration.
      */
     private ClientFactory() {
-        final ConfigurableApplicationContext context;
-
-        if (USE_XML_CONFIG) {
-            context = new ClassPathXmlApplicationContext("/net/iaeste/iws/client/spring/beans.xml");
-        } else {
-            context = new AnnotationConfigApplicationContext(Beans.class);
-        }
-
-        serviceFactory = new ServiceFactory(context.getBean(EntityManagerFactory.class).createEntityManager());
+        context = new ClassPathXmlApplicationContext("/net/iaeste/iws/client/spring/beans.xml");
     }
 
     /**
-     * Singleton class instantiator.
+     * Singleton class instantiator. It will not create a new instance of the
+     * {@code ClientFactory}, rather it will load the spring Context, and ask
+     * Spring to create a new "Bean", that will then be set as our instance.
      *
      * @return Client Settings instance
      */
@@ -87,15 +75,38 @@ public final class ClientFactory {
     // IWS API Implementations
     // =========================================================================
 
+    /**
+     *
+     * @return
+     */
     public Access getAccessImplementation() {
-        return new SpringAccessClient(serviceFactory);
+        synchronized (LOCK) {
+            if (access == null) {
+                access = (Access) context.getBean("springAccessClient");
+                //access = context.getBean(SpringAccessClient.class);
+            }
+
+            return access;
+        }
     }
 
-    public Administration getAdministrationImplementation() {
-        return new SpringAdministrationclient(serviceFactory);
+    public SpringAdministrationclient getAdministrationImplementation() {
+        synchronized (LOCK) {
+            if (administration == null) {
+                administration = context.getBean(SpringAdministrationclient.class);
+            }
+
+            return administration;
+        }
     }
 
-    public Exchange getExchangeImplementation() {
-        return new SpringExchangeClient(serviceFactory);
+    public SpringExchangeClient getExchangeImplementation() {
+        synchronized (LOCK) {
+            if (exchange == null) {
+                exchange = context.getBean(SpringExchangeClient.class);
+            }
+
+            return exchange;
+        }
     }
 }

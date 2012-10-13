@@ -161,9 +161,9 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         LOG.trace("Starting deleteOffer()");
-        Fallible response;
+        OfferResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFERS);

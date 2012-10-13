@@ -51,7 +51,7 @@ public interface Exchange {
 
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 
-    Fallible deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
+    OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 

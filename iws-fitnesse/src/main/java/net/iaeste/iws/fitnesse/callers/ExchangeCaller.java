@@ -109,7 +109,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
+    public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         try {
             return exchange.deleteOffer(token, request);
         } catch (Exception e) {

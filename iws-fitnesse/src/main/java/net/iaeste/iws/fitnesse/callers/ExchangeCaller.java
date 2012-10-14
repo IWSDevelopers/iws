@@ -36,11 +36,8 @@ import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
+import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
-import net.iaeste.iws.fitnesse.spring.EntityManagerProvider;
-import net.iaeste.iws.fitnesse.spring.SpringExchangeClient;
-
-import javax.persistence.EntityManager;
 
 /**
  * The IWS FitNesse implementation of the API logic. The Class will attempt to
@@ -57,8 +54,7 @@ public final class ExchangeCaller implements Exchange {
     private final Exchange exchange;
 
     public ExchangeCaller() {
-        final EntityManager entityManager = EntityManagerProvider.getInstance().getEntityManager();
-        exchange = new SpringExchangeClient(entityManager);
+        exchange = new ExchangeClient();
     }
 
     /**

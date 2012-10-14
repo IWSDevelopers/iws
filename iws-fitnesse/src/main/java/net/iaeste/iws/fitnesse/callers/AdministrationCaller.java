@@ -27,11 +27,8 @@ import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
+import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
-import net.iaeste.iws.fitnesse.spring.EntityManagerProvider;
-import net.iaeste.iws.fitnesse.spring.SpringAdministrationclient;
-
-import javax.persistence.EntityManager;
 
 /**
  * The IWS FitNesse implementation of the API logic. The Class will attempt to
@@ -48,8 +45,7 @@ public final class AdministrationCaller implements Administration {
     private final Administration administration;
 
     public AdministrationCaller() {
-        final EntityManager entityManager = EntityManagerProvider.getInstance().getEntityManager();
-        administration = new SpringAdministrationclient(entityManager);
+        administration = new AdministrationClient();
     }
 
     /**

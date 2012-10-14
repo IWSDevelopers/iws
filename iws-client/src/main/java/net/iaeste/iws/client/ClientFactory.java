@@ -51,7 +51,7 @@ public final class ClientFactory {
      * problems with the Spring database configuration.
      */
     private ClientFactory() {
-        context = new ClassPathXmlApplicationContext("/net/iaeste/iws/client/spring/beans.xml");
+        context = new ClassPathXmlApplicationContext("classpath:net/iaeste/iws/client/spring/beans.xml");
     }
 
     /**

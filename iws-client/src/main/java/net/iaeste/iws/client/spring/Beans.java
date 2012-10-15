@@ -15,6 +15,7 @@
 package net.iaeste.iws.client.spring;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -33,7 +34,7 @@ import javax.sql.DataSource;
  * @since   1.7
  */
 @Configuration
-//@ComponentScan("net.iaeste.iws.client.spring")
+@ComponentScan("net.iaeste.iws.client.spring")
 @EnableTransactionManagement
 public class Beans {
 

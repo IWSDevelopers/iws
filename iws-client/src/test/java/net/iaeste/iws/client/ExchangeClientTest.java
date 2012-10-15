@@ -21,8 +21,12 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
+import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
+import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -36,6 +40,12 @@ public class ExchangeClientTest {
 
     private final ExchangeClient client = new ExchangeClient();
     private final AuthenticationToken token = new AuthenticationToken("md5_5678901234567890123456789012");
+
+    @Test
+    public void testExchangeClient() {
+        final Fallible result = client.processFaculties(null, null);
+        assertThat(result, is(not(nullValue())));
+    }
 
 // TODO Get tests to work, they have been removed in the most incompentent and stupid way! However, they were commented since I don't have time to fix the problems now. The entire transaction mechanism have been rewritten, and these old test no longer works!
 //    @Test

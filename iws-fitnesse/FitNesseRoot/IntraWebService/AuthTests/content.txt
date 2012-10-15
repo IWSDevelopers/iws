@@ -7,4 +7,3 @@
 |Michl   |frodo    |true          |0          |OK                                        |=~/.{64}/|
 |Marko   |merry    |true          |0          |OK                                        |=~/.{64}/|
 |Vanja   |sam      |true          |0          |OK                                        |=~/.{64}/|
-|Kim     |pippin   |true          |0          |OK                                        |=~/.{64}/|

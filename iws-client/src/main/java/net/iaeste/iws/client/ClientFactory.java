@@ -15,10 +15,11 @@
 package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Access;
-import net.iaeste.iws.client.spring.SpringAdministrationclient;
-import net.iaeste.iws.client.spring.SpringExchangeClient;
+import net.iaeste.iws.api.Administration;
+import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.client.spring.Beans;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * The ClientFactory will use the provided Properties, to determine which
@@ -37,9 +38,9 @@ public final class ClientFactory {
     private static ClientFactory instance = null;
     private final ConfigurableApplicationContext context;
 
-    private Access access = null;
-    private SpringAdministrationclient administration = null;
-    private SpringExchangeClient exchange = null;
+//    private Access access = null;
+//    private Administration administration = null;
+//    private Exchange exchange = null;
 
     // =========================================================================
     // Factory Instantiation Methods
@@ -51,7 +52,7 @@ public final class ClientFactory {
      * problems with the Spring database configuration.
      */
     private ClientFactory() {
-        context = new ClassPathXmlApplicationContext("classpath:net/iaeste/iws/client/spring/beans.xml");
+        context = new AnnotationConfigApplicationContext(Beans.class);
     }
 
     /**
@@ -75,38 +76,36 @@ public final class ClientFactory {
     // IWS API Implementations
     // =========================================================================
 
-    /**
-     *
-     * @return
-     */
     public Access getAccessImplementation() {
-        synchronized (LOCK) {
-            if (access == null) {
-                access = (Access) context.getBean("springAccessClient");
-                //access = context.getBean(SpringAccessClient.class);
-            }
-
-            return access;
-        }
+        return (Access) context.getBean("springAccessClient");
+//        synchronized (LOCK) {
+//            if (access == null) {
+//                access = (Access) context.getBean("springAccessClient");
+//            }
+//
+//            return access;
+//        }
     }
 
-    public SpringAdministrationclient getAdministrationImplementation() {
-        synchronized (LOCK) {
-            if (administration == null) {
-                administration = context.getBean(SpringAdministrationclient.class);
-            }
-
-            return administration;
-        }
+    public Administration getAdministrationImplementation() {
+        return (Administration) context.getBean("springAdministrationclient");
+//        synchronized (LOCK) {
+//            if (administration == null) {
+//                administration = (Administration) context.getBean("springAdministrationclient");
+//            }
+//
+//            return administration;
+//        }
     }
 
-    public SpringExchangeClient getExchangeImplementation() {
-        synchronized (LOCK) {
-            if (exchange == null) {
-                exchange = context.getBean(SpringExchangeClient.class);
-            }
-
-            return exchange;
-        }
+    public Exchange getExchangeImplementation() {
+        return (Exchange) context.getBean("springExchangeClient");
+//        synchronized (LOCK) {
+//            if (exchange == null) {
+//                exchange = (Exchange) context.getBean("springExchangeClient");
+//            }
+//
+//            return exchange;
+//        }
     }
 }

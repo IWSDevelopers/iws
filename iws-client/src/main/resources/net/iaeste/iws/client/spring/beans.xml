@@ -1,48 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
-       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <context:annotation-config/>
     <context:component-scan base-package="net.iaeste.iws.client.spring" />
-
-    <jdbc:embedded-database id="dataSource" type="HSQL">
-        <jdbc:script location="classpath:net/iaeste/iws/persistence/hsqldb/init_tables.sql"/>
-        <jdbc:script location="classpath:net/iaeste/iws/persistence/hsqldb/init_views.sql"/>
-        <jdbc:script location="classpath:net/iaeste/iws/persistence/hsqldb/init_data.sql"/>
-        <jdbc:script location="classpath:net/iaeste/iws/persistence/hsqldb/exchange_tables.sql"/>
-        <jdbc:script location="classpath:net/iaeste/iws/persistence/hsqldb/exchange_data.sql"/>
-        <jdbc:script location="classpath:net/iaeste/iws/persistence/hsqldb/exchange_views.sql"/>
-    </jdbc:embedded-database>
-
-    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
-
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-
-    <!-- For @PersistenceContext annotations -->
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="packagesToScan" value="net.iaeste.iws.persistence" />
-        <property name="persistenceUnitName" value="client" />
-        <property name="dataSource" ref="dataSource" />
-        <property name="jpaDialect" ref="jpaDialect" />
-        <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-        <property name="persistenceUnitName" value="client" />
-    </bean>
-
-    <tx:advice id="transactionInterceptor" transaction-manager="transactionManager" />
-
-    <!-- For @Transactional annotations -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

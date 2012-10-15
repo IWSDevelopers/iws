@@ -47,11 +47,21 @@ import javax.persistence.PersistenceContext;
 @Repository("springAdministrationClient")
 public final class SpringAdministrationclient implements Administration {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    private final Object lock = new Object();
     private Administration administration = null;
+
+    /**
+     * Injects the {@code EntityManager} instance required to invoke our
+     * transactional daos. The EntityManager instance can only be injected into
+     * the beans, we cannot create a bean for the Administration Controller
+     * otherwise.
+     *
+     * @param entityManager Spring controlled EntityManager instance
+     */
+    @PersistenceContext
+    public void init(final EntityManager entityManager) {
+        final ServiceFactory factory = new ServiceFactory(entityManager);
+        administration = new AdministrationController(factory);
+    }
 
     // =========================================================================
     // IWS API Administration Functionality
@@ -62,7 +72,7 @@ public final class SpringAdministrationclient implements Administration {
      */
     @Override
     public Fallible processUser(final AuthenticationToken token, final ProcessUserRequest request) {
-        return getAdministration().processUser(token, request);
+        return administration.processUser(token, request);
     }
 
     /**
@@ -70,7 +80,7 @@ public final class SpringAdministrationclient implements Administration {
      */
     @Override
     public UserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
-        return getAdministration().fetchUsers(token, request);
+        return administration.fetchUsers(token, request);
     }
 
     /**
@@ -78,7 +88,7 @@ public final class SpringAdministrationclient implements Administration {
      */
     @Override
     public Fallible processGroups(final AuthenticationToken token, final GroupRequest request) {
-        return getAdministration().processGroups(token, request);
+        return administration.processGroups(token, request);
     }
 
     /**
@@ -86,7 +96,7 @@ public final class SpringAdministrationclient implements Administration {
      */
     @Override
     public GroupResponse fetchGroups(final AuthenticationToken token, final FetchGroupRequest request) {
-        return getAdministration().fetchGroups(token, request);
+        return administration.fetchGroups(token, request);
     }
 
     /**
@@ -94,7 +104,7 @@ public final class SpringAdministrationclient implements Administration {
      */
     @Override
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
-        return getAdministration().processCountries(token, request);
+        return administration.processCountries(token, request);
     }
 
     /**
@@ -102,7 +112,7 @@ public final class SpringAdministrationclient implements Administration {
      */
     @Override
     public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        return getAdministration().fetchCountries(token, request);
+        return administration.fetchCountries(token, request);
     }
 
     /**
@@ -110,33 +120,6 @@ public final class SpringAdministrationclient implements Administration {
      */
     @Override
     public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        return getAdministration().processUserGroupAssignment(token, request);
-    }
-
-    // =========================================================================
-    // Internal Methods
-    // =========================================================================
-
-    /**
-     * Since Spring only performs the injection of resources after class
-     * instantiation, we need a second place to actually create the
-     * Administration Controller instance that we wish to use for our
-     * communication with the IWS. This is required to have a proper
-     * Transactional mechanism surrounding the calls, so we don't have to worry
-     * about the current state.<br />
-     *   The method uses synchronization to create the instance, to ensure that
-     * the creation of a new Instance is thread safe.
-     *
-     * @return Administration Instance with Transactions
-     */
-    private Administration getAdministration() {
-        synchronized (lock) {
-            if (administration == null) {
-                final ServiceFactory factory = new ServiceFactory(entityManager);
-                administration = new AdministrationController(factory);
-            }
-
-            return administration;
-        }
+        return administration.processUserGroupAssignment(token, request);
     }
 }

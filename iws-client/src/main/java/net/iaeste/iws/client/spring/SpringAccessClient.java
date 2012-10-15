@@ -40,11 +40,20 @@ import javax.persistence.PersistenceContext;
 @Repository("springAccessClient")
 public final class SpringAccessClient implements Access {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    private final Object lock = new Object();
     private Access access = null;
+
+    /**
+     * Injects the {@code EntityManager} instance required to invoke our
+     * transactional daos. The EntityManager instance can only be injected into
+     * the beans, we cannot create a bean for the Access Controller otherwise.
+     *
+     * @param entityManager Spring controlled EntityManager instance
+     */
+    @PersistenceContext
+    public void init(final EntityManager entityManager) {
+        final ServiceFactory factory = new ServiceFactory(entityManager);
+        access = new AccessController(factory);
+    }
 
     // =========================================================================
     // IWS API Access Functionality
@@ -55,7 +64,7 @@ public final class SpringAccessClient implements Access {
      */
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        return getAccess().generateSession(request);
+        return access.generateSession(request);
     }
 
     /**
@@ -63,7 +72,7 @@ public final class SpringAccessClient implements Access {
      */
     @Override
     public Fallible deprecateSession(final AuthenticationToken token) {
-        return getAccess().deprecateSession(token);
+        return access.deprecateSession(token);
     }
 
     /**
@@ -71,33 +80,6 @@ public final class SpringAccessClient implements Access {
      */
     @Override
     public PermissionResponse fetchPermissions(final AuthenticationToken token) {
-        return getAccess().fetchPermissions(token);
-    }
-
-    // =========================================================================
-    // Internal Methods
-    // =========================================================================
-
-    /**
-     * Since Spring only performs the injection of resources after class
-     * instantiation, we need a second place to actually create the Access
-     * Controller instance that we wish to use for our communication with the
-     * IWS. This is required to have a proper Transactional mechanism
-     * surrounding the calls, so we don't have to worry about the current
-     * state.<br />
-     *   The method uses synchronization to create the instance, to ensure that
-     * the creation of a new Instance is thread safe.
-     *
-     * @return Access Instance with Transactions
-     */
-    private Access getAccess() {
-        synchronized (lock) {
-            if (access == null) {
-                final ServiceFactory factory = new ServiceFactory(entityManager);
-                access = new AccessController(factory);
-            }
-
-            return access;
-        }
+        return access.fetchPermissions(token);
     }
 }

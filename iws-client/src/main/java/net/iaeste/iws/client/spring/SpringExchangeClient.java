@@ -56,11 +56,20 @@ import javax.persistence.PersistenceContext;
 @Repository("springExchangeClient")
 public final class SpringExchangeClient implements Exchange {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    private final Object lock = new Object();
     private Exchange exchange = null;
+
+    /**
+     * Injects the {@code EntityManager} instance required to invoke our
+     * transactional daos. The EntityManager instance can only be injected into
+     * the beans, we cannot create a bean for the Exchange Controller otherwise.
+     *
+     * @param entityManager Spring controlled EntityManager instance
+     */
+    @PersistenceContext
+    public void init(final EntityManager entityManager) {
+        final ServiceFactory factory = new ServiceFactory(entityManager);
+        exchange = new ExchangeController(factory);
+    }
 
     // =========================================================================
     // IWS API Exchange Functionality
@@ -71,7 +80,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
-        return getExchange().fetchEmployers(token, request);
+        return exchange.fetchEmployers(token, request);
     }
 
     /**
@@ -79,7 +88,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public Fallible processFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        return getExchange().processFaculties(token, request);
+        return exchange.processFaculties(token, request);
     }
 
     /**
@@ -87,7 +96,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
-        return getExchange().fetchFaculties(token, request);
+        return exchange.fetchFaculties(token, request);
     }
 
     /**
@@ -95,7 +104,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
-        return getExchange().processOffer(token, request);
+        return exchange.processOffer(token, request);
     }
 
     /**
@@ -103,7 +112,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public Fallible deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
-        return getExchange().deleteOffer(token, request);
+        return exchange.deleteOffer(token, request);
     }
 
     /**
@@ -111,7 +120,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        return getExchange().fetchOffers(token, request);
+        return exchange.fetchOffers(token, request);
     }
 
     /**
@@ -119,7 +128,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public Fallible processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
-        return getExchange().processOfferTemplates(token, request);
+        return exchange.processOfferTemplates(token, request);
     }
 
     /**
@@ -127,7 +136,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
-        return getExchange().fetchOfferTemplates(token, request);
+        return exchange.fetchOfferTemplates(token, request);
     }
 
     /**
@@ -135,7 +144,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public Fallible processPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
-        return getExchange().processPublishGroups(token, request);
+        return exchange.processPublishGroups(token, request);
     }
 
     /**
@@ -143,7 +152,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
-        return getExchange().fetchPublishGroups(token, request);
+        return exchange.fetchPublishGroups(token, request);
     }
 
     /**
@@ -151,7 +160,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public Fallible processStudents(final AuthenticationToken token, final StudentRequest request) {
-        return getExchange().processStudents(token, request);
+        return exchange.processStudents(token, request);
     }
 
     /**
@@ -159,33 +168,6 @@ public final class SpringExchangeClient implements Exchange {
      */
     @Override
     public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        return getExchange().fetchStudents(token, request);
-    }
-
-    // =========================================================================
-    // Internal Methods
-    // =========================================================================
-
-    /**
-     * Since Spring only performs the injection of resources after class
-     * instantiation, we need a second place to actually create the Exchange
-     * Controller instance that we wish to use for our communication with the
-     * IWS. This is required to have a proper Transactional mechanism
-     * surrounding the calls, so we don't have to worry about the current
-     * state.<br />
-     *   The method uses synchronization to create the instance, to ensure that
-     * the creation of a new Instance is thread safe.
-     *
-     * @return Exchange Instance with Transactions
-     */
-    private Exchange getExchange() {
-        synchronized (lock) {
-            if (exchange == null) {
-                final ServiceFactory factory = new ServiceFactory(entityManager);
-                exchange = new ExchangeController(factory);
-            }
-
-            return exchange;
-        }
+        return exchange.fetchStudents(token, request);
     }
 }

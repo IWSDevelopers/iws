@@ -65,6 +65,7 @@ public class ExchangeService extends CommonService {
      * @param request
      * @return OfferResponse contains list of Fallible Offers for which processing failed.
      */
+    // TODO Drop this version, and use the one below instead
     public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
         OfferResponse response = null;
         final List<String> processingErrors = new ArrayList<>();
@@ -121,33 +122,35 @@ public class ExchangeService extends CommonService {
      * exists (check against the given refno) and the user is allowed to work
      * with it, then it us updated. If no such Offer exists, then a new Offer
      * is created and assigned to the given Group.<br />
-     *   The method returns an OfferResponse object with error information. No
+     * The method returns an OfferResponse object with error information. No
      * information about the Offer is returned.
      *
-     * @param authentication  User & Group information
-     * @param request         Offer Request information, i.e. OfferDTO
+     * @param authentication User & Group information
+     * @param request        Offer Request information, i.e. OfferDTO
      * @return OfferResponse with error information
      */
     public OfferResponse processOffer_new(final Authentication authentication, final ProcessOfferRequest request) {
-         final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
-         final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
+        final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
+        final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
 
-         if (existingEntity == null) {
-             // Persist the Object with history
-             dao.persist(authentication, newEntity);
-         } else {
-             // Check if the user is allowed to work with the Object, if not -
-             // then a Permission Exception is thrown
-             permissionCheck(authentication, authentication.getGroup());
+        if (existingEntity == null) {
+            // Persist the Object with history
+            dao.persist(authentication, newEntity);
+        } else {
+            // Check if the user is allowed to work with the Object, if not -
+            // then a Permission Exception is thrown
+            permissionCheck(authentication, authentication.getGroup());
 
-             // Persist the changes, the method takes the existing and merges the
-             // new values into it, and finally it also writes an entry in the
-             // history table
-             dao.persist(authentication, existingEntity, newEntity);
-         }
+            // Persist the changes, the method takes the existing and merges the
+            // new values into it, and finally it also writes an entry in the
+            // history table
+            dao.persist(authentication, existingEntity, newEntity);
+        }
 
-         return new OfferResponse();
-     }
+        return new OfferResponse();
+    }
+
+    // TODO Should perform the delete operation based on the refno
     public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {
         final OfferEntity foundOffer = dao.findOffer(request.getOfferId());
 

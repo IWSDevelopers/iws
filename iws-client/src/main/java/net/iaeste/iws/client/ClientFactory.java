@@ -38,10 +38,6 @@ public final class ClientFactory {
     private static ClientFactory instance = null;
     private final ConfigurableApplicationContext context;
 
-//    private Access access = null;
-//    private Administration administration = null;
-//    private Exchange exchange = null;
-
     // =========================================================================
     // Factory Instantiation Methods
     // =========================================================================
@@ -78,34 +74,13 @@ public final class ClientFactory {
 
     public Access getAccessImplementation() {
         return (Access) context.getBean("springAccessClient");
-//        synchronized (LOCK) {
-//            if (access == null) {
-//                access = (Access) context.getBean("springAccessClient");
-//            }
-//
-//            return access;
-//        }
     }
 
     public Administration getAdministrationImplementation() {
         return (Administration) context.getBean("springAdministrationclient");
-//        synchronized (LOCK) {
-//            if (administration == null) {
-//                administration = (Administration) context.getBean("springAdministrationclient");
-//            }
-//
-//            return administration;
-//        }
     }
 
     public Exchange getExchangeImplementation() {
         return (Exchange) context.getBean("springExchangeClient");
-//        synchronized (LOCK) {
-//            if (exchange == null) {
-//                exchange = (Exchange) context.getBean("springExchangeClient");
-//            }
-//
-//            return exchange;
-//        }
     }
 }

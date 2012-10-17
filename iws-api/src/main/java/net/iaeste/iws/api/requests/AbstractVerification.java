@@ -18,10 +18,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 import java.util.Collection;
-import java.util.IllegalFormatException;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -34,14 +32,11 @@ public abstract class AbstractVerification implements Verifiable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The e-mail compliance regular expression. */
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(IWSConstants.EMAIL_REGEX);
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void verify() throws VerificationException {
+    public final void verify() {
         final Map<String, String> validationResult = validate();
 
         if (!validationResult.isEmpty()) {
@@ -233,31 +228,6 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
-     * The method checks that the value is neither null, nor incompliant with
-     * the general form for e-mail addresses. If an error is found, then the
-     * information is added to the validation Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
-     * will return true.
-     *
-     * @param validation Map with Error information
-     * @param field      The name of the field (value) to be verified
-     * @param value      The value to verify
-     * @return True if field is valid, otherwise false
-     */
-    protected boolean isValidMail(final Map<String, String> validation, final String field, final String value) {
-        boolean check = isNotNull(validation, field, value);
-
-        if (check) {
-            if (!EMAIL_PATTERN.matcher(value).matches()) {
-                validation.put(field, format("The e-mail address is not compliant with the allowed format %s", IWSConstants.EMAIL_REGEX));
-                check = false;
-            }
-        }
-
-        return check;
-    }
-
-    /**
      * The method adds error messages for fields
      * with checks for existing messages. <br />
      * If the field in validation Map already had an error,
@@ -301,7 +271,7 @@ public abstract class AbstractVerification implements Verifiable {
      * IllegalFormatException. Otherwise, the method will return the result of
      * formatting the String.
      */
-    protected String format(final String message, final Object... args) throws IllegalFormatException {
+    protected String format(final String message, final Object... args) {
         return String.format(message, args);
     }
 }

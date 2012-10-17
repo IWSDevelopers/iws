@@ -15,7 +15,7 @@
 package net.iaeste.iws.persistence.monitoring;
 
 import net.iaeste.iws.api.dtos.Field;
-import net.iaeste.iws.persistence.entities.IWSEntity;
+import net.iaeste.iws.persistence.entities.Object;
 import net.iaeste.iws.persistence.exceptions.MonitoringException;
 
 import java.io.ByteArrayInputStream;
@@ -42,6 +42,8 @@ import java.util.zip.GZIPOutputStream;
  */
 public final class MonitoringProcessor {
 
+    private static final Integer DEFAULT_ARRAY_SIZE = 10;
+
     /**
      * The method returns the compressed serialized data for the given data. The
      * serialization and compression is achieved by using 3 streams, the first
@@ -58,7 +60,7 @@ public final class MonitoringProcessor {
      * @return Serialized and Compressed Byte Array
      * @throws MonitoringException if unable to write the data
      */
-    public byte[] serialize(final List<Field> fields) throws MonitoringException {
+    public byte[] serialize(final List<Field> fields) {
         final byte[] result;
 
         if ((fields != null) && !fields.isEmpty()) {
@@ -104,7 +106,7 @@ public final class MonitoringProcessor {
      * @return Deserialized and Decompressed Object
      * @throws MonitoringException if unable to read the data
      */
-    public List<Field> deserialize(final byte[] bytes) throws MonitoringException {
+    public List<Field> deserialize(final byte[] bytes) {
         final List<Field> result;
 
         if (bytes != null) {
@@ -132,7 +134,7 @@ public final class MonitoringProcessor {
      * @param entity  The Entity to find the {@code MonitoringLevel} for
      * @return Either found {@code MonitoringLevel} or "None"
      */
-    public MonitoringLevel findClassMonitoringLevel(final IWSEntity entity) {
+    public MonitoringLevel findClassMonitoringLevel(final Object entity) {
         MonitoringLevel level = MonitoringLevel.NONE;
 
         if (entity != null) {
@@ -154,7 +156,7 @@ public final class MonitoringProcessor {
      * @param entity  The Entity to find the name for
      * @return Entity Monitoring name or null
      */
-    public String findClassMonitoringName(final IWSEntity entity) {
+    public String findClassMonitoringName(final Object entity) {
         String name = null;
 
         if (entity != null) {
@@ -180,11 +182,11 @@ public final class MonitoringProcessor {
      * @return List with all the monitored values or null
      * @see MonitoringLevel
      */
-    public List<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity entity) {
+    public List<Field> findChanges(final MonitoringLevel classLevel, final Object entity) {
         final List<Field> found;
 
         if ((classLevel == MonitoringLevel.DETAILED) && (entity != null)) {
-            found = new ArrayList<>(10);
+            found = new ArrayList<>(DEFAULT_ARRAY_SIZE);
 
             for (final java.lang.reflect.Field field : entity.getClass().getDeclaredFields()) {
                 final Annotation annotation = field.getAnnotation(Monitored.class);
@@ -196,10 +198,10 @@ public final class MonitoringProcessor {
                     } else if (fieldLevel == MonitoringLevel.DETAILED) {
                         final String name = ((Monitored) annotation).name();
                         final String newValue = readObjectValue(field, entity);
-                        // For new Objects, there cannot be any old value
-                        final String oldValue = null;
 
-                        found.add(new Field(name, oldValue, newValue));
+                        // For new Objects, there cannot be any old value, so
+                        // we set the 'old' value to null
+                        found.add(new Field(name, null, newValue));
                     }
                 }
             }
@@ -226,11 +228,11 @@ public final class MonitoringProcessor {
      * @return List with all the monitored changes or null
      * @see MonitoringLevel
      */
-    public List<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity oldEntity, final IWSEntity newEntity) {
+    public List<Field> findChanges(final MonitoringLevel classLevel, final Object oldEntity, final Object newEntity) {
         final List<Field> found;
 
-        if ((classLevel == MonitoringLevel.DETAILED) && (oldEntity != null) && (newEntity != null) && oldEntity.getClass().equals(newEntity.getClass())) {
-            found = new ArrayList<>(10);
+        if ((classLevel == MonitoringLevel.DETAILED) && isValidIdenticalObjects(oldEntity, newEntity)) {
+            found = new ArrayList<>(DEFAULT_ARRAY_SIZE);
 
             for (final java.lang.reflect.Field field : oldEntity.getClass().getDeclaredFields()) {
                 final Annotation annotation = field.getAnnotation(Monitored.class);
@@ -272,7 +274,7 @@ public final class MonitoringProcessor {
      * @param obj    The Object to read the value from
      * @return The String representation of the Value or null
      */
-    private String readObjectValue(final java.lang.reflect.Field field, final IWSEntity obj) {
+    private String readObjectValue(final java.lang.reflect.Field field, final net.iaeste.iws.persistence.entities.Object obj) {
         // First, we store the Accessibility information for the Object, since
         // we need to set it to accessible before attempting to read it
         final boolean accessible = field.isAccessible();
@@ -280,7 +282,7 @@ public final class MonitoringProcessor {
 
         // Read the content, if we receive an Exception, then lets just assume
         // that the value is null
-        Object rawObject;
+        java.lang.Object rawObject;
         try {
             rawObject = field.get(obj);
         } catch (IllegalAccessException ignore) {
@@ -292,5 +294,17 @@ public final class MonitoringProcessor {
 
         // Return the String value or null
         return rawObject != null ? rawObject.toString() : null;
+    }
+
+    /**
+     * Returns true of both the given Objects are valud (not null), and they are
+     * identical. Otherwise it returns false.
+     *
+     * @param obj1 The First Object
+     * @param obj2 The Second OBject
+     * @return True if both Objects are identical, otherwise False
+     */
+    private Boolean isValidIdenticalObjects(final Object obj1, final Object obj2) {
+        return (obj1 != null) && (obj2 != null) && obj1.getClass().equals(obj2.getClass());
     }
 }

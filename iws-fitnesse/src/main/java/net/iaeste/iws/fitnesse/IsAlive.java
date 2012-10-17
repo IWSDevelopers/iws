@@ -18,16 +18,14 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.fitnesse.callers.AccessCaller;
-import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class IsAlive extends AbstractFixture<AuthenticationResponse> {
 
-    //private final Access access = new SpringAccessClient(EntityManagerProvider.getInstance().getEntityManager());
     private final Access access = new AccessCaller();
     private String username = null;
     private String password = null;
@@ -68,7 +66,7 @@ public class IsAlive extends AbstractFixture<AuthenticationResponse> {
      * {@inheritDoc}
      */
     @Override
-    public void execute() throws StopTestException {
+    public void execute() {
         final AuthenticationRequest request = buildRequest();
 
         response = access.generateSession(request);

@@ -82,7 +82,7 @@ public final class Copier {
         final Set<T> copy;
 
         if (original != null) {
-            copy = new HashSet<>();
+            copy = new HashSet<>(original.size());
             for (final T t : original) {
                 copy.add(t);
             }

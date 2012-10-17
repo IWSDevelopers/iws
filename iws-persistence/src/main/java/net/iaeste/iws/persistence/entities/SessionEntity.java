@@ -55,7 +55,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "sessions")
-public class SessionEntity implements IWSEntity {
+public class SessionEntity implements Object {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

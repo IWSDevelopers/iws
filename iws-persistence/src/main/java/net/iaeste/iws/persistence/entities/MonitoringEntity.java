@@ -38,7 +38,7 @@ import java.util.Date;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection AssignmentToDateFieldFromParameter, AssignmentToCollectionOrArrayFieldFromParameter
+ * @noinspection UnusedDeclaration, AssignmentToCollectionOrArrayFieldFromParameter, AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
         @NamedQuery(
@@ -54,7 +54,7 @@ import java.util.Date;
 @Entity
 @Table(name = "history")
 @Monitored(name = "history", level = MonitoringLevel.NONE)
-public class MonitoringEntity implements IWSEntity {
+public class MonitoringEntity implements Object {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -97,6 +97,7 @@ public class MonitoringEntity implements IWSEntity {
      */
     public MonitoringEntity(final UserEntity user, final GroupEntity group, final String tableName, final Long recordId) {
         this.user = user;
+        this.group = group;
         this.tableName = tableName;
         this.recordId = recordId;
     }
@@ -113,6 +114,7 @@ public class MonitoringEntity implements IWSEntity {
      */
     public MonitoringEntity(final UserEntity user, final GroupEntity group, final String tableName, final Long recordId, final byte[] fields) {
         this.user = user;
+        this.group = group;
         this.tableName = tableName;
         this.recordId = recordId;
         this.fields = fields;

@@ -22,7 +22,7 @@ package net.iaeste.iws.persistence.entities;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface Mergeable<T> extends IWSEntity {
+public interface Mergeable<T> extends Object {
 
     /**
      * Allows a merge between two objects of the same type. The method updates

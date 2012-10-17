@@ -49,7 +49,7 @@ public class BasicDaoTest {
     @Test
     @Transactional
     public void testSimpleFunctionality() {
-        final CountryEntity entity = new CountryEntity("Name");
+        final CountryEntity entity = new CountryEntity("id", "Name");
         final Query query = entityManager.createNamedQuery("country.findByName");
         query.setParameter("name", "Name");
 

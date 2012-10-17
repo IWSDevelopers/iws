@@ -44,7 +44,7 @@ import javax.persistence.Table;
 })
 @Entity
 @Table(name = "users")
-public class UserEntity implements IWSEntity {
+public class UserEntity implements Object {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

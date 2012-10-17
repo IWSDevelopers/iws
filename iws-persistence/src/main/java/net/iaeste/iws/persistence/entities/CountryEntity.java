@@ -45,6 +45,9 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id = null;
 
+    @Column(name = "country_id", nullable = false)
+    private String countryId = null;
+
     @Monitored(name="country name", level = MonitoringLevel.MARKED)
     @Column(nullable = false, name = "country_name")
     private String countryName = null;
@@ -60,7 +63,8 @@ public class CountryEntity implements Mergeable<CountryEntity> {
      *
      * @param countryName  The name of the Country
      */
-    public CountryEntity(final String countryName) {
+    public CountryEntity(final String countryId, final String countryName) {
+        this.countryId = countryId;
         this.countryName = countryName;
     }
 
@@ -71,6 +75,14 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @Override
     public Long getId() {
         return id;
+    }
+
+    public void setCountryId(final String countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getCountryId() {
+        return countryId;
     }
 
     public void setCountryName(final String countryName) {

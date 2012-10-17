@@ -22,6 +22,7 @@ import net.iaeste.iws.api.responses.AbstractResponse;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * User Object, contain the system specific information related to a user, and
@@ -40,12 +41,15 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
+ * @noinspection CastToConcreteClass, VariableNotUsedInsideIf
  */
 public final class User extends AbstractResponse implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /** The e-mail compliance regular expression. */
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(IWSConstants.EMAIL_REGEX);
 
     private Long userId = null;
     private UserStatus status = UserStatus.ACTIVE;
@@ -174,7 +178,7 @@ public final class User extends AbstractResponse implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() throws VerificationException {
+    public void verify() {
         // Object is used for either of these requests:
         // 1. Create new users (username, firstname, lastname must be valid)
         // 2. Update user personal details (userid, person)
@@ -184,15 +188,16 @@ public final class User extends AbstractResponse implements Verifiable {
             if (person != null) {
                 person.verify();
             }
-        } else if ((username == null) || firstname == null || lastname == null) {
+            if ((password != null) && password.isEmpty()) {
+                throw new VerificationException("Passwords cannot be empty.");
+            }
+        } else if (username != null) {
+            if (!EMAIL_PATTERN.matcher(username).matches()) {
+                throw new VerificationException("The username is not a valid e-mail address.");
+            }
 
-        }
-        if ((username != null) && (firstname != null) && (lastname != null)) {
-
-        } else if (userId != null) {
-
-            if (person != null) {
-                person.verify();
+            if ((firstname == null) || (lastname == null) || firstname.isEmpty() || lastname.isEmpty()) {
+                throw new VerificationException("New users must have both a first and last name.");
             }
         }
     }

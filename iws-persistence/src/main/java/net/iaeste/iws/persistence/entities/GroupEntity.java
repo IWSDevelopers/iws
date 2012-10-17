@@ -39,7 +39,7 @@ import javax.persistence.Table;
 })
 @Entity
 @Table(name = "groups")
-public class GroupEntity implements IWSEntity {
+public class GroupEntity implements Object {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

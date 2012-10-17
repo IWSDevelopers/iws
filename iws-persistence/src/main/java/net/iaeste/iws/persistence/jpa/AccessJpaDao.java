@@ -20,10 +20,7 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.IWSEntity;
-import net.iaeste.iws.persistence.entities.SessionEntity;
-import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.*;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
@@ -129,7 +126,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     // Internal Methods
     // =========================================================================
 
-    private <T extends IWSEntity> T findUniqueResult(final Query query, final String name) {
+    private <T extends net.iaeste.iws.persistence.entities.Object> T findUniqueResult(final Query query, final String name) {
         final List<T> found = query.getResultList();
 
         if (found.isEmpty()) {

@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import net.iaeste.iws.fitnesse.exceptions.StopTestException;
-
 /**
  * Fixture Functionality, that all Fixtures must implement. The methods dealing
  * with error information cannot be extracted into an Abstract class, since the
@@ -76,7 +74,7 @@ interface Fixture {
      *          if EJB problems occurrred
      * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.DecisionTable">Fixture.org</a>
      */
-    void execute() throws StopTestException;
+    void execute();
 
     /**
      * Fixture invokes this method between each iteration, i.e. after all the

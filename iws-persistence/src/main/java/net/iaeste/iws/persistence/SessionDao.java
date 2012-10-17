@@ -15,7 +15,6 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.persistence.entities.SessionEntity;
-import net.iaeste.iws.persistence.exceptions.PersistenceException;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -33,5 +32,5 @@ public interface SessionDao extends BasicDao {
      * @return Access Entity
      *
      */
-    SessionEntity findSession(String key) throws PersistenceException;
+    SessionEntity findSession(String key);
 }

@@ -200,7 +200,8 @@ insert into user_to_group (user_id, group_id, role_id) values ( 1, 1, 1);
 -- -- Daniel:
 
 ---- countries
-insert into countries (country_name) values ('Austria');
-insert into countries (country_name) values ('Croatia');
-insert into countries (country_name) values ('Germany');
-insert into countries (country_name) values ('Poland');
+insert into countries (country_id, country_name) values ('at', 'Austria');
+insert into countries (country_id, country_name) values ('hr', 'Croatia');
+insert into countries (country_id, country_name) values ('dk', 'Denmark');
+insert into countries (country_id, country_name) values ('de', 'Germany');
+insert into countries (country_id, country_name) values ('pl', 'Poland');

@@ -48,12 +48,13 @@ public class CountryEntityTest {
     @Test
     @Transactional
     public void testClassflow() {
-        final String countryName = "myLand";
-        final CountryEntity entity = new CountryEntity(countryName);
-
+        final CountryEntity entity = new CountryEntity();
+        entity.setCountryId("my");
+        entity.setCountryName("Land");
         entityManager.persist(entity);
+
         final Query query = entityManager.createNamedQuery("country.findByName");
-        query.setParameter("name", countryName);
+        query.setParameter("name", "Land");
         final List<CountryEntity> found = query.getResultList();
 
         assertThat(found.size(), is(1));

@@ -15,6 +15,7 @@
 
 package net.iaeste.iws.fitnesse;
 
+import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
@@ -31,9 +32,9 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.client.AccessClient;
+import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.core.transformers.CollectionTransformer;
-import net.iaeste.iws.fitnesse.callers.AccessCaller;
-import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
 import java.math.BigDecimal;
@@ -46,12 +47,12 @@ import java.util.HashSet;
  * @since 1.7
  */
 public final class SaveOffer extends AbstractFixture<OfferResponse> {
-    private final AccessCaller ac = new AccessCaller();
+    private final Access ac = new AccessClient();
     private AuthenticationToken token;
     private String username;
     private String password;
 
-    private final Exchange exchange = new ExchangeCaller();
+    private final Exchange exchange = new ExchangeClient();
     private Offer offer;
     private ProcessOfferRequest request;
 

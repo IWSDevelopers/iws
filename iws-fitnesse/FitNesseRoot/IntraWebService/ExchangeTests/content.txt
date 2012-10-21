@@ -1,14 +1,14 @@
 !path iws-fitnesse.jar
 !define TEST_SYSTEM {slim}
 
-!|script         |fetch offers              |
-|set request type|ALL                       |
-|fetch                                      |
-|check           |number of fetched offers|0|
+|script          |fetch offers                               |
+|set username    |Michl                   |and password|frodo|
+|set request type|ALL                                        |
+|fetch                                                       |
+|ensure          |is request ok                              |
+|check           |number of fetched offers|0                 |
 
-!|comment                                     |
-|test doesn't pass and it should              |
-!|script              |save offer              |
+|script              |save offer              |
 |set username        |Michl|and password|frodo|
 |set ref no          |AT-2012-0001            |
 |set employer name   |test employer name      |
@@ -28,10 +28,9 @@
 |show                |error message           |
 |ensure              |is request ok           |
 
-!|comment                                   |
-|test doesn't pass and it should            |
-|fix transactions?                          |
-|script          |fetch offers              |
-|set request type|ALL                       |
-|fetch                                      |
-|check           |number of fetched offers|1|
+|script          |fetch offers                               |
+|set username    |Michl                   |and password|frodo|
+|set request type|ALL                                        |
+|fetch                                                       |
+|ensure          |is request ok                              |
+|check           |number of fetched offers|1                 |

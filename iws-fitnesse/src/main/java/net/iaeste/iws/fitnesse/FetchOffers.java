@@ -15,6 +15,7 @@
 
 package net.iaeste.iws.fitnesse;
 
+import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.FetchType;
@@ -22,8 +23,8 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
-import net.iaeste.iws.fitnesse.callers.AccessCaller;
-import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
+import net.iaeste.iws.client.AccessClient;
+import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
 /**
@@ -32,8 +33,8 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @since 1.7
  */
 public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
-    private final Exchange exchange = new ExchangeCaller();
-    private final AccessCaller ac = new AccessCaller();
+    private final Exchange exchange = new ExchangeClient();
+    private final Access ac = new AccessClient();
     private AuthenticationToken token;
     private FetchOffersRequest request;
     private String username;
@@ -87,17 +88,17 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
     /**
      * prints offer
      *
-     * @param pfferIndex index of offer to display
+     * @param offerIndex index of offer to display
      * @return String representation of offer or error message if offer does not exist for given number
      */
-    public String printOffer(final int pfferIndex) {
+    public String printOffer(final int offerIndex) {
         if (response == null) {
             return "no response";
         }
-        if (pfferIndex < 1 || pfferIndex > numberOfFetchedOffers()) {
+        if (offerIndex < 1 || offerIndex > numberOfFetchedOffers()) {
             return "no offer for given index";
         }
-        return response.getOffers().get(pfferIndex - 1).toString();
+        return response.getOffers().get(offerIndex - 1).toString();
     }
 
     /** alias function for execute */

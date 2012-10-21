@@ -1,3 +1,2 @@
 |import                          |
 |net.iaeste.iws.fitnesse         |
-|net.iaeste.iws.fitnesse.builders|

@@ -33,13 +33,13 @@ public final class OfferTransformer {
     private OfferTransformer() {
     }
 
+    @SuppressWarnings("OverlyLongMethod")
     public static OfferEntity transform(final Offer offer) {
         OfferEntity result = null;
 
         if (offer != null) {
             result = new OfferEntity();
 
-            result.setId(offer.getId());
             result.setRefNo(offer.getRefNo());
             result.setNominationDeadline(offer.getNominationDeadline());
             result.setEmployerName(offer.getEmployerName());
@@ -91,13 +91,13 @@ public final class OfferTransformer {
         return result;
     }
 
+    @SuppressWarnings("OverlyLongMethod")
     public static Offer transform(final OfferEntity offer) {
         Offer result = null;
 
         if (offer != null) {
             result = new Offer();
 
-            result.setId(offer.getId());
             result.setRefNo(offer.getRefNo());
             result.setNominationDeadline(offer.getNominationDeadline());
             result.setEmployerName(offer.getEmployerName());

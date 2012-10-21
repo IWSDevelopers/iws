@@ -31,39 +31,7 @@ public class OfferRequestTestUtility {
     private OfferRequestTestUtility() {
     }
 
-    public static ProcessOfferRequest getEmptyRequest() {
-        return new ProcessOfferRequest();
-    }
-
-    public static ProcessOfferRequest getValidUpdateRequest() {
-        return new ProcessOfferRequest(getValidUpdateOffersList().get(0));
-    }
-
-    public static ProcessOfferRequest getValidCreateRequest() {
-        return new ProcessOfferRequest(getValidCreateOffersList().get(0));
-    }
-
-    public static List<Long> getUniqueIdList() {
-        final List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        ids.add(2L);
-        ids.add(3L);
-        return ids;
-    }
-
-    public static List<Offer> getValidUpdateOffersList() {
-        final String[] refNos = { "AT-2012-1000", "AT-2012-1001", "AT-2012-1002", "AT-2012-1003", "AT-2012-1004" };
-        final List<Offer> createList = getValidCreateOffersList();
-        long i = 0;
-        for (final Offer offer : createList) {
-            offer.setRefNo(refNos[(int) i]);
-            ++i;
-            offer.setId(i);
-        }
-        return createList;
-    }
-
-    public static List<Offer> getValidCreateOffersList() {
+    public static List<Offer> getValidOffersList() {
         final String[] refNos = { "GB-2012-2000", "GB-2012-2001", "GB-2012-2002", "GB-2012-2003", "GB-2012-2004" };
         final List<Offer> validEditOffers = new ArrayList<>(refNos.length);
         for (final String refNo : refNos) {
@@ -74,11 +42,4 @@ public class OfferRequestTestUtility {
         return validEditOffers;
     }
 
-    public static List<Long> getEmptyIdsList() {
-        return new ArrayList<>(0);
-    }
-
-    public static List<Offer> getEmptyOfferList() {
-        return new ArrayList<>(0);
-    }
 }

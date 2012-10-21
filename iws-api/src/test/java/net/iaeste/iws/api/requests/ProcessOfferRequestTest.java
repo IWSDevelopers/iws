@@ -33,15 +33,11 @@ import org.junit.Test;
  */
 public class ProcessOfferRequestTest {
 
-    private Offer validUpdateOffer;
-    private Offer validCreateOffer;
+    private Offer validOffer;
 
     @Before
     public void setUp() {
-        this.validUpdateOffer = OfferTestUtility.getMinimalOffer();
-        this.validUpdateOffer.setId(null);
-        this.validCreateOffer = OfferTestUtility.getMinimalOffer();
-        this.validUpdateOffer.setId(1L);
+        this.validOffer = OfferTestUtility.getMinimalOffer();
     }
 
     @Test(expected = VerificationException.class)
@@ -53,21 +49,21 @@ public class ProcessOfferRequestTest {
     @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testVerifyValidUpdateRequest() {
-        final ProcessOfferRequest request = new ProcessOfferRequest(validUpdateOffer);
+        final ProcessOfferRequest request = new ProcessOfferRequest(validOffer);
         request.verify();
     }
 
     @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testVerifyValidCreateRequest() {
-        final ProcessOfferRequest requestWithInvalidOffer = new ProcessOfferRequest(validCreateOffer);
+        final ProcessOfferRequest requestWithInvalidOffer = new ProcessOfferRequest(validOffer);
         requestWithInvalidOffer.verify();
     }
 
     @Test(expected = VerificationException.class)
     public void testVerifyEditRequestWithInvalidOffer() {
-        validUpdateOffer.setRefNo(null); // dto is not valid
-        final ProcessOfferRequest requestWithInvalidOffer = new ProcessOfferRequest(validUpdateOffer);
+        validOffer.setRefNo(null); // dto is not valid
+        final ProcessOfferRequest requestWithInvalidOffer = new ProcessOfferRequest(validOffer);
         requestWithInvalidOffer.verify();
     }
 
@@ -89,17 +85,17 @@ public class ProcessOfferRequestTest {
     @Test
     public void testGettersNullOffer() {
         final Offer setNullOffer = null;
-        ProcessOfferRequest request = new ProcessOfferRequest(setNullOffer);
+        final ProcessOfferRequest nullOfferRequest = new ProcessOfferRequest(setNullOffer);
 
-        Assert.assertThat(request, is(not(nullValue())));
+        Assert.assertThat(nullOfferRequest, is(not(nullValue())));
         Assert.assertThat(setNullOffer, is(nullValue()));
-        Assert.assertThat(request.getOffer(), is(not(nullValue())));
+        Assert.assertThat(nullOfferRequest.getOffer(), is(not(nullValue())));
 
-        request = new ProcessOfferRequest();
-        request.setOffer(setNullOffer);
+        final ProcessOfferRequest emptyRequest = new ProcessOfferRequest();
+        emptyRequest.setOffer(setNullOffer);
 
-        Assert.assertThat(request, is(not(nullValue())));
+        Assert.assertThat(emptyRequest, is(not(nullValue())));
         Assert.assertThat(setNullOffer, is(nullValue()));
-        Assert.assertThat(request.getOffer(), is(not(nullValue())));
+        Assert.assertThat(emptyRequest.getOffer(), is(not(nullValue())));
     }
 }

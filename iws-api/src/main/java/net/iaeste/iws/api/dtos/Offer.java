@@ -66,7 +66,7 @@ public final class Offer extends AbstractVerification {
      */
     public Offer(final Offer offer) {
         if (offer != null) {
-            this.id = offer.id;
+            // No id exist as refNo is unique
             this.refNo = offer.refNo;
             this.employerName = offer.employerName;
             this.employerAddress = offer.employerAddress;
@@ -117,8 +117,6 @@ public final class Offer extends AbstractVerification {
             this.studyLevels = Copier.copy(offer.studyLevels);
         }
     }
-
-    private Long id;
 
     /**
      * Format of reference number is: {@code [country code]-[exchange year]-[identification number]-[additional code (optional)]} <br/>
@@ -419,14 +417,6 @@ public final class Offer extends AbstractVerification {
         this.unavailableTo = Copier.copy(unavailableTo);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
     public Language getLanguage1() {
         return language1;
     }
@@ -701,9 +691,6 @@ public final class Offer extends AbstractVerification {
         }
 
         final Offer offer = (Offer) obj;
-        if (id != null ? !id.equals(offer.id) : offer.id != null) {
-            return false;
-        }
         if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
             return false;
         }
@@ -912,8 +899,7 @@ public final class Offer extends AbstractVerification {
     @Override
     public String toString() {
         return "Offer{" +
-                "id=" + id +
-                ", refNo='" + refNo + '\'' +
+                "refNo='" + refNo + '\'' +
                 ", nominationDeadline=" + nominationDeadline +
                 ", employerName='" + employerName + '\'' +
                 ", employerAddress='" + employerAddress + '\'' +
@@ -1113,6 +1099,7 @@ public final class Offer extends AbstractVerification {
     private boolean validateNotNullableFields(final Map<String, String> validation) {
         boolean check = true;
 
+        //noinspection ConstantConditions
         check &= isNotEmpty(validation, "refno", refNo);
         check &= isNotEmpty(validation, "employerName", employerName);
         check &= isNotNull(validation, "weeklyhours", weeklyHours);
@@ -1176,6 +1163,7 @@ public final class Offer extends AbstractVerification {
     private boolean validateDates(final Map<String, String> validation) {
         boolean check = true;
 
+        //noinspection ConstantConditions
         check &= validateDatesPresence(validation);
         check &= validateDatesOrder(validation);
         check &= validateDatesNominationDeadline(validation);

@@ -52,12 +52,12 @@ import java.util.List;
  * @since 1.7
  */
 public class OfferTransformerTest {
+    @SuppressWarnings("OverlyLongMethod")
     @Test
     public void testCopyingMinimalOfferToEntity() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         final OfferEntity entity = OfferTransformer.transform(offer);
 
-        assertThat(offer.getId(), is(entity.getId()));
         assertThat(offer.getRefNo(), is(entity.getRefNo()));
         assertThat(offer.getEmployerName(), is(entity.getEmployerName()));
         assertThat(offer.getEmployerAddress(), is(entity.getEmployerAddress()));
@@ -108,12 +108,12 @@ public class OfferTransformerTest {
         assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
     }
 
+    @SuppressWarnings("OverlyLongMethod")
     @Test
     public void testCopyingMinimalOfferToDto() {
         final OfferEntity entity = getMinimalOfferEntity();
         final Offer offer = OfferTransformer.transform(entity);
 
-        assertThat(offer.getId(), is(entity.getId()));
         assertThat(offer.getRefNo(), is(entity.getRefNo()));
         assertThat(offer.getEmployerName(), is(entity.getEmployerName()));
         assertThat(offer.getEmployerAddress(), is(entity.getEmployerAddress()));

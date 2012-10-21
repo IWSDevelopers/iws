@@ -59,7 +59,7 @@ public class ExchangeServiceTest {
 
     private final OfferDao dao = mock(OfferDao.class);
     private final ExchangeService client = new ExchangeService(dao);
-    private final List<Offer> offers = OfferRequestTestUtility.getValidCreateOffersList();
+    private final List<Offer> offers = OfferRequestTestUtility.getValidOffersList();
     private Authentication auth;
 
     @Before

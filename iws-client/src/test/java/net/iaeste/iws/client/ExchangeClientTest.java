@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.client;
 
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -54,52 +53,48 @@ public class ExchangeClientTest {
         token = new AuthenticationToken(response.getToken());
     }
 
-    //    @Test
-//    public void testProcessOfferCreateMinimalOffer() {
-//        final Offer offer = OfferTestUtility.getMinimalOffer();
-//        offer.setId(null); // create offer
-//        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
-//        final Fallible response = exchange.processOffer(token, offerRequest);
-//        assertThat(response.isOk(), is(true));
-//
-//        final EntityManager em = EntityManagerProvider.getInstance().getEntityManager();
-//        final OfferDao dao = new OfferJpaDao(em);
-//        final List<OfferEntity> offers = dao.findAll();
-//
-//        assertThat(offers.size(), is(1));
-//        final OfferEntity actual = offers.get(0);
-//        assertThat(actual.getId(), is(notNullValue()));
-//        actual.setId(null);
-//        assertThat(actual.getFieldOfStudies(), is(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies())));
-//        assertThat(actual.getStudyLevels(), is(CollectionTransformer.concatEnumCollection(offer.getStudyLevels())));
-//        assertThat(actual.getSpecializations(), is(CollectionTransformer.join(offer.getSpecializations())));
-//        // The purpose of the exchange, is to test the API implementation, which
-//        // only shows the DTO's, not the Entities. The entities are internal
-//        // Objects, and should *never* be exposed!
-//        //assertThat(actual, is(OfferTransformer.transform(offer)));
-//    }
-//
     @Test
-    public void testProcessOfferCreateFullOffer() {
-        final Offer offer = OfferTestUtility.getFullOffer();
+    public void testProcessOfferCreateMinimalOffer() {
+        final Offer minimalOffer = OfferTestUtility.getMinimalOffer();
+        minimalOffer.setRefNo("PL-2012-0001");
 
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(minimalOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
 
         // verify processResponse
         assertThat(processResponse.isOk(), is(true));
 
-        // check if offer is persisted
+        // check if minimalOffer is persisted
         final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, request);
 
         assertThat(fetchResponse.getOffers().isEmpty(), is(false));
-        assertThat(fetchResponse.getOffers(), containsInAnyOrder(offer));
+        assertThat(fetchResponse.getOffers().contains(minimalOffer), is(true));
+    }
+
+    @Test
+    public void testProcessOfferCreateFullOffer() {
+        final Offer fullOffer = OfferTestUtility.getFullOffer();
+        fullOffer.setRefNo("PL-2012-0002");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(fullOffer);
+        final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
+
+        // verify processResponse
+        assertThat(processResponse.isOk(), is(true));
+
+        // check if fullOffer is persisted
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, request);
+
+        assertThat(fetchResponse.getOffers().isEmpty(), is(false));
+        assertThat(fetchResponse.getOffers().contains(fullOffer), is(true));
     }
 
     @Test
     public void testDeleteOffer() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2012-0003");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);

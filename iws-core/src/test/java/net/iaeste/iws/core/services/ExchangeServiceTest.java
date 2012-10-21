@@ -37,10 +37,13 @@ import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -57,6 +60,16 @@ public class ExchangeServiceTest {
     private final OfferDao dao = mock(OfferDao.class);
     private final ExchangeService client = new ExchangeService(dao);
     private final List<Offer> offers = OfferRequestTestUtility.getValidCreateOffersList();
+    private Authentication auth;
+
+    @Before
+    public void init() {
+
+        auth = mock(Authentication.class);
+        final GroupEntity group = mock(GroupEntity.class);
+        when(group.getId()).thenReturn(1L);
+        when(auth.getGroup()).thenReturn(group);
+    }
 
     @Test
     public void testFetchOffersAll() {
@@ -82,6 +95,8 @@ public class ExchangeServiceTest {
     @Test
     public void testProcessingOffersCreateRequest() {
         final Offer offer = offers.get(0);
+        final OfferEntity entityToPersist = OfferTransformer.transform(offer);
+
         when(dao.findOffer(offer.getRefNo())).thenReturn(null);
 
         final ProcessOfferRequest request = new ProcessOfferRequest(offer);
@@ -90,39 +105,18 @@ public class ExchangeServiceTest {
         // Execute the test
         final OfferResponse result = client.processOffer(null, request);
 
+        // expect correct response
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffer(), is(new Offer()));
+
+        // verify that persist method was invoked
+        verify(dao, times(1)).persist(any(Authentication.class), argThat(new OfferEntityMatcher(entityToPersist)));
     }
 
-    /**
-     * Checks if processing is going to fail if the request is trying
-     * to create Offer when there is an Offer with that id in the database.
-     */
-    @Test
-    public void testProcessingOffersCreateRequestForExistingRefNo() {
-        final Offer offer = offers.get(0);
-        final Offer offerInDatabase = new Offer(offer);
-        offerInDatabase.setId(543L);
-        final OfferEntity existingEntity = OfferTransformer.transform(offerInDatabase);
-        when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
-
-        final ProcessOfferRequest request = new ProcessOfferRequest(offerInDatabase);
-        request.verify(); // make sure that request is valid
-
-        // Execute the test
-        final OfferResponse result = client.processOffer(null, request);
-
-        assertThat(result.isOk(), is(false));
-        assertThat(result.getOffer(), is(offerInDatabase));
-    }
-
-    /**
-     * Correct update request with one offer.
-     */
+    /** Correct update request with one offer. */
     @Test
     public void testProcessingOffersUpdateRequest() {
         final Offer offer = offers.get(0);
-        offer.setId(234L);
         // offer which currently exist in db
         offer.setCanteen(true);
         final OfferEntity existingEntity = OfferTransformer.transform(offer);
@@ -131,62 +125,21 @@ public class ExchangeServiceTest {
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 
         when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
-        when(dao.findOffer(offer.getId())).thenReturn(existingEntity);
 
         final ProcessOfferRequest request = new ProcessOfferRequest(offer);
         request.verify(); // make sure that request is valid
 
         // Execute the test
-        final OfferResponse result = client.processOffer(null, request);
+        final OfferResponse result = client.processOffer(auth, request);
 
+        // expect correct response
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffer(), is(new Offer()));
-        verify(dao, times(1)).persist(any(OfferEntity.class));
-        verify(dao).persist(argThat(new OfferEntityMatcher(entityToPersist)));
-    }
 
-    /**
-     * Checks if processing is going to fail if {@code refNo} in request does not match the one in the database.
-     */
-    @Test
-    public void testProcessingOffersUpdateRequestWithDifferentRefNos() {
-        final Offer offer = offers.get(0);
-        offer.setId(234L);
-        final Offer offerInDatabase = new Offer(offer);
-        offerInDatabase.setRefNo("CZ-2012-1004");
-        final OfferEntity existingOfferEntity = OfferTransformer.transform(offerInDatabase);
-        offer.setRefNo("PL-2012-1004");
-        when(dao.findOffer(offer.getId())).thenReturn(existingOfferEntity);
-
-        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
-        request.verify(); // make sure that request is valid
-
-        // Execute the test
-        final OfferResponse result = client.processOffer(null, request);
-
-        assertThat(result.isOk(), is(false));
-        assertThat(result.getOffer(), is(offer)); // one offer is invalid
-    }
-
-    /**
-     * Checks if processing is going to fail if there is no {@code OfferEntity}
-     * in the database for given {@code Offer.id} in the {@code OfferRequest}
-     */
-    @Test
-    public void testProcessingOffersUpdateRequestForNonexistentId() {
-        final Offer offer = offers.get(0);
-        final OfferEntity existingOffer = OfferTransformer.transform(offer);
-        when(dao.findOffer(offer.getRefNo())).thenReturn(existingOffer);
-        when(dao.findOffer(offer.getId())).thenReturn(null);
-
-        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
-        request.verify(); // make sure that request is valid
-
-        // Execute the test
-        final OfferResponse result = client.processOffer(null, request);
-
-        assertThat(result.isOk(), is(false));
-        assertThat(result.getOffer(), is(offer));
+        // verify that persist method was invoked
+        verify(dao, times(1)).persist(any(Authentication.class), argThat(new OfferEntityMatcher(existingEntity)),
+                argThat(new OfferEntityMatcher(entityToPersist)
+                ));
     }
 
     @Test
@@ -254,11 +207,19 @@ public class ExchangeServiceTest {
             this.entity = entity;
         }
 
+        /**
+         * Check if created/updated offers are equal.
+         * Except for PK and UK only Offer#getCanteen() is checked as it's the only fields which can differ for the example data.
+         */
         @Override
         public boolean matches(final Object o) {
             if (o instanceof OfferEntity) {
-                final OfferEntity entity = (OfferEntity) o;
-                return entity.getId().equals(this.entity.getId()) && entity.getCanteen().equals(this.entity.getCanteen());
+                final OfferEntity e = (OfferEntity) o;
+                if (e.getId() == null ? this.entity.getId() == null : e.getId().equals(this.entity.getId())) {
+                    if (e.getRefNo().equals(this.entity.getRefNo())) {
+                        return e.getCanteen() == null ? this.entity.getCanteen() == null : e.getCanteen().equals(this.entity.getCanteen());
+                    }
+                }
             }
             return false;
         }

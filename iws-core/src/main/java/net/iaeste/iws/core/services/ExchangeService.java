@@ -37,7 +37,6 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
-import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,69 +54,6 @@ public class ExchangeService extends CommonService {
     }
 
     /**
-     * if {@code id = null} then new {@code Offer} should be created.
-     * Otherwise, the {@code Offer} for the specified {@code id} is updated.
-     * <p/>
-     * If {@code id = null} and {@code refNo} exists, then the request is invalid.
-     * If (@code id != null} and {@code refNo} in the database and request don't match, then the request is invalid.
-     *
-     * @param authentication   TODO
-     * @param request
-     * @return OfferResponse contains list of Fallible Offers for which processing failed.
-     */
-    // TODO Drop this version, and use the one below instead
-    public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
-        OfferResponse response = null;
-        final List<String> processingErrors = new ArrayList<>();
-
-        final Offer offer = request.getOffer();
-        // If DTO objects has an id, we're trying to update the database.
-        // If DTO has an id and there is no such entity, an exception is thrown.
-        final OfferEntity unmanagedEntity = OfferTransformer.transform(offer);
-
-        if (offer.getId() == null) {
-//        if (request.isCreateRequest()) {
-            final OfferEntity offerByRefNo = dao.findOffer(offer.getRefNo());
-            if (offerByRefNo == null) {
-                try {
-                    dao.persist(unmanagedEntity);
-                } catch (PersistenceException e) {
-                    // some constraints have been violated, this shouldn't ever happened!
-                    processingErrors.add(e.toString());
-                }
-            } else {
-                // user can't create new Offer for existing refNo
-                processingErrors.add(String.format("create error: Offer with refNo=%s already exists.", offer.getRefNo()));
-            }
-        } else {
-            final OfferEntity existingOffer = dao.findOffer(offer.getId());
-            if (existingOffer == null) {
-                // trying to update nonexistent Entity
-                processingErrors.add(String.format("update error: there is no offer for given id=%d", offer.getId()));
-            } else if (!existingOffer.getRefNo().equals(unmanagedEntity.getRefNo())) {
-                // trying to update and refNos don't match
-                processingErrors.add("update error: cannot change refNo");
-            } else {
-                existingOffer.merge(unmanagedEntity);
-                try {
-                    dao.persist(existingOffer);
-                } catch (PersistenceException e) {
-                    // some constraints have been violated, this shouldn't ever happened!
-                    processingErrors.add(e.toString());
-                }
-            }
-        }
-
-        if (processingErrors.isEmpty()) {
-            response = new OfferResponse();
-        } else {
-            response = new OfferResponse(offer, processingErrors);
-        }
-
-        return response;
-    }
-
-    /**
      * Will attempt to persist a new Offer, meaning that if the Offer already
      * exists (check against the given refno) and the user is allowed to work
      * with it, then it us updated. If no such Offer exists, then a new Offer
@@ -129,7 +65,7 @@ public class ExchangeService extends CommonService {
      * @param request        Offer Request information, i.e. OfferDTO
      * @return OfferResponse with error information
      */
-    public OfferResponse processOffer_new(final Authentication authentication, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
         final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
         final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
 

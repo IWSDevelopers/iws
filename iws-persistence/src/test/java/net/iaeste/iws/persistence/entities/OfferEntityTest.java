@@ -29,6 +29,7 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
@@ -106,11 +107,16 @@ public class OfferEntityTest {
     private EntityManager entityManager;
 
     private OfferEntity offer;
+    private Authentication authentication;
 
     @Before
     public void before() {
         dao = new OfferJpaDao(entityManager);
         offer = getMinimalOffer();
+
+        // watch out!
+        // setting arguments to null may result in NullPointerException if auditing implementation changes
+        authentication = new Authentication(null, null);
     }
 
     private static OfferEntity getMinimalOffer() {
@@ -172,7 +178,7 @@ public class OfferEntityTest {
     @Test
     @Transactional
     public void testMinimalOffer() {
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         assertThat(offer.getId(), is(notNullValue()));
 
         offer = entityManager.find(OfferEntity.class, offer.getId());
@@ -198,7 +204,7 @@ public class OfferEntityTest {
     @Transactional
     public void testFullOffer() {
         offer = getFullOffer();
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         assertThat(offer.getId(), is(notNullValue()));
 
         offer = entityManager.find(OfferEntity.class, offer.getId());
@@ -259,27 +265,27 @@ public class OfferEntityTest {
         final String refNo = "CZ-2012-1001";
         offer.setRefNo(refNo);
         offer.setId(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         assertThat(offer.getId(), is(notNullValue()));
 
         offer = getMinimalOffer();
         offer.setRefNo(refNo);
         offer.setId(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullRefNo() {
         offer.setRefNo(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test
     @Transactional
     public void testNullNominationDeadline() {
         offer.setNominationDeadline(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
         assertThat(dao.findOffer(offer.getId()), is(offer));
@@ -289,56 +295,56 @@ public class OfferEntityTest {
     @Transactional
     public void testNullEmployerName() {
         offer.setEmployerName(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullLang1() {
         offer.setLanguage1(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullLang1Level() {
         offer.setLanguage1Level(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullWorkDescription() {
         offer.setWorkDescription(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullMaxWeeks() {
         offer.setMaximumWeeks(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullMinWeeks() {
         offer.setMinimumWeeks(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullWeeklyHours() {
         offer.setWeeklyHours(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test
     @Transactional
     public void testNullDailyHours() {
         offer.setDailyHours(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
         final OfferEntity foundOffer = dao.findOffer(offer.getId());
@@ -354,7 +360,7 @@ public class OfferEntityTest {
         }
 
         offer.setOtherRequirements(sb.toString());
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
         assertThat(dao.findOffer(offer.getId()), is(offer));
@@ -369,7 +375,7 @@ public class OfferEntityTest {
         }
 
         offer.setOtherRequirements(sb.toString());
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test
@@ -381,7 +387,7 @@ public class OfferEntityTest {
         }
 
         offer.setWorkDescription(sb.toString());
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
         assertThat(dao.findOffer(offer.getId()), is(offer));
@@ -396,14 +402,14 @@ public class OfferEntityTest {
         }
 
         offer.setWorkDescription(sb.toString());
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test
     @Transactional
     public void testWeeklyHoursPrecision() {
         offer.setWeeklyHours(0.999f);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         offer = entityManager.find(OfferEntity.class, offer.getId());
 
         assertThat(offer.getWeeklyHours(), is(Float.valueOf("0.999")));
@@ -414,7 +420,7 @@ public class OfferEntityTest {
     @Transactional
     public void testWeeklyHoursPrecision2() {
         offer.setWeeklyHours(10.9999f);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         offer = entityManager.find(OfferEntity.class, offer.getId());
         Assert.assertEquals("10.9999", offer.getWeeklyHours().toString());
     }*/
@@ -423,14 +429,14 @@ public class OfferEntityTest {
     @Transactional
     public void testWeeklyHoursPrecision3() {
         offer.setWeeklyHours(100.0f);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test
     @Transactional
     public void testDailyHoursPrecision() {
         offer.setDailyHours(0.999f);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         offer = entityManager.find(OfferEntity.class, offer.getId());
         assertThat(offer.getDailyHours(), is(Float.valueOf("0.999")));
     }
@@ -440,7 +446,7 @@ public class OfferEntityTest {
     @Transactional
     public void testDailyHoursPrecision2() {
         offer.setDailyHours(10.9999f);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         offer = entityManager.find(OfferEntity.class, offer.getId());
         Assert.assertEquals("10.9999", offer.getDailyHours().toString());
     }*/
@@ -449,7 +455,7 @@ public class OfferEntityTest {
     @Transactional
     public void testDailyHoursPrecision3() {
         offer.setDailyHours(100.0f);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test
@@ -457,7 +463,7 @@ public class OfferEntityTest {
     public void testPayment() {
         offer.setPayment(BigDecimal.valueOf(1234567890.12));
         offer.setPaymentFrequency(PaymentFrequency.M);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
         assertThat(dao.findOffer(offer.getId()), is(offer));
@@ -467,7 +473,7 @@ public class OfferEntityTest {
     @Transactional
     public void testPayment2() {
         offer.setPayment(BigDecimal.valueOf(12345678901.0));
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     /* TODO for some reason the precision does not work with hsqldb
@@ -475,14 +481,14 @@ public class OfferEntityTest {
     @Transactional
     public void testPayment3() {
         offer.setPayment(BigDecimal.valueOf(1234567890.123));
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }*/
 
     @Test
     @Transactional
     public void testDecuction() {
         offer.setDeduction(99);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
         assertThat(dao.findOffer(offer.getId()), is(offer));
@@ -492,7 +498,7 @@ public class OfferEntityTest {
     @Transactional
     public void testDecuction2() {
         offer.setDeduction(100);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test
@@ -500,7 +506,7 @@ public class OfferEntityTest {
     public void testLodgingCost() {
         offer.setLodgingCost(BigDecimal.valueOf(1234567890.12));
         offer.setLodgingCostFrequency(PaymentFrequency.M);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
         assertThat(dao.findOffer(offer.getId()), is(offer));
@@ -510,7 +516,7 @@ public class OfferEntityTest {
     @Transactional
     public void testLodgingCost2() {
         offer.setLodgingCost(BigDecimal.valueOf(12345678901.0));
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     /* TODO for some reason the precision does not work with hsqldb
@@ -518,7 +524,7 @@ public class OfferEntityTest {
     @Transactional
     public void testLodgingCost3() {
         offer.setLodgingCost(BigDecimal.valueOf(1234567890.123));
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }*/
 
     @Test
@@ -526,7 +532,7 @@ public class OfferEntityTest {
     public void testLivingCost() {
         offer.setLivingCost(BigDecimal.valueOf(1234567890.12));
         offer.setLivingCostFrequency(PaymentFrequency.M);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
         assertThat(dao.findOffer(offer.getId()), is(offer));
@@ -536,7 +542,7 @@ public class OfferEntityTest {
     @Transactional
     public void testLivingCost2() {
         offer.setLivingCost(BigDecimal.valueOf(12345678901.0));
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     /* TODO for some reason the precision does not work with hsqldb
@@ -544,21 +550,21 @@ public class OfferEntityTest {
     @Transactional
     public void testLivingCost3() {
         offer.setLivingCost(BigDecimal.valueOf(1234567890.123));
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }*/
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullFromDate() {
         offer.setFromDate(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testNullToDate() {
         offer.setToDate(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
     }
 
     @Test
@@ -566,7 +572,7 @@ public class OfferEntityTest {
     public void testNullPaymentFrequency() {
         offer.setPayment(null);
         offer.setPaymentFrequency(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         final OfferEntity persistedOffer = dao.findOffer(offer.getId());
         assertThat(persistedOffer, is(offer));
@@ -579,7 +585,7 @@ public class OfferEntityTest {
     public void testNullLodgingCostFrequency() {
         offer.setLodgingCostFrequency(null);
         offer.setLodgingCost(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         final OfferEntity persistedOffer = dao.findOffer(offer.getId());
         assertThat(persistedOffer, is(offer));
@@ -592,7 +598,7 @@ public class OfferEntityTest {
     public void testNullLivingCostFrequency() {
         offer.setLivingCostFrequency(null);
         offer.setLivingCost(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         final OfferEntity persistedOffer = dao.findOffer(offer.getId());
         assertThat(persistedOffer, is(offer));
@@ -606,7 +612,7 @@ public class OfferEntityTest {
         offer.setTypeOfWork(TYPE_OF_WORK);
 
         offer.setId(null);
-        dao.persist(offer);
+        dao.persist(authentication, offer);
 
         assertThat(offer, is(notNullValue()));
         assertThat(offer.getId(), is(notNullValue()));
@@ -617,7 +623,7 @@ public class OfferEntityTest {
     @Transactional
     public void testFind() {
         assertThat(dao.findAll().size(), is(0));
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         final OfferEntity offerFoundByRefNo = dao.findOffer(offer.getRefNo());
         assertThat(offerFoundByRefNo, is(notNullValue()));
         assertThat(offerFoundByRefNo, is(offer));
@@ -633,7 +639,7 @@ public class OfferEntityTest {
         assertThat(offerFoundByEmployerName, is(offer));
         final OfferEntity offer2 = getFullOffer();
         offer2.setRefNo(REF_NO_2);
-        dao.persist(offer2);
+        dao.persist(authentication, offer2);
         assertThat(dao.findAll().size(), is(2));
         final List<OfferEntity> offersFoundByLikeEmployerName = dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE);
         if (offersFoundByLikeEmployerName == null || offersFoundByLikeEmployerName.isEmpty()) {
@@ -649,7 +655,7 @@ public class OfferEntityTest {
         final Long id = offer.getId();
         final String refNo = offer.getRefNo();
         assert id == null;
-        dao.persist(offer);
+        dao.persist(authentication, offer);
         // make sure that offer was persisted
         final Long newId = offer.getId();
         assertThat(newId, is(notNullValue()));

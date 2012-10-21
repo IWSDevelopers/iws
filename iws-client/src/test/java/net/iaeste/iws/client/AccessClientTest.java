@@ -14,11 +14,6 @@
  */
 package net.iaeste.iws.client;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -33,10 +28,15 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class AccessClientTest {
 
@@ -77,8 +77,8 @@ public class AccessClientTest {
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
     }
 
-    @Ignore("Ignored, until the permission mess is sorted out!")
     @Test
+    @Ignore("Ignored, until the permission mess is sorted out!")
     public void testCrapValues() {
         final AuthenticationToken token = new AuthenticationToken("9e107d9d372bb6826bd81d3542a419d6");
 

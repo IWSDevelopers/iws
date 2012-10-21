@@ -22,17 +22,19 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection VariableNotUsedInsideIf
- * @since 1.7
  */
 public abstract class AbstractVerification implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void verify() {
         final Map<String, String> validationResult = validate();

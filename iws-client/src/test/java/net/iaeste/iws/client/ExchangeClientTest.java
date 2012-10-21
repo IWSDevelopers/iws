@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -53,7 +54,7 @@ public class ExchangeClientTest {
         token = new AuthenticationToken(response.getToken());
     }
 
-//    @Test
+    //    @Test
 //    public void testProcessOfferCreateMinimalOffer() {
 //        final Offer offer = OfferTestUtility.getMinimalOffer();
 //        offer.setId(null); // create offer
@@ -78,30 +79,24 @@ public class ExchangeClientTest {
 //        //assertThat(actual, is(OfferTransformer.transform(offer)));
 //    }
 //
-//    @Test
-//    public void testProcessOfferCreateFullOffer() {
-//        final Offer offer = OfferTestUtility.getFullOffer();
-//
-//        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
-//        final Fallible response = exchange.processOffer(token, offerRequest);
-//        assertThat(response.isOk(), is(true));
-//
-//        final EntityManager em = EntityManagerProvider.getInstance().getEntityManager();
-//        final OfferDao dao = new OfferJpaDao(em);
-//        final List<OfferEntity> offers = dao.findAll();
-//
-//        assertThat(offers.size(), is(1));
-//        final OfferEntity actual = offers.get(0);
-//        assertThat(actual.getId(), is(notNullValue()));
-//        assertThat(actual.getRefNo(), is(offer.getRefNo()));
-//        actual.setId(null);
-//        assertThat(OfferTransformer.transform(actual), is(offer));
-//        assertThat(actual.getFieldOfStudies(), is(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies())));
-//        assertThat(actual.getStudyLevels(), is(CollectionTransformer.concatEnumCollection(offer.getStudyLevels())));
-//        assertThat(actual.getSpecializations(), is(CollectionTransformer.join(offer.getSpecializations())));
-//    }
+    @Test
+    public void testProcessOfferCreateFullOffer() {
+        final Offer offer = OfferTestUtility.getFullOffer();
 
-    // FIXME: got org.springframework.beans.factory.NoSuchBeanDefinitionException
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
+
+        // verify processResponse
+        assertThat(processResponse.isOk(), is(true));
+
+        // check if offer is persisted
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, request);
+
+        assertThat(fetchResponse.getOffers().isEmpty(), is(false));
+        assertThat(fetchResponse.getOffers(), containsInAnyOrder(offer));
+    }
+
     @Test
     public void testDeleteOffer() {
         final Offer offer = OfferTestUtility.getMinimalOffer();

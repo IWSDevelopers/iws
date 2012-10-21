@@ -26,6 +26,7 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.requests.AbstractVerification;
 import net.iaeste.iws.api.utils.Copier;
+import net.iaeste.iws.api.utils.DateComparator;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -727,16 +728,16 @@ public final class Offer extends AbstractVerification {
         if (employerWebsite != null ? !employerWebsite.equals(offer.employerWebsite) : offer.employerWebsite != null) {
             return false;
         }
-        if (fromDate != null ? !fromDate.equals(offer.fromDate) : offer.fromDate != null) {
+        if (fromDate != null ? !DateComparator.equals(fromDate, offer.fromDate) : offer.fromDate != null) {
             return false;
         }
-        if (fromDate2 != null ? !fromDate2.equals(offer.fromDate2) : offer.fromDate2 != null) {
+        if (fromDate2 != null ? !DateComparator.equals(fromDate2, offer.fromDate2) : offer.fromDate2 != null) {
             return false;
         }
-        if (unavailableFrom != null ? !unavailableFrom.equals(offer.unavailableFrom) : offer.unavailableFrom != null) {
+        if (unavailableFrom != null ? !DateComparator.equals(unavailableFrom, offer.unavailableFrom) : offer.unavailableFrom != null) {
             return false;
         }
-        if (unavailableTo != null ? !unavailableTo.equals(offer.unavailableTo) : offer.unavailableTo != null) {
+        if (unavailableTo != null ? !DateComparator.equals(unavailableTo, offer.unavailableTo) : offer.unavailableTo != null) {
             return false;
         }
         if (language1 != offer.language1) {
@@ -787,7 +788,7 @@ public final class Offer extends AbstractVerification {
         if (nearestPubTransport != null ? !nearestPubTransport.equals(offer.nearestPubTransport) : offer.nearestPubTransport != null) {
             return false;
         }
-        if (nominationDeadline != null ? !nominationDeadline.equals(offer.nominationDeadline) : offer.nominationDeadline != null) {
+        if (nominationDeadline != null ? !DateComparator.equals(nominationDeadline, offer.nominationDeadline) : offer.nominationDeadline != null) {
             return false;
         }
         if (otherRequirements != null ? !otherRequirements.equals(offer.otherRequirements) : offer.otherRequirements != null) {
@@ -805,10 +806,10 @@ public final class Offer extends AbstractVerification {
         if (studyLevels != null ? !studyLevels.equals(offer.studyLevels) : offer.studyLevels != null) {
             return false;
         }
-        if (toDate != null ? !toDate.equals(offer.toDate) : offer.toDate != null) {
+        if (toDate != null ? !DateComparator.equals(toDate, offer.toDate) : offer.toDate != null) {
             return false;
         }
-        if (toDate2 != null ? !toDate2.equals(offer.toDate2) : offer.toDate2 != null) {
+        if (toDate2 != null ? !DateComparator.equals(toDate2, offer.toDate2) : offer.toDate2 != null) {
             return false;
         }
         if (weeklyHours != null ? !weeklyHours.equals(offer.weeklyHours) : offer.weeklyHours != null) {

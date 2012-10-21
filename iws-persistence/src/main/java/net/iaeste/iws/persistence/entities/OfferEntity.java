@@ -43,10 +43,11 @@ import java.util.Date;
  * is what. If you document the things in the DTO's (where it should be
  * regardlessly), you can simply refer to the information there with an @see.
  *
- * @author  Michal Knapik / last $Author:$
+ * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection OverlyComplexClass, AssignmentToDateFieldFromParameter, OverlyLongMethod
+ * , ClassWithTooManyFields
+ * @since 1.7
  */
 @Table(name = "offers")
 @Entity
@@ -111,7 +112,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     @Column(name = "study_fields", nullable = false)
     private String fieldOfStudies = null;
 
-    @Column(name = "work_type")
+    @Column(name = "work_type", length = 1)
     private String typeOfWork = null;
 
     @Column(name = "prev_training_req")
@@ -201,9 +202,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     @Column(name = "daily_hours", scale = 5, precision = 3)
     private Float dailyHours = null;
 
-    /**
-     * need big numbers, e.g. 1 EUR = 26.435,00 VND
-     */
+    /** need big numbers, e.g. 1 EUR = 26.435,00 VND */
     @Column(name = "payment", scale = 12, precision = 2)
     private BigDecimal payment = null;
 
@@ -614,9 +613,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
         this.workingPlace = workingPlace;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void merge(final OfferEntity obj) {
         // don't merge if objects are not the same entity

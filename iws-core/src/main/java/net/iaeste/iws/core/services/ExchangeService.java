@@ -41,9 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public class ExchangeService extends CommonService {
 
@@ -88,12 +88,12 @@ public class ExchangeService extends CommonService {
 
     // TODO Should perform the delete operation based on the refno
     public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {
-        final OfferEntity foundOffer = dao.findOffer(request.getOfferId());
+        final OfferEntity foundOffer = dao.findOffer(request.getOfferRefNo());
 
         if (foundOffer != null) {
             dao.delete(foundOffer.getId());
         } else {
-            throw new IWSException(IWSErrors.ENTITY_IDENTIFICATION_ERROR, "Cannot delete Offer with Id " + request.getOfferId());
+            throw new IWSException(IWSErrors.ENTITY_IDENTIFICATION_ERROR, "Cannot delete Offer with refNo " + request.getOfferRefNo());
         }
     }
 

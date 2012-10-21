@@ -1100,7 +1100,7 @@ public final class Offer extends AbstractVerification {
         boolean check = true;
 
         //noinspection ConstantConditions
-        check &= isNotEmpty(validation, "refno", refNo);
+        check &= isNotEmpty(validation, "refNo", refNo);
         check &= isNotEmpty(validation, "employerName", employerName);
         check &= isNotNull(validation, "weeklyhours", weeklyHours);
         check &= isNotEmpty(validation, "fieldOfStudies", fieldOfStudies);
@@ -1117,6 +1117,8 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
+     * Checks if reference number is valid with #refNoFormat.
+     *
      * @param validation Map with Error information
      * @return true if reference number is valid
      * @see #refNo

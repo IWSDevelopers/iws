@@ -145,11 +145,13 @@ public class ExchangeServiceTest {
     @Test
     public void testDeleteOffer() {
         final long offerId = 1L;
+        final String offerRefNo = "AT-2012-0001";
         final OfferEntity offerForDeletion = new OfferEntity();
         offerForDeletion.setId(offerId);
+        offerForDeletion.setRefNo(offerRefNo);
 
-        when(dao.findOffer(offerId)).thenReturn(offerForDeletion);
-        final DeleteOfferRequest request = new DeleteOfferRequest(offerId);
+        when(dao.findOffer(offerRefNo)).thenReturn(offerForDeletion);
+        final DeleteOfferRequest request = new DeleteOfferRequest(offerRefNo);
         request.verify(); // make sure that request is valid
 
         client.deleteOffer(null, request);
@@ -159,10 +161,10 @@ public class ExchangeServiceTest {
 
     @Test(expected = IWSException.class)
     public void testDeleteNonexistentOffer() {
-        final long offerId = 1L;
-        when(dao.findOffer(offerId)).thenReturn(null);
+        final String offerRefNo = "AT-2012-0001";
+        when(dao.findOffer(offerRefNo)).thenReturn(null);
 
-        final DeleteOfferRequest request = new DeleteOfferRequest(offerId);
+        final DeleteOfferRequest request = new DeleteOfferRequest(offerRefNo);
         request.verify(); // make sure that request is valid
 
         client.deleteOffer(null, request);

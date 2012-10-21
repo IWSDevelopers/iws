@@ -38,131 +38,118 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
+ * Spring based Exchange Client, which wraps the Exchange Controller from the
+ * IWS core module within a transactional layer.
+ *
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
+@Transactional
+@Repository("springExchangeClient")
 public final class SpringExchangeClient implements Exchange {
 
-    private final Exchange exchange;
+    private Exchange exchange;
 
     /**
-     * Default Constructor, initializes the Core Service Factory with the Spring
-     * based EntityManager instance.
+     * Injects the {@code EntityManager} instance required to invoke our
+     * transactional daos. The EntityManager instance can only be injected into
+     * the beans, we cannot create a bean for the Access Controller otherwise.
+     *
+     * @param entityManager Spring controlled EntityManager instance
      */
-    public SpringExchangeClient(final EntityManager entityManager) {
+    @PersistenceContext
+    public void init(final EntityManager entityManager) {
         final ServiceFactory factory = new ServiceFactory(entityManager);
         exchange = new ExchangeController(factory);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         return exchange.fetchEmployers(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public Fallible processFaculties(final AuthenticationToken token, final FacultyRequest request) {
         return exchange.processFaculties(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         return exchange.fetchFaculties(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         return exchange.processOffer(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         return exchange.deleteOffer(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return exchange.fetchOffers(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public Fallible processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
         return exchange.processOfferTemplates(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         return exchange.fetchOfferTemplates(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public Fallible processPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
         return exchange.processPublishGroups(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         return exchange.fetchPublishGroups(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public Fallible processStudents(final AuthenticationToken token, final StudentRequest request) {
         return exchange.processStudents(token, request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     @Transactional
     public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {

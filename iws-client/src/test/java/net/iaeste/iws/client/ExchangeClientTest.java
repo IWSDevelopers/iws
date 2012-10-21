@@ -16,13 +16,23 @@ package net.iaeste.iws.client;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.dtos.OfferTestUtility;
+import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.api.requests.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.FetchOffersRequest;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.OfferResponse;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -71,7 +81,7 @@ public class ExchangeClientTest {
 //    @Test
 //    public void testProcessOfferCreateFullOffer() {
 //        final Offer offer = OfferTestUtility.getFullOffer();
-//        offer.setId(null); // create offer
+//
 //        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
 //        final Fallible response = exchange.processOffer(token, offerRequest);
 //        assertThat(response.isOk(), is(true));
@@ -91,35 +101,35 @@ public class ExchangeClientTest {
 //        assertThat(actual.getSpecializations(), is(CollectionTransformer.join(offer.getSpecializations())));
 //    }
 
-// FIXME: got org.springframework.beans.factory.NoSuchBeanDefinitionException
-//    @Test
-//    public void testDeleteOffer() {
-//        final Offer offer = OfferTestUtility.getMinimalOffer();
-//
-//        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
-//        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
-//
-//        assertThat(saveResponse.isOk(), is(true));
-//
-//        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
-//        final FetchOffersResponse response = exchange.fetchOffers(token, request);
-//        assertThat(response.getOffers().isEmpty(), is(false));
-//        final int size = response.getOffers().size();
-//
-//        final Offer offerToDelete = response.getOffers().get(0);
-//
-//        final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getRefNo());
-//        final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);
-//
-//        assertThat(deleteResponse.isOk(), is(true));
-//        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.ALL);
-//        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
-//        assertThat(fetchResponse.getOffers().size(), is(size - 1));
-//
-//        for (final Offer o : fetchResponse.getOffers()) {
-//            if (o.getRefNo().equals(offerToDelete.getRefNo())) {
-//                fail("offer is supposed to be deleted");
-//            }
-//        }
-//    }
+    // FIXME: got org.springframework.beans.factory.NoSuchBeanDefinitionException
+    @Test
+    public void testDeleteOffer() {
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse response = exchange.fetchOffers(token, request);
+        assertThat(response.getOffers().isEmpty(), is(false));
+        final int size = response.getOffers().size();
+
+        final Offer offerToDelete = response.getOffers().get(0);
+
+        final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getRefNo());
+        final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);
+
+        assertThat(deleteResponse.isOk(), is(true));
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
+        assertThat(fetchResponse.getOffers().size(), is(size - 1));
+
+        for (final Offer o : fetchResponse.getOffers()) {
+            if (o.getRefNo().equals(offerToDelete.getRefNo())) {
+                fail("offer is supposed to be deleted");
+            }
+        }
+    }
 }

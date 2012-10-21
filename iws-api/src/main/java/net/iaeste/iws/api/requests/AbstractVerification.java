@@ -22,19 +22,17 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection VariableNotUsedInsideIf
+ * @since 1.7
  */
 public abstract class AbstractVerification implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public final void verify() {
         final Map<String, String> validationResult = validate();
@@ -64,7 +62,7 @@ public abstract class AbstractVerification implements Verifiable {
         boolean check = true;
 
         if (value == null) {
-            validation.put(field, "The field may not be null.");
+            addError(validation, field, "The field may not be null.");
             check = false;
         }
 
@@ -87,7 +85,7 @@ public abstract class AbstractVerification implements Verifiable {
         boolean check = true;
 
         if ((value == null) || value.isEmpty()) {
-            validation.put(field, "The field may not be null or empty.");
+            addError(validation, field, "The field may not be null or empty.");
             check = false;
         }
 
@@ -110,7 +108,7 @@ public abstract class AbstractVerification implements Verifiable {
         boolean check = true;
 
         if ((value == null) || value.isEmpty()) {
-            validation.put(field, "The field may not be null or empty.");
+            addError(validation, field, "The field may not be null or empty.");
             check = false;
         }
 
@@ -137,7 +135,7 @@ public abstract class AbstractVerification implements Verifiable {
             final Map<String, String> newValidation = value.validate();
 
             if (!newValidation.isEmpty()) {
-                validation.putAll(newValidation);
+                addAllErrors(validation, newValidation);
                 check = false;
             }
         }
@@ -166,7 +164,7 @@ public abstract class AbstractVerification implements Verifiable {
             // Since the Number is an Abstract type, we need to convert the number
             // to something, which we can then actually check against
             if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
-                validation.put(field, format("The value is not within the range %d to %d.", minimum, maximum));
+                addError(validation, field, format("The value is not within the range %d to %d.", minimum, maximum));
                 check = false;
             }
         }
@@ -211,7 +209,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param validation Map with Error information
      * @param field      The name of the field (value) to be verified
      * @param value      The value to verify
-     * @param maxSize  The maximally allowed length
+     * @param maxSize    The maximally allowed length
      * @return True if field is valid, otherwise false
      */
     protected boolean isWithinLimits(final Map<String, String> validation, final String field, final Collection<?> value, final int maxSize) {
@@ -219,7 +217,7 @@ public abstract class AbstractVerification implements Verifiable {
 
         if (check) {
             if (value.size() > maxSize) {
-                validation.put(field, format("the value size is bigger than %d.", maxSize));
+                addError(validation, field, format("the value size is bigger than %d.", maxSize));
                 check = false;
             }
         }

@@ -17,16 +17,18 @@ package net.iaeste.iws.fitnesse;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.client.AccessClient;
+import net.iaeste.iws.fitnesse.callers.AccessCaller;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class IsAlive extends AbstractFixture<AuthenticationResponse> {
 
-    private final Access access = new AccessClient();
+    // We need to use the Callers, since it wraps the IWS calls with Exception
+    // handling, to throw StopTest Exceptions, which FitNesse requires
+    private final Access access = new AccessCaller();
     private String username = null;
     private String password = null;
 
@@ -62,7 +64,9 @@ public class IsAlive extends AbstractFixture<AuthenticationResponse> {
     // Standard Fixture methods
     // =========================================================================
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() {
         final AuthenticationRequest request = buildRequest();
@@ -70,7 +74,9 @@ public class IsAlive extends AbstractFixture<AuthenticationResponse> {
         response = access.generateSession(request);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         super.reset();

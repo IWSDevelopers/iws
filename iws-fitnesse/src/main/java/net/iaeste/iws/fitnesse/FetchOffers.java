@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Access;
@@ -23,18 +22,25 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
-import net.iaeste.iws.client.AccessClient;
-import net.iaeste.iws.client.ExchangeClient;
+import net.iaeste.iws.fitnesse.callers.AccessCaller;
+import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * The flow with using the Token is not correct. You should create a Token as
+ * the first action, and deprecate it as the last.
+ *
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
-    private final Exchange exchange = new ExchangeClient();
-    private final Access ac = new AccessClient();
+
+    // We need to use the Callers, since it wraps the IWS calls with Exception
+    // handling, to throw StopTest Exceptions, which FitNesse requires
+    private final Exchange exchange = new ExchangeCaller();
+    private final Access access = new AccessCaller();
+
     private AuthenticationToken token;
     private FetchOffersRequest request;
     private String username;
@@ -42,7 +48,6 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
 
     public FetchOffers() {
         reset();
-
     }
 
     /**
@@ -57,8 +62,8 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
     /**
      * Sets username and password so the AuthenticationToken could be fetched.
      *
-     * @param username
-     * @param password
+     * @param username Username
+     * @param password Password
      */
     public void setUsernameAndPassword(final String username, final String password) {
         this.username = username;
@@ -77,28 +82,32 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
         this.token = new AuthenticationToken(token);
     }
 
-    /** @return number of offers fetched otherwise or -1 if there is no response */
+    /**
+     * @return number of offers fetched otherwise or -1 if there is no response
+     */
     public int numberOfFetchedOffers() {
-        if (response == null) {
-            return -1;
-        }
-        return response.getOffers().size();
+        return response == null ? -1 : response.getOffers().size();
     }
 
     /**
      * prints offer
      *
      * @param offerIndex index of offer to display
-     * @return String representation of offer or error message if offer does not exist for given number
+     * @return String representation of offer or error message if offer does not
+     *         exist for given number
      */
     public String printOffer(final int offerIndex) {
+        final String retVal;
+
         if (response == null) {
-            return "no response";
+            retVal = "no response";
+        } else if ((offerIndex < 1) || (offerIndex > numberOfFetchedOffers())) {
+            retVal = "no offer for given index";
+        } else {
+            retVal = response.getOffers().get(offerIndex - 1).toString();
         }
-        if (offerIndex < 1 || offerIndex > numberOfFetchedOffers()) {
-            return "no offer for given index";
-        }
-        return response.getOffers().get(offerIndex - 1).toString();
+
+        return retVal;
     }
 
     /** alias function for execute */
@@ -114,8 +123,10 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
 
     @Override
     public void reset() {
+        // Resets the Response Object
+        super.reset();
+
         request = null;
-        response = null;
         username = null;
         password = null;
         token = null;
@@ -124,7 +135,7 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
     private void getToken() {
         if (token == null) {
             final AuthenticationRequest authRequest = new AuthenticationRequest(username, password);
-            final AuthenticationResponse authResponse = ac.generateSession(authRequest);
+            final AuthenticationResponse authResponse = access.generateSession(authRequest);
             token = authResponse.getToken();
         }
     }

@@ -15,10 +15,11 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.dtos.Field;
-import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.Authentication;
-import net.iaeste.iws.persistence.entities.*;
-import net.iaeste.iws.persistence.entities.Object;
+import net.iaeste.iws.persistence.BasicDao;
+import net.iaeste.iws.persistence.entities.IWSEntity;
+import net.iaeste.iws.persistence.entities.Mergeable;
+import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
 
@@ -52,7 +53,7 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     @Deprecated
-    public void persist(final Object entity) {
+    public void persist(final IWSEntity entity) {
         entityManager.persist(entity);
     }
 
@@ -60,7 +61,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public void persist(final Authentication authentication, final Object entity) {
+    public void persist(final Authentication authentication, final IWSEntity entity) {
         // We have to start by persisting the entity, to have an Id
         entityManager.persist(entity);
 
@@ -90,7 +91,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public void delete(final Object entity) {
+    public void delete(final IWSEntity entity) {
         // First, let's drop all Objects matching the entity. Since the record
         // Id in the history table cannot be set up as a foreign key, we must
         // do this manually
@@ -107,7 +108,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public List<MonitoringEntity> findHistory(final net.iaeste.iws.persistence.entities.Object entity) {
+    public List<MonitoringEntity> findHistory(final IWSEntity entity) {
         final String name = monitoringProcessor.findClassMonitoringName(entity);
         final Long id = entity.getId();
         final List<MonitoringEntity> result;

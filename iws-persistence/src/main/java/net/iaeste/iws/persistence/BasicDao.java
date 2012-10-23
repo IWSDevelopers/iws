@@ -14,8 +14,9 @@
  */
 package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.persistence.entities.*;
-import net.iaeste.iws.persistence.entities.Object;
+import net.iaeste.iws.persistence.entities.IWSEntity;
+import net.iaeste.iws.persistence.entities.Mergeable;
+import net.iaeste.iws.persistence.entities.MonitoringEntity;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public interface BasicDao {
      *
      * @param entity Entity to persist
      */
-    void persist(Object entity);
+    void persist(IWSEntity entity);
 
     /**
      * Persist a monitored Entity to the database. The Monitoring mechanism will
@@ -45,10 +46,10 @@ public interface BasicDao {
      * @param authentication Information about the user invoking the request
      * @param entity         Entity to persist
      */
-    void persist(Authentication authentication, Object entity);
+    void persist(Authentication authentication, IWSEntity entity);
 
     /**
-     * Monitors and merges the new Entity values into the old Entity Object, and
+     * Monitors and merges the new Entity values into the old Entity IWSEntity, and
      * persists both the monitored information and the old Entity in the
      * database.
      *
@@ -63,7 +64,7 @@ public interface BasicDao {
      *
      * @param entity Entity to delete
      */
-    void delete(Object entity);
+    void delete(IWSEntity entity);
 
     /**
      * Finds the monitored history for a given Entity, and returns it.
@@ -71,5 +72,5 @@ public interface BasicDao {
      * @param entity The Entity to find the history for
      * @return List of the Entity history
      */
-    List<MonitoringEntity> findHistory(net.iaeste.iws.persistence.entities.Object entity);
+    List<MonitoringEntity> findHistory(IWSEntity entity);
 }

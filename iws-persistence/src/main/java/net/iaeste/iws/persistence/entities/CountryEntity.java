@@ -25,11 +25,18 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
 /**
+ * Entity for the Countries table. Contains all known countries, including their
+ * relationship with IAESTE.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
         @NamedQuery(name = "country.findAll",
@@ -38,6 +45,7 @@ import javax.persistence.Table;
                 query = "select c from CountryEntity c where c.countryName = :name")
 })
 @Entity
+@Monitored(name = "countries", level = MonitoringLevel.MARKED)
 @Table(name = "countries")
 public class CountryEntity implements Mergeable<CountryEntity> {
 
@@ -51,6 +59,54 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @Monitored(name="country name", level = MonitoringLevel.MARKED)
     @Column(nullable = false, name = "country_name")
     private String countryName = null;
+
+    @Monitored(name="country name full", level = MonitoringLevel.MARKED)
+    @Column(name = "country_name_full")
+    private String countryNameFull = null;
+
+    @Monitored(name="country name native", level = MonitoringLevel.MARKED)
+    @Column(name = "country_name_native")
+    private String countryNameNative = null;
+
+    @Monitored(name="nationality", level = MonitoringLevel.MARKED)
+    @Column(name = "nationality")
+    private String nationality = null;
+
+    @Monitored(name="citizens", level = MonitoringLevel.MARKED)
+    @Column(name = "citizens")
+    private String citizens = null;
+
+    @Monitored(name="phonecode", level = MonitoringLevel.MARKED)
+    @Column(name = "phonecode")
+    private String phonecode = null;
+
+    @Monitored(name="currency", level = MonitoringLevel.MARKED)
+    @Column(name = "currency")
+    private String currency = null;
+
+    @Monitored(name="languages", level = MonitoringLevel.MARKED)
+    @Column(name = "languages")
+    private String languages = null;
+
+    @Monitored(name="membership status", level = MonitoringLevel.MARKED)
+    @Column(name = "membership_status")
+    private Integer membershipStatus = 5;
+
+    @Monitored(name="member since", level = MonitoringLevel.MARKED)
+    @Column(name = "member_since")
+    private Integer memberSince = null;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modified", nullable = false)
+    private Date modified = new Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false)
+    private Date created = new Date();
+
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
 
     /**
      * Empty Constructor, required by JPA.
@@ -67,6 +123,10 @@ public class CountryEntity implements Mergeable<CountryEntity> {
         this.countryId = countryId;
         this.countryName = countryName;
     }
+
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
 
     public void setId(final Long id) {
         this.id = id;
@@ -93,6 +153,98 @@ public class CountryEntity implements Mergeable<CountryEntity> {
         return countryName;
     }
 
+    public void setCountryNameFull(final String countryNameFull) {
+        this.countryNameFull = countryNameFull;
+    }
+
+    public String getCountryNameFull() {
+        return countryNameFull;
+    }
+
+    public void setCountryNameNative(final String countryNameNative) {
+        this.countryNameNative = countryNameNative;
+    }
+
+    public String getCountryNameNative() {
+        return countryNameNative;
+    }
+
+    public void setNationality(final String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setCitizens(final String citizens) {
+        this.citizens = citizens;
+    }
+
+    public String getCitizens() {
+        return citizens;
+    }
+
+    public void setPhonecode(final String phonecode) {
+        this.phonecode = phonecode;
+    }
+
+    public String getPhonecode() {
+        return phonecode;
+    }
+
+    public void setCurrency(final String currency) {
+        this.currency = currency;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setLanguages(final String languages) {
+        this.languages = languages;
+    }
+
+    public String getLanguages() {
+        return languages;
+    }
+
+    public void setMembershipStatus(final Integer membershipStatus) {
+        this.membershipStatus = membershipStatus;
+    }
+
+    public Integer getMembershipStatus() {
+        return membershipStatus;
+    }
+
+    public void setMemberSince(final Integer memberSince) {
+        this.memberSince = memberSince;
+    }
+
+    public Integer getMemberSince() {
+        return memberSince;
+    }
+
+    public void setModified(final Date modified) {
+        this.modified = modified;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    // =========================================================================
+    // Entity Standard Methods
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */
@@ -100,6 +252,18 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     public void merge(final CountryEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
             countryName = obj.countryName;
+            countryNameFull = obj.countryNameFull;
+            countryNameNative = obj.countryNameNative;
+            nationality = obj.nationality;
+            citizens = obj.citizens;
+            phonecode = obj.phonecode;
+            currency = obj.currency;
+            languages = obj.languages;
+            membershipStatus = obj.membershipStatus;
+            memberSince = obj.memberSince;
+
+            // Merging over, let's just set the Modified date to 'now'
+            modified = new Date();
         }
     }
 }

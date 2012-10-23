@@ -54,7 +54,7 @@ import java.util.Date;
 @Entity
 @Table(name = "history")
 @Monitored(name = "history", level = MonitoringLevel.NONE)
-public class MonitoringEntity implements Object {
+public class MonitoringEntity implements IWSEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

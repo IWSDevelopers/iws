@@ -16,13 +16,13 @@ package net.iaeste.iws.persistence.entities;
 
 /**
  * Classes implementing this interface, are capable of updating the current
- * content, with the content of a second Object of the same type (and Id).
+ * content, with the content of a second IWSEntity of the same type (and Id).
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface Mergeable<T> extends Object {
+public interface Mergeable<T> extends IWSEntity {
 
     /**
      * Allows a merge between two objects of the same type. The method updates

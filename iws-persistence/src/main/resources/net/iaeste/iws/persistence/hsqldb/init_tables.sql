@@ -51,9 +51,9 @@ create table countries (
     currency            varchar(3),
     languages           varchar(100),
     membership_status   integer default 5,
-    membership_since    integer default -1,
-    modified           timestamp default now() not null,
-    created            timestamp default now() not null,
+    member_since        integer default -1,
+    modified            timestamp default now() not null,
+    created             timestamp default now() not null,
 
     primary key (id),
     unique (country_name)

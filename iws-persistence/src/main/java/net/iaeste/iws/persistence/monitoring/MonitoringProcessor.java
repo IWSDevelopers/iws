@@ -15,7 +15,7 @@
 package net.iaeste.iws.persistence.monitoring;
 
 import net.iaeste.iws.api.dtos.Field;
-import net.iaeste.iws.persistence.entities.Object;
+import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.exceptions.MonitoringException;
 
 import java.io.ByteArrayInputStream;
@@ -68,12 +68,12 @@ public final class MonitoringProcessor {
                  final GZIPOutputStream zipStream = new GZIPOutputStream(byteStream);
                  final ObjectOutputStream objectStream = new ObjectOutputStream(zipStream)) {
 
-                // First, we write the fields to the Object stream, so the
-                // Object data is stored when we're attempting to de-serialize
+                // First, we write the fields to the IWSEntity stream, so the
+                // IWSEntity data is stored when we're attempting to de-serialize
                 // them
                 objectStream.writeObject(fields);
 
-                // Before we can convert the content of the Object stream, we
+                // Before we can convert the content of the IWSEntity stream, we
                 // have to close it, to force a flushing of unwritten data
                 objectStream.close();
 
@@ -90,20 +90,20 @@ public final class MonitoringProcessor {
     }
 
     /**
-     * The method returns the decompressed deserialized Object from the given
+     * The method returns the decompressed deserialized IWSEntity from the given
      * byte array. The deserialization and decompression is achieved by using 3
      * streams, the first (top most, {@code ByteArrayInputStream}) is used to
      * convert the data from a byte array to a data stream, that can then be
      * used as input for the second stream ({@code GZIPInputStream}) to
      * uncompress the data and finally give it to the third stream
-     * ({@code ObjectInputStream}) to retrieve the Object that was originally
+     * ({@code ObjectInputStream}) to retrieve the IWSEntity that was originally
      * stored.<br />
      *   If a problem occurs, then a {@code MonitoringException} will be thrown,
      * otherwise the deserialized and decompressed data is returned.<br />
      *   If the given data is null, then an empty array is returned.
      *
-     * @param  bytes  Serialized and Compressed Object
-     * @return Deserialized and Decompressed Object
+     * @param  bytes  Serialized and Compressed IWSEntity
+     * @return Deserialized and Decompressed IWSEntity
      * @throws MonitoringException if unable to read the data
      */
     public List<Field> deserialize(final byte[] bytes) {
@@ -115,7 +115,7 @@ public final class MonitoringProcessor {
                  final ObjectInputStream objectStream = new ObjectInputStream(zipStream)) {
 
                 // As the streams handle the magic, all we have to worry about
-                // is reading the Object out, and return it :-)
+                // is reading the IWSEntity out, and return it :-)
                 result = (List<Field>) objectStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 throw new MonitoringException(e);
@@ -134,7 +134,7 @@ public final class MonitoringProcessor {
      * @param entity  The Entity to find the {@code MonitoringLevel} for
      * @return Either found {@code MonitoringLevel} or "None"
      */
-    public MonitoringLevel findClassMonitoringLevel(final Object entity) {
+    public MonitoringLevel findClassMonitoringLevel(final IWSEntity entity) {
         MonitoringLevel level = MonitoringLevel.NONE;
 
         if (entity != null) {
@@ -156,7 +156,7 @@ public final class MonitoringProcessor {
      * @param entity  The Entity to find the name for
      * @return Entity Monitoring name or null
      */
-    public String findClassMonitoringName(final Object entity) {
+    public String findClassMonitoringName(final IWSEntity entity) {
         String name = null;
 
         if (entity != null) {
@@ -182,7 +182,7 @@ public final class MonitoringProcessor {
      * @return List with all the monitored values or null
      * @see MonitoringLevel
      */
-    public List<Field> findChanges(final MonitoringLevel classLevel, final Object entity) {
+    public List<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity entity) {
         final List<Field> found;
 
         if ((classLevel == MonitoringLevel.DETAILED) && (entity != null)) {
@@ -228,7 +228,7 @@ public final class MonitoringProcessor {
      * @return List with all the monitored changes or null
      * @see MonitoringLevel
      */
-    public List<Field> findChanges(final MonitoringLevel classLevel, final Object oldEntity, final Object newEntity) {
+    public List<Field> findChanges(final MonitoringLevel classLevel, final IWSEntity oldEntity, final IWSEntity newEntity) {
         final List<Field> found;
 
         if ((classLevel == MonitoringLevel.DETAILED) && isValidIdenticalObjects(oldEntity, newEntity)) {
@@ -266,16 +266,16 @@ public final class MonitoringProcessor {
 
     /**
      * With the help of the Reflection framework, this method reads the value of
-     * the given Field from the given Object. If an error occurred, then the
-     * returned value is null, otherwise the {@code Object.toString()} value is
+     * the given Field from the given IWSEntity. If an error occurred, then the
+     * returned value is null, otherwise the {@code IWSEntity.toString()} value is
      * returned.
      *
      * @param field  The Field to read the value for
-     * @param obj    The Object to read the value from
+     * @param obj    The IWSEntity to read the value from
      * @return The String representation of the Value or null
      */
-    private String readObjectValue(final java.lang.reflect.Field field, final net.iaeste.iws.persistence.entities.Object obj) {
-        // First, we store the Accessibility information for the Object, since
+    private String readObjectValue(final java.lang.reflect.Field field, final IWSEntity obj) {
+        // First, we store the Accessibility information for the IWSEntity, since
         // we need to set it to accessible before attempting to read it
         final boolean accessible = field.isAccessible();
         field.setAccessible(true);
@@ -300,11 +300,11 @@ public final class MonitoringProcessor {
      * Returns true of both the given Objects are valud (not null), and they are
      * identical. Otherwise it returns false.
      *
-     * @param obj1 The First Object
+     * @param obj1 The First IWSEntity
      * @param obj2 The Second OBject
      * @return True if both Objects are identical, otherwise False
      */
-    private Boolean isValidIdenticalObjects(final Object obj1, final Object obj2) {
+    private Boolean isValidIdenticalObjects(final IWSEntity obj1, final IWSEntity obj2) {
         return (obj1 != null) && (obj2 != null) && obj1.getClass().equals(obj2.getClass());
     }
 }

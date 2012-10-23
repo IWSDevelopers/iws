@@ -19,7 +19,7 @@ package net.iaeste.iws.persistence.entities;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface Object {
+public interface IWSEntity {
 
     /**
      * The primary key in all our mergeable tables must always be retrievable

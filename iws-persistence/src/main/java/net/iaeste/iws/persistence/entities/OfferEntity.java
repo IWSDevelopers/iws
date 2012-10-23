@@ -55,8 +55,8 @@ import java.util.Date;
         @NamedQuery(name = "OfferEntity.findById", query = "SELECT o FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM OfferEntity o WHERE o.id IN :ids"),
         @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM OfferEntity o WHERE o.refNo = :refNo"),
-        @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT id FROM employer_information ei WHERE ei.employer_name = :employerName)"),
-        @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT id FROM employer_information ei WHERE ei.employer_name LIKE :employerName)"),
+        @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT id FROM EmployerInformationView ei WHERE ei.employerName = :employerName)"),
+        @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT id FROM EmployerInformationView ei WHERE ei.employerName LIKE :employerName)"),
         @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM OfferEntity o WHERE o.id IN :ids")
 })
@@ -74,7 +74,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     private Date nominationDeadline = null;
 
     /**
-     * EmployerInformation information should be duplicated in each offer for several reasons:
+     * Employer information should be duplicated in each offer for several reasons:
      * <ul>
      * <li>multiple locations for big companies</li>
      * <li>working hours can change from offer to offer</li>
@@ -82,7 +82,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
      * </ul>
      */
 
-    // EmployerInformation information
+    // Employer information
     @Column(name = "employer_name", nullable = false)
     private String employerName = null;
 

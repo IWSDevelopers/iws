@@ -8,4 +8,4 @@ INNER JOIN (
   SELECT distinct (employer_name) employer_name, max(changed_on) changed_on
   FROM offers
   GROUP BY employer_name
-) AS t2 ON o.employer_name = t2.employer_name AND o.changed_on = t2.changed_ona;
+) AS t2 ON o.employer_name = t2.employer_name AND o.changed_on = t2.changed_on;

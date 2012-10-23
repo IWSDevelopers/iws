@@ -645,7 +645,8 @@ public class OfferEntityTest {
         if (offersFoundByLikeEmployerName == null || offersFoundByLikeEmployerName.isEmpty()) {
             fail("This should not happen!");
         }
-        assertThat(offersFoundByLikeEmployerName.size(), is(2));
+        //we want to retrieve only one row for each employer
+        assertThat(offersFoundByLikeEmployerName.size(), is(1));
         assertThat(dao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
     }
 

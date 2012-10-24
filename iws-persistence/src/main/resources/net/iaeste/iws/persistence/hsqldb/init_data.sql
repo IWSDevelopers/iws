@@ -152,6 +152,7 @@ insert into users (id, username, password) values (4, 'Marko', 'fc261a5e3e3c85a4
 insert into users (id, username, password) values (5, 'Kim',   'ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f');
 insert into users (id, username, password) values (6, 'Daniel','26205d66c217a123c72d1e2bccd0536a12c39d65b085c224c4bbd0c75fcb3634');
 insert into users (id, username, password) values (7, 'Michal', '');
+insert into users (id, username, password) values (8, 'Pavel', 'ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f');
 
 ---- User to Group
 --- 1, 'Austria'

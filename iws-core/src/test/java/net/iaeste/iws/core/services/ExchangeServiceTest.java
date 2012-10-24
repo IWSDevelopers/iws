@@ -36,6 +36,7 @@ import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.core.notofications.NotificationCenter;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
@@ -58,7 +59,8 @@ import java.util.List;
 public class ExchangeServiceTest {
 
     private final OfferDao dao = mock(OfferDao.class);
-    private final ExchangeService client = new ExchangeService(dao);
+    private final NotificationCenter nc = mock(NotificationCenter.class);
+    private final ExchangeService client = new ExchangeService(dao, nc);
     private final List<Offer> offers = OfferRequestTestUtility.getValidOffersList();
     private Authentication auth;
 

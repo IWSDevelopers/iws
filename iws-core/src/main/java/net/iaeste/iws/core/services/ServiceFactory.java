@@ -14,10 +14,12 @@
  */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.core.notofications.NotificationCenter;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.OfferJpaDao;
+import net.iaeste.iws.persistence.jpa.UserNotificationJpaDao;
 
 import javax.persistence.EntityManager;
 
@@ -37,11 +39,13 @@ public class ServiceFactory {
 
     private final EntityManager entityManager;
     private final AccessDao accessDao;
+    private final NotificationCenter nc;
 
     public ServiceFactory(final EntityManager entityManager) {
         this.entityManager = entityManager;
 
         accessDao = new AccessJpaDao(entityManager);
+        nc = new NotificationCenter(new UserNotificationJpaDao(entityManager));
     }
 
     public AdministrationService prepareAdministrationService() {
@@ -61,7 +65,7 @@ public class ServiceFactory {
     public ExchangeService prepareOfferService() {
         final OfferDao dao = new OfferJpaDao(entityManager);
 
-        return new ExchangeService(dao);
+        return new ExchangeService(dao, nc);
     }
 
     public StudentService prepareStudentService() {

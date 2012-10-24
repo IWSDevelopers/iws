@@ -32,6 +32,7 @@ import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
+import net.iaeste.iws.core.notofications.NotificationCenter;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
@@ -41,16 +42,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class ExchangeService extends CommonService {
 
     private final OfferDao dao;
+    private final NotificationCenter nc;
 
-    public ExchangeService(final OfferDao dao) {
+    public ExchangeService(final OfferDao dao, NotificationCenter nc) {
         this.dao = dao;
+        this.nc = nc;
     }
 
     /**
@@ -72,6 +75,7 @@ public class ExchangeService extends CommonService {
         if (existingEntity == null) {
             // Persist the Object with history
             dao.persist(authentication, newEntity);
+            nc.processNewOffer(request.getOffer());
         } else {
             // Check if the user is allowed to work with the Object, if not -
             // then a Permission Exception is thrown
@@ -81,6 +85,7 @@ public class ExchangeService extends CommonService {
             // new values into it, and finally it also writes an entry in the
             // history table
             dao.persist(authentication, existingEntity, newEntity);
+            nc.processUpdatedOffer(request.getOffer());
         }
 
         return new OfferResponse();

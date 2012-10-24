@@ -21,6 +21,7 @@ import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
+import net.iaeste.iws.api.enums.NotificationType;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
@@ -1328,6 +1329,31 @@ public final class Offer extends AbstractVerification {
         }
 
         return check;
+    }
+
+    /**
+     * Unavailable period must be inside one of internship date ranges
+     * or between two ranges.
+     *
+     * @param type   Type of notification
+     * @param action Kind of action (new, update)
+     * @return generated String message
+     */
+    public String generateMessage(NotificationType type, String action) {
+        String message = "";
+        switch (type) {
+            case EMAIL: message = generateEmailMessage(action); break;
+            case IM: message = generateImMessage(action); break;
+        }
+        return message;
+    }
+
+    private String generateEmailMessage(String action) {
+        return "The offer " + refNo + " has been " + action;
+    }
+
+    private String generateImMessage(String action) {
+        return "The offer " + refNo + " has been " + action;
     }
 
 }

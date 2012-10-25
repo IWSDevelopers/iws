@@ -14,15 +14,6 @@
 */
 package net.iaeste.iws.core.services;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FetchType;
@@ -36,12 +27,12 @@ import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.core.notofications.NotificationCenter;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.notification.Notifications;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
@@ -50,23 +41,31 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection unchecked
- * @since 1.7
+ * @since   1.7
+ * @noinspection unchecked, CastToConcreteClass
  */
 public class ExchangeServiceTest {
 
     private final OfferDao dao = mock(OfferDao.class);
-    private final NotificationCenter nc = mock(NotificationCenter.class);
-    private final ExchangeService client = new ExchangeService(dao, nc);
+    private final Notifications notifications = mock(Notifications.class);
+    private final ExchangeService client = new ExchangeService(dao, notifications);
     private final List<Offer> offers = OfferRequestTestUtility.getValidOffersList();
-    private Authentication auth;
+    private Authentication auth = null;
 
     @Before
     public void init() {
-
         auth = mock(Authentication.class);
         final GroupEntity group = mock(GroupEntity.class);
         when(group.getId()).thenReturn(1L);
@@ -217,20 +216,22 @@ public class ExchangeServiceTest {
          */
         @Override
         public boolean matches(final Object o) {
+            boolean result = false;
+
             if (o instanceof OfferEntity) {
                 final OfferEntity e = (OfferEntity) o;
-                if (e.getId() == null ? this.entity.getId() == null : e.getId().equals(this.entity.getId())) {
-                    if (e.getRefNo().equals(this.entity.getRefNo())) {
-                        return e.getCanteen() == null ? this.entity.getCanteen() == null : e.getCanteen().equals(this.entity.getCanteen());
+                if (e.getId() == null ? entity.getId() == null : e.getId().equals(entity.getId())) {
+                    if (e.getRefNo().equals(entity.getRefNo())) {
+                        result = e.getCanteen() == null ? entity.getCanteen() == null : e.getCanteen().equals(entity.getCanteen());
                     }
                 }
             }
-            return false;
+            return result;
         }
 
         @Override
         public void describeTo(final Description description) {
-            description.appendText(String.format("Offer{id=%s}", entity.getId().toString()));
+            description.appendText(String.format("Offer{id=%s}", entity.getId()));
         }
     }
 }

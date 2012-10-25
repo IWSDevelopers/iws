@@ -58,7 +58,8 @@ public final class NotificationManager implements Notifications {
      */
     @Override
     public void notify(final Authentication authentication, final Notifiable obj) {
-        // Saves the general information about the Object to be notified.
+        // Save the general information about the Object to be notified.
+        notifyObservers();
     }
 
     /**

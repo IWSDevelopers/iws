@@ -19,6 +19,7 @@ import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.PaymentFrequency;
+import net.iaeste.iws.persistence.notification.Notifiable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,7 +61,7 @@ import java.util.Date;
         @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM OfferEntity o WHERE o.id IN :ids")
 })
-public class OfferEntity implements Mergeable<OfferEntity> {
+public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -621,12 +622,7 @@ public class OfferEntity implements Mergeable<OfferEntity> {
     public void merge(final OfferEntity obj) {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && id.equals(obj.id)) {
-            // first comparing that the Id's are identical, and then
-            // updating - please stop smoking funny weed!
-            //id = obj.id;
-            // Question is, if we at all should allow that this field is being
-            // updated - if so, then we should do it in a separate call.
-            //refNo = obj.refNo;
+            // Note, Id & refno are *not* allowed to be updated!
             employerName = obj.employerName;
             employerAddress = obj.employerAddress;
             employerAddress2 = obj.employerAddress2;

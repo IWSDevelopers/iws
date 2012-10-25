@@ -22,6 +22,7 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.persistence.notification.Notifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +52,8 @@ public final class SpringAccessClient implements Access {
      */
     @PersistenceContext
     public void init(final EntityManager entityManager) {
-        final ServiceFactory factory = new ServiceFactory(entityManager);
+        final Notifications notitications = new NotificationLogger();
+        final ServiceFactory factory = new ServiceFactory(entityManager, notitications);
         access = new AccessController(factory);
     }
 

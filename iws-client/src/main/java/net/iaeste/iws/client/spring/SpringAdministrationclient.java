@@ -29,6 +29,7 @@ import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.persistence.notification.Notifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +60,8 @@ public final class SpringAdministrationclient implements Administration {
      */
     @PersistenceContext
     public void init(final EntityManager entityManager) {
-        final ServiceFactory factory = new ServiceFactory(entityManager);
+        final Notifications notitications = new NotificationLogger();
+        final ServiceFactory factory = new ServiceFactory(entityManager, notitications);
         administration = new AdministrationController(factory);
     }
 

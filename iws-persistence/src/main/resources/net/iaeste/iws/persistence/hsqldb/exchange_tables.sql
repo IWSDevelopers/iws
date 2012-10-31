@@ -50,7 +50,7 @@ CREATE TABLE offers (
     work_description          varchar(1000) NOT NULL  CHECK(length(work_description) > 0),
     working_place             varchar(255),
     work_type                 char(1),
-    study_levels              char(3)       NOT NULL  CHECK(length(study_levels) > 0),
+    study_levels              varchar(25)   NOT NULL  CHECK(length(study_levels) > 0),
     study_fields              varchar(1000) NOT NULL  CHECK(length(study_fields) > 0),
     specializations           varchar(1000),
     primary key (id),

@@ -16,9 +16,11 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.SessionResponse;
 
 /**
  * Methods to control the current session for a user, i.e. methods to both
@@ -51,6 +53,10 @@ public interface Access {
      * @return Standard Error object
      */
     Fallible deprecateSession(AuthenticationToken token);
+
+    SessionResponse verifySession(AuthenticationToken token);
+
+    Fallible saveSessionData(AuthenticationToken token, SessionDataRequest request);
 
     /**
      * Retrieves the list of permissions for a given user, identified by the

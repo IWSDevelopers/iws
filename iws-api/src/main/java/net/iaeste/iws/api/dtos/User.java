@@ -15,14 +15,13 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
 import net.iaeste.iws.api.responses.AbstractResponse;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * User Object, contain the system specific information related to a user, and
@@ -48,15 +47,11 @@ public final class User extends AbstractResponse implements Verifiable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The e-mail compliance regular expression. */
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(IWSConstants.EMAIL_REGEX);
-
-    private Long userId = null;
-    private UserStatus status = UserStatus.ACTIVE;
-    private String username = null;
-    private String password = null;
+    private String userId = null;
+    private UserStatus status = null;
     private String firstname = null;
     private String lastname = null;
+    private Privacy privacy = Privacy.PRIVATE;
     private Person person = null;
 
     /**
@@ -67,30 +62,45 @@ public final class User extends AbstractResponse implements Verifiable {
     }
 
     /**
-     * Constructor to be used to create a new User account. The username must
-     * be a valid e-mail address. Likewise, the first and last name must also
-     * be valid, since these cannot be altered later!
-     *
-     * @param username  Username (e-mail address)
-     * @param firstname User First (Given) name
-     * @param lastname  User Last (Family) name
-     */
-    public User(final String username, final String firstname, final String lastname) {
-        this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
-    }
-
-    /**
      * Constructor for an existing user, where the personal details should be
      * updated.
      *
      * @param userId The internal Id of the user
      * @param person The personal details
      */
-    public User(final Long userId, final Person person) {
+    public User(final String userId, final Person person) {
         this.userId = userId;
         this.person = person;
+    }
+
+    /**
+     * Constructor for an existing user, where the personal details should be
+     * updated. Please note, that there is a state machine checking the current
+     * status against the new.<br />
+     *   Below is the State machine presented. A User always starts with Status
+     * "New", and can from there either get the status "Active" or "Blocked".
+     * If the user is removed, the status is then set to "Deleted" - meaning
+     * that all private data is removed from the system, and the user account
+     * is deactivated. However, it is important to note that the User Object in
+     * the system will remain there - the reason for this, is that the User may
+     * also have worked with Group data, and thus the information about the
+     * person must be preserved in the history.
+     * <pre>
+     *              NEW
+     *             /   \
+     *            /     \
+     *       ACTIVE <-> BLOCKED
+     *           \      /
+     *            \    /
+     *           DELETED
+     * </pre>
+     *
+     * @param userId The internal Id of the user
+     * @param status The new Status
+     */
+    public User(final String userId, final UserStatus status) {
+        this.userId = userId;
+        this.status = status;
     }
 
     /**
@@ -102,8 +112,6 @@ public final class User extends AbstractResponse implements Verifiable {
         if (user != null) {
             userId = user.userId;
             status = user.status;
-            username = user.username;
-            password = user.password;
             firstname = user.firstname;
             lastname = user.lastname;
             person = new Person(user.person);
@@ -114,11 +122,11 @@ public final class User extends AbstractResponse implements Verifiable {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUserId(final Long userId) {
+    public void setUserId(final String userId) {
         this.userId = userId;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -128,22 +136,6 @@ public final class User extends AbstractResponse implements Verifiable {
 
     public UserStatus getStatus() {
         return status;
-    }
-
-    public void setUsername(final String username) {
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setFirstname(final String firstname) {
@@ -160,6 +152,14 @@ public final class User extends AbstractResponse implements Verifiable {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public void setPrivacy(final Privacy privacy) {
+        this.privacy = privacy;
+    }
+
+    public Privacy getPrivacy() {
+        return privacy;
     }
 
     public void setPerson(final Person person) {
@@ -179,27 +179,12 @@ public final class User extends AbstractResponse implements Verifiable {
      */
     @Override
     public void verify() {
+        // This Object is used to either read a users information, or to update
+        // same.
         // Object is used for either of these requests:
         // 1. Create new users (username, firstname, lastname must be valid)
         // 2. Update user personal details (userid, person)
         // 3. Delete user (userId)
-
-        if (userId != null) {
-            if (person != null) {
-                person.verify();
-            }
-            if ((password != null) && password.isEmpty()) {
-                throw new VerificationException("Passwords cannot be empty.");
-            }
-        } else if (username != null) {
-            if (!EMAIL_PATTERN.matcher(username).matches()) {
-                throw new VerificationException("The username is not a valid e-mail address.");
-            }
-
-            if ((firstname == null) || (lastname == null) || firstname.isEmpty() || lastname.isEmpty()) {
-                throw new VerificationException("New users must have both a first and last name.");
-            }
-        }
     }
 
     /**
@@ -208,23 +193,8 @@ public final class User extends AbstractResponse implements Verifiable {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + userId.hashCode();
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + status.hashCode();
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + username.hashCode();
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + firstname.hashCode();
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + lastname.hashCode();
-
-        return result;
     }
 
     /**
@@ -241,12 +211,21 @@ public final class User extends AbstractResponse implements Verifiable {
         }
 
         final User user = (User) obj;
+        return !(userId != null ? !userId.equals(user.userId) : user.userId != null);
+    }
 
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) {
-            return false;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
 
-        return !(username != null ? !username.equals(user.username) : user.username != null);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + userId.hashCode();
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + firstname.hashCode();
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + lastname.hashCode();
+
+        return result;
     }
 
     /**
@@ -255,10 +234,9 @@ public final class User extends AbstractResponse implements Verifiable {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
-                "status='" + status + '\'' +
-                ", firstname='" + firstname + '\'' +
+                "firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

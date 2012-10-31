@@ -35,7 +35,7 @@ import java.util.Date;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection AssignmentToDateFieldFromParameter
+ * @noinspection AssignmentToDateFieldFromParameter, AssignmentToCollectionOrArrayFieldFromParameter
  */
 @NamedQueries({
         @NamedQuery(name = "session.findByToken",
@@ -70,6 +70,9 @@ public class SessionEntity implements IWSEntity {
 
     @Column(nullable = false, name = "active")
     private Boolean active = true;
+
+    @Column(name = "session_data")
+    private byte[] sessionData = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified")
@@ -118,6 +121,14 @@ public class SessionEntity implements IWSEntity {
 
     public Boolean getActive() {
         return active;
+    }
+
+    public void setSessionData(final byte[] sessionData) {
+        this.sessionData = sessionData;
+    }
+
+    public byte[] getSessionData() {
+        return sessionData;
     }
 
     public void setModified(final Date modified) {

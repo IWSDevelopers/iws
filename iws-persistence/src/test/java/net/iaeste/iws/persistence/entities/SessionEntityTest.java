@@ -45,7 +45,7 @@ import static org.junit.Assert.fail;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
 public class SessionEntityTest {
 
-    private AccessDao dao;
+    private AccessDao dao = null;
     @PersistenceContext
     private EntityManager entityManager;
 

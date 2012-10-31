@@ -17,9 +17,11 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.SessionResponse;
 
 /**
  * Simple Client to work with the IWS Acess functionality. The access to
@@ -47,6 +49,22 @@ public final class AccessClient implements Access {
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         return access.generateSession(request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SessionResponse verifySession(final AuthenticationToken token) {
+        return access.verifySession(token);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
+        return access.saveSessionData(token, request);
     }
 
     /**

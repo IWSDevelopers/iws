@@ -34,6 +34,8 @@ import net.iaeste.iws.api.responses.UserResponse;
  */
 public interface Administration {
 
+//    CreateUserResponse createUser(AuthenticationToken token, CreateUserRequest request);
+//    Fallible activateUser(final String activationString);
     Fallible processUser(AuthenticationToken token, ProcessUserRequest request);
     UserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
 

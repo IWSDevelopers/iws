@@ -36,6 +36,7 @@ import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.core.transformers.CollectionTransformer;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+import org.joda.time.DateMidnight;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -89,7 +90,6 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         }
     }
 
-
     /**
      * Sets username and password so the AuthenticationToken could be fetched.
      *
@@ -127,7 +127,7 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
-        offer.setNominationDeadline(nominationDeadline);
+        offer.setNominationDeadline(new DateMidnight(nominationDeadline));
     }
 
     /** not null */
@@ -232,28 +232,28 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
 
     /** not null */
     public void setFromDate(final Date fromDate) {
-        offer.setFromDate(fromDate);
+        offer.setFromDate(new DateMidnight(fromDate));
     }
 
     /** not null */
     public void setToDate(final Date toDate) {
-        offer.setToDate(toDate);
+        offer.setToDate(new DateMidnight(toDate));
     }
 
     public void setFromDate2(final Date fromDate2) {
-        offer.setFromDate2(fromDate2);
+        offer.setFromDate2(new DateMidnight(fromDate2));
     }
 
     public void setToDate2(final Date toDate2) {
-        offer.setToDate2(toDate2);
+        offer.setToDate2(new DateMidnight(toDate2));
     }
 
     public void setUnavailableFrom(final Date unavailableFrom) {
-        offer.setUnavailableFrom(unavailableFrom);
+        offer.setUnavailableFrom(new DateMidnight(unavailableFrom));
     }
 
     public void setUnavailableTo(final Date unavailableTo) {
-        offer.setUnavailableTo(unavailableTo);
+        offer.setUnavailableTo(new DateMidnight(unavailableTo));
     }
 
     public void setWorkingPlace(final String workingPlace) {

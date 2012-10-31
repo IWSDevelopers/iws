@@ -173,7 +173,7 @@ public final class EmployerInformation extends AbstractVerification {
         final Map<String, String> errors = new HashMap<>(0);
 
         isNotNull(errors, "weeklyHours", weeklyHours);
-        isNotEmpty(errors, "name", name);
+        isNotNullOrEmpty(errors, "name", name);
 
         return errors;
     }

@@ -12,24 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
-package net.iaeste.iws.core.transformers;/*
- * =============================================================================
- * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.transformers.OfferTransformerTest
- * -----------------------------------------------------------------------------
- * This software is provided by the members of the IAESTE Internet Development
- * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
- * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
- *
- * This software is provided "as is"; the IDT or individuals within the IDT
- * cannot be held legally responsible for any problems the software may cause.
- * =============================================================================
- */
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
@@ -46,13 +29,18 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection OverlyLongMethod
  */
 public class OfferTransformerTest {
-    @SuppressWarnings("OverlyLongMethod")
+
     @Test
     public void testCopyingMinimalOfferToEntity() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
@@ -93,13 +81,13 @@ public class OfferTransformerTest {
         assertThat(offer.getLivingCost(), is(entity.getLivingCost()));
         assertThat(offer.getLivingCostFrequency(), is(entity.getLivingCostFrequency()));
         assertThat(offer.getCanteen(), is(entity.getCanteen()));
-        assertThat(offer.getNominationDeadline(), is(entity.getNominationDeadline()));
-        assertThat(offer.getFromDate(), is(entity.getFromDate()));
-        assertThat(offer.getToDate(), is(entity.getToDate()));
-        assertThat(offer.getFromDate2(), is(entity.getFromDate2()));
-        assertThat(offer.getToDate2(), is(entity.getToDate2()));
-        assertThat(offer.getUnavailableFrom(), is(entity.getUnavailableFrom()));
-        assertThat(offer.getUnavailableTo(), is(entity.getUnavailableTo()));
+        assertThat(offer.getNominationDeadline(), is(nullValue()));
+        assertThat(offer.getFromDate().toDate(), is(entity.getFromDate()));
+        assertThat(offer.getToDate().toDate(), is(entity.getToDate()));
+        assertThat(offer.getFromDate2(), is(nullValue()));
+        assertThat(offer.getToDate2(), is(nullValue()));
+        assertThat(offer.getUnavailableFrom(), is(nullValue()));
+        assertThat(offer.getUnavailableTo(), is(nullValue()));
 
         assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
 
@@ -108,7 +96,6 @@ public class OfferTransformerTest {
         assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
     }
 
-    @SuppressWarnings("OverlyLongMethod")
     @Test
     public void testCopyingMinimalOfferToDto() {
         final OfferEntity entity = getMinimalOfferEntity();
@@ -149,13 +136,13 @@ public class OfferTransformerTest {
         assertThat(offer.getLivingCost(), is(entity.getLivingCost()));
         assertThat(offer.getLivingCostFrequency(), is(entity.getLivingCostFrequency()));
         assertThat(offer.getCanteen(), is(entity.getCanteen()));
-        assertThat(offer.getNominationDeadline(), is(entity.getNominationDeadline()));
-        assertThat(offer.getFromDate(), is(entity.getFromDate()));
-        assertThat(offer.getToDate(), is(entity.getToDate()));
-        assertThat(offer.getFromDate2(), is(entity.getFromDate2()));
-        assertThat(offer.getToDate2(), is(entity.getToDate2()));
-        assertThat(offer.getUnavailableFrom(), is(entity.getUnavailableFrom()));
-        assertThat(offer.getUnavailableTo(), is(entity.getUnavailableTo()));
+        assertThat(offer.getNominationDeadline(), is(nullValue()));
+        assertThat(offer.getFromDate().toDate(), is(entity.getFromDate()));
+        assertThat(offer.getToDate().toDate(), is(entity.getToDate()));
+        assertThat(offer.getFromDate2(), is(nullValue()));
+        assertThat(offer.getToDate2(), is(nullValue()));
+        assertThat(offer.getUnavailableFrom(), is(nullValue()));
+        assertThat(offer.getUnavailableTo(), is(nullValue()));
 
         assertThat(offer.getTypeOfWork(), is(TypeOfWork.toValue(entity.getTypeOfWork())));
 
@@ -211,7 +198,7 @@ public class OfferTransformerTest {
         minimalOffer.setEmployerName(OfferTestUtility.EMPLOYER_NAME);
         final List<StudyLevel> list = new ArrayList<>(1);
         list.add(StudyLevel.E);
-        final List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
+        final List<FieldOfStudy> fieldOfStudies = new ArrayList<>(1);
         fieldOfStudies.add(FieldOfStudy.IT);
         minimalOffer.setFieldOfStudies(CollectionTransformer.concatEnumCollection(fieldOfStudies));
         minimalOffer.setStudyLevels(CollectionTransformer.concatEnumCollection(list));
@@ -221,15 +208,14 @@ public class OfferTransformerTest {
         minimalOffer.setMaximumWeeks(OfferTestUtility.MAXIMUM_WEEKS);
         minimalOffer.setMinimumWeeks(OfferTestUtility.MINIMUM_WEEKS);
         minimalOffer.setWeeklyHours(OfferTestUtility.WEEKLY_HOURS);
-        minimalOffer.setFromDate(OfferTestUtility.FROM_DATE);
-        minimalOffer.setToDate(OfferTestUtility.TO_DATE);
+        minimalOffer.setFromDate(OfferTestUtility.FROM_DATE.toDate());
+        minimalOffer.setToDate(OfferTestUtility.TO_DATE.toDate());
         return minimalOffer;
     }
 
-    @SuppressWarnings("OverlyLongMethod")
     private OfferEntity getFullOfferEntity() {
         final OfferEntity offer = getMinimalOfferEntity();
-        offer.setNominationDeadline(OfferTestUtility.NOMINATION_DEADLINE);
+        offer.setNominationDeadline(OfferTestUtility.NOMINATION_DEADLINE.toDate());
         offer.setEmployerAddress(OfferTestUtility.EMPLOYER_ADDRESS);
         offer.setEmployerAddress2(OfferTestUtility.EMPLOYER_ADDRESS2);
         offer.setEmployerBusiness(OfferTestUtility.EMPLOYER_BUSINESS);
@@ -244,10 +230,10 @@ public class OfferTransformerTest {
         offer.setLanguage3(Language.GERMAN);
         offer.setLanguage3Level(LanguageLevel.E);
         offer.setTypeOfWork(OfferTestUtility.TYPE_OF_WORK.toString());
-        offer.setFromDate2(OfferTestUtility.FROM_DATE2);
-        offer.setToDate2(OfferTestUtility.TO_DATE2);
-        offer.setUnavailableFrom(OfferTestUtility.UNAVAIABLE_FROM);
-        offer.setUnavailableTo(OfferTestUtility.UNAVAIABLE_TO);
+        offer.setFromDate2(OfferTestUtility.FROM_DATE2.toDate());
+        offer.setToDate2(OfferTestUtility.TO_DATE2.toDate());
+        offer.setUnavailableFrom(OfferTestUtility.UNAVAIABLE_FROM.toDate());
+        offer.setUnavailableTo(OfferTestUtility.UNAVAIABLE_TO.toDate());
         offer.setWorkingPlace(OfferTestUtility.WORKING_PLACE);
         offer.setNearestAirport(OfferTestUtility.NEAREST_AIRPORT);
         offer.setNearestPubTransport(OfferTestUtility.NEAREST_PUBLIC_TRANSPORT);

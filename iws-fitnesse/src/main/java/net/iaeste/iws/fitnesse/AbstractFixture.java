@@ -14,8 +14,14 @@
  */
 package net.iaeste.iws.fitnesse;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -88,5 +94,34 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
         response = null;
         testId = null;
         testCase = null;
+    }
+
+    /**
+     * Parses the given String as either a Date or a Timestamp. If it is a Date,
+     * i.e. "yyyy-MM-dd", then the time "02:00:00" is being appended, to ensure
+     * that neither summer/winter time nor special locale settings will affect
+     * the date test.
+     *
+     * @param date The date as String to parse
+     * @return Parsed Date object or null
+     * @throws StopTestException if unable to properly parse date
+     * @see IWSConstants#DATE_FORMAT
+     */
+    public Date parse(final String date) {
+        Date result = null;
+
+        if (date != null) {
+            final String dateToParse = date.trim();
+            if (!dateToParse.isEmpty()) {
+                try {
+                    final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
+                    result = formatter.parse(dateToParse);
+                } catch (final ParseException e) {
+                    throw new StopTestException("Expected date format is '" + IWSConstants.DATE_FORMAT + "' but got " + date, e);
+                }
+            }
+        }
+
+        return result;
     }
 }

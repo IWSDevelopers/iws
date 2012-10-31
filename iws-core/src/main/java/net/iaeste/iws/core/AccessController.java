@@ -19,9 +19,11 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.SessionResponse;
 import net.iaeste.iws.core.services.AccessService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import org.slf4j.Logger;
@@ -80,6 +82,52 @@ public final class AccessController extends CommonController implements Access {
         }
 
         LOG.trace("Finished generateSession()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SessionResponse verifySession(final AuthenticationToken token) {
+        LOG.trace("Starting verifySession()");
+        SessionResponse response;
+
+        try {
+            verify(token, AUTHENTICATION_TOKEN_ERROR);
+
+            final AccessService service = factory.prepareAuthenticationService();
+            final AuthenticationToken copyToken = new AuthenticationToken(token);
+            //service.verifySession(copyToken);
+            response = new SessionResponse();
+        } catch (IWSException e) {
+            response = new SessionResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished verifySession()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
+        LOG.trace("Starting saveSessionData()");
+        SessionResponse response;
+
+        try {
+            verify(token, AUTHENTICATION_TOKEN_ERROR);
+
+            final AccessService service = factory.prepareAuthenticationService();
+            final AuthenticationToken copyToken = new AuthenticationToken(token);
+            //service.saveSessionData(copyToken, request);
+            response = new SessionResponse();
+        } catch (IWSException e) {
+            response = new SessionResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished saveSessionData()");
         return response;
     }
 

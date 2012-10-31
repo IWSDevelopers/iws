@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.UserStatus
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.SessionDataRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,28 +12,12 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.enums;
+package net.iaeste.iws.api.requests;
 
 /**
- * Users can have different status in the system, by default all users are
- * Active. However, a user can also be prevented from logging in - this is
- * a useful feature for someone who are temporarily unavailable. Finally, the
- * user can be deleted. However, as deleting normally implies that the data is
- * removed, the IWS will simply mark the account deleted, and delete all data
- * associated with it. This way, it is still possible to see the things the,
- * now former, user have made in various groups.
- *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
-public enum UserStatus {
-
-    NEW,
-
-    ACTIVE,
-
-    BLOCKED,
-
-    DELETED
+public class SessionDataRequest {
 }

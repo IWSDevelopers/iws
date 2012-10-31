@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.enums.Currency;
@@ -24,35 +23,36 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
+import org.joda.time.DateMidnight;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection PublicStaticCollectionField, OverlyLongMethod
  */
-@SuppressWarnings("ClassWithTooManyFields")
 public class OfferTestUtility {
+
     public static final String REF_NO = "AT-2012-1234-AB";
-    public static final Date NOMINATION_DEADLINE = new Date();
+    public static final DateMidnight NOMINATION_DEADLINE = new DateMidnight();
     public static final String EMPLOYER_NAME = "Test_Employer_1";
     public static final String WORK_DESCRIPTION = "nothing";
     public static final Integer MAXIMUM_WEEKS = 12;
     public static final Integer MINIMUM_WEEKS = 12;
     public static final Float WEEKLY_HOURS = 40.0f;
-    public static final Date FROM_DATE = new Date();
-    public static final Date TO_DATE = new Date(FROM_DATE.getTime() + 3600 * 24 * 90);
+    public static final DateMidnight FROM_DATE = new DateMidnight();
+    public static final DateMidnight TO_DATE = FROM_DATE.plusDays(90);
     public static final TypeOfWork TYPE_OF_WORK = TypeOfWork.R;
-    public static final Date FROM_DATE2 = new Date(TO_DATE.getTime() + 3600 * 24 * 90);
-    public static final Date TO_DATE2 = new Date(FROM_DATE2.getTime() + 3600 * 24 * 90);
-    public static final Date UNAVAIABLE_FROM = new Date(TO_DATE.getTime());
-    public static final Date UNAVAIABLE_TO = new Date(FROM_DATE2.getTime());
+    public static final DateMidnight FROM_DATE2 = TO_DATE.plusDays(90);
+    public static final DateMidnight TO_DATE2 = FROM_DATE2.plus(90);
+    public static final DateMidnight UNAVAIABLE_FROM = TO_DATE;
+    public static final DateMidnight UNAVAIABLE_TO = FROM_DATE2;
     public static final BigDecimal PAYMENT = new BigDecimal(3000);
     public static final BigDecimal LODGING_COST = new BigDecimal(1000);
     public static final BigDecimal LIVING_COST = new BigDecimal(2000);
@@ -73,8 +73,6 @@ public class OfferTestUtility {
     public static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.M;
     public static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.M;
     public static final Boolean CANTEEN = true;
-    public static final Boolean PREV_TRAINING_REQUIRED = true;
-    @SuppressWarnings("PublicStaticCollectionField")
     public static final Set<String> SPECIALIZATIONS;
 
     static {
@@ -84,22 +82,16 @@ public class OfferTestUtility {
         SPECIALIZATIONS = Collections.unmodifiableSet(specializations);
     }
 
-    @SuppressWarnings("PublicStaticCollectionField")
-    public static final Set<FieldOfStudy> FIELD_OF_STUDIES = Collections.unmodifiableSet(
-            EnumSet.of(FieldOfStudy.IT, FieldOfStudy.AGRICULTURE));
-    @SuppressWarnings("PublicStaticCollectionField")
+    public static final Set<FieldOfStudy> FIELD_OF_STUDIES = Collections.unmodifiableSet(EnumSet.of(FieldOfStudy.IT, FieldOfStudy.AGRICULTURE));
     public static final Set<StudyLevel> STUDY_LEVELS = Collections.unmodifiableSet(
             EnumSet.of(StudyLevel.E, StudyLevel.M));
 
     private OfferTestUtility() {
     }
 
-    public static Offer getEmptyOffer() {
-        return new Offer();
-    }
-
     public static Offer getMinimalOffer() {
         final Offer minimalOffer = new Offer();
+
         minimalOffer.setRefNo(REF_NO);
         minimalOffer.setEmployerName(EMPLOYER_NAME);
         minimalOffer.setStudyLevels(STUDY_LEVELS);
@@ -113,12 +105,13 @@ public class OfferTestUtility {
         minimalOffer.setFromDate(FROM_DATE);
         minimalOffer.setToDate(TO_DATE);
         minimalOffer.setPayment(null);
+
         return minimalOffer;
     }
 
-    @SuppressWarnings("OverlyLongMethod")
     public static Offer getFullOffer() {
         final Offer offer = getMinimalOffer();
+
         offer.setRefNo("GB-2012-1234-AB");
         offer.setNominationDeadline(NOMINATION_DEADLINE);
         offer.setEmployerAddress(EMPLOYER_ADDRESS);
@@ -154,6 +147,7 @@ public class OfferTestUtility {
         offer.setLivingCostFrequency(LIVING_COST_FREQUENCY);
         offer.setCanteen(CANTEEN);
         offer.setSpecializations(SPECIALIZATIONS);
+
         return offer;
     }
 }

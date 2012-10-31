@@ -58,7 +58,7 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
         final List<UserNotificationEntity> result = query.getResultList();
 
         if (result.size() != 1) {
-            throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "No user notification (" + subject + ") for the user '" + user.getUsername() + "' was found.");
+            throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "No user notification (" + subject + ") for the user '" + user.getFirstname() + ' ' + user.getLastname() + "' was found.");
         }
 
         return result.get(0);

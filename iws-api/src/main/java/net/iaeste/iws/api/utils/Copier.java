@@ -24,7 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -140,26 +139,6 @@ public final class Copier {
             System.arraycopy(original, 0, copy, 0, original.length);
         } else {
             copy = EMPTY_STRING_ARRAY;
-        }
-
-        return copy;
-    }
-
-    /**
-     * Copies the given Date object, as the original Date object is not
-     * immutable. If the given Date is null, then a null value is returned,
-     * since it makes little sense to return a new Date object.
-     *
-     * @param original The Date to copy
-     * @return Copy of the given Date, or null
-     */
-    public static Date copy(final Date original) {
-        final Date copy;
-
-        if (original != null) {
-            copy = new Date(original.getTime());
-        } else {
-            copy = null;
         }
 
         return copy;

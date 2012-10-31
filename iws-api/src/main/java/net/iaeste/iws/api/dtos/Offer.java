@@ -27,11 +27,9 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.requests.AbstractVerification;
 import net.iaeste.iws.api.utils.Copier;
-import net.iaeste.iws.api.utils.DateComparator;
+import org.joda.time.DateMidnight;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,82 +39,88 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// ToDo Kim; Review if all fields are present - the Address seems to be missing information, there is no City, Zip or Country added.
+// Todo Kim; The Refno validation is made against all existing countrycodes. It should suffice to consider the country of the offering committee, this should be the same as the Country in the Company Address
+// ToDo Kim; Ensure that the tests for this class covers all cases, i.e. that all Strings are checked for length
 /**
  * Standard IAESTE Offer.
  *
- * @author Michael Pickelbauer / last $Author:$
+ * @author  Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection CastToConcreteClass, OverlyLongMethod, OverlyComplexMethod
- * , RedundantIfStatement, ClassWithTooManyFields @since 1.7, OverlyComplexClass
+ * @since   1.7
+ * @noinspection OverlyComplexClass, OverlyLongMethod, CastToConcreteClass, ConstantConditions, BooleanMethodNameMustStartWithQuestion, OverlyComplexBooleanExpression, OverlyComplexMethod
  */
 public final class Offer extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private static final String refNoFormat = "(%s)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?"; // %s - country codes
+    private static final String REFNO_FORMAT = "(%s)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?"; // %s - country codes
 
-    /** Empty Constructor, required for some communication frameworks. */
+    /**
+     * Empty Constructor, required for some communication frameworks.
+     */
     public Offer() {
     }
 
     /**
      * Copy constructor.
      * <p/>
-     * Fields are copied one by one. Correct "cloning" for muttable members is provided by setters.
+     * Fields are copied one by one. Correct "cloning" for muttable members is
+     * provided by setters.
      *
      * @param offer Offer to copy
      */
     public Offer(final Offer offer) {
         if (offer != null) {
             // No id exist as refNo is unique
-            this.refNo = offer.refNo;
-            this.employerName = offer.employerName;
-            this.employerAddress = offer.employerAddress;
-            this.employerAddress2 = offer.employerAddress2;
-            this.employerBusiness = offer.employerBusiness;
-            this.employerEmployeesCount = offer.employerEmployeesCount;
-            this.employerWebsite = offer.employerWebsite;
-            this.prevTrainingRequired = offer.prevTrainingRequired;
-            this.otherRequirements = offer.otherRequirements;
-            this.language1 = offer.language1;
-            this.language1Level = offer.language1Level;
-            this.language1Operator = offer.language1Operator;
-            this.language2 = offer.language2;
-            this.language2Level = offer.language2Level;
-            this.language2Operator = offer.language2Operator;
-            this.language3 = offer.language3;
-            this.language3Level = offer.language3Level;
-            this.workDescription = offer.workDescription;
-            this.minimumWeeks = offer.minimumWeeks;
-            this.maximumWeeks = offer.maximumWeeks;
-            this.workingPlace = offer.workingPlace;
-            this.nearestAirport = offer.nearestAirport;
-            this.nearestPubTransport = offer.nearestPubTransport;
-            this.weeklyHours = offer.weeklyHours;
-            this.dailyHours = offer.dailyHours;
-            this.payment = offer.payment;
-            this.currency = offer.currency;
-            this.paymentFrequency = offer.paymentFrequency;
-            this.deduction = offer.deduction;
-            this.lodgingBy = offer.lodgingBy;
-            this.lodgingCost = offer.lodgingCost;
-            this.lodgingCostFrequency = offer.lodgingCostFrequency;
-            this.livingCost = offer.livingCost;
-            this.livingCostFrequency = offer.livingCostFrequency;
-            this.canteen = offer.canteen;
+            refNo = offer.refNo;
+            employerName = offer.employerName;
+            employerAddress = offer.employerAddress;
+            employerAddress2 = offer.employerAddress2;
+            employerBusiness = offer.employerBusiness;
+            employerEmployeesCount = offer.employerEmployeesCount;
+            employerWebsite = offer.employerWebsite;
+            prevTrainingRequired = offer.prevTrainingRequired;
+            otherRequirements = offer.otherRequirements;
+            language1 = offer.language1;
+            language1Level = offer.language1Level;
+            language1Operator = offer.language1Operator;
+            language2 = offer.language2;
+            language2Level = offer.language2Level;
+            language2Operator = offer.language2Operator;
+            language3 = offer.language3;
+            language3Level = offer.language3Level;
+            workDescription = offer.workDescription;
+            minimumWeeks = offer.minimumWeeks;
+            maximumWeeks = offer.maximumWeeks;
+            workingPlace = offer.workingPlace;
+            nearestAirport = offer.nearestAirport;
+            nearestPubTransport = offer.nearestPubTransport;
+            weeklyHours = offer.weeklyHours;
+            dailyHours = offer.dailyHours;
+            payment = offer.payment;
+            currency = offer.currency;
+            paymentFrequency = offer.paymentFrequency;
+            deduction = offer.deduction;
+            lodgingBy = offer.lodgingBy;
+            lodgingCost = offer.lodgingCost;
+            lodgingCostFrequency = offer.lodgingCostFrequency;
+            livingCost = offer.livingCost;
+            livingCostFrequency = offer.livingCostFrequency;
+            canteen = offer.canteen;
 
-            this.nominationDeadline = Copier.copy(offer.nominationDeadline);
-            this.fromDate = Copier.copy(offer.fromDate);
-            this.toDate = Copier.copy(offer.toDate);
-            this.fromDate2 = Copier.copy(offer.fromDate2);
-            this.toDate2 = Copier.copy(offer.toDate2);
-            this.unavailableFrom = Copier.copy(offer.unavailableFrom);
-            this.unavailableTo = Copier.copy(offer.unavailableTo);
+            nominationDeadline = Copier.copy(offer.nominationDeadline);
+            fromDate = Copier.copy(offer.fromDate);
+            toDate = Copier.copy(offer.toDate);
+            fromDate2 = Copier.copy(offer.fromDate2);
+            toDate2 = Copier.copy(offer.toDate2);
+            unavailableFrom = Copier.copy(offer.unavailableFrom);
+            unavailableTo = Copier.copy(offer.unavailableTo);
 
-            this.typeOfWork = offer.typeOfWork;
-            this.fieldOfStudies = Copier.copy(offer.fieldOfStudies);
-            this.specializations = Copier.copy(offer.specializations);
-            this.studyLevels = Copier.copy(offer.studyLevels);
+            typeOfWork = offer.typeOfWork;
+            fieldOfStudies = Copier.copy(offer.fieldOfStudies);
+            specializations = Copier.copy(offer.specializations);
+            studyLevels = Copier.copy(offer.studyLevels);
         }
     }
 
@@ -132,7 +136,7 @@ public final class Offer extends AbstractVerification {
      * <li>has to match the regular expression: {@code (CC)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?} (where {@code CC} is one of the country codes)</li>
      * </ul>
      */
-    private String refNo;
+    private String refNo = null;
 
     /**
      * validations:
@@ -140,19 +144,19 @@ public final class Offer extends AbstractVerification {
      * <li>If set, it must be before {@code fromDate} and {@code fromDate2} (@link #validateDatesNominationDeadline}.</li>
      * </ul>
      */
-    private Date nominationDeadline;
+    private DateMidnight nominationDeadline = null;
 
     // EmployerInformation information
     /**
      * validations:
      * <ul><li>required, {@link #validateNotNullableFields}</li></ul>
      */
-    private String employerName;
-    private String employerAddress;
-    private String employerAddress2;
-    private String employerBusiness;
-    private Integer employerEmployeesCount;
-    private String employerWebsite;
+    private String employerName = null;
+    private String employerAddress = null;
+    private String employerAddress2 = null;
+    private String employerBusiness = null;
+    private Integer employerEmployeesCount = null;
+    private String employerWebsite = null;
 
     //Student Information
     /**
@@ -165,12 +169,12 @@ public final class Offer extends AbstractVerification {
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
 
     /**
-     * Most of specializations will be String values of {@code Specialization} enumeration
-     * but has to be defined as a Set of Strings because
-     * the user should be able to add custom
-     * specializations in addition to the predefined ones.
+     * Most of specializations will be String values of {@code Specialization}
+     * enumeration but has to be defined as a Set of Strings because the user
+     * should be able to add custom specializations in addition to the
+     * predefined ones.
      */
-    private Set<String> specializations = new HashSet<>();
+    private Set<String> specializations = new HashSet<>(1);
 
     /**
      * validations:
@@ -180,20 +184,20 @@ public final class Offer extends AbstractVerification {
      * </ul>
      */
     private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
-    private Boolean prevTrainingRequired;
-    private String otherRequirements;
+    private Boolean prevTrainingRequired = null;
+    private String otherRequirements = null;
 
     /**
      * validations:
      * <ul><li>required, {@link #validateNotNullableFields}</li></ul>
      */
-    private Language language1;
+    private Language language1 = null;
 
     /**
      * validations:
      * <ul><li>required, {@link #validateNotNullableFields}</li></ul>
      */
-    private LanguageLevel language1Level;
+    private LanguageLevel language1Level = null;
 
     /**
      * #language1Operator and #language2Operator define
@@ -207,26 +211,24 @@ public final class Offer extends AbstractVerification {
      * Priority of the operators doesn't matter because
      * {@code #language2 op #language3} are placed inside braces.
      */
-    private LanguageOperator language1Operator;
-    private Language language2;
-    private LanguageLevel language2Level;
-    private LanguageOperator language2Operator;
-    private Language language3;
-    private LanguageLevel language3Level;
+    private LanguageOperator language1Operator = null;
+    private Language language2 = null;
+    private LanguageLevel language2Level = null;
+    private LanguageOperator language2Operator = null;
+    private Language language3 = null;
+    private LanguageLevel language3Level = null;
 
     // Work offered
     /**
      * validations:
      * <ul>
      * <li>required, {@link #validateNotNullableFields}</li>
-     * <li>length between
-     * net.iaeste.iws.api.constants.IWSExchangeConstants#MIN_OFFER_WORK_DESCRIPTION_SIZE
-     * up to
-     * net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_WORK_DESCRIPTION_SIZE</li>
+     * <li>length between IWSExchangeConstants#MIN_OFFER_WORK_DESCRIPTION_SIZE
+     * up to IWSExchangeConstants#MAX_OFFER_WORK_DESCRIPTION_SIZE</li>
      * </ul>
      */
-    private String workDescription;
-    private TypeOfWork typeOfWork;
+    private String workDescription = null;
+    private TypeOfWork typeOfWork = null;
 
     /**
      * validations:
@@ -235,7 +237,7 @@ public final class Offer extends AbstractVerification {
      * <li>has to be less or equal than #maximumWeeks</li>
      * </ul>
      */
-    private Integer minimumWeeks;
+    private Integer minimumWeeks = null;
 
     /**
      * validations:
@@ -244,7 +246,7 @@ public final class Offer extends AbstractVerification {
      * <li>has to be greater or equal than #minimumWeeks</li>
      * </ul>
      */
-    private Integer maximumWeeks;
+    private Integer maximumWeeks = null;
 
     /**
      * validations:
@@ -253,7 +255,7 @@ public final class Offer extends AbstractVerification {
      * <li>{@link #validateDates(java.util.Map)}</li>
      * </ul>
      */
-    private Date fromDate;
+    private DateMidnight fromDate = null;
     /**
      * validations:
      * <ul>
@@ -261,43 +263,43 @@ public final class Offer extends AbstractVerification {
      * <li>{@link #validateDates(java.util.Map)}</li>
      * </ul>
      */
-    private Date toDate;
-    private Date fromDate2;
-    private Date toDate2;
+    private DateMidnight toDate = null;
+    private DateMidnight fromDate2 = null;
+    private DateMidnight toDate2 = null;
 
     /**
      * validations:
      * <ul><li>{@link #validateUnavailableDatesOrder(java.util.Map)}</li></ul>
      */
-    private Date unavailableFrom;
+    private DateMidnight unavailableFrom = null;
     /**
      * validations:
      * <ul><li>{@link #validateUnavailableDatesOrder(java.util.Map)} )}</li></ul>
      */
-    private Date unavailableTo;
-    private String workingPlace;
-    private String nearestAirport;
-    private String nearestPubTransport;
+    private DateMidnight unavailableTo = null;
+    private String workingPlace = null;
+    private String nearestAirport = null;
+    private String nearestPubTransport = null;
 
     /**
      * validations:
      * <ul><li>required, {@link #validateNotNullableFields(java.util.Map)}</li></ul>
      */
-    private Float weeklyHours;
-    private Float dailyHours;
+    private Float weeklyHours = null;
+    private Float dailyHours = null;
     /* need big numbers, e.g. 1 EUR = 26.435,00 VND */
-    private BigDecimal payment;
-    private Currency currency;
-    private PaymentFrequency paymentFrequency;
-    private Integer deduction;
+    private BigDecimal payment = null;
+    private Currency currency = null;
+    private PaymentFrequency paymentFrequency = null;
+    private Integer deduction = null;
 
     // Accommodation
-    private String lodgingBy;
-    private BigDecimal lodgingCost;
-    private PaymentFrequency lodgingCostFrequency;
-    private BigDecimal livingCost;
-    private PaymentFrequency livingCostFrequency;
-    private Boolean canteen;
+    private String lodgingBy = null;
+    private BigDecimal lodgingCost = null;
+    private PaymentFrequency lodgingCostFrequency = null;
+    private BigDecimal livingCost = null;
+    private PaymentFrequency livingCostFrequency = null;
+    private Boolean canteen = null;
 
     public Boolean getCanteen() {
         return canteen;
@@ -387,36 +389,36 @@ public final class Offer extends AbstractVerification {
         this.fieldOfStudies = Copier.copy(fieldOfStudies);
     }
 
-    public Date getFromDate2() {
-        return Copier.copy(fromDate2);
+    public DateMidnight getFromDate2() {
+        return fromDate2;
     }
 
-    public void setFromDate2(final Date fromDate) {
-        this.fromDate2 = Copier.copy(fromDate);
+    public void setFromDate2(final DateMidnight fromDate2) {
+        this.fromDate2 = fromDate2;
     }
 
-    public Date getFromDate() {
+    public DateMidnight getFromDate() {
         return Copier.copy(fromDate);
     }
 
-    public void setFromDate(final Date fromDate2) {
-        this.fromDate = Copier.copy(fromDate2);
+    public void setFromDate(final DateMidnight fromDate) {
+        this.fromDate = fromDate;
     }
 
-    public Date getUnavailableFrom() {
-        return Copier.copy(unavailableFrom);
+    public DateMidnight getUnavailableFrom() {
+        return unavailableFrom;
     }
 
-    public void setUnavailableFrom(final Date unavailableFrom) {
-        this.unavailableFrom = Copier.copy(unavailableFrom);
+    public void setUnavailableFrom(final DateMidnight unavailableFrom) {
+        this.unavailableFrom = unavailableFrom;
     }
 
-    public Date getUnavailableTo() {
-        return Copier.copy(unavailableTo);
+    public DateMidnight getUnavailableTo() {
+        return unavailableTo;
     }
 
-    public void setUnavailableTo(final Date unavailableTo) {
-        this.unavailableTo = Copier.copy(unavailableTo);
+    public void setUnavailableTo(final DateMidnight unavailableTo) {
+        this.unavailableTo = unavailableTo;
     }
 
     public Language getLanguage1() {
@@ -555,12 +557,12 @@ public final class Offer extends AbstractVerification {
         this.nearestPubTransport = nearestPubTransport;
     }
 
-    public Date getNominationDeadline() {
-        return Copier.copy(nominationDeadline);
+    public DateMidnight getNominationDeadline() {
+        return nominationDeadline;
     }
 
-    public void setNominationDeadline(final Date nominationDeadline) {
-        this.nominationDeadline = Copier.copy(nominationDeadline);
+    public void setNominationDeadline(final DateMidnight nominationDeadline) {
+        this.nominationDeadline = nominationDeadline;
     }
 
     public String getOtherRequirements() {
@@ -608,7 +610,7 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setSpecializations(final Set<String> specializations) {
-        this.specializations = specializations;
+        this.specializations = Copier.copy(specializations);
     }
 
     public Set<StudyLevel> getStudyLevels() {
@@ -619,20 +621,20 @@ public final class Offer extends AbstractVerification {
         this.studyLevels = Copier.copy(studyLevels);
     }
 
-    public Date getToDate2() {
-        return Copier.copy(toDate2);
+    public DateMidnight getToDate2() {
+        return toDate2;
     }
 
-    public void setToDate2(final Date toDate2) {
-        this.toDate2 = Copier.copy(toDate2);
+    public void setToDate2(final DateMidnight toDate2) {
+        this.toDate2 = toDate2;
     }
 
-    public Date getToDate() {
-        return Copier.copy(toDate);
+    public DateMidnight getToDate() {
+        return toDate;
     }
 
-    public void setToDate(final Date toDate) {
-        this.toDate = Copier.copy(toDate);
+    public void setToDate(final DateMidnight toDate) {
+        this.toDate = toDate;
     }
 
     public TypeOfWork getTypeOfWork() {
@@ -672,33 +674,22 @@ public final class Offer extends AbstractVerification {
     // =========================================================================
 
     /**
-     * first thought was that id should be sufficient, but what if two
-     * NOT PRESISTED offers want to be compared, then there is no ID
-     * <p/>
-     * Even persisted offers can be updated differently, so still all
-     * fields need to be taken into conscideration.
-     * <p/>
      * {@inheritDoc}
-     *
-     * @param obj
-     * @return
      */
     @Override
     public boolean equals(final Object obj) {
+        // Notes, considerations about simplifying this Object was made, but
+        // turned down since it should be possible to check if two unpersisted
+        // Objects are equal
         if (this == obj) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (!(obj instanceof Offer)) {
             return false;
         }
 
         final Offer offer = (Offer) obj;
-        if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
-            return false;
-        }
-        if (livingCostFrequency != offer.livingCostFrequency) {
-            return false;
-        }
+
         if (canteen != null ? !canteen.equals(offer.canteen) : offer.canteen != null) {
             return false;
         }
@@ -729,16 +720,13 @@ public final class Offer extends AbstractVerification {
         if (employerWebsite != null ? !employerWebsite.equals(offer.employerWebsite) : offer.employerWebsite != null) {
             return false;
         }
-        if (fromDate != null ? !DateComparator.equals(fromDate, offer.fromDate) : offer.fromDate != null) {
+        if (fieldOfStudies != null ? !fieldOfStudies.equals(offer.fieldOfStudies) : offer.fieldOfStudies != null) {
             return false;
         }
-        if (fromDate2 != null ? !DateComparator.equals(fromDate2, offer.fromDate2) : offer.fromDate2 != null) {
+        if (fromDate != null ? !fromDate.equals(offer.fromDate) : offer.fromDate != null) {
             return false;
         }
-        if (unavailableFrom != null ? !DateComparator.equals(unavailableFrom, offer.unavailableFrom) : offer.unavailableFrom != null) {
-            return false;
-        }
-        if (unavailableTo != null ? !DateComparator.equals(unavailableTo, offer.unavailableTo) : offer.unavailableTo != null) {
+        if (fromDate2 != null ? !fromDate2.equals(offer.fromDate2) : offer.fromDate2 != null) {
             return false;
         }
         if (language1 != offer.language1) {
@@ -768,6 +756,9 @@ public final class Offer extends AbstractVerification {
         if (livingCost != null ? !(livingCost.compareTo(offer.livingCost) == 0) : offer.livingCost != null) {
             return false;
         }
+        if (livingCostFrequency != offer.livingCostFrequency) {
+            return false;
+        }
         if (lodgingBy != null ? !lodgingBy.equals(offer.lodgingBy) : offer.lodgingBy != null) {
             return false;
         }
@@ -789,7 +780,7 @@ public final class Offer extends AbstractVerification {
         if (nearestPubTransport != null ? !nearestPubTransport.equals(offer.nearestPubTransport) : offer.nearestPubTransport != null) {
             return false;
         }
-        if (nominationDeadline != null ? !DateComparator.equals(nominationDeadline, offer.nominationDeadline) : offer.nominationDeadline != null) {
+        if (nominationDeadline != null ? !nominationDeadline.equals(offer.nominationDeadline) : offer.nominationDeadline != null) {
             return false;
         }
         if (otherRequirements != null ? !otherRequirements.equals(offer.otherRequirements) : offer.otherRequirements != null) {
@@ -804,13 +795,28 @@ public final class Offer extends AbstractVerification {
         if (prevTrainingRequired != null ? !prevTrainingRequired.equals(offer.prevTrainingRequired) : offer.prevTrainingRequired != null) {
             return false;
         }
+        if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
+            return false;
+        }
+        if (specializations != null ? !specializations.equals(offer.specializations) : offer.specializations != null) {
+            return false;
+        }
         if (studyLevels != null ? !studyLevels.equals(offer.studyLevels) : offer.studyLevels != null) {
             return false;
         }
-        if (toDate != null ? !DateComparator.equals(toDate, offer.toDate) : offer.toDate != null) {
+        if (toDate != null ? !toDate.equals(offer.toDate) : offer.toDate != null) {
             return false;
         }
-        if (toDate2 != null ? !DateComparator.equals(toDate2, offer.toDate2) : offer.toDate2 != null) {
+        if (toDate2 != null ? !toDate2.equals(offer.toDate2) : offer.toDate2 != null) {
+            return false;
+        }
+        if (typeOfWork != offer.typeOfWork) {
+            return false;
+        }
+        if (unavailableFrom != null ? !unavailableFrom.equals(offer.unavailableFrom) : offer.unavailableFrom != null) {
+            return false;
+        }
+        if (unavailableTo != null ? !unavailableTo.equals(offer.unavailableTo) : offer.unavailableTo != null) {
             return false;
         }
         if (weeklyHours != null ? !weeklyHours.equals(offer.weeklyHours) : offer.weeklyHours != null) {
@@ -819,30 +825,13 @@ public final class Offer extends AbstractVerification {
         if (workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null) {
             return false;
         }
-        if (workingPlace != null ? !workingPlace.equals(offer.workingPlace) : offer.workingPlace != null) {
-            return false;
-        }
-        if (typeOfWork != null ? !typeOfWork.equals(offer.typeOfWork) : offer.typeOfWork != null) {
-            return false;
-        }
-        if (!(fieldOfStudies == null ? EnumSet.noneOf(FieldOfStudy.class) : fieldOfStudies).equals(
-                offer.fieldOfStudies == null ? EnumSet.noneOf(FieldOfStudy.class) : offer.fieldOfStudies)) {
-            return false;
-        }
-        if (!(studyLevels == null ? EnumSet.noneOf(StudyLevel.class) : studyLevels).equals(
-                offer.studyLevels == null ? EnumSet.noneOf(StudyLevel.class) : offer.studyLevels)) {
-            return false;
-        }
-        if (!(specializations == null ? Collections.emptySet() : specializations).equals(
-                offer.specializations == null ? Collections.emptySet() : offer.specializations)) {
-            return false;
-        }
 
-        return true;
+        return !(workingPlace != null ? !workingPlace.equals(offer.workingPlace) : offer.workingPlace != null);
     }
 
-    /** {@inheritDoc} */
-    @SuppressWarnings("OverlyLongMethod")
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
@@ -897,7 +886,9 @@ public final class Offer extends AbstractVerification {
         return hash;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "Offer{" +
@@ -1101,15 +1092,14 @@ public final class Offer extends AbstractVerification {
     private boolean validateNotNullableFields(final Map<String, String> validation) {
         boolean check = true;
 
-        //noinspection ConstantConditions
-        check &= isNotEmpty(validation, "refNo", refNo);
-        check &= isNotEmpty(validation, "employerName", employerName);
+        check &= isNotNullOrEmpty(validation, "refNo", refNo);
+        check &= isNotNullOrEmpty(validation, "employerName", employerName);
         check &= isNotNull(validation, "weeklyhours", weeklyHours);
-        check &= isNotEmpty(validation, "fieldOfStudies", fieldOfStudies);
-        check &= isNotEmpty(validation, "studyLevels", studyLevels);
+        check &= isNotNullOrEmpty(validation, "fieldOfStudies", fieldOfStudies);
+        check &= isNotNullOrEmpty(validation, "studyLevels", studyLevels);
         check &= isNotNull(validation, "language1", language1);
         check &= isNotNull(validation, "language1Level", language1Level);
-        check &= isNotEmpty(validation, "workDescription", workDescription);
+        check &= isNotNullOrEmpty(validation, "workDescription", workDescription);
         check &= isNotNull(validation, "minimumWeeks", minimumWeeks);
         check &= isNotNull(validation, "maximumWeeks", maximumWeeks);
         check &= isNotNull(validation, "fromDate", fromDate);
@@ -1119,7 +1109,7 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
-     * Checks if reference number is valid with #refNoFormat.
+     * Checks if reference number is valid with #REFNO_FORMAT.
      *
      * @param validation Map with Error information
      * @return true if reference number is valid
@@ -1129,6 +1119,7 @@ public final class Offer extends AbstractVerification {
         boolean check = true;
 
         if (refNo != null) {
+            // ToDo Kim; Current check is made against ALL countries, not just the IAESTE countries. The best solution is to check country code against the company address, secondly against a shorter, static, list
             final String[] codes = Locale.getISOCountries();
             // for each country code 3 bytes are needed: "CC|"
             final StringBuilder countryCodes = new StringBuilder(3 * codes.length - 1);
@@ -1138,7 +1129,8 @@ public final class Offer extends AbstractVerification {
             }
             countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
 
-            final Pattern refNoPattern = Pattern.compile(String.format(refNoFormat, countryCodes.toString().toUpperCase()));
+            // The list of countries code is provide in upper case, hence enforce an uppercase is redundant
+            final Pattern refNoPattern = Pattern.compile(String.format(REFNO_FORMAT, countryCodes.toString()));
             final Matcher matcher = refNoPattern.matcher(refNo);
             if (!matcher.matches()) {
                 addError(validation, "refNo", "reference number has incorrect format");
@@ -1167,7 +1159,6 @@ public final class Offer extends AbstractVerification {
     private boolean validateDates(final Map<String, String> validation) {
         boolean check = true;
 
-        //noinspection ConstantConditions
         check &= validateDatesPresence(validation);
         check &= validateDatesOrder(validation);
         check &= validateDatesNominationDeadline(validation);
@@ -1226,21 +1217,20 @@ public final class Offer extends AbstractVerification {
         boolean check = true;
 
         // 'from' date can't be after 'to' date
-        if (fromDate != null && toDate != null && fromDate.after(toDate)) {
+        if (isAfter(fromDate, toDate)) {
             addError(validation, "fromDate", "should be before toDate");
             check = false;
         }
-        if (fromDate2 != null && toDate2 != null && fromDate2.after(toDate2)) {
+        if (isAfter(fromDate2, toDate2)) {
             addError(validation, "fromDate2", "should be before toDate2");
             check = false;
         }
-        if (unavailableFrom != null && unavailableTo != null && unavailableFrom.after(unavailableTo)) {
+        if (isAfter(unavailableFrom, unavailableTo)) {
             addError(validation, "unavailableFrom", "should be before unavailableTo");
             check = false;
         }
 
         return check;
-
     }
 
     /**
@@ -1251,15 +1241,25 @@ public final class Offer extends AbstractVerification {
      */
     private boolean validateDatesNominationDeadline(final Map<String, String> validation) {
         boolean check = true;
-        if (nominationDeadline != null) {
-            // "nominationDeadline" must be before start of an internship
-            if ((fromDate != null && nominationDeadline.after(fromDate))
-                    || (fromDate2 != null && nominationDeadline.after(fromDate2))) {
-                addError(validation, "nominationDeadline", "should be before 'fromDate' and 'fromDate2'");
-                check = false;
-            }
+
+        if (isAfter(nominationDeadline, fromDate) || isAfter(nominationDeadline, fromDate2)) {
+            addError(validation, "nominationDeadline", "should be before 'fromDate' and 'fromDate2'");
+            check = false;
         }
+
+//        if (nominationDeadline != null) {
+//            // "nominationDeadline" must be before start of an internship
+//            if (((fromDate != null) && nominationDeadline.after(fromDate)) || ((fromDate2 != null) && nominationDeadline.after(fromDate2))) {
+//                addError(validation, "nominationDeadline", "should be before 'fromDate' and 'fromDate2'");
+//                check = false;
+//            }
+//        }
+
         return check;
+    }
+
+    private Boolean isAfter(final DateMidnight first, final DateMidnight second) {
+        return (first != null) && (second != null) && first.isAfter(second);
     }
 
     /**
@@ -1279,7 +1279,7 @@ public final class Offer extends AbstractVerification {
             } else {
                 // from < to and from2 < to is already checked
                 // check if group 2 is outside group 1
-                if (!(fromDate.after(toDate2) || fromDate2.after(toDate))) {
+                if (!(fromDate.isAfter(toDate2) || fromDate2.isAfter(toDate))) {
                     addError(validation, "fromDate", "fromDate-toDate and fromDate2-toDate2 periods overlap on each other");
                     addError(validation, "fromDate2", "fromDate-toDate and fromDate2-toDate2 periods overlap on each other");
                     check = false;
@@ -1302,23 +1302,23 @@ public final class Offer extends AbstractVerification {
         if (unavailableFrom != null && unavailableTo != null) {
             // unavailable "from" and "to" date must be inside "from" and "to" or "from2" and "to2" dates
             //      or between "to" and "from2" or "to2" and "from" (see #84 for requirements)
-            if (unavailableFrom.before(fromDate) && unavailableTo.after(fromDate)) {
+            if (unavailableFrom.isBefore(fromDate) && unavailableTo.isAfter(fromDate)) {
                 check = false;
             }
-            if (unavailableFrom.after(toDate) && unavailableTo.before(toDate)) {
+            if (unavailableFrom.isAfter(toDate) && unavailableTo.isBefore(toDate)) {
                 check = false;
             }
-            if (unavailableFrom.after(fromDate) && unavailableFrom.before(toDate) && unavailableTo.after(toDate)) {
+            if (unavailableFrom.isAfter(fromDate) && unavailableFrom.isBefore(toDate) && unavailableTo.isAfter(toDate)) {
                 check = false;
             }
             if (fromDate2 != null) {
-                if (unavailableFrom.before(fromDate2) && unavailableTo.after(fromDate2)) {
+                if (unavailableFrom.isBefore(fromDate2) && unavailableTo.isAfter(fromDate2)) {
                     check = false;
                 }
-                if (unavailableFrom.after(toDate2) && unavailableTo.before(toDate2)) {
+                if (unavailableFrom.isAfter(toDate2) && unavailableTo.isBefore(toDate2)) {
                     check = false;
                 }
-                if (unavailableFrom.after(fromDate2) && unavailableFrom.before(toDate2) && unavailableTo.after(toDate2)) {
+                if (unavailableFrom.isAfter(fromDate2) && unavailableFrom.isBefore(toDate2) && unavailableTo.isAfter(toDate2)) {
                     check = false;
                 }
             }
@@ -1339,21 +1339,28 @@ public final class Offer extends AbstractVerification {
      * @param action Kind of action (new, update)
      * @return generated String message
      */
-    public String generateMessage(NotificationType type, String action) {
-        String message = "";
+    public String generateMessage(final NotificationType type, final String action) {
+        final String message;
+
         switch (type) {
-            case EMAIL: message = generateEmailMessage(action); break;
-            case IM: message = generateImMessage(action); break;
+            case EMAIL:
+                message = generateEmailMessage(action);
+                break;
+            case IM:
+                message = generateImMessage(action);
+                break;
+            default:
+                message = "";
         }
+
         return message;
     }
 
-    private String generateEmailMessage(String action) {
+    private String generateEmailMessage(final String action) {
         return "The offer " + refNo + " has been " + action;
     }
 
-    private String generateImMessage(String action) {
+    private String generateImMessage(final String action) {
         return "The offer " + refNo + " has been " + action;
     }
-
 }

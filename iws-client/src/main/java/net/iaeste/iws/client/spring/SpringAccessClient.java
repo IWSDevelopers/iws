@@ -17,9 +17,11 @@ package net.iaeste.iws.client.spring;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.SessionResponse;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.notification.Notifications;
@@ -67,6 +69,22 @@ public final class SpringAccessClient implements Access {
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         return access.generateSession(request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SessionResponse verifySession(final AuthenticationToken token) {
+        return access.verifySession(token);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
+        return access.saveSessionData(token, request);
     }
 
     /**

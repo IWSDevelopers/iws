@@ -17,9 +17,11 @@ package net.iaeste.iws.fitnesse.callers;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.SessionResponse;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -45,6 +47,30 @@ public final class AccessCaller implements Access {
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         try {
             return access.generateSession(request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SessionResponse verifySession(final AuthenticationToken token) {
+        try {
+            return access.verifySession(token);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
+        try {
+            return access.saveSessionData(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

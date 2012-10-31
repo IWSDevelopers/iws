@@ -72,6 +72,29 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * The method takes a value, and verifies that if it is not null, that it
+     * is neither empty. If the value is not null but empty, then the
+     * information is added to the validation Map.<br />
+     *   If an error was found, then a false is returned, otherwise the method
+     * will return true.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     * @return True if field is valid, otherwise false
+     */
+    protected boolean isNotEmpty(final Map<String, String> validation, final String field, final String value) {
+        boolean check = true;
+
+        if (value != null && value.isEmpty()) {
+            addError(validation, field, "the field may not be empty.");
+            check = false;
+        }
+
+        return check;
+    }
+
+    /**
      * The method takes a value, and verifies that this value is neither null,
      * nor empty. If an error is found, then the information is added to the
      * validation Map.<br />
@@ -83,7 +106,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value      The value to verify
      * @return True if field is valid, otherwise false
      */
-    protected boolean isNotEmpty(final Map<String, String> validation, final String field, final String value) {
+    protected boolean isNotNullOrEmpty(final Map<String, String> validation, final String field, final String value) {
         boolean check = true;
 
         if ((value == null) || value.isEmpty()) {
@@ -106,7 +129,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value      The value to verify
      * @return True if field is valid, otherwise false
      */
-    protected boolean isNotEmpty(final Map<String, String> validation, final String field, final Set<?> value) {
+    protected boolean isNotNullOrEmpty(final Map<String, String> validation, final String field, final Set<?> value) {
         boolean check = true;
 
         if ((value == null) || value.isEmpty()) {

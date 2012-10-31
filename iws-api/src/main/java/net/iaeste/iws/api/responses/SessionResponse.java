@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchEmployerInformationRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.SessionResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,82 +12,68 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.requests;
+package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.FetchType;
-
-import java.util.HashMap;
-import java.util.Map;
+import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
 
 /**
- * @author  Pavel Fiala / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection RedundantNoArgConstructor
  */
-public final class FetchEmployerInformationRequest extends AbstractVerification {
+public class SessionResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-
-    private FetchType fetchType;
-    private String name;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchEmployerInformationRequest() {
-        fetchType = null;
-        name = null;
+    public SessionResponse() {
     }
 
     /**
-     * Default Constructor, for setting all values.
+     * Error Constructor.
      *
-     * @param fetchType The EmployerInformation Fetch Type
-     * @param name      The EmployerInformation Name
+     * @param error    IWS Error Object
+     * @param message  Error Message
      */
-    public FetchEmployerInformationRequest(final FetchType fetchType, final String name) {
-        this.fetchType = fetchType;
-        this.name = name;
+    public SessionResponse(final IWSError error, final String message) {
+        super(error, message);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setFetchType(final FetchType fetchType) {
-        this.fetchType = fetchType;
-    }
-
-    public FetchType getFetchType() {
-        return fetchType;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     // =========================================================================
-    // Standard Request Methods
+    // Standard Response Methods
     // =========================================================================
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+    public boolean equals(final Object obj) {
+        throw new NotImplementedException("TBD");
+    }
 
-        isNotNull(validation, "fetchType", fetchType);
-        isNotNullOrEmpty(validation, "name", name);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        throw new NotImplementedException("TBD");
+    }
 
-        return validation;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        throw new NotImplementedException("TBD");
     }
 }

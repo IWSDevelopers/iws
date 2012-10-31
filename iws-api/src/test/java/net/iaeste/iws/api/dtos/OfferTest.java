@@ -15,13 +15,6 @@
 
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.dtos.OfferTestUtility.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.hasKey;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
@@ -31,16 +24,23 @@ import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.utils.Copier;
 import org.hamcrest.Matchers;
+import org.joda.time.DateMidnight;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static net.iaeste.iws.api.dtos.OfferTestUtility.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.hasKey;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -49,8 +49,8 @@ import java.util.Set;
  */
 public class OfferTest {
     private Offer offer = getMinimalOffer();
-    /** field is used in methods for verifing dates, field is initialized in {@reference setUpDates} method */
-    private static final Date[] dates = new Date[10];
+    /** field is used in methods for verifing dates, field is initialized in {@link #setUpDates} method */
+    private static final DateMidnight[] dates = new DateMidnight[10];
     private static final String[] validRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "AT-2012-1234-AB", "GB-2011-0001" };
 
     private static final String[] invalidRefNos = { "GB-2011-00001", "UK-2011-00001", "INE-2011-0001-KU", "GB-2011-w001", "PL-201w-0001", "GB-2011-0001-101",
@@ -69,9 +69,10 @@ public class OfferTest {
     }
 
     private void setUpDates() {
-        final long now = new Date().getTime();
-        for (int i = 0; i < dates.length; ++i) {
-            dates[i] = new Date(now + i * 3600 * 24);
+        final DateMidnight now = new DateMidnight();
+
+        for (int i = 1; i < dates.length; ++i) {
+            dates[i] = now.plusDays(i);
         }
     }
 
@@ -109,14 +110,6 @@ public class OfferTest {
     }
 
     @Test
-    public void testMutableFields() {
-        offer.setNominationDeadline(NOMINATION_DEADLINE);
-        final Date nominationDeadline = offer.getNominationDeadline();
-        nominationDeadline.setTime(new Date().getTime() + 3600);
-        assertThat(nominationDeadline, is(not(offer.getNominationDeadline())));
-    }
-
-    @Test
     public void testAddingToFieldOfStudyList() {
         final Set<FieldOfStudy> fieldOfStudies = offer.getFieldOfStudies();
         final Set<FieldOfStudy> primaryFieldOfStudies = offer.getFieldOfStudies();
@@ -141,28 +134,6 @@ public class OfferTest {
         studyLevels.add(StudyLevel.B);
         assertThat(studyLevels, is(not(offer.getStudyLevels())));
         assertThat(primaryStudyLevels, is(offer.getStudyLevels()));
-    }
-
-    @Test
-    public void testDatesImmutability() {
-        final Date now = new Date();
-        final Date oldDate = (Date) now.clone();
-        offer.setUnavailableFrom(now);
-        offer.setUnavailableTo(now);
-        offer.setToDate(now);
-        offer.setToDate2(now);
-        offer.setFromDate(now);
-        offer.setFromDate2(now);
-        offer.setNominationDeadline(now);
-
-        now.setTime(now.getTime() + 3600);
-        assertThat("HolidaysFrom", oldDate, is(offer.getUnavailableFrom()));
-        assertThat("HolidaysTo", oldDate, is(offer.getUnavailableTo()));
-        assertThat("ToDate", oldDate, is(offer.getToDate()));
-        assertThat("ToDate2", oldDate, is(offer.getToDate2()));
-        assertThat("FromDate", oldDate, is(offer.getFromDate()));
-        assertThat("FromDate2", oldDate, is(offer.getFromDate2()));
-        assertThat("NominationDeadline", oldDate, is(offer.getNominationDeadline()));
     }
 
     @Test

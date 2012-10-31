@@ -20,6 +20,9 @@ import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import org.joda.time.DateMidnight;
+
+import java.util.Date;
 
 /**
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
@@ -28,12 +31,36 @@ import net.iaeste.iws.persistence.entities.OfferEntity;
  * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
+ * @noinspection OverlyLongMethod
  */
 public final class OfferTransformer {
+
     private OfferTransformer() {
     }
 
-    @SuppressWarnings("OverlyLongMethod")
+    private static Date convert(final DateMidnight date) {
+        final Date result;
+
+        if (date != null) {
+            result = date.toDate();
+        } else {
+            result = null;
+        }
+
+        return result;
+    }
+
+    public static DateMidnight convert(final Date date) {
+        final DateMidnight result;
+
+        if (date != null) {
+            result = new DateMidnight(date);
+        } else {
+            result = null;
+        }
+
+        return result;
+    }
     public static OfferEntity transform(final Offer offer) {
         OfferEntity result = null;
 
@@ -41,7 +68,7 @@ public final class OfferTransformer {
             result = new OfferEntity();
 
             result.setRefNo(offer.getRefNo());
-            result.setNominationDeadline(offer.getNominationDeadline());
+            result.setNominationDeadline(convert(offer.getNominationDeadline()));
             result.setEmployerName(offer.getEmployerName());
             result.setEmployerAddress(offer.getEmployerAddress());
             result.setEmployerAddress2(offer.getEmployerAddress2());
@@ -64,12 +91,12 @@ public final class OfferTransformer {
             result.setTypeOfWork(offer.getTypeOfWork() != null ? offer.getTypeOfWork().toString() : null);
             result.setMinimumWeeks(offer.getMinimumWeeks());
             result.setMaximumWeeks(offer.getMaximumWeeks());
-            result.setFromDate(offer.getFromDate());
-            result.setToDate(offer.getToDate());
-            result.setFromDate2(offer.getFromDate2());
-            result.setToDate2(offer.getToDate2());
-            result.setUnavailableFrom(offer.getUnavailableFrom());
-            result.setUnavailableTo(offer.getUnavailableTo());
+            result.setFromDate(convert(offer.getFromDate()));
+            result.setToDate(convert(offer.getToDate()));
+            result.setFromDate2(convert(offer.getFromDate2()));
+            result.setToDate2(convert(offer.getToDate2()));
+            result.setUnavailableFrom(convert(offer.getUnavailableFrom()));
+            result.setUnavailableTo(convert(offer.getUnavailableTo()));
             result.setWorkingPlace(offer.getWorkingPlace());
             result.setNearestAirport(offer.getNearestAirport());
             result.setNearestPubTransport(offer.getNearestPubTransport());
@@ -91,7 +118,6 @@ public final class OfferTransformer {
         return result;
     }
 
-    @SuppressWarnings("OverlyLongMethod")
     public static Offer transform(final OfferEntity offer) {
         Offer result = null;
 
@@ -99,7 +125,7 @@ public final class OfferTransformer {
             result = new Offer();
 
             result.setRefNo(offer.getRefNo());
-            result.setNominationDeadline(offer.getNominationDeadline());
+            result.setNominationDeadline(convert(offer.getNominationDeadline()));
             result.setEmployerName(offer.getEmployerName());
             result.setEmployerAddress(offer.getEmployerAddress());
             result.setEmployerAddress2(offer.getEmployerAddress2());
@@ -122,12 +148,12 @@ public final class OfferTransformer {
             result.setTypeOfWork(TypeOfWork.toValue(offer.getTypeOfWork()));
             result.setMinimumWeeks(offer.getMinimumWeeks());
             result.setMaximumWeeks(offer.getMaximumWeeks());
-            result.setFromDate(offer.getFromDate());
-            result.setToDate(offer.getToDate());
-            result.setFromDate2(offer.getFromDate2());
-            result.setToDate2(offer.getToDate2());
-            result.setUnavailableFrom(offer.getUnavailableFrom());
-            result.setUnavailableTo(offer.getUnavailableTo());
+            result.setFromDate(convert(offer.getFromDate()));
+            result.setToDate(convert(offer.getToDate()));
+            result.setFromDate2(convert(offer.getFromDate2()));
+            result.setToDate2(convert(offer.getToDate2()));
+            result.setUnavailableFrom(convert(offer.getUnavailableFrom()));
+            result.setUnavailableTo(convert(offer.getUnavailableTo()));
             result.setWorkingPlace(offer.getWorkingPlace());
             result.setNearestAirport(offer.getNearestAirport());
             result.setNearestPubTransport(offer.getNearestPubTransport());

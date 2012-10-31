@@ -19,6 +19,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
@@ -57,6 +58,49 @@ public class AdministrationController extends CommonController implements Admini
         super(factory.getAccessDao());
 
         this.factory = factory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
+        LOG.trace("Starting createUser()");
+        Fallible response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.CREATE_USER);
+            verify(request, "To be clarified.");
+
+            final AdministrationService service = factory.prepareAdministrationService();
+            //service.createUser(authentication, request);
+            response = new UserResponse();
+        } catch (IWSException e) {
+            response = new UserResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished createUser()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible activateUser(final String activationString) {
+        LOG.trace("Starting activateUser()");
+        Fallible response;
+
+        try {
+            final AdministrationService service = factory.prepareAdministrationService();
+            //service.activateUser(activationString);
+            response = new FacultyResponse();
+        } catch (IWSException e) {
+            response = new UserResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished activateUser()");
+        return response;
     }
 
     /**

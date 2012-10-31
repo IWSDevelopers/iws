@@ -47,5 +47,5 @@ public enum Permission {
 
     // Student
     PROCESS_STUDENTS,
-    LOOKUP_STUDENTS
+    CREATE_USER, LOOKUP_STUDENTS
 }

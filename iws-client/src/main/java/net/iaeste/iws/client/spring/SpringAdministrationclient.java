@@ -17,6 +17,7 @@ package net.iaeste.iws.client.spring;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
@@ -68,6 +69,22 @@ public final class SpringAdministrationclient implements Administration {
     // =========================================================================
     // IWS API Administration Functionality
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
+        return administration.createUser(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible activateUser(final String activationString) {
+        return administration.activateUser(activationString);
+    }
 
     /**
      * {@inheritDoc}

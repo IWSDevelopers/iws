@@ -16,6 +16,7 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
@@ -34,8 +35,8 @@ import net.iaeste.iws.api.responses.UserResponse;
  */
 public interface Administration {
 
-//    CreateUserResponse createUser(AuthenticationToken token, CreateUserRequest request);
-//    Fallible activateUser(final String activationString);
+    Fallible createUser(AuthenticationToken token, CreateUserRequest request);
+    Fallible activateUser(final String activationString);
     Fallible processUser(AuthenticationToken token, ProcessUserRequest request);
     UserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
 

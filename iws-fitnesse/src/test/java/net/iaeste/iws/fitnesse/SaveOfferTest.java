@@ -14,19 +14,18 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.util.Date;
 import org.junit.Test;
 
-import java.util.Date;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class SaveOfferTest {
 
@@ -59,8 +58,8 @@ public class SaveOfferTest {
         cut.setMaximumWeeks(52);
         cut.setMinimumWeeks(6);
         cut.setWeeklyHours(40.0f);
-        cut.setFromDate(new Date());
-        cut.setToDate(new Date(new Date().getTime() + 3600 * 24 * 360));
+        cut.setFromDate(new Date().toString());
+        cut.setToDate(new Date().plusDays(360).toString());
 
         assertThat(cut.verify(), is(true));
 

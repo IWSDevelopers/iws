@@ -17,7 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Authorization;
-import net.iaeste.iws.api.utils.Copier;
+import net.iaeste.iws.api.util.Copier;
 
 import java.util.ArrayList;
 import java.util.List;

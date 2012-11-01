@@ -15,7 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.utils.Copier;
+import net.iaeste.iws.api.util.Copier;
 
 import java.io.Serializable;
 import java.util.Date;

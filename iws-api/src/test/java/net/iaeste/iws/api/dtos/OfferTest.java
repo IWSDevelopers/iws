@@ -22,9 +22,9 @@ import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.utils.Copier;
+import net.iaeste.iws.api.util.Copier;
+import net.iaeste.iws.api.util.Date;
 import org.hamcrest.Matchers;
-import org.joda.time.DateMidnight;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ import static org.junit.Assert.assertThat;
 public class OfferTest {
     private Offer offer = getMinimalOffer();
     /** field is used in methods for verifing dates, field is initialized in {@link #setUpDates} method */
-    private static final DateMidnight[] dates = new DateMidnight[10];
+    private static final Date[] dates = new Date[10];
     private static final String[] validRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "AT-2012-1234-AB", "GB-2011-0001" };
 
     private static final String[] invalidRefNos = { "GB-2011-00001", "UK-2011-00001", "INE-2011-0001-KU", "GB-2011-w001", "PL-201w-0001", "GB-2011-0001-101",
@@ -69,7 +69,7 @@ public class OfferTest {
     }
 
     private void setUpDates() {
-        final DateMidnight now = new DateMidnight();
+        final Date now = new Date();
 
         for (int i = 1; i < dates.length; ++i) {
             dates[i] = now.plusDays(i);

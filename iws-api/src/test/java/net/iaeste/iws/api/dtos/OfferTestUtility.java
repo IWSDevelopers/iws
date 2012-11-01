@@ -23,7 +23,7 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
-import org.joda.time.DateMidnight;
+import net.iaeste.iws.api.util.Date;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -40,19 +40,19 @@ import java.util.Set;
 public class OfferTestUtility {
 
     public static final String REF_NO = "AT-2012-1234-AB";
-    public static final DateMidnight NOMINATION_DEADLINE = new DateMidnight();
+    public static final Date NOMINATION_DEADLINE = new Date();
     public static final String EMPLOYER_NAME = "Test_Employer_1";
     public static final String WORK_DESCRIPTION = "nothing";
     public static final Integer MAXIMUM_WEEKS = 12;
     public static final Integer MINIMUM_WEEKS = 12;
     public static final Float WEEKLY_HOURS = 40.0f;
-    public static final DateMidnight FROM_DATE = new DateMidnight();
-    public static final DateMidnight TO_DATE = FROM_DATE.plusDays(90);
+    public static final Date FROM_DATE = new Date();
+    public static final Date TO_DATE = FROM_DATE.plusDays(90);
     public static final TypeOfWork TYPE_OF_WORK = TypeOfWork.R;
-    public static final DateMidnight FROM_DATE2 = TO_DATE.plusDays(90);
-    public static final DateMidnight TO_DATE2 = FROM_DATE2.plus(90);
-    public static final DateMidnight UNAVAIABLE_FROM = TO_DATE;
-    public static final DateMidnight UNAVAIABLE_TO = FROM_DATE2;
+    public static final Date FROM_DATE2 = TO_DATE.plusDays(90);
+    public static final Date TO_DATE2 = FROM_DATE2.plusDays(90);
+    public static final Date UNAVAIABLE_FROM = TO_DATE;
+    public static final Date UNAVAIABLE_TO = FROM_DATE2;
     public static final BigDecimal PAYMENT = new BigDecimal(3000);
     public static final BigDecimal LODGING_COST = new BigDecimal(1000);
     public static final BigDecimal LIVING_COST = new BigDecimal(2000);

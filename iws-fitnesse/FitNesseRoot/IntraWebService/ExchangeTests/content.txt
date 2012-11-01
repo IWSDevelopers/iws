@@ -21,8 +21,8 @@
 |set maximum weeks   |52                      |
 |set minimum weeks   |6                       |
 |set weekly hours    |40                      |
-|set from date       |2010-Jan-01             |
-|set to date         |2012-Sep-04             |
+|set from date       |2010-01-01              |
+|set to date         |2012-01-04              |
 |ensure              |verify                  |
 |save                                         |
 |show                |error message           |

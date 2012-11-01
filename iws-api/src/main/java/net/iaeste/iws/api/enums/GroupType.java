@@ -29,29 +29,24 @@ package net.iaeste.iws.api.enums;
 public enum GroupType {
 
     /**
-     * The Super type, designated to all functionality needed by the system
-     * administrators, to correct data at runtime without touching the
-     * underlying system.<br />
-     *   By default, only 2 groups exists with this group type:
-     * <ul>
-     *   <li><b>Private</b><br />
-     *   Certain functionality in the system is determined private initially,
-     *   and thus is assigned to this group, as the only information that
-     *   matters when attempting to access it, is the user.
-     *   </li>
-     *   <li><b>Admin</b><br />
-     *   The main admin group, for functionality in the system, which only
-     *   members with this access level may use. The primary goal for this, is
-     *   to correct data or reconstruct reported bugs, if they are hard to track
-     *   by more conventional matters. However, all usage of this functionality
-     *   may only be made with the consent of the user involved, as it may
-     *   otherwise be a criminal offense since data protection laws can be
-     *   violated.
-     *   </li>
-     * </ul>
-     * Note; users can only be member of 1 Administration Group!
+     * The Administration Group is present to ensure that certain users may
+     * perform special tasks, that is otherwise not allowed. For example, to
+     * avoid data corruption, it is not allowed for users to change their first
+     * and lastnames. However, there are cases where you wish to change them,
+     * such as marriage where the family name is changed.<br />
+     *   There can only exists 1 Administration Group.
      */
     ADMINISTRATION,
+
+    /**
+     * All user accounts have a private group assigned, with this type. It is
+     * there to ensure that all data is only linked with Groups, and allow a
+     * simpler logic when handling data.<br />
+     *   The Private group is also there to ensure that if a user is removed
+     * from the system, then the private data can be easily removed as
+     * well.
+     */
+    PRIVATE,
 
     /**
      * All members are assigned to this type, which gives the rights to the

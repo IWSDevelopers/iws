@@ -19,18 +19,16 @@ import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
+import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.persistence.entities.OfferEntity;
-import org.joda.time.DateMidnight;
-
-import java.util.Date;
 
 /**
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
  *
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  * @noinspection OverlyLongMethod
  */
 public final class OfferTransformer {
@@ -38,8 +36,8 @@ public final class OfferTransformer {
     private OfferTransformer() {
     }
 
-    private static Date convert(final DateMidnight date) {
-        final Date result;
+    private static java.util.Date convert(final Date date) {
+        final java.util.Date result;
 
         if (date != null) {
             result = date.toDate();
@@ -50,11 +48,11 @@ public final class OfferTransformer {
         return result;
     }
 
-    public static DateMidnight convert(final Date date) {
-        final DateMidnight result;
+    public static Date convert(final java.util.Date date) {
+        final Date result;
 
         if (date != null) {
-            result = new DateMidnight(date);
+            result = new Date(date);
         } else {
             result = null;
         }

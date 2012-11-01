@@ -18,7 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.utils.Copier;
+import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
 

@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Access;
@@ -32,26 +31,31 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.core.transformers.CollectionTransformer;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
-import org.joda.time.DateMidnight;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashSet;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * Please note, that Dates cannot be set directly from the FitNesse framework,
+ * since FitNesse uses the American date format as the default, which means that
+ * we will get exceptions thrown if we attempt to use them. Hence, we use our
+ * own Date class, which can take the format that we support.
+ *
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class SaveOffer extends AbstractFixture<OfferResponse> {
+
     private final Access ac = new AccessClient();
     private AuthenticationToken token;
-    private String username;
-    private String password;
+    private String username = null;
+    private String password = null;
 
     private final Exchange exchange = new ExchangeClient();
     private Offer offer;
@@ -126,8 +130,8 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setRefNo(refNo);
     }
 
-    public void setNominationDeadline(final Date nominationDeadline) {
-        offer.setNominationDeadline(new DateMidnight(nominationDeadline));
+    public void setNominationDeadline(final String nominationDeadline) {
+        offer.setNominationDeadline(new Date(nominationDeadline));
     }
 
     /** not null */
@@ -231,29 +235,29 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
     }
 
     /** not null */
-    public void setFromDate(final Date fromDate) {
-        offer.setFromDate(new DateMidnight(fromDate));
+    public void setFromDate(final String fromDate) {
+        offer.setFromDate(new Date(fromDate));
     }
 
     /** not null */
-    public void setToDate(final Date toDate) {
-        offer.setToDate(new DateMidnight(toDate));
+    public void setToDate(final String toDate) {
+        offer.setToDate(new Date(toDate));
     }
 
-    public void setFromDate2(final Date fromDate2) {
-        offer.setFromDate2(new DateMidnight(fromDate2));
+    public void setFromDate2(final String fromDate2) {
+        offer.setFromDate2(new Date(fromDate2));
     }
 
-    public void setToDate2(final Date toDate2) {
-        offer.setToDate2(new DateMidnight(toDate2));
+    public void setToDate2(final String toDate2) {
+        offer.setToDate2(new Date(toDate2));
     }
 
-    public void setUnavailableFrom(final Date unavailableFrom) {
-        offer.setUnavailableFrom(new DateMidnight(unavailableFrom));
+    public void setUnavailableFrom(final String unavailableFrom) {
+        offer.setUnavailableFrom(new Date(unavailableFrom));
     }
 
-    public void setUnavailableTo(final Date unavailableTo) {
-        offer.setUnavailableTo(new DateMidnight(unavailableTo));
+    public void setUnavailableTo(final String unavailableTo) {
+        offer.setUnavailableTo(new Date(unavailableTo));
     }
 
     public void setWorkingPlace(final String workingPlace) {

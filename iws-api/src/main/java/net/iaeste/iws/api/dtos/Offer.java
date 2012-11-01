@@ -26,8 +26,8 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.requests.AbstractVerification;
-import net.iaeste.iws.api.utils.Copier;
-import org.joda.time.DateMidnight;
+import net.iaeste.iws.api.util.Copier;
+import net.iaeste.iws.api.util.Date;
 
 import java.math.BigDecimal;
 import java.util.EnumSet;
@@ -144,7 +144,7 @@ public final class Offer extends AbstractVerification {
      * <li>If set, it must be before {@code fromDate} and {@code fromDate2} (@link #validateDatesNominationDeadline}.</li>
      * </ul>
      */
-    private DateMidnight nominationDeadline = null;
+    private Date nominationDeadline = null;
 
     // EmployerInformation information
     /**
@@ -255,7 +255,7 @@ public final class Offer extends AbstractVerification {
      * <li>{@link #validateDates(java.util.Map)}</li>
      * </ul>
      */
-    private DateMidnight fromDate = null;
+    private Date fromDate = null;
     /**
      * validations:
      * <ul>
@@ -263,20 +263,20 @@ public final class Offer extends AbstractVerification {
      * <li>{@link #validateDates(java.util.Map)}</li>
      * </ul>
      */
-    private DateMidnight toDate = null;
-    private DateMidnight fromDate2 = null;
-    private DateMidnight toDate2 = null;
+    private Date toDate = null;
+    private Date fromDate2 = null;
+    private Date toDate2 = null;
 
     /**
      * validations:
      * <ul><li>{@link #validateUnavailableDatesOrder(java.util.Map)}</li></ul>
      */
-    private DateMidnight unavailableFrom = null;
+    private Date unavailableFrom = null;
     /**
      * validations:
      * <ul><li>{@link #validateUnavailableDatesOrder(java.util.Map)} )}</li></ul>
      */
-    private DateMidnight unavailableTo = null;
+    private Date unavailableTo = null;
     private String workingPlace = null;
     private String nearestAirport = null;
     private String nearestPubTransport = null;
@@ -389,35 +389,35 @@ public final class Offer extends AbstractVerification {
         this.fieldOfStudies = Copier.copy(fieldOfStudies);
     }
 
-    public DateMidnight getFromDate2() {
+    public Date getFromDate2() {
         return fromDate2;
     }
 
-    public void setFromDate2(final DateMidnight fromDate2) {
+    public void setFromDate2(final Date fromDate2) {
         this.fromDate2 = fromDate2;
     }
 
-    public DateMidnight getFromDate() {
-        return Copier.copy(fromDate);
+    public Date getFromDate() {
+        return fromDate;
     }
 
-    public void setFromDate(final DateMidnight fromDate) {
+    public void setFromDate(final Date fromDate) {
         this.fromDate = fromDate;
     }
 
-    public DateMidnight getUnavailableFrom() {
+    public Date getUnavailableFrom() {
         return unavailableFrom;
     }
 
-    public void setUnavailableFrom(final DateMidnight unavailableFrom) {
+    public void setUnavailableFrom(final Date unavailableFrom) {
         this.unavailableFrom = unavailableFrom;
     }
 
-    public DateMidnight getUnavailableTo() {
+    public Date getUnavailableTo() {
         return unavailableTo;
     }
 
-    public void setUnavailableTo(final DateMidnight unavailableTo) {
+    public void setUnavailableTo(final Date unavailableTo) {
         this.unavailableTo = unavailableTo;
     }
 
@@ -557,11 +557,11 @@ public final class Offer extends AbstractVerification {
         this.nearestPubTransport = nearestPubTransport;
     }
 
-    public DateMidnight getNominationDeadline() {
+    public Date getNominationDeadline() {
         return nominationDeadline;
     }
 
-    public void setNominationDeadline(final DateMidnight nominationDeadline) {
+    public void setNominationDeadline(final Date nominationDeadline) {
         this.nominationDeadline = nominationDeadline;
     }
 
@@ -621,19 +621,19 @@ public final class Offer extends AbstractVerification {
         this.studyLevels = Copier.copy(studyLevels);
     }
 
-    public DateMidnight getToDate2() {
+    public Date getToDate2() {
         return toDate2;
     }
 
-    public void setToDate2(final DateMidnight toDate2) {
+    public void setToDate2(final Date toDate2) {
         this.toDate2 = toDate2;
     }
 
-    public DateMidnight getToDate() {
+    public Date getToDate() {
         return toDate;
     }
 
-    public void setToDate(final DateMidnight toDate) {
+    public void setToDate(final Date toDate) {
         this.toDate = toDate;
     }
 
@@ -1258,7 +1258,7 @@ public final class Offer extends AbstractVerification {
         return check;
     }
 
-    private Boolean isAfter(final DateMidnight first, final DateMidnight second) {
+    private Boolean isAfter(final Date first, final Date second) {
         return (first != null) && (second != null) && first.isAfter(second);
     }
 

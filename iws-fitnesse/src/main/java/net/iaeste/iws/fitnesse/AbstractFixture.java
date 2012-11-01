@@ -26,7 +26,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
- * @noinspection StaticNonFinalField
+ * @noinspection StaticNonFinalField, SynchronizationOnStaticField
  */
 abstract class AbstractFixture<T extends Fallible> implements Fixture {
 
@@ -35,8 +35,9 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
     protected String testId = null;
     protected String testCase = null;
 
-    // The following fields are static, so they will work regardlessly of the
-    // current Fixture instance
+    // To ensure that the Session will work regardless of the request being
+    // made, the data is made static and all access is being synchronized, to
+    // avoid that the system enters into an unknown state.
     private static final Object LOCK = new Object();
     private static AuthenticationToken token = null;
     private static String username = null;
@@ -46,16 +47,60 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
      * {@inheritDoc}
      */
     @Override
-    public void testId(final String str) {
-        testId = str;
+    public void testId(final String testId) {
+        this.testId = testId;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void testCase(final String str) {
-        testCase = str;
+    public void testCase(final String testCase) {
+        this.testCase = testCase;
+    }
+
+    /**
+     * FitNesse does not allow invocation of Static methods. However, we need
+     * some of the methods to be static, to ensure that we can access the
+     * Static members of the Class. This is needed to ensure that our Session
+     * Object is working across Fixtures being invoked.
+     */
+    public void setUsername(final String username) {
+        doSetUsername(username);
+    }
+
+    /**
+     * FitNesse does not allow invocation of Static methods. However, we need
+     * some of the methods to be static, to ensure that we can access the
+     * Static members of the Class. This is needed to ensure that our Session
+     * Object is working across Fixtures being invoked.
+     */
+    public void setPassword(final String password) {
+        doSetPassword(password);
+    }
+
+    /**
+     * FitNesse does not allow invocation of Static methods. However, we need
+     * some of the methods to be static, to ensure that we can access the
+     * Static members of the Class. This is needed to ensure that our Session
+     * Object is working across Fixtures being invoked.
+     *
+     * @return Response Obect from IWS
+     */
+    public AuthenticationResponse createSession() {
+        return doCreateSession();
+    }
+
+    /**
+     * FitNesse does not allow invocation of Static methods. However, we need
+     * some of the methods to be static, to ensure that we can access the
+     * Static members of the Class. This is needed to ensure that our Session
+     * Object is working across Fixtures being invoked.
+     *
+     * @return IWS Error information
+     */
+    public Fallible deprecateSession() {
+        return doDeprecateSession();
     }
 
     /**
@@ -64,7 +109,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
      *
      * @param str username
      */
-    public static void setUsername(final String str) {
+    private static void doSetUsername(final String str) {
         synchronized (LOCK) {
             username = str;
         }
@@ -76,7 +121,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
      *
      * @param str Password
      */
-    public static void setPassword(final String str) {
+    private static void doSetPassword(final String str) {
         synchronized (LOCK) {
             password = str;
         }
@@ -85,7 +130,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
     /**
      * Creates a new Session to be used for the subsequent requests.
      */
-    public static AuthenticationResponse createSession() {
+    private static AuthenticationResponse doCreateSession() {
         synchronized (LOCK) {
             final AuthenticationResponse result;
 
@@ -105,7 +150,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
      * Deprecates the current Session, i.e. equivalent to the user performing a
      * 'log out' operation.
      */
-    public static Fallible deprecateSession() {
+    private static Fallible doDeprecateSession() {
         synchronized (LOCK) {
             final Fallible result = ACCESS.deprecateSession(token);
 

@@ -28,22 +28,12 @@ import net.iaeste.iws.core.exceptions.SessionExistsException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.exceptions.MonitoringException;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -87,7 +77,7 @@ public final class AccessService {
 
     public SessionResponse verifySession(final AuthenticationToken token) {
         final SessionEntity entity = dao.findActiveSession(token);
-        final HashMap<String, String> data = deserialize(entity.getSessionData());
+        final byte[] data = entity.getSessionData();
         final DateTime created = new DateTime(entity.getCreated());
         final DateTime modified = new DateTime(entity.getModified());
 
@@ -101,8 +91,7 @@ public final class AccessService {
 
     public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
         final SessionEntity entity = dao.findActiveSession(token);
-        final byte[] data = serialize((HashMap<String, String>)request.getSessionData());
-        entity.setSessionData(data);
+        entity.setSessionData(request.getSessionData());
         entity.setModified(new Date());
         dao.persist(entity);
 
@@ -157,46 +146,5 @@ public final class AccessService {
 
         // Now, let's find the user, based on the credentials
         return dao.findUserByCredentials(request.getUsername(), hashcode);
-    }
-
-    private <T extends Serializable> byte[] serialize(final T data) {
-        final byte[] result;
-
-        if (data != null) {
-            try (final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-                 final GZIPOutputStream zipStream = new GZIPOutputStream(byteStream);
-                 final ObjectOutputStream objectStream = new ObjectOutputStream(zipStream)) {
-
-                objectStream.writeObject(data);
-                objectStream.close();
-
-                result = byteStream.toByteArray();
-            } catch (IOException e) {
-                throw new MonitoringException(e);
-            }
-        } else {
-            result = null;
-        }
-
-        return result;
-    }
-
-    private <T extends Serializable> T deserialize(final byte[] bytes) {
-        final T result;
-
-        if (bytes != null) {
-            try (final ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
-                 final GZIPInputStream zipStream = new GZIPInputStream(byteStream);
-                 final ObjectInputStream objectStream = new ObjectInputStream(zipStream)) {
-
-                result = (T) objectStream.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                throw new MonitoringException(e);
-            }
-        } else  {
-            result = null;
-        }
-
-        return result;
     }
 }

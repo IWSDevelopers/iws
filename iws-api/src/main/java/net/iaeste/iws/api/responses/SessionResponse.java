@@ -16,23 +16,35 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.util.Copier;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.DateTime;
 
-import java.util.Map;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.zip.GZIPInputStream;
 
 /**
+ * The Session Response Object contains the Session Data belonging to the users
+ * current active Session. The Data is stored internally as a Blob, i.e. a
+ * Byte Array (Compressed). And is deserialized to an Object of the type
+ * specified by the Client.<br />
+ *   Note, that the IWS only allows a single active Session for any user at the
+ * time, this is a limitation to avoid data corruption.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
+ * @noinspection CastToConcreteClass, unchecked, AssignmentToCollectionOrArrayFieldFromParameter
  */
 public class SessionResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Map<String, String> sessionData = null;
+    private byte[] sessionData = null;
     private DateTime created = null;
     private DateTime modified = null;
 
@@ -43,8 +55,8 @@ public class SessionResponse extends AbstractResponse {
     public SessionResponse() {
     }
 
-    public SessionResponse(final Map<String, String> sessionData, final DateTime created, final DateTime modified) {
-        this.sessionData = Copier.copy(sessionData);
+    public SessionResponse(final byte[] sessionData, final DateTime created, final DateTime modified) {
+        this.sessionData = sessionData;
         this.created = created;
         this.modified = modified;
     }
@@ -63,12 +75,12 @@ public class SessionResponse extends AbstractResponse {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setSessionData(final Map<String, String> sessionData) {
-        this.sessionData = Copier.copy(sessionData);
+    public void setSessionData(final byte[] sessionData) {
+        this.sessionData = sessionData;
     }
 
-    public Map<String, String> getSessionData() {
-        return Copier.copy(sessionData);
+    public <T extends Serializable> T getSessionData() {
+        return deserialize(sessionData);
     }
 
     public void setCreated(final DateTime created) {
@@ -114,7 +126,7 @@ public class SessionResponse extends AbstractResponse {
             return false;
         }
 
-        return !(sessionData != null ? !sessionData.equals(that.sessionData) : that.sessionData != null);
+        return !(sessionData != null ? !Arrays.equals(sessionData, that.sessionData) : that.sessionData != null);
     }
 
     /**
@@ -124,7 +136,7 @@ public class SessionResponse extends AbstractResponse {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (sessionData != null ? sessionData.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (sessionData != null ? Arrays.hashCode(sessionData) : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
 
@@ -137,9 +149,27 @@ public class SessionResponse extends AbstractResponse {
     @Override
     public String toString() {
         return "SessionResponse{" +
-                "sessionData=" + sessionData +
-                ", created=" + created +
+                "created=" + created +
                 ", modified=" + modified +
                 '}';
+    }
+
+    private <T extends Serializable> T deserialize(final byte[] bytes) {
+        final T result;
+
+        if (bytes != null) {
+            try (final ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
+                 final GZIPInputStream zipStream = new GZIPInputStream(byteStream);
+                 final ObjectInputStream objectStream = new ObjectInputStream(zipStream)) {
+
+                result = (T) objectStream.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                throw new VerificationException(e);
+            }
+        } else  {
+            result = null;
+        }
+
+        return result;
     }
 }

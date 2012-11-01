@@ -49,6 +49,7 @@ import java.util.Date;
         @NamedQuery(name = "session.deprecate",
                 query = "update SessionEntity s set " +
                         "   s.active = :status, " +
+                        "   s.sessionData = null, " +
                         "   s.modified = current_timestamp " +
                         "where s.active = true " +
                         "  and s.user.id = :id")

@@ -76,11 +76,12 @@ public interface Access {
      */
     Fallible saveSessionData(AuthenticationToken token, SessionDataRequest request);
 
-
     /**
      * The IWS doesn't delete ongoing sessions, it only closes them for further
      * usage. By invoking this method, the currently active session for the
-     * given token is being deprecated (i.e. closed).
+     * given token is being deprecated (i.e. closed).<br />
+     *   When deprecating the Session, all data assigned to the Session is being
+     * removed.
      *
      * @param token  The {@code AuthenticationToken} to deprecate the session for
      * @return Standard Error object

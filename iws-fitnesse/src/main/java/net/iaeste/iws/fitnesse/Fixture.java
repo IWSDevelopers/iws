@@ -14,9 +14,6 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.Fallible;
-
 /**
  * Fixture Functionality, that all Fixtures must implement. The methods dealing
  * with error information cannot be extracted into an Abstract class, since the
@@ -31,12 +28,12 @@ interface Fixture {
     /**
      * To better be able to identify the test case, this id is not used.
      */
-    void testId(String str);
+    void testId(String testId);
 
     /**
      * To give test cases a name that can describe them - The name is not used.
      */
-    void testCase(String str);
+    void testCase(String testCase);
 
     /**
      * Display method to display if the request went well or not. All responses

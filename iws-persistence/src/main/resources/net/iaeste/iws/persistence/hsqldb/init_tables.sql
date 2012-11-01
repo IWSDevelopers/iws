@@ -445,7 +445,7 @@ create table sessions (
     session_key      varchar(128) not null,
     user_id          integer not null,
     active           decimal(1) default 1 not null,
-    session_data     varbinary(8192),
+    session_data     varbinary(16384),
     created          timestamp default now() not null,
     modified         timestamp default now() not null,
 

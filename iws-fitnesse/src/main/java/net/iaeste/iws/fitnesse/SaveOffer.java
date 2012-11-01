@@ -14,9 +14,7 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
@@ -27,12 +25,9 @@ import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
-import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.core.transformers.CollectionTransformer;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -52,36 +47,30 @@ import java.util.HashSet;
  */
 public final class SaveOffer extends AbstractFixture<OfferResponse> {
 
-    private final Access ac = new AccessClient();
-    private AuthenticationToken token;
-    private String username = null;
-    private String password = null;
-
     private final Exchange exchange = new ExchangeClient();
-    private Offer offer;
+    private Offer offer = new Offer();
     private ProcessOfferRequest request;
 
-    public SaveOffer() {
-        reset();
-    }
-
-    /** alias function for execute */
+    /**
+     * Alias for the execute function.
+     */
     public void save() {
         execute();
     }
 
     @Override
     public void execute() throws StopTestException {
-        getToken();
+        createSession();
         request = new ProcessOfferRequest(offer);
-        response = exchange.processOffer(token, request);
+        response = exchange.processOffer(getToken(), request);
     }
 
     @Override
     public void reset() {
+        super.reset();
+
         request = null;
         response = null;
-        token = null;
         offer = new Offer();
     }
 
@@ -101,28 +90,8 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
      * @param password
      */
     public void setUsernameAndPassword(final String username, final String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public void setUsername(final String username) {
-        this.username = username;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
-    public void setToken(final String token) {
-        this.token = new AuthenticationToken(token);
-    }
-
-    private void getToken() {
-        if (token == null) {
-            final AuthenticationRequest authRequest = new AuthenticationRequest(username, password);
-            final AuthenticationResponse authResponse = ac.generateSession(authRequest);
-            token = authResponse.getToken();
-        }
+        setUsername(username);
+        setPassword(password);
     }
 
     /** not null */

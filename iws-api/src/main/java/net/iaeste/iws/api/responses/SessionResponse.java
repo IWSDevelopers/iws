@@ -16,23 +16,37 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.util.Copier;
+import net.iaeste.iws.api.util.DateTime;
+
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection CastToConcreteClass
  */
 public class SessionResponse extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private Map<String, String> sessionData = null;
+    private DateTime created = null;
+    private DateTime modified = null;
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public SessionResponse() {
+    }
+
+    public SessionResponse(final Map<String, String> sessionData, final DateTime created, final DateTime modified) {
+        this.sessionData = Copier.copy(sessionData);
+        this.created = created;
+        this.modified = modified;
     }
 
     /**
@@ -49,6 +63,30 @@ public class SessionResponse extends AbstractResponse {
     // Standard Setters & Getters
     // =========================================================================
 
+    public void setSessionData(final Map<String, String> sessionData) {
+        this.sessionData = Copier.copy(sessionData);
+    }
+
+    public Map<String, String> getSessionData() {
+        return Copier.copy(sessionData);
+    }
+
+    public void setCreated(final DateTime created) {
+        this.created = created;
+    }
+
+    public DateTime getCreated() {
+        return created;
+    }
+
+    public void setModified(final DateTime modified) {
+        this.modified = modified;
+    }
+
+    public DateTime getModified() {
+        return modified;
+    }
+
     // =========================================================================
     // Standard Response Methods
     // =========================================================================
@@ -58,7 +96,25 @@ public class SessionResponse extends AbstractResponse {
      */
     @Override
     public boolean equals(final Object obj) {
-        throw new NotImplementedException("TBD");
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof SessionResponse)) {
+            return false;
+        }
+
+        final SessionResponse that = (SessionResponse) obj;
+
+        if (created != null ? !created.equals(that.created) : that.created != null) {
+            return false;
+        }
+
+        if (modified != null ? !modified.equals(that.modified) : that.modified != null) {
+            return false;
+        }
+
+        return !(sessionData != null ? !sessionData.equals(that.sessionData) : that.sessionData != null);
     }
 
     /**
@@ -66,7 +122,13 @@ public class SessionResponse extends AbstractResponse {
      */
     @Override
     public int hashCode() {
-        throw new NotImplementedException("TBD");
+        int result = super.hashCode();
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (sessionData != null ? sessionData.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
+
+        return result;
     }
 
     /**
@@ -74,6 +136,10 @@ public class SessionResponse extends AbstractResponse {
      */
     @Override
     public String toString() {
-        throw new NotImplementedException("TBD");
+        return "SessionResponse{" +
+                "sessionData=" + sessionData +
+                ", created=" + created +
+                ", modified=" + modified +
+                '}';
     }
 }

@@ -105,5 +105,6 @@ public class IsAliveTest {
         assertThat(cut.errorMessage(), is(IWSConstants.SUCCESS));
         assertThat(cut.token(), is(not(nullValue())));
         assertThat(cut.token().length(), is(64));
+        cut.deprecateSession();
     }
 }

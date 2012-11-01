@@ -14,10 +14,58 @@
  */
 package net.iaeste.iws.api.requests;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.util.Copier;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class SessionDataRequest {
+public class SessionDataRequest extends AbstractVerification {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private Map<String, String> sessionData = null;
+
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
+    public SessionDataRequest() {
+    }
+
+    public SessionDataRequest(final Map<String, String> sessionData) {
+        this.sessionData = Copier.copy(sessionData);
+    }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    public void setSessionData(final Map<String, String> sessionData) {
+        this.sessionData = Copier.copy(sessionData);
+    }
+
+    public Map<String, String> getSessionData() {
+        return Copier.copy(sessionData);
+    }
+
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        final Map<String, String> validation = new HashMap<>(0);
+
+        return validation;
+    }
 }

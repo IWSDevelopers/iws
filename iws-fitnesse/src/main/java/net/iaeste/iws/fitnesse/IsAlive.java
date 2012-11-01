@@ -14,10 +14,7 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import net.iaeste.iws.api.Access;
-import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.fitnesse.callers.AccessCaller;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -26,23 +23,9 @@ import net.iaeste.iws.fitnesse.callers.AccessCaller;
  */
 public class IsAlive extends AbstractFixture<AuthenticationResponse> {
 
-    // We need to use the Callers, since it wraps the IWS calls with Exception
-    // handling, to throw StopTest Exceptions, which FitNesse requires
-    private final Access access = new AccessCaller();
-    private String username = null;
-    private String password = null;
-
     // =========================================================================
     // Fixture Setters
     // =========================================================================
-
-    public void setUsername(final String username) {
-        this.username = username;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
 
     // =========================================================================
     // Fixture Display methods
@@ -69,9 +52,7 @@ public class IsAlive extends AbstractFixture<AuthenticationResponse> {
      */
     @Override
     public void execute() {
-        final AuthenticationRequest request = buildRequest();
-
-        response = access.generateSession(request);
+        response = createSession();
     }
 
     /**
@@ -80,21 +61,6 @@ public class IsAlive extends AbstractFixture<AuthenticationResponse> {
     @Override
     public void reset() {
         super.reset();
-
-        username = null;
-        password = null;
-    }
-
-    // =========================================================================
-    // Internal methods
-    // =========================================================================
-
-    private AuthenticationRequest buildRequest() {
-        final AuthenticationRequest request = new AuthenticationRequest();
-
-        request.setUsername(username);
-        request.setPassword(password);
-
-        return request;
+        deprecateSession();
     }
 }

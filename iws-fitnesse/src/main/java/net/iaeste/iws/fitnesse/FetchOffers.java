@@ -14,15 +14,10 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
-import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
-import net.iaeste.iws.fitnesse.callers.AccessCaller;
 import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -39,16 +34,7 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
     // We need to use the Callers, since it wraps the IWS calls with Exception
     // handling, to throw StopTest Exceptions, which FitNesse requires
     private final Exchange exchange = new ExchangeCaller();
-    private final Access access = new AccessCaller();
-
-    private AuthenticationToken token;
-    private FetchOffersRequest request;
-    private String username;
-    private String password;
-
-    public FetchOffers() {
-        reset();
-    }
+    private FetchOffersRequest request = null;
 
     /**
      * specify which offers should be fetched
@@ -66,20 +52,8 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
      * @param password Password
      */
     public void setUsernameAndPassword(final String username, final String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public void setUsername(final String username) {
-        this.username = username;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
-    public void setToken(final String token) {
-        this.token = new AuthenticationToken(token);
+        setUsername(username);
+        setPassword(password);
     }
 
     /**
@@ -110,15 +84,17 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
         return retVal;
     }
 
-    /** alias function for execute */
+    /**
+     * Alias for the execute function.
+     */
     public void fetch() {
         execute();
     }
 
     @Override
     public void execute() throws StopTestException {
-        getToken();
-        response = exchange.fetchOffers(token, request);
+        createSession();
+        response = exchange.fetchOffers(getToken(), request);
     }
 
     @Override
@@ -127,16 +103,5 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
         super.reset();
 
         request = null;
-        username = null;
-        password = null;
-        token = null;
-    }
-
-    private void getToken() {
-        if (token == null) {
-            final AuthenticationRequest authRequest = new AuthenticationRequest(username, password);
-            final AuthenticationResponse authResponse = access.generateSession(authRequest);
-            token = authResponse.getToken();
-        }
     }
 }

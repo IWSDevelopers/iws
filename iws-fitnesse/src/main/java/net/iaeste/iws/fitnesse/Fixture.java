@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.fitnesse;
 
+import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.Fallible;
+
 /**
  * Fixture Functionality, that all Fixtures must implement. The methods dealing
  * with error information cannot be extracted into an Abstract class, since the
@@ -26,12 +29,12 @@ package net.iaeste.iws.fitnesse;
 interface Fixture {
 
     /**
-     * To better be able to identify the test case, this
+     * To better be able to identify the test case, this id is not used.
      */
     void testId(String str);
 
     /**
-     *
+     * To give test cases a name that can describe them - The name is not used.
      */
     void testCase(String str);
 
@@ -70,15 +73,17 @@ interface Fixture {
      * (result & setFallible()). If an error occurred, then an exception of type
      * {@code StopTestException} will be thrown.
      *
-     * @throws net.iaeste.iws.fitnesse.exceptions.StopTestException
-     *          if EJB problems occurrred
+     * @throws net.iaeste.iws.fitnesse.exceptions.StopTestException if a problem occurrred
      * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.DecisionTable">Fixture.org</a>
      */
     void execute();
 
     /**
      * Fixture invokes this method between each iteration, i.e. after all the
-     * output methods has been invoked and before the next set is invoked.
+     * output methods has been invoked and before the next set is invoked.<br />
+     *   Please note, that the reset itself will not deprecate the current
+     * Session. This is meant to avoid that a constant set of login/logout is
+     * required.
      *
      * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.DecisionTable">Fixture.org</a>
      */

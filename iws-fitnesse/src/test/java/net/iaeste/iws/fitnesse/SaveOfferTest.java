@@ -39,7 +39,7 @@ public class SaveOfferTest {
 
         // some offers might have been fetched
         assertThat(fetch.isRequestOk(), is(true));
-        final int noOfOffers = fetch.numberOfFetchedOffers();
+        final int numberOfFetchedOffers = fetch.numberOfFetchedOffers();
 
         // trying to save new Offer
         final SaveOffer cut = new SaveOffer();
@@ -77,6 +77,9 @@ public class SaveOfferTest {
 
         // expect one offer more that before
         assertThat(fetch2.isRequestOk(), is(true));
-        assertThat(fetch2.numberOfFetchedOffers(), is(noOfOffers + 1));
+        assertThat(fetch2.numberOfFetchedOffers(), is(numberOfFetchedOffers + 1));
+
+        // Finally, perform a "logout"
+        fetch.deprecateSession();
     }
 }

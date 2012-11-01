@@ -23,9 +23,23 @@ import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.api.responses.SessionResponse;
 
 /**
- * Methods to control the current session for a user, i.e. methods to both
- * request a new session and deprecate an ongoing session. As well as list the
- * permissions that a user has.
+ * Access to the IWS, requires a Session. This Interface, holds all required
+ * functionality to properly work with a Session, which includes creating,
+ * verifying, updating and deprecating them. Additionally, the method to fetch
+ * the list of Permissions is also here.<br />
+ *   The usage of the IWS follows this flow:
+ * <pre>
+ *     1. Create a new Session
+ *     2. Iterate as long as desired
+ *        a) Verify the users Session, returns the current Session Data
+ *        b) Perform various actions against the IWS, using the Session
+ *        c) If SessionData needs saving, save them
+ *     3. Once work is completed, deprecate the Session
+ * </pre>
+ * It is important to underline, that a User may only have 1 (one) active
+ * Session at the time. Meaning, that the same user may not log into different
+ * IWS based systems at the same time. This feature was added to prevent Account
+ * misusage. Though the consequences of attempting will simply be a rejection.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -45,6 +59,25 @@ public interface Access {
     AuthenticationResponse generateSession(AuthenticationRequest request);
 
     /**
+     * Verifies the current Session and returns the associated Session Data in
+     * the response.
+     *
+     * @param token  User Authentication Request object
+     * @return Session Response, with Error And Session data
+     */
+    SessionResponse verifySession(AuthenticationToken token);
+
+    /**
+     * Used to save a users session Data in the IWS.
+     *
+     * @param token  User Authentication Request object
+     * @param request  SesseionData Request Object
+     * @return Standard Error object
+     */
+    Fallible saveSessionData(AuthenticationToken token, SessionDataRequest request);
+
+
+    /**
      * The IWS doesn't delete ongoing sessions, it only closes them for further
      * usage. By invoking this method, the currently active session for the
      * given token is being deprecated (i.e. closed).
@@ -54,10 +87,6 @@ public interface Access {
      */
     Fallible deprecateSession(AuthenticationToken token);
 
-    SessionResponse verifySession(AuthenticationToken token);
-
-    Fallible saveSessionData(AuthenticationToken token, SessionDataRequest request);
-
     /**
      * Retrieves the list of permissions for a given user, identified by the
      * token.
@@ -66,5 +95,4 @@ public interface Access {
      * @return Authorization Result Object
      */
     PermissionResponse fetchPermissions(AuthenticationToken token);
-
 }

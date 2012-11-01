@@ -76,6 +76,13 @@ public interface IWSErrors {
     IWSError NOT_PERMITTED = new IWSError(404, "User is not permitted to process the requested Object");
 
     /**
+     * If the User tries to create a new Session, while already having an
+     * Active Session, an error should be thrown. This will prevent that users
+     * try to log in multiple places, but forget to log out again.
+     */
+    IWSError SESSION_EXISTS = new IWSError(405, "User can only hold one active Session at the time");
+
+    /**
      * The database is inaccessible.
      */
     IWSError DATABASE_UNREACHABLE = new IWSError(501, "Database unreachable");

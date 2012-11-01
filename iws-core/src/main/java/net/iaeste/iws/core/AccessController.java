@@ -98,8 +98,7 @@ public final class AccessController extends CommonController implements Access {
 
             final AccessService service = factory.prepareAuthenticationService();
             final AuthenticationToken copyToken = new AuthenticationToken(token);
-            //service.verifySession(copyToken);
-            response = new SessionResponse();
+            response = service.verifySession(copyToken);
         } catch (IWSException e) {
             response = new SessionResponse(e.getError(), e.getMessage());
         }
@@ -114,15 +113,14 @@ public final class AccessController extends CommonController implements Access {
     @Override
     public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
         LOG.trace("Starting saveSessionData()");
-        SessionResponse response;
+        Fallible response;
 
         try {
             verify(token, AUTHENTICATION_TOKEN_ERROR);
 
             final AccessService service = factory.prepareAuthenticationService();
             final AuthenticationToken copyToken = new AuthenticationToken(token);
-            //service.saveSessionData(copyToken, request);
-            response = new SessionResponse();
+            response = service.saveSessionData(copyToken, request);
         } catch (IWSException e) {
             response = new SessionResponse(e.getError(), e.getMessage());
         }

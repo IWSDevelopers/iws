@@ -65,12 +65,17 @@ public interface IWSConstants {
     int HASHCODE_MULTIPLIER = 31;
 
     /**
-     * Default IWBase Date Format.
+     * Default IWS Date Format.
      */
     String DATE_FORMAT = "yyyy-MM-dd";
 
     /**
-     * Default IWBase Success message.
+     * Default IWS DateTime Format.
+     */
+    String DATE_TIME_FORMST = DATE_FORMAT + " HH:mm:ss";
+
+    /**
+     * Default IWS Success message.
      */
     String SUCCESS = "OK";
 

@@ -17,6 +17,7 @@ package net.iaeste.iws.fitnesse.callers;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
@@ -44,6 +45,30 @@ public final class AdministrationCaller implements Administration {
 
     // The Client handles the IWS for us, we use use it
     private final Administration administration = new AdministrationClient();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
+        try {
+            return administration.createUser(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible activateUser(final String activationString) {
+        try {
+            return administration.activateUser(activationString);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
 
     /**
      * {@inheritDoc}

@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,16 +31,40 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /** The user that ill be added to a group **/
+    private User user = null;
+
+    /**The group to which the user will be added **/
+    private Long groupID;
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public UserGroupAssignmentRequest() {
+    public UserGroupAssignmentRequest(User user, Long groupID) {
+        this.user = new User(user);
+        this.groupID = groupID;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Long getGroupID() {
+        return groupID;
+    }
+
+    public void setGroupID(Long groupID) {
+        this.groupID = groupID;
+    }
 
     // =========================================================================
     // Standard Request Methods

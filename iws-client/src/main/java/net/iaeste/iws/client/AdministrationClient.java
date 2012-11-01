@@ -17,6 +17,7 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
@@ -42,6 +43,22 @@ public final class AdministrationClient implements Administration {
      */
     public AdministrationClient() {
         administration = ClientFactory.getInstance().getAdministrationImplementation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
+        return administration.createUser(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible activateUser(final String activationString) {
+        return administration.activateUser(activationString);
     }
 
     /**

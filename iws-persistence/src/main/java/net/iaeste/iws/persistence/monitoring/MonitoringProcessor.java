@@ -282,7 +282,7 @@ public final class MonitoringProcessor {
 
         // Read the content, if we receive an Exception, then lets just assume
         // that the value is null
-        java.lang.Object rawObject;
+        Object rawObject;
         try {
             rawObject = field.get(obj);
         } catch (IllegalAccessException ignore) {

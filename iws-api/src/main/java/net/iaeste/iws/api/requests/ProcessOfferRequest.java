@@ -26,7 +26,7 @@ import java.util.Map;
  * @noinspection CastToConcreteClass
  * @since   1.7
  */
-public final class ProcessOfferRequest extends AbstractVerification implements Verifiable {
+public final class ProcessOfferRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

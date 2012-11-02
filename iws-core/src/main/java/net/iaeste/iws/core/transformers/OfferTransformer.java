@@ -20,6 +20,7 @@ import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 
 /**
@@ -59,6 +60,15 @@ public final class OfferTransformer {
 
         return result;
     }
+
+    /**
+     * Transform Offer DTO into the OfferEntity.
+     *
+     * {@link Offer#modified} and {@link Offer#created} fields are excluded from coping.
+     *
+     * @param offer Offer DTO to transform
+     * @return OfferEntity transformed from DTO
+     */
     public static OfferEntity transform(final Offer offer) {
         OfferEntity result = null;
 
@@ -111,11 +121,18 @@ public final class OfferTransformer {
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
             result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
+            // modified&created are not copied to Entity as they cannot be changed manually
         }
 
         return result;
     }
 
+    /**
+     * Transform OfferEntity into the Offer DTO.
+     *
+     * @param offer Offer Entity to transform
+     * @return Offer DTO transformed from Entity
+     */
     public static Offer transform(final OfferEntity offer) {
         Offer result = null;
 
@@ -168,6 +185,9 @@ public final class OfferTransformer {
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
             result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, offer.getStudyLevels()));
+
+            result.setModified(new DateTime(offer.getModified()));
+            result.setCreated(new DateTime(offer.getCreated()));
         }
 
         return result;

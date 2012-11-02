@@ -2,10 +2,10 @@
 -- Please add all Exchange related views here
 -- =============================================================================
 CREATE VIEW employer_information AS
-SELECT id, employer_name, changed_on
+SELECT id, employer_name, modified
 FROM offers o
 INNER JOIN (
-  SELECT distinct (employer_name) employer_name, max(changed_on) changed_on
+  SELECT distinct (employer_name) employer_name, max(modified) modified
   FROM offers
   GROUP BY employer_name
-) AS t2 ON o.employer_name = t2.employer_name AND o.changed_on = t2.changed_on;
+) AS t2 ON o.employer_name = t2.employer_name AND o.modified = t2.modified;

@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -23,15 +28,13 @@ import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
+import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Michal Knapik / last $Author:$
@@ -44,6 +47,13 @@ public class OfferTransformerTest {
     @Test
     public void testCopyingMinimalOfferToEntity() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
+
+        // set modified and created (should be ignored on transformation)
+        final Date modifiedDate = new Date(new Date().getTime() - 3600);
+        final Date createdDate = new Date(new Date().getTime() - 7200);
+        offer.setModified(new DateTime(modifiedDate));
+        offer.setCreated(new DateTime(createdDate));
+
         final OfferEntity entity = OfferTransformer.transform(offer);
 
         assertThat(offer.getRefNo(), is(entity.getRefNo()));
@@ -94,6 +104,10 @@ public class OfferTransformerTest {
         assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
         assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
         assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
+
+        // modified and created are readonly so they shouldn't be copied to Entity
+        assertThat(entity.getModified(), is(not(modifiedDate)));
+        assertThat(entity.getCreated(), is(not(createdDate)));
     }
 
     @Test
@@ -149,6 +163,9 @@ public class OfferTransformerTest {
         assertThat(offer.getStudyLevels(), is(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels())));
         assertThat(offer.getSpecializations(), is(CollectionTransformer.explodeStringSet(entity.getSpecializations())));
         assertThat(offer.getFieldOfStudies(), is(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies())));
+
+        assertThat(offer.getModified().toDate(), is(entity.getModified()));
+        assertThat(offer.getCreated().toDate(), is(entity.getCreated()));
 
     }
 

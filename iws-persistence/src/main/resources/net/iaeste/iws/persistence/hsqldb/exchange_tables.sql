@@ -53,13 +53,15 @@ CREATE TABLE offers (
     study_levels              varchar(25)   NOT NULL  CHECK(length(study_levels) > 0),
     study_fields              varchar(1000) NOT NULL  CHECK(length(study_fields) > 0),
     specializations           varchar(1000),
-    primary key (id),
-    unique (ref_no),
+-- owner id, TODO michal: change to NOT NULL if GroupEntity works
+    group_id                  INTEGER       NULL  REFERENCES groups(id) ON DELETE CASCADE,
+--    group_id                  INTEGER       NOT NULL  REFERENCES groups(id) ON DELETE CASCADE,
 
-    changed_on       TIMESTAMP DEFAULT NOW(),
-    changed_by       INTEGER       NULL REFERENCES users (id) ON DELETE SET NULL,
-    created_on       TIMESTAMP DEFAULT NOW(),
-    created_by       INTEGER       NULL REFERENCES users (id) ON DELETE SET NULL
+    modified                  TIMESTAMP  DEFAULT now(),
+    created                   TIMESTAMP  DEFAULT now(),
+
+    primary key (id),
+    unique (ref_no)
 );
 
 CREATE SEQUENCE employer_sequence START WITH 1 INCREMENT BY 1;

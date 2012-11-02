@@ -3,7 +3,7 @@
 
 |Is alive                                                                                          |
 |username|password |is request ok?|error code?|error message?                            |token?   |
-|Michl   |incorrect|false         |403        |No account for the user 'Michl' was found.|         |
+|Michl   |incorrect|false         |403        |No account for the user 'michl' was found.|         |
 |Michl   |frodo    |true          |0          |OK                                        |=~/.{64}/|
 |Marko   |merry    |true          |0          |OK                                        |=~/.{64}/|
 |Vanja   |sam      |true          |0          |OK                                        |=~/.{64}/|

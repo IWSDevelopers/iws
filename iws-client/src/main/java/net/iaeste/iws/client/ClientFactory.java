@@ -77,7 +77,7 @@ public final class ClientFactory {
     }
 
     public Administration getAdministrationImplementation() {
-        return (Administration) context.getBean("springAdministrationclient");
+        return (Administration) context.getBean("springAdministrationClient");
     }
 
     public Exchange getExchangeImplementation() {

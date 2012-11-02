@@ -14,19 +14,29 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.GroupStatus;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
 /**
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
+ * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
         @NamedQuery(
@@ -45,40 +55,166 @@ public class GroupEntity implements IWSEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false, name = "external_id")
+    private String externalId = null;
+
+    @Column(nullable = true, name = "parent_id")
+    private Long parentId = null;
+
+    @ManyToOne(targetEntity = GroupTypeEntity.class)
+    @JoinColumn(nullable = false, name = "grouptype_id")
+    private GroupTypeEntity groupType = null;
+
     @Column(name = "groupname")
-    private String groupName;
+    private String groupname = null;
+
+    @Column(name = "full_name")
+    private String fullName = null;
+
+    @Column(name = "group_description")
+    private String description = null;
+
+    @ManyToOne(targetEntity = CountryEntity.class)
+    @JoinColumn(nullable = true, name = "country_id")
+    private CountryEntity country = null;
+
+    @Column(nullable = true, name = "list_name")
+    private String listName = null;
+
+    @Column(nullable = false, name = "status")
+    @Enumerated(EnumType.STRING)
+    private GroupStatus status = GroupStatus.ACTIVE;
+
+    /** Last time the User Account was modified. */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modified")
+    private Date modified = new Date();
+
+    /** Timestamp when the user was created. */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created")
+    private Date created = new Date();
+
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
 
     /**
      * Empty Constructor, JPA requirement.
      */
     public GroupEntity() {
         id = null;
-        groupName = null;
+        groupname = null;
     }
 
     /**
      * Default Constructor, for creating new entity.
      *
-     * @param groupName  Group Name
+     * @param groupname  Group Name
      */
-    public GroupEntity(final String groupName) {
+    public GroupEntity(final String groupname) {
         id = null;
-        this.groupName = groupName;
+        this.groupname = groupname;
     }
+
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
 
     public void setId(final Long id) {
         this.id = id;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
-    public void setGroupName(final String groupName) {
-        this.groupName = groupName;
+    public void setExternalId(final String externalId) {
+        this.externalId = externalId;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setParentId(final Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setGroupType(final GroupTypeEntity groupType) {
+        this.groupType = groupType;
+    }
+
+    public GroupTypeEntity getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupname(final String groupname) {
+        this.groupname = groupname;
+    }
+
+    public String getGroupname() {
+        return groupname;
+    }
+
+    public void setFullName(final String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setCountry(final CountryEntity country) {
+        this.country = country;
+    }
+
+    public CountryEntity getCountry() {
+        return country;
+    }
+
+    public void setListName(final String listName) {
+        this.listName = listName;
+    }
+
+    public String getListName() {
+        return listName;
+    }
+
+    public void setStatus(final GroupStatus status) {
+        this.status = status;
+    }
+
+    public GroupStatus getStatus() {
+        return status;
+    }
+
+    public void setModified(final Date modified) {
+        this.modified = modified;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    public Date getCreated() {
+        return created;
     }
 }

@@ -36,7 +36,20 @@ import net.iaeste.iws.api.responses.UserResponse;
 public interface Administration {
 
     Fallible createUser(AuthenticationToken token, CreateUserRequest request);
-    Fallible activateUser(final String activationString);
+
+    /**
+     * Users cannot access the IWS, until their account has been activated, this
+     * happens via an e-mail that is sent to their e-mail address (username),
+     * with an activation link.<br />
+     *   Once activation link is activated, this method should be invoked, which
+     * will handle the actual activation process. Meaning, that if an account is
+     * found in status "new", and with the given activation code, then it is
+     * being updated to status "active", the code is removed and the updates are
+     * saved.
+     *
+     * @param activationString
+     */
+    Fallible activateUser(String activationString);
     Fallible processUser(AuthenticationToken token, ProcessUserRequest request);
     UserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
 

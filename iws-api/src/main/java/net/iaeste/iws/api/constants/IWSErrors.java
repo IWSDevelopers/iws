@@ -88,6 +88,12 @@ public interface IWSErrors {
     IWSError DATABASE_UNREACHABLE = new IWSError(501, "Database unreachable");
 
     /**
+     * If a situation arise, where there exists multiple similar records, which
+     * should not be allowed.
+     */
+    IWSError DATABASE_CONSTRAINT_INCONSISTENCY = new IWSError(502, "Database Constraint Inconsistency");
+
+    /**
      * Unknown Persistency Error.
      */
     IWSError PERSISTENCE_ERROR = new IWSError(502, "Persistency Error");
@@ -106,6 +112,10 @@ public interface IWSErrors {
      * Error reading or writing the monitoring data in serialized form.
      */
     IWSError MONITORING_FAILURE = new IWSError(505, "Monitoring Serialization Error");
+
+    IWSError USER_ACCOUNT_EXISTS = new IWSError(601, "User Account Already exists");
+
+    IWSError NO_USER_ACCOUNT_FOUND = new IWSError(602, "No User Account exists");
 
     /**
      * The current method is not yet implemented.

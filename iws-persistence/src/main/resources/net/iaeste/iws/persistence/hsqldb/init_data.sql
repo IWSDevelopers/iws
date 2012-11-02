@@ -145,14 +145,14 @@ insert into permission_to_role (role_id, permission_id) values (3, 17);
 -- insert into permission_to_role (role_id, permission_id) values (8, 8);
 
 ---- User
-insert into users (id, external_id, username, password, firstname, lastname) values (1, '1', 'Michl', 'ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f', '', '');
-insert into users (id, external_id, username, password, firstname, lastname) values (2, '2', 'Matej', '', '', '');
-insert into users (id, external_id, username, password, firstname, lastname) values (3, '3', 'Vanja', 'e96e02d8e47f2a7c03be5117b3ed175c52aa30fb22028cf9c96f261563577605', '', '');
-insert into users (id, external_id, username, password, firstname, lastname) values (4, '4', 'Marko', 'fc261a5e3e3c85a419825aad1ced0df53b9a3fa69bd439d1610eb99f8de6bcd6', '', '');
-insert into users (id, external_id, username, password, firstname, lastname) values (5, '5', 'Kim',   'ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f', '', '');
-insert into users (id, external_id, username, password, firstname, lastname) values (6, '6', 'Daniel','26205d66c217a123c72d1e2bccd0536a12c39d65b085c224c4bbd0c75fcb3634', '', '');
-insert into users (id, external_id, username, password, firstname, lastname) values (7, '7', 'Michal', '', '', '');
-insert into users (id, external_id, username, password, firstname, lastname) values (8, '8', 'Pavel', 'ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f', '', '');
+insert into users (id, external_id, username, password, firstname, lastname) values (1, '1', 'michl', 'ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f', '', '');
+insert into users (id, external_id, username, password, firstname, lastname) values (2, '2', 'matej', '', '', '');
+insert into users (id, external_id, username, password, firstname, lastname) values (3, '3', 'vanja', 'e96e02d8e47f2a7c03be5117b3ed175c52aa30fb22028cf9c96f261563577605', '', '');
+insert into users (id, external_id, username, password, firstname, lastname) values (4, '4', 'marko', 'fc261a5e3e3c85a419825aad1ced0df53b9a3fa69bd439d1610eb99f8de6bcd6', '', '');
+insert into users (id, external_id, username, password, firstname, lastname) values (5, '5', 'kim',   'ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f', '', '');
+insert into users (id, external_id, username, password, firstname, lastname) values (6, '6', 'daniel','26205d66c217a123c72d1e2bccd0536a12c39d65b085c224c4bbd0c75fcb3634', '', '');
+insert into users (id, external_id, username, password, firstname, lastname) values (7, '7', 'michal', '', '', '');
+insert into users (id, external_id, username, password, firstname, lastname) values (8, '8', 'pavel', 'ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f', '', '');
 
 ---- User to Group
 --- 1, 'Austria'

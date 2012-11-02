@@ -73,8 +73,7 @@ public class AdministrationController extends CommonController implements Admini
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            //service.createUser(authentication, request);
-            response = new UserResponse();
+            response = service.createUser(authentication, request);
         } catch (IWSException e) {
             response = new UserResponse(e.getError(), e.getMessage());
         }
@@ -93,8 +92,8 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final AdministrationService service = factory.prepareAdministrationService();
-            //service.activateUser(activationString);
-            response = new FacultyResponse();
+            service.activateUser(activationString);
+            response = new UserResponse();
         } catch (IWSException e) {
             response = new UserResponse(e.getError(), e.getMessage());
         }

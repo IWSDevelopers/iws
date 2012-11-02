@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.persistence.notification.Notifiable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,20 +48,25 @@ import java.util.Date;
         @NamedQuery(
                 name = "user.loginCredentials",
                 query = "select u from UserEntity u " +
-                        "where lower(u.userName) = lower(:username)" +
+                        "where u.userName = :username" +
                         "  and u.password = :password"),
+        @NamedQuery(
+                name = "user.findByUserName",
+                query = "select u from UserEntity u " +
+                        "where u.userName = :username"),
         @NamedQuery(
                 name = "user.findByExternalId",
                 query = "select u from UserEntity u " +
                         "where u.externalId = :id"),
         @NamedQuery(
-                name = "user.findByCode",
+                name = "user.findByCodeAndStatus",
                 query = "select u from UserEntity u " +
-                        "where u.code = :code")
+                        "where u.code = :code" +
+                        "  and u.status = :status")
 })
 @Entity
 @Table(name = "users")
-public class UserEntity implements IWSEntity {
+public class UserEntity implements IWSEntity, Notifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

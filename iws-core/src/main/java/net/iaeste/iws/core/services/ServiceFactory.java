@@ -48,7 +48,7 @@ public final class ServiceFactory {
     }
 
     public AdministrationService prepareAdministrationService() {
-        return new AdministrationService(entityManager);
+        return new AdministrationService(accessDao, notifications);
     }
 
     public AccessService prepareAuthenticationService() {

@@ -17,10 +17,15 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.entities.*;
+import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.IWSEntity;
+import net.iaeste.iws.persistence.entities.RoleEntity;
+import net.iaeste.iws.persistence.entities.SessionEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
@@ -59,6 +64,47 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         }
 
         return result.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserEntity findUserByUsername(final String username) {
+        final Query query = entityManager.createNamedQuery("user.findByUserName");
+        query.setParameter("username", username);
+        final List<UserEntity> list = query.getResultList();
+
+        final UserEntity user;
+        if (list.size() == 1) {
+            user = list.get(0);
+        } else if (list.isEmpty()) {
+            user = null;
+        } else {
+            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "There exists multiple records for a user with username " + username);
+        }
+
+        return user;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserEntity findUserByCodeAndStatus(final String code, final UserStatus status) {
+        final Query query = entityManager.createNamedQuery("user.findByCodeAndStatus");
+        query.setParameter("code", code);
+        query.setParameter("status", status);
+        final List<UserEntity> list = query.getResultList();
+
+        final UserEntity user;
+        if (list.size() == 1) {
+            user = list.get(0);
+        } else {
+            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "There exists multiple records for a user with the code " + code);
+        }
+
+        return user;
     }
 
     /**
@@ -120,6 +166,30 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     @Override
     public GroupEntity findGroup(final AuthenticationToken token, final Permission permission) {
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RoleEntity findRoleById(final Long id) {
+        final Query query = entityManager.createNamedQuery("role.findById");
+        query.setParameter("id", id);
+        final List<RoleEntity> list = query.getResultList();
+
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<RoleEntity> findRolesByName(final String role) {
+        final Query query = entityManager.createNamedQuery("role.findRoleByName");
+        query.setParameter("role", role);
+        final List<RoleEntity> list = query.getResultList();
+
+        return list;
     }
 
     // =========================================================================

@@ -96,4 +96,6 @@ public interface IWSConstants {
      */
     int DEFAULT_PASSWORD_LENGTH = 8;
 
+    Long ROLE_OWNER = 1L;
+    Long ROLE_MEMBER = 3L;
 }

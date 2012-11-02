@@ -141,10 +141,11 @@ public final class AccessService {
     private UserEntity findUserFromCredentials(final AuthenticationRequest request) {
         // First, let's read the Password in clear-text (lower cased), and
         // generate the Hashcode value for it.
+        final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
         final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
         final String hashcode = HashcodeGenerator.generateSHA256(password);
 
         // Now, let's find the user, based on the credentials
-        return dao.findUserByCredentials(request.getUsername(), hashcode);
+        return dao.findUserByCredentials(username, hashcode);
     }
 }

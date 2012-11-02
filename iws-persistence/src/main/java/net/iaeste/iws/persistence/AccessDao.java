@@ -16,7 +16,9 @@ package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
@@ -32,6 +34,10 @@ public interface AccessDao extends BasicDao {
 
     UserEntity findUserByCredentials(String username, String passwordHashcode);
 
+    UserEntity findUserByUsername(String username);
+
+    UserEntity findUserByCodeAndStatus(String code, UserStatus status);
+
     SessionEntity findActiveSession(UserEntity user);
 
     SessionEntity findActiveSession(AuthenticationToken token);
@@ -41,4 +47,23 @@ public interface AccessDao extends BasicDao {
     List<UserPermissionView> findPermissions(Integer userId);
 
     GroupEntity findGroup(AuthenticationToken token, Permission permission);
+
+    /**
+     * Find a Role by the name. However, as it is possible to have multiple
+     * roles with the same name, but assigned to different Countries or Groups,
+     * the result of this method is a list.
+     *
+     * @param role Name of the role to find Entities for
+     * @return List of all Roles in the IWS, matching the given name
+     */
+    List<RoleEntity> findRolesByName(String role);
+
+    /**
+     * Finds a role based on the Id. Returns either the found RoleEntity or if
+     * nothing was found - null.
+     *
+     * @param id  Id of the Role to find
+     * @return Found RoleEntity or null
+     */
+    RoleEntity findRoleById(Long id);
 }

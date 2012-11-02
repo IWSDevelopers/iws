@@ -87,7 +87,7 @@ public class IsAliveTest {
         // Verify that the result is the expected
         assertThat(cut.isRequestOk(), is(false));
         assertThat(cut.errorCode(), is(IWSErrors.AUTHORIZATION_ERROR.getError()));
-        assertThat(cut.errorMessage(), is("No account for the user 'Bilbo' was found."));
+        assertThat(cut.errorMessage(), is("No account for the user 'bilbo' was found."));
     }
 
     @Test

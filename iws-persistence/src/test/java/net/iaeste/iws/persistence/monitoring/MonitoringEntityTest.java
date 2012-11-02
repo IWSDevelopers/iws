@@ -38,9 +38,9 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  * @noinspection ObjectAllocationInLoop
  */
 @RunWith(SpringJUnit4ClassRunner.class)

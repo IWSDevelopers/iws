@@ -35,7 +35,7 @@ public class CommonService {
      */
     protected void permissionCheck(final Authentication authentication, final GroupEntity group) {
         if (!authentication.getGroup().getId().equals(group.getId())) {
-            throw new PermissionException("User is not member of the group " + group.getGroupName());
+            throw new PermissionException("User is not member of the group " + group.getGroupname());
         }
     }
 }

@@ -49,7 +49,7 @@ import java.util.regex.Pattern;
  * @author  Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyComplexClass, OverlyLongMethod, CastToConcreteClass, ConstantConditions, BooleanMethodNameMustStartWithQuestion, OverlyComplexBooleanExpression, OverlyComplexMethod
+ * @noinspection OverlyComplexClass, OverlyLongMethod, CastToConcreteClass, ConstantConditions, BooleanMethodNameMustStartWithQuestion, OverlyComplexBooleanExpression, OverlyComplexMethod, ClassWithTooManyFields
  */
 public final class Offer extends AbstractVerification {
 
@@ -308,13 +308,14 @@ public final class Offer extends AbstractVerification {
     /**
      * Date of last modification of the Offer in the database.
      * <p/>
-     * Field is read only.
+     * Field is read only. All changes made to that field will be discarded on persisting.
      */
     private DateTime modified = null;
+
     /**
      * Date of creation of the Offer in the database.
      * <p/>
-     * Field is read only.
+     * Field is read only. All changes made to that field will be discarded on persisting.
      */
     private DateTime created = null;
 
@@ -690,8 +691,26 @@ public final class Offer extends AbstractVerification {
         return modified;
     }
 
+    /**
+     * For internal use only.
+     *
+     * @param modified DateTime of last modification of the Offer
+     */
+    public void setModified(final DateTime modified) {
+        this.modified = modified;
+    }
+
     public DateTime getCreated() {
         return created;
+    }
+
+    /**
+     * For internal use only.
+     *
+     * @param created DateTime of the creation of the Offer
+     */
+    public void setCreated(final DateTime created) {
+        this.created = created;
     }
 
     // =========================================================================

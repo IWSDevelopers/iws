@@ -111,6 +111,7 @@ public final class OfferTransformer {
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
             result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
+            // modified&created are not copied to Entity as they cannot be changed manually
         }
 
         return result;
@@ -168,6 +169,9 @@ public final class OfferTransformer {
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setCanteen(offer.getCanteen());
             result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, offer.getStudyLevels()));
+//            TODO michal: copy modified&created information
+//            result.setModified(convert(offer.getModified()));
+//            result.setCreated(convert(offer.getCreated()));
         }
 
         return result;

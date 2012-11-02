@@ -28,6 +28,7 @@ import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.requests.AbstractVerification;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DateTime;
 
 import java.math.BigDecimal;
 import java.util.EnumSet;
@@ -121,6 +122,9 @@ public final class Offer extends AbstractVerification {
             fieldOfStudies = Copier.copy(offer.fieldOfStudies);
             specializations = Copier.copy(offer.specializations);
             studyLevels = Copier.copy(offer.studyLevels);
+
+            modified = Copier.copy(offer.modified);
+            created = Copier.copy(offer.created);
         }
     }
 
@@ -300,6 +304,19 @@ public final class Offer extends AbstractVerification {
     private BigDecimal livingCost = null;
     private PaymentFrequency livingCostFrequency = null;
     private Boolean canteen = null;
+
+    /**
+     * Date of last modification of the Offer in the database.
+     * <p/>
+     * Field is read only.
+     */
+    private DateTime modified = null;
+    /**
+     * Date of creation of the Offer in the database.
+     * <p/>
+     * Field is read only.
+     */
+    private DateTime created = null;
 
     public Boolean getCanteen() {
         return canteen;
@@ -669,6 +686,14 @@ public final class Offer extends AbstractVerification {
         this.workingPlace = workingPlace;
     }
 
+    public DateTime getModified() {
+        return modified;
+    }
+
+    public DateTime getCreated() {
+        return created;
+    }
+
     // =========================================================================
     // Standard DTO Methods
     // =========================================================================
@@ -825,6 +850,7 @@ public final class Offer extends AbstractVerification {
         if (workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null) {
             return false;
         }
+        // #modified and #created are not relevant for the equality of the offers.
 
         return !(workingPlace != null ? !workingPlace.equals(offer.workingPlace) : offer.workingPlace != null);
     }
@@ -938,6 +964,8 @@ public final class Offer extends AbstractVerification {
                 ", livingCost=" + livingCost +
                 ", livingCostFrequency=" + livingCostFrequency +
                 ", canteen=" + canteen +
+                ", modified=" + modified +
+                ", created=" + created +
                 '}';
     }
 

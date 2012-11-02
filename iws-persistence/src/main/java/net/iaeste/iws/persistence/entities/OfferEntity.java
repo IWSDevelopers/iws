@@ -238,6 +238,15 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Column(name = "canteen")
     private Boolean canteen = null;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modified", nullable = false)
+    private Date modified = new Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false)
+    private Date created = new Date();
+
+
     public Boolean getCanteen() {
         return canteen;
     }
@@ -615,6 +624,22 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         this.workingPlace = workingPlace;
     }
 
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -668,6 +693,10 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
             fieldOfStudies = obj.fieldOfStudies;
             specializations = obj.specializations;
             studyLevels = obj.studyLevels;
+
+            // Set the Modified value to 'now', so the time of
+            // the last update is in the Record in the database.
+            modified = new Date();
         }
     }
 }

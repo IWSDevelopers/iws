@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static java.lang.Thread.sleep;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -670,6 +672,42 @@ public class OfferEntityTest {
         // make sure that offer was deleted
         final OfferEntity notFound = dao.findOffer(newId);
         assertThat(notFound, is(nullValue()));
+    }
+
+    @Test
+    @Transactional
+    public void testCreatedAndModified() throws InterruptedException {
+        final Date start = new Date();
+
+        sleep(1);
+        offer = getMinimalOffer();
+
+        // creating an offer
+        dao.persist(authentication, offer);
+        assertThat(offer.getId(), is(notNullValue()));
+
+        offer = entityManager.find(OfferEntity.class, offer.getId());
+        final OfferEntity persisted = dao.findOffer(offer.getId());
+        assertThat(offer, is(persisted));
+
+        // modified and created should be initialized
+        assertThat(offer.getCreated(), is(greaterThan(start)));
+        assertThat(offer.getModified(), is(greaterThan(start)));
+
+        final Date createdAt = offer.getCreated();
+        final Date modifiedAt = offer.getModified();
+        // updating the offer
+        sleep(1);
+        offer.setDeduction(12);
+
+        dao.persist(authentication, dao.findOffer(offer.getId()), offer);
+
+        final OfferEntity updated = dao.findOffer(offer.getId());
+        assertThat(offer, is(updated));
+
+        // modified and created should be initialized
+        assertThat(updated.getCreated(), is(createdAt));
+        assertThat(updated.getModified(), is(greaterThan(modifiedAt)));
     }
 
     @After

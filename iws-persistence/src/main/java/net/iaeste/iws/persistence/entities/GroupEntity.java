@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +22,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -47,6 +50,9 @@ public class GroupEntity implements IWSEntity {
 
     @Column(name = "groupname")
     private String groupName;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<OfferEntity> ownedOffers = null;
 
     /**
      * Empty Constructor, JPA requirement.
@@ -80,5 +86,13 @@ public class GroupEntity implements IWSEntity {
 
     public String getGroupName() {
         return groupName;
+    }
+
+    public Set<OfferEntity> getOwnedOffers() {
+        return ownedOffers;
+    }
+
+    public void setOwnedOffers(Set<OfferEntity> ownedOffers) {
+        this.ownedOffers = ownedOffers;
     }
 }

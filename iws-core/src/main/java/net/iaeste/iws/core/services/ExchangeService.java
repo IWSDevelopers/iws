@@ -32,11 +32,11 @@ import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
-import net.iaeste.iws.persistence.notification.Notifications;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.notification.Notifications;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,12 +112,10 @@ public class ExchangeService extends CommonService {
                 response = new FetchOffersResponse(findAllOffers());
                 break;
             case OWNED:
-                // TODO: select only owned offers
-                response = new FetchOffersResponse(findAllOffers());
+                response = new FetchOffersResponse(findOwnedOffers(authentication.getGroup().getId()));
                 break;
             case SHARED:
-                // TODO: select only shared offers
-                response = new FetchOffersResponse(findAllOffers());
+                response = new FetchOffersResponse(findSharedOffers());
                 break;
             default:
                 response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
@@ -143,6 +141,18 @@ public class ExchangeService extends CommonService {
 
     private List<Offer> findOffers(final List<Long> ids) {
         final List<OfferEntity> found = dao.findOffers(ids);
+
+        return convertEntityList(found);
+    }
+
+    private List<Offer> findOwnedOffers(final Long ownerId) {
+        final List<OfferEntity> found = dao.findOffersByOwnerId(ownerId);
+
+        return convertEntityList(found);
+    }
+
+    private List<Offer> findSharedOffers() {
+        final List<OfferEntity> found = dao.findSharedOffers();
 
         return convertEntityList(found);
     }

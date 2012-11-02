@@ -76,6 +76,21 @@ public interface OfferDao extends BasicDao {
     List<OfferEntity> findOffersByLikeEmployerName(final String employerName);
 
     /**
+     * Finds all offers which are owned by a group of given Id.
+     *
+     * @param   ownerId ownerId of a group owning offers
+     * @return  list of {@link OfferEntity} which are owned by GroupEntity with {@code id = ownerId}
+     */
+    List<OfferEntity> findOffersByOwnerId(final Long ownerId);
+
+    /**
+     * Finds all shared offers.
+     *
+     * @return list of {@link OfferEntity} which are shared
+     */
+    List<OfferEntity> findSharedOffers();
+
+    /**
      * Deletes an offer from database.
      *
      * @param offerId id of the offer to delete

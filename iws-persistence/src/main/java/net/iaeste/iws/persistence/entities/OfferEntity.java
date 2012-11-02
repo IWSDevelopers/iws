@@ -25,9 +25,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -58,6 +61,8 @@ import java.util.Date;
         @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM OfferEntity o WHERE o.refNo = :refNo"),
         @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT id FROM EmployerInformationView ei WHERE ei.employerName = :employerName)"),
         @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT id FROM EmployerInformationView ei WHERE ei.employerName LIKE :employerName)"),
+        @NamedQuery(name = "OfferEntity.findByOwnerId", query = "SELECT o FROM OfferEntity o WHERE o.owner.id = :id"),
+        @NamedQuery(name = "OfferEntity.findShared", query = "SELECT o FROM OfferEntity o"), // TODO michal: correct shared offers query
         @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM OfferEntity o WHERE o.id IN :ids")
 })
@@ -246,6 +251,13 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Column(name = "created", nullable = false)
     private Date created = new Date();
 
+    // TODO michal: owner should be not null, change it if GroupEntity works
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    // TODO michal: @Kim, @Michl: Can we set `updatable = false`? Will there be a possibility to change Offer owner once created?
+    @JoinColumn(name = "group_id", nullable = true)
+//    @JoinColumn(name = "group_id", nullable = false)
+    private GroupEntity owner = null;
 
     public Boolean getCanteen() {
         return canteen;
@@ -638,6 +650,14 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public GroupEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(final GroupEntity owner) {
+        this.owner = owner;
     }
 
     /**

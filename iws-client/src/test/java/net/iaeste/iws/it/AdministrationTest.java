@@ -1,8 +1,5 @@
 package net.iaeste.iws.it;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -13,8 +10,13 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.spring.NotificationSpy;
-import org.junit.Ignore;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -28,7 +30,8 @@ public class AdministrationTest {
     private final NotificationSpy spy = NotificationSpy.getInstance();
     private final Administration administration = new AdministrationClient();
 
-    private void login() {
+    @Before
+    public void before() {
         if (token == null) {
             final String username = "austria";
             final String password = "austria";
@@ -38,9 +41,13 @@ public class AdministrationTest {
 
             token = response.getToken();
         }
+
+        // Clear all messages from the Notification Queue
+        spy.clear();
     }
 
-    private void logout() {
+    @After
+    public void after() {
         if (token != null) {
             access.deprecateSession(token);
             token = null;
@@ -48,14 +55,7 @@ public class AdministrationTest {
     }
 
     @Test
-    public void testDummy() {
-        assertThat(Boolean.TRUE, is(true));
-    }
-
-    @Test
-    @Ignore("TBD Kim; It's late and this is a bad excuse for not fixing it, but I'm too tired to do it now...")
     public void testCreateAccount() {
-        login();
         final CreateUserRequest createUserRequest = new CreateUserRequest();
         createUserRequest.setUsername("alpha");
         createUserRequest.setPassword("beta");
@@ -65,6 +65,6 @@ public class AdministrationTest {
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         assertThat(spy.size(), is(1));
-        logout();
+        assertThat(spy.getNext().generateNotificationMessage(), containsString("Activation Code"));
     }
 }

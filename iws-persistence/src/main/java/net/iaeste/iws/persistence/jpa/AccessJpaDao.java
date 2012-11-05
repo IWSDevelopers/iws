@@ -16,12 +16,15 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
+import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
@@ -152,9 +155,9 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public List<UserPermissionView> findPermissions(final Integer userId) {
+    public List<UserPermissionView> findPermissions(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("view.findAllUserPermissions");
-        query.setParameter("uid", userId);
+        query.setParameter("uid", user.getId());
         final List<UserPermissionView> permissions = query.getResultList();
 
         return permissions;
@@ -164,8 +167,38 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public GroupEntity findGroup(final AuthenticationToken token, final Permission permission) {
-        return null;
+    public GroupTypeEntity findGroupType(final GroupType groupType) {
+        final Query query = entityManager.createNamedQuery("grouptype.findByName");
+        query.setParameter("name", groupType.name());
+        final List<GroupTypeEntity> groupTypes = query.getResultList();
+
+        return groupTypes.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findGroup(final UserEntity user, final String groupId, final Permission permission) {
+        final Query query;
+
+        if (groupId == null) {
+            query = entityManager.createNamedQuery("group.findByPermission");
+        } else {
+            query = entityManager.createNamedQuery("group.findByExternalGroupIdAndPermission");
+            query.setParameter("egid", groupId);
+        }
+        query.setParameter("uid", user.getId());
+        query.setParameter("permission", permission.name());
+        final List<GroupEntity> groups = query.getResultList();
+
+        if (groups.size() == 1) {
+            return groups.get(0);
+        } else if (groups.isEmpty()) {
+            throw new AuthorizationException("User is not permitted to perform actions of type: " + permission);
+        } else {
+            throw new AuthorizationException("User permission could not be uniquely identified, please provide the Group for the user.");
+        }
     }
 
     /**

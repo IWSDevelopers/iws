@@ -19,6 +19,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -26,6 +28,14 @@ import javax.persistence.Table;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@NamedQueries({
+        @NamedQuery(
+                name = "grouptype.findAll",
+                query = "select gt from GroupTypeEntity gt"),
+        @NamedQuery(name = "grouptype.findByName",
+                query = "select gt from GroupTypeEntity gt " +
+                        "where lower(gt.grouptype) = lower(:name)")
+})
 @Entity
 @Table(name = "grouptypes")
 public class GroupTypeEntity {

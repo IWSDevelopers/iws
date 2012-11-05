@@ -52,7 +52,7 @@ public class UserGroupEntity implements IWSEntity {
     @JoinColumn(nullable = false, name = "role_id")
     private RoleEntity role = null;
 
-    @Column(nullable = true, name = "title")
+    @Column(nullable = true, name = "custom_title")
     private String title = null;
 
     @Column(nullable = false, name = "on_public_list")

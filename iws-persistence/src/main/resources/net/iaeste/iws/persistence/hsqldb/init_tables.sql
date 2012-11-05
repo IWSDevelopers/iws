@@ -148,7 +148,7 @@ create table groups (
     primary key (id),
     foreign key (grouptype_id) references grouptypes (id),
     foreign key (country_id) references countries (id),
-    unique (external_id)
+    constraint group_unique_external_id unique (external_id)
 );
 
 
@@ -263,9 +263,9 @@ create table users (
     modified                 timestamp default now() not null,
 
     primary key (id),
-    unique (external_id),
-    unique (username),
-    unique (temporary_code)
+    constraint user_unique_external_id unique (external_id),
+    constraint user_unique_username unique (username),
+    constraint user_unique_code unique (temporary_code)
 );
 
 

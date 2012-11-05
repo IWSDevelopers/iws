@@ -14,11 +14,6 @@
  */
 package net.iaeste.iws.client;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -28,10 +23,14 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -78,8 +77,7 @@ public class AccessClientTest {
     }
 
     @Test
-    @Ignore("Ignored, until the permission mess is sorted out!")
-    public void testCrapValues() {
+    public void testFetchingPermissions() {
         final AuthenticationToken token = new AuthenticationToken("9e107d9d372bb6826bd81d3542a419d6");
 
         final PermissionResponse response = access.fetchPermissions(token);
@@ -89,12 +87,5 @@ public class AccessClientTest {
         assertThat(response.isOk(), is(true));
         assertThat(response.getError(), is(IWSErrors.SUCCESS));
         assertThat(response.getMessage(), is(IWSConstants.SUCCESS));
-
-        // Request went through, now we can check the response
-        assertThat(permissions.size(), is(14));
-        assertThat(permissions.get(0).getGroupType(), is("Country"));
-        assertThat(permissions.get(0).getPermission(), is("PROCESS_USERS"));
-        assertThat(permissions.get(1).getGroupType(), is("Country"));
-        assertThat(permissions.get(1).getPermission(), is("FETCH_USERS"));
     }
 }

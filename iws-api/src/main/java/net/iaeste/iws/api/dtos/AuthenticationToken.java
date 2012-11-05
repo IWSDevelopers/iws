@@ -46,7 +46,7 @@ public final class AuthenticationToken extends AbstractVerification {
     private String token = null;
 
     /** For Group Authorization, the GroupId must also be provided. */
-    private Integer groupId = null;
+    private String groupId = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -71,7 +71,7 @@ public final class AuthenticationToken extends AbstractVerification {
      * @param  token  The Token, i.e. currently active Cryptographical Checksum
      * @param groupId GroupId for the Authorization check
      */
-    public AuthenticationToken(final String token, final Integer groupId) {
+    public AuthenticationToken(final String token, final String groupId) {
         this.token = token;
         this.groupId = groupId;
     }
@@ -114,7 +114,7 @@ public final class AuthenticationToken extends AbstractVerification {
      *
      * @param groupId  GroupId for the Authorization check
      */
-    public void setGroupId(final Integer groupId) {
+    public void setGroupId(final String groupId) {
         this.groupId = groupId;
     }
 
@@ -124,7 +124,7 @@ public final class AuthenticationToken extends AbstractVerification {
      *
      * @return GroupIs for the Authorization check
      */
-    public Integer getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 

@@ -16,6 +16,7 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.CountryRequest;
@@ -71,20 +72,8 @@ public class AdministrationService {
         // To avoid problems, all internal handling of the username is in lowercase
         final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
         if (dao.findUserByUsername(username) == null) {
-            final UserEntity user = new UserEntity();
-
-            // To avoid misusage all Users have a unique external Id
-            user.setExternalId(UUID.randomUUID().toString());
-            user.setUserName(username);
-            user.setPassword(HashcodeGenerator.generateSHA256(request.getPassword()));
-            user.setFirstname(request.getFirstname());
-            user.setLastname(request.getLastname());
-            user.setCode(generateActivationCode(request));
-            dao.persist(user);
-
-            final GroupEntity privateGroup = new GroupEntity();
-            privateGroup.setGroupname(request.getFirstname() + ' ' + request.getLastname());
-            dao.persist(privateGroup);
+            final UserEntity user = createAndPersistUserEntity(username, request);
+            final GroupEntity privateGroup = createAndPersistPrivateGroup(user);
 
             final RoleEntity owner = dao.findRoleById(IWSConstants.ROLE_OWNER);
             final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
@@ -102,6 +91,32 @@ public class AdministrationService {
         }
 
         return result;
+    }
+
+    private UserEntity createAndPersistUserEntity(final String username, final CreateUserRequest request) {
+        final UserEntity user = new UserEntity();
+
+        // To avoid misusage all Users have a unique external Id
+        user.setExternalId(UUID.randomUUID().toString());
+        user.setUserName(username);
+        user.setPassword(HashcodeGenerator.generateSHA256(request.getPassword()));
+        user.setFirstname(request.getFirstname());
+        user.setLastname(request.getLastname());
+        user.setCode(generateActivationCode(request));
+        dao.persist(user);
+
+        return user;
+    }
+
+    private GroupEntity createAndPersistPrivateGroup(final UserEntity user) {
+        final GroupEntity group = new GroupEntity();
+
+        group.setGroupname(user.getFirstname() + ' ' + user.getLastname());
+        group.setGroupType(dao.findGroupType(GroupType.PRIVATE));
+        group.setExternalId(UUID.randomUUID().toString());
+        dao.persist(group);
+
+        return group;
     }
 
     private String generateActivationCode(final CreateUserRequest request) {

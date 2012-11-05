@@ -14,17 +14,11 @@
  */
 package net.iaeste.iws.persistence;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import net.iaeste.iws.persistence.views.UserPermissionView;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -35,6 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -74,25 +73,16 @@ public class AccessDaoTest {
         assertThat(notFound, is(nullValue()));
     }
 
-    @Ignore("Ignored, until the permission mess is sorted out!")
     @Test
     @Transactional
-    public void oldTestAccess() {
+    public void oldReadingPermissions() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        //Michl: Nase, NC Member           in Austria
-        final List<UserPermissionView> result = dao.findPermissions(1);
+        final UserEntity user = dao.findUserByUsername("austria");
+        final List<UserPermissionView> result = dao.findPermissions(user);
 
+        // Running check for a number makes no sense, since the amount will
+        // change over the cause of time, as permissions are added and removed
         assertThat(result, is(not(nullValue())));
-        assertThat(result.size(), is(14));
-
-        // Now, lets check the first permission
-        assertThat(result.get(0).getGroupName(), is("Austria"));
-        assertThat(result.get(0).getGroupType(), is("Country"));
-        assertThat(result.get(0).getPermission(), is("PROCESS_USERS"));
-
-        // Now, lets check the second permission
-        assertThat(result.get(1).getGroupName(), is("Austria"));
-        assertThat(result.get(1).getGroupType(), is("Country"));
-        assertThat(result.get(1).getPermission(), is("FETCH_USERS"));
+        assertThat(result.isEmpty(), is(false));
     }
 }

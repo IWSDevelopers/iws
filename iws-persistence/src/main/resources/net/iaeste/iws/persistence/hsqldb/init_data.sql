@@ -250,11 +250,11 @@ insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (
 insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (19, 5,   18, 5, 'Poland');
 
 -- Couple of Users, password is the same as the username
-insert into users (id, external_id, username, password, firstname, lastname) values (1, '13452874-0c0f-4caf-8101-a8e9b41d6e69', 'austria', '7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266', 'NS', 'Austria');
-insert into users (id, external_id, username, password, firstname, lastname) values (2, '23d4c552-dce4-4941-9254-9b7b87712c0e', 'croatia', 'f17f6b658c4b6feb54250a4266ee642d39b6ca2e2fbc7714a6dc36ae6e6b7c9a', 'NS', 'Croatia');
-insert into users (id, external_id, username, password, firstname, lastname) values (3, 'a14bb076-c2f7-419d-bd28-1d453ac3fda5', 'denmark', '5f0bf3ff6b72ac09f881221fc8bd88ba9f24a393c2e544716dbf792978a7f313', 'NS', 'Denmark');
-insert into users (id, external_id, username, password, firstname, lastname) values (4, '047fde56-f5f7-4811-8a3d-a9b12d207570', 'germany', 'b2c01c8a8a0d9a99f145f099a963021f010dc608a8e992bd1a2aec958b48f32d', 'NS', 'Germany');
-insert into users (id, external_id, username, password, firstname, lastname) values (5, '4bb8499a-f0dd-44d8-929e-0a7dbd218ed2', 'poland',  '9cbbdd6cbd5335f528ec9f858ee4ddd727186dca99e33f8fc3273d39681d54a8', 'NS', 'Poland');
+insert into users (external_id, username, password, firstname, lastname) values ('13452874-0c0f-4caf-8101-a8e9b41d6e69', 'austria', '7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266', 'NS', 'Austria');
+insert into users (external_id, username, password, firstname, lastname) values ('23d4c552-dce4-4941-9254-9b7b87712c0e', 'croatia', 'f17f6b658c4b6feb54250a4266ee642d39b6ca2e2fbc7714a6dc36ae6e6b7c9a', 'NS', 'Croatia');
+insert into users (external_id, username, password, firstname, lastname) values ('a14bb076-c2f7-419d-bd28-1d453ac3fda5', 'denmark', '5f0bf3ff6b72ac09f881221fc8bd88ba9f24a393c2e544716dbf792978a7f313', 'NS', 'Denmark');
+insert into users (external_id, username, password, firstname, lastname) values ('047fde56-f5f7-4811-8a3d-a9b12d207570', 'germany', 'b2c01c8a8a0d9a99f145f099a963021f010dc608a8e992bd1a2aec958b48f32d', 'NS', 'Germany');
+insert into users (external_id, username, password, firstname, lastname) values ('4bb8499a-f0dd-44d8-929e-0a7dbd218ed2', 'poland',  '9cbbdd6cbd5335f528ec9f858ee4ddd727186dca99e33f8fc3273d39681d54a8', 'NS', 'Poland');
 
 -- User Group Associations
 insert into user_to_group (user_id, group_id, role_id) values ( 1, 10, 1);

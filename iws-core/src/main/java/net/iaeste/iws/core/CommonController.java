@@ -56,11 +56,12 @@ class CommonController {
      */
     Authentication verifyAccess(final AuthenticationToken token, final Permission permission) {
         verify(token, "Invalid Authentication Token provided.");
+
         try {
             // Authentication Check; Expect Exception if unable to find a User
             final UserEntity user = dao.findActiveSession(token).getUser();
             // Authorization Check; Expect Exception if unable to match a Group
-            final GroupEntity group = dao.findGroup(token, permission);
+            final GroupEntity group = dao.findGroup(user, token.getGroupId(), permission);
 
             // So far so good, return the information
             return new Authentication(user, group);

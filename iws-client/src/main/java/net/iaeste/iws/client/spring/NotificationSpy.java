@@ -60,6 +60,7 @@ public final class NotificationSpy implements Notifications {
     @Override
     public void notify(final Authentication authentication, final Notifiable obj) {
         LOG.info(authentication.getUser() + " has altered Object " + obj + " belonging to " + authentication.getGroup());
+        notifiables.add(obj);
         notifyObservers();
     }
 
@@ -87,6 +88,13 @@ public final class NotificationSpy implements Notifications {
         for (final Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    /**
+     * Remove all messages from the Notification Queue.
+     */
+    public void clear() {
+        notifiables.clear();
     }
 
     /**

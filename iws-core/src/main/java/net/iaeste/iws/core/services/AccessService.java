@@ -111,7 +111,8 @@ public final class AccessService {
     }
 
     public List<Authorization> findPermissions(final AuthenticationToken token) {
-        final List<UserPermissionView> permissions = dao.findPermissions(1);
+        final UserEntity user = dao.findUserByUsername("austria");
+        final List<UserPermissionView> permissions = dao.findPermissions(user);
         final List<Authorization> result = new ArrayList<>(permissions.size());
 
         for (final UserPermissionView view : permissions) {

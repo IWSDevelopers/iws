@@ -119,9 +119,12 @@ public class UserEntity implements IWSEntity, Notifiable {
     private UserStatus status = UserStatus.NEW;
 
     /**
-     * Privacy is a rather important topic. A users data is only exposed to
+     * Privacy is a rather important topic. A users data is only exposed to be
+     * exposed to those groups where user user is a member. Only Exception, is
+     * the NC's mailinglist, and the corresponding Contact list, which will
+     * contain the users phonenumbers.
      */
-    @Column(nullable = false, name = "private_data")
+    @Column(nullable = true, name = "private_data")
     private Boolean privateData = true;
 
     /**
@@ -130,7 +133,7 @@ public class UserEntity implements IWSEntity, Notifiable {
      * created and the current Status is "new", and again if the user forgot
      * his or her password, and have requested a new one.
      */
-    @Column(name = "temporary_code")
+    @Column(nullable = true, name = "temporary_code")
     private String code= null;
 
     /** Last time the User Account was modified. */

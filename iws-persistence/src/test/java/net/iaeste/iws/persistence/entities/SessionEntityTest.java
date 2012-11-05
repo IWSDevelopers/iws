@@ -14,12 +14,12 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,8 +31,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -54,7 +57,6 @@ public class SessionEntityTest {
         dao = new AccessJpaDao(entityManager);
     }
 
-    @Ignore("Ignored, until the permission mess is sorted out!")
     @Test
     @Transactional
     public void testSessionEntity() {
@@ -63,10 +65,17 @@ public class SessionEntityTest {
         final String key = HashcodeGenerator.generateSHA512("User Password, Date, IPNumber, and more");
         user.setUserName("alfa");
         user.setPassword(HashcodeGenerator.generateSHA256("beta"));
+        user.setFirstname("Alpha");
+        user.setLastname("Beta");
+        user.setExternalId(UUID.randomUUID().toString());
         session.setSessionKey(key);
         session.setUser(user);
         dao.persist(user);
         dao.persist(session);
+
+        final AuthenticationToken token = new AuthenticationToken(key);
+        final SessionEntity found = dao.findActiveSession(token);
+        assertThat(found, is(not(nullValue())));
     }
 
     @Test
@@ -76,9 +85,9 @@ public class SessionEntityTest {
         final SessionEntity entity = new SessionEntity();
         final Query userQuery = entityManager.createNamedQuery("user.findById");
         userQuery.setParameter("id", 1L);
-        final UserEntity user = (UserEntity) userQuery.getSingleResult();
+        final List<UserEntity> found = userQuery.getResultList();
         entity.setSessionKey(key);
-        entity.setUser(user);
+        entity.setUser(found.get(0));
         entityManager.persist(entity);
 
         final Query query = entityManager.createNamedQuery("session.findByToken");

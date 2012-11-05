@@ -15,9 +15,11 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -44,9 +46,11 @@ public interface AccessDao extends BasicDao {
 
     Integer deprecateSession(UserEntity user);
 
-    List<UserPermissionView> findPermissions(Integer userId);
+    List<UserPermissionView> findPermissions(UserEntity user);
 
-    GroupEntity findGroup(AuthenticationToken token, Permission permission);
+    GroupTypeEntity findGroupType(GroupType groupType);
+
+    GroupEntity findGroup(UserEntity user, String groupId, Permission permission);
 
     /**
      * Find a Role by the name. However, as it is possible to have multiple

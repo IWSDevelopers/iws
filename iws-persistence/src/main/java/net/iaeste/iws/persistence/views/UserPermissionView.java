@@ -31,8 +31,11 @@ import java.io.Serializable;
  * @since   1.7
  */
 @Entity
-@NamedQueries(@NamedQuery(name = "view.findAllUserPermissions",
-        query = "SELECT v FROM UserPermissionView v where v.id.userId = :uid"))
+@NamedQueries({
+        @NamedQuery(name = "view.findAllUserPermissions",
+                query = "select v from UserPermissionView v " +
+                        "where v.id.userId = :uid")
+})
 @Table(name = "user_permissions")
 public class UserPermissionView extends AbstractView {
 
@@ -63,12 +66,6 @@ public class UserPermissionView extends AbstractView {
     @Column(name = "permission")
     private String permission = null;
 
-    /**
-     * Empty Constructor, required by JPA.
-     */
-    public UserPermissionView() {
-    }
-
     public void setId(final UserPermissionViewId id) {
         this.id = id;
     }
@@ -77,27 +74,27 @@ public class UserPermissionView extends AbstractView {
         return id;
     }
 
-    public void setUserId(final Integer userId) {
+    public void setUserId(final Long userId) {
         id.setUserId(userId);
     }
 
-    public Integer getUserID() {
+    public Long getUserID() {
         return id.getUserId();
     }
 
-    public void setGroupId(final Integer groupId) {
+    public void setGroupId(final Long groupId) {
         id.setGroupId(groupId);
     }
 
-    public Integer getGroupId() {
+    public Long getGroupId() {
         return id.getGroupId();
     }
 
-    public void setPermissionId(final Integer permissionId) {
+    public void setPermissionId(final Long permissionId) {
         id.setPermissionId(permissionId);
     }
 
-    public Integer getPermissionId() {
+    public Long getPermissionId() {
         return id.getPermissionId();
     }
 
@@ -170,9 +167,9 @@ public class UserPermissionView extends AbstractView {
         /** {@see IWSConstants#SERIAL_VERSION_UID}. */
         private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-        @Column(name = "uid") private Integer userId;
-        @Column(name = "gid") private Integer groupId;
-        @Column(name = "pid") private Integer permissionId;
+        @Column(name = "uid") private Long userId;
+        @Column(name = "gid") private Long groupId;
+        @Column(name = "pid") private Long permissionId;
 
         /**
          * Default Empty JPA Constructor.
@@ -183,27 +180,27 @@ public class UserPermissionView extends AbstractView {
             permissionId = null;
         }
 
-        void setUserId(final Integer userId) {
+        void setUserId(final Long userId) {
             this.userId = userId;
         }
 
-        Integer getUserId() {
+        Long getUserId() {
             return userId;
         }
 
-        public void setGroupId(final Integer groupId) {
+        public void setGroupId(final Long groupId) {
             this.groupId = groupId;
         }
 
-        public Integer getGroupId() {
+        public Long getGroupId() {
             return groupId;
         }
 
-        public void setPermissionId(final Integer permissionId) {
+        public void setPermissionId(final Long permissionId) {
             this.permissionId = permissionId;
         }
 
-        public Integer getPermissionId() {
+        public Long getPermissionId() {
             return permissionId;
         }
     }

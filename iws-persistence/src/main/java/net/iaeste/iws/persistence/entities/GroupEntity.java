@@ -27,7 +27,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,12 +40,27 @@ import java.util.Date;
  */
 @NamedQueries({
         @NamedQuery(
-                name = "gorup.findAll",
+                name = "group.findAll",
                 query = "select g from GroupEntity g"),
         @NamedQuery(
                 name = "group.findById",
                 query = "select g from GroupEntity g " +
-                        "where g.id = :id")
+                        "where g.id = :id"),
+        @NamedQuery(
+                name = "group.findByExternalId",
+                query = "select g from GroupEntity g " +
+                        "where g.externalId = :id"),
+        @NamedQuery(name = "group.findByPermission",
+                query = "select g from GroupEntity g, UserPermissionView v " +
+                        "where g.id = v.id.groupId" +
+                        "  and v.id.userId = :uid" +
+                        "  and v.permission = :permission"),
+        @NamedQuery(name = "group.findByExternalGroupIdAndPermission",
+                query = "select g from GroupEntity g, UserPermissionView v " +
+                        "where g.id = v.id.groupId" +
+                        "  and v.id.userId = :uid" +
+                        "  and g.externalId = :egid" +
+                        "  and v.permission = :permission")
 })
 @Entity
 @Table(name = "groups")

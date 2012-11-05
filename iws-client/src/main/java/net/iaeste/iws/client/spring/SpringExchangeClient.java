@@ -68,7 +68,7 @@ public final class SpringExchangeClient implements Exchange {
      */
     @PersistenceContext
     public void init(final EntityManager entityManager) {
-        final Notifications notitications = new NotificationLogger();
+        final Notifications notitications = NotificationSpy.getInstance();
         final ServiceFactory factory = new ServiceFactory(entityManager, notitications);
         exchange = new ExchangeController(factory);
     }

@@ -156,7 +156,7 @@ public class AdministrationController extends CommonController implements Admini
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SUB_GROUPS);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();

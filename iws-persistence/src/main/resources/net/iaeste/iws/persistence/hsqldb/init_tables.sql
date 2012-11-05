@@ -56,7 +56,7 @@ create table countries (
     created             timestamp default now() not null,
 
     primary key (id),
-    unique (country_name)
+    unique (country_id)
 );
 
 
@@ -72,7 +72,7 @@ create table countries (
 create table permissions (
     id                  integer not null,
     permission          varchar(50) not null,
-    restricted          decimal(1) default 1 not null,
+    restricted          decimal(1) default 0 not null,
     description         varchar(2048),
 
     primary key (id),

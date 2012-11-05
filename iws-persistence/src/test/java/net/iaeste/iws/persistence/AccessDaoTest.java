@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.persistence;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
@@ -30,11 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -54,7 +54,7 @@ public class AccessDaoTest {
     public void testSession() {
         final AccessDao dao = new AccessJpaDao(entityManager);
         final String key = "12345678901234567890123456789012";
-        final UserEntity user = dao.findUserByCredentials("kim", "ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f");
+        final UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");
 
         // Create a new Session for a user, and save it in the database
         final SessionEntity entity = new SessionEntity();

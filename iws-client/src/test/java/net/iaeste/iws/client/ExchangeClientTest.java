@@ -14,6 +14,10 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -31,10 +35,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
 /**
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -48,7 +48,7 @@ public class ExchangeClientTest {
 
     @BeforeClass
     public static void registerSession() {
-        final AuthenticationResponse response = access.generateSession(new AuthenticationRequest("Michl", "frodo"));
+        final AuthenticationResponse response = access.generateSession(new AuthenticationRequest("austria", "austria"));
         assertThat(response.isOk(), is(true));
         token = new AuthenticationToken(response.getToken());
     }

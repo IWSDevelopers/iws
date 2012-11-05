@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.SimpleNotifications
+ * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.NotificationSpy
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -25,16 +25,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Very simple Logging implementation of the Notification Server.
+ * For the tests, it is nice to have a way to read the notifications that is
+ * being send. This Spy will help with this. It is a Singleton, that stores all
+ * Notifications being send, and they can then be processed one-by-one.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class NotificationLogger implements Notifications {
+public final class NotificationSpy implements Notifications {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NotificationLogger.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationSpy.class);
+    private static NotificationSpy instance = null;
+    private static final Object LOCK = new Object();
     private final List<Observer> observers = new ArrayList<>(10);
+    private final List<Notifiable> notifiables = new ArrayList<>(10);
+
+    private NotificationSpy() {
+    }
+
+    public static NotificationSpy getInstance() {
+        synchronized (LOCK) {
+            if (instance == null) {
+                instance = new NotificationSpy();
+            }
+
+            return instance;
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -69,5 +87,33 @@ public class NotificationLogger implements Notifications {
         for (final Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    /**
+     * Returns the number of Notiications currently being held in this Spy.
+     *
+     * @return Number of Notifications in the Spy
+     */
+    public Integer size() {
+        return notifiables.size();
+    }
+
+    /**
+     * Reads the first Notification from the Notification Stack, and pops it
+     * from the stack. As long as a non-null value is returned, the Stack is not
+     * empty.
+     *
+     * @return First Notitication from the Stack
+     */
+    public Notifiable getNext() {
+        final Notifiable notifiable;
+
+        if (!notifiables.isEmpty()) {
+            notifiable = notifiables.remove(0);
+        } else {
+            notifiable = null;
+        }
+
+        return notifiable;
     }
 }

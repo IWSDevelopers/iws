@@ -260,4 +260,24 @@ public class UserEntity implements IWSEntity, Notifiable {
     public Date getCreated() {
         return created;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String generateNotificationMessage() {
+        // The Notifications related to the User Entity, is either to Activate
+        // a new Account, or if the user have forgotten the Password. To
+        // distinguish between them, we simply look at the User Status. If the
+        // Status is New, then we have to send the Activation Notification,
+        // otherwise we send the Forgot Password Notification
+        final String message;
+        if (status == UserStatus.NEW) {
+            message = "Activation Code = " + code;
+        } else {
+            message = "Reset Password Code = " + code;
+        }
+
+        return message;
+    }
 }

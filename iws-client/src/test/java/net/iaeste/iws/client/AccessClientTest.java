@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -27,11 +32,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -57,8 +57,8 @@ public class AccessClientTest {
     @Test
     public void testGenerateAndDeprecateSession() {
         final Access client = new AccessClient();
-        final String username = "Michl";
-        final String password = "frodo";
+        final String username = "austria";
+        final String password = "austria";
         final AuthenticationRequest request = new AuthenticationRequest(username, password);
 
         final AuthenticationResponse response = client.generateSession(request);

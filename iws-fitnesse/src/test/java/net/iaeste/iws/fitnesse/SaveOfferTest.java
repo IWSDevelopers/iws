@@ -14,13 +14,13 @@
  */
 package net.iaeste.iws.fitnesse;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.util.Date;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Michal Knapik / last $Author:$
@@ -32,8 +32,8 @@ public class SaveOfferTest {
     @Test
     public void testSaveOffers() {
         final FetchOffers fetch = new FetchOffers();
-        fetch.setUsername("Michl");
-        fetch.setPassword("frodo");
+        fetch.setUsername("austria");
+        fetch.setPassword("austria");
         fetch.setRequestType("ALL");
         fetch.fetch();
 

@@ -15,9 +15,28 @@
 package net.iaeste.iws.persistence.notification;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * Please note, that the current information here is very much incomplete. A
+ * possible solution would be to use a standard Templating Engine for the
+ * information, to be send. This way, the method themselves just have to refer
+ * to the name of the Template that holds the required information, and by
+ * combining the Object with the Template, it should be possible to generate it
+ * all.
+ *   Example for Templating Engine: Velocity
+ *
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public interface Notifiable {
+
+    /**
+     * The Notification relies on a message being sent in some sort of format.
+     * However, this is not yet clarified exactly how it should be done. So
+     * for now - this is just a simple placeholder. So we at least can test
+     * those parts of the System, that relies on Notifications as part of the
+     * flow, i.e. Create User Account, Forgot Password, etc.
+     *
+     * @return Simple Message
+     */
+    String generateNotificationMessage();
 }

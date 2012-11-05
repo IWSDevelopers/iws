@@ -21,14 +21,66 @@ package net.iaeste.iws.api.enums;
  */
 public enum Permission {
 
+    // =========================================================================
+    // System Control, i.e. permissions on the System or International Scale
+    // =========================================================================
+
+    /**
+     * When creating a new Committee (Co-operating Institution). This
+     * include creating a untested account for the Committee Owner.
+     */
+    CREATE_COMMITTEE,
+
+    /**
+     * When altering information related to the Co-operating Institution. This
+     * includes such things as changing the name of the Committee, suspending
+     * the Committee and Activating Committee, etc.
+     */
+    PROCESS_COMMITTEE,
+
+    /**
+     * When upgrading membership, i.e. Co-Operating Institution -> Associate
+     * Member.
+     */
+    UPGRADE_COMMITTEE,
+
+    /**
+     * Reading a list of all committees, with some flags for pagination,
+     * sorting, limiting, etc.
+     */
+    FETCH_COMMITTEES,
+
+    /**
+     *
+     */
+    CREATE_REGIONAL_GROUP,
+
+    /**
+     *
+     */
+    PROCESS_REGIONAL_GROUP,
+
+    /**
+     *
+     */
+    FETCH_REGIONALS_GROUP,
+
     // Access Control
     PROCESS_USERS,
     FETCH_USERS,
-    PROCESS_GROUPS,
+
+    /**
+     * Process SubGroups, includes the following: Create, Update, Delete & Assign Ownership
+     */
+    PROCESS_SUB_GROUPS,
     FETCH_GROUPS,
     FETCH_COUNTRIES,
     PROCESS_COUNTRIES,
     PROCESS_USER_GROUP_ASSIGNMENT,
+    FETCH_GROUP_MEMBERS,
+    CHANGE_GROUP_OWNER,
+    ADD_USER_GROUP_ASSOCIATION,
+    ALTER_USER_GROUP_ASSOCIATION,
 
     /***************************
      * Exchange

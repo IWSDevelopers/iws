@@ -719,4 +719,12 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
             modified = new Date();
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String generateNotificationMessage() {
+        return "Offer " + refNo;
+    }
 }

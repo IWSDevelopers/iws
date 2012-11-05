@@ -14,14 +14,14 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
+import org.junit.Test;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -48,7 +48,7 @@ public class IsAliveTest {
     public void testCallMissingUsername() {
         final IsAlive cut = new IsAlive();
         cut.reset();
-        cut.setPassword("frodo");
+        cut.setPassword("austria");
 
         // Execute the test
         cut.execute();
@@ -63,7 +63,7 @@ public class IsAliveTest {
     public void testCallMissingPassword() {
         final IsAlive cut = new IsAlive();
         cut.reset();
-        cut.setUsername("Michl");
+        cut.setUsername("austria");
 
         // Execute the test
         cut.execute();
@@ -78,8 +78,8 @@ public class IsAliveTest {
     public void testInvalidCredentials() {
         final IsAlive cut = new IsAlive();
         cut.reset();
-        cut.setUsername("Bilbo");
-        cut.setPassword("Baggins");
+        cut.setUsername("hungary");
+        cut.setPassword("hungary");
 
         // Execute the test
         cut.execute();
@@ -87,15 +87,15 @@ public class IsAliveTest {
         // Verify that the result is the expected
         assertThat(cut.isRequestOk(), is(false));
         assertThat(cut.errorCode(), is(IWSErrors.AUTHORIZATION_ERROR.getError()));
-        assertThat(cut.errorMessage(), is("No account for the user 'bilbo' was found."));
+        assertThat(cut.errorMessage(), is("No account for the user 'hungary' was found."));
     }
 
     @Test
     public void testValidCredentials() {
         final IsAlive cut = new IsAlive();
         cut.reset();
-        cut.setUsername("Michl");
-        cut.setPassword("frodo");
+        cut.setUsername("austria");
+        cut.setPassword("austria");
 
         // Execute the test
         cut.execute();

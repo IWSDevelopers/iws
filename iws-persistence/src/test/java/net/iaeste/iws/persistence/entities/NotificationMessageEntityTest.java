@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationType;
 import net.iaeste.iws.persistence.AccessDao;
@@ -33,9 +36,6 @@ import javax.persistence.Query;
 import java.util.Date;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 /**
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -53,8 +53,8 @@ public class NotificationMessageEntityTest {
     @Transactional
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        UserEntity user = dao.findUserByCredentials("pavel", "ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f");
-        assertThat(user.getUserName(), is("pavel"));
+        UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");
+        assertThat(user.getUserName(), is("austria"));
 
         final NotificationMessageEntity entity = new NotificationMessageEntity();
         entity.setMessage("message text");
@@ -79,8 +79,8 @@ public class NotificationMessageEntityTest {
     @Transactional
     public void testUpdateQuery() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        UserEntity user = dao.findUserByCredentials("pavel", "ff6668c9c0541301b18b3da3be4f719151eb0f873f3b74dbb036ee00434cee0f");
-        assertThat(user.getUserName(), is("pavel"));
+        UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");
+        assertThat(user.getUserName(), is("austria"));
 
         final NotificationMessageEntity entity = new NotificationMessageEntity();
         entity.setMessage("message text");

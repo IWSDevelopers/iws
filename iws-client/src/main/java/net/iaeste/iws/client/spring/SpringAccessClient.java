@@ -54,7 +54,7 @@ public final class SpringAccessClient implements Access {
      */
     @PersistenceContext
     public void init(final EntityManager entityManager) {
-        final Notifications notitications = new NotificationLogger();
+        final Notifications notitications = NotificationSpy.getInstance();
         final ServiceFactory factory = new ServiceFactory(entityManager, notitications);
         access = new AccessController(factory);
     }

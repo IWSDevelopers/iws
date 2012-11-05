@@ -34,28 +34,27 @@ import java.math.BigDecimal;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 // ToDo Kim; Review if all fields are present - the Address seems to be missing information, there is no City, Zip or Country added.
-// Todo Kim; The Refno validation is made against all existing countrycodes. It should suffice to consider the country of the offering committee, this should be the same as the Country in the Company Address
 // ToDo Kim; Ensure that the tests for this class covers all cases, i.e. that all Strings are checked for length
+
 /**
  * Standard IAESTE Offer.
  *
- * @author  Michael Pickelbauer / last $Author:$
+ * @author Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection OverlyComplexClass, OverlyLongMethod, CastToConcreteClass, ConstantConditions, BooleanMethodNameMustStartWithQuestion, OverlyComplexBooleanExpression, OverlyComplexMethod, ClassWithTooManyFields
+ * @since 1.7
  */
 public final class Offer extends AbstractVerification {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private static final String REFNO_FORMAT = "(%s)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?"; // %s - country codes
+//    private static final String REFNO_FORMAT = "(%s)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?"; // %s - country codes
 
     /**
      * Empty Constructor, required for some communication frameworks.
@@ -620,7 +619,12 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setRefNo(final String refNo) {
-        this.refNo = refNo;
+        if (refNo != null) {
+            this.refNo = refNo.toUpperCase(IWSConstants.DEFAULT_LOCALE);
+        } else {
+            // Some tests are failing, if we don't force a null value!
+            this.refNo = null;
+        }
     }
 
     public Set<String> getSpecializations() {
@@ -1165,24 +1169,9 @@ public final class Offer extends AbstractVerification {
     private boolean validateRefNo(final Map<String, String> validation) {
         boolean check = true;
 
-        if (refNo != null) {
-            // ToDo Kim; Current check is made against ALL countries, not just the IAESTE countries. The best solution is to check country code against the company address, secondly against a shorter, static, list
-            final String[] codes = Locale.getISOCountries();
-            // for each country code 3 bytes are needed: "CC|"
-            final StringBuilder countryCodes = new StringBuilder(3 * codes.length - 1);
-            for (final String code : codes) {
-                countryCodes.append(code);
-                countryCodes.append('|');
-            }
-            countryCodes.delete(countryCodes.length() - 1, countryCodes.length());
-
-            // The list of countries code is provide in upper case, hence enforce an uppercase is redundant
-            final Pattern refNoPattern = Pattern.compile(String.format(REFNO_FORMAT, countryCodes.toString()));
-            final Matcher matcher = refNoPattern.matcher(refNo);
-            if (!matcher.matches()) {
-                addError(validation, "refNo", "reference number has incorrect format");
-                check = false;
-            }
+        if ((refNo != null) && !IWSExchangeConstants.REFNO_PATTERN.matcher(refNo).matches()) {
+            addError(validation, "refNo", "reference number has incorrect format");
+            check = false;
         }
 
         return check;

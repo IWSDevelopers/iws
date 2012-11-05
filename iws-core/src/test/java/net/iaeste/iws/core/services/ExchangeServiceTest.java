@@ -30,6 +30,7 @@ import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.notification.Notifications;
@@ -95,7 +96,11 @@ public class ExchangeServiceTest {
 
     @Test
     public void testProcessingOffersCreateRequest() {
-        final Authentication authentication = new Authentication(null, null);
+        final CountryEntity country = new CountryEntity();
+        country.setCountryId("GB");
+        final GroupEntity group = new GroupEntity();
+        group.setCountry(country);
+        final Authentication authentication = new Authentication(null, group);
         final Offer offer = offers.get(0);
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 

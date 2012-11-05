@@ -2,15 +2,15 @@
 !define TEST_SYSTEM {slim}
 
 |script          |fetch offers                                 |
-|set username    |austria                 |and password|austria|
+|set username    |denmark                 |and password|denmark|
 |set request type|ALL                                          |
 |fetch                                                         |
 |ensure          |is request ok                                |
 |check           |number of fetched offers|0                   |
 
 |script              |save offer                  |
-|set username        |austria|and password|austria|
-|set ref no          |AT-2012-0001                |
+|set username        |denmark|and password|denmark|
+|set ref no          |dk-2012-0001                |
 |set employer name   |test employer name          |
 |reject              |verify                      |
 |set study levels    |E                           |

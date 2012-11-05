@@ -19,6 +19,7 @@ import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
@@ -73,9 +74,13 @@ public class ExchangeService extends CommonService {
         final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
 
         if (existingEntity == null) {
-            // Add the Group to the Object
+            // Add the Group to the Offer
             newEntity.setGroup(authentication.getGroup());
-            // Persist the Object with history
+            // Before we can persist the Offer, we need to check that the refno
+            // is valid. Since the Country is part of the Group, we can simply
+            // compare the refno with that
+            verifyRefnoValidity(newEntity);
+            // Persist the Offer with history
             dao.persist(authentication, newEntity);
         } else {
             // Check if the user is allowed to work with the Object, if not -
@@ -93,6 +98,14 @@ public class ExchangeService extends CommonService {
         notifications.notify(authentication, newEntity);
 
         return new OfferResponse();
+    }
+
+    private void verifyRefnoValidity(final OfferEntity offer) {
+        final String countryCode = offer.getGroup().getCountry().getCountryId();
+        final String refno = offer.getRefNo();
+        if (!refno.startsWith(countryCode)) {
+            throw new VerificationException("The reference number is not valid for this country. Received '" + refno.substring(0, 2) + "' but expected '" + countryCode + "'.");
+        }
     }
 
     // TODO Should perform the delete operation based on the refno

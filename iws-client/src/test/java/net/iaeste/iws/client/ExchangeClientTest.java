@@ -14,12 +14,9 @@
  */
 package net.iaeste.iws.client;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -35,6 +32,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 /**
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -44,11 +45,11 @@ public class ExchangeClientTest {
 
     private final Exchange exchange = new ExchangeClient();
     private static final Access access = new AccessClient();
-    private static AuthenticationToken token;
+    private static AuthenticationToken token = null;
 
     @BeforeClass
     public static void registerSession() {
-        final AuthenticationResponse response = access.generateSession(new AuthenticationRequest("austria", "austria"));
+        final AuthenticationResponse response = access.generateSession(new AuthenticationRequest("poland", "poland"));
         assertThat(response.isOk(), is(true));
         token = new AuthenticationToken(response.getToken());
     }
@@ -56,6 +57,21 @@ public class ExchangeClientTest {
     @AfterClass
     public static void after() {
         access.deprecateSession(token);
+    }
+
+    @Test
+    public void testProcessOfferWithInvalidRefno() {
+        final Offer minimalOffer = OfferTestUtility.getMinimalOffer();
+        // We're logged in as Poland, so the Offer must start with "PL".
+        minimalOffer.setRefNo("GB-2012-0001");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(minimalOffer);
+        final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
+
+        // verify processResponse
+        assertThat(processResponse.isOk(), is(false));
+        assertThat(processResponse.getError(), is(IWSErrors.VERIFICATION_ERROR));
+        assertThat(processResponse.getMessage(), is("The reference number is not valid for this country. Received 'GB' but expected 'PL'."));
     }
 
     @Test

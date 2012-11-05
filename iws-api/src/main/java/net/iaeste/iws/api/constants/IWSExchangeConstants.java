@@ -15,6 +15,8 @@
 
 package net.iaeste.iws.api.constants;
 
+import java.util.regex.Pattern;
+
 /**
  * Exchange specific constants for the IW Services.
  *
@@ -23,6 +25,9 @@ package net.iaeste.iws.api.constants;
  * @since 1.7
  */
 public interface IWSExchangeConstants {
+
+    String REFNO_FORMAT = "[A-Z]{2}-\\d{4}-\\d{4}(-[A-Z0-9]{2})?";
+    Pattern REFNO_PATTERN = Pattern.compile(REFNO_FORMAT);
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.FieldOfStudy}

@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
@@ -43,19 +42,19 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.junit.Assert.assertThat;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class OfferTest {
+
     private Offer offer = getMinimalOffer();
     /** field is used in methods for verifing dates, field is initialized in {@link #setUpDates} method */
     private static final Date[] dates = new Date[10];
     private static final String[] validRefNos = { "IN-2011-0001-KU", "GB-2011-0001-01", "AT-2012-1234-AB", "GB-2011-0001" };
 
     private static final String[] invalidRefNos = { "GB-2011-00001", "UK-2011-00001", "INE-2011-0001-KU", "GB-2011-w001", "PL-201w-0001", "GB-2011-0001-101",
-            "GB-10000-00001-01", "GB-2011-a000-01", "GB-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01", "XX-2011-a000-01",
-            "XX-2011-0000-01" };
+            "GB-10000-00001-01", "GB-2011-a000-01", "GB-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01" };
     static final String ERRMSG_NOT_NULL = " field cannot be null";
     static final String ERRMSG_PRESENCE = "if 'from(2)' is present then 'to(2)' should be present";
     private static final String ERRMSG_LENGTH = " incorrect length";

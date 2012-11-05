@@ -53,12 +53,9 @@ CREATE TABLE offers (
     study_levels              varchar(25)   NOT NULL  CHECK(length(study_levels) > 0),
     study_fields              varchar(1000) NOT NULL  CHECK(length(study_fields) > 0),
     specializations           varchar(1000),
--- owner id, TODO michal: change to NOT NULL if GroupEntity works
-    group_id                  INTEGER       NULL  REFERENCES groups(id) ON DELETE CASCADE,
---    group_id                  INTEGER       NOT NULL  REFERENCES groups(id) ON DELETE CASCADE,
-
-    modified                  TIMESTAMP  DEFAULT now(),
-    created                   TIMESTAMP  DEFAULT now(),
+    group_id                  integer       not null references groups (id) on delete cascade,
+    modified                  timestamp default now(),
+    created                   timestamp default now(),
 
     primary key (id),
     unique (ref_no)

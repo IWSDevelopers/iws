@@ -73,6 +73,8 @@ public class ExchangeService extends CommonService {
         final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
 
         if (existingEntity == null) {
+            // Add the Group to the Object
+            newEntity.setGroup(authentication.getGroup());
             // Persist the Object with history
             dao.persist(authentication, newEntity);
         } else {

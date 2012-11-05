@@ -40,24 +40,29 @@ import java.util.Date;
  */
 @NamedQueries({
         @NamedQuery(name = "group.findAll",
-                query = "select g from GroupEntity g"),
+                    query = "select g from GroupEntity g"),
         @NamedQuery(name = "group.findById",
-                query = "select g from GroupEntity g " +
-                        "where g.id = :id"),
+                    query = "select g from GroupEntity g " +
+                            "where g.id = :id"),
         @NamedQuery(name = "group.findByExternalId",
-                query = "select g from GroupEntity g " +
-                        "where g.externalId = :id"),
+                    query = "select g from GroupEntity g " +
+                            "where g.externalId = :id"),
+        @NamedQuery(name = "group.findByUserAndType",
+                    query = "select g from GroupEntity g, UserGroupEntity ug " +
+                            "where g.id = ug.group.id" +
+                            "  and g.groupType.grouptype = :type" +
+                            "  and ug.user.id = :uid"),
         @NamedQuery(name = "group.findByPermission",
-                query = "select g from GroupEntity g, UserPermissionView v " +
-                        "where g.id = v.id.groupId" +
-                        "  and v.id.userId = :uid" +
-                        "  and v.permission = :permission"),
+                    query = "select g from GroupEntity g, UserPermissionView v " +
+                            "where g.id = v.id.groupId" +
+                            "  and v.id.userId = :uid" +
+                            "  and v.permission = :permission"),
         @NamedQuery(name = "group.findByExternalGroupIdAndPermission",
-                query = "select g from GroupEntity g, UserPermissionView v " +
-                        "where g.id = v.id.groupId" +
-                        "  and v.id.userId = :uid" +
-                        "  and g.externalId = :egid" +
-                        "  and v.permission = :permission")
+                    query = "select g from GroupEntity g, UserPermissionView v " +
+                            "where g.id = v.id.groupId" +
+                            "  and v.id.userId = :uid" +
+                            "  and g.externalId = :egid" +
+                            "  and v.permission = :permission")
 })
 @Entity
 @Table(name = "groups")

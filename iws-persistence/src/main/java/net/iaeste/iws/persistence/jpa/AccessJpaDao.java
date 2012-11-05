@@ -29,6 +29,7 @@ import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
@@ -199,6 +200,28 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         } else {
             throw new AuthorizationException("User permission could not be uniquely identified, please provide the Group for the user.");
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findGroup(final UserEntity user, final GroupType type) {
+        final Query query = entityManager.createNamedQuery("group.findByUserAndType");
+        query.setParameter("uid", user.getId());
+        query.setParameter("type", type.name());
+        final List<GroupEntity> found = query.getResultList();
+
+        final GroupEntity group;
+        if (found.size() == 1) {
+            group = found.get(0);
+        } else if (found.isEmpty()) {
+            group = null;
+        } else {
+            throw new PersistenceException(IWSErrors.WARNING, "Unable to fund a unique record for the user " + user + " with a Group of type " + type.name());
+        }
+
+        return group;
     }
 
     /**

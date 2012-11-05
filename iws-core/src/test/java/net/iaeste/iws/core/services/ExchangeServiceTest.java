@@ -95,6 +95,7 @@ public class ExchangeServiceTest {
 
     @Test
     public void testProcessingOffersCreateRequest() {
+        final Authentication authentication = new Authentication(null, null);
         final Offer offer = offers.get(0);
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 
@@ -104,7 +105,7 @@ public class ExchangeServiceTest {
         request.verify(); // make sure that request is valid
 
         // Execute the test
-        final OfferResponse result = client.manageOffer(null, request);
+        final OfferResponse result = client.manageOffer(authentication, request);
 
         // expect correct response
         assertThat(result.isOk(), is(true));

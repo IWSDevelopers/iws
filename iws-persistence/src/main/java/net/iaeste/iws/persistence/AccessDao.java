@@ -52,6 +52,8 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroup(UserEntity user, String groupId, Permission permission);
 
+    GroupEntity findGroup(UserEntity user, GroupType type);
+
     /**
      * Find a Role by the name. However, as it is possible to have multiple
      * roles with the same name, but assigned to different Countries or Groups,

@@ -189,7 +189,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
             query.setParameter("egid", groupId);
         }
         query.setParameter("uid", user.getId());
-        query.setParameter("permission", permission.name());
+        query.setParameter("permission", permission);
         final List<GroupEntity> groups = query.getResultList();
 
         if (groups.size() == 1) {

@@ -17,6 +17,8 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
+import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.Fallible;
@@ -116,8 +118,8 @@ public final class AccessService {
         final List<Authorization> result = new ArrayList<>(permissions.size());
 
         for (final UserPermissionView view : permissions) {
-            final String permission = view.getPermission();
-            final String groupType = view.getGroupType();
+            final Permission permission = view.getPermission();
+            final GroupType groupType = view.getGroupType();
             final Authorization authorization = new Authorization(permission, groupType);
 
             result.add(authorization);

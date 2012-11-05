@@ -37,9 +37,11 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * ToDo Kim; Add JavaDoc for all requests.
+ *
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public interface Exchange {
 

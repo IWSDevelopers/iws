@@ -19,13 +19,13 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.requests.ManageUserAccountRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.ProcessUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
@@ -153,7 +153,7 @@ public class AdministrationService {
         }
     }
 
-    public void processUsers(final Authentication authentication, final ProcessUserRequest request) {
+    public void processUsers(final Authentication authentication, final ManageUserAccountRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 

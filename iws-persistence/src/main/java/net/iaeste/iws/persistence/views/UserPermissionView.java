@@ -15,11 +15,15 @@
 package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.Permission;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -55,7 +59,8 @@ public class UserPermissionView extends AbstractView {
     private Integer groupTypeId = null;
 
     @Column(name = "grouptype")
-    private String groupType = null;
+    @Enumerated(EnumType.STRING)
+    private GroupType groupType = null;
 
     @Column(name = "rid")
     private Integer roleId = null;
@@ -64,7 +69,8 @@ public class UserPermissionView extends AbstractView {
     private String roleName = null;
 
     @Column(name = "permission")
-    private String permission = null;
+    @Enumerated(EnumType.STRING)
+    private Permission permission = null;
 
     public void setId(final UserPermissionViewId id) {
         this.id = id;
@@ -122,11 +128,11 @@ public class UserPermissionView extends AbstractView {
         return groupTypeId;
     }
 
-    public void setGroupType(final String groupType) {
+    public void setGroupType(final GroupType groupType) {
         this.groupType = groupType;
     }
 
-    public String getGroupType() {
+    public GroupType getGroupType() {
         return groupType;
     }
 
@@ -146,11 +152,11 @@ public class UserPermissionView extends AbstractView {
         return roleName;
     }
 
-    public void setPermission(final String permission) {
+    public void setPermission(final Permission permission) {
         this.permission = permission;
     }
 
-    public String getPermission() {
+    public Permission getPermission() {
         return permission;
     }
 

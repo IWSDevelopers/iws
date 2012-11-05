@@ -33,8 +33,8 @@ public class Authorization implements Serializable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String permission = null;
-    private String groupType = null;
+    private Permission permission = null;
+    private GroupType groupType = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -50,8 +50,8 @@ public class Authorization implements Serializable {
      * @param groupType   Group Type
      */
     public Authorization(final Permission permission, final GroupType groupType) {
-        this.permission = permission.name();
-        this.groupType = groupType.name();
+        this.permission = permission;
+        this.groupType = groupType;
     }
 
     /**
@@ -66,37 +66,23 @@ public class Authorization implements Serializable {
         }
     }
 
-    /**
-     * String Constructor, for our initial testing, we just need something that
-     * works.
-     *
-     * @param permission  Authorization
-     * @param groupType   Group Type
-     * @deprecated this was only added temporarily for testing
-     */
-    @Deprecated
-    public Authorization(final String permission, final String groupType) {
-        this.permission = permission;
-        this.groupType = groupType;
-    }
-
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
     public void setPermission(final Permission permission) {
-        this.permission = permission.name();
+        this.permission = permission;
     }
 
-    public String getPermission() {
+    public Permission getPermission() {
         return permission;
     }
 
     public void setGroupType(final GroupType groupType) {
-        this.groupType = groupType.name();
+        this.groupType = groupType;
     }
 
-    public String getGroupType() {
+    public GroupType getGroupType() {
         return groupType;
     }
 
@@ -119,11 +105,11 @@ public class Authorization implements Serializable {
 
         final Authorization that = (Authorization) obj;
 
-        if (groupType != null ? !groupType.equals(that.groupType) : that.groupType != null) {
+        if (groupType != null ? groupType != that.groupType : that.groupType != null) {
             return false;
         }
 
-        return !(permission != null ? !permission.equals(that.permission) : that.permission != null);
+        return !(permission != null ? permission != that.permission : that.permission != null);
     }
 
     /**

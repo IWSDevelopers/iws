@@ -18,13 +18,13 @@ import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.requests.ManageUserAccountRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.ProcessUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FacultyResponse;
@@ -69,7 +69,7 @@ public class AdministrationController extends CommonController implements Admini
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.CREATE_USER);
+            final Authentication authentication = verifyAccess(token, Permission.MANAGE_USER_ACCOUNTS);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();
@@ -106,12 +106,12 @@ public class AdministrationController extends CommonController implements Admini
      * {@inheritDoc}
      */
     @Override
-    public Fallible processUser(final AuthenticationToken token, final ProcessUserRequest request) {
+    public Fallible alterUserAccount(final AuthenticationToken token, final ManageUserAccountRequest request) {
         LOG.trace("Starting processUsers()");
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_USERS);
+            final Authentication authentication = verifyAccess(token, Permission.MANAGE_USER_ACCOUNTS);
             verify(request, "To be clarified.");
 
             final AdministrationService service = factory.prepareAdministrationService();

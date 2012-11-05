@@ -68,7 +68,7 @@ public class ExchangeService extends CommonService {
      * @param request        Offer Request information, i.e. OfferDTO
      * @return OfferResponse with error information
      */
-    public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
+    public OfferResponse manageOffer(final Authentication authentication, final ProcessOfferRequest request) {
         final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
         final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
 

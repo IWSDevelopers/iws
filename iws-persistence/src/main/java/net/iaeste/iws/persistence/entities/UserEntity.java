@@ -48,12 +48,14 @@ import java.util.Date;
         @NamedQuery(
                 name = "user.loginCredentials",
                 query = "select u from UserEntity u " +
-                        "where u.userName = :username" +
+                        "where u.status = 'ACTIVE'" +
+                        "  and u.userName = :username" +
                         "  and u.password = :password"),
         @NamedQuery(
                 name = "user.findByUserName",
                 query = "select u from UserEntity u " +
-                        "where u.userName = :username"),
+                        "where u.status <> 'DELETED'" +
+                        "  and u.userName = :username"),
         @NamedQuery(
                 name = "user.findByExternalId",
                 query = "select u from UserEntity u " +

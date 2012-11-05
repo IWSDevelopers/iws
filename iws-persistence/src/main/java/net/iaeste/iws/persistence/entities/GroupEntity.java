@@ -39,15 +39,12 @@ import java.util.Date;
  * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "group.findAll",
+        @NamedQuery(name = "group.findAll",
                 query = "select g from GroupEntity g"),
-        @NamedQuery(
-                name = "group.findById",
+        @NamedQuery(name = "group.findById",
                 query = "select g from GroupEntity g " +
                         "where g.id = :id"),
-        @NamedQuery(
-                name = "group.findByExternalId",
+        @NamedQuery(name = "group.findByExternalId",
                 query = "select g from GroupEntity g " +
                         "where g.externalId = :id"),
         @NamedQuery(name = "group.findByPermission",

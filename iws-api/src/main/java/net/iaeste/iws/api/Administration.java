@@ -15,13 +15,13 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.requests.ManageUserAccountRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.ProcessUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
@@ -29,12 +29,32 @@ import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 
 /**
+ * Handles Administration of User Accounts, Groups, Roles and Countries.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 public interface Administration {
 
+    /**
+     * Creates a new User Account, with the data from the Request Object. The
+     * will have Status {@link net.iaeste.iws.api.enums.UserStatus#NEW}, and an
+     * e-mail is send to the user via the provided username. The e-mail will
+     * contain an Activation Link, which is then used to activate the
+     * account.<br />
+     *   Note, the account cannot be used before it is activated. If the Account
+     * is been deleted before Activation is completed, then all information is
+     * removed from the system. If the Account is deleted after activation, the
+     * User Account Object will remain in the system, though all data will be
+     * removed.
+     *
+     * @param token    Authentication information about the user invoking the
+     *                 request
+     * @param request  Request data, must contain username, password as well as
+     *                 first and last name
+     * @return Standard Error object
+     */
     Fallible createUser(AuthenticationToken token, CreateUserRequest request);
 
     /**
@@ -47,10 +67,34 @@ public interface Administration {
      * being updated to status "active", the code is removed and the updates are
      * saved.
      *
-     * @param activationString
+     * @param activationString  Code used to activate the Account with
+     * @return Standard Error object
      */
     Fallible activateUser(String activationString);
-    Fallible processUser(AuthenticationToken token, ProcessUserRequest request);
+
+    /**
+     * With this request, it is possible to alter the User Account specified in
+     * the Request Object. The changes can include Blocking an Active Account,
+     * and thus preventing the user from accessing or re-activating a Blocked
+     * Account or even Delete an Account.<br />
+     *   Note; deletion is a non-reversible action. Although the Account is
+     * deleted, only private data associated with the account is deleted, the
+     * account itself remains in the system with status deleted.
+     *
+     * @param token    Authentication information about the user invoking the
+     *                 request
+     * @param request  Request data, must contain the User Account and the new
+     *                 state for it
+     * @return Standard Error object
+     */
+    Fallible alterUserAccount(AuthenticationToken token, ManageUserAccountRequest request);
+
+    /**
+     *
+     * @param token
+     * @param request
+     * @return
+     */
     UserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
 
     Fallible processGroups(AuthenticationToken token, GroupRequest request);

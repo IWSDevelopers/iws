@@ -144,11 +144,11 @@ public class ExchangeController extends CommonController implements Exchange {
         OfferResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.MANAGE_OFFERS);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();
-            response = service.processOffer(authentication, request);
+            response = service.manageOffer(authentication, request);
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());
         }
@@ -166,7 +166,7 @@ public class ExchangeController extends CommonController implements Exchange {
         OfferResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.MANAGE_OFFERS);
             verify(request, "To be clarified.");
 
             final ExchangeService service = factory.prepareOfferService();

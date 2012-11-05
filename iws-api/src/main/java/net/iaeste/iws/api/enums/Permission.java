@@ -66,7 +66,12 @@ public enum Permission {
     FETCH_REGIONALS_GROUP,
 
     // Access Control
-    PROCESS_USERS,
+    /**
+     *
+     * {@link net.iaeste.iws.api.Administration#createUser(net.iaeste.iws.api.dtos.AuthenticationToken, net.iaeste.iws.api.requests.CreateUserRequest)}
+     * {@link net.iaeste.iws.api.Administration#alterUserAccount(net.iaeste.iws.api.dtos.AuthenticationToken, net.iaeste.iws.api.requests.ManageUserAccountRequest)}
+     */
+    MANAGE_USER_ACCOUNTS,
     FETCH_USERS,
 
     /**
@@ -79,15 +84,14 @@ public enum Permission {
     PROCESS_USER_GROUP_ASSIGNMENT,
     FETCH_GROUP_MEMBERS,
     CHANGE_GROUP_OWNER,
-    ADD_USER_GROUP_ASSOCIATION,
-    ALTER_USER_GROUP_ASSOCIATION,
+    MANAGE_USER_GROUP_ASSOCIATION,
 
     /***************************
      * Exchange
      */
 
     // Offer
-    PROCESS_OFFERS,
+    MANAGE_OFFERS,
     LOOKUP_OFFERS,
     PROCESS_OFFER_TEMPLATES,
     LOOKUP_OFFER_TEMPLATES,
@@ -99,5 +103,5 @@ public enum Permission {
 
     // Student
     PROCESS_STUDENTS,
-    CREATE_USER, LOOKUP_STUDENTS
+    LOOKUP_STUDENTS
 }

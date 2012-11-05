@@ -104,7 +104,7 @@ public class ExchangeServiceTest {
         request.verify(); // make sure that request is valid
 
         // Execute the test
-        final OfferResponse result = client.processOffer(null, request);
+        final OfferResponse result = client.manageOffer(null, request);
 
         // expect correct response
         assertThat(result.isOk(), is(true));
@@ -131,7 +131,7 @@ public class ExchangeServiceTest {
         request.verify(); // make sure that request is valid
 
         // Execute the test
-        final OfferResponse result = client.processOffer(auth, request);
+        final OfferResponse result = client.manageOffer(auth, request);
 
         // expect correct response
         assertThat(result.isOk(), is(true));

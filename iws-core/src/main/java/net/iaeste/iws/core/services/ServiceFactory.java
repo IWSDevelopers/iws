@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.persistence.StudentDao;
+import net.iaeste.iws.persistence.jpa.StudentJpaDao;
 import net.iaeste.iws.persistence.notification.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.OfferDao;
@@ -36,6 +38,8 @@ import javax.persistence.EntityManager;
  */
 public final class ServiceFactory {
 
+    // Note, for now the Constructor sets the EntityManager, it is a long-term
+    // requirement, that we instead should have setters for the DAO's.
     private final EntityManager entityManager;
     private final Notifications notifications;
     private final AccessDao accessDao;
@@ -52,9 +56,7 @@ public final class ServiceFactory {
     }
 
     public AccessService prepareAuthenticationService() {
-        final AccessDao dao = new AccessJpaDao(entityManager);
-
-        return new AccessService(dao);
+        return new AccessService(accessDao);
     }
 
     public FacultyService prepareFacultyService() {
@@ -63,12 +65,12 @@ public final class ServiceFactory {
 
     public ExchangeService prepareOfferService() {
         final OfferDao dao = new OfferJpaDao(entityManager);
-
         return new ExchangeService(dao, notifications);
     }
 
     public StudentService prepareStudentService() {
-        return new StudentService(entityManager);
+        final StudentDao dao = new StudentJpaDao(entityManager);
+        return new StudentService(dao);
     }
 
     public AccessDao getAccessDao() {

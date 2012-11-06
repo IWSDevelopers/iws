@@ -70,9 +70,9 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processFaculties(final AuthenticationToken token, final FacultyRequest request) {
+    public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
         try {
-            return exchange.processFaculties(token, request);
+            return exchange.manageFaculties(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -130,9 +130,9 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         try {
-            return exchange.processOfferTemplates(token, request);
+            return exchange.manageOfferTemplate(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -154,9 +154,9 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
+    public Fallible managePublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
         try {
-            return exchange.processPublishGroups(token, request);
+            return exchange.managePublishGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -178,9 +178,9 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processStudents(final AuthenticationToken token, final StudentRequest request) {
+    public Fallible manageStudent(final AuthenticationToken token, final StudentRequest request) {
         try {
-            return exchange.processStudents(token, request);
+            return exchange.manageStudent(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

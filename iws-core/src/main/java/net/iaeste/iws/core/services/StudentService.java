@@ -19,20 +19,19 @@ import net.iaeste.iws.api.requests.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.persistence.Authentication;
-
-import javax.persistence.EntityManager;
+import net.iaeste.iws.persistence.StudentDao;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class StudentService {
+public final class StudentService {
 
-    private final EntityManager entityManager;
+    private final StudentDao studentDao;
 
-    public StudentService(final EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public StudentService(final StudentDao studentDao) {
+        this.studentDao = studentDao;
     }
 
     public void processStudents(final Authentication authentication, final StudentRequest request) {

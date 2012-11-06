@@ -85,8 +85,8 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        return exchange.processFaculties(token, request);
+    public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
+        return exchange.manageFaculties(token, request);
     }
 
     /**
@@ -125,8 +125,8 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
-        return exchange.processOfferTemplates(token, request);
+    public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+        return exchange.manageOfferTemplate(token, request);
     }
 
     /**
@@ -141,8 +141,8 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
-        return exchange.processPublishGroups(token, request);
+    public Fallible managePublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
+        return exchange.managePublishGroup(token, request);
     }
 
     /**
@@ -157,8 +157,8 @@ public final class SpringExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processStudents(final AuthenticationToken token, final StudentRequest request) {
-        return exchange.processStudents(token, request);
+    public Fallible manageStudent(final AuthenticationToken token, final StudentRequest request) {
+        return exchange.manageStudent(token, request);
     }
 
     /**

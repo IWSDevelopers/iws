@@ -47,7 +47,7 @@ public interface Exchange {
 
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 
-    Fallible processFaculties(AuthenticationToken token, FacultyRequest request);
+    Fallible manageFaculties(AuthenticationToken token, FacultyRequest request);
 
     FacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
 
@@ -57,15 +57,15 @@ public interface Exchange {
 
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
-    Fallible processOfferTemplates(AuthenticationToken token, OfferTemplateRequest request);
+    Fallible manageOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
 
     OfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
 
-    Fallible processPublishGroups(AuthenticationToken token, PublishGroupRequest request);
+    Fallible managePublishGroup(AuthenticationToken token, PublishGroupRequest request);
 
     PublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
-    Fallible processStudents(AuthenticationToken token, StudentRequest request);
+    Fallible manageStudent(AuthenticationToken token, StudentRequest request);
 
     StudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
 }

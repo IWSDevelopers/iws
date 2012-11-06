@@ -94,8 +94,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        LOG.trace("Starting processFaculties()");
+    public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
+        LOG.trace("Starting manageFaculties()");
         Fallible response;
 
         try {
@@ -109,7 +109,7 @@ public class ExchangeController extends CommonController implements Exchange {
             response = new FacultyResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processFaculties()");
+        LOG.trace("Finished manageFaculties()");
         return response;
     }
 
@@ -206,8 +206,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processOfferTemplates(final AuthenticationToken token, final OfferTemplateRequest request) {
-        LOG.trace("Starting processOfferTemplates()");
+    public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+        LOG.trace("Starting manageOfferTemplate()");
         Fallible response;
 
         try {
@@ -221,7 +221,7 @@ public class ExchangeController extends CommonController implements Exchange {
             response = new OfferTemplateResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processOfferTemplates()");
+        LOG.trace("Finished manageOfferTemplate()");
         return response;
     }
 
@@ -251,8 +251,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishGroups(final AuthenticationToken token, final PublishGroupRequest request) {
-        LOG.trace("Starting processPublishGroups()");
+    public Fallible managePublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
+        LOG.trace("Starting managePublishGroup()");
         Fallible response;
 
         try {
@@ -266,7 +266,7 @@ public class ExchangeController extends CommonController implements Exchange {
             response = new PublishGroupResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processPublishGroups()");
+        LOG.trace("Finished managePublishGroup()");
         return response;
     }
 
@@ -296,8 +296,8 @@ public class ExchangeController extends CommonController implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processStudents(final AuthenticationToken token, final StudentRequest request) {
-        LOG.trace("Starting processStudents()");
+    public Fallible manageStudent(final AuthenticationToken token, final StudentRequest request) {
+        LOG.trace("Starting manageStudent()");
         Fallible response;
 
         try {
@@ -311,7 +311,7 @@ public class ExchangeController extends CommonController implements Exchange {
             response = new StudentResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processStudents()");
+        LOG.trace("Finished manageStudent()");
         return response;
     }
 

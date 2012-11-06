@@ -48,7 +48,7 @@ import java.util.UUID;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class AdministrationService {
+public final class AdministrationService {
 
     private final AccessDao dao;
     private final Notifications notifications;

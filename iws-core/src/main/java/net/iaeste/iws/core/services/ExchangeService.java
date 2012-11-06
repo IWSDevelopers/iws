@@ -47,7 +47,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class ExchangeService extends CommonService {
+public final class ExchangeService extends CommonService {
 
     private final OfferDao dao;
     private final Notifications notifications;

@@ -71,7 +71,7 @@ public interface Access {
      * Used to save a users session Data in the IWS.
      *
      * @param token  User Authentication Request object
-     * @param request  SesseionData Request Object
+     * @param request  SessionData Request Object
      * @return Standard Error object
      */
     Fallible saveSessionData(AuthenticationToken token, SessionDataRequest request);

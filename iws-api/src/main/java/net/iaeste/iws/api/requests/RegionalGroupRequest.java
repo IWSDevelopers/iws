@@ -24,7 +24,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class RegionRequest extends AbstractVerification {
+public class RegionalGroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -33,7 +33,7 @@ public class RegionRequest extends AbstractVerification {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public RegionRequest() {
+    public RegionalGroupRequest() {
     }
 
     // =========================================================================

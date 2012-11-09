@@ -76,4 +76,8 @@ public final class ServiceFactory {
     public AccessDao getAccessDao() {
         return accessDao;
     }
+
+    public CommitteeService prepareCommitteeService() {
+        return new CommitteeService();
+    }
 }

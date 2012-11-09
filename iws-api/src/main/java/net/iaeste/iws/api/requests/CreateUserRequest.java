@@ -63,12 +63,28 @@ public class CreateUserRequest extends AbstractVerification {
     }
 
     /**
+     * Default Constructor for creating users without a pre-defined Password.
+     * However, the username and the first/last names must be set. The System
+     * will automatically generate a password, and set it in the e-mail
+     * delivered.
+     *
+     * @param username  The users e-mail address, is used as username in IWS
+     * @param firstname The users given name, can only be altered by the DBA's
+     * @param lastname  The users Family name, can only be altered by the DBA's
+     */
+    public CreateUserRequest(final String username, final String firstname, final String lastname) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
+    /**
      * Default Constructor. All users generated must have this information set.
      *
-     * @param username   The users e-mail address, is used as username in IWS
-     * @param password   Chosen Password in clear-text
-     * @param firstname  The users given name, can only be altered by the DBA's
-     * @param lastname   The users Family name, can only be altered by the DBA's
+     * @param username  The users e-mail address, is used as username in IWS
+     * @param password  Chosen Password in clear-text
+     * @param firstname The users given name, can only be altered by the DBA's
+     * @param lastname  The users Family name, can only be altered by the DBA's
      */
     public CreateUserRequest(final String username, final String password, final String firstname, final String lastname) {
         this.username = username;
@@ -124,9 +140,11 @@ public class CreateUserRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-
+        if (!EMAIL_PATTERN.matcher(username).matches()) {
+            validation.put("username", "invalid e-mail address.");
+        }
         isWithinLimits(validation, "username", username, 1, 50);
-        isNotNullOrEmpty(validation, "password", password);
+        isNotEmpty(validation, "password", password);
         isWithinLimits(validation, "firstname", firstname, 1, 50);
         isWithinLimits(validation, "lastname", lastname, 1, 50);
 

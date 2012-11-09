@@ -20,10 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.6
- * @noinspection RedundantNoArgConstructor
+ * @since   1.7
  */
 public final class CountryRequest extends AbstractVerification {
 

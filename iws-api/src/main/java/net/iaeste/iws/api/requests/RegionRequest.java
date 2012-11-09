@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchUserRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.RegionRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -24,7 +24,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchUserRequest extends AbstractVerification {
+public class RegionRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -33,7 +33,7 @@ public final class FetchUserRequest extends AbstractVerification {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchUserRequest() {
+    public RegionRequest() {
     }
 
     // =========================================================================

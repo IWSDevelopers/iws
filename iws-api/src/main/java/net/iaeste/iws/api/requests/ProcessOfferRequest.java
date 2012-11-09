@@ -23,7 +23,6 @@ import java.util.Map;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection CastToConcreteClass
  * @since   1.7
  */
 public final class ProcessOfferRequest extends AbstractVerification {

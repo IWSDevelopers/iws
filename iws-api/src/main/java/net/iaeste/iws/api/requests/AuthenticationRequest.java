@@ -23,7 +23,7 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
+ * @noinspection CastToConcreteClass
  */
 public final class AuthenticationRequest extends AbstractVerification {
 
@@ -110,7 +110,6 @@ public final class AuthenticationRequest extends AbstractVerification {
             return false;
         }
 
-        //noinspection CastToConcreteClass
         final AuthenticationRequest that = (AuthenticationRequest) obj;
         if (password != null ? !password.equals(that.password) : that.password != null) {
             return false;

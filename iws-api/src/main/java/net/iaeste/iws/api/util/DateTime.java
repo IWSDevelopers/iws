@@ -104,7 +104,7 @@ public class DateTime implements Serializable {
             return true;
         }
 
-        if (!(obj instanceof Date)) {
+        if (!(obj instanceof DateTime)) {
             return false;
         }
 

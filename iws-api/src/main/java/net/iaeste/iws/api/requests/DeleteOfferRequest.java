@@ -21,10 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection CastToConcreteClass
- * @since 1.7
  */
 public final class DeleteOfferRequest extends AbstractVerification {
 

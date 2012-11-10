@@ -73,7 +73,7 @@ public abstract class AbstractVerification implements Verifiable {
 
     /**
      * The method takes a value, and verifies that if it is not null, that it
-     * is neither empty. If the value is not null but empty, then the
+     * is then also not empty. If the value is not null but empty, then the
      * information is added to the validation Map.<br />
      *   If an error was found, then a false is returned, otherwise the method
      * will return true.

@@ -29,13 +29,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection AssignmentToDateFieldFromParameter
+ * @since 1.7
  */
 @NamedQueries({
         @NamedQuery(
@@ -82,7 +83,9 @@ public class UserEntity implements IWSEntity, Notifiable {
     @Column(nullable = false, name = "external_id")
     private String externalId = null;
 
-    /** The username is the users private e-mail address. */
+    /**
+     * The username is the users private e-mail address.
+     */
     @Column(nullable = false, name = "username")
     private String userName = null;
 
@@ -102,7 +105,8 @@ public class UserEntity implements IWSEntity, Notifiable {
     @Column(nullable = false, name = "firstname")
     private String firstname = null;
 
-    /** The users lastname, can only be altered by the DBA's. Although the
+    /**
+     * The users lastname, can only be altered by the DBA's. Although the
      * lastname is not a system value, it is stored in this Entity, rather than
      * the Person Entity, since the value should exists, also when a user has
      * been removed from the system.
@@ -136,17 +140,29 @@ public class UserEntity implements IWSEntity, Notifiable {
      * his or her password, and have requested a new one.
      */
     @Column(nullable = true, name = "temporary_code")
-    private String code= null;
+    private String code = null;
 
-    /** Last time the User Account was modified. */
+    /**
+     * Last time the User Account was modified.
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified")
     private Date modified = new Date();
 
-    /** Timestamp when the user was created. */
+    /**
+     * Timestamp when the user was created.
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
     private Date created = new Date();
+
+    /**
+     * This field, is used to store information from the Business Logic, that
+     * has to be used when generating a notification. The information is not
+     * persisted.
+     */
+    @Transient
+    private String temporary = null;
 
     // =========================================================================
     // Entity Constructors
@@ -267,6 +283,17 @@ public class UserEntity implements IWSEntity, Notifiable {
     }
 
     /**
+     * This setter is for the temporary, none-persisted information, that can be
+     * added to the User Object. The information is used for the Notifcation
+     * Generation.
+     *
+     * @param temporary Temporary Information, not persisted
+     */
+    public void setTemporary(final String temporary) {
+        this.temporary = temporary;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -278,8 +305,11 @@ public class UserEntity implements IWSEntity, Notifiable {
         // otherwise we send the Forgot Password Notification
         final String message;
         if (status == UserStatus.NEW) {
-            message = "Activation Code = " + code;
+            message = "New User Account generated, with password = '" +
+                      temporary + "' and Activation Code = " + code;
         } else {
+            // temporary stores information about the type of notification,
+            // which can be either forgot password or change username
             message = "Reset Password Code = " + code;
         }
 

@@ -24,7 +24,6 @@ import java.util.Map;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection RedundantNoArgConstructor
  */
 public final class FetchEmployerInformationRequest extends AbstractVerification {
 

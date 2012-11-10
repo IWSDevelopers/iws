@@ -70,7 +70,7 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.MANAGE_USER_ACCOUNTS);
-            verify(request, "To be clarified.");
+            verify(request, "Cannot process a null request.");
 
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.createUser(authentication, request);

@@ -32,6 +32,7 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
+import net.iaeste.iws.common.utils.PasswordGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -96,10 +97,23 @@ public final class AdministrationService {
     private UserEntity createAndPersistUserEntity(final String username, final CreateUserRequest request) {
         final UserEntity user = new UserEntity();
 
+        // First, the Password. If no password is specified, then we'll generate
+        // one. Regardlessly, the password is set in the UserEntity, for the
+        // Notification
+        final String password;
+        if (request.getPassword() == null) {
+            password = PasswordGenerator.generatePassword();
+        } else {
+            password = request.getPassword();
+        }
+
         // To avoid misusage all Users have a unique external Id
         user.setExternalId(UUID.randomUUID().toString());
+
+        // Now, set all the information about the user and persist the Account
         user.setUserName(username);
-        user.setPassword(HashcodeGenerator.generateSHA256(request.getPassword()));
+        user.setTemporary(password);
+        user.setPassword(HashcodeGenerator.generateSHA256(password));
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
         user.setCode(generateActivationCode(request));

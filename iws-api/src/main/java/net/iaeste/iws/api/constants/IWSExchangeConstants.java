@@ -60,6 +60,17 @@ public interface IWSExchangeConstants {
     int MAX_OFFER_WORK_DESCRIPTION_SIZE = 1000;
 
     /**
+     * Defines the minimum length of other requirements
+     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     */
+    int MIN_OFFER_OTHER_REQUIREMENTS_SIZE = 0;
+    /**
+     * Defines the maximum length of other requirements
+     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     */
+    int MAX_OFFER_OTHER_REQUIREMENTS_SIZE = 500;
+
+    /**
      * Defines the minimum number of weeks required
      * for an {@link net.iaeste.iws.api.dtos.Offer}
      */

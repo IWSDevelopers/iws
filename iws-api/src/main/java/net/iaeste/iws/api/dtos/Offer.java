@@ -1016,6 +1016,7 @@ public final class Offer extends AbstractVerification {
         validateSizeOfFieldOfStudies(validation);
         validateSizeOfSpecializations(validation);
         validateLengthOfWorkDescription(validation);
+        validateLengthOfOtherRequirements(validation);
         validateFieldDependencies(validation);
 
         return validation;
@@ -1072,7 +1073,7 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
-     * Checks if minimum and maximum weeks values are correct.
+     * Checks if length of work description is correct.
      * <ul>
      * <li>length of {@link #workDescription} should be between
      * {@link IWSExchangeConstants#MIN_OFFER_WORK_DESCRIPTION_SIZE}
@@ -1085,6 +1086,23 @@ public final class Offer extends AbstractVerification {
     private boolean validateLengthOfWorkDescription(final Map<String, String> validation) {
         return isWithinLimits(validation, "workDescription", workDescription, IWSExchangeConstants.MIN_OFFER_WORK_DESCRIPTION_SIZE,
                 IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE);
+    }
+
+    /**
+     * Checks if length of other requirements (if set) is correct.
+     * <ul>
+     * <li>length of {@link #otherRequirements} should be between
+     * {@link IWSExchangeConstants#MIN_OFFER_OTHER_REQUIREMENTS_SIZE}
+     * and {@link IWSExchangeConstants#MAX_OFFER_OTHER_REQUIREMENTS_SIZE}</li>
+     * </ul>
+     *
+     * @param validation Map with Error information
+     * @return true if {@link #otherRequirements} is valid
+     */
+    private boolean validateLengthOfOtherRequirements(final Map<String, String> validation) {
+        return otherRequirements == null || isWithinLimits(validation, "otherRequirements", otherRequirements,
+                IWSExchangeConstants.MIN_OFFER_OTHER_REQUIREMENTS_SIZE,
+                IWSExchangeConstants.MAX_OFFER_OTHER_REQUIREMENTS_SIZE);
     }
 
     /**

@@ -12,86 +12,67 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.dtos;
 
-import junit.framework.Assert;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import org.junit.Before;
 import org.junit.Test;
 
-import static net.iaeste.iws.api.dtos.StudentTestUtility.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
- * @author Teis Lindemark / last $Author:$
+ * @author  Teis Lindemark / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public class StudentTest {
-    private Student student = getMinimalStudent();
+public final class StudentTest {
 
-    static final String ERRMSG_NOT_NULL = " field cannot be null";
-
-    @Before
-    public void before() {
-        this.student = getMinimalStudent();
-    }
+    private static final Long STUDENT_ID = 1L;
+    private static final String STUDENT_NAME = "Test Student";
+    private static final Group GROUP = new Group();
 
     @Test
     public void testCopyConstructor() {
-        final Student studentToCopy = getMinimalStudent();
-        final Student copiedStudent = new Student(studentToCopy);
-        assertThat(studentToCopy, is(not(nullValue())));
-        assertThat(copiedStudent, is(not(nullValue())));
-        assertThat(studentToCopy, is(copiedStudent));
+        final Student original = new Student(STUDENT_ID, STUDENT_NAME, GROUP);
+        final Student copy = new Student(original);
+
+        assertThat(original, is(not(nullValue())));
+        assertThat(copy, is(not(nullValue())));
+        assertThat(original, is(copy));
     }
 
     @Test
     public void testMinimalStudent() {
-        Assert.assertNotNull("reference not null",student);
-        assertThat("StudentId",STUDENT_ID,is(student.getStudentId()));
-        assertThat("StudentName",STUDENT_NAME,is(student.getStudentName()));
-        assertThat("Group",GROUP,is(student.getGroup()));
+        final Student student = new Student(STUDENT_ID, STUDENT_NAME, GROUP);
+
+        student.verify();
+
+        assertThat(student, is(not(nullValue())));
+        assertThat(student.getStudentId(), is(STUDENT_ID));
+        assertThat(student.getStudentName(), is(STUDENT_NAME));
+        assertThat(student.getGroup(), is(GROUP));
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
-    @Test
-    public void testMinimalStudentShouldBeValid() {
-        student = getMinimalStudent();
+    @Test(expected = VerificationException.class)
+    public void testNotNullableStudentId() {
+        final Student student = new Student(null, STUDENT_NAME, GROUP);
+
         student.verify();
     }
 
-    @Test
-    public void testNotNullableStudentId() {
-        student = getMinimalStudent();
-        student.setStudentId(null);
-        assertThat(String.format("studentId%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
-    }
-
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableStudentName() {
-        student = getMinimalStudent();
-        student.setStudentName(null);
-        assertThat(String.format("studentName%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+        final Student student = new Student(STUDENT_ID, null, GROUP);
+
+        student.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableGroup() {
-        student = getMinimalStudent();
-        student.setGroup(null);
-        assertThat(String.format("studentGroup%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
-    }
+        final Student student = new Student(STUDENT_ID, STUDENT_NAME, null);
 
-    public boolean isVerificationExceptionThrown() {
-        try {
-            student.verify();
-            return false;
-        } catch (VerificationException ignore) {
-            return true;
-        }
+        student.verify();
     }
 }

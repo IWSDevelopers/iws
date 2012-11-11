@@ -47,6 +47,7 @@ public final class Copier {
     // See: http://forums.sun.com/thread.jspa?threadID=530823 (link doesn't work after Oracle took over Sun)
     // See: http://stackoverflow.com/questions/529085/java-how-to-generic-array-creation
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
      * Private Constructor, this is a utility class.
@@ -139,6 +140,27 @@ public final class Copier {
             System.arraycopy(original, 0, copy, 0, original.length);
         } else {
             copy = EMPTY_STRING_ARRAY;
+        }
+
+        return copy;
+    }
+
+    /**
+     * Copies the given Array, to ensure that the new Array is not exposing any
+     * references. If the given Array is null, then a new empty Array is
+     * returned, to avoid a potential {@code NullPointerException}.
+     *
+     * @param original The Array to copy
+     * @return Copy of the given Array, or an empty Array
+     */
+    public static byte[] copy(final byte[] original) {
+        final byte[] copy;
+
+        if (original != null) {
+            copy = new byte[original.length];
+            System.arraycopy(original, 0, copy, 0, original.length);
+        } else {
+            copy = EMPTY_BYTE_ARRAY;
         }
 
         return copy;

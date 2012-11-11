@@ -17,6 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.DateTime;
 
 import java.io.ByteArrayInputStream;
@@ -37,7 +38,7 @@ import java.util.zip.GZIPInputStream;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass, unchecked, AssignmentToCollectionOrArrayFieldFromParameter
+ * @noinspection CastToConcreteClass
  */
 public class SessionResponse extends AbstractResponse {
 
@@ -55,8 +56,15 @@ public class SessionResponse extends AbstractResponse {
     public SessionResponse() {
     }
 
+    /**
+     * Default Constructor, for setting all the data.
+     *
+     * @param sessionData Client specific Session Data
+     * @param created     Time of Creation for this session
+     * @param modified    Last update of the Session
+     */
     public SessionResponse(final byte[] sessionData, final DateTime created, final DateTime modified) {
-        this.sessionData = sessionData;
+        this.sessionData = Copier.copy(sessionData);
         this.created = created;
         this.modified = modified;
     }
@@ -76,7 +84,7 @@ public class SessionResponse extends AbstractResponse {
     // =========================================================================
 
     public void setSessionData(final byte[] sessionData) {
-        this.sessionData = sessionData;
+        this.sessionData = Copier.copy(sessionData);
     }
 
     public <T extends Serializable> T getSessionData() {

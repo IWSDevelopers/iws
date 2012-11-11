@@ -258,7 +258,6 @@ create table users (
     status                   varchar(25) default 'NEW' not null,
     private_data             decimal(1) default 1 not null,
     temporary_code           varchar(128),
-    notification_frequency   varchar(25),
     created                  timestamp default now() not null,
     modified                 timestamp default now() not null,
 

@@ -2,7 +2,7 @@
 -- Please add all Exchange related views here
 -- =============================================================================
 CREATE VIEW employer_information AS
-SELECT id, employer_name, modified
+SELECT id, employer_name, group_id, modified
 FROM offers o
 INNER JOIN (
   SELECT distinct (employer_name) employer_name, max(modified) modified

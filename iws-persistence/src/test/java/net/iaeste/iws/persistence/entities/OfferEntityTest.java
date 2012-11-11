@@ -637,8 +637,8 @@ public class OfferEntityTest {
         final OfferEntity offerFoundById = offerDao.findOffer(offer.getId());
         assertThat(offerFoundById, is(notNullValue()));
         assertThat(offerFoundById, is(offer));
-        assertThat(offerDao.findOffersByEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
-        final List<OfferEntity> offersFoundByEmployerName = offerDao.findOffersByEmployerName(offer.getEmployerName());
+        assertThat(offerDao.findOffersByEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING, offer.getGroup().getId()).size(), is(0));
+        final List<OfferEntity> offersFoundByEmployerName = offerDao.findOffersByEmployerName(offer.getEmployerName(), offer.getGroup().getId());
         if (offersFoundByEmployerName == null || offersFoundByEmployerName.isEmpty()) {
             fail("This should not happen!");
         }
@@ -649,13 +649,13 @@ public class OfferEntityTest {
         offer2.setGroup(offer.getGroup());
         offerDao.persist(authentication, offer2);
         assertThat(offerDao.findAll().size(), is(2));
-        final List<OfferEntity> offersFoundByLikeEmployerName = offerDao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE);
+        final List<OfferEntity> offersFoundByLikeEmployerName = offerDao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE, offer.getGroup().getId());
         if (offersFoundByLikeEmployerName == null || offersFoundByLikeEmployerName.isEmpty()) {
             fail("This should not happen!");
         }
         //we want to retrieve only one row for each employer
         assertThat(offersFoundByLikeEmployerName.size(), is(1));
-        assertThat(offerDao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
+        assertThat(offerDao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING, offer.getGroup().getId()).size(), is(0));
     }
 
     @Test

@@ -15,7 +15,6 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.FetchType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +29,6 @@ public final class FetchEmployerInformationRequest extends AbstractVerification 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private FetchType fetchType;
     private String name;
 
     /**
@@ -38,32 +36,21 @@ public final class FetchEmployerInformationRequest extends AbstractVerification 
      * for WebServices to work properly.
      */
     public FetchEmployerInformationRequest() {
-        fetchType = null;
         name = null;
     }
 
     /**
      * Default Constructor, for setting all values.
      *
-     * @param fetchType The EmployerInformation Fetch Type
      * @param name      The EmployerInformation Name
      */
-    public FetchEmployerInformationRequest(final FetchType fetchType, final String name) {
-        this.fetchType = fetchType;
+    public FetchEmployerInformationRequest(final String name) {
         this.name = name;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
-
-    public void setFetchType(final FetchType fetchType) {
-        this.fetchType = fetchType;
-    }
-
-    public FetchType getFetchType() {
-        return fetchType;
-    }
 
     public void setName(final String name) {
         this.name = name;
@@ -84,7 +71,6 @@ public final class FetchEmployerInformationRequest extends AbstractVerification 
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "fetchType", fetchType);
         isNotNullOrEmpty(validation, "name", name);
 
         return validation;

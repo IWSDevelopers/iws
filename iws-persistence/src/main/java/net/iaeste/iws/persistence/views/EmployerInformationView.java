@@ -18,14 +18,9 @@ package net.iaeste.iws.persistence.views;
 import net.iaeste.iws.api.constants.IWSConstants;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Id;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -45,6 +40,9 @@ public class EmployerInformationView extends AbstractView {
 
     @Column(name = "employer_name")
     private String employerName = null;
+
+    @Column(name = "group_id")
+    private Long groupId = null;
 
     @Column(name = "changed_on")
     private Date changedOn = null;
@@ -67,8 +65,16 @@ public class EmployerInformationView extends AbstractView {
         this.employerName = employerName;
     }
 
-    public String getUserID() {
+    public String getEmployerName() {
         return employerName;
+    }
+
+    public void setGroupId(final Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Long getGroupId() {
+        return groupId;
     }
 
     public void setChangedOn(final Date changedOn) {

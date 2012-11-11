@@ -61,19 +61,21 @@ public interface OfferDao extends BasicDao {
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
+     * @param ownerId ownerId of a group owning offers
      * @return list of {@code }OfferEntity}
      * @throws PersistenceException
      */
-    List<OfferEntity> findOffersByEmployerName(final String employerName);
+    List<OfferEntity> findOffersByEmployerName(final String employerName, final Long ownerId);
 
     /**
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
+     * @param ownerId ownerId of a group owning offers
      * @return list of {@code }OfferEntity}
      * @throws PersistenceException
      */
-    List<OfferEntity> findOffersByLikeEmployerName(final String employerName);
+    List<OfferEntity> findOffersByLikeEmployerName(final String employerName, final Long ownerId);
 
     /**
      * Finds all offers which are owned by a group of given Id.

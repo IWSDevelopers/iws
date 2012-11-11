@@ -183,12 +183,12 @@ public class ExchangeServiceTest {
         entities.add(null);
         entities.add(null);
 
-        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME)).thenReturn(entities);
+        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME, auth.getGroup().getId())).thenReturn(entities);
 
-        final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest(FetchType.OWNED, OfferTestUtility.EMPLOYER_NAME);
+        final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest(OfferTestUtility.EMPLOYER_NAME);
         request.verify(); // make sure that request is valid
 
-        final FetchEmployerInformationResponse result = client.fetchEmployers(null, request);
+        final FetchEmployerInformationResponse result = client.fetchEmployers(auth, request);
 
         assertThat(result.getEmployers().size(), is(entities.size()));
     }
@@ -199,12 +199,12 @@ public class ExchangeServiceTest {
         entities.add(null);
         entities.add(null);
 
-        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME)).thenReturn(entities);
+        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME, auth.getGroup().getId())).thenReturn(entities);
 
-        final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest(FetchType.OWNED, "");
+        final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest("");
         request.verify(); // make sure that request is valid
 
-        final FetchEmployerInformationResponse result = client.fetchEmployers(null, request);
+        final FetchEmployerInformationResponse result = client.fetchEmployers(auth, request);
 
         assertThat(result.getEmployers().size(), is(entities.size()));
     }

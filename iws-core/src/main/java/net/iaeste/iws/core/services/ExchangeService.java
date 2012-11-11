@@ -143,7 +143,7 @@ public final class ExchangeService extends CommonService {
         final FetchEmployerInformationResponse response;
 
         //TODO: select only owned offers
-        response = new FetchEmployerInformationResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName())));
+        response = new FetchEmployerInformationResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName(), authentication.getGroup().getId())));
 
         return response;
     }
@@ -172,14 +172,14 @@ public final class ExchangeService extends CommonService {
         return convertEntityList(found);
     }
 
-    private List<Offer> findOffersByEmployerName(final String employerName) {
-        final List<OfferEntity> found = dao.findOffersByEmployerName(employerName);
+    private List<Offer> findOffersByEmployerName(final String employerName, final Long ownerId) {
+        final List<OfferEntity> found = dao.findOffersByEmployerName(employerName, ownerId);
 
         return convertEntityList(found);
     }
 
-    private List<Offer> findOffersByLikeEmployerName(final String employerName) {
-        final List<OfferEntity> found = dao.findOffersByLikeEmployerName(employerName);
+    private List<Offer> findOffersByLikeEmployerName(final String employerName, final Long ownerId) {
+        final List<OfferEntity> found = dao.findOffersByLikeEmployerName(employerName, ownerId);
 
         return convertEntityList(found);
     }

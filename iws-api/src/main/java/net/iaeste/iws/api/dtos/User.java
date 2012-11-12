@@ -28,7 +28,7 @@ import java.util.Map;
  * the personal details in the Person Object. Please note, that a user is
  * considered a vital Object in the system and cannot be deleted. The personal
  * details can be deleted.<br />
- * Since the username is the e-mail of a user which is subject to changes, it
+ *   Since the username is the e-mail of a user which is subject to changes, it
  * is, of course, possible to change it - just as it is possible to change the
  * password. However, the name of a user cannot be altered. The system is
  * designed as a multi-user system, where it is possible to assign rights to

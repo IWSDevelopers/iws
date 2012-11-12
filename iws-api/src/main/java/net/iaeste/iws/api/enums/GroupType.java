@@ -16,7 +16,7 @@ package net.iaeste.iws.api.enums;
 
 /**
  * All Groups in the IW has to be assigned an overall type, which determines its
- * basic functionality (permissions). Please note, that certain GroupType, are
+ * basic functionality (permissions). Please note, that certain GroupTypes, are
  * designed so any given user may only be member of 1 (one), others are open,
  * so users can be part of many. The restricted groups are: Administration,
  * Members, National and Sar - In fact, a user can only be member of either 1
@@ -57,7 +57,7 @@ public enum GroupType {
      * national organization - another group exists called "Global", for all
      * other members. Mostly this consists of the General Secretary, Ombudsman,
      * IDT members, etc.<br />
-     * Note; users can only be member of 1 Members Group!
+     *   Note; users can only be member of 1 Members Group!
      */
     MEMBERS,
 
@@ -115,7 +115,7 @@ public enum GroupType {
      *   The type of functionality will consists of access to certain sections
      * of the IntraWeb, and only some of the members of the Staff group will
      * be allowed to join the NC's Mailinglist.<br />
-     * Note; users can only be member of 1 National or SAR Group!
+     *   Note; users can only be member of 1 National or SAR Group!
      */
     NATIONAL,
 
@@ -125,7 +125,7 @@ public enum GroupType {
      * regions Greenland and Faroe Islands are both SAR's, with independent
      * governments, but still relying on the primary country's blessing in
      * certain areas.<br />
-     * Note; users can only be member of 1 National or SAR Group!
+     *   Note; users can only be member of 1 National or SAR Group!
      */
     SAR,
 

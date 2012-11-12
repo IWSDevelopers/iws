@@ -37,7 +37,6 @@ public final class ManageUserAccountRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private User user = null;
-
     private UserStatus status = null;
 
     /**

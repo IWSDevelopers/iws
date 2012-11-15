@@ -17,6 +17,13 @@ package net.iaeste.iws.core.notifications;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 /**
  * The Class requires an EJB framework to properly work. For this reason, large
@@ -64,7 +71,7 @@ public class NotificationEmailSender implements Observer {
 
     private void processMessages() {
 //        List<NotificationMessageEntity> messages = dao.findNotificationMessages(NotificationType.EMAIL, NotificationMessageStatus.NEW, new Date());
-//        //TODO: do the grouping somewhere/somehow
+//        //Map<UserEntity, List<NotificationMessageEntity>> groupedMessages = groupByUser(messages);
 //        String subject = "IAESTE IW notification";
 //
 //        for(NotificationMessageEntity message : messages) {
@@ -84,5 +91,21 @@ public class NotificationEmailSender implements Observer {
 //                //do something, log...
 //            }
 //        }
+    }
+
+    private Map<UserEntity, List<NotificationMessageEntity>> groupByUser(final List<NotificationMessageEntity> messages) {
+        Map<UserEntity, List<NotificationMessageEntity>> result = new HashMap<>();
+        for(NotificationMessageEntity message : messages) {
+            List<NotificationMessageEntity> userMessages;
+            final UserEntity user = message.getUser();
+            if(result.containsKey(user)) {
+                userMessages = result.get(user);
+            } else {
+                userMessages = new ArrayList<>(1);
+            }
+            userMessages.add(message);
+            result.put(user, userMessages);
+        }
+        return result;
     }
 }

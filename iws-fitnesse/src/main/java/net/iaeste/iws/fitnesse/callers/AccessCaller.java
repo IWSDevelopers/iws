@@ -25,6 +25,8 @@ import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
+import java.io.Serializable;
+
 /**
  * The IWS FitNesse implementation of the API logic. The Class will attempt to
  * invoke the IWS Client module, and wrap all calls with an Exception check that
@@ -56,9 +58,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public SessionDataResponse fetchSessionData(final AuthenticationToken token) {
+    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         try {
-            return access.fetchSessionData(token);
+            return access.saveSessionData(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -68,9 +70,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
+    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
         try {
-            return access.saveSessionData(token, request);
+            return access.fetchSessionData(token);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

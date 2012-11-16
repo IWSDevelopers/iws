@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.Serializable;
 
 /**
  * Spring based Access Client, which wraps the Access Controller from the
@@ -75,16 +76,16 @@ public final class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public SessionDataResponse fetchSessionData(final AuthenticationToken token) {
-        return access.fetchSessionData(token);
+    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+        return access.saveSessionData(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
-        return access.saveSessionData(token, request);
+    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
+        return access.fetchSessionData(token);
     }
 
     /**

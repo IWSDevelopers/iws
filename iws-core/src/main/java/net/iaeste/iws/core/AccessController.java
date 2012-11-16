@@ -31,6 +31,7 @@ import net.iaeste.iws.persistence.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -90,7 +91,7 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
+    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         LOG.trace("Starting saveSessionData()");
         Fallible response;
 
@@ -112,15 +113,15 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public SessionDataResponse fetchSessionData(final AuthenticationToken token) {
+    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
         LOG.trace("Starting fetchSessionData()");
-        SessionDataResponse response;
+        SessionDataResponse<T> response;
 
         try {
             verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
-            response = service.verifySession(token);
+            response = service.fetchSessionData(token);
         } catch (IWSException e) {
             response = new SessionDataResponse(e.getError(), e.getMessage());
         }

@@ -23,6 +23,8 @@ import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 
+import java.io.Serializable;
+
 /**
  * Simple Client to work with the IWS Acess functionality. The access to
  * be used is controlled via the Factory, which loads the settings from a
@@ -55,16 +57,16 @@ public final class AccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public SessionDataResponse fetchSessionData(final AuthenticationToken token) {
-        return access.fetchSessionData(token);
+    public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
+        return access.saveSessionData(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
-        return access.saveSessionData(token, request);
+    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
+        return access.fetchSessionData(token);
     }
 
     /**

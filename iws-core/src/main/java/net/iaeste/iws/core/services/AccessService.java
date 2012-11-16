@@ -32,6 +32,7 @@ import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
@@ -81,20 +82,6 @@ public final class AccessService extends CommonService {
         }
     }
 
-    public SessionDataResponse<?> verifySession(final AuthenticationToken token) {
-        final SessionEntity entity = dao.findActiveSession(token);
-        final byte[] data = entity.getSessionData();
-        final DateTime created = new DateTime(entity.getCreated());
-        final DateTime modified = new DateTime(entity.getModified());
-
-        final SessionDataResponse<?> response = new SessionDataResponse<>();
-        response.setSessionData(data);
-        response.setCreated(created);
-        response.setModified(modified);
-
-        return response;
-    }
-
     /**
      * Clients may store some temporary data together with the Session. This
      * data is set in the DTO Object in the API module, and there converted to
@@ -107,11 +94,25 @@ public final class AccessService extends CommonService {
      * @param token   User Token
      * @param request SessionData Request
      */
-    public void saveSessionData(final AuthenticationToken token, final SessionDataRequest<?> request) {
+    public <T extends Serializable> void saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         final SessionEntity entity = dao.findActiveSession(token);
         entity.setSessionData(request.getSessionData());
         entity.setModified(new Date());
         dao.persist(entity);
+    }
+
+    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
+        final SessionEntity entity = dao.findActiveSession(token);
+        final byte[] data = entity.getSessionData();
+        final DateTime created = new DateTime(entity.getCreated());
+        final DateTime modified = new DateTime(entity.getModified());
+
+        final SessionDataResponse<T> response = new SessionDataResponse<>();
+        response.setSessionData(data);
+        response.setCreated(created);
+        response.setModified(modified);
+
+        return response;
     }
 
     /**
@@ -134,6 +135,12 @@ public final class AccessService extends CommonService {
     }
 
     /**
+     * Fetches a list of Permissions for a User. If the ExternalGroupId is not
+     * set, then the result will be all the Groups and their respective
+     * Permissions. If the ExternalGroupId is set, then the result will be for
+     * the specific Group, unless the user is either not a member of the given
+     * group, or the group is invalid, in which case, an Exception is thrown.
+     *
      * @param authentication  Authentication Object, with User & optinal Group
      * @param externalGroupId If only the permissions for the given Groups
      *                        should be fetched
@@ -152,16 +159,6 @@ public final class AccessService extends CommonService {
         }
 
         return convertPermissionMap(map);
-    }
-
-    private List<Authorization> convertPermissionMap(final Map<Group, Set<Permission>> map) {
-        final List<Authorization> result = new ArrayList<>(map.size());
-
-        for (final Map.Entry<Group, Set<Permission>> set : map.entrySet()) {
-            result.add(new Authorization(set.getKey(), set.getValue()));
-        }
-
-        return result;
     }
 
     // =========================================================================
@@ -202,5 +199,15 @@ public final class AccessService extends CommonService {
         group.setDescription(view.getGroupDescription());
 
         return group;
+    }
+
+    private List<Authorization> convertPermissionMap(final Map<Group, Set<Permission>> map) {
+        final List<Authorization> result = new ArrayList<>(map.size());
+
+        for (final Map.Entry<Group, Set<Permission>> set : map.entrySet()) {
+            result.add(new Authorization(set.getKey(), set.getValue()));
+        }
+
+        return result;
     }
 }

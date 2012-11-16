@@ -23,13 +23,13 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
@@ -40,7 +40,7 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection ReturnOfNull
+ * @noinspection ReturnOfNull, CastToConcreteClass
  */
 public class AccessJpaDao extends BasicJpaDao implements AccessDao {
 
@@ -156,12 +156,22 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public List<UserPermissionView> findPermissions(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("view.findAllUserPermissions");
-        query.setParameter("uid", user.getId());
-        final List<UserPermissionView> permissions = query.getResultList();
+    public List<UserPermissionView> findPermissions(final Authentication authentication, final String externalGroupId) {
+        final Query query;
+        if (externalGroupId != null) {
+            query = entityManager.createNamedQuery("view.findUserGroupPermissions");
+            query.setParameter("egid", externalGroupId);
+        } else {
+            query = entityManager.createNamedQuery("view.findAllUserPermissions");
+        }
+        query.setParameter("uid", authentication.getUser().getId());
 
-        return permissions;
+        final List<UserPermissionView> list = query.getResultList();
+        if (list.isEmpty()) {
+            throw new AuthorizationException("User is not a member of the group with Id: " + externalGroupId);
+        }
+
+        return list;
     }
 
     /**
@@ -206,22 +216,37 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public GroupEntity findGroup(final UserEntity user, final GroupType type) {
-        final Query query = entityManager.createNamedQuery("group.findByUserAndType");
+    public GroupEntity findGroup(final UserEntity user, final String groupId) {
+        final Query query = entityManager.createNamedQuery("group.findByUserAndExternalId");
         query.setParameter("uid", user.getId());
-        query.setParameter("type", type.name());
-        final List<GroupEntity> found = query.getResultList();
+        query.setParameter("eid", groupId);
 
-        final GroupEntity group;
-        if (found.size() == 1) {
-            group = found.get(0);
-        } else if (found.isEmpty()) {
-            group = null;
-        } else {
-            throw new PersistenceException(IWSErrors.WARNING, "Unable to fund a unique record for the user " + user + " with a Group of type " + type.name());
-        }
+        return (GroupEntity) query.getSingleResult();
+    }
 
-        return group;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findNationalGroup(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("group.findNationalOrSarByUser");
+        query.setParameter("uid", user.getId());
+        query.setParameter("national", GroupType.NATIONAL.name());
+        query.setParameter("sar", GroupType.SAR.name());
+
+        return (GroupEntity) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findPrivateGroup(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("group.findPrivateGroupByUser");
+        query.setParameter("uid", user.getId());
+        query.setParameter("type", GroupType.PRIVATE.name());
+
+        return (GroupEntity) query.getSingleResult();
     }
 
     /**
@@ -231,9 +256,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public RoleEntity findRoleById(final Long id) {
         final Query query = entityManager.createNamedQuery("role.findById");
         query.setParameter("id", id);
-        final List<RoleEntity> list = query.getResultList();
 
-        return list.isEmpty() ? null : list.get(0);
+        return (RoleEntity) query.getSingleResult();
     }
 
     /**

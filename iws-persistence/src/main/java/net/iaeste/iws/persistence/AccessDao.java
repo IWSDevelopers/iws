@@ -46,13 +46,27 @@ public interface AccessDao extends BasicDao {
 
     Integer deprecateSession(UserEntity user);
 
-    List<UserPermissionView> findPermissions(UserEntity user);
+    /**
+     * Fetches a list of Permissions, that a user has towards a specific Group.
+     * If no GroupId is given, then all permissions that a user has in the IWS
+     * is returned.
+     *
+     * @param authentication  User Authentication information
+     * @param externalGroupId Optional (external) GroupId of the Group to see
+     *                        the permissions for
+     * @return List of results from the PermissionView
+     */
+    List<UserPermissionView> findPermissions(Authentication authentication, String externalGroupId);
 
     GroupTypeEntity findGroupType(GroupType groupType);
 
     GroupEntity findGroup(UserEntity user, String groupId, Permission permission);
 
-    GroupEntity findGroup(UserEntity user, GroupType type);
+    GroupEntity findGroup(UserEntity user, String groupId);
+
+    GroupEntity findNationalGroup(UserEntity user);
+
+    GroupEntity findPrivateGroup(UserEntity user);
 
     /**
      * Find a Role by the name. However, as it is possible to have multiple

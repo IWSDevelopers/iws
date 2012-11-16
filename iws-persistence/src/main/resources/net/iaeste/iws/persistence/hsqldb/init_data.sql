@@ -193,11 +193,11 @@ insert into permission_to_role (role_id, permission_id) values (2, 202);
 -- =============================================================================
 -- Default Groups
 -- =============================================================================
-insert into groups (id, grouptype_id, groupname, full_name) values (0, 0, 'SysOp', 'System Operators &amp; Administrators');
-insert into groups (id, grouptype_id, groupname, full_name) values (1, 2, 'Global', 'Global Members of IAESTE');
-insert into groups (id, grouptype_id, groupname, full_name) values (2, 3, 'Board', 'Board of IAESTE A.s.b.l.');
-insert into groups (id, grouptype_id, groupname, full_name) values (3, 3, 'SID', 'Seminar on IAESTE Development');
-insert into groups (id, grouptype_id, groupname, full_name) values (4, 3, 'IDT', 'IAESTE Internet Development Team');
+insert into groups (id, external_id, grouptype_id, groupname, full_name) values (0, '0bbe7a76-3864-4f8c-934f-2b47907c1daa', 0, 'SysOp', 'System Operators &amp; Administrators');
+insert into groups (id, external_id, grouptype_id, groupname, full_name) values (1, '9eb79837-82a1-45eb-8f55-fd89a8592290', 2, 'Global', 'Global Members of IAESTE');
+insert into groups (id, external_id, grouptype_id, groupname, full_name) values (2, '80962576-3e38-4858-be0d-57252e7316b1', 3, 'Board', 'Board of IAESTE A.s.b.l.');
+insert into groups (id, external_id, grouptype_id, groupname, full_name) values (3, 'd8325230-a4b5-4063-b949-3233693c980d', 3, 'SID', 'Seminar on IAESTE Development');
+insert into groups (id, external_id, grouptype_id, groupname, full_name) values (4, '2e351535-1609-4867-b713-2f8d6a2aab3f', 3, 'IDT', 'IAESTE Internet Development Team');
 
 
 -- =============================================================================
@@ -211,16 +211,16 @@ insert into countries (country_id, country_name) values ('DE', 'Germany');
 insert into countries (country_id, country_name) values ('PL', 'Poland');
 
 -- Couple of Member Groups
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (10, 2, null, 1, 'Austria');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (11, 5,   10, 1, 'Austria');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (12, 2, null, 2, 'Croatia');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (13, 5,   12, 2, 'Croatia');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (14, 2, null, 3, 'Denmark');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (15, 5,   14, 3, 'Denmark');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (16, 2, null, 4, 'Germany');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (17, 5,   16, 4, 'Germany');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (18, 2, null, 5, 'Poland');
-insert into Groups (id, grouptype_id, parent_id, country_id, groupname) values (19, 5,   18, 5, 'Poland');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (10, '2cc7e1bb-01e8-43a2-9643-2e964cbd41c5', 2, null, 1, 'Austria');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (11, 'c7b15f81-4f83-48e8-9ffb-9e73255f5e5e', 5,   10, 1, 'Austria');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (12, 'adc8dfd4-bc3a-4b27-897b-87d3950db503', 2, null, 2, 'Croatia');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (13, '0cad3aa9-dc44-444d-be48-ec77a3cafef7', 5,   12, 2, 'Croatia');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (14, '3adbeb2b-05c0-456e-8809-1d1e4743f2c1', 2, null, 3, 'Denmark');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (15, '6f54e025-a703-41e3-b1ff-796a9f8ad04e', 5,   14, 3, 'Denmark');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (16, 'f1a223ee-7564-4ea4-b2fe-040e289d1f50', 2, null, 4, 'Germany');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (17, '17eb00ac-1386-4852-9934-e3dce3f57c13', 5,   16, 4, 'Germany');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (18, 'f36c1de6-e3ae-46da-83f4-f8259486dcf0', 2, null, 5, 'Poland');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupname) values (19, 'e60f9897-864b-4d1b-9c1a-1681fd35e97a', 5,   18, 5, 'Poland');
 
 -- Couple of Users, password is the same as the username
 insert into users (external_id, status, username, password, firstname, lastname) values ('13452874-0c0f-4caf-8101-a8e9b41d6e69', 'ACTIVE', 'austria', '7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266', 'NS', 'Austria');

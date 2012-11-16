@@ -38,7 +38,11 @@ import java.io.Serializable;
 @NamedQueries({
         @NamedQuery(name = "view.findAllUserPermissions",
                 query = "select v from UserPermissionView v " +
-                        "where v.id.userId = :uid")
+                        "where v.id.userId = :uid"),
+        @NamedQuery(name = "view.findUserGroupPermissions",
+                query = "select v from UserPermissionView v " +
+                        "where v.id.userId = :uid" +
+                        "  and v.externalGroupId = :egid")
 })
 @Table(name = "user_permissions")
 public class UserPermissionView extends AbstractView {
@@ -49,18 +53,27 @@ public class UserPermissionView extends AbstractView {
     @EmbeddedId
     private UserPermissionViewId id = new UserPermissionViewId();
 
+    @Column(name = "euid")
+    private String externalUserId = null;
+
+    @Column(name = "egid")
+    private String externalGroupId = null;
+
     @Column(name = "username")
     private String userName = null;
 
     @Column(name = "groupname")
     private String groupName = null;
 
-    @Column(name = "tid")
-    private Integer groupTypeId = null;
-
     @Column(name = "grouptype")
     @Enumerated(EnumType.STRING)
     private GroupType groupType = null;
+
+    @Column(name = "country")
+    private String countryId = null;
+
+    @Column(name = "group_description")
+    private String groupDescription = null;
 
     @Column(name = "rid")
     private Integer roleId = null;
@@ -71,6 +84,10 @@ public class UserPermissionView extends AbstractView {
     @Column(name = "permission")
     @Enumerated(EnumType.STRING)
     private Permission permission = null;
+
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
 
     public void setId(final UserPermissionViewId id) {
         this.id = id;
@@ -104,6 +121,22 @@ public class UserPermissionView extends AbstractView {
         return id.getPermissionId();
     }
 
+    public void setExternalUserId(final String externalUserId) {
+        this.externalUserId = externalUserId;
+    }
+
+    public String getExternalUserId() {
+        return externalUserId;
+    }
+
+    public void setExternalGroupId(final String externalGroupId) {
+        this.externalGroupId = externalGroupId;
+    }
+
+    public String getExternalGroupId() {
+        return externalGroupId;
+    }
+
     public void setUserName(final String userName) {
         this.userName = userName;
     }
@@ -120,20 +153,28 @@ public class UserPermissionView extends AbstractView {
         return groupName;
     }
 
-    public void setGroupTypeId(final Integer groupTypeId) {
-        this.groupTypeId = groupTypeId;
-    }
-
-    public Integer getGroupTypeId() {
-        return groupTypeId;
-    }
-
     public void setGroupType(final GroupType groupType) {
         this.groupType = groupType;
     }
 
     public GroupType getGroupType() {
         return groupType;
+    }
+
+    public void setCountryId(final String countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setGroupDescription(final String groupDescription) {
+        this.groupDescription = groupDescription;
+    }
+
+    public String getGroupDescription() {
+        return groupDescription;
     }
 
     public void setRoleId(final Integer roleId) {

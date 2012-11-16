@@ -7,18 +7,20 @@
 -- =============================================================================
 create view user_permissions as
   select
-    u.id           as uid,
-    u.external_id  as euid,
-    g.id           as gid,
-    g.external_id  as egid,
-    t.id           as tid,
-    r.id           as rid,
-    p.id           as pid,
-    u.username     as username,
-    g.groupname    as groupname,
-    t.grouptype    as grouptype,
-    r.role         as rolename,
-    p.permission   as permission
+    u.id                 as uid,
+    u.external_id        as euid,
+    g.id                 as gid,
+    g.external_id        as egid,
+    t.id                 as tid,
+    r.id                 as rid,
+    p.id                 as pid,
+    u.username           as username,
+    g.groupname          as groupname,
+    g.group_description  as group_description,
+    g.country_id         as country,
+    t.grouptype          as grouptype,
+    u2g.custom_title     as rolename,
+    p.permission         as permission
   from
     users u,
     groups g,

@@ -20,7 +20,9 @@ import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
-import net.iaeste.iws.api.responses.SessionResponse;
+import net.iaeste.iws.api.responses.SessionDataResponse;
+
+import java.io.Serializable;
 
 /**
  * Access to the IWS, requires a Session. This Interface, holds all required
@@ -59,22 +61,22 @@ public interface Access {
     AuthenticationResponse generateSession(AuthenticationRequest request);
 
     /**
-     * Verifies the current Session and returns the associated Session Data in
-     * the response.
-     *
-     * @param token  User Authentication Request object
-     * @return Session Response, with Error And Session data
-     */
-    SessionResponse verifySession(AuthenticationToken token);
-
-    /**
      * Used to save a users session Data in the IWS.
      *
      * @param token  User Authentication Request object
      * @param request  SessionData Request Object
      * @return Standard Error object
      */
-    Fallible saveSessionData(AuthenticationToken token, SessionDataRequest request);
+    <T extends Serializable> Fallible saveSessionData(AuthenticationToken token, SessionDataRequest<T> request);
+
+    /**
+     * Verifies the current Session and returns the associated Session Data in
+     * the response.
+     *
+     * @param token  User Authentication Request object
+     * @return Session Response, with Error And Session data
+     */
+    <T extends Serializable> SessionDataResponse<T> fetchSessionData(AuthenticationToken token);
 
     /**
      * The IWS doesn't delete ongoing sessions, it only closes them for further
@@ -90,7 +92,10 @@ public interface Access {
 
     /**
      * Retrieves the list of permissions for a given user, identified by the
-     * token.
+     * token. If a GroupId is set in the token, then a list of Permissions that
+     * the user may perform against the content of this group is returned.
+     * Otherwise, all the Groups that the user is a member of is returned,
+     * together with their associated permissions.
      *
      * @param token  User {@code AuthenticationToken}
      * @return Authorization Result Object

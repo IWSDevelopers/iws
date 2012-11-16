@@ -40,7 +40,7 @@ import java.util.zip.GZIPOutputStream;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class SessionDataRequest extends AbstractVerification {
+public final class SessionDataRequest<T extends Serializable> extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -60,7 +60,7 @@ public class SessionDataRequest extends AbstractVerification {
      *
      * @param sessionData Client specific Session Data
      */
-    public <T extends Serializable> SessionDataRequest(final T sessionData) {
+    public SessionDataRequest(final T sessionData) {
         this.sessionData = serialize(sessionData);
     }
 
@@ -68,7 +68,7 @@ public class SessionDataRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public <T extends Serializable> void setSessionData(final T sessionData) {
+    public void setSessionData(final T sessionData) {
         this.sessionData = serialize(sessionData);
     }
 

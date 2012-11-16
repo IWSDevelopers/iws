@@ -21,7 +21,7 @@ import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
-import net.iaeste.iws.api.responses.SessionResponse;
+import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -56,9 +56,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public SessionResponse verifySession(final AuthenticationToken token) {
+    public SessionDataResponse fetchSessionData(final AuthenticationToken token) {
         try {
-            return access.verifySession(token);
+            return access.fetchSessionData(token);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

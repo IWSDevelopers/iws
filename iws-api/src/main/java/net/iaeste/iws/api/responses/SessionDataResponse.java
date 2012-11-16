@@ -40,7 +40,7 @@ import java.util.zip.GZIPInputStream;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public class SessionResponse extends AbstractResponse {
+public final class SessionDataResponse<T extends Serializable> extends AbstractResponse {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -53,7 +53,7 @@ public class SessionResponse extends AbstractResponse {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public SessionResponse() {
+    public SessionDataResponse() {
     }
 
     /**
@@ -63,7 +63,7 @@ public class SessionResponse extends AbstractResponse {
      * @param created     Time of Creation for this session
      * @param modified    Last update of the Session
      */
-    public SessionResponse(final byte[] sessionData, final DateTime created, final DateTime modified) {
+    public SessionDataResponse(final byte[] sessionData, final DateTime created, final DateTime modified) {
         this.sessionData = Copier.copy(sessionData);
         this.created = created;
         this.modified = modified;
@@ -75,7 +75,7 @@ public class SessionResponse extends AbstractResponse {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public SessionResponse(final IWSError error, final String message) {
+    public SessionDataResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -87,7 +87,7 @@ public class SessionResponse extends AbstractResponse {
         this.sessionData = Copier.copy(sessionData);
     }
 
-    public <T extends Serializable> T getSessionData() {
+    public T getSessionData() {
         return deserialize(sessionData);
     }
 
@@ -120,11 +120,11 @@ public class SessionResponse extends AbstractResponse {
             return true;
         }
 
-        if (!(obj instanceof SessionResponse)) {
+        if (!(obj instanceof SessionDataResponse)) {
             return false;
         }
 
-        final SessionResponse that = (SessionResponse) obj;
+        final SessionDataResponse that = (SessionDataResponse) obj;
 
         if (created != null ? !created.equals(that.created) : that.created != null) {
             return false;
@@ -156,13 +156,13 @@ public class SessionResponse extends AbstractResponse {
      */
     @Override
     public String toString() {
-        return "SessionResponse{" +
+        return "SessionDataResponse{" +
                 "created=" + created +
                 ", modified=" + modified +
                 '}';
     }
 
-    private <T extends Serializable> T deserialize(final byte[] bytes) {
+    private T deserialize(final byte[] bytes) {
         final T result;
 
         if (bytes != null) {

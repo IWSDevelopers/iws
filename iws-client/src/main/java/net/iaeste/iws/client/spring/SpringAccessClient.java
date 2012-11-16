@@ -21,7 +21,7 @@ import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
-import net.iaeste.iws.api.responses.SessionResponse;
+import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.notification.Notifications;
@@ -75,8 +75,8 @@ public final class SpringAccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public SessionResponse verifySession(final AuthenticationToken token) {
-        return access.verifySession(token);
+    public SessionDataResponse fetchSessionData(final AuthenticationToken token) {
+        return access.fetchSessionData(token);
     }
 
     /**

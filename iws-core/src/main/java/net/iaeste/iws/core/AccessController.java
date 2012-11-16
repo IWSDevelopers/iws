@@ -22,10 +22,12 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.PermissionResponse;
-import net.iaeste.iws.api.responses.SessionResponse;
+import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.core.services.AccessService;
 import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.persistence.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +49,6 @@ import java.util.List;
 public final class AccessController extends CommonController implements Access {
 
     private static final String AUTHENTICATION_REQUEST_ERROR = "The Authentication Request Object is undefined.";
-    private static final String AUTHENTICATION_TOKEN_ERROR = "The Authentication Token is undefined.";
     private static final Logger LOG = LoggerFactory.getLogger(AccessController.class);
     private final ServiceFactory factory;
 
@@ -89,40 +90,18 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public SessionResponse verifySession(final AuthenticationToken token) {
-        LOG.trace("Starting verifySession()");
-        SessionResponse response;
-
-        try {
-            verify(token, AUTHENTICATION_TOKEN_ERROR);
-
-            final AccessService service = factory.prepareAuthenticationService();
-            final AuthenticationToken copyToken = new AuthenticationToken(token);
-            response = service.verifySession(copyToken);
-        } catch (IWSException e) {
-            response = new SessionResponse(e.getError(), e.getMessage());
-        }
-
-        LOG.trace("Finished verifySession()");
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
         LOG.trace("Starting saveSessionData()");
         Fallible response;
 
         try {
-            verify(token, AUTHENTICATION_TOKEN_ERROR);
+            verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
-            final AuthenticationToken copyToken = new AuthenticationToken(token);
-            response = service.saveSessionData(copyToken, request);
+            service.saveSessionData(token, request);
+            response = new FallibleResponse();
         } catch (IWSException e) {
-            response = new SessionResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished saveSessionData()");
@@ -133,19 +112,39 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deprecateSession(final AuthenticationToken token) {
-        LOG.trace("Starting deprecateSession()");
-        AuthenticationResponse response;
+    public SessionDataResponse fetchSessionData(final AuthenticationToken token) {
+        LOG.trace("Starting fetchSessionData()");
+        SessionDataResponse response;
 
         try {
-            verify(token, AUTHENTICATION_TOKEN_ERROR);
+            verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
-            final AuthenticationToken copyToken = new AuthenticationToken(token);
-            service.deprecateSession(copyToken);
-            response = new AuthenticationResponse();
+            response = service.verifySession(token);
         } catch (IWSException e) {
-            response = new AuthenticationResponse(e.getError(), e.getMessage());
+            response = new SessionDataResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished fetchSessionData()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible deprecateSession(final AuthenticationToken token) {
+        LOG.trace("Starting deprecateSession()");
+        Fallible response;
+
+        try {
+            verifyPrivateAccess(token);
+
+            final AccessService service = factory.prepareAuthenticationService();
+            service.deprecateSession(token);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished deprecateSession()");
@@ -161,11 +160,10 @@ public final class AccessController extends CommonController implements Access {
         PermissionResponse response;
 
         try {
-            verify(token, AUTHENTICATION_TOKEN_ERROR);
+            final Authentication authentication = verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
-            final AuthenticationToken copyToken = new AuthenticationToken(token);
-            final List<Authorization> authorizations = service.findPermissions(copyToken);
+            final List<Authorization> authorizations = service.findPermissions(authentication, token.getGroupId());
             response = new PermissionResponse(authorizations);
         } catch (IWSException e) {
             response = new PermissionResponse(e.getError(), e.getMessage());

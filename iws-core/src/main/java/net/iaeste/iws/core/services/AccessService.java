@@ -17,33 +17,36 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
-import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
-import net.iaeste.iws.api.responses.Fallible;
-import net.iaeste.iws.api.responses.SessionResponse;
+import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.SessionExistsException;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection ObjectAllocationInLoop
  */
-public final class AccessService {
+public final class AccessService extends CommonService {
 
     private final AccessDao dao;
 
@@ -62,7 +65,7 @@ public final class AccessService {
      * credentials. Returns a new Token, if no session exists. If an active
      * session exists, then the method will thrown an SessionExists Exception.
      *
-     * @param request  Request Object with User Credentials
+     * @param request Request Object with User Credentials
      * @return New AuthenticationToken
      * @throws SessionExistsException if an Active Session already exists
      */
@@ -73,17 +76,18 @@ public final class AccessService {
         if (activeSession == null) {
             return new AuthenticationToken(generateAndPersistSessionKey(user));
         } else {
-            throw new SessionExistsException("An Active Session for user " + user.getFirstname() + ' ' + user.getLastname() + " already exists.");
+            final String msg = "An Active Session for user %s %s already exists.";
+            throw new SessionExistsException(format(msg, user.getFirstname(), user.getLastname()));
         }
     }
 
-    public SessionResponse verifySession(final AuthenticationToken token) {
+    public SessionDataResponse<?> verifySession(final AuthenticationToken token) {
         final SessionEntity entity = dao.findActiveSession(token);
         final byte[] data = entity.getSessionData();
         final DateTime created = new DateTime(entity.getCreated());
         final DateTime modified = new DateTime(entity.getModified());
 
-        final SessionResponse response = new SessionResponse();
+        final SessionDataResponse<?> response = new SessionDataResponse<>();
         response.setSessionData(data);
         response.setCreated(created);
         response.setModified(modified);
@@ -91,15 +95,32 @@ public final class AccessService {
         return response;
     }
 
-    public Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest request) {
+    /**
+     * Clients may store some temporary data together with the Session. This
+     * data is set in the DTO Object in the API module, and there converted to
+     * a Byte Array. The reason for converting the Byte Array already in the
+     * API module, is to avoid needing knowledge about the Object later.<br />
+     * The data is simply added (updated) to the currently active session,
+     * and saved. The data is then added to the response from a fetchSessionData
+     * request.
+     *
+     * @param token   User Token
+     * @param request SessionData Request
+     */
+    public void saveSessionData(final AuthenticationToken token, final SessionDataRequest<?> request) {
         final SessionEntity entity = dao.findActiveSession(token);
         entity.setSessionData(request.getSessionData());
         entity.setModified(new Date());
         dao.persist(entity);
-
-        return new SessionResponse();
     }
 
+    /**
+     * Deprecates a Session, meaning that the current session associated with
+     * the given token, is set to deprecated (invalid), so it can no longer be
+     * used.
+     *
+     * @param token Token containing the session to deprecate
+     */
     public void deprecateSession(final AuthenticationToken token) {
         final SessionEntity session = dao.findActiveSession(token);
         final Integer updated = dao.deprecateSession(session.getUser());
@@ -112,21 +133,40 @@ public final class AccessService {
         }
     }
 
-    public List<Authorization> findPermissions(final AuthenticationToken token) {
-        final UserEntity user = dao.findUserByUsername("austria");
-        final List<UserPermissionView> permissions = dao.findPermissions(user);
-        final List<Authorization> result = new ArrayList<>(permissions.size());
+    /**
+     * @param authentication  Authentication Object, with User & optinal Group
+     * @param externalGroupId If only the permissions for the given Groups
+     *                        should be fetched
+     * @return List of Authorization Objects
+     */
+    public List<Authorization> findPermissions(final Authentication authentication, final String externalGroupId) {
+        final List<UserPermissionView> found = dao.findPermissions(authentication, externalGroupId);
 
-        for (final UserPermissionView view : permissions) {
-            final Permission permission = view.getPermission();
-            final GroupType groupType = view.getGroupType();
-            final Authorization authorization = new Authorization(permission, groupType);
+        final Map<Group, Set<Permission>> map = new HashMap<>(10);
+        for (final UserPermissionView view : found) {
+            final Group group = readGroup(view);
+            if (!map.containsKey(group)) {
+                map.put(group, EnumSet.noneOf(Permission.class));
+            }
+            map.get(group).add(view.getPermission());
+        }
 
-            result.add(authorization);
+        return convertPermissionMap(map);
+    }
+
+    private List<Authorization> convertPermissionMap(final Map<Group, Set<Permission>> map) {
+        final List<Authorization> result = new ArrayList<>(map.size());
+
+        for (final Map.Entry<Group, Set<Permission>> set : map.entrySet()) {
+            result.add(new Authorization(set.getKey(), set.getValue()));
         }
 
         return result;
     }
+
+    // =========================================================================
+    // Internal helper methods
+    // =========================================================================
 
     private String generateAndPersistSessionKey(final UserEntity user) {
         // Generate new Hashcode from the User Credentials, and some other entropy
@@ -150,5 +190,17 @@ public final class AccessService {
 
         // Now, let's find the user, based on the credentials
         return dao.findUserByCredentials(username, hashcode);
+    }
+
+    private Group readGroup(final UserPermissionView view) {
+        final Group group = new Group();
+
+        group.setGroupId(view.getExternalGroupId());
+        group.setGroupType(view.getGroupType());
+        group.setGroupName(view.getGroupName());
+        group.setCountryId(view.getCountryId());
+        group.setDescription(view.getGroupDescription());
+
+        return group;
     }
 }

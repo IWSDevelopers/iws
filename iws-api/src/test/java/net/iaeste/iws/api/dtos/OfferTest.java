@@ -42,9 +42,9 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.junit.Assert.assertThat;
 
 /**
- * @author  Michal Knapik / last $Author:$
+ * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public class OfferTest {
 
@@ -548,6 +548,24 @@ public class OfferTest {
         assertThat(String.format("workDescription%s", ERRMSG_LENGTH), isVerificationExceptionThrown(), is(true));
     }
 
+    @Test
+    public void testNullableOtherRequirements() {
+        offer = getFullOffer();
+        offer.setOtherRequirements(null);
+        // allow to save offers with no other requirements specified
+        assertThat(isVerificationExceptionThrown(), is(false));
+    }
+
+    @Test
+    public void testLengthOfOtherRequirements() {
+        offer = getMinimalOffer();
+        final StringBuilder sb = new StringBuilder(IWSExchangeConstants.MAX_OFFER_OTHER_REQUIREMENTS_SIZE + 1);
+        for (int i = 0; i < IWSExchangeConstants.MAX_OFFER_OTHER_REQUIREMENTS_SIZE + 1; i++) {
+            sb.append('1');
+        }
+        offer.setOtherRequirements(sb.toString());
+        assertThat(String.format("otherRequirements%s", ERRMSG_LENGTH), isVerificationExceptionThrown(), is(true));
+    }
 
     @Test
     public void testNotNullableMaximumWeeks() {

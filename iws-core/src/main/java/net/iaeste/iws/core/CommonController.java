@@ -71,6 +71,35 @@ class CommonController {
     }
 
     /**
+     * For those requests, which does not require a Permission, we still need to
+     * verify the provided Token, fetch an {@code Authentication} Object, which
+     * we can use internally.
+     *
+     * @param token Authentication Token
+     * @return Authentication Object
+     * @throws VerificationException if neither authenticated nor authorized
+     */
+    Authentication verifyPrivateAccess(final AuthenticationToken token) {
+        verify(token, "Invalid Authentication Token provided.");
+
+        try {
+            // Authentication Check; Expect Exception if unable to find a User
+            final UserEntity user = dao.findActiveSession(token).getUser();
+
+            // For most requests, we are not using the Group, so for our Private
+            // usage, we're ignoring this. If data has to be added, and thus
+            // requires the Private Group, then this must be fetched. The
+            // decision to do it so, was made to avoid loosing too much
+            // performance on operations that are rarely required
+            final GroupEntity group = null;
+            // So far so good, return the information
+            return new Authentication(user, group);
+        } catch (PersistenceException e) {
+            throw new VerificationException(e);
+        }
+    }
+
+    /**
      * Internal method to test verifiable objects. If the object is undefined,
      * i.e. null a VerificationException with the provided message is thrown,
      * otherwise the verify method is called on the verifiable object.

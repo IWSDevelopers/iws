@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class CreateUserRequest extends AbstractVerification {
+public final class CreateUserRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

@@ -27,7 +27,7 @@ import java.util.List;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public class Change implements Serializable {
+public final class Change implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

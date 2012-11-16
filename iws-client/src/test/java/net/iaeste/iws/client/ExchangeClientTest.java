@@ -14,22 +14,17 @@
  */
 package net.iaeste.iws.client;
 
-import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
-import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -41,22 +36,19 @@ import static org.junit.Assert.fail;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class ExchangeClientTest {
+public class ExchangeClientTest extends AbstractClientTest {
 
     private final Exchange exchange = new ExchangeClient();
-    private static final Access access = new AccessClient();
-    private static AuthenticationToken token = null;
+    private AuthenticationToken token = null;
 
-    @BeforeClass
-    public static void registerSession() {
-        final AuthenticationResponse response = access.generateSession(new AuthenticationRequest("poland", "poland"));
-        assertThat(response.isOk(), is(true));
-        token = new AuthenticationToken(response.getToken());
+    @Override
+    public void before() {
+        token = login("poland", "poland");
     }
 
-    @AfterClass
-    public static void after() {
-        access.deprecateSession(token);
+    @Override
+    public void after() {
+        logout(token);
     }
 
     @Test

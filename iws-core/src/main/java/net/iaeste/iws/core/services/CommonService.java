@@ -14,16 +14,33 @@
  */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 
 /**
+ * All Common Service funtionality is collected here. Although the Class aught
+ * to be Abstract, since we should (or cat) not use it directly, it should not
+ * be instantiated anywhere, but rather just extended in our Actual Services.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 public class CommonService {
+
+    /**
+     * Formats a given String using our default {@code Locale} and returns the
+     * result.
+     *
+     * @param message The String to format
+     * @param objects Objects to be added to the String
+     * @return Formatted String
+     */
+    protected String format(final String message, final Object... objects) {
+        return String.format(IWSConstants.DEFAULT_LOCALE, message, objects);
+    }
 
     /**
      * Checks if the user is permitted to access the requested Object, by

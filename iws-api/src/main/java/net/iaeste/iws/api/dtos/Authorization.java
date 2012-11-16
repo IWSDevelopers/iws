@@ -14,11 +14,13 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.api.util.Copier;
 
 import java.io.Serializable;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Contains the information about a permission.
@@ -28,13 +30,13 @@ import java.io.Serializable;
  * @since   1.7
  * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
-public class Authorization implements Serializable {
+public final class Authorization implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Permission permission = null;
-    private GroupType groupType = null;
+    private Group group = null;
+    private Set<Permission> permissions = EnumSet.noneOf(Permission.class);
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -46,12 +48,12 @@ public class Authorization implements Serializable {
     /**
      * Default Constructor.
      *
-     * @param permission  Authorization
-     * @param groupType   Group Type
+     * @param group       Group
+     * @param permissions Authorization
      */
-    public Authorization(final Permission permission, final GroupType groupType) {
-        this.permission = permission;
-        this.groupType = groupType;
+    public Authorization(final Group group, final Set<Permission> permissions) {
+        this.group = group;
+        this.permissions = Copier.copy(permissions);
     }
 
     /**
@@ -61,8 +63,8 @@ public class Authorization implements Serializable {
      */
     public Authorization(final Authorization authorization) {
         if (authorization != null) {
-            permission = authorization.permission;
-            groupType = authorization.groupType;
+            permissions = Copier.copy(authorization.permissions);
+            group = authorization.group;
         }
     }
 
@@ -70,20 +72,20 @@ public class Authorization implements Serializable {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setPermission(final Permission permission) {
-        this.permission = permission;
+    public void setGroup(final Group group) {
+        this.group = group;
     }
 
-    public Permission getPermission() {
-        return permission;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupType(final GroupType groupType) {
-        this.groupType = groupType;
+    public void setPermissions(final Set<Permission> permissions) {
+        this.permissions = Copier.copy(permissions);
     }
 
-    public GroupType getGroupType() {
-        return groupType;
+    public Set<Permission> getPermission() {
+        return permissions;
     }
 
     // =========================================================================
@@ -105,11 +107,11 @@ public class Authorization implements Serializable {
 
         final Authorization that = (Authorization) obj;
 
-        if (groupType != null ? groupType != that.groupType : that.groupType != null) {
+        if (group != null ? !group.equals(that.group) : that.group != null) {
             return false;
         }
 
-        return !(permission != null ? permission != that.permission : that.permission != null);
+        return !(permissions != null ? !permissions.equals(that.permissions) : that.permissions != null);
     }
 
     /**
@@ -119,8 +121,8 @@ public class Authorization implements Serializable {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (permission != null ? permission.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupType != null ? groupType.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (group != null ? group.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (permissions != null ? permissions.hashCode() : 0);
 
         return hash;
     }
@@ -131,8 +133,8 @@ public class Authorization implements Serializable {
     @Override
     public String toString() {
         return "Authorization{" +
-                "permission='" + permission + '\'' +
-                ", groupType='" + groupType + '\'' +
+                "group='" + group + '\'' +
+                ", permission='" + permissions + '\'' +
                 '}';
     }
 }

@@ -20,13 +20,17 @@ import net.iaeste.iws.api.constants.IWSErrors;
 /**
  * Exception to be thrown, in case the implementation is missing. The usage of
  * this exception should not become the norm, rather the exception for features
- * which have been added to the external API, but haven't been implemented yet.
+ * which have been added to the external API, but haven't been implemented
+ * yet.<br />
+ *   Class is made deprecated by default, since it helps to outline the areas
+ * where we have not completed work.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @deprecated Please implement the logic
  */
-public class NotImplementedException extends IWSException {
+public final class NotImplementedException extends IWSException {
 
     /** @see IWSConstants#SERIAL_VERSION_UID */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -35,6 +39,7 @@ public class NotImplementedException extends IWSException {
      * Default Constructor.
      *
      * @param message  Specific message, regarding the problem
+     * @deprecated Please implement the logic
      * @see IWSException
      * @see IWSErrors#VERIFICATION_ERROR
      */

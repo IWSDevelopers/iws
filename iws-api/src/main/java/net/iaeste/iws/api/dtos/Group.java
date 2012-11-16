@@ -27,7 +27,7 @@ import java.util.Map;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public class Group extends AbstractVerification {
+public final class Group extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -73,11 +73,11 @@ public class Group extends AbstractVerification {
         return groupName;
     }
 
-    private void setGroupType(final GroupType groupType) {
+    public void setGroupType(final GroupType groupType) {
         this.groupType = groupType;
     }
 
-    private GroupType getGroupType() {
+    public GroupType getGroupType() {
         return groupType;
     }
 

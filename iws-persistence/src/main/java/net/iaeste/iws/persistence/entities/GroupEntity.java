@@ -33,9 +33,9 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
@@ -47,11 +47,22 @@ import java.util.Date;
         @NamedQuery(name = "group.findByExternalId",
                     query = "select g from GroupEntity g " +
                             "where g.externalId = :id"),
-        @NamedQuery(name = "group.findByUserAndType",
+        @NamedQuery(name = "group.findByUserAndExternalId",
+                    query = "select g from GroupEntity g, UserGroupEntity ug " +
+                            "where g.id = ug.group.id" +
+                            "  and g.externalId = :eid" +
+                            "  and ug.user.id = :uid"),
+        @NamedQuery(name = "group.findPrivateGroupByUser",
                     query = "select g from GroupEntity g, UserGroupEntity ug " +
                             "where g.id = ug.group.id" +
                             "  and g.groupType.grouptype = :type" +
                             "  and ug.user.id = :uid"),
+        @NamedQuery(name = "group.findNationalOrSarByUser",
+                query = "select g from GroupEntity g, UserGroupEntity ug " +
+                        "where g.id = ug.group.id" +
+                        "  and ug.user.id = :uid" +
+                        "  and (g.groupType.grouptype = :national" +
+                        "   or g.groupType.grouptype = :sar)"),
         @NamedQuery(name = "group.findByPermission",
                     query = "select g from GroupEntity g, UserPermissionView v " +
                             "where g.id = v.id.groupId" +

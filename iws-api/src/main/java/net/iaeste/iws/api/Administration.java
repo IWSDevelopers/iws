@@ -15,12 +15,12 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.ManageUserAccountRequest;
+import net.iaeste.iws.api.requests.FetchUserRequest;
+import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
-import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
@@ -43,16 +43,16 @@ public interface Administration {
      * e-mail is send to the user via the provided username. The e-mail will
      * contain an Activation Link, which is then used to activate the
      * account.<br />
-     *   Note, the account cannot be used before it is activated. If the Account
+     * Note, the account cannot be used before it is activated. If the Account
      * is been deleted before Activation is completed, then all information is
      * removed from the system. If the Account is deleted after activation, the
      * User Account Object will remain in the system, though all data will be
      * removed.
      *
-     * @param token    Authentication information about the user invoking the
-     *                 request
-     * @param request  Request data, must contain username, password as well as
-     *                 first and last name
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request data, must contain username, password as well as
+     *                first and last name
      * @return Standard Error object
      */
     Fallible createUser(AuthenticationToken token, CreateUserRequest request);
@@ -61,13 +61,13 @@ public interface Administration {
      * Users cannot access the IWS, until their account has been activated, this
      * happens via an e-mail that is sent to their e-mail address (username),
      * with an activation link.<br />
-     *   Once activation link is activated, this method should be invoked, which
+     * Once activation link is activated, this method should be invoked, which
      * will handle the actual activation process. Meaning, that if an account is
      * found in status "new", and with the given activation code, then it is
      * being updated to status "active", the code is removed and the updates are
      * saved.
      *
-     * @param activationString  Code used to activate the Account with
+     * @param activationString Code used to activate the Account with
      * @return Standard Error object
      */
     Fallible activateUser(String activationString);
@@ -77,30 +77,40 @@ public interface Administration {
      * the Request Object. The changes can include Blocking an Active Account,
      * and thus preventing the user from accessing or re-activating a Blocked
      * Account or even Delete an Account.<br />
+     *   If the request is made by the user itself, it is then possible for the
+     * user to update the data associated with him or her. This reflects on
+     * personal information, and privacy settings. It is also possible for a
+     * user to delete his or her account from the system, Though, it is not
+     * possible to either activate or deactivate the account.<br />
      *   Note; deletion is a non-reversible action. Although the Account is
      * deleted, only private data associated with the account is deleted, the
-     * account itself remains in the system with status deleted.
+     * account itself remains in the system with status deleted.<br />
+     *   Note; All users may invoke this call, but to change the status of an
+     * account, requires that the user has the right permissions.
      *
-     * @param token    Authentication information about the user invoking the
-     *                 request
-     * @param request  Request data, must contain the User Account and the new
-     *                 state for it
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request data, must contain the User Account and the new
+     *                state for it
      * @return Standard Error object
      */
-    Fallible alterUserAccount(AuthenticationToken token, ManageUserAccountRequest request);
+    Fallible controlUserAccount(AuthenticationToken token, UserRequest request);
 
     /**
-     *
-     * @param token
-     * @param request
-     * @return
+     * Retrieves a list of users from the system. The
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Fetch User Request Object
+     * @return Response Object with the found users and error information
      */
     UserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
 
     Fallible processGroups(AuthenticationToken token, GroupRequest request);
+
     GroupResponse fetchGroups(AuthenticationToken token, FetchGroupRequest request);
 
     Fallible processCountries(AuthenticationToken token, CountryRequest request);
+
     CountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
 
     Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);

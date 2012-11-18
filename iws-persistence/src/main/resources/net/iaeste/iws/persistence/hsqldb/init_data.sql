@@ -28,7 +28,7 @@ insert into roles (id, role, description) values (4, 'Guest', 'Guests are only a
 -- =============================================================================
 -- Permissions from net.iaeste.iws.api.enums.Permission
 -- =============================================================================
-insert into permissions (id, permission) values (101, 'MANAGE_USER_ACCOUNTS');
+insert into permissions (id, permission) values (101, 'CONTROL_USER_ACCOUNT');
 insert into permissions (id, permission) values (102, 'FETCH_USERS');
 insert into permissions (id, permission) values (111, 'PROCESS_SUB_GROUPS');
 insert into permissions (id, permission) values (112, 'FETCH_GROUPS');
@@ -60,7 +60,7 @@ insert into permissions (id, permission) values (202, 'LOOKUP_OFFERS');
 -- for GroupTypes, and Permissions for Roles), then we'll have the answer
 -- =============================================================================
 
--- Permission 102 - Manage User Accounts
+-- Permission 102 - Control User Account
 --   -> GroupTypes: 0 Administration
 --                  2 Member
 --   -> Roles:      1 Owner

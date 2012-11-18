@@ -17,6 +17,7 @@ package net.iaeste.iws.api.dtos;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.Verifiable;
 import net.iaeste.iws.api.responses.AbstractResponse;
 
@@ -48,9 +49,9 @@ public final class User extends AbstractResponse implements Verifiable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String userId = null;
-    private UserStatus status = null;
     private String firstname = null;
     private String lastname = null;
+    private UserStatus status = null;
     private Privacy privacy = Privacy.PRIVATE;
     private Person person = null;
 
@@ -111,9 +112,10 @@ public final class User extends AbstractResponse implements Verifiable {
     public User(final User user) {
         if (user != null) {
             userId = user.userId;
-            status = user.status;
             firstname = user.firstname;
             lastname = user.lastname;
+            status = user.status;
+            privacy = user.privacy;
             person = new Person(user.person);
         }
     }
@@ -130,14 +132,6 @@ public final class User extends AbstractResponse implements Verifiable {
         return userId;
     }
 
-    public void setStatus(final UserStatus status) {
-        this.status = status;
-    }
-
-    public UserStatus getStatus() {
-        return status;
-    }
-
     public void setFirstname(final String firstname) {
         this.firstname = firstname;
     }
@@ -152,6 +146,14 @@ public final class User extends AbstractResponse implements Verifiable {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public void setStatus(final UserStatus status) {
+        this.status = status;
+    }
+
+    public UserStatus getStatus() {
+        return status;
     }
 
     public void setPrivacy(final Privacy privacy) {
@@ -179,12 +181,11 @@ public final class User extends AbstractResponse implements Verifiable {
      */
     @Override
     public void verify() {
-        // This Object is used to either read a users information, or to update
-        // same.
-        // Object is used for either of these requests:
-        // 1. Create new users (username, firstname, lastname must be valid)
-        // 2. Update user personal details (userid, person)
-        // 3. Delete user (userId)
+        final Map<String, String> validationResult = validate();
+
+        if (!validationResult.isEmpty()) {
+            throw new VerificationException("Validation failed: " + validationResult.toString());
+        }
     }
 
     /**
@@ -193,6 +194,10 @@ public final class User extends AbstractResponse implements Verifiable {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        if ((userId == null) || (userId.length() != 36)) {
+            validation.put("userId", "Invalid UserID.");
+        }
 
         return validation;
     }
@@ -211,7 +216,28 @@ public final class User extends AbstractResponse implements Verifiable {
         }
 
         final User user = (User) obj;
-        return !(userId != null ? !userId.equals(user.userId) : user.userId != null);
+
+        if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) {
+            return false;
+        }
+
+        if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null) {
+            return false;
+        }
+
+        if (person != null ? !person.equals(user.person) : user.person != null) {
+            return false;
+        }
+
+        if (privacy != user.privacy) {
+            return false;
+        }
+
+        if (status != user.status) {
+            return false;
+        }
+
+        return userId.equals(user.userId);
     }
 
     /**
@@ -222,8 +248,11 @@ public final class User extends AbstractResponse implements Verifiable {
         int result = super.hashCode();
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + userId.hashCode();
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + firstname.hashCode();
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + lastname.hashCode();
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (firstname != null ? firstname.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lastname != null ? lastname.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (privacy != null ? privacy.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (person != null ? person.hashCode() : 0);
 
         return result;
     }
@@ -234,9 +263,11 @@ public final class User extends AbstractResponse implements Verifiable {
     @Override
     public String toString() {
         return "User{" +
-                "firstname='" + firstname + '\'' +
+                "userId='" + userId + '\'' +
+                ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
-                ", status='" + status + '\'' +
+                ", status=" + status +
+                ", privacy=" + privacy +
                 '}';
     }
 }

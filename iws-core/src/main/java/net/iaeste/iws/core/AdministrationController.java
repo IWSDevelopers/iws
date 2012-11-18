@@ -18,17 +18,17 @@ import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.ManageUserAccountRequest;
+import net.iaeste.iws.api.requests.FetchUserRequest;
+import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
-import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
-import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.core.services.AdministrationService;
@@ -38,13 +38,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.6
+ * @since   1.7
  */
 public class AdministrationController extends CommonController implements Administration {
 
-    private static final String AUTHENTICATION_TOKEN_ERROR = "The Authentication Token is undefined.";
     private static final Logger LOG = LoggerFactory.getLogger(AdministrationController.class);
     private final ServiceFactory factory;
 
@@ -69,13 +68,13 @@ public class AdministrationController extends CommonController implements Admini
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.MANAGE_USER_ACCOUNTS);
+            final Authentication authentication = verifyAccess(token, Permission.CONTROL_USER_ACCOUNT);
             verify(request, "Cannot process a null request.");
 
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.createUser(authentication, request);
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished createUser()");
@@ -93,9 +92,9 @@ public class AdministrationController extends CommonController implements Admini
         try {
             final AdministrationService service = factory.prepareAdministrationService();
             service.activateUser(activationString);
-            response = new UserResponse();
+            response = new FallibleResponse();
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished activateUser()");
@@ -106,22 +105,26 @@ public class AdministrationController extends CommonController implements Admini
      * {@inheritDoc}
      */
     @Override
-    public Fallible alterUserAccount(final AuthenticationToken token, final ManageUserAccountRequest request) {
-        LOG.trace("Starting processUsers()");
+    public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
+        LOG.trace("Starting controlUserAccount()");
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.MANAGE_USER_ACCOUNTS);
-            verify(request, "To be clarified.");
+            // The Permission check for this request, is moved into the service
+            // that handles the request. The reason for this, is that users may
+            // also alter their own data, but that it requires the correct
+            // permissions to alter others.
+            final Authentication authentication = verifyPrivateAccess(token);
+            verify(request, "Cannot process a null request.");
 
             final AdministrationService service = factory.prepareAdministrationService();
-            service.processUsers(authentication, request);
-            response = new FacultyResponse();
+            service.controlUserAccount(authentication, request);
+            response = new FallibleResponse();
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processUsers()");
+        LOG.trace("Finished controlUserAccount()");
         return response;
     }
 
@@ -135,7 +138,7 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.FETCH_USERS);
-            verify(request, "To be clarified.");
+            verify(request, "Cannot process a null request.");
 
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.fetchUsers(authentication, request);

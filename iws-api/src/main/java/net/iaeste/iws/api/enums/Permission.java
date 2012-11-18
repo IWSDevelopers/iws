@@ -65,13 +65,25 @@ public enum Permission {
      */
     FETCH_REGIONALS_GROUP,
 
-    // Access Control
+    // =========================================================================
+    // Administration Permissions
+    // =========================================================================
+
     /**
-     *
-     * {@link net.iaeste.iws.api.Administration#createUser(net.iaeste.iws.api.dtos.AuthenticationToken, net.iaeste.iws.api.requests.CreateUserRequest)}
-     * {@link net.iaeste.iws.api.Administration#alterUserAccount(net.iaeste.iws.api.dtos.AuthenticationToken, net.iaeste.iws.api.requests.ManageUserAccountRequest)}
+     * The Controlling User Account permission is required, to perform
+     * operations against Accounts in the IWS. An Account, is defined as a mean
+     * for someone to gain access to the system.<br />
+     *   The permission allow for creating new user accounts and also to change
+     * the accounts, i.e. change status and delete them.
      */
-    MANAGE_USER_ACCOUNTS,
+    CONTROL_USER_ACCOUNT,
+
+    /**
+     * To view user accounts, you must be allowed to fetch them first. The
+     * viewing is limitted to the account information, and only of the user has
+     * allowed that private information is also revealed (opt-in), then more
+     * details will be fetched.
+     */
     FETCH_USERS,
 
     /**

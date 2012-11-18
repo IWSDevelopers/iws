@@ -16,7 +16,6 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.User;
-import net.iaeste.iws.api.enums.UserStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,24 +30,22 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class ManageUserAccountRequest extends AbstractVerification {
+public final class UserRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private User user = null;
-    private UserStatus status = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public ManageUserAccountRequest() {
+    public UserRequest() {
     }
 
-    public ManageUserAccountRequest(final User user, final UserStatus status) {
+    public UserRequest(final User user) {
         this.user = user;
-        this.status = status;
     }
 
     // =========================================================================
@@ -63,14 +60,6 @@ public final class ManageUserAccountRequest extends AbstractVerification {
         return new User(user);
     }
 
-    public void setStatus(final UserStatus status) {
-        this.status = status;
-    }
-
-    public UserStatus getStatus() {
-        return status;
-    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -83,7 +72,6 @@ public final class ManageUserAccountRequest extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotVerifiable(validation, "user", user);
-        isNotNull(validation, "status", status);
 
         return validation;
     }

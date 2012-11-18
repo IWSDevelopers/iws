@@ -17,6 +17,7 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchUserRequest;
@@ -37,6 +38,7 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
+import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.notification.Notifications;
@@ -167,8 +169,70 @@ public final class AdministrationService {
         }
     }
 
+    /**
+     * Now, this is a tricky one - there are two usages of this method. The
+     * first is for private usage, meaning that if the UserId of both the
+     * Authentication Object and the Request is the same, then it means that
+     * the user is trying to make updates to his or her data, or delete the
+     * record.<br />
+     *   If the userId's differ, then a permission check is made, to see if the
+     * requesting user is allowed to perform this kind of action, and if they
+     * are allowed to do it against the user.<br />
+     *   Now, there are other complications to take into considerations. If the
+     * user in the request is the current Owner of the Group in question
+     * (members group), then the account cannot be altered. This little
+     * amendment also applies to personal requests, where the owner cannot
+     * delete him or herself.
+     *
+     * @param authentication User & Group information
+     * @param request        User Request information
+     * ToDo clean up code, this looks terrible!
+     */
     public void controlUserAccount(final Authentication authentication, final UserRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        final GroupEntity group = dao.findMemberGroup(authentication.getUser());
+        final RoleEntity role = dao.findRoleByUserAndGrouo(request.getUser().getUserId(), group);
+        // Check if this is a personal request or not
+        if (authentication.getUser().getExternalId().equals(request.getUser().getUserId())) {
+            final UserEntity user = authentication.getUser();
+            // Personal request, Updating all information, but we need to check
+            // the ownership as well
+            if (user.getStatus() == UserStatus.DELETED) {
+                deletePrivateData(user);
+                // We deleted the user - now kill the session
+                final SessionEntity session = dao.findActiveSession(user);
+                session.setActive(false);
+                dao.persist(session);
+            } else {
+                // Okay, no deleting attempt, just an update
+                user.setPrivateData(request.getUser().getPrivacy());
+            }
+        } else {
+            // First, we need to verify if the user may access. The DAO method
+            // throws an Exception, if the user is not allowed
+            dao.findGroupByPermission(authentication.getUser(), null, Permission.CONTROL_USER_ACCOUNT);
+            if (!role.getId().equals(IWSConstants.ROLE_OWNER)) {
+                final UserEntity user = dao.findUserByExternalId(request.getUser().getUserId());
+                // Okay, we have a ball game - let's update the record with the
+                // demanded changes
+                if (request.getUser().getStatus() == UserStatus.DELETED) {
+                    deletePrivateData(user);
+                } else {
+                    // Update User account with the new Status and save it
+                    user.setStatus(request.getUser().getStatus());
+                    dao.persist(user);
+                }
+            }
+        }
+    }
+
+    private void deletePrivateData(final UserEntity user) {
+        // First, we'll delete the user data
+        final GroupEntity group = dao.findPrivateGroup(user);
+        dao.delete(group);
+
+        // Now, we're going to set the account to deleted
+        user.setStatus(UserStatus.DELETED);
+        dao.persist(user);
     }
 
     public UserResponse fetchUsers(final Authentication authentication, final FetchUserRequest request) {

@@ -42,8 +42,14 @@ import java.util.Date;
                 query = "select r from RoleEntity r"),
         @NamedQuery(
                 name = "role.findById",
-                query = "select r from RoleEntity  r " +
+                query = "select r from RoleEntity r " +
                         "where r.id = :id"),
+        @NamedQuery(
+                name = "role.findByUserAndGroup",
+                query = "select r from UserGroupEntity ug, RoleEntity r " +
+                        "where ug.role.id = r.id" +
+                        "  and ug.user.externalId = :euid" +
+                        "  and ug.group.id = :gid"),
         @NamedQuery(
                 name = "role.findRoleByName",
                 query = "select r from RoleEntity r " +

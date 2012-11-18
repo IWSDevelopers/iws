@@ -59,7 +59,7 @@ public enum GroupType {
      * IDT members, etc.<br />
      *   Note; users can only be member of 1 Members Group!
      */
-    MEMBERS,
+    MEMBER,
 
     /**
      * A number of Groups exists, which are truly "International", meaning that

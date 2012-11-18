@@ -190,7 +190,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public GroupEntity findGroup(final UserEntity user, final String groupId, final Permission permission) {
+    public GroupEntity findGroupByPermission(final UserEntity user, final String groupId, final Permission permission) {
         final Query query;
 
         if (groupId == null) {
@@ -228,6 +228,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public GroupEntity findMemberGroup(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
+        query.setParameter("uid", user.getId());
+        query.setParameter("type", GroupType.MEMBER.name());
+
+        return (GroupEntity) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public GroupEntity findNationalGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findNationalOrSarByUser");
         query.setParameter("uid", user.getId());
@@ -242,7 +254,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public GroupEntity findPrivateGroup(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("group.findPrivateGroupByUser");
+        final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
         query.setParameter("uid", user.getId());
         query.setParameter("type", GroupType.PRIVATE.name());
 
@@ -258,6 +270,29 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("id", id);
 
         return (RoleEntity) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RoleEntity findRoleByUserAndGrouo(final String externalUserId, final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("role.findByUserAndGroup");
+        query.setParameter("euid", externalUserId);
+        query.setParameter("gid", group.getId());
+
+        return (RoleEntity) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserEntity findUserByExternalId(final String externalUserId) {
+        final Query query = entityManager.createNamedQuery("user.findByExternalId");
+        query.setParameter("euid", externalUserId);
+
+        return (UserEntity) query.getSingleResult();
     }
 
     /**

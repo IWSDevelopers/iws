@@ -137,7 +137,10 @@ public class AdministrationController extends CommonController implements Admini
         UserResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_USERS);
+            // The Permission check for this request, is moved into the service
+            // that handles the request. The reason for this, is that users may
+            // also request their own data.
+            final Authentication authentication = verifyPrivateAccess(token);
             verify(request, "Cannot process a null request.");
 
             final AdministrationService service = factory.prepareAdministrationService();

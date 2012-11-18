@@ -256,7 +256,7 @@ create table users (
     firstname                varchar(50) not null,
     lastname                 varchar(50) not null,
     status                   varchar(25) default 'NEW' not null,
-    private_data             decimal(1) default 1 not null,
+    private_data             varchar(10) default 'PRIVATE' not null,
     temporary_code           varchar(128),
     created                  timestamp default now() not null,
     modified                 timestamp default now() not null,

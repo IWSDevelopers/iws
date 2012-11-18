@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.persistence.notification.Notifiable;
 
@@ -60,7 +61,7 @@ import java.util.Date;
         @NamedQuery(
                 name = "user.findByExternalId",
                 query = "select u from UserEntity u " +
-                        "where u.externalId = :id"),
+                        "where u.externalId = :euid"),
         @NamedQuery(
                 name = "user.findByCodeAndStatus",
                 query = "select u from UserEntity u " +
@@ -131,7 +132,8 @@ public class UserEntity implements IWSEntity, Notifiable {
      * contain the users phonenumbers.
      */
     @Column(nullable = true, name = "private_data")
-    private Boolean privateData = true;
+    @Enumerated(EnumType.STRING)
+    private Privacy privateData = Privacy.PRIVATE;
 
     /**
      * This field is used to store the SHA-256 hashcode value of the users
@@ -250,11 +252,11 @@ public class UserEntity implements IWSEntity, Notifiable {
         return status;
     }
 
-    public void setPrivateData(final Boolean privateData) {
+    public void setPrivateData(final Privacy privateData) {
         this.privateData = privateData;
     }
 
-    public Boolean getPrivateData() {
+    public Privacy getPrivateData() {
         return privateData;
     }
 

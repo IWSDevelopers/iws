@@ -61,7 +61,7 @@ class CommonController {
             // Authentication Check; Expect Exception if unable to find a User
             final UserEntity user = dao.findActiveSession(token).getUser();
             // Authorization Check; Expect Exception if unable to match a Group
-            final GroupEntity group = dao.findGroup(user, token.getGroupId(), permission);
+            final GroupEntity group = dao.findGroupByPermission(user, token.getGroupId(), permission);
 
             // So far so good, return the information
             return new Authentication(user, group);

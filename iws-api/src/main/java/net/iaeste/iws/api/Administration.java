@@ -86,7 +86,10 @@ public interface Administration {
      * deleted, only private data associated with the account is deleted, the
      * account itself remains in the system with status deleted.<br />
      *   Note; All users may invoke this call, but to change the status of an
-     * account, requires that the user has the right permissions.
+     * account, requires that the user has the right permissions.<br />
+     *   Note; Regardless of who is making the request, it is not possible to
+     * alter the status of someone who is currently having the role Owner, of
+     * the Members Group.
      *
      * @param token   Authentication information about the user invoking the
      *                request

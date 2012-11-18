@@ -52,7 +52,7 @@ import java.util.Date;
                             "where g.id = ug.group.id" +
                             "  and g.externalId = :eid" +
                             "  and ug.user.id = :uid"),
-        @NamedQuery(name = "group.findPrivateGroupByUser",
+        @NamedQuery(name = "group.findGroupByUserAndType",
                     query = "select g from GroupEntity g, UserGroupEntity ug " +
                             "where g.id = ug.group.id" +
                             "  and g.groupType.grouptype = :type" +

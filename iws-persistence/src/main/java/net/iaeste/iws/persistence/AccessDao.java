@@ -60,9 +60,11 @@ public interface AccessDao extends BasicDao {
 
     GroupTypeEntity findGroupType(GroupType groupType);
 
-    GroupEntity findGroup(UserEntity user, String groupId, Permission permission);
+    GroupEntity findGroupByPermission(UserEntity user, String groupId, Permission permission);
 
     GroupEntity findGroup(UserEntity user, String groupId);
+
+    GroupEntity findMemberGroup(UserEntity user);
 
     GroupEntity findNationalGroup(UserEntity user);
 
@@ -86,4 +88,7 @@ public interface AccessDao extends BasicDao {
      * @return Found RoleEntity or null
      */
     RoleEntity findRoleById(Long id);
+    RoleEntity findRoleByUserAndGrouo(String externalUserId, GroupEntity group);
+
+    UserEntity findUserByExternalId(String externalUserId);
 }

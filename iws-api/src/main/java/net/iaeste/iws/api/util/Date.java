@@ -128,10 +128,21 @@ public final class Date implements Serializable {
      * given number of Days.
      *
      * @param days Number of days to add to the current
-     * @return New Date instance woth the given days added
+     * @return New Date instance with the given days added
      */
     public Date plusDays(final int days) {
         return new Date(date.plusDays(days));
+    }
+
+    /**
+     * Returns a new Date instance with the basic value of the current plus the
+     * given number of Weeks.
+     *
+     * @param weeks Number of weeks to add to the current
+     * @return New Date instance with the given weeks added
+     */
+    public Date plusWeeks(final int weeks) {
+        return new Date(date.plusWeeks(weeks));
     }
 
     /**

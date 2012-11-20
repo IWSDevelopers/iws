@@ -52,7 +52,10 @@ import java.util.Date;
                         "   s.sessionData = null, " +
                         "   s.modified = current_timestamp " +
                         "where s.active = true " +
-                        "  and s.user.id = :id")
+                        "  and s.user.id = :id"),
+        @NamedQuery(name = "session.deleteUserSessions",
+                    query =  "delete from SessionEntity s " +
+                             "where s.user.id = :uid")
 })
 @Entity
 @Table(name = "sessions")

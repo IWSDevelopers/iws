@@ -18,16 +18,17 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.FetchUserRequest;
-import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
+import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
@@ -38,10 +39,11 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
-import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.notification.Notifications;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.UUID;
@@ -53,6 +55,7 @@ import java.util.UUID;
  */
 public final class AdministrationService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AdministrationService.class);
     private final AccessDao dao;
     private final Notifications notifications;
 
@@ -95,6 +98,94 @@ public final class AdministrationService {
 
         return result;
     }
+
+    /**
+     * Users cannot access the IWS, until their account has been activated, this
+     * happens via an e-mail that is sent to their e-mail address (username),
+     * with an activation link.<br />
+     *   Once activation link is activated, this method should be invoked, which
+     * will handle the actual activation process. Meaning, that if an account is
+     * found in status "new", and with the given activation code, then it is
+     * being updated to status "active", the code is removed and the updates are
+     * saved.<br />
+     *   If everything went well, then
+     *
+     * @param activationString Hashvalue of the activation String
+     */
+    public void activateUser(final String activationString) {
+        final UserEntity user = dao.findUserByCodeAndStatus(activationString, UserStatus.NEW);
+
+        if (user != null) {
+            // Update the fields in the User Entity, so the user can log in
+            user.setStatus(UserStatus.ACTIVE);
+            user.setCode(null);
+            user.setModified(new Date());
+            dao.persist(user);
+        }
+    }
+
+    /**
+     * Now, this is a tricky one - there are two usages of this method. The
+     * first is for private usage, meaning that if the UserId of both the
+     * Authentication Object and the Request is the same, then it means that
+     * the user is trying to make updates to his or her data, or delete the
+     * record.<br />
+     *   If the userId's differ, then a permission check is made, to see if the
+     * requesting user is allowed to perform this kind of action, and if they
+     * are allowed to do it against the user.<br />
+     *   Now, there are other complications to take into considerations. If the
+     * user in the request is the current Owner of the Group in question
+     * (members group), then the account cannot be altered. This little
+     * amendment also applies to personal requests, where the owner cannot
+     * delete him or herself.
+     *
+     * @param authentication User & Group information
+     * @param request        User Request information
+     */
+    public void controlUserAccount(final Authentication authentication, final UserRequest request) {
+        final String externalId = authentication.getUser().getExternalId();
+        final String providedId = request.getUser().getUserId();
+        final UserEntity user = authentication.getUser();
+
+        // Check if this is a personal request or not
+        if (externalId.equals(providedId)) {
+            if (user.getStatus() == UserStatus.DELETED) {
+                deletePrivateData(user);
+            } else {
+                updatePrivacyAndData(user, request);
+            }
+        } else {
+            handleMemberAccountChanges(user, request);
+        }
+    }
+
+    public UserResponse fetchUsers(final Authentication authentication, final FetchUserRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public void processGroups(final Authentication authentication, final GroupRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public GroupResponse fetchGroups(final Authentication authentication, final FetchGroupRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public void processCountries(final Authentication authentication, final CountryRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public CountryResponse fetchCountries(final Authentication authentication, final FetchCountryRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
 
     private UserEntity createAndPersistUserEntity(final String username, final CreateUserRequest request) {
         final UserEntity user = new UserEntity();
@@ -145,117 +236,67 @@ public final class AdministrationService {
     }
 
     /**
-     * Users cannot access the IWS, until their account has been activated, this
-     * happens via an e-mail that is sent to their e-mail address (username),
-     * with an activation link.<br />
-     *   Once activation link is activated, this method should be invoked, which
-     * will handle the actual activation process. Meaning, that if an account is
-     * found in status "new", and with the given activation code, then it is
-     * being updated to status "active", the code is removed and the updates are
-     * saved.<br />
-     *   If everything went well, then
+     * Handles changes to member account - meaning status changes only. If the
+     * account belongs to the Owner of the Group, then no changes may be made.
+     * Otherwise, it is possible to activate/deactivate an account and delete
+     * it.<br />
+     *   ToDo: Add state machine for the status changes
      *
-     * @param activationString Hashvalue of the activation String
+     * @param administrator User that is invoking the request
+     * @param request       The data Object to read the changes from
      */
-    public void activateUser(final String activationString) {
-        final UserEntity user = dao.findUserByCodeAndStatus(activationString, UserStatus.NEW);
+    private void handleMemberAccountChanges(final UserEntity administrator, final UserRequest request) {
+        final GroupEntity group = dao.findMemberGroup(administrator);
+        final RoleEntity role = dao.findRoleByUserAndGrouo(request.getUser().getUserId(), group);
 
-        if (user != null) {
-            // Update the fields in the User Entity, so the user can log in
-            user.setStatus(UserStatus.ACTIVE);
-            user.setCode(null);
-            user.setModified(new Date());
-            dao.persist(user);
+        // First, we need to verify if the user may access. The DAO method
+        // throws an Exception, if the user is not allowed
+        dao.findGroupByPermission(administrator, null, Permission.CONTROL_USER_ACCOUNT);
+
+        if (!role.getId().equals(IWSConstants.ROLE_OWNER)) {
+            final UserEntity user = dao.findUserByExternalId(request.getUser().getUserId());
+            // Okay, we have a ball game - let's update the record with the
+            // demanded changes
+            if (request.getUser().getStatus() == UserStatus.DELETED) {
+                deletePrivateData(user);
+            } else {
+                // Update User account with the new Status and save it
+                user.setStatus(request.getUser().getStatus());
+                dao.persist(user);
+            }
         }
     }
 
     /**
-     * Now, this is a tricky one - there are two usages of this method. The
-     * first is for private usage, meaning that if the UserId of both the
-     * Authentication Object and the Request is the same, then it means that
-     * the user is trying to make updates to his or her data, or delete the
-     * record.<br />
-     *   If the userId's differ, then a permission check is made, to see if the
-     * requesting user is allowed to perform this kind of action, and if they
-     * are allowed to do it against the user.<br />
-     *   Now, there are other complications to take into considerations. If the
-     * user in the request is the current Owner of the Group in question
-     * (members group), then the account cannot be altered. This little
-     * amendment also applies to personal requests, where the owner cannot
-     * delete him or herself.
+     * Deletes the private data for a user. The data has to be removed, to avoid
+     * breaking any privacy laws. Only thing remaining of the User Account, will
+     * be the
      *
-     * @param authentication User & Group information
-     * @param request        User Request information
-     * ToDo clean up code, this looks terrible!
+     * @param user User Entity to delete the private data of
      */
-    public void controlUserAccount(final Authentication authentication, final UserRequest request) {
-        final GroupEntity group = dao.findMemberGroup(authentication.getUser());
-        final RoleEntity role = dao.findRoleByUserAndGrouo(request.getUser().getUserId(), group);
-        // Check if this is a personal request or not
-        if (authentication.getUser().getExternalId().equals(request.getUser().getUserId())) {
-            final UserEntity user = authentication.getUser();
-            // Personal request, Updating all information, but we need to check
-            // the ownership as well
-            if (user.getStatus() == UserStatus.DELETED) {
-                deletePrivateData(user);
-                // We deleted the user - now kill the session
-                final SessionEntity session = dao.findActiveSession(user);
-                session.setActive(false);
-                dao.persist(session);
-            } else {
-                // Okay, no deleting attempt, just an update
-                user.setPrivateData(request.getUser().getPrivacy());
-            }
-        } else {
-            // First, we need to verify if the user may access. The DAO method
-            // throws an Exception, if the user is not allowed
-            dao.findGroupByPermission(authentication.getUser(), null, Permission.CONTROL_USER_ACCOUNT);
-            if (!role.getId().equals(IWSConstants.ROLE_OWNER)) {
-                final UserEntity user = dao.findUserByExternalId(request.getUser().getUserId());
-                // Okay, we have a ball game - let's update the record with the
-                // demanded changes
-                if (request.getUser().getStatus() == UserStatus.DELETED) {
-                    deletePrivateData(user);
-                } else {
-                    // Update User account with the new Status and save it
-                    user.setStatus(request.getUser().getStatus());
-                    dao.persist(user);
-                }
-            }
-        }
-    }
-
     private void deletePrivateData(final UserEntity user) {
-        // First, we'll delete the user data
+        // First, delete the Sessions, they are linked to the User account, and
+        // not the users private Group
+        final int deletedSessions = dao.deleteSessions(user);
+
+        // Secondly, delete all data associated with the user, meaning the users
+        // private Group
         final GroupEntity group = dao.findPrivateGroup(user);
         dao.delete(group);
 
-        // Now, we're going to set the account to deleted
+        // Now, remove and System specific data from the Account, and set the
+        // Status to deleted, thus preventing the account from being used
+        // anymore
+        user.setCode(null);
+        user.setPrivateData(Privacy.PRIVATE);
         user.setStatus(UserStatus.DELETED);
         dao.persist(user);
+
+        LOG.info("Deleted all private data for user {}, including {} sessions,", user, deletedSessions);
     }
 
-    public UserResponse fetchUsers(final Authentication authentication, final FetchUserRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public void processGroups(final Authentication authentication, final GroupRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public GroupResponse fetchGroups(final Authentication authentication, final FetchGroupRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public void processCountries(final Authentication authentication, final CountryRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public CountryResponse fetchCountries(final Authentication authentication, final FetchCountryRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+    private void updatePrivacyAndData(final UserEntity user, final UserRequest request) {
+        user.setPrivateData(request.getUser().getPrivacy());
+        dao.persist(user);
     }
 }

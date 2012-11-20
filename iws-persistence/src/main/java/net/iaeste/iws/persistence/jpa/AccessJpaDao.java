@@ -156,6 +156,17 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public int deleteSessions(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("session.deleteUserSessions");
+        query.setParameter("uid", user.getId());
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<UserPermissionView> findPermissions(final Authentication authentication, final String externalGroupId) {
         final Query query;
         if (externalGroupId != null) {

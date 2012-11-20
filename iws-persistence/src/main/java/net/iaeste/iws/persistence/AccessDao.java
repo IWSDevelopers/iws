@@ -46,6 +46,8 @@ public interface AccessDao extends BasicDao {
 
     Integer deprecateSession(UserEntity user);
 
+    int deleteSessions(UserEntity user);
+
     /**
      * Fetches a list of Permissions, that a user has towards a specific Group.
      * If no GroupId is given, then all permissions that a user has in the IWS

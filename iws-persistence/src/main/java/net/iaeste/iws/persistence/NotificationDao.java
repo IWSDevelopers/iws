@@ -38,7 +38,7 @@ public interface NotificationDao extends BasicDao {
      * @param subject Subject of the notification
      * @return        UserNotificationEntity
      */
-    UserNotificationEntity findUserNotificationSetting(User user, NotificationSubject subject);
+    UserNotificationEntity findUserNotificationSetting(UserEntity user, NotificationSubject subject);
 
     /**
      * Finds all NotificationMessageEntity for selected notification channel

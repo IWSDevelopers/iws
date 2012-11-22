@@ -33,7 +33,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 /**
- * These classes sind temporarily placed here. We need the functionality, but it
+ * These classes send temporarily placed here. We need the functionality, but it
  * should rightly be placed in the EJB module. Until the EJB module is ready,
  * and we have a GlassFish instance to deploy to, we will keep it here.<br />
  *   The sending information (port, addresses) will be injected using JNDI.

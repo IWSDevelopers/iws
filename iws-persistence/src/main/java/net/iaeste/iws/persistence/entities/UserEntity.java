@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.persistence.notification.Notifiable;
@@ -316,5 +317,10 @@ public class UserEntity implements IWSEntity, Notifiable {
         }
 
         return message;
+    }
+
+    @Override
+    public NotificationSubject getNotificationSubject() {
+        return NotificationSubject.USER;
     }
 }

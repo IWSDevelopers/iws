@@ -18,6 +18,7 @@ import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
+import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.persistence.notification.Notifiable;
 
@@ -722,5 +723,10 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Override
     public String generateNotificationMessage() {
         return "Offer " + refNo;
+    }
+
+    @Override
+    public NotificationSubject getNotificationSubject() {
+        return NotificationSubject.OFFER;
     }
 }

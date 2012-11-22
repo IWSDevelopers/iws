@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.notification;
 
+import net.iaeste.iws.api.enums.NotificationSubject;
+
 /**
  * Please note, that the current information here is very much incomplete. A
  * possible solution would be to use a standard Templating Engine for the
@@ -39,4 +41,6 @@ public interface Notifiable {
      * @return Simple Message
      */
     String generateNotificationMessage();
+
+    NotificationSubject getNotificationSubject();
 }

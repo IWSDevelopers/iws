@@ -23,6 +23,7 @@ import net.iaeste.iws.api.enums.NotificationType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 
 import javax.persistence.EntityManager;
@@ -50,15 +51,15 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
      * {@inheritDoc}
      */
     @Override
-    public UserNotificationEntity findUserNotificationSetting(final User user, final NotificationSubject subject) {
+    public UserNotificationEntity findUserNotificationSetting(final UserEntity user, final NotificationSubject subject) {
         final Query query = entityManager.createNamedQuery("notifications.findSettingByUserAndSubject");
-        query.setParameter("id", user.getUserId());
+        query.setParameter("id", user.getId());
         query.setParameter("subject", subject);
 
         final List<UserNotificationEntity> result = query.getResultList();
 
         if (result.size() != 1) {
-            throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "No user notification (" + subject + ") for the user with id: '" + user.getUserId() + "' was found.");
+            throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "No user notification (" + subject + ") for the user with id: '" + user.getId() + "' was found.");
         }
 
         return result.get(0);

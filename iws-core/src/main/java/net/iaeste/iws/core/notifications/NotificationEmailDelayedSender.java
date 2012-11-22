@@ -33,7 +33,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class NotificationEmailSender implements Observer {
+public class NotificationEmailDelayedSender implements Observer {
 
 //    @Resource(mappedName = "iws-EmailQueue")
 //    private Queue queue;
@@ -47,7 +47,7 @@ public class NotificationEmailSender implements Observer {
 
     private final NotificationDao dao;
 
-    public NotificationEmailSender(final NotificationDao dao) {
+    public NotificationEmailDelayedSender(final NotificationDao dao) {
         this.dao = dao;
 
 //        QueueConnection queueConnection = null;
@@ -70,8 +70,8 @@ public class NotificationEmailSender implements Observer {
     }
 
     private void processMessages() {
-//        List<NotificationMessageEntity> messages = dao.findNotificationMessages(NotificationType.EMAIL, NotificationMessageStatus.NEW, new Date());
-//        //Map<UserEntity, List<NotificationMessageEntity>> groupedMessages = groupByUser(messages);
+//        List<NotificationMessageEntity> messages = dao.findNotificationMessages(NotificationType.EMAIL, NotificationMessageStatus.NEW, new java.util.Date());
+//        Map<UserEntity, List<NotificationMessageEntity>> groupedMessages = groupByUser(messages);
 //        String subject = "IAESTE IW notification";
 //
 //        for(NotificationMessageEntity message : messages) {

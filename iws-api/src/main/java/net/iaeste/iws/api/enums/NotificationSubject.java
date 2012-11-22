@@ -24,5 +24,6 @@ package net.iaeste.iws.api.enums;
  */
 public enum NotificationSubject {
     OFFER,
-    GROUP
+    GROUP,
+    USER
 }

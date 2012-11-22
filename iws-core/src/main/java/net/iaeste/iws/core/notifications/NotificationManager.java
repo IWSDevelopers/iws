@@ -20,16 +20,23 @@ import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.NotificationType;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
+import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.notification.Notifiable;
 import net.iaeste.iws.persistence.notification.Notifications;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,6 +66,27 @@ public final class NotificationManager implements Notifications {
     @Override
     public void notify(final Authentication authentication, final Notifiable obj) {
         // Save the general information about the Object to be notified.
+        List<UserEntity> users = getRecipients(obj);
+
+        //TODO for user account messages there is no setting, if statement for it?
+        for (final UserEntity user : users) {
+            //get user settings
+            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, obj.getNotificationSubject());
+            if (userNotification == null) {
+                //user hasn't set any notification
+                continue;
+            }
+
+            final NotificationMessageEntity message = new NotificationMessageEntity();
+            message.setStatus(NotificationMessageStatus.NEW);
+            message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
+            final String messageText = obj.generateNotificationMessage();
+            message.setMessage(messageText);
+
+            //save messages into DB
+            dao.persist(message);
+        }
+
         notifyObservers();
     }
 
@@ -74,28 +102,28 @@ public final class NotificationManager implements Notifications {
     public void processUpdatedOffer(final Offer offer) {
         //read from database who wants to be notified for the offer
         //TODO: waiting for #97
-        final List<User> users = new ArrayList<>(0);
-
-        for (final User user : users) {
-            //get user settings
-            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, NotificationSubject.OFFER);
-            if (userNotification == null) {
-                //user hasn't set any notification
-                continue;
-            }
-
-            final NotificationMessageEntity message = new NotificationMessageEntity();
-            message.setStatus(NotificationMessageStatus.NEW);
-            message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-            //create message
-            final String messageText = offer.generateMessage(NotificationType.EMAIL, "updated");
-            message.setMessage(messageText);
-
-            //save messages into DB
-            dao.persist(message);
-        }
-
-        notifyObservers();
+//        final List<User> users = new ArrayList<>(0);
+//
+//        for (final User user : users) {
+//            //get user settings
+//            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, NotificationSubject.OFFER);
+//            if (userNotification == null) {
+//                //user hasn't set any notification
+//                continue;
+//            }
+//
+//            final NotificationMessageEntity message = new NotificationMessageEntity();
+//            message.setStatus(NotificationMessageStatus.NEW);
+//            message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
+//            //create message
+//            final String messageText = offer.generateMessage(NotificationType.EMAIL, "updated");
+//            message.setMessage(messageText);
+//
+//            //save messages into DB
+//            dao.persist(message);
+//        }
+//
+//        notifyObservers();
     }
 
     /**
@@ -110,35 +138,35 @@ public final class NotificationManager implements Notifications {
     public void processNewOffer(final Offer offer) {
         //read from database who wants to be notified for the offer
         //TODO: waiting for #97
-        final List<User> users = new ArrayList<>(10);
-
-        for (final User user : users) {
-            //get user settings
-            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, NotificationSubject.OFFER);
-            if (userNotification == null) {
-                //user hasn't set any notification
-                continue;
-            }
-
-            final NotificationMessageEntity message = new NotificationMessageEntity();
-            message.setStatus(NotificationMessageStatus.NEW);
-            message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-            //create message
-            final String messageText = offer.generateMessage(NotificationType.EMAIL, "new");
-            message.setMessage(messageText);
-
-            //save messages into DB
-            dao.persist(message);
-        }
-
-        notifyObservers();
+//        final List<User> users = new ArrayList<>(10);
+//
+//        for (final User user : users) {
+//            //get user settings
+//            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, NotificationSubject.OFFER);
+//            if (userNotification == null) {
+//                //user hasn't set any notification
+//                continue;
+//            }
+//
+//            final NotificationMessageEntity message = new NotificationMessageEntity();
+//            message.setStatus(NotificationMessageStatus.NEW);
+//            message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
+//            //create message
+//            final String messageText = offer.generateMessage(NotificationType.EMAIL, "new");
+//            message.setMessage(messageText);
+//
+//            //save messages into DB
+//            dao.persist(message);
+//        }
+//
+//        notifyObservers();
     }
 
     /**
      * @param frequency
      * @return
      */
-    private Date getNotificationTime(final NotificationFrequency frequency) {
+    private java.util.Date getNotificationTime(final NotificationFrequency frequency) {
         Date result = null;
         switch (frequency) {
             case IMMEDIATELY:
@@ -146,17 +174,40 @@ public final class NotificationManager implements Notifications {
                 break;
             case DAILY:
                 result = new Date();
-                //TODO: get a date of the next day
+                result = result.plusDays(1);
                 break;
             case WEEKLY:
-                //TODO: get a date of the first day of next week
-                result = new Date();
+                DateMidnight d = new org.joda.time.DateMidnight();
+                if (d.getDayOfWeek() < DateTimeConstants.FRIDAY) {
+                    d = d.withDayOfWeek(DateTimeConstants.FRIDAY);
+                } else {
+                    d = d.plusWeeks(1).withDayOfWeek(DateTimeConstants.FRIDAY);
+                }
+                result = new Date(d);
         }
-        return result;
+        return result.toDate();
     }
 
-    private List<User> getRecipients() {
-        return null;
+    private List<UserEntity> getRecipients(final Notifiable obj) {
+        List<UserEntity> res = new ArrayList<>();
+        if(obj instanceof UserEntity) {
+            res = getRecipients((UserEntity)obj);
+        } else if (obj instanceof OfferEntity) {
+            res = getRecipients((OfferEntity)obj);
+        }
+        return res;
+    }
+
+    private List<UserEntity> getRecipients(final UserEntity user) {
+        List<UserEntity> res = new ArrayList<>(1);
+        res.add(user);
+        return res;
+    }
+
+    private List<UserEntity> getRecipients(final OfferEntity offer) {
+        List<UserEntity> res = new ArrayList<>();
+        throw new NotImplementedException("Get recipients for the offer is not implemented");
+        //return res;
     }
 
     @Override

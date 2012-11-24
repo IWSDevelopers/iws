@@ -18,7 +18,7 @@ import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
-import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.persistence.Authentication;
 
 /**

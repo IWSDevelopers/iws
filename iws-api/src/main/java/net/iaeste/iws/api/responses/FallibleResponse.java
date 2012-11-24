@@ -16,6 +16,7 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
  * Default Response Object, for those methods, that only return the error
@@ -25,7 +26,7 @@ import net.iaeste.iws.api.constants.IWSError;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class FallibleResponse extends AbstractResponse {
+public class FallibleResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

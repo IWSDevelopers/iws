@@ -30,7 +30,7 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
-import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.common.utils.HashcodeGenerator;

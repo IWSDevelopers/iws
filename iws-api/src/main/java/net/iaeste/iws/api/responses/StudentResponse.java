@@ -17,13 +17,14 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class StudentResponse extends AbstractResponse {
+public final class StudentResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

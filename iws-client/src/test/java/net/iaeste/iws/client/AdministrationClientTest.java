@@ -16,7 +16,7 @@ package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.requests.CreateUserRequest;
-import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

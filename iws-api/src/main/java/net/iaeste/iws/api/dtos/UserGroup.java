@@ -16,7 +16,7 @@ package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.api.responses.AbstractResponse;
+import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
  * This Object contains the information about a User in a Group relation. It is
@@ -30,7 +30,7 @@ import net.iaeste.iws.api.responses.AbstractResponse;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public final class UserGroup extends AbstractResponse {
+public final class UserGroup extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

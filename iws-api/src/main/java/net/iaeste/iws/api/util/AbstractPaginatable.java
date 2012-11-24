@@ -17,7 +17,6 @@ package net.iaeste.iws.api.util;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.AbstractVerification;
 
 /**
  * All Requests that allowe sorting and pagination, must extend this class.

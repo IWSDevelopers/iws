@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

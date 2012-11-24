@@ -21,7 +21,7 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
-import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.core.services.CommitteeService;
 import net.iaeste.iws.core.services.ServiceFactory;

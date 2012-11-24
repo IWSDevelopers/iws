@@ -17,6 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.util.AbstractFallible;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.DateTime;
 
@@ -40,7 +41,7 @@ import java.util.zip.GZIPInputStream;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public final class SessionDataResponse<T extends Serializable> extends AbstractResponse {
+public final class SessionDataResponse<T extends Serializable> extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

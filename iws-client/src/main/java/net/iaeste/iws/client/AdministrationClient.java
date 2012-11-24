@@ -25,7 +25,7 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
-import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 

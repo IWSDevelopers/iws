@@ -25,7 +25,7 @@ import net.iaeste.iws.api.enums.NotificationType;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
-import net.iaeste.iws.api.requests.AbstractVerification;
+import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;

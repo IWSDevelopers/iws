@@ -18,7 +18,7 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.fitnesse.callers.AccessCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 

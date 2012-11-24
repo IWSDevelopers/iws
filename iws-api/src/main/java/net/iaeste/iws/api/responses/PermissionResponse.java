@@ -17,6 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Authorization;
+import net.iaeste.iws.api.util.AbstractFallible;
 import net.iaeste.iws.api.util.Copier;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.List;
  * @since   1.7
  * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
-public final class PermissionResponse extends AbstractResponse {
+public final class PermissionResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

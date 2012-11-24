@@ -15,7 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.requests.AbstractVerification;
+import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
 import java.util.Map;

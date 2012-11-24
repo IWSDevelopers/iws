@@ -18,8 +18,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.Verifiable;
-import net.iaeste.iws.api.responses.AbstractResponse;
+import net.iaeste.iws.api.util.AbstractFallible;
+import net.iaeste.iws.api.util.Verifiable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +42,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class User extends AbstractResponse implements Verifiable {
+public final class User extends AbstractFallible implements Verifiable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

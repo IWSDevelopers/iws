@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.responses;
+package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
@@ -25,7 +25,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public abstract class AbstractResponse implements Fallible {
+public abstract class AbstractFallible implements Fallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -33,13 +33,13 @@ public abstract class AbstractResponse implements Fallible {
     /** IWS Error Object. */
     protected final IWSError error;
 
-    /** IWS Error Message */
+    /** IWS Error Message. */
     protected final String message;
 
     /**
      * Default Constructor.
      */
-    protected AbstractResponse() {
+    protected AbstractFallible() {
         error = IWSErrors.SUCCESS;
         message = IWSConstants.SUCCESS;
     }
@@ -50,7 +50,7 @@ public abstract class AbstractResponse implements Fallible {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    protected AbstractResponse(final IWSError error, final String message) {
+    protected AbstractFallible(final IWSError error, final String message) {
         this.error = error;
         this.message = message;
     }

@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.EmployerInformation;
+import net.iaeste.iws.api.util.AbstractFallible;
 import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.List;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public final class FetchEmployerInformationResponse extends AbstractResponse {
+public final class FetchEmployerInformationResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

@@ -19,7 +19,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
-import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.CommitteeController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.notification.Notifications;

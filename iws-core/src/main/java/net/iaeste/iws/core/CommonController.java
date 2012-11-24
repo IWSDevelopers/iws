@@ -17,7 +17,7 @@ package net.iaeste.iws.core;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.Verifiable;
+import net.iaeste.iws.api.util.Verifiable;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;

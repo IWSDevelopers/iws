@@ -17,6 +17,7 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
  * The Result Object from an Authentication Call, the object will either
@@ -28,7 +29,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
  * @since   1.7
  * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
-public final class AuthenticationResponse extends AbstractResponse {
+public final class AuthenticationResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

@@ -29,7 +29,7 @@ import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
-import net.iaeste.iws.api.responses.Fallible;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;

@@ -14,6 +14,7 @@
 */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FetchType;
@@ -33,6 +34,7 @@ import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -67,10 +69,12 @@ public class ExchangeServiceTest {
 
     @Before
     public void init() {
-        auth = mock(Authentication.class);
-        final GroupEntity group = mock(GroupEntity.class);
-        when(group.getId()).thenReturn(1L);
-        when(auth.getGroup()).thenReturn(group);
+        final AuthenticationToken token = new AuthenticationToken();
+        final UserEntity user = new UserEntity();
+        final GroupEntity group = new GroupEntity();
+        group.setId(1L);
+
+        auth = new Authentication(token, user, group);
     }
 
     @Test
@@ -100,7 +104,8 @@ public class ExchangeServiceTest {
         country.setCountryId("GB");
         final GroupEntity group = new GroupEntity();
         group.setCountry(country);
-        final Authentication authentication = new Authentication(null, group);
+        final AuthenticationToken token = new AuthenticationToken();
+        final Authentication authentication = new Authentication(token, null, group);
         final Offer offer = offers.get(0);
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 

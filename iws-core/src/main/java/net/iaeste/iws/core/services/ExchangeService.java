@@ -100,9 +100,10 @@ public final class ExchangeService extends CommonService {
         return new OfferResponse();
     }
 
-    private void verifyRefnoValidity(final OfferEntity offer) {
+    private static void verifyRefnoValidity(final OfferEntity offer) {
         final String countryCode = offer.getGroup().getCountry().getCountryId();
         final String refno = offer.getRefNo();
+
         if (!refno.startsWith(countryCode)) {
             throw new VerificationException("The reference number is not valid for this country. Received '" + refno.substring(0, 2) + "' but expected '" + countryCode + "'.");
         }

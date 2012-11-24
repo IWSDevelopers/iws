@@ -226,7 +226,7 @@ public final class AdministrationService {
         return group;
     }
 
-    private String generateActivationCode(final CreateUserRequest request) {
+    private static String generateActivationCode(final CreateUserRequest request) {
         final String clear = request.getUsername()
                            + request.getFirstname()
                            + request.getLastname()

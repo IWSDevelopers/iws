@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
@@ -118,10 +119,11 @@ public class OfferEntityTest {
         final AccessDao accessDao = new AccessJpaDao(entityManager);
 
         offer = getMinimalOffer();
+        final AuthenticationToken token = new AuthenticationToken();
         final UserEntity user = accessDao.findUserByUsername("austria");
         final GroupEntity group = accessDao.findNationalGroup(user);
         offer.setGroup(group);
-        authentication = new Authentication(user, group);
+        authentication = new Authentication(token, user, group);
     }
 
     private static OfferEntity getMinimalOffer() {

@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 
@@ -28,8 +29,9 @@ import net.iaeste.iws.persistence.entities.UserEntity;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class Authentication {
+public final class Authentication {
 
+    private final AuthenticationToken token;
     private final UserEntity user;
     private final GroupEntity group;
 
@@ -39,9 +41,14 @@ public class Authentication {
      * @param user   User Entity for the current user
      * @param group  Group Entity for the group being worked with
      */
-    public Authentication(final UserEntity user, final GroupEntity group) {
+    public Authentication(final AuthenticationToken token, final UserEntity user, final GroupEntity group) {
+        this.token = token;
         this.user = user;
         this.group = group;
+    }
+
+    public AuthenticationToken getToken() {
+        return token;
     }
 
     public UserEntity getUser() {

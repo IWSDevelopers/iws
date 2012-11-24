@@ -46,6 +46,7 @@ import java.util.UUID;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection ObjectAllocationInLoop
  */
 public final class AccessService extends CommonService {
 
@@ -189,7 +190,7 @@ public final class AccessService extends CommonService {
         return dao.findUserByCredentials(username, hashcode);
     }
 
-    private Group readGroup(final UserPermissionView view) {
+    private static Group readGroup(final UserPermissionView view) {
         final Group group = new Group();
 
         group.setGroupId(view.getExternalGroupId());
@@ -201,7 +202,7 @@ public final class AccessService extends CommonService {
         return group;
     }
 
-    private List<Authorization> convertPermissionMap(final Map<Group, Set<Permission>> map) {
+    private static List<Authorization> convertPermissionMap(final Map<Group, Set<Permission>> map) {
         final List<Authorization> result = new ArrayList<>(map.size());
 
         for (final Map.Entry<Group, Set<Permission>> set : map.entrySet()) {

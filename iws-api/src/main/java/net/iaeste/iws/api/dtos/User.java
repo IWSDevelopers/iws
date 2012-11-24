@@ -41,7 +41,6 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass, VariableNotUsedInsideIf
  */
 public final class User extends AbstractResponse implements Verifiable {
 

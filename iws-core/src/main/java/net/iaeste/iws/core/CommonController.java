@@ -64,7 +64,7 @@ class CommonController {
             final GroupEntity group = dao.findGroupByPermission(user, token.getGroupId(), permission);
 
             // So far so good, return the information
-            return new Authentication(user, group);
+            return new Authentication(token, user, group);
         } catch (PersistenceException e) {
             throw new VerificationException(e);
         }
@@ -93,7 +93,7 @@ class CommonController {
             // performance on operations that are rarely required
             final GroupEntity group = null;
             // So far so good, return the information
-            return new Authentication(user, group);
+            return new Authentication(token, user, group);
         } catch (PersistenceException e) {
             throw new VerificationException(e);
         }

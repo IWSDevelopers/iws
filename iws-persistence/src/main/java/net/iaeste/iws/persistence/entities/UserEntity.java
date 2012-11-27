@@ -137,6 +137,13 @@ public class UserEntity implements IWSEntity, Notifiable {
     private Privacy privateData = Privacy.PRIVATE;
 
     /**
+     * Personal Notifications period. By default, all notifications are
+     * delivered immediately.
+     */
+    @Column(nullable = false, name = "notifications")
+    private String notifications = "immediately";
+
+    /**
      * This field is used to store the SHA-256 hashcode value of the users
      * temporary Authentication Code. This code is used, when a User account is
      * created and the current Status is "new", and again if the user forgot
@@ -261,6 +268,14 @@ public class UserEntity implements IWSEntity, Notifiable {
         return privateData;
     }
 
+    public void setNotifications(final String notifications) {
+        this.notifications = notifications;
+    }
+
+    public String getNotifications() {
+        return notifications;
+    }
+
     public void setCode(final String code) {
         this.code = code;
     }
@@ -307,6 +322,7 @@ public class UserEntity implements IWSEntity, Notifiable {
         // Status is New, then we have to send the Activation Notification,
         // otherwise we send the Forgot Password Notification
         final String message;
+
         if (status == UserStatus.NEW) {
             message = "New User Account generated, with password = '" +
                       temporary + "' and Activation Code = " + code;
@@ -319,6 +335,9 @@ public class UserEntity implements IWSEntity, Notifiable {
         return message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationSubject getNotificationSubject() {
         return NotificationSubject.USER;

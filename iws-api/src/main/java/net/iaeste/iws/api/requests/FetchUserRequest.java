@@ -15,8 +15,8 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Copier;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +32,7 @@ public final class FetchUserRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private List<UserGroup> users = null;
+    private List<String> userIds = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -41,9 +41,26 @@ public final class FetchUserRequest extends AbstractVerification {
     public FetchUserRequest() {
     }
 
+    /**
+     * Default Constructor.
+     *
+     * @param userIds List of Id's for the users to fetch
+     */
+    public FetchUserRequest(final List<String> userIds) {
+        this.userIds = Copier.copy(userIds);
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setUserIds(final List<String> userIds) {
+        this.userIds = Copier.copy(userIds);
+    }
+
+    public List<String> getUserIds() {
+        return Copier.copy(userIds);
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -55,6 +72,11 @@ public final class FetchUserRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        if ((userIds == null) || userIds.isEmpty()) {
+            validation.put("userIds", "No UserId's are present.");
+        }
+
         return validation;
     }
 }

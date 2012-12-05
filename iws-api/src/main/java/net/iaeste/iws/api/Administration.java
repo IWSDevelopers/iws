@@ -15,18 +15,18 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.FetchUserRequest;
-import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
+import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.GroupResponse;
-import net.iaeste.iws.api.responses.UserResponse;
+import net.iaeste.iws.api.util.Fallible;
 
 /**
  * Handles Administration of User Accounts, Groups, Roles and Countries.
@@ -106,7 +106,7 @@ public interface Administration {
      * @param request Fetch User Request Object
      * @return Response Object with the found users and error information
      */
-    UserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
+    FetchUserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
 
     Fallible processGroups(AuthenticationToken token, GroupRequest request);
 

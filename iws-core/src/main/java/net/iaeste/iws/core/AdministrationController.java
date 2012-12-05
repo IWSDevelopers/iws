@@ -18,19 +18,19 @@ import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.FetchUserRequest;
-import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
+import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.GroupResponse;
-import net.iaeste.iws.api.responses.UserResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AdministrationService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -132,9 +132,9 @@ public class AdministrationController extends CommonController implements Admini
      * {@inheritDoc}
      */
     @Override
-    public UserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
+    public FetchUserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
         LOG.trace("Starting fetchUsers()");
-        UserResponse response;
+        FetchUserResponse response;
 
         try {
             // The Permission check for this request, is moved into the service
@@ -146,7 +146,7 @@ public class AdministrationController extends CommonController implements Admini
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.fetchUsers(authentication, request);
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FetchUserResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchUsers()");

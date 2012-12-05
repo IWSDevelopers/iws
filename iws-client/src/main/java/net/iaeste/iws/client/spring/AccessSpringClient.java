@@ -19,11 +19,11 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
-import net.iaeste.iws.core.AccessController;
-import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.ejb.beans.AccessBean;
+import net.iaeste.iws.ejb.beans.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,23 +41,35 @@ import java.io.Serializable;
  * @since   1.7
  */
 @Transactional
-@Repository("springAccessClient")
-public final class SpringAccessClient implements Access {
+@Repository("accessSpringClient")
+public final class AccessSpringClient implements Access {
 
     private Access access = null;
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
      * transactional daos. The EntityManager instance can only be injected into
-     * the beans, we cannot create a bean for the Access Controller otherwise.
+     * the Spring Beans, we cannot create a Spring Bean for the Access EJB
+     * otherwise.
      *
      * @param entityManager Spring controlled EntityManager instance
      */
     @PersistenceContext
     public void init(final EntityManager entityManager) {
+        // Create the Notification Spy, and inject it
         final Notifications notitications = NotificationSpy.getInstance();
-        final ServiceFactory factory = new ServiceFactory(entityManager, notitications);
-        access = new AccessController(factory);
+        final NotificationManagerBean notificationBean = new NotificationManagerBean();
+        notificationBean.setNotifications(notitications);
+
+        // Create an Access EJB, and inject the EntityManager & Notification Spy
+        final AccessBean accessBean = new AccessBean();
+        accessBean.setEntityManager(entityManager);
+        accessBean.setNotificationManager(notificationBean);
+        accessBean.postConstruct();
+
+        // Set our Access implementation to the Access EJB, running withing a
+        // "Spring Container".
+        access = accessBean;
     }
 
     // =========================================================================

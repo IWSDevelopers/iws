@@ -28,8 +28,8 @@ import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.core.AdministrationController;
-import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.ejb.beans.AdministrationBean;
+import net.iaeste.iws.ejb.beans.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,24 +46,35 @@ import javax.persistence.PersistenceContext;
  * @since   1.7
  */
 @Transactional
-@Repository("springAdministrationClient")
-public final class SpringAdministrationclient implements Administration {
+@Repository("administrationSpringClient")
+public final class AdministrationSpringClient implements Administration {
 
     private Administration administration = null;
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
      * transactional daos. The EntityManager instance can only be injected into
-     * the beans, we cannot create a bean for the Administration Controller
-     * otherwise.
+     * the Spring Beans, we cannot create a Spring Bean for the Administration
+     * EJB otherwise.
      *
      * @param entityManager Spring controlled EntityManager instance
      */
     @PersistenceContext
     public void init(final EntityManager entityManager) {
+        // Create the Notification Spy, and inject it
         final Notifications notitications = NotificationSpy.getInstance();
-        final ServiceFactory factory = new ServiceFactory(entityManager, notitications);
-        administration = new AdministrationController(factory);
+        final NotificationManagerBean notificationBean = new NotificationManagerBean();
+        notificationBean.setNotifications(notitications);
+
+        // Create an Administration EJB, and inject the EntityManager & Notification Spy
+        final AdministrationBean administrationBean = new AdministrationBean();
+        administrationBean.setEntityManager(entityManager);
+        administrationBean.setNotificationManager(notificationBean);
+        administrationBean.postConstruct();
+
+        // Set our Administration implementation to the Administration EJB,
+        // running withing a "Spring Container".
+        administration = administrationBean;
     }
 
     // =========================================================================

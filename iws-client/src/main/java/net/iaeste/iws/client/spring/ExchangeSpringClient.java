@@ -29,15 +29,15 @@ import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
-import net.iaeste.iws.core.ExchangeController;
-import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.ejb.beans.ExchangeBean;
+import net.iaeste.iws.ejb.beans.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,23 +54,35 @@ import javax.persistence.PersistenceContext;
  * @since   1.7
  */
 @Transactional
-@Repository("springExchangeClient")
-public final class SpringExchangeClient implements Exchange {
+@Repository("exchangeSpringClient")
+public final class ExchangeSpringClient implements Exchange {
 
     private Exchange exchange = null;
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
      * transactional daos. The EntityManager instance can only be injected into
-     * the beans, we cannot create a bean for the Access Controller otherwise.
+     * the Spring Beans, we cannot create a Spring Bean for the Exchange EJB
+     * otherwise.
      *
      * @param entityManager Spring controlled EntityManager instance
      */
     @PersistenceContext
     public void init(final EntityManager entityManager) {
+        // Create the Notification Spy, and inject it
         final Notifications notitications = NotificationSpy.getInstance();
-        final ServiceFactory factory = new ServiceFactory(entityManager, notitications);
-        exchange = new ExchangeController(factory);
+        final NotificationManagerBean notificationBean = new NotificationManagerBean();
+        notificationBean.setNotifications(notitications);
+
+        // Create an Exchange EJB, and inject the EntityManager & Notification Spy
+        final ExchangeBean exchangeBean = new ExchangeBean();
+        exchangeBean.setEntityManager(entityManager);
+        exchangeBean.setNotificationManager(notificationBean);
+        exchangeBean.postConstruct();
+
+        // Set our Exchange implementation to the Exchange EJB, running withing
+        // a "Spring Container".
+        exchange = exchangeBean;
     }
 
     /**

@@ -20,8 +20,8 @@ import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.core.CommitteeController;
-import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.ejb.beans.CommitteeBean;
+import net.iaeste.iws.ejb.beans.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,24 +35,35 @@ import javax.persistence.PersistenceContext;
  * @since   1.7
  */
 @Transactional
-@Repository("springCommitteeClient")
-public class SpringCommitteeClient implements Committees {
+@Repository("committeeSpringClient")
+public class CommitteeSpringClient implements Committees {
 
     private Committees committees = null;
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
      * transactional daos. The EntityManager instance can only be injected into
-     * the beans, we cannot create a bean for the Administration Controller
+     * the Spring Beans, we cannot create a Spring Bean for the Committees EJB
      * otherwise.
      *
      * @param entityManager Spring controlled EntityManager instance
      */
     @PersistenceContext
     public void init(final EntityManager entityManager) {
+        // Create the Notification Spy, and inject it
         final Notifications notitications = NotificationSpy.getInstance();
-        final ServiceFactory factory = new ServiceFactory(entityManager, notitications);
-        committees = new CommitteeController(factory);
+        final NotificationManagerBean notificationBean = new NotificationManagerBean();
+        notificationBean.setNotifications(notitications);
+
+        // Create an Committees EJB, and inject the EntityManager & Notification Spy
+        final CommitteeBean committeeBean = new CommitteeBean();
+        committeeBean.setEntityManager(entityManager);
+        committeeBean.setNotificationManager(notificationBean);
+        committeeBean.postConstruct();
+
+        // Set our Committees implementation to the Committees EJB,
+        // running withing a "Spring Container".
+        committees = committeeBean;
     }
 
     // =========================================================================

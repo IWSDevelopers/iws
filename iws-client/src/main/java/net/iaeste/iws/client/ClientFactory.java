@@ -74,18 +74,18 @@ public final class ClientFactory {
     // =========================================================================
 
     public Access getAccessImplementation() {
-        return (Access) context.getBean("springAccessClient");
+        return (Access) context.getBean("accessSpringClient");
     }
 
     public Administration getAdministrationImplementation() {
-        return (Administration) context.getBean("springAdministrationClient");
+        return (Administration) context.getBean("administrationSpringClient");
     }
 
     public Exchange getExchangeImplementation() {
-        return (Exchange) context.getBean("springExchangeClient");
+        return (Exchange) context.getBean("exchangeSpringClient");
     }
 
     public Committees getCommitteeImplementation() {
-        return (Committees) context.getBean("springCommitteeClient");
+        return (Committees) context.getBean("committeeSpringClient");
     }
 }

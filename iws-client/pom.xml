@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>net.iaeste.iws</groupId>
-            <artifactId>iws-core</artifactId>
+            <artifactId>iws-ejb</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -19,6 +19,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -32,7 +33,7 @@ public class DateTime implements Serializable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Internal Date format. */
-    private static final DateFormat FORMAT = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
+    private final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
 
     /** The internal Date, implementation uses the JodaTime Classes. */
     private final org.joda.time.DateTime dateTime;
@@ -59,7 +60,7 @@ public class DateTime implements Serializable {
      *
      * @param dateTime {@code java.util.Date} instance, to base this instance on
      */
-    public DateTime(final java.util.Date dateTime) {
+    public DateTime(final Date dateTime) {
         this.dateTime = new org.joda.time.DateTime(dateTime);
     }
 
@@ -91,7 +92,7 @@ public class DateTime implements Serializable {
      *
      * @return {@code java.util.Date} instance for this Date
      */
-    public java.util.Date toDate() {
+    public Date toDate() {
         return dateTime.toDate();
     }
 
@@ -125,6 +126,6 @@ public class DateTime implements Serializable {
      */
     @Override
     public String toString() {
-        return FORMAT.format(dateTime.toDate());
+        return format.format(dateTime.toDate());
     }
 }

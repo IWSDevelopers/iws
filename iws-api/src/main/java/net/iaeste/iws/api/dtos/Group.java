@@ -51,6 +51,13 @@ public final class Group extends AbstractVerification {
      * @param group Group Object to copy
      */
     public Group(final Group group) {
+        if (group != null) {
+            groupId = group.groupId;
+            groupName = group.groupName;
+            groupType = group.groupType;
+            description = group.description;
+            countryId = group.countryId;
+        }
     }
 
     // =========================================================================

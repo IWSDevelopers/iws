@@ -30,6 +30,7 @@ import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
@@ -254,8 +255,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public GroupEntity findNationalGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findNationalOrSarByUser");
         query.setParameter("uid", user.getId());
-        query.setParameter("national", GroupType.NATIONAL.name());
-        query.setParameter("sar", GroupType.SAR.name());
 
         return (GroupEntity) query.getSingleResult();
     }
@@ -304,6 +303,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("euid", externalUserId);
 
         return (UserEntity) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserGroupEntity findMemberByExternalId(final String externalUserId, final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("usergroup.findMemberByGroupAndUser");
+        query.setParameter("gid", group.getId());
+        query.setParameter("euid", externalUserId);
+
+        return (UserGroupEntity) query.getSingleResult();
     }
 
     /**

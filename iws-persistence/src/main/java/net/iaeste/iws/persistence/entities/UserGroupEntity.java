@@ -21,6 +21,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +34,18 @@ import java.util.Date;
  * @since 1.7
  * @noinspection AssignmentToDateFieldFromParameter
  */
+@NamedQueries({
+        @NamedQuery(
+                name = "usergroup.findById",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.id = :id"),
+        @NamedQuery(
+                name = "usergroup.findMemberByGroupAndUser",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
+                        "  and ug.group.id = :gid" +
+                        "  and ug.user.externalId = :euid")
+})
 @Entity
 @Table(name = "user_to_group")
 public class UserGroupEntity implements IWSEntity {

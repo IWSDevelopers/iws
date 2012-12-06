@@ -23,6 +23,7 @@ import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import java.util.List;
@@ -93,4 +94,15 @@ public interface AccessDao extends BasicDao {
     RoleEntity findRoleByUserAndGrouo(String externalUserId, GroupEntity group);
 
     UserEntity findUserByExternalId(String externalUserId);
+
+    /**
+     * Finds a user from the given Member Group. If no such user account is
+     * associated with the the Group, then a null is returned, otherwise the
+     * found UserEntity is returned.
+     *
+     * @param group          The MemberGroup to find the user from
+     * @param externalUserId The users external Id
+     * @return Found UserGroupEntity or null
+     */
+    UserGroupEntity findMemberByExternalId(String externalUserId, GroupEntity group);
 }

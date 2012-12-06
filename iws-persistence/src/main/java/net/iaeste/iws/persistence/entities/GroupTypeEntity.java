@@ -14,8 +14,12 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.GroupType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +49,8 @@ public class GroupTypeEntity {
     private Long id = null;
 
     @Column(nullable = false, name = "grouptype")
-    private String grouptype = null;
+    @Enumerated(EnumType.STRING)
+    private GroupType grouptype = null;
 
     @Column(nullable = false, name = "description")
     private String description = null;
@@ -62,11 +67,11 @@ public class GroupTypeEntity {
         return id;
     }
 
-    public void setGrouptype(final String grouptype) {
+    public void setGrouptype(final GroupType grouptype) {
         this.grouptype = grouptype;
     }
 
-    public String getGrouptype() {
+    public GroupType getGrouptype() {
         return grouptype;
     }
 

@@ -16,6 +16,7 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
@@ -31,9 +32,9 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.common.utils.PasswordGenerator;
 import net.iaeste.iws.persistence.AccessDao;
@@ -48,6 +49,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.UUID;
+
+import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -161,7 +164,40 @@ public final class AdministrationService {
     }
 
     public FetchUserResponse fetchUsers(final Authentication authentication, final FetchUserRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        final FetchUserResponse response;
+        final String externalId = authentication.getUser().getExternalId();
+        final String userId = request.getUserId();
+        final User user;
+
+        if (userId.equals(externalId)) {
+            // The user itself
+            final UserEntity entity = dao.findUserByExternalId(externalId);
+            user = transform(entity);
+        } else {
+            // First, we make an Authorization Check. If it fails, an
+            // AuthorizationException is thrown
+            final UserEntity administrator = authentication.getUser();
+            dao.findGroupByPermission(administrator, null, Permission.FETCH_USERS);
+
+            // Find the administrators MemberGroup, we need it for the lookup
+            final GroupEntity member = dao.findMemberGroup(administrator);
+            final UserGroupEntity entity = dao.findMemberByExternalId(externalId, member);
+            if (entity != null) {
+                user = transform(entity.getUser());
+
+                // We're in the Group Context, where the Privacy flag applies,
+                // meaning that if a user has set this, then the user's private
+                // or personal data may not be displayed
+                if (user.getPrivacy() == Privacy.PRIVATE) {
+                    user.setNotifications(null);
+                    user.setPerson(null);
+                }
+            } else {
+                user = null;
+            }
+        }
+
+        return new FetchUserResponse(user);
     }
 
     public void processGroups(final Authentication authentication, final GroupRequest request) {
@@ -297,7 +333,10 @@ public final class AdministrationService {
     }
 
     private void updatePrivacyAndData(final UserEntity user, final UserRequest request) {
+        // TODO Make the UserEntity mergeable!
         user.setPrivateData(request.getUser().getPrivacy());
+        user.setNotifications(request.getUser().getNotifications());
+
         dao.persist(user);
     }
 }

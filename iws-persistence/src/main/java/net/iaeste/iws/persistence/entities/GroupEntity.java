@@ -61,8 +61,8 @@ import java.util.Date;
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
                         "where g.id = ug.group.id" +
                         "  and ug.user.id = :uid" +
-                        "  and (g.groupType.grouptype = :national" +
-                        "   or g.groupType.grouptype = :sar)"),
+                        "  and (g.groupType.grouptype = 'NATIONAL'" +
+                        "   or g.groupType.grouptype = 'SAR')"),
         @NamedQuery(name = "group.findByPermission",
                     query = "select g from GroupEntity g, UserPermissionView v " +
                             "where g.id = v.id.groupId" +

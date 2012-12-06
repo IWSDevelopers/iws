@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class CollectionTransformer {
+public final class CollectionTransformer {
 
     public static final String DELIMITER = "|";
     private static final String DELIMITER_REG_EXP = "\\|";

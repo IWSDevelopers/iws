@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class AdministrationController extends CommonController implements Administration {
+public final class AdministrationController extends CommonController implements Administration {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdministrationController.class);
     private final ServiceFactory factory;
@@ -69,7 +69,7 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.CONTROL_USER_ACCOUNT);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.createUser(authentication, request);
@@ -115,7 +115,7 @@ public class AdministrationController extends CommonController implements Admini
             // also alter their own data, but that it requires the correct
             // permissions to alter others.
             final Authentication authentication = verifyPrivateAccess(token);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
             service.controlUserAccount(authentication, request);
@@ -141,7 +141,7 @@ public class AdministrationController extends CommonController implements Admini
             // that handles the request. The reason for this, is that users may
             // also request their own data.
             final Authentication authentication = verifyPrivateAccess(token);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.fetchUsers(authentication, request);
@@ -163,7 +163,7 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_SUB_GROUPS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
             service.processGroups(authentication, request);
@@ -186,7 +186,7 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.fetchGroups(authentication, request);
@@ -208,7 +208,7 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_COUNTRIES);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
             service.processCountries(authentication, request);
@@ -231,7 +231,7 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.FETCH_COUNTRIES);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.fetchCountries(authentication, request);
@@ -253,7 +253,7 @@ public class AdministrationController extends CommonController implements Admini
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
             service.processUserGroupAssignment(authentication, request);

@@ -61,7 +61,7 @@ public final class CommitteeController extends CommonController implements Commi
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.CREATE_COMMITTEE);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.createCommittee(authentication, request);
@@ -83,7 +83,7 @@ public final class CommitteeController extends CommonController implements Commi
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.MANAGE_COMMITTEE);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.manageCommittee(authentication, request);
@@ -105,7 +105,7 @@ public final class CommitteeController extends CommonController implements Commi
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.UPGRADE_COMMITTEE);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.upgradeCommittee(authentication, request);
@@ -127,7 +127,7 @@ public final class CommitteeController extends CommonController implements Commi
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.MANAGE_INTERNATIONAL_GROUP);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.manageInternationalGroup(authentication, request);
@@ -149,7 +149,7 @@ public final class CommitteeController extends CommonController implements Commi
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.CREATE_REGIONAL_GROUP);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.createRegionalGroup(authentication, request);
@@ -171,7 +171,7 @@ public final class CommitteeController extends CommonController implements Commi
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.MANAGE_REGIONAL_GROUP);
-            verify(request, "Cannot process a null request.");
+            verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.manageRegionalGroup(authentication, request);

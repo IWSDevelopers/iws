@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class ExchangeController extends CommonController implements Exchange {
+public final class ExchangeController extends CommonController implements Exchange {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeController.class);
     private final ServiceFactory factory;
@@ -78,7 +78,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFERS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
             response = service.fetchEmployers(authentication, request);
@@ -100,7 +100,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_FACULTIES);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final FacultyService service = factory.prepareFacultyService();
             service.processFaculties(authentication, request);
@@ -123,7 +123,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_FACULTIES);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final FacultyService service = factory.prepareFacultyService();
             response = service.fetchFaculties(authentication, request);
@@ -145,7 +145,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.MANAGE_OFFERS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
             response = service.manageOffer(authentication, request);
@@ -167,7 +167,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.MANAGE_OFFERS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
             service.deleteOffer(authentication, request);
@@ -190,7 +190,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFERS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
             response = service.fetchOffers(authentication, request);
@@ -212,7 +212,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_TEMPLATES);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
             service.processOfferTemplates(authentication, request);
@@ -235,7 +235,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFER_TEMPLATES);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
             response = service.fetchOfferTemplates(authentication, request);
@@ -257,7 +257,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_PUBLISH_GROUPS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
             service.processPublishGroups(authentication, request);
@@ -280,7 +280,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFER_PUBLISH_GROUPS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
             response = service.fetchPublishGroups(authentication, request);
@@ -302,7 +302,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENTS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final StudentService service = factory.prepareStudentService();
             service.processStudents(authentication, request);
@@ -325,7 +325,7 @@ public class ExchangeController extends CommonController implements Exchange {
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_STUDENTS);
-            verify(request, "To be clarified.");
+            verify(request);
 
             final StudentService service = factory.prepareStudentService();
             response = service.fetchStudents(authentication, request);

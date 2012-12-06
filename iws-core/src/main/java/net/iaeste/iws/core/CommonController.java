@@ -33,6 +33,7 @@ import net.iaeste.iws.persistence.exceptions.PersistenceException;
  */
 class CommonController {
 
+    private static final String NULL_REQUEST = " Object may not be null.";
     private final AccessDao dao;
 
     CommonController(final AccessDao dao) {
@@ -105,13 +106,20 @@ class CommonController {
      * otherwise the verify method is called on the verifiable object.
      *
      * @param verifiable Object to verify
-     * @param message    Error message, if the verifiable object is null
+     * @param message    The Error message to display
      * @throws VerificationException if the verification failed
      * @see Verifiable#verify()
      */
-    void verify(final Verifiable verifiable, final String message) {
+    void verify(final Verifiable verifiable, final String... message) {
         if (verifiable == null) {
-            throw new VerificationException(message);
+            final String text;
+            if (message != null && message.length == 1) {
+                text = message[0];
+            } else {
+                text = "Cannot process a Null Request Object.";
+            }
+
+            throw new VerificationException(text + NULL_REQUEST);
         }
 
         verifiable.verify();

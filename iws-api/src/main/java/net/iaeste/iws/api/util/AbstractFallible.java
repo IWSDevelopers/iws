@@ -31,10 +31,10 @@ public abstract class AbstractFallible implements Fallible {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** IWS Error Object. */
-    protected final IWSError error;
+    private final IWSError error;
 
     /** IWS Error Message. */
-    protected final String message;
+    private final String message;
 
     /**
      * Default Constructor.
@@ -83,7 +83,22 @@ public abstract class AbstractFallible implements Fallible {
      * {@inheritDoc}
      */
     @Override
-    public abstract boolean equals(Object obj);
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof AbstractFallible)) {
+            return false;
+        }
+
+        final AbstractFallible that = (AbstractFallible) obj;
+
+        if (error != null ? !error.equals(that.error) : that.error != null) {
+            return false;
+        }
+
+        return !(message != null ? !message.equals(that.message) : that.message != null);
+    }
 
     /**
      * {@inheritDoc}

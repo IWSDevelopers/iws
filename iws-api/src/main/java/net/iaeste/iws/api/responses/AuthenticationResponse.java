@@ -125,6 +125,6 @@ public final class AuthenticationResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "AuthenticationResponse[token=" + token + ",error=" + error + ",message=" + message + ']';
+        return "AuthenticationResponse[token=" + token + ']';
     }
 }

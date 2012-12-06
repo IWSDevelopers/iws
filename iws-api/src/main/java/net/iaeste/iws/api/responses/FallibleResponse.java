@@ -65,13 +65,14 @@ public class FallibleResponse extends AbstractFallible {
             return false;
         }
 
-        final FallibleResponse that = (FallibleResponse) obj;
-
-        if (error != null ? !error.equals(that.error) : that.error != null) {
-            return false;
-        }
-
-        return !(message != null ? !message.equals(that.message) : that.message != null);
+        //final FallibleResponse that = (FallibleResponse) obj;
+        return super.equals(obj);
+//
+//        if (error != null ? !error.equals(that.error) : that.error != null) {
+//            return false;
+//        }
+//
+//        return !(message != null ? !message.equals(that.message) : that.message != null);
     }
 
     /**
@@ -79,10 +80,7 @@ public class FallibleResponse extends AbstractFallible {
      */
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (error != null ? error.hashCode() : 0);
-        result = 31 * result + (message != null ? message.hashCode() : 0);
-        return result;
+        return super.hashCode();
     }
 
     /**
@@ -90,9 +88,6 @@ public class FallibleResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "FallibleResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                '}';
+        return "";
     }
 }

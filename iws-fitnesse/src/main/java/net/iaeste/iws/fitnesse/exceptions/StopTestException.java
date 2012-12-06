@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IWS (iws-fitnesse)
+ * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.exceptions.StopTestException
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -24,8 +24,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
  *
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.ExceptionHandling">Fixture.org</a>
  * @since 1.7
+ * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.ExceptionHandling">Fixture.org</a>
  */
 public class StopTestException extends RuntimeException {
 

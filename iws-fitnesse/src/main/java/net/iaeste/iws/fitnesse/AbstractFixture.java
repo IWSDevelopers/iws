@@ -31,9 +31,9 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 abstract class AbstractFixture<T extends Fallible> implements Fixture {
 
     private static final Access ACCESS = new AccessCaller();
-    protected T response = null;
-    protected String testId = null;
-    protected String testCase = null;
+    private T response = null;
+    private String testId = null;
+    private String testCase = null;
 
     // To ensure that the Session will work regardless of the request being
     // made, the data is made static and all access is being synchronized, to
@@ -42,6 +42,14 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
     private static AuthenticationToken token = null;
     private static String username = null;
     private static String password = null;
+
+    public void setResponse(final T response) {
+        this.response = response;
+    }
+
+    public T getResponse() {
+        return response;
+    }
 
     /**
      * {@inheritDoc}

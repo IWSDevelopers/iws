@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.utils.Date
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.util.Date
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -44,7 +44,7 @@ public final class Date implements Serializable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** Internal Date format. */
-    private static final DateFormat FORMAT = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
+    private final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
 
     /** The internal Date, implementation uses the JodaTime Classes. */
     private final DateMidnight date;
@@ -85,7 +85,7 @@ public final class Date implements Serializable {
      */
     public Date(final String date) {
         try {
-            this.date = new DateMidnight(FORMAT.parse(date));
+            this.date = new DateMidnight(format.parse(date));
         } catch (ParseException e) {
             throw new VerificationException(e);
         }
@@ -175,6 +175,6 @@ public final class Date implements Serializable {
      */
     @Override
     public String toString() {
-        return FORMAT.format(date.toDate());
+        return format.format(date.toDate());
     }
 }

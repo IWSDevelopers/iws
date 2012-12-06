@@ -92,9 +92,7 @@ class CommonController {
             // requires the Private Group, then this must be fetched. The
             // decision to do it so, was made to avoid loosing too much
             // performance on operations that are rarely required
-            final GroupEntity group = null;
-            // So far so good, return the information
-            return new Authentication(token, user, group);
+            return new Authentication(token, user, null);
         } catch (PersistenceException e) {
             throw new VerificationException(e);
         }

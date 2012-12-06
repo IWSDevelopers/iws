@@ -62,7 +62,7 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
     public void execute() throws StopTestException {
         createSession();
         request = new ProcessOfferRequest(offer);
-        response = exchange.processOffer(getToken(), request);
+        setResponse(exchange.processOffer(getToken(), request));
     }
 
     @Override
@@ -70,7 +70,6 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         super.reset();
 
         request = null;
-        response = null;
         offer = new Offer();
     }
 

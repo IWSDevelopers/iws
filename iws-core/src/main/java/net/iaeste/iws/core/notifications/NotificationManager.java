@@ -15,14 +15,10 @@
 package net.iaeste.iws.core.notifications;
 
 import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
-import net.iaeste.iws.api.enums.NotificationSubject;
-import net.iaeste.iws.api.enums.NotificationType;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
@@ -34,7 +30,6 @@ import net.iaeste.iws.persistence.notification.Notifiable;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +42,10 @@ import java.util.List;
  * handling should be done via a "cron" job. That is a Timer job in EJB, or
  * perhaps via an external queuing system like Quartz.
  *
- * @author  Pavel Fiala / last $Author:$
+ * @author Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @noinspection ObjectAllocationInLoop
+ * @since 1.7
  */
 public final class NotificationManager implements Notifications {
 
@@ -66,25 +62,23 @@ public final class NotificationManager implements Notifications {
     @Override
     public void notify(final Authentication authentication, final Notifiable obj) {
         // Save the general information about the Object to be notified.
-        List<UserEntity> users = getRecipients(obj);
+        final List<UserEntity> users = getRecipients(obj);
 
         //TODO for user account messages there is no setting, if statement for it?
         for (final UserEntity user : users) {
             //get user settings
             final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, obj.getNotificationSubject());
-            if (userNotification == null) {
-                //user hasn't set any notification
-                continue;
+
+            if (userNotification != null) {
+                final NotificationMessageEntity message = new NotificationMessageEntity();
+                message.setStatus(NotificationMessageStatus.NEW);
+                message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
+                final String messageText = obj.generateNotificationMessage();
+                message.setMessage(messageText);
+
+                //save messages into DB
+                dao.persist(message);
             }
-
-            final NotificationMessageEntity message = new NotificationMessageEntity();
-            message.setStatus(NotificationMessageStatus.NEW);
-            message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-            final String messageText = obj.generateNotificationMessage();
-            message.setMessage(messageText);
-
-            //save messages into DB
-            dao.persist(message);
         }
 
         notifyObservers();
@@ -162,52 +156,54 @@ public final class NotificationManager implements Notifications {
 //        notifyObservers();
     }
 
-    /**
-     * @param frequency
-     * @return
-     */
     private java.util.Date getNotificationTime(final NotificationFrequency frequency) {
-        Date result = null;
+        Date result;
+
         switch (frequency) {
-            case IMMEDIATELY:
-                result = new Date();
-                break;
             case DAILY:
                 result = new Date();
                 result = result.plusDays(1);
                 break;
             case WEEKLY:
-                DateMidnight d = new org.joda.time.DateMidnight();
-                if (d.getDayOfWeek() < DateTimeConstants.FRIDAY) {
-                    d = d.withDayOfWeek(DateTimeConstants.FRIDAY);
+                DateMidnight dateMidnight = new DateMidnight();
+                if (dateMidnight.getDayOfWeek() < DateTimeConstants.FRIDAY) {
+                    dateMidnight = dateMidnight.withDayOfWeek(DateTimeConstants.FRIDAY);
                 } else {
-                    d = d.plusWeeks(1).withDayOfWeek(DateTimeConstants.FRIDAY);
+                    dateMidnight = dateMidnight.plusWeeks(1).withDayOfWeek(DateTimeConstants.FRIDAY);
                 }
-                result = new Date(d);
+                result = new Date(dateMidnight);
+                break;
+            case IMMEDIATELY:
+            default:
+                result = new Date();
         }
+
         return result.toDate();
     }
 
     private List<UserEntity> getRecipients(final Notifiable obj) {
-        List<UserEntity> res = new ArrayList<>();
-        if(obj instanceof UserEntity) {
-            res = getRecipients((UserEntity)obj);
+        final List<UserEntity> entities;
+
+        if (obj instanceof UserEntity) {
+            entities = getRecipients((UserEntity) obj);
         } else if (obj instanceof OfferEntity) {
-            res = getRecipients((OfferEntity)obj);
+            entities = getRecipients((OfferEntity) obj);
+        } else {
+            entities = new ArrayList<>(0);
         }
-        return res;
+
+        return entities;
     }
 
     private List<UserEntity> getRecipients(final UserEntity user) {
-        List<UserEntity> res = new ArrayList<>(1);
-        res.add(user);
-        return res;
+        final List<UserEntity> entities = new ArrayList<>(1);
+        entities.add(user);
+
+        return entities;
     }
 
     private List<UserEntity> getRecipients(final OfferEntity offer) {
-        List<UserEntity> res = new ArrayList<>();
         throw new NotImplementedException("Get recipients for the offer is not implemented");
-        //return res;
     }
 
     @Override

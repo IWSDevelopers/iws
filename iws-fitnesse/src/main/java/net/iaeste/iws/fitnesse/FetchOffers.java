@@ -60,7 +60,7 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
      * @return number of offers fetched otherwise or -1 if there is no response
      */
     public int numberOfFetchedOffers() {
-        return response == null ? -1 : response.getOffers().size();
+        return getResponse() == null ? -1 : getResponse().getOffers().size();
     }
 
     /**
@@ -73,12 +73,12 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
     public String printOffer(final int offerIndex) {
         final String retVal;
 
-        if (response == null) {
+        if (getResponse() == null) {
             retVal = "no response";
         } else if ((offerIndex < 1) || (offerIndex > numberOfFetchedOffers())) {
             retVal = "no offer for given index";
         } else {
-            retVal = response.getOffers().get(offerIndex - 1).toString();
+            retVal = getResponse().getOffers().get(offerIndex - 1).toString();
         }
 
         return retVal;
@@ -94,7 +94,7 @@ public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
     @Override
     public void execute() throws StopTestException {
         createSession();
-        response = exchange.fetchOffers(getToken(), request);
+        setResponse(exchange.fetchOffers(getToken(), request));
     }
 
     @Override

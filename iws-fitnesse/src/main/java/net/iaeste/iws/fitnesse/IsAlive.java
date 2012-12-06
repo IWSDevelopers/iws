@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IWS (iws-fitnesse)
+ * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.IsAlive
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -34,6 +34,7 @@ public class IsAlive extends AbstractFixture<AuthenticationResponse> {
     public String token() {
         final String token;
 
+        final AuthenticationResponse response = getResponse();
         if ((response != null) && (response.getToken() != null)) {
             token = response.getToken().getToken();
         } else {
@@ -52,7 +53,7 @@ public class IsAlive extends AbstractFixture<AuthenticationResponse> {
      */
     @Override
     public void execute() {
-        response = createSession();
+        setResponse(createSession());
     }
 
     /**

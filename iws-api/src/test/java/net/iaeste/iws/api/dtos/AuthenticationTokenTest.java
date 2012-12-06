@@ -26,7 +26,6 @@ import static org.junit.Assert.assertThat;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
  */
 public final class AuthenticationTokenTest {
 

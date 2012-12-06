@@ -12,15 +12,15 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.dtos;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public class EmployerTestUtility {
+public final class EmployerTestUtility {
+
     public static final String NAME = "Test_Employer_1";
     public static final String ADDRESS = "test address 30";
     public static final String ADDRESS2 = "test address 31";

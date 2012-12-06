@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.dtos.Offer;
@@ -22,11 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public class OfferRequestTestUtility {
+public final class OfferRequestTestUtility {
 
     private OfferRequestTestUtility() {
     }

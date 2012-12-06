@@ -14,19 +14,18 @@
  */
 package net.iaeste.iws.api.requests;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-
 import com.gargoylesoftware.base.testing.EqualsTester;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection ResultOfObjectAllocationIgnored
- * @since 1.7
+ * @since   1.7
  */
 public final class DeleteOfferRequestTest {
     private static final String invalidOfferRefNo = "AT-2012-@#$1";

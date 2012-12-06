@@ -37,7 +37,7 @@ import java.util.Set;
  * @since   1.7
  * @noinspection PublicStaticCollectionField, OverlyLongMethod
  */
-public class OfferTestUtility {
+public final class OfferTestUtility {
 
     public static final String REF_NO = "AT-2012-1234-AB";
     public static final Date NOMINATION_DEADLINE = new Date();

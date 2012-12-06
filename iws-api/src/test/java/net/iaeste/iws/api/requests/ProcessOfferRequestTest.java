@@ -12,12 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.requests;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -26,18 +21,23 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Michal Knapik / last $Author:$
- * @version $Revision:$ / $Date:$
- * @since 1.7
- */
-public class ProcessOfferRequestTest {
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.nullValue;
 
-    private Offer validOffer;
+/**
+ * @author  Michal Knapik / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since   1.7
+ * @noinspection JUnitTestMethodWithNoAssertions
+ */
+public final class ProcessOfferRequestTest {
+
+    private Offer validOffer = null;
 
     @Before
     public void setUp() {
-        this.validOffer = OfferTestUtility.getMinimalOffer();
+        validOffer = OfferTestUtility.getMinimalOffer();
     }
 
     @Test(expected = VerificationException.class)
@@ -46,14 +46,12 @@ public class ProcessOfferRequestTest {
         requestWithInvalidOffer.verify();
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testVerifyValidUpdateRequest() {
         final ProcessOfferRequest request = new ProcessOfferRequest(validOffer);
         request.verify();
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testVerifyValidCreateRequest() {
         final ProcessOfferRequest requestWithInvalidOffer = new ProcessOfferRequest(validOffer);

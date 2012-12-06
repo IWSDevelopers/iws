@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.enums.FetchType;
@@ -31,7 +30,7 @@ import static org.junit.Assert.assertThat;
  * @since   1.7
  * @noinspection ObjectAllocationInLoop
  */
-public class FetchOfferRequestTest {
+public final class FetchOfferRequestTest {
 
     @Test
     public void testConstructor() {

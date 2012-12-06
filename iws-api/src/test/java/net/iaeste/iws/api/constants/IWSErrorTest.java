@@ -25,7 +25,6 @@ import static org.junit.Assert.assertThat;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
  */
 public class IWSErrorTest {
 
@@ -51,7 +50,6 @@ public class IWSErrorTest {
         assertThat(result.hashCode(), is(-56661044));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));
-        //noinspection ResultOfObjectAllocationIgnored
         new EqualsTester(result, same, diff, null);
     }
 

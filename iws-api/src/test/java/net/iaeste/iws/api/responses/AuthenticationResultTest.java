@@ -30,7 +30,6 @@ import static org.junit.Assert.assertThat;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
  */
 public class AuthenticationResultTest {
 
@@ -55,7 +54,7 @@ public class AuthenticationResultTest {
         assertThat(result.getToken(), is(token));
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
-        assertThat(result.toString(), is("AuthenticationResponse[token=AuthenticationToken[token=KEY],error=IWSError[error=0,description=SUCCESS],message=OK]"));
+        assertThat(result.toString(), is("AuthenticationResponse[token=AuthenticationToken[token=KEY]]"));
         assertThat(result.hashCode(), is(-545849611));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));

@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.exceptions.VerificationException;
@@ -25,9 +24,9 @@ import static net.iaeste.iws.api.dtos.EmployerTestUtility.*;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class EmployerInformationTest {
     private EmployerInformation employer = getMinimalEmployer();

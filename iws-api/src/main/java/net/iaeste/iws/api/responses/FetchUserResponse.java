@@ -16,10 +16,14 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
+ * Response Object for a FetchUser request. Will return the found User Object.
+ * If information returned depends on the users privacy settings, and the
+ * requesting user.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -29,11 +33,23 @@ public final class FetchUserResponse extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /** The List of Users, matching the request. */
+    private User user = null;
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public FetchUserResponse() {
+    }
+
+    /**
+     * Default Constructor.
+     *
+     * @param user User Object
+     */
+    public FetchUserResponse(final User user) {
+        this.user = user;
     }
 
     /**
@@ -50,6 +66,14 @@ public final class FetchUserResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
+    public void setUser(final User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     // =========================================================================
     // Standard Response Methods
     // =========================================================================
@@ -59,7 +83,15 @@ public final class FetchUserResponse extends AbstractFallible {
      */
     @Override
     public boolean equals(final Object obj) {
-        throw new NotImplementedException("TBD");
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof FetchUserResponse)) {
+            return false;
+        }
+
+        final FetchUserResponse that = (FetchUserResponse) obj;
+        return !(user != null ? !user.equals(that.user) : that.user != null);
     }
 
     /**
@@ -67,7 +99,11 @@ public final class FetchUserResponse extends AbstractFallible {
      */
     @Override
     public int hashCode() {
-        throw new NotImplementedException("TBD");
+        int result = super.hashCode();
+
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+
+        return result;
     }
 
     /**
@@ -75,6 +111,8 @@ public final class FetchUserResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        throw new NotImplementedException("TBD");
+        return "FetchUserResponse{" +
+                "user=" + user +
+                '}';
     }
 }

@@ -16,13 +16,13 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
+ * Request Object for fetching a User Object.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -32,7 +32,7 @@ public final class FetchUserRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private List<String> userIds = null;
+    private String userId = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -44,22 +44,22 @@ public final class FetchUserRequest extends AbstractVerification {
     /**
      * Default Constructor.
      *
-     * @param userIds List of Id's for the users to fetch
+     * @param userId The UserId of the user to retrieve
      */
-    public FetchUserRequest(final List<String> userIds) {
-        this.userIds = Copier.copy(userIds);
+    public FetchUserRequest(final String userId) {
+        this.userId = userId;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUserIds(final List<String> userIds) {
-        this.userIds = Copier.copy(userIds);
+    public void setUserId(final String userId) {
+        this.userId = userId;
     }
 
-    public List<String> getUserIds() {
-        return Copier.copy(userIds);
+    public String getUserId() {
+        return userId;
     }
 
     // =========================================================================
@@ -73,8 +73,8 @@ public final class FetchUserRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        if ((userIds == null) || userIds.isEmpty()) {
-            validation.put("userIds", "No UserId's are present.");
+        if ((userId == null) || (userId.length() != 36)) {
+            validation.put("userId", "No valid UserId is present.");
         }
 
         return validation;

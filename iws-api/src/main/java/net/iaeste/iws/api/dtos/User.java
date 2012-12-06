@@ -52,6 +52,7 @@ public final class User extends AbstractFallible implements Verifiable {
     private String lastname = null;
     private UserStatus status = null;
     private Privacy privacy = Privacy.PRIVATE;
+    private String notifications = null;
     private Person person = null;
 
     /**
@@ -161,6 +162,14 @@ public final class User extends AbstractFallible implements Verifiable {
 
     public Privacy getPrivacy() {
         return privacy;
+    }
+
+    public void setNotifications(final String notifications) {
+        this.notifications = notifications;
+    }
+
+    public String getNotifications() {
+        return notifications;
     }
 
     public void setPerson(final Person person) {

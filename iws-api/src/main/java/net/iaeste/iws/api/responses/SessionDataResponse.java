@@ -125,7 +125,7 @@ public final class SessionDataResponse<T extends Serializable> extends AbstractF
             return false;
         }
 
-        final SessionDataResponse that = (SessionDataResponse) obj;
+        final SessionDataResponse<?> that = (SessionDataResponse<?>) obj;
 
         if (created != null ? !created.equals(that.created) : that.created != null) {
             return false;

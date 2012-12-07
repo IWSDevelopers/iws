@@ -17,10 +17,10 @@ package net.iaeste.iws.api.enums;
 /**
  * PaymentFrequency Object for the Exchange Module.
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection EnumeratedConstantNamingConvention
- * @since 1.7
  */
 public enum PaymentFrequency {
 

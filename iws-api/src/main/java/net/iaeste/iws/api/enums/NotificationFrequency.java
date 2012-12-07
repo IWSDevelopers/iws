@@ -12,17 +12,17 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.enums;
 
 /**
  * Notification Frequency - when the user wants to receive notification about an IW action
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public enum NotificationFrequency {
+
     IMMEDIATELY,
     DAILY,
     WEEKLY

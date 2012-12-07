@@ -24,6 +24,7 @@ import java.util.List;
  * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
+ * @noinspection FieldCanBeLocal, UnusedDeclaration
  */
 public enum FieldOfStudy {
 
@@ -292,9 +293,9 @@ public enum FieldOfStudy {
 
     VETERINARY_SCIENCE(Collections.<Specialization>emptyList());
 
-    private List<Specialization> specializations;
+    private final List<Specialization> specializations;
 
-    private FieldOfStudy(List<Specialization> specializations) {
+    FieldOfStudy(final List<Specialization> specializations) {
         this.specializations = specializations;
     }
 }

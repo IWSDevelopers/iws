@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.api.dtos;
 
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 
@@ -24,10 +23,10 @@ import java.util.Map;
 /**
  * The EmployerInformation Object contains all information about the employer.
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection CastToConcreteClass, RefusedBequest, ClassWithTooManyFields
- * @since 1.7
+ * @since   1.7
+ * @noinspection OverlyComplexMethod
  */
 public final class EmployerInformation extends AbstractVerification {
 

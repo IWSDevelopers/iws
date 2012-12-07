@@ -16,7 +16,6 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
@@ -59,7 +58,7 @@ public final class PublishGroupResponse extends AbstractFallible {
      */
     @Override
     public boolean equals(final Object obj) {
-        throw new NotImplementedException("TBD");
+        return super.equals(obj);
     }
 
     /**
@@ -67,7 +66,7 @@ public final class PublishGroupResponse extends AbstractFallible {
      */
     @Override
     public int hashCode() {
-        throw new NotImplementedException("TBD");
+        return super.hashCode();
     }
 
     /**
@@ -75,6 +74,6 @@ public final class PublishGroupResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        throw new NotImplementedException("TBD");
+        return "";
     }
 }

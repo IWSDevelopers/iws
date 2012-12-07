@@ -17,11 +17,13 @@ package net.iaeste.iws.api.enums;
 /**
  * Possible levels for grading languages
  *
- * @author Marko Cilimkovic / last $Author:$
+ * @author  Marko Cilimkovic / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection EnumeratedConstantNamingConvention
  */
 public enum LanguageLevel {
+
     E("Excellent"),
     G("Good"),
     F("Fair");

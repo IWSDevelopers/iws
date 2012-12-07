@@ -17,11 +17,12 @@ package net.iaeste.iws.api.enums;
 /**
  * StudyCompleted Object for the Exchange Module.
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public enum StudyCompleted {
+
     /**
      * Beginning (1-3 Semesters)
      */

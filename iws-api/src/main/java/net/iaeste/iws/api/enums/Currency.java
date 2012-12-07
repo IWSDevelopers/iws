@@ -17,11 +17,12 @@ package net.iaeste.iws.api.enums;
 /**
 *  All currencies that can be used in the system
 *
-* @author Marko Cilimkovic / last $Author:$
+* @author  Marko Cilimkovic / last $Author:$
 * @version $Revision:$ / $Date:$
-* @since 1.7
+* @since   1.7
 */
 public enum Currency {
+
     // TODO add all currencies
     EUR("Euro"),
     HRK("Croatian Kuna"),

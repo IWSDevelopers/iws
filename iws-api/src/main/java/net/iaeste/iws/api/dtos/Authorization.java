@@ -28,7 +28,6 @@ import java.util.Set;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
 public final class Authorization implements Serializable {
 

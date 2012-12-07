@@ -12,17 +12,17 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.enums;
 
 /**
  * Notification Type - how the notification is delivered (email, instant message, ...)
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public enum NotificationType {
+
     EMAIL,
     IM
 }

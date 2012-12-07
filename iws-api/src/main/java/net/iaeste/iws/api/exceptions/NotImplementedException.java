@@ -30,6 +30,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
  * @since   1.7
  * @deprecated Please implement the logic
  */
+@Deprecated
 public final class NotImplementedException extends IWSException {
 
     /** @see IWSConstants#SERIAL_VERSION_UID */
@@ -43,6 +44,7 @@ public final class NotImplementedException extends IWSException {
      * @see IWSException
      * @see IWSErrors#VERIFICATION_ERROR
      */
+    @Deprecated
     public NotImplementedException(final String message) {
         super(IWSErrors.NOT_IMPLEMENTED, message);
     }

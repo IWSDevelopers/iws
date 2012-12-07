@@ -25,7 +25,6 @@ import java.util.Date;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass, ConstantConditions
  */
 public class DateTime implements Serializable {
 

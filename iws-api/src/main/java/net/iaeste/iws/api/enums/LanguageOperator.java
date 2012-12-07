@@ -17,11 +17,13 @@ package net.iaeste.iws.api.enums;
 /**
  * Possible choices for selecting if something is required or optional
  *
- * @author Marko Cilimkovic / last $Author:$
+ * @author  Marko Cilimkovic / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection EnumeratedConstantNamingConvention
  */
 public enum LanguageOperator {
+
     A("And"),
     O("Or");
 

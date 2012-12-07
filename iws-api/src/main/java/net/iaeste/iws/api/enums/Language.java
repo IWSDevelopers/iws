@@ -17,11 +17,12 @@ package net.iaeste.iws.api.enums;
 /**
  * All languages that can be selected in the system
  *
- * @author Marko Cilimkovic / last $Author:$
+ * @author  Marko Cilimkovic / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public enum Language {
+
     ENGLISH("English"),
     ARABIC("Arabic"),
     BELARUSIAN("Belarusian"),
@@ -62,7 +63,6 @@ public enum Language {
     UKRAINIAN("Ukrainian"),
     ANY("Any");
 
-
     private final String description;
 
     Language(final String description) {
@@ -80,7 +80,6 @@ public enum Language {
      * @return null or enum value
      */
     public static Language toValue(final String language) {
-        return language == null ? null : Language.valueOf(language);
+        return language == null ? null : valueOf(language);
     }
-
 }

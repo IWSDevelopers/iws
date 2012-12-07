@@ -15,13 +15,13 @@
 package net.iaeste.iws.api.enums;
 
 /**
- * TODO: commment
- *
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection EnumeratedConstantNamingConvention
  */
 public enum StudyLevel {
+
     B("Beginning"),
     M("Middle"),
     E("End");

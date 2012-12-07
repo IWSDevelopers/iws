@@ -12,17 +12,17 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.enums;
 
 /**
  * Notification Subject - the subject of notifications, i.e. offer, group change (new user, ...), event (new invitation to event, new registrations)
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public enum NotificationSubject {
+
     OFFER,
     GROUP,
     USER

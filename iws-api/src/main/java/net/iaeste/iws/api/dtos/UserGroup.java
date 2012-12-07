@@ -28,7 +28,7 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
+ * @noinspection OverlyComplexMethod
  */
 public final class UserGroup extends AbstractFallible {
 

@@ -21,9 +21,29 @@ package net.iaeste.iws.api.enums;
  */
 public enum GroupStatus {
 
+    /**
+     * The default value for all Groups, upon creation. It means that the Group
+     * can be used and all data accessed without restrictions.
+     */
     ACTIVE,
 
+    /**
+     * Groups, which are currently blocked, will not be visible or accessible.
+     * If the Group is a Members Group, the users from this Group can no longer
+     * log into the system. The purpose of this option, is to prevent misusage
+     * of the system, without deleting the information. A Group with status
+     * Blocked, can always be reactivated.
+     */
     BLOCKED,
 
+    /**
+     * Groups, which are Deleted, can no longer be used. Data belonging to the
+     * Group will be deleted, and if the Group is a Members Group, then the
+     * current members can no longer use the IWS, as this translates to their
+     * accounts being deleted as well.<br />
+     *   Shared information belonging to the Group, will not be deleted from
+     * the system.<br />
+     *   Note; This is a non-reversible state.
+     */
     DELETED
 }

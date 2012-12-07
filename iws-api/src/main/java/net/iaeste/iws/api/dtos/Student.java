@@ -26,7 +26,6 @@ import java.util.Map;
  * @author  Teis Lindemark / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
  */
 public final class Student extends AbstractVerification {
 

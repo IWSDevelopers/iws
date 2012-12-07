@@ -25,7 +25,6 @@ import java.util.Set;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection VariableNotUsedInsideIf
  */
 public abstract class AbstractVerification implements Verifiable {
 

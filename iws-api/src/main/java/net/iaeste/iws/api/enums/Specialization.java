@@ -17,9 +17,9 @@ package net.iaeste.iws.api.enums;
 /**
  * Contains all predefined Specializations.
  *
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public enum Specialization {
 
@@ -177,5 +177,4 @@ public enum Specialization {
     QUANTUM_MECHANICS,
     STATISTICAL_PHYSICS,
     THERMODYNAMICS
-
 }

@@ -17,11 +17,13 @@ package net.iaeste.iws.api.enums;
 /**
  * All types of work that can be selected in the system
  *
- * @author Marko Cilimkovic / last $Author:$
+ * @author  Marko Cilimkovic / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection EnumeratedConstantNamingConvention
  */
 public enum TypeOfWork {
+
     R("Research and Development"),
     P("Professional"),
     W("Working Environment"),
@@ -44,6 +46,6 @@ public enum TypeOfWork {
      * @return null or enum value
      */
     public static TypeOfWork toValue(final String typeOfWork) {
-        return typeOfWork == null ? null : TypeOfWork.valueOf(typeOfWork);
+        return typeOfWork == null ? null : valueOf(typeOfWork);
     }
 }

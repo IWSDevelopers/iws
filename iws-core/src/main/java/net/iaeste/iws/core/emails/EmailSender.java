@@ -41,12 +41,12 @@ import java.util.Properties;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection AccessOfSystemProperties, CastToConcreteClass
+ * @noinspection CastToConcreteClass, AccessOfSystemProperties
  */
 @MessageDriven(mappedName = "iws-EmailQueue",
         activationConfig = {@ActivationConfigProperty(
                 propertyName = "destinationType", propertyValue = "javax.jms.Queue")})
-public final class EmailSender implements MessageListener {
+public class EmailSender implements MessageListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailSender.class);
 

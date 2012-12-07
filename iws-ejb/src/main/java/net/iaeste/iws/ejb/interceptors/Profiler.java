@@ -27,7 +27,7 @@ import java.text.DecimalFormat;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection IntegerDivisionInFloatingPointContext, ProhibitedExceptionDeclared
+ * @noinspection ProhibitedExceptionDeclared
  */
 public final class Profiler {
 
@@ -41,7 +41,7 @@ public final class Profiler {
         try {
             return invocation.proceed();
         } finally {
-            final double time = (System.nanoTime() - start) / 1000000;
+            final double time = (double) (System.nanoTime() - start) / 1000000;
             final String name = invocation.getMethod().getName();
             final String duration = format.format(time);
 

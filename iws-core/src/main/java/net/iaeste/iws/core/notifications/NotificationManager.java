@@ -42,10 +42,10 @@ import java.util.List;
  * handling should be done via a "cron" job. That is a Timer job in EJB, or
  * perhaps via an external queuing system like Quartz.
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection ObjectAllocationInLoop
- * @since 1.7
+ * @since   1.7
+ * @noinspection CastToConcreteClass, ChainOfInstanceofChecks, ObjectAllocationInLoop
  */
 public final class NotificationManager implements Notifications {
 

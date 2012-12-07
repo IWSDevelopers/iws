@@ -29,9 +29,10 @@ import java.util.List;
  * The Class requires an EJB framework to properly work. For this reason, large
  * parts of the code is commented out.
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection ObjectAllocationInLoop
  */
 public class NotificationEmailDelayedSender implements Observer {
 
@@ -94,18 +95,22 @@ public class NotificationEmailDelayedSender implements Observer {
     }
 
     private Map<UserEntity, List<NotificationMessageEntity>> groupByUser(final List<NotificationMessageEntity> messages) {
-        Map<UserEntity, List<NotificationMessageEntity>> result = new HashMap<>();
-        for(NotificationMessageEntity message : messages) {
-            List<NotificationMessageEntity> userMessages;
+        final Map<UserEntity, List<NotificationMessageEntity>> result = new HashMap<>(0);
+
+        for (final NotificationMessageEntity message : messages) {
+            final List<NotificationMessageEntity> userMessages;
             final UserEntity user = message.getUser();
-            if(result.containsKey(user)) {
+
+            if (result.containsKey(user)) {
                 userMessages = result.get(user);
             } else {
                 userMessages = new ArrayList<>(1);
             }
+
             userMessages.add(message);
             result.put(user, userMessages);
         }
+
         return result;
     }
 }

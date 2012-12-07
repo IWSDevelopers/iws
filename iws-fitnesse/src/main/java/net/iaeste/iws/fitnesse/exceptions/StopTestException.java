@@ -22,9 +22,9 @@ import net.iaeste.iws.api.constants.IWSConstants;
  * be thrown within the ZObEL Fixture environment, to ensure proper handling
  * of problems.<br />
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  * @see <a href="http://fitnesse.org/Fixture.UserGuide.SliM.ExceptionHandling">Fixture.org</a>
  */
 public class StopTestException extends RuntimeException {

@@ -245,4 +245,15 @@ public class GroupEntity implements IWSEntity {
     public Date getCreated() {
         return created;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "GroupEntity{" +
+                "id='" + externalId + '\'' +
+                ", groupname='" + groupname + '\'' +
+                '}';
+    }
 }

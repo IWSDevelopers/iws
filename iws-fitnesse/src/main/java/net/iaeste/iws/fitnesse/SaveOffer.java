@@ -49,7 +49,7 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
 
     private final Exchange exchange = new ExchangeClient();
     private Offer offer = new Offer();
-    private ProcessOfferRequest request;
+    private ProcessOfferRequest request = null;
 
     /**
      * Alias for the execute function.
@@ -58,6 +58,9 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         execute();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws StopTestException {
         createSession();
@@ -65,6 +68,9 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         setResponse(exchange.processOffer(getToken(), request));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
         super.reset();
@@ -74,19 +80,23 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
     }
 
     public boolean verify() {
+        boolean result;
+
         try {
             offer.verify();
-            return true;
+            result = true;
         } catch (VerificationException ignore) {
-            return false;
+            result = false;
         }
+
+        return result;
     }
 
     /**
      * Sets username and password so the AuthenticationToken could be fetched.
      *
-     * @param username
-     * @param password
+     * @param username Username
+     * @param password Password
      */
     public void setUsernameAndPassword(final String username, final String password) {
         setUsername(username);

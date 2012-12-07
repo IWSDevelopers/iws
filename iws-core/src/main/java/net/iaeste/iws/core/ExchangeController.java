@@ -50,6 +50,7 @@ import org.slf4j.LoggerFactory;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection OverlyCoupledClass
  */
 public final class ExchangeController extends CommonController implements Exchange {
 

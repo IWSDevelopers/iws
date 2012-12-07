@@ -342,4 +342,16 @@ public class UserEntity implements IWSEntity, Notifiable {
     public NotificationSubject getNotificationSubject() {
         return NotificationSubject.USER;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id='" + externalId + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                '}';
+    }
 }

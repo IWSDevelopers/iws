@@ -19,9 +19,9 @@ package net.iaeste.iws.fitnesse;
  * with error information cannot be extracted into an Abstract class, since the
  * Fixture implementation is using reflection, with some restrictions setup.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 interface Fixture {
 

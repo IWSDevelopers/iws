@@ -17,11 +17,6 @@ package net.iaeste.iws.ejb.beans;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
 
 /**
  * Common functionality for all IWS Beans.

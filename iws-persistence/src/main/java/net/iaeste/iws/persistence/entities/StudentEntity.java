@@ -14,11 +14,16 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import net.iaeste.iws.api.enums.NotificationSubject;
-import net.iaeste.iws.persistence.notification.Notifiable;
-
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * @author Teis Lindemark / last $Author:$
@@ -26,12 +31,15 @@ import javax.persistence.*;
  * @since 1.7
  */
 @NamedQueries({
-        @NamedQuery(name = "StudentEntity.findAll", query = "select s from StudentEntity s"),
-        @NamedQuery(name = "StudentEntity.findByName", query = "select s from StudentEntity s where s.studentName = :studentName")
+        @NamedQuery(name = "student.findAll",
+                query = "select s from StudentEntity s"),
+        @NamedQuery(name = "student.findByName",
+                query = "select s from StudentEntity s " +
+                        "where s.studentName = :name")
 })
 @Entity
 @Table(name = "students")
-public class StudentEntity implements IWSEntity, Notifiable {
+public class StudentEntity implements IWSEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,11 +52,14 @@ public class StudentEntity implements IWSEntity, Notifiable {
     @JoinColumn(nullable = false, name = "group_id")
     private GroupEntity group = null;
 
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor
      */
     public StudentEntity() {
-
     }
 
     public StudentEntity(final Long id, final String studentName, final GroupEntity group) {
@@ -57,46 +68,35 @@ public class StudentEntity implements IWSEntity, Notifiable {
         this.group = group;
     }
 
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Long getId() {
         return id;
+    }
+
+    public void setStudentName(final String studentName) {
+        this.studentName = studentName;
     }
 
     public String getStudentName() {
         return studentName;
     }
 
-    public GroupEntity getGroup() {
-        return group;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public void setGroup(GroupEntity group) {
+    public void setGroup(final GroupEntity group) {
         this.group = group;
     }
 
-    /**
-     * The Notification relies on a message being sent in some sort of format.
-     * However, this is not yet clarified exactly how it should be done. So
-     * for now - this is just a simple placeholder. So we at least can test
-     * those parts of the System, that relies on Notifications as part of the
-     * flow, i.e. Create User Account, Forgot Password, etc.
-     *
-     * @return Simple Message
-     */
-    @Override
-    public String generateNotificationMessage() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public NotificationSubject getNotificationSubject() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public GroupEntity getGroup() {
+        return group;
     }
 }

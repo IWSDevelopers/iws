@@ -41,8 +41,8 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * {@inheritDoc}
      */
     @Override
-    public List<StudentEntity> findAll() {
-        final Query query = entityManager.createNamedQuery("StudentEntity.findAll");
+    public List<StudentEntity> findAllStudents() {
+        final Query query = entityManager.createNamedQuery("student.findAll");
 
         return query.getResultList();
     }
@@ -51,9 +51,9 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * {@inheritDoc}
      */
     @Override
-    public List<StudentEntity> findByName(String studentName) {
-        final Query query = entityManager.createNamedQuery("StudentEntity.findByName");
-        query.setParameter("studentName", studentName);
+    public List<StudentEntity> findByName(final String name) {
+        final Query query = entityManager.createNamedQuery("student.findByName");
+        query.setParameter("name", name);
 
         return query.getResultList();
     }

@@ -30,12 +30,13 @@ public interface StudentDao {
      *
      * @return list of {@code StudentEntity}
      */
-    List<StudentEntity> findAll();
+    List<StudentEntity> findAllStudents();
 
     /**
-     * Find the entity in the database
+     * Find the entity in the database, via the provided name.
      *
-     * @return list of {@code: StudentEntity}
+     * @param name The name of the student to find
+     * @return list of {@code StudentEntity}
      */
-    List<StudentEntity> findByName(final String studentName);
+    List<StudentEntity> findByName(final String name);
 }

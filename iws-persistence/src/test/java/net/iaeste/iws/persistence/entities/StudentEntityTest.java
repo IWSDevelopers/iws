@@ -21,7 +21,6 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,7 +79,7 @@ public class StudentEntityTest {
         //entityManager.persist(entity);
         studentDao.persist(authentication,entity);
 
-        final Query query = entityManager.createNamedQuery("StudentEntity.findAll");
+        final Query query = entityManager.createNamedQuery("student.findAll");
         final List<StudentEntity> list = query.getResultList();
 
         assertThat(list.size(), is(1));
@@ -96,8 +95,8 @@ public class StudentEntityTest {
         //entityManager.persist(entity);
         studentDao.persist(authentication,entity);
 
-        final Query query = entityManager.createNamedQuery("StudentEntity.findByName");
-        query.setParameter("studentName","Test Student");
+        final Query query = entityManager.createNamedQuery("student.findByName");
+        query.setParameter("name","Test Student");
         final List<StudentEntity> found = query.getResultList();
 
         assertThat(found.size(),is(1));

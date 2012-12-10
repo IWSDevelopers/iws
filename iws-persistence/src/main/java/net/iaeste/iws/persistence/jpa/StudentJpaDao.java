@@ -15,8 +15,11 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.StudentDao;
+import net.iaeste.iws.persistence.entities.StudentEntity;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -34,4 +37,24 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
         super(entityManager);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<StudentEntity> findAll() {
+        final Query query = entityManager.createNamedQuery("StudentEntity.findAll");
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<StudentEntity> findByName(String studentName) {
+        final Query query = entityManager.createNamedQuery("StudentEntity.findByName");
+        query.setParameter("studentName", studentName);
+
+        return query.getResultList();
+    }
 }

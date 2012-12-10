@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.StudentDao
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.StudentRequestTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,30 +12,24 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.persistence.entities.StudentEntity;
+package net.iaeste.iws.api.requests;
 
-import java.util.List;
+import net.iaeste.iws.api.dtos.Student;
+import org.junit.Before;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author  Teis Lindemark / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection RedundantNoArgConstructor
  */
-public interface StudentDao {
+public class StudentRequestTest {
 
-    /**
-     * Get all students from the database.
-     *
-     * @return list of {@code StudentEntity}
-     */
-    List<StudentEntity> findAll();
+    private Student validStudent;
 
-    /**
-     * Find the entity in the database
-     *
-     * @return list of {@code: StudentEntity}
-     */
-    List<StudentEntity> findByName(final String studentName);
+    @Before
+    public void setUp() {
+
+    }
 }

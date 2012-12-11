@@ -73,8 +73,8 @@ public final class AdministrationClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FetchUserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
-        return administration.fetchUsers(token, request);
+    public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
+        return administration.fetchUser(token, request);
     }
 
     /**

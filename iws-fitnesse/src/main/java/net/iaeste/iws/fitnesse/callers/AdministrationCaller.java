@@ -86,9 +86,9 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public FetchUserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
+    public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
         try {
-            return administration.fetchUsers(token, request);
+            return administration.fetchUser(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

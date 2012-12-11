@@ -132,8 +132,8 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FetchUserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
-        LOG.trace("Starting fetchUsers()");
+    public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
+        LOG.trace("Starting fetchUser()");
         FetchUserResponse response;
 
         try {
@@ -144,12 +144,12 @@ public final class AdministrationController extends CommonController implements 
             verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
-            response = service.fetchUsers(authentication, request);
+            response = service.fetchUser(authentication, request);
         } catch (IWSException e) {
             response = new FetchUserResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchUsers()");
+        LOG.trace("Finished fetchUser()");
         return response;
     }
 

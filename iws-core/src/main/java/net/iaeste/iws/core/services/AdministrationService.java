@@ -163,7 +163,7 @@ public final class AdministrationService {
         }
     }
 
-    public FetchUserResponse fetchUsers(final Authentication authentication, final FetchUserRequest request) {
+    public FetchUserResponse fetchUser(final Authentication authentication, final FetchUserRequest request) {
         final String externalId = authentication.getUser().getExternalId();
         final String userId = request.getUserId();
         final User user;

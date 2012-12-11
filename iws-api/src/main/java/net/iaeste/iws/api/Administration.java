@@ -106,7 +106,7 @@ public interface Administration {
      * @param request Fetch User Request Object
      * @return Response Object with the found users and error information
      */
-    FetchUserResponse fetchUsers(AuthenticationToken token, FetchUserRequest request);
+    FetchUserResponse fetchUser(AuthenticationToken token, FetchUserRequest request);
 
     Fallible processGroups(AuthenticationToken token, GroupRequest request);
 

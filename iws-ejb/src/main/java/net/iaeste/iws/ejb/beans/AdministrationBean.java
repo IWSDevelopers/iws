@@ -170,11 +170,11 @@ public class AdministrationBean extends AbstractBean implements AdministrationRe
      */
     @Override
     @Interceptors(Profiler.class)
-    public FetchUserResponse fetchUsers(final AuthenticationToken token, final FetchUserRequest request) {
+    public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
         FetchUserResponse response;
 
         try {
-            response = administration.fetchUsers(token, request);
+            response = administration.fetchUser(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

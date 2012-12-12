@@ -23,7 +23,6 @@ import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
-import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.notification.Notifiable;
@@ -62,11 +61,11 @@ public final class NotificationManager implements Notifications {
     @Override
     public void notify(final Authentication authentication, final Notifiable obj) {
         // Save the general information about the Object to be notified.
-        final List<UserEntity> users = getRecipients(obj);
+        final List<UserEntity> users = obj.getRecipients();
 
-        //TODO for user account messages there is no setting, if statement for it?
         for (final UserEntity user : users) {
             //get user settings
+            //TODO user should have permanent entry in the notification setting to receive messages about NotificationSubject.USER immediately
             final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, obj.getNotificationSubject());
 
             if (userNotification != null) {
@@ -179,31 +178,6 @@ public final class NotificationManager implements Notifications {
         }
 
         return result.toDate();
-    }
-
-    private List<UserEntity> getRecipients(final Notifiable obj) {
-        final List<UserEntity> entities;
-
-        if (obj instanceof UserEntity) {
-            entities = getRecipients((UserEntity) obj);
-        } else if (obj instanceof OfferEntity) {
-            entities = getRecipients((OfferEntity) obj);
-        } else {
-            entities = new ArrayList<>(0);
-        }
-
-        return entities;
-    }
-
-    private List<UserEntity> getRecipients(final UserEntity user) {
-        final List<UserEntity> entities = new ArrayList<>(1);
-        entities.add(user);
-
-        return entities;
-    }
-
-    private List<UserEntity> getRecipients(final OfferEntity offer) {
-        throw new NotImplementedException("Get recipients for the offer is not implemented");
     }
 
     @Override

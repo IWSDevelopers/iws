@@ -20,6 +20,7 @@ import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.PaymentFrequency;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.persistence.notification.Notifiable;
 
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <pre>
@@ -722,11 +724,24 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
      */
     @Override
     public String generateNotificationMessage() {
+        //TODO: generate message according to the state of the offer in exchange
         return "Offer " + refNo;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationSubject getNotificationSubject() {
         return NotificationSubject.OFFER;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserEntity> getRecipients() {
+        //TODO: according to the state of the offer in exchange flow, select interested users in groups related to this offer
+        throw new NotImplementedException("Get recipients for the offer is not implemented");
     }
 }

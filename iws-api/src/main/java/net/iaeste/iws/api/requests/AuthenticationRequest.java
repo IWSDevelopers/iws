@@ -83,14 +83,14 @@ public final class AuthenticationRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(1);
 
         // Sharing the exact value that fails is not a good idea, hence we try
         // to anonymize it a bit. From a security perspective, it is called
         // "Security through Obscurity" - and it is not our only mechanism, but
         // limitting the information that hackers may get, is always a good
         // idea :-)
-        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+        if ((username == null) || (password == null) || username.isEmpty() || password.isEmpty()) {
             validation.put("User Credentials", "Missing or invalid value.");
         }
 

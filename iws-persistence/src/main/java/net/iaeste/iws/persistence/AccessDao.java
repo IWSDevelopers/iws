@@ -65,7 +65,7 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroupByPermission(UserEntity user, String groupId, Permission permission);
 
-    GroupEntity findGroup(UserEntity user, String groupId);
+    GroupEntity findGroup(UserEntity user, String externalGroupId);
 
     GroupEntity findMemberGroup(UserEntity user);
 

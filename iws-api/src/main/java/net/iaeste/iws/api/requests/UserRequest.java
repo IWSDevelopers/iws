@@ -45,6 +45,11 @@ public final class UserRequest extends AbstractVerification {
     public UserRequest() {
     }
 
+    /**
+     * Default Constructor.
+     *
+     * @param user User Object to process
+     */
     public UserRequest(final User user) {
         this.user = user;
     }
@@ -70,7 +75,7 @@ public final class UserRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(1);
 
         isNotVerifiable(validation, "user", user);
 

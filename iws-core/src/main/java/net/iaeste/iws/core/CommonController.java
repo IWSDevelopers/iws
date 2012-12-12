@@ -15,6 +15,7 @@
 package net.iaeste.iws.core;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.Verifiable;
@@ -50,7 +51,7 @@ class CommonController {
      * a new {@code Authentication} Object, that will be returned, this Object
      * will contain the User & Group Entities for the action.
      *
-     * @param token      Authentication Token
+     * @param token      Authentication Token with GroupId
      * @param permission Permission to be checked
      * @return Authentication Object
      * @throws VerificationException if neither authenticated nor authorized
@@ -58,11 +59,38 @@ class CommonController {
     Authentication verifyAccess(final AuthenticationToken token, final Permission permission) {
         verify(token, "Invalid Authentication Token provided.");
 
+        return verifyAccess(token, permission, token.getGroupId());
+    }
+
+    /**
+     * Checks the given Token to see if the user is known (authenticated) and
+     * allowed (authorized) to invoke the desired request. Please note, that
+     * although a user is allowed to perform a request, it doesn't mean that
+     * the user is allowed to process the desired data. This check must be made
+     * additionally.<br />
+     *   If the user is allowed to make the request, then the method will create
+     * a new {@code Authentication} Object, that will be returned, this Object
+     * will contain the User & Group Entities for the action.
+     *
+     * @param token      Authentication Token
+     * @param permission Permission to be checked
+     * @param group      Group to use instead of the one from the Token
+     * @return Authentication Object
+     * @throws VerificationException if neither authenticated nor authorized
+     */
+    Authentication verifyAccess(final AuthenticationToken token, final Permission permission, final Group group) {
+        verify(token, "Invalid Authentication Token provided.");
+        verify(group);
+
+        return verifyAccess(token, permission, group.getGroupId());
+    }
+
+    private Authentication verifyAccess(final AuthenticationToken token, final Permission permission, final String externalGroupId) {
         try {
             // Authentication Check; Expect Exception if unable to find a User
             final UserEntity user = dao.findActiveSession(token).getUser();
             // Authorization Check; Expect Exception if unable to match a Group
-            final GroupEntity group = dao.findGroupByPermission(user, token.getGroupId(), permission);
+            final GroupEntity group = dao.findGroupByPermission(user, externalGroupId, permission);
 
             // So far so good, return the information
             return new Authentication(token, user, group);
@@ -92,7 +120,7 @@ class CommonController {
             // requires the Private Group, then this must be fetched. The
             // decision to do it so, was made to avoid loosing too much
             // performance on operations that are rarely required
-            return new Authentication(token, user, null);
+            return new Authentication(token, user);
         } catch (PersistenceException e) {
             throw new VerificationException(e);
         }

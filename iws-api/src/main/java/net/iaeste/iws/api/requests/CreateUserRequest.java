@@ -139,7 +139,7 @@ public final class CreateUserRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(5);
 
         if (!EMAIL_PATTERN.matcher(username).matches()) {
             validation.put("username", "invalid e-mail address.");

@@ -30,6 +30,8 @@ public final class FetchGroupRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private String groupId = null;
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
@@ -37,9 +39,26 @@ public final class FetchGroupRequest extends AbstractVerification {
     public FetchGroupRequest() {
     }
 
+    /**
+     * Default Constructor.
+     *
+     * @param groupId Id of the Group to fetch
+     */
+    public FetchGroupRequest(final String groupId) {
+        this.groupId = groupId;
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setGroupId(final String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -50,7 +69,12 @@ public final class FetchGroupRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(1);
+
+        if ((groupId == null) || (groupId.length() != 36)) {
+            validation.put("groupId", "No valid groupId is present.");
+        }
+
         return validation;
     }
 }

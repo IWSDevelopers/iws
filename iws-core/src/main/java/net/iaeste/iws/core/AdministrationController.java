@@ -28,8 +28,8 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AdministrationService;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -157,22 +157,22 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible processGroups(final AuthenticationToken token, final GroupRequest request) {
-        LOG.trace("Starting processGroups()");
+    public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
+        LOG.trace("Starting processGroup()");
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SUB_GROUPS);
             verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SUB_GROUPS, request.getGroup());
 
             final AdministrationService service = factory.prepareAdministrationService();
-            service.processGroups(authentication, request);
-            response = new GroupResponse();
+            service.processGroup(authentication, request);
+            response = new FallibleResponse();
         } catch (IWSException e) {
-            response = new GroupResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processGroups()");
+        LOG.trace("Finished processGroup()");
         return response;
     }
 
@@ -180,21 +180,21 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public GroupResponse fetchGroups(final AuthenticationToken token, final FetchGroupRequest request) {
-        LOG.trace("Starting fetchGroups()");
-        GroupResponse response;
+    public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
+        LOG.trace("Starting fetchGroup()");
+        FetchGroupResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
             verify(request);
 
             final AdministrationService service = factory.prepareAdministrationService();
-            response = service.fetchGroups(authentication, request);
+            response = service.fetchGroup(authentication, request);
         } catch (IWSException e) {
-            response = new GroupResponse(e.getError(), e.getMessage());
+            response = new FetchGroupResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchGroups()");
+        LOG.trace("Finished fetchGroup()");
         return response;
     }
 
@@ -257,9 +257,9 @@ public final class AdministrationController extends CommonController implements 
 
             final AdministrationService service = factory.prepareAdministrationService();
             service.processUserGroupAssignment(authentication, request);
-            response = new GroupResponse();
+            response = new FetchGroupResponse();
         } catch (IWSException e) {
-            response = new GroupResponse(e.getError(), e.getMessage());
+            response = new FetchGroupResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished processUserGroupAssignment()");

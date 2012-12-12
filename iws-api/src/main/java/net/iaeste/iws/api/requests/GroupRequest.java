@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -30,6 +31,8 @@ public final class GroupRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private Group group = null;
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
@@ -37,9 +40,26 @@ public final class GroupRequest extends AbstractVerification {
     public GroupRequest() {
     }
 
+    /**
+     * Default Constructor,
+     *
+     * @param group Group Object to process
+     */
+    public GroupRequest(final Group group) {
+        this.group = group;
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setGroup(final Group group) {
+        this.group = group;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -50,7 +70,10 @@ public final class GroupRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(1);
+
+        isNotVerifiable(validation, "group", group);
+
         return validation;
     }
 }

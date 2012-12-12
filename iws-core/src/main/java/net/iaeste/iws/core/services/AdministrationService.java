@@ -16,6 +16,7 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
@@ -31,8 +32,8 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
+import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
@@ -199,12 +200,40 @@ public final class AdministrationService {
         return new FetchUserResponse(user);
     }
 
-    public void processGroups(final Authentication authentication, final GroupRequest request) {
+    /**
+     * This method can handle two types if requests:
+     * <ul>
+     *     <li>Create new subgroup</li>
+     *     <li>Update current group</li>
+     * </ul>
+     * If the given Group from the GroupRequest contains an Id, then it is
+     * assumed that this group should be updated, otherwise it is an attempt at
+     * creating a new Group.
+     *
+     * @param authentication User & Group information
+     * @param request        Group Request information
+     */
+    public void processGroup(final Authentication authentication, final GroupRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public GroupResponse fetchGroups(final Authentication authentication, final FetchGroupRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+    public FetchGroupResponse fetchGroup(final Authentication authentication, final FetchGroupRequest request) {
+        final GroupEntity entity = dao.findGroup(authentication.getUser(), request.getGroupId());
+
+        final Group group;
+        if (entity != null) {
+            group = new Group();
+
+            group.setGroupId(entity.getExternalId());
+            group.setGroupName(entity.getGroupName());
+            group.setGroupType(entity.getGroupType().getGrouptype());
+            group.setDescription(entity.getDescription());
+            group.setCountryId(entity.getCountry().getCountryId());
+        } else {
+            group = null;
+        }
+
+        return new FetchGroupResponse(group);
     }
 
     public void processCountries(final Authentication authentication, final CountryRequest request) {
@@ -254,7 +283,7 @@ public final class AdministrationService {
     private GroupEntity createAndPersistPrivateGroup(final UserEntity user) {
         final GroupEntity group = new GroupEntity();
 
-        group.setGroupname(user.getFirstname() + ' ' + user.getLastname());
+        group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
         group.setGroupType(dao.findGroupType(GroupType.PRIVATE));
         group.setExternalId(UUID.randomUUID().toString());
         dao.persist(group);

@@ -24,8 +24,8 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
+import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 /**
@@ -108,9 +108,9 @@ public interface Administration {
      */
     FetchUserResponse fetchUser(AuthenticationToken token, FetchUserRequest request);
 
-    Fallible processGroups(AuthenticationToken token, GroupRequest request);
+    Fallible processGroup(AuthenticationToken token, GroupRequest request);
 
-    GroupResponse fetchGroups(AuthenticationToken token, FetchGroupRequest request);
+    FetchGroupResponse fetchGroup(AuthenticationToken token, FetchGroupRequest request);
 
     Fallible processCountries(AuthenticationToken token, CountryRequest request);
 

@@ -71,7 +71,7 @@ public final class FetchUserRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(1);
 
         if ((userId == null) || (userId.length() != 36)) {
             validation.put("userId", "No valid UserId is present.");

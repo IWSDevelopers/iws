@@ -47,6 +47,19 @@ public final class Authentication {
         this.group = group;
     }
 
+    /**
+     * Default Constructor, for private access, mening access to personal data
+     * where the GroupId is implicit the users private Group.
+     *
+     * @param user   User Entity for the current user
+     * @param group  Group Entity for the group being worked with
+     */
+    public Authentication(final AuthenticationToken token, final UserEntity user) {
+        this.token = token;
+        this.user = user;
+        group = null;
+    }
+
     public AuthenticationToken getToken() {
         return token;
     }

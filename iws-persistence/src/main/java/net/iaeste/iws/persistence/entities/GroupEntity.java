@@ -94,7 +94,7 @@ public class GroupEntity implements IWSEntity {
     private GroupTypeEntity groupType = null;
 
     @Column(name = "groupname")
-    private String groupname = null;
+    private String groupName = null;
 
     @Column(name = "full_name")
     private String fullName = null;
@@ -132,17 +132,17 @@ public class GroupEntity implements IWSEntity {
      */
     public GroupEntity() {
         id = null;
-        groupname = null;
+        groupName = null;
     }
 
     /**
      * Default Constructor, for creating new entity.
      *
-     * @param groupname  Group Name
+     * @param groupName  Group Name
      */
-    public GroupEntity(final String groupname) {
+    public GroupEntity(final String groupName) {
         id = null;
-        this.groupname = groupname;
+        this.groupName = groupName;
     }
 
     // =========================================================================
@@ -182,12 +182,12 @@ public class GroupEntity implements IWSEntity {
         return groupType;
     }
 
-    public void setGroupname(final String groupname) {
-        this.groupname = groupname;
+    public void setGroupName(final String groupName) {
+        this.groupName = groupName;
     }
 
-    public String getGroupname() {
-        return groupname;
+    public String getGroupName() {
+        return groupName;
     }
 
     public void setFullName(final String fullName) {
@@ -253,7 +253,7 @@ public class GroupEntity implements IWSEntity {
     public String toString() {
         return "GroupEntity{" +
                 "id='" + externalId + '\'' +
-                ", groupname='" + groupname + '\'' +
+                ", groupname='" + groupName + '\'' +
                 '}';
     }
 }

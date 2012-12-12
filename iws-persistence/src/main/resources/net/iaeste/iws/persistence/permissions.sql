@@ -73,7 +73,7 @@ create view user_permissions as
     r.id         as rid,
     p.id         as pid,
     u.user_name  as username,
-    g.group_name as groupname,
+    g.group_name as groupName,
     t.group_type as grouptype,
     r.role       as rolename,
     p.permission as permission

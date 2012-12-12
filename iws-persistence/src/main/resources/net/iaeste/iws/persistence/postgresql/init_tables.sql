@@ -128,7 +128,7 @@ CREATE TABLE grouptypes (
 CREATE TABLE groups (
   id              INTEGER DEFAULT NEXTVAL('group_sequence') PRIMARY KEY,
   grouptype_id    INTEGER,
-  groupname       VARCHAR(50),
+  groupName       VARCHAR(50),
   FOREIGN KEY (grouptype_id) REFERENCES grouptypes(id)
 );
 

@@ -14,7 +14,9 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 
 /**
@@ -70,4 +72,37 @@ public final class AdministrationTransformer {
 
         return entity;
     }
+
+    public static Group transform(final GroupEntity entity) {
+        final Group group;
+
+        if (entity != null) {
+            group = new Group();
+
+            group.setGroupId(entity.getExternalId());
+            group.setGroupName(entity.getGroupName());
+            group.setGroupType(entity.getGroupType().getGrouptype());
+            group.setCountryId(entity.getCountry().getCountryId());
+            group.setDescription(entity.getDescription());
+        } else {
+            group = null;
+        }
+
+        return group;
+    }
+
+    public static GroupEntity transform(final Group group) {
+        final GroupEntity entity;
+
+        if (group != null) {
+            entity = new GroupEntity();
+
+            entity.setDescription(group.getDescription());
+        } else {
+            entity = null;
+        }
+
+        return entity;
+    }
+
 }

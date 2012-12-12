@@ -199,7 +199,7 @@ create view user_permissions as
     r.id         as rid,
     p.id         as pid,
     u.user_name  as username,
-    g.group_name as groupname,
+    g.group_name as groupName,
     t.group_type as grouptype,
     r.role       as rolename,
     p.permission as permission
@@ -347,8 +347,8 @@ display the idea - let's try to make some queries to show how the idea works.
 
 First, let's try to see what we get from the user_permission view:
 
-$ select uid, gid, username, groupname, permission from user_permissions;
- uid | gid | username | groupname  |  permission
+$ select uid, gid, username, groupName, permission from user_permissions;
+ uid | gid | username | groupName  |  permission
 -----+-----+----------+------------+--------------
    7 |   6 | Boromir  | Fellowship | Bow & Arrow
    6 |   6 | Aragorn  | Fellowship | Bow & Arrow
@@ -435,8 +435,8 @@ which in addition to the other rights we have just seen, also have the
 permission to use Spears. However, when we invoke the first view again, with
 this specific permission, we get a list of all users who are allowed to use it:
 
-$ select uid, gid, username, groupname, rolename, permission from user_permissions where pid = 7;
- uid | gid | username | groupname | rolename | permission
+$ select uid, gid, username, groupName, rolename, permission from user_permissions where pid = 7;
+ uid | gid | username | groupName | rolename | permission
 -----+-----+----------+-----------+----------+------------
   12 |   4 | Eomer    | Men       | Horseman | Spears
 (1 row)
@@ -444,8 +444,8 @@ $ select uid, gid, username, groupname, rolename, permission from user_permissio
 Here we can see, that only the user Eomer is allowed to use this functionality,
 and only for the group Men. If we instead ask who may use magic:
 
-$ select uid, gid, username, groupname, rolename, permission from user_permissions where pid = 1;
- uid | gid | username | groupname  | rolename | permission
+$ select uid, gid, username, groupName, rolename, permission from user_permissions where pid = 1;
+ uid | gid | username | groupName  | rolename | permission
 -----+-----+----------+------------+----------+-------------
   10 |   3 | Elrond   | Elves      | Wizard   | Cast Spells
    5 |   4 | Gandalf  | Men        | Wizard   | Cast Spells

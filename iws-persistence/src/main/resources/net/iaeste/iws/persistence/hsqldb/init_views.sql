@@ -15,7 +15,7 @@ create view user_permissions as
     r.id                 as rid,
     p.id                 as pid,
     u.username           as username,
-    g.groupname          as groupname,
+    g.groupName          as groupName,
     g.group_description  as group_description,
     g.country_id         as country,
     t.grouptype          as grouptype,

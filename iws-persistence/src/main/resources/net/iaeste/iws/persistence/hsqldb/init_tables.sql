@@ -161,7 +161,7 @@ create table groups (
     external_id         varchar(36),
     parent_id           integer,
     grouptype_id        integer,
-    groupname           varchar(50),
+    groupName           varchar(50),
     full_name           varchar(100),
     group_description   varchar(250),
     country_id          integer,

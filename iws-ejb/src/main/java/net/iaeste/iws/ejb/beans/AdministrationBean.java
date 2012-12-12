@@ -27,8 +27,8 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -189,11 +189,11 @@ public class AdministrationBean extends AbstractBean implements AdministrationRe
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible processGroups(final AuthenticationToken token, final GroupRequest request) {
+    public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
         Fallible response;
 
         try {
-            response = administration.processGroups(token, request);
+            response = administration.processGroup(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -208,15 +208,15 @@ public class AdministrationBean extends AbstractBean implements AdministrationRe
      */
     @Override
     @Interceptors(Profiler.class)
-    public GroupResponse fetchGroups(final AuthenticationToken token, final FetchGroupRequest request) {
-        GroupResponse response;
+    public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
+        FetchGroupResponse response;
 
         try {
-            response = administration.fetchGroups(token, request);
+            response = administration.fetchGroup(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
-            response = new GroupResponse(IWSErrors.ERROR, e.getMessage());
+            response = new FetchGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

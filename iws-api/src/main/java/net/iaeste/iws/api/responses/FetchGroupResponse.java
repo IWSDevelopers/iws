@@ -16,6 +16,7 @@ package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
@@ -23,16 +24,22 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class GroupResponse extends AbstractFallible {
+public final class FetchGroupResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private Group group = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public GroupResponse() {
+    public FetchGroupResponse() {
+    }
+
+    public FetchGroupResponse(final Group group) {
+        this.group = group;
     }
 
     /**
@@ -41,13 +48,21 @@ public final class GroupResponse extends AbstractFallible {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public GroupResponse(final IWSError error, final String message) {
+    public FetchGroupResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setGroup(final Group group) {
+        this.group = group;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
 
     // =========================================================================
     // Standard Response Methods
@@ -58,15 +73,27 @@ public final class GroupResponse extends AbstractFallible {
      */
     @Override
     public boolean equals(final Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof FetchGroupResponse)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+
+        final FetchGroupResponse that = (FetchGroupResponse) obj;
+        return !(group != null ? !group.equals(that.group) : that.group != null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = super.hashCode();
+
+        result = 31 * result + (group != null ? group.hashCode() : 0);
+
+        return result;
     }
 
     /**
@@ -74,6 +101,8 @@ public final class GroupResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "";
+        return "FetchGroupResponse{" +
+                "group=" + group +
+                '}';
     }
 }

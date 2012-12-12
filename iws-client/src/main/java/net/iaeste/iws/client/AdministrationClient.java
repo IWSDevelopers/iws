@@ -25,8 +25,8 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
+import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.GroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 /**
@@ -81,16 +81,16 @@ public final class AdministrationClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processGroups(final AuthenticationToken token, final GroupRequest request) {
-        return administration.processGroups(token, request);
+    public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
+        return administration.processGroup(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public GroupResponse fetchGroups(final AuthenticationToken token, final FetchGroupRequest request) {
-        return administration.fetchGroups(token, request);
+    public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
+        return administration.fetchGroup(token, request);
     }
 
     /**

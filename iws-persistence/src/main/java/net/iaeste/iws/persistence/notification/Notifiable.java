@@ -15,6 +15,9 @@
 package net.iaeste.iws.persistence.notification;
 
 import net.iaeste.iws.api.enums.NotificationSubject;
+import net.iaeste.iws.persistence.entities.UserEntity;
+
+import java.util.List;
 
 /**
  * Please note, that the current information here is very much incomplete. A
@@ -43,4 +46,6 @@ public interface Notifiable {
     String generateNotificationMessage();
 
     NotificationSubject getNotificationSubject();
+
+    List<UserEntity> getRecipients();
 }

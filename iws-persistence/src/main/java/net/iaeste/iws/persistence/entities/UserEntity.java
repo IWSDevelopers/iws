@@ -32,7 +32,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -341,6 +343,17 @@ public class UserEntity implements IWSEntity, Notifiable {
     @Override
     public NotificationSubject getNotificationSubject() {
         return NotificationSubject.USER;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserEntity> getRecipients() {
+        final List<UserEntity> entities = new ArrayList<>(1);
+        entities.add(this);
+
+        return entities;
     }
 
     /**

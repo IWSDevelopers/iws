@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2012, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.common.exceptions.AuthorizationException
+ * Project: IntraWeb Services (iws-common) - net.iaeste.iws.common.exceptions.AuthorizationException
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be

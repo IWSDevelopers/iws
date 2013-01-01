@@ -77,7 +77,7 @@ public final class UserRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(1);
 
-        isNotVerifiable(validation, "user", user);
+        isVerifiable(validation, "user", user);
 
         return validation;
     }

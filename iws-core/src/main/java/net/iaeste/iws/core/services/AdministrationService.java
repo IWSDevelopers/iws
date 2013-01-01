@@ -236,15 +236,15 @@ public final class AdministrationService {
         return new FetchGroupResponse(group);
     }
 
+    public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
     public void processCountries(final Authentication authentication, final CountryRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 
     public CountryResponse fetchCountries(final Authentication authentication, final FetchCountryRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 

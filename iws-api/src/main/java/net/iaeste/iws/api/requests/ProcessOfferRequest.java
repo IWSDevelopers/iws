@@ -75,10 +75,7 @@ public final class ProcessOfferRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final HashMap<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "offer", offer);
-        if(offer != null) {
-            addAllErrors(validation, offer.validate());
-        }
+        isVerifiable(validation, "offer", offer);
 
         return validation;
     }

@@ -51,7 +51,7 @@ public abstract class AbstractVerification implements Verifiable {
      * The method takes a value, and verifies that this value is not null. If an
      * error is found, then the information is added to the validation
      * Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
+     *   If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -97,7 +97,7 @@ public abstract class AbstractVerification implements Verifiable {
      * The method takes a value, and verifies that this value is neither null,
      * nor empty. If an error is found, then the information is added to the
      * validation Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
+     *   If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -120,7 +120,7 @@ public abstract class AbstractVerification implements Verifiable {
      * The method takes a value, and verifies that this value is neither null,
      * nor empty. If an error is found, then the information is added to the
      * validation Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
+     *   If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -144,7 +144,7 @@ public abstract class AbstractVerification implements Verifiable {
      * this value is not null, and then invokes the validation on it. If an
      * error is found, then the information is added to the validation
      * Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
+     *   If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -152,14 +152,42 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value      The value to verify
      * @return True if field is valid, otherwise false
      */
-    protected boolean isNotVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
+    protected boolean isVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
         boolean check = isNotNull(validation, field, value);
 
         if (check) {
             final Map<String, String> newValidation = value.validate();
 
             if (!newValidation.isEmpty()) {
-                addAllErrors(validation, newValidation);
+                addAllErrors(validation, newValidation, field);
+                check = false;
+            }
+        }
+
+        return check;
+    }
+
+    /**
+     * The method takes a value of type {@code Verifiable}, and verifies that
+     * this value is either null or if not null then invokes the validation on
+     * it. If an error is found, then the information is added to the validation
+     * Map.<br />
+     *   If an error was found, then a false is returned, otherwise the method
+     * will return true.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     * @return True if field is valid, otherwise false
+     */
+    protected boolean isNullOrVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
+        boolean check = true;
+
+        if (validation != null) {
+            final Map<String, String> newValidation = value.validate();
+
+            if (!newValidation.isEmpty()) {
+                addAllErrors(validation, newValidation, field);
                 check = false;
             }
         }
@@ -171,7 +199,7 @@ public abstract class AbstractVerification implements Verifiable {
      * The method checks that the value is neither null nor outside of the
      * required range of values. If an error is found, then the information is
      * added to the validation Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
+     *   If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -227,7 +255,7 @@ public abstract class AbstractVerification implements Verifiable {
      * The method checks that the value is neither null nor too long. If an
      * error is found, then the information is added to the validation
      * Map.<br />
-     * If an error was found, then a false is returned, otherwise the method
+     *   If an error was found, then a false is returned, otherwise the method
      * will return true.
      *
      * @param validation Map with Error information
@@ -250,10 +278,10 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
-     * The method adds error messages for fields
-     * with checks for existing messages. <br />
-     * If the field in validation Map already had an error,
-     * then the error messages are concatenated.
+     * The method adds error messages for fields with checks for existing
+     * messages.<br />
+     *   If the field in validation Map already had an error, then the error
+     * messages are concatenated.
      *
      * @param validation   Map with Error information
      * @param field        The name of the field to add error
@@ -272,18 +300,20 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
-     * The method add error messages from {@code errors} to
-     * validation Map. <br />
-     * If the field in validation Map already had an error,
-     * then the error messages are concatenated.
+     * The method add error messages from {@code errors} to validation
+     * Map.<br />
+     *   If the field in validation Map already had an error, then the error
+     * messages are concatenated.
      *
      * @param validation Map with Error information to which errors will be added
      * @param errors     Map with Error information to be added
+     * @param field      The field of the first field, as a prefix
      * @see #addError(java.util.Map, String, String)
      */
-    protected void addAllErrors(final Map<String, String> validation, final Map<String, String> errors) {
+    protected void addAllErrors(final Map<String, String> validation, final Map<String, String> errors, final String field) {
         for (final Map.Entry<String, String> stringStringEntry : errors.entrySet()) {
-            addError(validation, stringStringEntry.getKey(), stringStringEntry.getValue());
+            final String fieldName = field + '.' + stringStringEntry.getKey();
+            addError(validation, fieldName, stringStringEntry.getValue());
         }
     }
 

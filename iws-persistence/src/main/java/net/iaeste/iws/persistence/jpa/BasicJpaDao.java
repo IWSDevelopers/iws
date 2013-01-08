@@ -84,7 +84,7 @@ public class BasicJpaDao implements BasicDao {
         }
 
         oldEntity.merge(newEntity);
-        entityManager.persist(newEntity);
+        entityManager.persist(oldEntity);
     }
 
     /**

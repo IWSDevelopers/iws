@@ -32,6 +32,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AdministrationService;
+import net.iaeste.iws.core.services.CountryService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
 import org.slf4j.Logger;
@@ -210,7 +211,7 @@ public final class AdministrationController extends CommonController implements 
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_COUNTRIES);
             verify(request);
 
-            final AdministrationService service = factory.prepareAdministrationService();
+            final CountryService service = factory.prepareCountryService();
             service.processCountries(authentication, request);
             response = new CountryResponse();
         } catch (IWSException e) {
@@ -230,11 +231,11 @@ public final class AdministrationController extends CommonController implements 
         CountryResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_COUNTRIES);
+            verifyAccess(token, Permission.FETCH_COUNTRIES);
             verify(request);
 
-            final AdministrationService service = factory.prepareAdministrationService();
-            response = service.fetchCountries(authentication, request);
+            final CountryService service = factory.prepareCountryService();
+            response = service.fetchCountries(request);
         } catch (IWSException e) {
             response = new CountryResponse(e.getError(), e.getMessage());
         }

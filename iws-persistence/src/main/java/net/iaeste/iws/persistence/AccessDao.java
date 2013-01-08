@@ -18,6 +18,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
@@ -105,4 +106,8 @@ public interface AccessDao extends BasicDao {
      * @return Found UserGroupEntity or null
      */
     UserGroupEntity findMemberByExternalId(String externalUserId, GroupEntity group);
+
+    GroupTypeEntity findGroupTypeByType(GroupType groupType);
+
+    CountryEntity findCountryByCode(String countryId);
 }

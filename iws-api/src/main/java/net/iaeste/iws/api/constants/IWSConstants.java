@@ -51,6 +51,11 @@ public interface IWSConstants {
     Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     /**
+     * The year that IAESTE was founded.
+     */
+    int FOUNDING_YEAR = 1948;
+
+    /**
      * A non-zero, odd number used as the initial value, when generating
      * HashCode values. See Item 9, from Effective Java 2nd Edition by
      * Joshua Bloch.

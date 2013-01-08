@@ -14,11 +14,14 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.persistence.monitoring.Monitored;
 import net.iaeste.iws.persistence.monitoring.MonitoringLevel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,9 +43,13 @@ import java.util.Date;
  */
 @NamedQueries({
         @NamedQuery(name = "country.findAll",
-                query = "SELECT c FROM CountryEntity c"),
+                query = "select c from CountryEntity c"),
         @NamedQuery(name = "country.findByName",
-                query = "select c from CountryEntity c where c.countryName = :name")
+                query = "select c from CountryEntity c " +
+                        "where c.countryName = :name"),
+        @NamedQuery(name = "country.findByCountryId",
+                query = "select c from CountryEntity c " +
+                        "where c.countryId = :cid")
 })
 @Entity
 @Monitored(name = "countries", level = MonitoringLevel.MARKED)
@@ -53,7 +60,7 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id = null;
 
-    @Column(name = "country_id", nullable = false)
+    @Column(name = "country_id", nullable = false, unique = true)
     private String countryId = null;
 
     @Monitored(name="country name", level = MonitoringLevel.MARKED)
@@ -88,9 +95,10 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @Column(name = "languages")
     private String languages = null;
 
-    @Monitored(name="membership status", level = MonitoringLevel.MARKED)
-    @Column(name = "membership_status")
-    private Integer membershipStatus = 5;
+    @Monitored(name="membership", level = MonitoringLevel.MARKED)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "membership")
+    private Membership membership = Membership.LISTED;
 
     @Monitored(name="member since", level = MonitoringLevel.MARKED)
     @Column(name = "member_since")
@@ -209,12 +217,12 @@ public class CountryEntity implements Mergeable<CountryEntity> {
         return languages;
     }
 
-    public void setMembershipStatus(final Integer membershipStatus) {
-        this.membershipStatus = membershipStatus;
+    public void setMembership(final Membership membership) {
+        this.membership = membership;
     }
 
-    public Integer getMembershipStatus() {
-        return membershipStatus;
+    public Membership getMembership() {
+        return membership;
     }
 
     public void setMemberSince(final Integer memberSince) {
@@ -259,7 +267,7 @@ public class CountryEntity implements Mergeable<CountryEntity> {
             phonecode = obj.phonecode;
             currency = obj.currency;
             languages = obj.languages;
-            membershipStatus = obj.membershipStatus;
+            membership = obj.membership;
             memberSince = obj.memberSince;
 
             // Merging over, let's just set the Modified date to 'now'

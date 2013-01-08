@@ -14,13 +14,15 @@
  */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.CountryDao;
+import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.StudentDao;
+import net.iaeste.iws.persistence.jpa.AccessJpaDao;
+import net.iaeste.iws.persistence.jpa.CountryJpaDao;
+import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
 import net.iaeste.iws.persistence.notification.Notifications;
-import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.OfferDao;
-import net.iaeste.iws.persistence.jpa.AccessJpaDao;
-import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 
 import javax.persistence.EntityManager;
 
@@ -42,6 +44,7 @@ public final class ServiceFactory {
     // requirement, that we instead should have setters for the DAO's.
     private final EntityManager entityManager;
     private final Notifications notifications;
+    private final CountryDao countryDao;
     private final AccessDao accessDao;
 
     public ServiceFactory(final EntityManager entityManager, final Notifications notifications) {
@@ -49,10 +52,15 @@ public final class ServiceFactory {
         this.notifications = notifications;
 
         accessDao = new AccessJpaDao(entityManager);
+        countryDao = new CountryJpaDao(entityManager);
     }
 
     public AdministrationService prepareAdministrationService() {
         return new AdministrationService(accessDao, notifications);
+    }
+
+    public CountryService prepareCountryService() {
+        return new CountryService(countryDao);
     }
 
     public AccessService prepareAuthenticationService() {

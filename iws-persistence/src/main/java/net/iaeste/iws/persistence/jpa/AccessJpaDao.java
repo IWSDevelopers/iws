@@ -24,6 +24,7 @@ import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -327,6 +328,30 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final List<RoleEntity> list = query.getResultList();
 
         return list;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupTypeEntity findGroupTypeByType(final GroupType groupType) {
+        final Query query = entityManager.createNamedQuery("grouptype.findByType");
+        query.setParameter("type", groupType);
+        final List<GroupTypeEntity> list = query.getResultList();
+
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CountryEntity findCountryByCode(final String countryId) {
+        final Query query = entityManager.createNamedQuery("country.findByCountryId");
+        query.setParameter("cid", countryId);
+        final List<CountryEntity> list = query.getResultList();
+
+        return list.isEmpty() ? null : list.get(0);
     }
 
     // =========================================================================

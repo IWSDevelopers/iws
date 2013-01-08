@@ -36,6 +36,9 @@ import javax.persistence.Table;
         @NamedQuery(
                 name = "grouptype.findAll",
                 query = "select gt from GroupTypeEntity gt"),
+        @NamedQuery(name= "grouptype.findByType",
+                query = "select gt from GroupTypeEntity gt " +
+                        "where gt.grouptype = :type"),
         @NamedQuery(name = "grouptype.findByName",
                 query = "select gt from GroupTypeEntity gt " +
                         "where lower(gt.grouptype) = lower(:name)")

@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Java has a Data Obejct, This is terrible, and the fixes are suppose to be
@@ -142,6 +143,15 @@ public final class Date implements Serializable {
      */
     public Date plusWeeks(final int weeks) {
         return new Date(date.plusWeeks(weeks));
+    }
+
+    /**
+     * Returns the year from the current Date.
+     *
+     * @return The year for this Date
+     */
+    public int getCurrentYear() {
+        return date.toGregorianCalendar().get(Calendar.YEAR);
     }
 
     /**

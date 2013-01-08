@@ -2,6 +2,7 @@
 -- Default Views for the Core part of IWS
 -- =============================================================================
 
+
 -- =============================================================================
 -- List the Permissions for a User
 -- =============================================================================
@@ -39,6 +40,7 @@ create view user_permissions as
     and p.id = p2t.permission_id
     and t.id = p2t.grouptype_id;
 
+
 -- =============================================================================
 -- List the Permissions for a Group
 -- =============================================================================
@@ -54,3 +56,33 @@ create view group_permissions as
     permission_to_grouptype p2t
   where t.id = p2t.grouptype_id
     and p.id = p2t.permission_id;
+
+
+-- =============================================================================
+-- List the Countries with their respective Staff and National Secretary
+-- Note; The GroupTypeId 5 is "National Group" or Staff
+-- Note; The RoleId 1 is "Owner" or for National Groups, "National Secretary"
+-- =============================================================================
+create view country_details as
+  select
+    c.country_id           as country_id,
+    c.country_name         as country_name,
+    c.country_name_full    as country_name_full,
+    c.country_name_native  as country_name_native,
+    c.nationality          as nationality,
+    c.citizens             as citizens,
+    c.phonecode            as phonecode,
+    c.currency             as currency,
+    c.languages            as languages,
+    c.membership           as membership,
+    c.member_since         as member_since,
+    g.list_name            as list_name,
+    u.firstname            as ns_firstname,
+    u.lastname             as ns_lastname
+  from
+    countries c
+    left join groups g          on c.id = g.country_id
+    left join user_to_group u2g on g.id = u2g.group_id
+    left join users u           on u.id = u2g.user_id
+  where g.grouptype_id = 5
+    and u2g.role_id = 1;

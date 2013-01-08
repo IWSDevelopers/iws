@@ -252,6 +252,34 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * The method checks that the value is neither null nor has in invalid
+     * length. If an error is found, then the information is added to the
+     * validation Map.<br />
+     *   If an error was found, then a false is returned, otherwise the method
+     * will return true.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     * @param size       The exact length to allow
+     * @return True if field is valid, otherwise false
+     */
+    protected boolean hasExactSize(final Map<String, String> validation, final String field, final String value, final int size) {
+        boolean check = isNotNull(validation, field, value);
+
+        if (check) {
+            // Since the Number is an Abstract type, we need to convert the number
+            // to something, which we can then actually check against
+            if (value.length() != size) {
+                addError(validation, field, format("The value is not exactly %d characters long.", size));
+                check = false;
+            }
+        }
+
+        return check;
+    }
+
+    /**
      * The method checks that the value is neither null nor too long. If an
      * error is found, then the information is added to the validation
      * Map.<br />

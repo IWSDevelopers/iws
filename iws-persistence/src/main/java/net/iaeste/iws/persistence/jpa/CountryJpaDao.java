@@ -14,8 +14,10 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.persistence.CountryDao;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.views.CountryView;
 
 import javax.persistence.EntityManager;
@@ -36,6 +38,30 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      */
     public CountryJpaDao(final EntityManager entityManager) {
         super(entityManager);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CountryEntity findCountry(final String countryId) {
+        final Query query = entityManager.createNamedQuery("country.findByCountryId");
+        query.setParameter("cid", countryId.toLowerCase(IWSConstants.DEFAULT_LOCALE));
+        final List<CountryEntity> list = query.getResultList();
+
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CountryEntity findCountryByName(final String countryName) {
+        final Query query = entityManager.createNamedQuery("country.findByName");
+        query.setParameter("name", countryName);
+        final List<CountryEntity> list = query.getResultList();
+
+        return list.isEmpty() ? null : list.get(0);
     }
 
     /**

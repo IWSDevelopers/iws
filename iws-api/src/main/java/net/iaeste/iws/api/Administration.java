@@ -112,9 +112,32 @@ public interface Administration {
 
     FetchGroupResponse fetchGroup(AuthenticationToken token, FetchGroupRequest request);
 
+    Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
+
+    /**
+     * The IWS uses an internal listing of Countries, that are based on the UN
+     * list. This method will allow to correct mistakes in existing records or
+     * add new Countries to the list of existing.<br />
+     *   The IWS will not allow that Country records are deleted, nor that the
+     * names of Countries will conflict, i.e. multiple Countries having the same
+     * names.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request data, must contain the Country Record
+     * @return Standard Error object
+     */
     Fallible processCountries(AuthenticationToken token, CountryRequest request);
 
+    /**
+     * Retrieves a list of Countries from the internal UN listing of Countries,
+     * together with some limited information about the Staff and National
+     * Secretary for this Country.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Fetch Country Request Object
+     * @return Response Object with the found countries and error information
+     */
     CountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
-
-    Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
 }

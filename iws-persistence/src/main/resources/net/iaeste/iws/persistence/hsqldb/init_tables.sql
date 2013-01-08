@@ -59,7 +59,8 @@ create table countries (
     constraint country_pk primary key (id),
 
     /* Unique Constraints */
-    constraint country_unique_country_id unique (country_id),
+    constraint country_unique_country_id   unique (country_id),
+    constraint country_unique_country_name unique (country_name),
 
     /* Not Null Constraints */
     constraint country_notnull_id           check (id is not null),

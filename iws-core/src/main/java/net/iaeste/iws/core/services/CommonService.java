@@ -20,7 +20,7 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 
 /**
- * All Common Service funtionality is collected here. Although the Class aught
+ * All Common Service funtionality is collected here. Although the Class ought
  * to be Abstract, since we should (or cat) not use it directly, it should not
  * be instantiated anywhere, but rather just extended in our Actual Services.
  *

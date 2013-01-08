@@ -46,7 +46,7 @@ import java.util.Date;
                 query = "select c from CountryEntity c"),
         @NamedQuery(name = "country.findByName",
                 query = "select c from CountryEntity c " +
-                        "where c.countryName = :name"),
+                        "where lower(c.countryName) = lower(:name)"),
         @NamedQuery(name = "country.findByCountryId",
                 query = "select c from CountryEntity c " +
                         "where c.countryId = :cid")

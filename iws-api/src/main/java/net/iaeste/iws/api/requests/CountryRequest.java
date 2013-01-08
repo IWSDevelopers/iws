@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -30,16 +31,40 @@ public final class CountryRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private Country country;
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public CountryRequest() {
+        country = null;
+    }
+
+    /**
+     * Default Constructor, for creating or updating a country.
+     *
+     * @param country Country Object
+     */
+    public CountryRequest(final Country country) {
+        this.country = country;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setCountry(final Country country) {
+        if (country == null) {
+            throw new IllegalArgumentException("Null value for the Country is not allowed");
+        }
+
+        this.country = country;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -51,6 +76,9 @@ public final class CountryRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        isVerifiable(validation, "country", country);
+
         return validation;
     }
 }

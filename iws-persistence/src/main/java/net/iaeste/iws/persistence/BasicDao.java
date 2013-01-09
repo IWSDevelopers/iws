@@ -34,9 +34,9 @@ public interface BasicDao {
      * used only, if no monitoring is required. Examples, when creating a new
      * session, changing password, etc.
      *
-     * @param entity Entity to persist
+     * @param entityToPersist Entity to persist
      */
-    void persist(IWSEntity entity);
+    void persist(IWSEntity entityToPersist);
 
     /**
      * Persist a monitored Entity to the database. The Monitoring mechanism will
@@ -44,20 +44,21 @@ public interface BasicDao {
      * the monitored information and the Entity in the database.
      *
      * @param authentication Information about the user invoking the request
-     * @param entity         Entity to persist
+     * @param entityToPersist         Entity to persist
      */
-    void persist(Authentication authentication, IWSEntity entity);
+    void persist(Authentication authentication, IWSEntity entityToPersist);
 
     /**
-     * Monitors and merges the new Entity values into the old Entity IWSEntity, and
-     * persists both the monitored information and the old Entity in the
-     * database.
+     * Monitors and merges the given Entity with the values from the second
+     * Entity, that contains the changes provided by the user. The changes are
+     * using the monitoring mechanism and if required, also saved in the
+     * database together with the updated entityToPersist.
      *
-     * @param authentication Information about the user invoking the request
-     * @param oldEntity      Entity to persist
-     * @param newEntity      Changes to merge into the old Entity
+     * @param authentication    Information about the user invoking the request
+     * @param entityToPersist   Entity to persist
+     * @param changesToBeMerged Changes to merge into the existing Entity
      */
-    <T extends Mergeable<T>> void persist(Authentication authentication, T oldEntity, T newEntity);
+    <T extends Mergeable<T>> void persist(Authentication authentication, T entityToPersist, T changesToBeMerged);
 
     /**
      * Deletes the given Entity from the database.

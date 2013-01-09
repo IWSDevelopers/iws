@@ -52,22 +52,21 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    @Deprecated
-    public void persist(final IWSEntity entity) {
-        entityManager.persist(entity);
+    public void persist(final IWSEntity entityToPersist) {
+        entityManager.persist(entityToPersist);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void persist(final Authentication authentication, final IWSEntity entity) {
-        // We have to start by persisting the entity, to have an Id
-        entityManager.persist(entity);
+    public void persist(final Authentication authentication, final IWSEntity entityToPersist) {
+        // We have to start by persisting the entityToPersist, to have an Id
+        entityManager.persist(entityToPersist);
 
-        final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entity);
+        final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
         if (level != MonitoringLevel.NONE) {
-            final List<Field> changes = monitoringProcessor.findChanges(level, entity);
+            final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
             persistMonitoredData(authentication, changes);
         }
     }
@@ -76,15 +75,15 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Mergeable<T>> void persist(final Authentication authentication, final T oldEntity, final T newEntity) {
-        final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(oldEntity);
+    public <T extends Mergeable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
+        final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
         if (level != MonitoringLevel.NONE) {
-            final List<Field> changes = monitoringProcessor.findChanges (level, oldEntity, newEntity);
+            final List<Field> changes = monitoringProcessor.findChanges (level, entityToPersist, changesToBeMerged);
             persistMonitoredData(authentication, changes);
         }
 
-        oldEntity.merge(newEntity);
-        entityManager.persist(oldEntity);
+        entityToPersist.merge(changesToBeMerged);
+        entityManager.persist(entityToPersist);
     }
 
     /**
@@ -92,7 +91,7 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public void delete(final IWSEntity entity) {
-        // First, let's drop all Objects matching the entity. Since the record
+        // First, let's drop all Objects matching the entityToPersist. Since the record
         // Id in the history table cannot be set up as a foreign key, we must
         // do this manually
         final String tableName = monitoringProcessor.findClassMonitoringName(entity);

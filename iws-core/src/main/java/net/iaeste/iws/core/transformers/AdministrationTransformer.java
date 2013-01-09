@@ -18,6 +18,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -30,6 +31,29 @@ public final class AdministrationTransformer {
      * Private Constructor, this is a utility Class.
      */
     private AdministrationTransformer() {}
+
+    public static User transform(final UserGroupEntity entity) {
+        final User user;
+        if (entity != null) {
+            user = new User();
+
+            final UserEntity userEntity = entity.getUser();
+            final GroupEntity groupEntity = entity.getGroup();
+            user.setUserId(userEntity.getExternalId());
+            user.setFirstname(userEntity.getFirstname());
+            user.setLastname(userEntity.getLastname());
+            user.setStatus(userEntity.getStatus());
+            user.setPrivacy(userEntity.getPrivateData());
+            user.setNotifications(userEntity.getNotifications());
+            user.setMemberCountryId(groupEntity.getCountry().getCountryId());
+
+            // TODO; Implement the Person Object
+            //user.setPerson(transform(entity.getPerson()));
+        } else {
+            user = null;
+        }
+        return user;
+    }
 
     public static User transform(final UserEntity entity) {
         final User user;

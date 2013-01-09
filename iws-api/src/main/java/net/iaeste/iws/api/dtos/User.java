@@ -41,6 +41,7 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection OverlyComplexMethod
  */
 public final class User extends AbstractFallible implements Verifiable {
 
@@ -53,6 +54,7 @@ public final class User extends AbstractFallible implements Verifiable {
     private UserStatus status = null;
     private Privacy privacy = Privacy.PRIVATE;
     private String notifications = null;
+    private String memberCountryId = null;
     private Person person = null;
 
     /**
@@ -116,6 +118,7 @@ public final class User extends AbstractFallible implements Verifiable {
             lastname = user.lastname;
             status = user.status;
             privacy = user.privacy;
+            memberCountryId = user.memberCountryId;
             person = new Person(user.person);
         }
     }
@@ -172,6 +175,14 @@ public final class User extends AbstractFallible implements Verifiable {
         return notifications;
     }
 
+    public void setMemberCountryId(final String memberCountryId) {
+        this.memberCountryId = memberCountryId;
+    }
+
+    public String getMemberCountryId() {
+        return memberCountryId;
+    }
+
     public void setPerson(final Person person) {
         this.person = person;
     }
@@ -218,34 +229,35 @@ public final class User extends AbstractFallible implements Verifiable {
         if (this == obj) {
             return true;
         }
-
         if (!(obj instanceof User)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
             return false;
         }
 
         final User user = (User) obj;
 
+        // Note, the Notifications & Person Objects are omitted, since they are
+        // not set for all views of this Object, and we need to verify that two
+        // instances are identical, regardless of who is viewing them
+        if (userId != null ? !userId.equals(user.userId) : user.userId != null) {
+            return false;
+        }
         if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) {
             return false;
         }
-
         if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null) {
             return false;
         }
-
-        if (person != null ? !person.equals(user.person) : user.person != null) {
+        if (status != user.status) {
             return false;
         }
-
         if (privacy != user.privacy) {
             return false;
         }
 
-        if (status != user.status) {
-            return false;
-        }
-
-        return userId.equals(user.userId);
+        return !(memberCountryId != null ? !memberCountryId.equals(user.memberCountryId) : user.memberCountryId != null);
     }
 
     /**
@@ -255,12 +267,15 @@ public final class User extends AbstractFallible implements Verifiable {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + userId.hashCode();
+        // Note, the Notifications & Person Objects are omitted, since they are
+        // not set for all views of this Object, and we need to verify that two
+        // instances are identical, regardless of who is viewing them
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (userId != null ? userId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (firstname != null ? firstname.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (lastname != null ? lastname.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (privacy != null ? privacy.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (person != null ? person.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (memberCountryId != null ? memberCountryId.hashCode() : 0);
 
         return result;
     }
@@ -270,12 +285,16 @@ public final class User extends AbstractFallible implements Verifiable {
      */
     @Override
     public String toString() {
+        // Note, the Notifications & Person Objects are omitted, since they are
+        // not set for all views of this Object, and we need to verify that two
+        // instances are identical, regardless of who is viewing them
         return "User{" +
                 "userId='" + userId + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", status=" + status +
                 ", privacy=" + privacy +
+                ", memberCountryId='" + memberCountryId + '\'' +
                 '}';
     }
 }

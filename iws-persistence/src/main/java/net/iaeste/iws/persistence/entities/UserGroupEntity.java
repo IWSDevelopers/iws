@@ -44,6 +44,11 @@ import java.util.Date;
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.groupType.grouptype = 'MEMBERS'" +
                         "  and ug.group.id = :gid" +
+                        "  and ug.user.externalId = :euid"),
+        @NamedQuery(
+                name = "usergroup.findMemberByUser",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
                         "  and ug.user.externalId = :euid")
 })
 @Entity

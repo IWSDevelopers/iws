@@ -106,6 +106,7 @@ public interface AccessDao extends BasicDao {
      * @return Found UserGroupEntity or null
      */
     UserGroupEntity findMemberByExternalId(String externalUserId, GroupEntity group);
+    UserGroupEntity findMemberByExternalId(String externalUserId);
 
     GroupTypeEntity findGroupTypeByType(GroupType groupType);
 

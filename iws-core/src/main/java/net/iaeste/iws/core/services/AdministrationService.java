@@ -172,7 +172,7 @@ public final class AdministrationService {
 
         if (userId.equals(externalId)) {
             // The user itself
-            final UserEntity entity = dao.findUserByExternalId(externalId);
+            final UserGroupEntity entity = dao.findMemberByExternalId(externalId);
             user = transform(entity);
         } else {
             // First, we make an Authorization Check. If it fails, an
@@ -184,7 +184,7 @@ public final class AdministrationService {
             final GroupEntity member = dao.findMemberGroup(administrator);
             final UserGroupEntity entity = dao.findMemberByExternalId(externalId, member);
             if (entity != null) {
-                user = transform(entity.getUser());
+                user = transform(entity);
 
                 // We're in the Group Context, where the Privacy flag applies,
                 // meaning that if a user has set this, then the user's private

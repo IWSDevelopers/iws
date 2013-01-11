@@ -35,6 +35,7 @@ public final class PermissionResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+    private String userId;
     private List<Authorization> authorizations;
 
     /**
@@ -42,6 +43,7 @@ public final class PermissionResponse extends AbstractFallible {
      * for WebServices to work properly.
      */
     public PermissionResponse() {
+        userId = null;
         authorizations = new ArrayList<>(0);
     }
 
@@ -50,7 +52,8 @@ public final class PermissionResponse extends AbstractFallible {
      *
      * @param authorizations List of allowed Permission for a given user
      */
-    public PermissionResponse(final List<Authorization> authorizations) {
+    public PermissionResponse(final String userId, final List<Authorization> authorizations) {
+        this.userId = userId;
         this.authorizations = Copier.copy(authorizations);
     }
 
@@ -62,12 +65,22 @@ public final class PermissionResponse extends AbstractFallible {
      */
     public PermissionResponse(final IWSError error, final String message) {
         super(error, message);
+
+        userId = null;
         authorizations = null;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setUserId(final String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
 
     public void setAuthorizations(final List<Authorization> authorizations) {
         this.authorizations = Copier.copy(authorizations);
@@ -105,6 +118,7 @@ public final class PermissionResponse extends AbstractFallible {
     public int hashCode() {
         int hash = super.hashCode();
 
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (userId != null ? userId.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (authorizations != null ? authorizations.hashCode() : 0);
 
         return hash;
@@ -116,6 +130,7 @@ public final class PermissionResponse extends AbstractFallible {
     @Override
     public String toString() {
         return "PermissionResponse{" +
+                "userId=" + userId +
                 "authorizations=" + authorizations +
                 '}';
     }

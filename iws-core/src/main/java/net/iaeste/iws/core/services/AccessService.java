@@ -21,6 +21,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
+import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
@@ -147,10 +148,11 @@ public final class AccessService extends CommonService {
      *                        should be fetched
      * @return List of Authorization Objects
      */
-    public List<Authorization> findPermissions(final Authentication authentication, final String externalGroupId) {
+    public PermissionResponse findPermissions(final Authentication authentication, final String externalGroupId) {
+        // List will always contain at least 1 entry, otherwise an exception is thrown
         final List<UserPermissionView> found = dao.findPermissions(authentication, externalGroupId);
-
         final Map<Group, Set<Permission>> map = new HashMap<>(10);
+
         for (final UserPermissionView view : found) {
             final Group group = readGroup(view);
             if (!map.containsKey(group)) {
@@ -159,7 +161,9 @@ public final class AccessService extends CommonService {
             map.get(group).add(view.getPermission());
         }
 
-        return convertPermissionMap(map);
+        final List<Authorization> list = convertPermissionMap(map);
+        final String userId = found.get(0).getExternalUserId();
+        return new PermissionResponse(userId, list);
     }
 
     // =========================================================================

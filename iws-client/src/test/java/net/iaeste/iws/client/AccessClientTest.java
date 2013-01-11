@@ -118,6 +118,7 @@ public class AccessClientTest {
 
     @Test
     public void testFetchPermissions() {
+        final String userId = "13452874-0c0f-4caf-8101-a8e9b41d6e69";
         // Create a new Token, that we can use for the test
         final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria", "austria")).getToken();
 
@@ -129,6 +130,7 @@ public class AccessClientTest {
         token.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
         final PermissionResponse responseNational = access.fetchPermissions(token);
         assertThat(responseNational.isOk(), is(true));
+        assertThat(responseNational.getUserId(), is(userId));
 
         // When we make a request for a specific Group, we only expect to find a single element
         assertThat(responseNational.getAuthorizations().size(), is(1));

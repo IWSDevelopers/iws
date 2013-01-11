@@ -16,15 +16,14 @@ package net.iaeste.iws.core;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccessService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -32,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Primary implementation of the IWS Access functionality. The class is the
@@ -164,8 +162,7 @@ public final class AccessController extends CommonController implements Access {
             final Authentication authentication = verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
-            final List<Authorization> authorizations = service.findPermissions(authentication, token.getGroupId());
-            response = new PermissionResponse(authorizations);
+            response = service.findPermissions(authentication, token.getGroupId());
         } catch (IWSException e) {
             response = new PermissionResponse(e.getError(), e.getMessage());
         }

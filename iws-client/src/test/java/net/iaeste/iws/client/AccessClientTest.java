@@ -23,9 +23,10 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.notifications.NotificationSpy;
 import org.junit.Test;
 
 import java.util.Date;
@@ -34,6 +35,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -43,6 +45,7 @@ import static org.junit.Assert.assertThat;
  */
 public class AccessClientTest {
 
+    private final NotificationSpy spy = NotificationSpy.getInstance();
     private final Access access = new AccessClient();
 
     @Test
@@ -73,6 +76,7 @@ public class AccessClientTest {
         assertThat(response.getToken().getToken().length(), is(64));
 
         final PermissionResponse permissionResponse = access.fetchPermissions(response.getToken());
+        assertThat(permissionResponse.isOk(), is(true));
 
         // Now, let's try to see if we can deprecate the Session, and thus
         // ensure that the first Object is properly persisted
@@ -80,6 +84,39 @@ public class AccessClientTest {
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(result.isOk(), is(true));
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
+    }
+
+    @Test
+    public void testResettingSession() {
+        final Access client = new AccessClient();
+        // We need to reset the spy to avoid other notifications disturbing us
+        spy.clear();
+        final String username = "austria";
+        final String password = "austria";
+        final AuthenticationRequest request = new AuthenticationRequest(username, password);
+
+        // Generate a Session, and verify that it works
+        final AuthenticationResponse response = client.generateSession(request);
+        final PermissionResponse permissionResponse = access.fetchPermissions(response.getToken());
+        assertThat(permissionResponse.isOk(), is(true));
+
+        // Now we've forgotten our session, so request a reset
+        access.requestResettingSession(request);
+        final String notification = spy.getNext().getMessage();
+        assertThat(notification, containsString("Reset Session"));
+        final String code = notification.substring(21);
+        final AuthenticationResponse newResponse = access.resetSession(code);
+
+        // Now verify that control was handed over to the new Session
+        final PermissionResponse permissionResponse2 = access.fetchPermissions(newResponse.getToken());
+        final PermissionResponse permissionResponse3 = access.fetchPermissions(response.getToken());
+        assertThat(permissionResponse2.isOk(), is(true));
+        assertThat(permissionResponse3.isOk(), is(false));
+        assertThat(permissionResponse3.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(permissionResponse3.getMessage(), is("No AuthenticationToken was found."));
+
+        // And clean-up, so no sessions are lurking around
+        assertThat(access.deprecateSession(newResponse.getToken()).isOk(), is(true));
     }
 
     @Test

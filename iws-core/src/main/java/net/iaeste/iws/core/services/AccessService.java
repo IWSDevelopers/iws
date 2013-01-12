@@ -27,7 +27,7 @@ import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
-import net.iaeste.iws.core.exceptions.SessionExistsException;
+import net.iaeste.iws.core.exceptions.SessionException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
@@ -76,7 +76,7 @@ public final class AccessService extends CommonService {
      *
      * @param request Request Object with User Credentials
      * @return New AuthenticationToken
-     * @throws SessionExistsException if an Active Session already exists
+     * @throws net.iaeste.iws.core.exceptions.SessionException if an Active Session already exists
      */
     public AuthenticationToken generateSession(final AuthenticationRequest request) {
         final UserEntity user = findUserFromCredentials(request);
@@ -86,10 +86,23 @@ public final class AccessService extends CommonService {
             return new AuthenticationToken(generateAndPersistSessionKey(user));
         } else {
             final String msg = "An Active Session for user %s %s already exists.";
-            throw new SessionExistsException(format(msg, user.getFirstname(), user.getLastname()));
+            throw new SessionException(format(msg, user.getFirstname(), user.getLastname()));
         }
     }
 
+    /**
+     * Handles the first part of resetting the current session for a user. It
+     * simply adds a Temporary Code to the User, and ships it as an immediate
+     * notification to the user. The user can then use this Code to invoke the
+     * second part of the resetting mechanism, which handles the actual
+     * resetting.<br />
+     *   The method requires that we can uniquely identify the user, thus the
+     * same information as for generating a new Session is required.<br />
+     *   If no active sessions exists, then an Exception is thrown.
+     *
+     * @param request Authentication Request Object, with user credentials
+     * @throws SessionException if no active session exists
+     */
     public void requestResettingSession(final AuthenticationRequest request) {
         final UserEntity user = findUserFromCredentials(request);
         final SessionEntity activeSession = dao.findActiveSession(user);
@@ -100,7 +113,7 @@ public final class AccessService extends CommonService {
             final Authentication authentication = new Authentication(user);
             notifications.notify(authentication, user, NotificationMessageType.RESET_SESSION);
         } else {
-            throw new SessionExistsException("No Session exists for this user.");
+            throw new SessionException("No Session exists for this user.");
         }
     }
 
@@ -112,7 +125,7 @@ public final class AccessService extends CommonService {
      *
      * @param resetSessionString The Token for resetting the users Session
      * @return New AuthenticationToken
-     * @throws SessionExistsException if an Active Session already exists
+     * @throws SessionException if no Active Session exists
      */
     public AuthenticationToken resetSession(final String resetSessionString) {
         final UserEntity user = dao.findUserByCodeAndStatus(resetSessionString, UserStatus.ACTIVE);
@@ -122,7 +135,7 @@ public final class AccessService extends CommonService {
             dao.deprecateSession(user);
             return new AuthenticationToken(generateAndPersistSessionKey(user));
         } else {
-            throw new SessionExistsException("No Session exists to reset.");
+            throw new SessionException("No Session exists to reset.");
         }
     }
 

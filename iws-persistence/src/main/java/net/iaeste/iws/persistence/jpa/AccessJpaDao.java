@@ -106,6 +106,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final UserEntity user;
         if (list.size() == 1) {
             user = list.get(0);
+        } else if (list.isEmpty()) {
+            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "No user records were found with the code " + code);
         } else {
             throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "There exists multiple records for a user with the code " + code);
         }

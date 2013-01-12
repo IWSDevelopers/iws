@@ -26,7 +26,7 @@ import net.iaeste.iws.api.exceptions.IWSException;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class SessionExistsException extends IWSException {
+public class SessionException extends IWSException {
 
     /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -38,7 +38,7 @@ public class SessionExistsException extends IWSException {
      *
      * @param message  Specific message, regarding the problem
      */
-    public SessionExistsException(final String message) {
+    public SessionException(final String message) {
         super(IWSErrors.SESSION_EXISTS, message);
     }
 }

@@ -96,26 +96,28 @@ public interface IWSErrors {
     /**
      * Unknown Persistency Error.
      */
-    IWSError PERSISTENCE_ERROR = new IWSError(502, "Persistency Error");
+    IWSError PERSISTENCE_ERROR = new IWSError(503, "Persistency Error");
 
     /**
      * The Identification Error is passed when trying to edit unexisting {@code Entity}.
      */
-    IWSError ENTITY_IDENTIFICATION_ERROR = new IWSError(503, "Entity Identification Error");
+    IWSError ENTITY_IDENTIFICATION_ERROR = new IWSError(504, "Entity Identification Error");
 
     /**
      * The processing of the request failed.
      */
-    IWSError PROCESSING_FAILURE = new IWSError(504, "Request cannot be processed");
+    IWSError PROCESSING_FAILURE = new IWSError(505, "Request cannot be processed");
 
     /**
      * Error reading or writing the monitoring data in serialized form.
      */
-    IWSError MONITORING_FAILURE = new IWSError(505, "Monitoring Serialization Error");
+    IWSError MONITORING_FAILURE = new IWSError(506, "Monitoring Serialization Error");
 
     IWSError USER_ACCOUNT_EXISTS = new IWSError(601, "User Account Already exists");
 
     IWSError NO_USER_ACCOUNT_FOUND = new IWSError(602, "No User Account exists");
+
+    IWSError INVALID_NOTIFICATION = new IWSError(603, "Notification Type is not allowed in this context.");
 
     /**
      * The current method is not yet implemented.

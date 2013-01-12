@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.persistence.exceptions.NotificationException;
 import net.iaeste.iws.persistence.notification.Notifiable;
 import net.iaeste.iws.persistence.notification.NotificationMessageType;
 
@@ -319,20 +320,20 @@ public class UserEntity implements IWSEntity, Notifiable {
      */
     @Override
     public String generateNotificationMessage(final NotificationMessageType type) {
-        // The Notifications related to the User Entity, is either to Activate
-        // a new Account, or if the user have forgotten the Password. To
-        // distinguish between them, we simply look at the User Status. If the
-        // Status is New, then we have to send the Activation Notification,
-        // otherwise we send the Forgot Password Notification
         final String message;
 
-        if (status == UserStatus.NEW) {
-            message = "New User Account generated, with password = '" +
-                      temporary + "' and Activation Code = " + code;
-        } else {
-            // temporary stores information about the type of notification,
-            // which can be either forgot password or change username
-            message = "Reset Password Code = " + code;
+        switch (type) {
+            case ACTIVATE_USER:
+                message = "New User Account generated, with password = '" + temporary + "' and Activation Code = " + code;
+                break;
+            case RESET_PASSWORD:
+                message = "Reset Password Code = " + code;
+                break;
+            case RESET_SESSION:
+                message = "Reset Session Code = " + code;
+                break;
+            default:
+                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
         }
 
         return message;

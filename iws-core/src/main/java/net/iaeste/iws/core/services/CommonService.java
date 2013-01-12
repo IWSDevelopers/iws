@@ -15,9 +15,13 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.requests.CreateUserRequest;
+import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+
+import java.util.UUID;
 
 /**
  * All Common Service funtionality is collected here. Although the Class ought

@@ -43,7 +43,7 @@ public interface Notifiable {
      *
      * @return Simple Message
      */
-    String generateNotificationMessage();
+    String generateNotificationMessage(NotificationMessageType type);
 
     NotificationSubject getNotificationSubject();
 

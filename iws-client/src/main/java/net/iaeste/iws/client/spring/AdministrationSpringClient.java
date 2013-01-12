@@ -28,6 +28,7 @@ import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.ejb.beans.AdministrationBean;
 import net.iaeste.iws.ejb.beans.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;

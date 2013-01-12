@@ -58,7 +58,7 @@ public class AdministrationClientTest extends AbstractClientTest {
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         assertThat(spy.size(), is(1));
-        final String notification = spy.getNext().generateNotificationMessage();
+        final String notification = spy.getNext().getMessage();
         assertThat(notification, containsString("Activation Code"));
     }
 
@@ -75,7 +75,7 @@ public class AdministrationClientTest extends AbstractClientTest {
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         assertThat(spy.size(), is(1));
-        final String notification = spy.getNext().generateNotificationMessage();
+        final String notification = spy.getNext().getMessage();
         assertThat(notification, containsString("Activation Code"));
     }
 }

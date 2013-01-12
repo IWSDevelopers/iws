@@ -64,7 +64,7 @@ public final class ServiceFactory {
     }
 
     public AccessService prepareAuthenticationService() {
-        return new AccessService(accessDao);
+        return new AccessService(accessDao, notifications);
     }
 
     public FacultyService prepareFacultyService() {

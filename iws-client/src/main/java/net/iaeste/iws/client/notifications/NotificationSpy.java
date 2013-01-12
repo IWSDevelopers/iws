@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.NotificationSpy
+ * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.notifications.NotificationSpy
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,11 +12,12 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.client.spring;
+package net.iaeste.iws.client.notifications;
 
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.notification.Notifiable;
+import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public final class NotificationSpy implements Notifications {
     private static NotificationSpy instance = null;
     private static final Object LOCK = new Object();
     private final List<Observer> observers = new ArrayList<>(10);
-    private final List<Notifiable> notifiables = new ArrayList<>(10);
+    private final List<NotificationMessage> notifiables = new ArrayList<>(10);
 
     private NotificationSpy() {
     }
@@ -59,9 +60,10 @@ public final class NotificationSpy implements Notifications {
      * {@inheritDoc}
      */
     @Override
-    public void notify(final Authentication authentication, final Notifiable obj) {
+    public void notify(final Authentication authentication, final Notifiable obj, final NotificationMessageType type) {
         LOG.info(authentication.getUser() + " has altered Object " + obj + " belonging to " + authentication.getGroup());
-        notifiables.add(obj);
+        final NotificationMessage message = new NotificationMessage(obj, type);
+        notifiables.add(message);
         notifyObservers();
     }
 
@@ -114,15 +116,15 @@ public final class NotificationSpy implements Notifications {
      *
      * @return First Notitication from the Stack
      */
-    public Notifiable getNext() {
-        final Notifiable notifiable;
+    public NotificationMessage getNext() {
+        final NotificationMessage message;
 
         if (!notifiables.isEmpty()) {
-            notifiable = notifiables.remove(0);
+            message = notifiables.remove(0);
         } else {
-            notifiable = null;
+            message = null;
         }
 
-        return notifiable;
+        return message;
     }
 }

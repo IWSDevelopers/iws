@@ -15,6 +15,7 @@
 package net.iaeste.iws.core;
 
 import net.iaeste.iws.api.Access;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
@@ -82,6 +83,48 @@ public final class AccessController extends CommonController implements Access {
         }
 
         LOG.trace("Finished generateSession()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible requestResettingSession(final AuthenticationRequest request) {
+        LOG.trace("Starting requestResettingSession()");
+        Fallible response;
+
+        try {
+            verify(request, AUTHENTICATION_REQUEST_ERROR);
+
+            final AccessService service = factory.prepareAuthenticationService();
+            service.requestResettingSession(request);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new AuthenticationResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished requestResettingSession()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AuthenticationResponse resetSession(final String resetSessionString) {
+        LOG.trace("Starting resetSession()");
+        AuthenticationResponse response;
+
+        try {
+            final AccessService service = factory.prepareAuthenticationService();
+            final AuthenticationToken token = service.resetSession(resetSessionString);
+            response = new AuthenticationResponse(token);
+        } catch (IWSException e) {
+            response = new AuthenticationResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished resetSession()");
         return response;
     }
 

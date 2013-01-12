@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.notification.Notifications
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.notification.NotificationType
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,22 +14,28 @@
  */
 package net.iaeste.iws.persistence.notification;
 
-import net.iaeste.iws.common.utils.Observable;
-import net.iaeste.iws.persistence.Authentication;
-
 /**
+ * The same Objects can have many different types of Notifications, this will
+ * help the Class determine, exactly which one is suppose to be generated.
+ *
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public interface Notifications extends Observable {
+public enum NotificationMessageType {
 
     /**
-     * Classes to be observed, should extend the Notifiable interface.
-     *
-     * @param authentication Authentication information (user + group)
-     * @param obj            Instance to notify about changes for
-     * @param type           Type of Notification Message to send
+     * If the Object only supports a single type of Notifications, then this
+     * type should be used as the default.
      */
-    void notify(Authentication authentication, Notifiable obj, NotificationMessageType type);
+    GENERAL,
+
+    /** For Activating newly created User Accounts. */
+    ACTIVATE_USER,
+
+    /** For sending of reset password requests. */
+    RESET_PASSWORD,
+
+    /** For handling resetting Session requests. */
+    RESET_SESSION
 }

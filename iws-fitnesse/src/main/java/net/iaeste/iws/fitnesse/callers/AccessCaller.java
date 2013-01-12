@@ -58,6 +58,30 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
+    public Fallible requestResettingSession(final AuthenticationRequest request) {
+        try {
+            return access.requestResettingSession(request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AuthenticationResponse resetSession(final String resetSessionString) {
+        try {
+            return access.resetSession(resetSessionString);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         try {
             return access.saveSessionData(token, request);

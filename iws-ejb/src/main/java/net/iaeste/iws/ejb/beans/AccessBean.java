@@ -126,6 +126,42 @@ public class AccessBean extends AbstractBean implements AccessRemote {
      * {@inheritDoc}
      */
     @Override
+    public Fallible requestResettingSession(final AuthenticationRequest request) {
+        Fallible response;
+
+        try {
+            response = access.requestResettingSession(request);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AuthenticationResponse resetSession(final String resetSessionString) {
+        AuthenticationResponse response;
+
+        try {
+            response = access.resetSession(resetSessionString);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new AuthenticationResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         Fallible response;
 

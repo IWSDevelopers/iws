@@ -20,6 +20,7 @@ import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.ejb.beans.CommitteeBean;
 import net.iaeste.iws.ejb.beans.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;

@@ -36,8 +36,21 @@ public final class Authentication {
     private final GroupEntity group;
 
     /**
-     * Default Constructor.
+     * Minimal Constructor.
      *
+     * @param user   User Entity for the current user
+     */
+    public Authentication(final UserEntity user) {
+        this.user = user;
+
+        token = null;
+        group = null;
+    }
+
+    /**
+     * Full Constructor.
+     *
+     * @param token  User Authenticatin Token
      * @param user   User Entity for the current user
      * @param group  Group Entity for the group being worked with
      */
@@ -51,12 +64,13 @@ public final class Authentication {
      * Default Constructor, for private access, mening access to personal data
      * where the GroupId is implicit the users private Group.
      *
+     * @param token  User Authenticatin Token
      * @param user   User Entity for the current user
-     * @param group  Group Entity for the group being worked with
      */
     public Authentication(final AuthenticationToken token, final UserEntity user) {
         this.token = token;
         this.user = user;
+
         group = null;
     }
 

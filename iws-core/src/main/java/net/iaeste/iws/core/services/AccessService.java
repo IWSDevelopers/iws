@@ -19,6 +19,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.PermissionResponse;
@@ -31,6 +32,8 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.notification.NotificationMessageType;
+import net.iaeste.iws.persistence.notification.Notifications;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import java.io.Serializable;
@@ -51,16 +54,19 @@ import java.util.UUID;
  */
 public final class AccessService extends CommonService {
 
+    private final Notifications notifications;
     private final AccessDao dao;
 
     /**
      * Default Constructor. This Service only requires an AccessDao instance,
      * which is used for all database operations.
      *
-     * @param dao AccessDAO instance
+     * @param dao           AccessDAO instance
+     * @param notifications Notification Object
      */
-    public AccessService(final AccessDao dao) {
+    public AccessService(final AccessDao dao, final Notifications notifications) {
         this.dao = dao;
+        this.notifications = notifications;
     }
 
     /**
@@ -81,6 +87,42 @@ public final class AccessService extends CommonService {
         } else {
             final String msg = "An Active Session for user %s %s already exists.";
             throw new SessionExistsException(format(msg, user.getFirstname(), user.getLastname()));
+        }
+    }
+
+    public void requestResettingSession(final AuthenticationRequest request) {
+        final UserEntity user = findUserFromCredentials(request);
+        final SessionEntity activeSession = dao.findActiveSession(user);
+
+        if (activeSession != null) {
+            user.setCode(HashcodeGenerator.generateSHA512(UUID.randomUUID().toString()));
+            dao.persist(user);
+            final Authentication authentication = new Authentication(user);
+            notifications.notify(authentication, user, NotificationMessageType.RESET_SESSION);
+        } else {
+            throw new SessionExistsException("No Session exists for this user.");
+        }
+    }
+
+    /**
+     * Reads the current user & session data from the system. If unable to find
+     * a user for the given reset String, or if no active Session Objects
+     * exists, then an exception is thrown, otherwise the current Sessions are
+     * deprecated and a new Session is created.
+     *
+     * @param resetSessionString The Token for resetting the users Session
+     * @return New AuthenticationToken
+     * @throws SessionExistsException if an Active Session already exists
+     */
+    public AuthenticationToken resetSession(final String resetSessionString) {
+        final UserEntity user = dao.findUserByCodeAndStatus(resetSessionString, UserStatus.ACTIVE);
+        final SessionEntity deadSession = dao.findActiveSession(user);
+
+        if (deadSession != null) {
+            dao.deprecateSession(user);
+            return new AuthenticationToken(generateAndPersistSessionKey(user));
+        } else {
+            throw new SessionExistsException("No Session exists to reset.");
         }
     }
 

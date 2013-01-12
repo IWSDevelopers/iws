@@ -18,6 +18,7 @@ import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.persistence.notification.Notifiable;
+import net.iaeste.iws.persistence.notification.NotificationMessageType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -317,7 +318,7 @@ public class UserEntity implements IWSEntity, Notifiable {
      * {@inheritDoc}
      */
     @Override
-    public String generateNotificationMessage() {
+    public String generateNotificationMessage(final NotificationMessageType type) {
         // The Notifications related to the User Entity, is either to Activate
         // a new Account, or if the user have forgotten the Password. To
         // distinguish between them, we simply look at the User Status. If the

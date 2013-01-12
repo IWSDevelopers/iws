@@ -36,6 +36,7 @@ import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.ejb.beans.ExchangeBean;
 import net.iaeste.iws.ejb.beans.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;

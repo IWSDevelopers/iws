@@ -61,6 +61,34 @@ public interface Access {
     AuthenticationResponse generateSession(AuthenticationRequest request);
 
     /**
+     * In case a user has lost the SessionKey, and is thus incapable getting
+     * into the system by normal means. It is possible to request that the
+     * Session is being reset, i.e. that a new Session is created.<br />
+     *   This request will then send an immediate notification to the e-mail
+     * address of the given User, with a reset code. This code can then be
+     * send back to the system and a new Session is then created to replace the
+     * old, locked, Session.<br />
+     *   Although the main part of this functionality is similar to just making
+     * a normal login request, the main goal here is to avoid that a misuse of
+     * the account is taking place - so only the owner should be able to do
+     * this. As the resetting will also close the existing session.
+     *
+     * @param request  User Authentication Request object
+     * @return Standard Error object
+     */
+    Fallible requestResettingSession(AuthenticationRequest request);
+
+    /**
+     * Handles the second part of Session Resetting. It will check if there
+     * currently exists a Session and if so, then it will close the existing
+     * Session, create a new and return this.
+     *
+     * @param resetSessionString The Reset token sent to the user
+     * @return Authentication Result Object
+     */
+    AuthenticationResponse resetSession(String resetSessionString);
+
+    /**
      * Used to save a users session Data in the IWS.
      *
      * @param token  User Authentication Request object

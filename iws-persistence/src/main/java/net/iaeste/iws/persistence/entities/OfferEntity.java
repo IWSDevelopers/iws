@@ -22,6 +22,7 @@ import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.persistence.notification.Notifiable;
+import net.iaeste.iws.persistence.notification.NotificationMessageType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -723,7 +724,7 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
      * {@inheritDoc}
      */
     @Override
-    public String generateNotificationMessage() {
+    public String generateNotificationMessage(final NotificationMessageType type) {
         //TODO: generate message according to the state of the offer in exchange
         return "Offer " + refNo;
     }

@@ -44,6 +44,7 @@ import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ import static net.iaeste.iws.core.transformers.AdministrationTransformer.transfo
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class AdministrationService {
+public final class AdministrationService extends CommonService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdministrationService.class);
     private final AccessDao dao;
@@ -95,7 +96,7 @@ public final class AdministrationService {
             final UserGroupEntity userGroup = new UserGroupEntity(user, group, member);
             dao.persist(userGroup);
 
-            notifications.notify(authentication, user);
+            notifications.notify(authentication, user, NotificationMessageType.ACTIVATE_USER);
             result = new UserResponse();
         } else {
             result = new UserResponse(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");
@@ -336,10 +337,19 @@ public final class AdministrationService {
         user.setPassword(HashcodeGenerator.generateSHA256(password));
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
-        user.setCode(generateActivationCode(request));
+        user.setCode(generateActicationCode(request));
         dao.persist(user);
 
         return user;
+    }
+
+    private static String generateActicationCode(final CreateUserRequest request) {
+        final String clear = request.getUsername()
+                           + request.getFirstname()
+                           + request.getLastname()
+                           + UUID.randomUUID().toString();
+
+        return HashcodeGenerator.generateSHA512(clear);
     }
 
     private GroupEntity createAndPersistPrivateGroup(final UserEntity user) {
@@ -351,15 +361,6 @@ public final class AdministrationService {
         dao.persist(group);
 
         return group;
-    }
-
-    private static String generateActivationCode(final CreateUserRequest request) {
-        final String clear = request.getUsername()
-                           + request.getFirstname()
-                           + request.getLastname()
-                           + UUID.randomUUID().toString();
-
-        return HashcodeGenerator.generateSHA512(clear);
     }
 
     /**

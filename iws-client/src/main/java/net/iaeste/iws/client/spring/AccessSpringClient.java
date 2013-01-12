@@ -22,6 +22,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.ejb.beans.AccessBean;
 import net.iaeste.iws.ejb.beans.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;
@@ -82,6 +83,22 @@ public final class AccessSpringClient implements Access {
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         return access.generateSession(request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible requestResettingSession(final AuthenticationRequest request) {
+        return access.requestResettingSession(request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AuthenticationResponse resetSession(final String resetSessionString) {
+        return access.resetSession(resetSessionString);
     }
 
     /**

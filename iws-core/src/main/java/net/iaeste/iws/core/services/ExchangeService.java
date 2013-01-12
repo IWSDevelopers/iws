@@ -37,6 +37,7 @@ import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public final class ExchangeService extends CommonService {
 
         // Send a notification to the users who so desire. Via the Notifiable
         // Interface, can the Object handle it itself
-        notifications.notify(authentication, newEntity);
+        notifications.notify(authentication, newEntity, NotificationMessageType.GENERAL);
 
         return new OfferResponse();
     }

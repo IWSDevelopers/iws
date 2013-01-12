@@ -17,7 +17,6 @@ package net.iaeste.iws.core.notifications;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.Authentication;
@@ -26,6 +25,7 @@ import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.notification.Notifiable;
+import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTimeConstants;
@@ -59,7 +59,7 @@ public final class NotificationManager implements Notifications {
      * {@inheritDoc}
      */
     @Override
-    public void notify(final Authentication authentication, final Notifiable obj) {
+    public void notify(final Authentication authentication, final Notifiable obj, final NotificationMessageType type) {
         // Save the general information about the Object to be notified.
         final List<UserEntity> users = obj.getRecipients();
 
@@ -72,7 +72,7 @@ public final class NotificationManager implements Notifications {
                 final NotificationMessageEntity message = new NotificationMessageEntity();
                 message.setStatus(NotificationMessageStatus.NEW);
                 message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-                final String messageText = obj.generateNotificationMessage();
+                final String messageText = obj.generateNotificationMessage(type);
                 message.setMessage(messageText);
 
                 //save messages into DB

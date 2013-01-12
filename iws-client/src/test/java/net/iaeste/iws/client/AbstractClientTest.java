@@ -18,7 +18,7 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.client.spring.NotificationSpy;
+import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import org.junit.After;
 import org.junit.Before;

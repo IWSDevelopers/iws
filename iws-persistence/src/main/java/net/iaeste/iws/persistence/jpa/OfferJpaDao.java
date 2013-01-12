@@ -112,7 +112,7 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
     @Override
     public List<OfferEntity> findOffersByLikeEmployerName(final String employerName, final Long ownerId) {
         final Query query = entityManager.createNamedQuery("OfferEntity.findByLikeEmployerName");
-        query.setParameter("employerName", '%' + employerName + '%');
+        query.setParameter("employerName", '%' + employerName.toLowerCase() + '%');
         query.setParameter("groupId", ownerId);
 
         return query.getResultList();

@@ -42,6 +42,14 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
+    public UserGroupAssignmentRequest() {
+    }
+
+    /**
+     * TODO correct javadoc
+     * @param user
+     * @param group
+     */
     public UserGroupAssignmentRequest(final User user, final Group group) {
         this.user = new User(user);
         this.group = group;

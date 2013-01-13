@@ -144,7 +144,6 @@ public final class ExchangeService extends CommonService {
     public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
         final FetchEmployerInformationResponse response;
 
-        //TODO: select only owned offers
         response = new FetchEmployerInformationResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName(), authentication.getGroup().getId())));
 
         return response;

@@ -32,7 +32,7 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The user that ill be added to a group. **/
+    /** The user that will be added to a group. **/
     private User user = null;
 
     /** The group to which the user will be added.**/

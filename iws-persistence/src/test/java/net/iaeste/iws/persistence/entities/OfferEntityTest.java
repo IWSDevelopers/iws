@@ -98,11 +98,11 @@ public class OfferEntityTest {
     private static final String NEAREST_AIRPORT = "VIE";
     private static final String NEAREST_PUBLIC_TRANSPORT = "U4";
     private static final Currency CURRENCY = Currency.EUR;
-    private static final PaymentFrequency PAYMENT_FREQUENCY = PaymentFrequency.W;
-    private static final Integer DEDUCTION = 20;
+    private static final PaymentFrequency PAYMENT_FREQUENCY = PaymentFrequency.WEEKLY;
+    private static final String DEDUCTION = "20%";
     private static final String LODGING_BY = "IAESTE";
-    private static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.M;
-    private static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.M;
+    private static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.MONTHLY;
+    private static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.MONTHLY;
     private static final Boolean CANTEEN = true;
 
     @PersistenceContext
@@ -470,7 +470,7 @@ public class OfferEntityTest {
     @Transactional
     public void testPayment() {
         offer.setPayment(BigDecimal.valueOf(1234567890.12));
-        offer.setPaymentFrequency(PaymentFrequency.M);
+        offer.setPaymentFrequency(PaymentFrequency.MONTHLY);
         offerDao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
@@ -495,7 +495,7 @@ public class OfferEntityTest {
     @Test
     @Transactional
     public void testDecuction() {
-        offer.setDeduction(99);
+        offer.setDeduction("99");
         offerDao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
@@ -505,7 +505,7 @@ public class OfferEntityTest {
     @Test(expected = PersistenceException.class)
     @Transactional
     public void testDecuction2() {
-        offer.setDeduction(100);
+        offer.setDeduction("This is not an allowed deduction value, it is simply too long...");
         offerDao.persist(authentication, offer);
     }
 
@@ -513,7 +513,7 @@ public class OfferEntityTest {
     @Transactional
     public void testLodgingCost() {
         offer.setLodgingCost(BigDecimal.valueOf(1234567890.12));
-        offer.setLodgingCostFrequency(PaymentFrequency.M);
+        offer.setLodgingCostFrequency(PaymentFrequency.MONTHLY);
         offerDao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));
@@ -539,7 +539,7 @@ public class OfferEntityTest {
     @Transactional
     public void testLivingCost() {
         offer.setLivingCost(BigDecimal.valueOf(1234567890.12));
-        offer.setLivingCostFrequency(PaymentFrequency.M);
+        offer.setLivingCostFrequency(PaymentFrequency.MONTHLY);
         offerDao.persist(authentication, offer);
 
         assertThat(offer.getId(), is(notNullValue()));

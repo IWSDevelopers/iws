@@ -21,7 +21,6 @@ import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
-import net.iaeste.iws.api.enums.NotificationType;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
@@ -50,82 +49,8 @@ import java.util.Set;
  */
 public final class Offer extends AbstractVerification {
 
-    /**
-     * {@link IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-//    private static final String REFNO_FORMAT = "(%s)-\\d{4}-\\d{4}(-[A-Z0-9]{2})?"; // %s - country codes
-
-    /**
-     * Empty Constructor, required for some communication frameworks.
-     */
-    public Offer() {
-    }
-
-    /**
-     * Copy constructor.
-     * <p/>
-     * Fields are copied one by one. Correct "cloning" for muttable members is
-     * provided by setters.
-     *
-     * @param offer Offer to copy
-     */
-    public Offer(final Offer offer) {
-        if (offer != null) {
-            // No id exist as refNo is unique
-            refNo = offer.refNo;
-            employerName = offer.employerName;
-            employerAddress = offer.employerAddress;
-            employerAddress2 = offer.employerAddress2;
-            employerBusiness = offer.employerBusiness;
-            employerEmployeesCount = offer.employerEmployeesCount;
-            employerWebsite = offer.employerWebsite;
-            prevTrainingRequired = offer.prevTrainingRequired;
-            otherRequirements = offer.otherRequirements;
-            language1 = offer.language1;
-            language1Level = offer.language1Level;
-            language1Operator = offer.language1Operator;
-            language2 = offer.language2;
-            language2Level = offer.language2Level;
-            language2Operator = offer.language2Operator;
-            language3 = offer.language3;
-            language3Level = offer.language3Level;
-            workDescription = offer.workDescription;
-            minimumWeeks = offer.minimumWeeks;
-            maximumWeeks = offer.maximumWeeks;
-            workingPlace = offer.workingPlace;
-            nearestAirport = offer.nearestAirport;
-            nearestPubTransport = offer.nearestPubTransport;
-            weeklyHours = offer.weeklyHours;
-            dailyHours = offer.dailyHours;
-            payment = offer.payment;
-            currency = offer.currency;
-            paymentFrequency = offer.paymentFrequency;
-            deduction = offer.deduction;
-            lodgingBy = offer.lodgingBy;
-            lodgingCost = offer.lodgingCost;
-            lodgingCostFrequency = offer.lodgingCostFrequency;
-            livingCost = offer.livingCost;
-            livingCostFrequency = offer.livingCostFrequency;
-            canteen = offer.canteen;
-
-            nominationDeadline = Copier.copy(offer.nominationDeadline);
-            fromDate = Copier.copy(offer.fromDate);
-            toDate = Copier.copy(offer.toDate);
-            fromDate2 = Copier.copy(offer.fromDate2);
-            toDate2 = Copier.copy(offer.toDate2);
-            unavailableFrom = Copier.copy(offer.unavailableFrom);
-            unavailableTo = Copier.copy(offer.unavailableTo);
-
-            typeOfWork = offer.typeOfWork;
-            fieldOfStudies = Copier.copy(offer.fieldOfStudies);
-            specializations = Copier.copy(offer.specializations);
-            studyLevels = Copier.copy(offer.studyLevels);
-
-            modified = Copier.copy(offer.modified);
-            created = Copier.copy(offer.created);
-        }
-    }
 
     /**
      * Format of reference number is: {@code [country code]-[exchange year]-[identification number]-[additional code (optional)]} <br/>
@@ -144,7 +69,8 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>If set, it must be before {@code fromDate} and {@code fromDate2} (@link #validateDatesNominationDeadline}.</li>
+     *   <li>If set, it must be before {@code fromDate} and {@code fromDate2}
+     *   (@link #validateDatesNominationDeadline}.</li>
      * </ul>
      */
     private Date nominationDeadline = null;
@@ -294,7 +220,7 @@ public final class Offer extends AbstractVerification {
     private BigDecimal payment = null;
     private Currency currency = null;
     private PaymentFrequency paymentFrequency = null;
-    private Integer deduction = null;
+    private String deduction = null;
 
     // Accommodation
     private String lodgingBy = null;
@@ -318,304 +244,375 @@ public final class Offer extends AbstractVerification {
      */
     private DateTime created = null;
 
-    public Boolean getCanteen() {
-        return canteen;
+    /**
+     * Empty Constructor, required for some communication frameworks.
+     */
+    public Offer() {
     }
+
+    /**
+     * Copy constructor.
+     * <p/>
+     * Fields are copied one by one. Correct "cloning" for muttable members is
+     * provided by setters.
+     *
+     * @param offer Offer to copy
+     */
+    public Offer(final Offer offer) {
+        if (offer != null) {
+            // No id exist as refNo is unique
+            refNo = offer.refNo;
+            employerName = offer.employerName;
+            employerAddress = offer.employerAddress;
+            employerAddress2 = offer.employerAddress2;
+            employerBusiness = offer.employerBusiness;
+            employerEmployeesCount = offer.employerEmployeesCount;
+            employerWebsite = offer.employerWebsite;
+            prevTrainingRequired = offer.prevTrainingRequired;
+            otherRequirements = offer.otherRequirements;
+            language1 = offer.language1;
+            language1Level = offer.language1Level;
+            language1Operator = offer.language1Operator;
+            language2 = offer.language2;
+            language2Level = offer.language2Level;
+            language2Operator = offer.language2Operator;
+            language3 = offer.language3;
+            language3Level = offer.language3Level;
+            workDescription = offer.workDescription;
+            minimumWeeks = offer.minimumWeeks;
+            maximumWeeks = offer.maximumWeeks;
+            workingPlace = offer.workingPlace;
+            nearestAirport = offer.nearestAirport;
+            nearestPubTransport = offer.nearestPubTransport;
+            weeklyHours = offer.weeklyHours;
+            dailyHours = offer.dailyHours;
+            payment = offer.payment;
+            currency = offer.currency;
+            paymentFrequency = offer.paymentFrequency;
+            deduction = offer.deduction;
+            lodgingBy = offer.lodgingBy;
+            lodgingCost = offer.lodgingCost;
+            lodgingCostFrequency = offer.lodgingCostFrequency;
+            livingCost = offer.livingCost;
+            livingCostFrequency = offer.livingCostFrequency;
+            canteen = offer.canteen;
+
+            nominationDeadline = Copier.copy(offer.nominationDeadline);
+            fromDate = Copier.copy(offer.fromDate);
+            toDate = Copier.copy(offer.toDate);
+            fromDate2 = Copier.copy(offer.fromDate2);
+            toDate2 = Copier.copy(offer.toDate2);
+            unavailableFrom = Copier.copy(offer.unavailableFrom);
+            unavailableTo = Copier.copy(offer.unavailableTo);
+
+            typeOfWork = offer.typeOfWork;
+            fieldOfStudies = Copier.copy(offer.fieldOfStudies);
+            specializations = Copier.copy(offer.specializations);
+            studyLevels = Copier.copy(offer.studyLevels);
+
+            modified = Copier.copy(offer.modified);
+            created = Copier.copy(offer.created);
+        }
+    }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
 
     public void setCanteen(final Boolean canteen) {
         this.canteen = canteen;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public Boolean getCanteen() {
+        return canteen;
     }
 
     public void setCurrency(final Currency currency) {
         this.currency = currency;
     }
 
-    public Float getDailyHours() {
-        return dailyHours;
+    public Currency getCurrency() {
+        return currency;
     }
 
     public void setDailyHours(final Float dailyHours) {
         this.dailyHours = dailyHours;
     }
 
-    public Integer getDeduction() {
-        return deduction;
+    public Float getDailyHours() {
+        return dailyHours;
     }
 
-    public void setDeduction(final Integer deduction) {
+    public void setDeduction(final String deduction) {
         this.deduction = deduction;
     }
 
-    public String getEmployerAddress2() {
-        return employerAddress2;
+    public String getDeduction() {
+        return deduction;
     }
 
     public void setEmployerAddress2(final String employerAddress2) {
         this.employerAddress2 = employerAddress2;
     }
 
-    public String getEmployerAddress() {
-        return employerAddress;
+    public String getEmployerAddress2() {
+        return employerAddress2;
     }
 
     public void setEmployerAddress(final String employerAddress) {
         this.employerAddress = employerAddress;
     }
 
-    public String getEmployerBusiness() {
-        return employerBusiness;
+    public String getEmployerAddress() {
+        return employerAddress;
     }
 
     public void setEmployerBusiness(final String employerBusiness) {
         this.employerBusiness = employerBusiness;
     }
 
-    public Integer getEmployerEmployeesCount() {
-        return employerEmployeesCount;
+    public String getEmployerBusiness() {
+        return employerBusiness;
     }
 
     public void setEmployerEmployeesCount(final Integer employerEmployeesCount) {
         this.employerEmployeesCount = employerEmployeesCount;
     }
 
-    public String getEmployerName() {
-        return employerName;
+    public Integer getEmployerEmployeesCount() {
+        return employerEmployeesCount;
     }
 
     public void setEmployerName(final String employerName) {
         this.employerName = employerName;
     }
 
-    public String getEmployerWebsite() {
-        return employerWebsite;
+    public String getEmployerName() {
+        return employerName;
     }
 
     public void setEmployerWebsite(final String employerWebsite) {
         this.employerWebsite = employerWebsite;
     }
 
-    public Set<FieldOfStudy> getFieldOfStudies() {
-        return Copier.copy(fieldOfStudies);
+    public String getEmployerWebsite() {
+        return employerWebsite;
     }
 
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
         this.fieldOfStudies = Copier.copy(fieldOfStudies);
     }
 
-    public Date getFromDate2() {
-        return fromDate2;
-    }
-
-    public void setFromDate2(final Date fromDate2) {
-        this.fromDate2 = fromDate2;
-    }
-
-    public Date getFromDate() {
-        return fromDate;
+    public Set<FieldOfStudy> getFieldOfStudies() {
+        return Copier.copy(fieldOfStudies);
     }
 
     public void setFromDate(final Date fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Date getUnavailableFrom() {
-        return unavailableFrom;
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate2(final Date fromDate2) {
+        this.fromDate2 = fromDate2;
+    }
+
+    public Date getFromDate2() {
+        return fromDate2;
     }
 
     public void setUnavailableFrom(final Date unavailableFrom) {
         this.unavailableFrom = unavailableFrom;
     }
 
-    public Date getUnavailableTo() {
-        return unavailableTo;
+    public Date getUnavailableFrom() {
+        return unavailableFrom;
     }
 
     public void setUnavailableTo(final Date unavailableTo) {
         this.unavailableTo = unavailableTo;
     }
 
-    public Language getLanguage1() {
-        return language1;
+    public Date getUnavailableTo() {
+        return unavailableTo;
     }
 
     public void setLanguage1(final Language language1) {
         this.language1 = language1;
     }
 
-    public LanguageLevel getLanguage1Level() {
-        return language1Level;
+    public Language getLanguage1() {
+        return language1;
     }
 
     public void setLanguage1Level(final LanguageLevel language1Level) {
         this.language1Level = language1Level;
     }
 
-    public LanguageOperator getLanguage1Operator() {
-        return language1Operator;
+    public LanguageLevel getLanguage1Level() {
+        return language1Level;
     }
 
     public void setLanguage1Operator(final LanguageOperator language1Operator) {
         this.language1Operator = language1Operator;
     }
 
-    public Language getLanguage2() {
-        return language2;
+    public LanguageOperator getLanguage1Operator() {
+        return language1Operator;
     }
 
     public void setLanguage2(final Language language2) {
         this.language2 = language2;
     }
 
-    public LanguageLevel getLanguage2Level() {
-        return language2Level;
+    public Language getLanguage2() {
+        return language2;
     }
 
     public void setLanguage2Level(final LanguageLevel language2Level) {
         this.language2Level = language2Level;
     }
 
-    public LanguageOperator getLanguage2Operator() {
-        return language2Operator;
+    public LanguageLevel getLanguage2Level() {
+        return language2Level;
     }
 
     public void setLanguage2Operator(final LanguageOperator language2Operator) {
         this.language2Operator = language2Operator;
     }
 
-    public Language getLanguage3() {
-        return language3;
+    public LanguageOperator getLanguage2Operator() {
+        return language2Operator;
     }
 
     public void setLanguage3(final Language language3) {
         this.language3 = language3;
     }
 
-    public LanguageLevel getLanguage3Level() {
-        return language3Level;
+    public Language getLanguage3() {
+        return language3;
     }
 
     public void setLanguage3Level(final LanguageLevel language3Level) {
         this.language3Level = language3Level;
     }
 
-    public BigDecimal getLivingCost() {
-        return livingCost;
+    public LanguageLevel getLanguage3Level() {
+        return language3Level;
     }
 
     public void setLivingCost(final BigDecimal livingCost) {
         this.livingCost = livingCost;
     }
 
-    public PaymentFrequency getLivingCostFrequency() {
-        return livingCostFrequency;
+    public BigDecimal getLivingCost() {
+        return livingCost;
     }
 
     public void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
         this.livingCostFrequency = livingCostFrequency;
     }
 
-    public String getLodgingBy() {
-        return lodgingBy;
+    public PaymentFrequency getLivingCostFrequency() {
+        return livingCostFrequency;
     }
 
     public void setLodgingBy(final String lodgingBy) {
         this.lodgingBy = lodgingBy;
     }
 
-    public BigDecimal getLodgingCost() {
-        return lodgingCost;
+    public String getLodgingBy() {
+        return lodgingBy;
     }
 
     public void setLodgingCost(final BigDecimal lodgingCost) {
         this.lodgingCost = lodgingCost;
     }
 
-    public PaymentFrequency getLodgingCostFrequency() {
-        return lodgingCostFrequency;
+    public BigDecimal getLodgingCost() {
+        return lodgingCost;
     }
 
     public void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
         this.lodgingCostFrequency = lodgingCostFrequency;
     }
 
-    public Integer getMaximumWeeks() {
-        return maximumWeeks;
+    public PaymentFrequency getLodgingCostFrequency() {
+        return lodgingCostFrequency;
     }
 
     public void setMaximumWeeks(final Integer maximumWeeks) {
         this.maximumWeeks = maximumWeeks;
     }
 
-    public Integer getMinimumWeeks() {
-        return minimumWeeks;
+    public Integer getMaximumWeeks() {
+        return maximumWeeks;
     }
 
     public void setMinimumWeeks(final Integer minimumWeeks) {
         this.minimumWeeks = minimumWeeks;
     }
 
-    public String getNearestAirport() {
-        return nearestAirport;
+    public Integer getMinimumWeeks() {
+        return minimumWeeks;
     }
 
     public void setNearestAirport(final String nearestAirport) {
         this.nearestAirport = nearestAirport;
     }
 
-    public String getNearestPubTransport() {
-        return nearestPubTransport;
+    public String getNearestAirport() {
+        return nearestAirport;
     }
 
     public void setNearestPubTransport(final String nearestPubTransport) {
         this.nearestPubTransport = nearestPubTransport;
     }
 
-    public Date getNominationDeadline() {
-        return nominationDeadline;
+    public String getNearestPubTransport() {
+        return nearestPubTransport;
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
         this.nominationDeadline = nominationDeadline;
     }
 
-    public String getOtherRequirements() {
-        return otherRequirements;
+    public Date getNominationDeadline() {
+        return nominationDeadline;
     }
 
     public void setOtherRequirements(final String otherRequirements) {
         this.otherRequirements = otherRequirements;
     }
 
-    public BigDecimal getPayment() {
-        return payment;
+    public String getOtherRequirements() {
+        return otherRequirements;
     }
 
     public void setPayment(final BigDecimal payment) {
         this.payment = payment;
     }
 
-    public PaymentFrequency getPaymentFrequency() {
-        return paymentFrequency;
+    public BigDecimal getPayment() {
+        return payment;
     }
 
     public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
         this.paymentFrequency = paymentFrequency;
     }
 
-    public Boolean getPrevTrainingRequired() {
-        return prevTrainingRequired;
+    public PaymentFrequency getPaymentFrequency() {
+        return paymentFrequency;
     }
 
     public void setPrevTrainingRequired(final Boolean prevTrainingRequired) {
         this.prevTrainingRequired = prevTrainingRequired;
     }
 
-    public String getRefNo() {
-        return refNo;
+    public Boolean getPrevTrainingRequired() {
+        return prevTrainingRequired;
     }
 
     public void setRefNo(final String refNo) {
@@ -627,72 +624,72 @@ public final class Offer extends AbstractVerification {
         }
     }
 
-    public Set<String> getSpecializations() {
-        return Copier.copy(specializations);
+    public String getRefNo() {
+        return refNo;
     }
 
     public void setSpecializations(final Set<String> specializations) {
         this.specializations = Copier.copy(specializations);
     }
 
-    public Set<StudyLevel> getStudyLevels() {
-        return Copier.copy(studyLevels);
+    public Set<String> getSpecializations() {
+        return Copier.copy(specializations);
     }
 
     public void setStudyLevels(final Set<StudyLevel> studyLevels) {
         this.studyLevels = Copier.copy(studyLevels);
     }
 
-    public Date getToDate2() {
-        return toDate2;
-    }
-
-    public void setToDate2(final Date toDate2) {
-        this.toDate2 = toDate2;
-    }
-
-    public Date getToDate() {
-        return toDate;
+    public Set<StudyLevel> getStudyLevels() {
+        return Copier.copy(studyLevels);
     }
 
     public void setToDate(final Date toDate) {
         this.toDate = toDate;
     }
 
-    public TypeOfWork getTypeOfWork() {
-        return typeOfWork;
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate2(final Date toDate2) {
+        this.toDate2 = toDate2;
+    }
+
+    public Date getToDate2() {
+        return toDate2;
     }
 
     public void setTypeOfWork(final TypeOfWork typeOfWork) {
         this.typeOfWork = typeOfWork;
     }
 
-    public Float getWeeklyHours() {
-        return weeklyHours;
+    public TypeOfWork getTypeOfWork() {
+        return typeOfWork;
     }
 
     public void setWeeklyHours(final Float weeklyHours) {
         this.weeklyHours = weeklyHours;
     }
 
-    public String getWorkDescription() {
-        return workDescription;
+    public Float getWeeklyHours() {
+        return weeklyHours;
     }
 
     public void setWorkDescription(final String workDescription) {
         this.workDescription = workDescription;
     }
 
-    public String getWorkingPlace() {
-        return workingPlace;
+    public String getWorkDescription() {
+        return workDescription;
     }
 
     public void setWorkingPlace(final String workingPlace) {
         this.workingPlace = workingPlace;
     }
 
-    public DateTime getModified() {
-        return modified;
+    public String getWorkingPlace() {
+        return workingPlace;
     }
 
     /**
@@ -704,8 +701,8 @@ public final class Offer extends AbstractVerification {
         this.modified = modified;
     }
 
-    public DateTime getCreated() {
-        return created;
+    public DateTime getModified() {
+        return modified;
     }
 
     /**
@@ -715,6 +712,10 @@ public final class Offer extends AbstractVerification {
      */
     public void setCreated(final DateTime created) {
         this.created = created;
+    }
+
+    public DateTime getCreated() {
+        return created;
     }
 
     // =========================================================================
@@ -1018,6 +1019,7 @@ public final class Offer extends AbstractVerification {
         validateLengthOfWorkDescription(validation);
         validateLengthOfOtherRequirements(validation);
         validateFieldDependencies(validation);
+        validateStringLength(validation);
 
         return validation;
     }
@@ -1103,6 +1105,16 @@ public final class Offer extends AbstractVerification {
         return otherRequirements == null || isWithinLimits(validation, "otherRequirements", otherRequirements,
                 IWSExchangeConstants.MIN_OFFER_OTHER_REQUIREMENTS_SIZE,
                 IWSExchangeConstants.MAX_OFFER_OTHER_REQUIREMENTS_SIZE);
+    }
+
+    /**
+     * Check for the fiels, where there are limitations imposed by the size in
+     * the database.
+     *
+     * @param validation Map with Error information
+     */
+    private void validateStringLength(final Map<String, String> validation) {
+        isNotEmptyOrTooLong(validation, "deduction", deduction, 20);
     }
 
     /**
@@ -1385,36 +1397,36 @@ public final class Offer extends AbstractVerification {
         return check;
     }
 
-    /**
-     * Unavailable period must be inside one of internship date ranges
-     * or between two ranges.
-     *
-     * @param type   Type of notification
-     * @param action Kind of action (new, update)
-     * @return generated String message
-     */
-    public String generateMessage(final NotificationType type, final String action) {
-        final String message;
-
-        switch (type) {
-            case EMAIL:
-                message = generateEmailMessage(action);
-                break;
-            case IM:
-                message = generateImMessage(action);
-                break;
-            default:
-                message = "";
-        }
-
-        return message;
-    }
-
-    private String generateEmailMessage(final String action) {
-        return "The offer " + refNo + " has been " + action;
-    }
-
-    private String generateImMessage(final String action) {
-        return "The offer " + refNo + " has been " + action;
-    }
+//    /**
+//     * Unavailable period must be inside one of internship date ranges
+//     * or between two ranges.
+//     *
+//     * @param type   Type of notification
+//     * @param action Kind of action (new, update)
+//     * @return generated String message
+//     */
+//    public String generateMessage(final NotificationType type, final String action) {
+//        final String message;
+//
+//        switch (type) {
+//            case EMAIL:
+//                message = generateEmailMessage(action);
+//                break;
+//            case IM:
+//                message = generateImMessage(action);
+//                break;
+//            default:
+//                message = "";
+//        }
+//
+//        return message;
+//    }
+//
+//    private String generateEmailMessage(final String action) {
+//        return "The offer " + refNo + " has been " + action;
+//    }
+//
+//    private String generateImMessage(final String action) {
+//        return "The offer " + refNo + " has been " + action;
+//    }
 }

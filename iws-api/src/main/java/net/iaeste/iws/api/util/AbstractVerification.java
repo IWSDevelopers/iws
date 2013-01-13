@@ -85,8 +85,32 @@ public abstract class AbstractVerification implements Verifiable {
     protected boolean isNotEmpty(final Map<String, String> validation, final String field, final String value) {
         boolean check = true;
 
-        if (value != null && value.isEmpty()) {
+        if ((value != null) && value.isEmpty()) {
             addError(validation, field, "the field may not be empty.");
+            check = false;
+        }
+
+        return check;
+    }
+
+    /**
+     * The method takes a value, and verifies that if it is not null, that it
+     * is then also not empty or exceed the maximum length. If the value is not
+     * allowed, then the information is added to the validation Map.<br />
+     *   If an error was found, then a false is returned, otherwise the method
+     * will return true.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     * @param length     The maximum length of the field
+     * @return True if field is valid, otherwise false
+     */
+    protected boolean isNotEmptyOrTooLong(final Map<String, String> validation, final String field, final String value, final int length) {
+        boolean check = true;
+
+        if ((value != null) && (value.isEmpty() || (value.length() > length))) {
+            addError(validation, field, "The field may neither be empty or exceed the max length of " + length);
             check = false;
         }
 

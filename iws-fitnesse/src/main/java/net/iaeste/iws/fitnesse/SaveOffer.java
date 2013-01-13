@@ -271,7 +271,7 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setPaymentFrequency(paymentFrequency);
     }
 
-    public void setDeduction(final Integer deduction) {
+    public void setDeduction(final String deduction) {
         offer.setDeduction(deduction);
     }
 

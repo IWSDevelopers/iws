@@ -67,11 +67,11 @@ public final class OfferTestUtility {
     public static final String NEAREST_PUBLIC_TRANSPORT = "U4";
     public static final Float DAILY_HOURS = WEEKLY_HOURS / 5;
     public static final Currency CURRENCY = Currency.EUR;
-    public static final PaymentFrequency PAYMENT_FREQUENCY = PaymentFrequency.W;
-    public static final Integer DEDUCTION = 20;
+    public static final PaymentFrequency PAYMENT_FREQUENCY = PaymentFrequency.WEEKLY;
+    public static final String DEDUCTION = "20%";
     public static final String LODGING_BY = "IAESTE";
-    public static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.M;
-    public static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.M;
+    public static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.MONTHLY;
+    public static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.MONTHLY;
     public static final Boolean CANTEEN = true;
     public static final Set<String> SPECIALIZATIONS;
 

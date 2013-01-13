@@ -222,11 +222,11 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     private Currency currency = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_frequency", length = 1)
+    @Column(name = "payment_frequency", length = 10)
     private PaymentFrequency paymentFrequency = null;
 
-    @Column(name = "deduction", scale = 2, precision = 0)
-    private Integer deduction = null;
+    @Column(name = "deduction", length = 20)
+    private String deduction = null;
 
     // Accommodation
     @Column(name = "lodging_by")
@@ -235,13 +235,15 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Column(name = "lodging_cost", scale = 12, precision = 2)
     private BigDecimal lodgingCost = null;
 
-    @Column(name = "lodging_cost_frequency", length = 1)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "lodging_cost_frequency", length = 10)
     private PaymentFrequency lodgingCostFrequency = null;
 
     @Column(name = "living_cost", scale = 12, precision = 2)
     private BigDecimal livingCost = null;
 
-    @Column(name = "living_cost_frequency", length = 1)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "living_cost_frequency")
     private PaymentFrequency livingCostFrequency = null;
 
     @Column(name = "canteen")
@@ -283,11 +285,11 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         this.dailyHours = dailyHours;
     }
 
-    public Integer getDeduction() {
+    public String getDeduction() {
         return deduction;
     }
 
-    public void setDeduction(final Integer deduction) {
+    public void setDeduction(final String deduction) {
         this.deduction = deduction;
     }
 

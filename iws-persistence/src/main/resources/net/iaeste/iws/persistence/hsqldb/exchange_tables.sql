@@ -107,17 +107,31 @@ create table students (
 
 
 CREATE TABLE offer2group (
-    offer_id           INTEGER    REFERENCES offers (id) ON DELETE CASCADE,
-    group_id           INTEGER    REFERENCES groups (id) ON DELETE CASCADE,
-    student_id         INTEGER    REFERENCES students (id) ON DELETE SET NULL,
-    status             VARCHAR(1) DEFAULT 'n',
-    visible            BOOLEAN    DEFAULT true,
-    comment            VARCHAR(100)       DEFAULT '',
-    exchanged          BOOLEAN    DEFAULT false,
-    answered_by        INTEGER    REFERENCES users (id),
+    offer_id           INTEGER,
+    group_id           INTEGER,
+    student_id         INTEGER,
+    status             VARCHAR(1)    DEFAULT 'n',
+    is_archived        BOOLEAN       DEFAULT false,
+    visible            BOOLEAN       DEFAULT true,
+    comment            VARCHAR(100)  DEFAULT '',
     answered           TIMESTAMP,
+    answered_by        INTEGER       REFERENCES users (id),
     modified           TIMESTAMP,
-    created_by         INTEGER    REFERENCES users (id),
+    modified_by        INTEGER       REFERENCES users (id),
     created            TIMESTAMP,
-    is_archived        BOOLEAN    DEFAULT false NOT NULL
+    created_by         INTEGER       REFERENCES users (id),
+
+    /* Primary & Foreign Keys */
+    constraint offer2group_pk          primary key (offer_id, group_id),
+    constraint offer2group_fk_offer_id foreign key (offer_id) references offers (id) ON DELETE CASCADE,
+    constraint offer2group_fk_group_id foreign key (group_id) references groups (id) ON DELETE CASCADE,
+    constraint offer2group_fk_student_id foreign key (student_id) references students (id) ON DELETE SET NULL,
+
+    /* Not Null Constraints */
+    constraint offer2group_notnull_offer_id     check (offer_id is not null),
+    constraint offer2group_notnull_group_id     check (group_id is not null),
+    constraint offer2group_notnull_modified     check (modified is not null),
+    constraint offer2group_notnull_created      check (created is not null)
 );
+
+-- TODO: iw3's offer2group_history for tracking of viewed/accepted etc together with messages

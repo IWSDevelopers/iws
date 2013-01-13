@@ -115,17 +115,20 @@ CREATE TABLE offer2group (
     visible            BOOLEAN       DEFAULT true,
     comment            VARCHAR(100)  DEFAULT '',
     answered           TIMESTAMP,
-    answered_by        INTEGER       REFERENCES users (id),
+    answered_by        INTEGER,
     modified           TIMESTAMP,
-    modified_by        INTEGER       REFERENCES users (id),
+    modified_by        INTEGER,
     created            TIMESTAMP,
-    created_by         INTEGER       REFERENCES users (id),
+    created_by         INTEGER,
 
     /* Primary & Foreign Keys */
     constraint offer2group_pk          primary key (offer_id, group_id),
     constraint offer2group_fk_offer_id foreign key (offer_id) references offers (id) ON DELETE CASCADE,
     constraint offer2group_fk_group_id foreign key (group_id) references groups (id) ON DELETE CASCADE,
     constraint offer2group_fk_student_id foreign key (student_id) references students (id) ON DELETE SET NULL,
+    constraint offer2group_fk_answered_by foreign key (answered_by) references users (id) ON DELETE SET NULL,
+    constraint offer2group_fk_modified_by foreign key (modified_by) references users (id) ON DELETE SET NULL,
+    constraint offer2group_fk_created_by foreign key (created_by) references users (id) ON DELETE SET NULL,
 
     /* Not Null Constraints */
     constraint offer2group_notnull_offer_id     check (offer_id is not null),

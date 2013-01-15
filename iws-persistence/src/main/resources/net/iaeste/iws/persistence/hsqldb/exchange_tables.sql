@@ -118,9 +118,9 @@ CREATE TABLE offer_to_group (
     comment            VARCHAR(100)  DEFAULT '',
     answered           TIMESTAMP,
     answered_by        INTEGER,
-    modified           TIMESTAMP,
+    modified           TIMESTAMP DEFAULT now(),
     modified_by        INTEGER,
-    created            TIMESTAMP,
+    created            TIMESTAMP DEFAULT now(),
     created_by         INTEGER,
 
     /* Primary & Foreign Keys */

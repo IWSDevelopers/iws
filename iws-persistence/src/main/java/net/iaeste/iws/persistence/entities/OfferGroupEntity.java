@@ -27,14 +27,44 @@ import java.util.Date;
  */
 @NamedQueries({
         @NamedQuery(
-                name = "offergroup.findById",
+                name = "OfferGroupEntity.findAll",
+                query = "select og from OfferGroupEntity og "),
+        @NamedQuery(
+                name = "OfferGroupEntity.findById",
                 query = "select og from OfferGroupEntity og " +
                         "where og.id = :id"),
         @NamedQuery(
-                name = "offergroup.findGroupsByOffer",
+                name = "OfferGroupEntity.findGroupsByOfferAndGroup",
                 query = "select og from OfferGroupEntity og " +
                         "where og.group.id = :gid" +
-                        "  and og.offer.id = :oid")
+                        "  and og.offer.id = :oid"),
+        @NamedQuery(
+                name = "OfferGroupEntity.findGroupsByOffer",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.id = :oid"),
+        @NamedQuery(
+                name = "OfferGroupEntity.findGroupsByOfferRefNo",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.refNo = :refno"),
+        @NamedQuery(
+                name = "OfferGroupEntity.deleteByIds",
+                query = "DELETE FROM OfferGroupEntity og WHERE og.id IN :ids"),
+        @NamedQuery(
+                name = "OfferGroupEntity.deleteByOffer",
+                query = "DELETE FROM OfferGroupEntity og WHERE og.offer.id = :oid"),
+        @NamedQuery(
+                name = "OfferGroupEntity.deleteByOfferAndGroups",
+                query = "DELETE FROM OfferGroupEntity og WHERE og.offer.id = :oid " +
+                        " and og.group.id IN :gids")
+        /* TODO not working, getting 'unexpected token: CROSS'
+        @NamedQuery(
+                name = "OfferGroupEntity.deleteByOfferRefNo",
+                query = "DELETE FROM OfferGroupEntity og WHERE og.offer.refNo = :refno"),
+        @NamedQuery(
+                name = "OfferGroupEntity.deleteByOfferRefNoAndGroups",
+                query = "DELETE FROM OfferGroupEntity og WHERE og.offer.refNo = :refno " +
+                        " and og.group.id IN :gids")
+        */
 })
 @Entity
 @Table(name = "offer_to_group")
@@ -216,11 +246,11 @@ public class OfferGroupEntity implements IWSEntity {
         return modifiedBy;
     }
 
-    public void setCreated(final Date created) {
-        this.created = created;
+    public void setCreatedBy(final UserEntity createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public UserEntity getCreatedBy(final UserEntity createdBy) {
+    public UserEntity getCreatedBy() {
         return createdBy;
     }
 

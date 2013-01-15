@@ -14,7 +14,9 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 
 import java.util.List;
@@ -93,6 +95,58 @@ public interface OfferDao extends BasicDao {
     List<OfferEntity> findSharedOffers();
 
     /**
+     * Finds information about sharing of the offer
+     *
+     * @param  offerId id of the offer to get sharing info for
+     * @return list of {@link OfferGroupEntity} which are shared
+     */
+    List<OfferGroupEntity> findGroupsForSharedOffer(final Long offerId);
+
+    /**
+     * Finds information about sharing of the offer
+     *
+     * @param  refNo reference number of the offer to get sharing info for
+     * @return list of {@link OfferGroupEntity} which are shared
+     */
+    List<OfferGroupEntity> findGroupsForSharedOffer(final String refNo);
+
+    /**
+     * Unshares the offer from all groups
+     *
+     * @param offerId id of the offer to get sharing info for
+     * @return number of groups from which the offer was unshared
+     */
+    Integer unshareFromAllGroups(final Long offerId);
+
+    /**
+     * Unshares the offer from all groups
+     * TODO not working, see OfferGroupEntity
+     *
+     * @param  refNo reference number of the offer to get sharing info for
+     * @return number of groups from which the offer was unshared
+     */
+    Integer unshareFromAllGroups(final String refNo);
+
+    /**
+     * Unshares the offer from groups
+     *
+     * @param  offerId id of the offer to get sharing info for
+     * @param  groups list of groups from which the offer is unshared
+     * @return number of groups from which the offer was unshared
+     */
+    Integer unshareFromGroups(final Long offerId, final List<Long> groups);
+
+    /**
+     * Unshares the offer from groups
+     * TODO not working, see OfferGroupEntity
+     *
+     * @param  refNo reference number of the offer to get sharing info for
+     * @param  groups list of groups from which the offer is unshared
+     * @return number of groups from which the offer was unshared
+     */
+    Integer unshareFromGroups(final String refNo, final List<Long> groups);
+
+    /**
      * Deletes an offer from database.
      *
      * @param offerId id of the offer to delete
@@ -107,4 +161,12 @@ public interface OfferDao extends BasicDao {
      * @return number of deleted objects
      */
     Integer delete(final List<Long> offerIds);
+
+    /**
+     * Finds all groups for given external ids
+     *
+     * @param externalIds list of external ids
+     * @return list of {@link GroupEntity}
+     */
+    List<GroupEntity> findGroupByExternalIds(final List<String> externalIds);
 }

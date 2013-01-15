@@ -21,6 +21,7 @@ import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -246,11 +247,32 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
         return query.executeUpdate();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<GroupEntity> findGroupByExternalIds(List<String> externalIds) {
         final Query query = entityManager.createNamedQuery("group.findByExternalGroupIds");
         query.setParameter("egids", externalIds);
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findGroupByExternalId(final String externalId) {
+        List<String> externalIds = new ArrayList<>(1);
+        externalIds.add(externalId);
+        List<GroupEntity> groups = findGroupByExternalIds(externalIds);
+
+        GroupEntity group = null;
+
+        if (groups.size() == 1) {
+            group = groups.get(0);
+        }
+
+        return group;
     }
 }

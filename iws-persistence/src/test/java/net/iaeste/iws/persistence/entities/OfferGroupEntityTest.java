@@ -119,6 +119,8 @@ public class OfferGroupEntityTest {
         GroupEntity group = groups.get(0);
         assertThat(group.getExternalId(), is(GROUP_EXTERNAL_ID));
         assertThat(group.getGroupName(), is(GROUP_NAME));
+
+        assertThat(offerDao.findGroupByExternalId(GROUP_EXTERNAL_ID), is(group));
     }
 
     @Test

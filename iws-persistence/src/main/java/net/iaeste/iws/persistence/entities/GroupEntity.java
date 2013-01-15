@@ -73,7 +73,13 @@ import java.util.Date;
                             "where g.id = v.id.groupId" +
                             "  and v.id.userId = :uid" +
                             "  and g.externalId = :egid" +
-                            "  and v.permission = :permission")
+                            "  and v.permission = :permission"),
+        @NamedQuery(name = "group.findByExternalGroupId",
+                query = "select g from GroupEntity g " +
+                        "where g.externalId = :egid"),
+        @NamedQuery(name = "group.findByExternalGroupIds",
+                query = "select g from GroupEntity g " +
+                        "where g.externalId in :egids")
 })
 @Entity
 @Table(name = "groups")

@@ -153,4 +153,22 @@ public class HashcodeGeneratorTest {
         assertThat(resultEmpty, is(expectedEmpty));
         assertThat(resultNull, is(expectedNull));
     }
+
+// Following is not really test code, but used to generage User accounts.
+//    private static final String USER_INSERT = "insert into users (external_id, status, username, password, firstname, lastname) values ('";
+//    private static final String USER_FORMAT = USER_INSERT + "%s', 'ACTIVE', '%s', '%s', '%s', '%s');";
+//
+//    @Test
+//    public void testPasswords() {
+//        final String country = "Germany";
+//        for (int i = 1; i <= 5; i++) {
+//            final String euid = UUID.randomUUID().toString();
+//            final String username = country.toLowerCase(IWSConstants.DEFAULT_LOCALE) + i;
+//            final String firstname = "User" + i;
+//            final String password = HashcodeGenerator.generateSHA256(username);
+//            final String query = String.format(USER_FORMAT, euid, username, password, firstname, country);
+//
+//            System.out.println(query);
+//        }
+//    }
 }

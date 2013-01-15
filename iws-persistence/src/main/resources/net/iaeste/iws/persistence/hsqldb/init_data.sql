@@ -209,8 +209,9 @@ insert into countries (country_id, country_name) values ('HR', 'Croatia');
 insert into countries (country_id, country_name) values ('DK', 'Denmark');
 insert into countries (country_id, country_name) values ('DE', 'Germany');
 insert into countries (country_id, country_name) values ('PL', 'Poland');
+insert into countries (country_id, country_name) values ('HU', 'Hungary');
 
--- Couple of Member Groups
+-- Couple of Member Groups, our Sequence starts with 25, so we only allow a limitted amount of test data
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (10, '2cc7e1bb-01e8-43a2-9643-2e964cbd41c5', 2, null, 1, 'Austria');
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (11, 'c7b15f81-4f83-48e8-9ffb-9e73255f5e5e', 5,   10, 1, 'Austria');
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (12, 'adc8dfd4-bc3a-4b27-897b-87d3950db503', 2, null, 2, 'Croatia');
@@ -221,6 +222,8 @@ insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupN
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (17, '17eb00ac-1386-4852-9934-e3dce3f57c13', 5,   16, 4, 'Germany');
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (18, 'f36c1de6-e3ae-46da-83f4-f8259486dcf0', 2, null, 5, 'Poland');
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (19, 'e60f9897-864b-4d1b-9c1a-1681fd35e97a', 5,   18, 5, 'Poland');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (20, 'b28aa7c1-4a39-4879-a881-13e130624857', 2, null, 5, 'Hungary');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (21, '3b4bdadc-f157-4362-a370-c2191adfd86a', 5,   20, 5, 'Hungary');
 
 -- Couple of Users, password is the same as the username
 insert into users (external_id, status, username, password, firstname, lastname) values ('13452874-0c0f-4caf-8101-a8e9b41d6e69', 'ACTIVE', 'austria', '7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266', 'NS', 'Austria');
@@ -228,6 +231,7 @@ insert into users (external_id, status, username, password, firstname, lastname)
 insert into users (external_id, status, username, password, firstname, lastname) values ('a14bb076-c2f7-419d-bd28-1d453ac3fda5', 'ACTIVE', 'denmark', '5f0bf3ff6b72ac09f881221fc8bd88ba9f24a393c2e544716dbf792978a7f313', 'NS', 'Denmark');
 insert into users (external_id, status, username, password, firstname, lastname) values ('047fde56-f5f7-4811-8a3d-a9b12d207570', 'ACTIVE', 'germany', 'b2c01c8a8a0d9a99f145f099a963021f010dc608a8e992bd1a2aec958b48f32d', 'NS', 'Germany');
 insert into users (external_id, status, username, password, firstname, lastname) values ('4bb8499a-f0dd-44d8-929e-0a7dbd218ed2', 'ACTIVE', 'poland',  '9cbbdd6cbd5335f528ec9f858ee4ddd727186dca99e33f8fc3273d39681d54a8', 'NS', 'Poland');
+insert into users (external_id, status, username, password, firstname, lastname) values ('bc62b71e-2c33-4dee-887a-b204f2dd4db1', 'ACTIVE', 'hungary', 'aa0db396b7d5266b3919e6bde7fdb036efd6456f153568d36d884a372387f778', 'NS', 'Hungary');
 
 -- User Group Associations
 insert into user_to_group (user_id, group_id, role_id) values ( 1, 10, 1);
@@ -240,3 +244,5 @@ insert into user_to_group (user_id, group_id, role_id) values ( 4, 16, 1);
 insert into user_to_group (user_id, group_id, role_id) values ( 4, 17, 1);
 insert into user_to_group (user_id, group_id, role_id) values ( 5, 18, 1);
 insert into user_to_group (user_id, group_id, role_id) values ( 5, 19, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 6, 20, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 6, 21, 1);

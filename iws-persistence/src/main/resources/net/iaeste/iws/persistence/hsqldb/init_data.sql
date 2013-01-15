@@ -189,6 +189,18 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 202
 insert into permission_to_role (role_id, permission_id) values (1, 202);
 insert into permission_to_role (role_id, permission_id) values (2, 202);
 
+-- Permission: 14 - Publish Offer
+--   -> GroupTypes: 5 National
+--                  6 SAR
+--                  7 Local
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 14);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 14);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 14);
+insert into permission_to_role (role_id, permission_id) values (1, 14);
+insert into permission_to_role (role_id, permission_id) values (2, 14);
+
 
 -- =============================================================================
 -- Default Groups

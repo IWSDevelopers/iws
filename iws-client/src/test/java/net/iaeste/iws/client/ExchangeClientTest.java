@@ -24,6 +24,7 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
@@ -151,7 +152,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
         assertThat(saveResponse.isOk(), is(true));
 
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.OWNED);
         final FetchOffersResponse response = exchange.fetchOffers(token, request);
         assertThat(response.getOffers().isEmpty(), is(false));
 
@@ -166,9 +167,26 @@ public class ExchangeClientTest extends AbstractClientTest {
         group.setGroupType(GroupType.NATIONAL);
         groups.add(group);
 
-        final PublishOfferRequest publishRequest = new PublishOfferRequest(offerToShare, groups);
+        PublishOfferRequest publishRequest = new PublishOfferRequest(offerToShare, groups);
         PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
 
         assertThat(publishResponse.isOk(), is(true));
+
+        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offerToShare.getRefNo());
+        FetchPublishOfferResponse fetchPublishResponse = exchange.fetchPublishedOfferInfo(token, fetchPublishRequest);
+
+        //is it shared to two groups?
+        assertThat(fetchPublishResponse.getOfferGroups().size(), is(2));
+
+        groups.clear();
+        publishRequest = new PublishOfferRequest(offerToShare, groups);
+        publishResponse = exchange.processPublishOffer(token, publishRequest);
+
+        //is it shared to two groups?
+        assertThat(publishResponse.isOk(), is(true));
+        fetchPublishResponse = exchange.fetchPublishedOfferInfo(token, fetchPublishRequest);
+
+        //is it shared to nobody?
+        assertThat(fetchPublishResponse.getOfferGroups().size(), is(2));
     }
 }

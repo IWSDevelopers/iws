@@ -16,12 +16,14 @@ package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.dtos.OfferGroup;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 
 /**
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
@@ -217,6 +219,29 @@ public final class OfferTransformer {
             result.setNearestPubTransport(offer.getNearestPubTransport());
             result.setWeeklyHours(offer.getWeeklyHours());
             result.setDailyHours(offer.getDailyHours());
+        }
+
+        return result;
+    }
+
+    /**
+     * Transform OfferGroupEntity into the OfferGroup DTO
+     *
+     * @param t     The Class object to overloading transform method
+     * @param offerGroupEntity Source OfferGroupEntity which is to be transformed
+     * @return OfferGroup Object
+     */
+    public static OfferGroup transform(final Class<OfferGroupEntity> t, final OfferGroupEntity offerGroupEntity) {
+        OfferGroup result = null;
+
+        if (offerGroupEntity != null) {
+            result = new OfferGroup();
+
+            result.setOfferRefNo(offerGroupEntity.getOffer().getRefNo());
+            result.setGroupExternalId(offerGroupEntity.getGroup().getExternalId());
+            result.setAnswered(new DateTime(offerGroupEntity.getAnswered()));
+            result.setModified(new DateTime(offerGroupEntity.getModified()));
+            result.setCreated(new DateTime(offerGroupEntity.getCreated()));
         }
 
         return result;

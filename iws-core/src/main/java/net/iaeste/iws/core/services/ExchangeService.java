@@ -18,16 +18,13 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.dtos.OfferGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.*;
-import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.FetchOffersResponse;
-import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.api.responses.OfferTemplateResponse;
-import net.iaeste.iws.api.responses.PublishGroupResponse;
+import net.iaeste.iws.api.responses.*;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
@@ -141,7 +138,7 @@ public final class ExchangeService extends CommonService {
     public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
         final FetchEmployerInformationResponse response;
 
-        response = new FetchEmployerInformationResponse(convertEntityList(EmployerInformation.class, dao.findOffersByLikeEmployerName(request.getName(), authentication.getGroup().getId())));
+        response = new FetchEmployerInformationResponse(convertEntityListToEmployerInformationList(dao.findOffersByLikeEmployerName(request.getName(), authentication.getGroup().getId())));
 
         return response;
     }
@@ -192,11 +189,21 @@ public final class ExchangeService extends CommonService {
         return result;
     }
 
-    private List<EmployerInformation> convertEntityList(Class<EmployerInformation> t, final List<OfferEntity> found) {
+    private List<EmployerInformation> convertEntityListToEmployerInformationList(final List<OfferEntity> found) {
         final List<EmployerInformation> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
             result.add(OfferTransformer.transform(EmployerInformation.class, entity));
+        }
+
+        return result;
+    }
+
+    private List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
+        final List<OfferGroup> result = new ArrayList<>(found.size());
+
+        for (final OfferGroupEntity entity : found) {
+            result.add(OfferTransformer.transform(OfferGroupEntity.class, entity));
         }
 
         return result;
@@ -249,5 +256,13 @@ public final class ExchangeService extends CommonService {
                 dao.persist(authentication, og);
             }
         }
+    }
+
+    public FetchPublishOfferResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishOfferRequest request) {
+        final FetchPublishOfferResponse response;
+
+        response = new FetchPublishOfferResponse(convertOfferGroupEntityList(dao.findGroupsForSharedOffer(request.getRefNo())));
+
+        return response;
     }
 }

@@ -349,6 +349,20 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchPublishOfferResponse fetchPublishedOfferInfo(AuthenticationToken token, FetchPublishOfferRequest request) {
-        return null;
+        LOG.trace("Starting fetchPublishedOfferInfo()");
+        FetchPublishOfferResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_PUBLISH_OFFER);
+            verify(request);
+
+            final ExchangeService service = factory.prepareOfferService();
+            response = service.fetchPublishedOfferInfo(authentication, request);
+        } catch (IWSException e) {
+            response = new FetchPublishOfferResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished fetchPublishedOfferInfo()");
+        return response;
     }
 }

@@ -16,7 +16,9 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.EmployerInformation;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
@@ -36,7 +38,9 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 
@@ -213,8 +217,37 @@ public final class ExchangeService extends CommonService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
+    /**
+     * Method for proccesing publishing (sharing) of offer. Passing empty list of groups means complete unsharing
+     * of the offer. Otherwise the offer is share to those groups in the list.
+     *
+     * @param authentication
+     * @param request
+     */
     public void processPublishGroups(final Authentication authentication, final PublishGroupRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        final Offer offer = request.getOffer();
+        dao.findAll();
+        final List<OfferGroupEntity> groupsForSharedOffer = dao.findGroupsForSharedOffer(offer.getRefNo());
+
+        if(!groupsForSharedOffer.isEmpty()) {
+            dao.unshareFromAllGroups(offer.getRefNo());
+        }
+
+        publishGroups(authentication, request);
+    }
+
+    private void publishGroups(final Authentication authentication, final PublishGroupRequest request) {
+        final OfferEntity offer = dao.findOffer(request.getOffer().getRefNo());
+
+        for(Group group : request.getGroups()) {
+            if(group.getGroupType() == GroupType.NATIONAL) {
+                GroupEntity groupEntity = dao.findGroupByExternalId(group.getGroupId());
+                OfferGroupEntity og = new OfferGroupEntity(offer, groupEntity);
+                og.setCreatedBy(authentication.getUser());
+
+                dao.persist(authentication, og);
+            }
+        }
     }
 
     public PublishGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {

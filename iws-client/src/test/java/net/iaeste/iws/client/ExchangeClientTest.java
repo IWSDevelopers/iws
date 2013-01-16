@@ -17,15 +17,22 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FetchType;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -134,5 +141,36 @@ public class ExchangeClientTest extends AbstractClientTest {
                 fail("offer is supposed to be deleted");
             }
         }
+    }
+
+    @Test
+    public void testShareOffer() {
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2012-0004");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse response = exchange.fetchOffers(token, request);
+        assertThat(response.getOffers().isEmpty(), is(false));
+
+        final Offer offerToShare = response.getOffers().get(0);
+        List<Group> groups = new ArrayList<>();
+        Group group = new Group();
+        group.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
+        group.setGroupType(GroupType.NATIONAL);
+        groups.add(group);
+        group = new Group();
+        group.setGroupId("17eb00ac-1386-4852-9934-e3dce3f57c13");
+        group.setGroupType(GroupType.NATIONAL);
+        groups.add(group);
+
+        final PublishGroupRequest publishRequest = new PublishGroupRequest(offerToShare, groups);
+        Fallible publishResponse = exchange.managePublishGroup(token, publishRequest);
+
+        assertThat(publishResponse.isOk(), is(true));
     }
 }

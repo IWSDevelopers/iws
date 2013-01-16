@@ -16,19 +16,15 @@ package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.Group;
-import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.dtos.OfferTestUtility;
+import net.iaeste.iws.api.dtos.*;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.*;
-import net.iaeste.iws.api.responses.FetchOffersResponse;
-import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.api.responses.PublishOfferResponse;
+import net.iaeste.iws.api.responses.*;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.core.transformers.OfferTransformer;
 import org.junit.Test;
+import sun.util.LocaleServiceProviderPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,5 +184,40 @@ public class ExchangeClientTest extends AbstractClientTest {
 
         //is it shared to nobody?
         assertThat(fetchPublishResponse.getOfferGroups().size(), is(2));
+    }
+
+    @Test
+    public void testGetEmployerInformation() {
+        final Offer offer = OfferTestUtility.getFullOffer();
+        offer.setRefNo("PL-2012-0005");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.OWNED);
+        final FetchOffersResponse response = exchange.fetchOffers(token, request);
+
+        assertThat(response.getOffers().isEmpty(), is(false));
+        assertThat(response.getOffers().indexOf(offer)>-1, is(true));
+        assertThat(response.getOffers().get(response.getOffers().indexOf(offer)), is(offer));
+
+        FetchEmployerInformationRequest employerRequest = new FetchEmployerInformationRequest(offer.getEmployerName());
+        FetchEmployerInformationResponse employerResponse = exchange.fetchEmployers(token, employerRequest);
+
+        assertThat(employerResponse.getEmployers().isEmpty(), is(false));
+        EmployerInformation employerInformation = employerResponse.getEmployers().get(0);
+        assertThat(employerInformation.getAddress(), is(offer.getEmployerAddress()));
+        assertThat(employerInformation.getAddress2(), is(offer.getEmployerAddress2()));
+        assertThat(employerInformation.getBusiness(), is(offer.getEmployerBusiness()));
+        assertThat(employerInformation.getDailyHours(), is(offer.getDailyHours()));
+        assertThat(employerInformation.getEmployeesCount(), is(offer.getEmployerEmployeesCount()));
+        assertThat(employerInformation.getName(), is(offer.getEmployerName()));
+        assertThat(employerInformation.getNearestAirport(), is(offer.getNearestAirport()));
+        assertThat(employerInformation.getNearestPubTransport(), is(offer.getNearestPubTransport()));
+        assertThat(employerInformation.getWebsite(), is(offer.getEmployerWebsite()));
+        assertThat(employerInformation.getWeeklyHours(), is(offer.getWeeklyHours()));
+        assertThat(employerInformation.getWorkingPlace(), is(offer.getWorkingPlace()));
     }
 }

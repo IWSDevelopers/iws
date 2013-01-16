@@ -16,26 +16,9 @@ package net.iaeste.iws.fitnesse.callers;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.FacultyRequest;
-import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.FetchFacultiesRequest;
-import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
-import net.iaeste.iws.api.requests.FetchOffersRequest;
-import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.PublishGroupRequest;
-import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.FacultyResponse;
+import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.responses.*;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.FetchOffersResponse;
-import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.api.responses.OfferTemplateResponse;
-import net.iaeste.iws.api.responses.PublishGroupResponse;
-import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -193,6 +176,30 @@ public final class ExchangeCaller implements Exchange {
     public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
         try {
             return exchange.fetchStudents(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request) {
+        try {
+            return exchange.processPublishOffer(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchPublishOfferResponse fetchPublishedOfferInfo(AuthenticationToken token, FetchPublishOfferRequest request) {
+        try {
+            return exchange.fetchPublishedOfferInfo(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

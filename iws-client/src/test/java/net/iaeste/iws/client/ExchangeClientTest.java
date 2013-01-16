@@ -22,12 +22,10 @@ import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.requests.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.FetchOffersRequest;
-import net.iaeste.iws.api.requests.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.PublishGroupRequest;
+import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.api.responses.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
 
@@ -168,8 +166,8 @@ public class ExchangeClientTest extends AbstractClientTest {
         group.setGroupType(GroupType.NATIONAL);
         groups.add(group);
 
-        final PublishGroupRequest publishRequest = new PublishGroupRequest(offerToShare, groups);
-        Fallible publishResponse = exchange.managePublishGroup(token, publishRequest);
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offerToShare, groups);
+        PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
 
         assertThat(publishResponse.isOk(), is(true));
     }

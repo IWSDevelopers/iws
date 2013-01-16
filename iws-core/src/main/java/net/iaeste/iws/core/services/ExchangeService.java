@@ -22,14 +22,7 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
-import net.iaeste.iws.api.requests.FetchOffersRequest;
-import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.PublishGroupRequest;
+import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
@@ -217,6 +210,14 @@ public final class ExchangeService extends CommonService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
+    public void processPublishGroups(final Authentication authentication, final PublishGroupRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public PublishGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
     /**
      * Method for proccesing publishing (sharing) of offer. Passing empty list of groups means complete unsharing
      * of the offer. Otherwise the offer is share to those groups in the list.
@@ -224,7 +225,7 @@ public final class ExchangeService extends CommonService {
      * @param authentication
      * @param request
      */
-    public void processPublishGroups(final Authentication authentication, final PublishGroupRequest request) {
+    public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
         final Offer offer = request.getOffer();
         dao.findAll();
         final List<OfferGroupEntity> groupsForSharedOffer = dao.findGroupsForSharedOffer(offer.getRefNo());
@@ -233,10 +234,10 @@ public final class ExchangeService extends CommonService {
             dao.unshareFromAllGroups(offer.getRefNo());
         }
 
-        publishGroups(authentication, request);
+        publishOffer(authentication, request);
     }
 
-    private void publishGroups(final Authentication authentication, final PublishGroupRequest request) {
+    private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {
         final OfferEntity offer = dao.findOffer(request.getOffer().getRefNo());
 
         for(Group group : request.getGroups()) {
@@ -248,9 +249,5 @@ public final class ExchangeService extends CommonService {
                 dao.persist(authentication, og);
             }
         }
-    }
-
-    public PublishGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
     }
 }

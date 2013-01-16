@@ -18,26 +18,9 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.FacultyRequest;
-import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.FetchFacultiesRequest;
-import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
-import net.iaeste.iws.api.requests.FetchOffersRequest;
-import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.PublishGroupRequest;
-import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.FacultyResponse;
+import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.responses.*;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.FetchOffersResponse;
-import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.api.responses.OfferTemplateResponse;
-import net.iaeste.iws.api.responses.PublishGroupResponse;
-import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.FacultyService;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -336,5 +319,36 @@ public final class ExchangeController extends CommonController implements Exchan
 
         LOG.trace("Finished fetchStudents()");
         return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
+        LOG.trace("Starting processPublishOffer()");
+        PublishOfferResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_PUBLISH_GROUPS);
+            verify(request);
+
+            final ExchangeService service = factory.prepareOfferService();
+            service.processPublishOffer(authentication, request);
+            response = new PublishOfferResponse();
+        } catch (IWSException e) {
+            response = new PublishOfferResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished processPublishOffer()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchPublishOfferResponse fetchPublishedOfferInfo(AuthenticationToken token, FetchPublishOfferRequest request) {
+        return null;
     }
 }

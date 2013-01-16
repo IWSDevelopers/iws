@@ -330,7 +330,7 @@ public final class ExchangeController extends CommonController implements Exchan
         PublishOfferResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_PUBLISH_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
             verify(request);
 
             final ExchangeService service = factory.prepareOfferService();

@@ -45,13 +45,14 @@ insert into permissions (id, permission) values (201, 'MANAGE_OFFERS');
 insert into permissions (id, permission) values (202, 'LOOKUP_OFFERS');
 --insert into permissions (id, permission) values (12, 'PROCESS_OFFER_TEMPLATES');
 --insert into permissions (id, permission) values (13, 'LOOKUP_OFFER_TEMPLATES');
-insert into permissions (id, permission) values (14, 'PROCESS_OFFER_PUBLISH_GROUPS');
-insert into permissions (id, permission) values (15, 'LOOKUP_OFFER_PUBLISH_GROUPS');
+--insert into permissions (id, permission) values (14, 'PROCESS_OFFER_PUBLISH_GROUPS');
+--insert into permissions (id, permission) values (15, 'LOOKUP_OFFER_PUBLISH_GROUPS');
 --insert into permissions (id, permission) values (16, 'LOOKUP_FACULTIES');
 --insert into permissions (id, permission) values (17, 'PROCESS_FACULTIES');
 --insert into permissions (id, permission) values (18, 'PROCESS_STUDENTS');
 --insert into permissions (id, permission) values (19, 'LOOKUP_STUDENTS');
-
+insert into permissions (id, permission) values (20, 'PROCESS_PUBLISH_OFFER');
+insert into permissions (id, permission) values (21, 'LOOKUP_PUBLISH_OFFER');
 
 -- =============================================================================
 -- Linking the Permissions to both Roles & GroupTypes, so when we do perform a
@@ -189,17 +190,17 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 202
 insert into permission_to_role (role_id, permission_id) values (1, 202);
 insert into permission_to_role (role_id, permission_id) values (2, 202);
 
--- Permission: 14 - Publish Offer
+-- Permission: 20 - Publish Offer
 --   -> GroupTypes: 5 National
 --                  6 SAR
 --                  7 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
-insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 14);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 14);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 14);
-insert into permission_to_role (role_id, permission_id) values (1, 14);
-insert into permission_to_role (role_id, permission_id) values (2, 14);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 20);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 20);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 20);
+insert into permission_to_role (role_id, permission_id) values (1, 20);
+insert into permission_to_role (role_id, permission_id) values (2, 20);
 
 -- Permission: 14 - Lookup Publish Offer
 --   -> GroupTypes: 5 National
@@ -207,11 +208,11 @@ insert into permission_to_role (role_id, permission_id) values (2, 14);
 --                  7 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
-insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 15);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 15);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 15);
-insert into permission_to_role (role_id, permission_id) values (1, 15);
-insert into permission_to_role (role_id, permission_id) values (2, 15);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 21);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 21);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 21);
+insert into permission_to_role (role_id, permission_id) values (1, 21);
+insert into permission_to_role (role_id, permission_id) values (2, 21);
 
 
 -- =============================================================================

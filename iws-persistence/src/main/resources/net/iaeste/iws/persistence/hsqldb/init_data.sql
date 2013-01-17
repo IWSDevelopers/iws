@@ -247,8 +247,8 @@ insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupN
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (17, '17eb00ac-1386-4852-9934-e3dce3f57c13', 5,   16, 4, 'Germany');
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (18, 'f36c1de6-e3ae-46da-83f4-f8259486dcf0', 2, null, 5, 'Poland');
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (19, 'e60f9897-864b-4d1b-9c1a-1681fd35e97a', 5,   18, 5, 'Poland');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (20, 'b28aa7c1-4a39-4879-a881-13e130624857', 2, null, 5, 'Hungary');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (21, '3b4bdadc-f157-4362-a370-c2191adfd86a', 5,   20, 5, 'Hungary');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (20, 'b28aa7c1-4a39-4879-a881-13e130624857', 2, null, 6, 'Hungary');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (21, '3b4bdadc-f157-4362-a370-c2191adfd86a', 5,   20, 6, 'Hungary');
 
 -- Couple of Users, password is the same as the username
 insert into users (external_id, status, username, password, firstname, lastname) values ('13452874-0c0f-4caf-8101-a8e9b41d6e69', 'ACTIVE', 'austria', '7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266', 'NS', 'Austria');

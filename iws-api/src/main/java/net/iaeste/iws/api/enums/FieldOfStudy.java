@@ -298,4 +298,8 @@ public enum FieldOfStudy {
     FieldOfStudy(final List<Specialization> specializations) {
         this.specializations = specializations;
     }
+
+    public List<Specialization> getSpecializations() {
+        return specializations;
+    }
 }

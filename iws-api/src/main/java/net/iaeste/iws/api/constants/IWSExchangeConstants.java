@@ -33,7 +33,7 @@ public interface IWSExchangeConstants {
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.FieldOfStudy}
      * for an {@link net.iaeste.iws.api.dtos.Offer}
      */
-    int MAX_OFFER_FIELDS_OF_STUDY = 7;
+    int MAX_OFFER_FIELDS_OF_STUDY = 3;
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.Specialization}

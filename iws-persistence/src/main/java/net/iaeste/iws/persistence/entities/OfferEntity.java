@@ -668,7 +668,7 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Override
     public void merge(final OfferEntity obj) {
         // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && id.equals(obj.id)) {
+        if ((id != null) && (obj != null) && refNo.equals(obj.refNo)) {
             // Note, Id & refno are *not* allowed to be updated!
             employerName = obj.employerName;
             employerAddress = obj.employerAddress;

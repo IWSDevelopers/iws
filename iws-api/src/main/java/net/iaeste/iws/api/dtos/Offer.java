@@ -231,6 +231,11 @@ public final class Offer extends AbstractVerification {
     private Boolean canteen = null;
 
     /**
+     * Number of Hard Copies.
+     */
+    private Integer numberOfHardCopies = null;
+
+    /**
      * Date of last modification of the Offer in the database.
      * <p/>
      * Field is read only. All changes made to that field will be discarded on persisting.
@@ -296,6 +301,7 @@ public final class Offer extends AbstractVerification {
             livingCost = offer.livingCost;
             livingCostFrequency = offer.livingCostFrequency;
             canteen = offer.canteen;
+            numberOfHardCopies = offer.numberOfHardCopies;
 
             nominationDeadline = Copier.copy(offer.nominationDeadline);
             fromDate = Copier.copy(offer.fromDate);
@@ -692,6 +698,14 @@ public final class Offer extends AbstractVerification {
         return workingPlace;
     }
 
+    public void setNumberOfHardCopies(final Integer numberOfHardCopies) {
+        this.numberOfHardCopies = numberOfHardCopies;
+    }
+
+    public Integer getNumberOfHardCopies() {
+        return numberOfHardCopies;
+    }
+
     /**
      * For internal use only.
      *
@@ -740,6 +754,9 @@ public final class Offer extends AbstractVerification {
         final Offer offer = (Offer) obj;
 
         if (canteen != null ? !canteen.equals(offer.canteen) : offer.canteen != null) {
+            return false;
+        }
+        if (numberOfHardCopies != null ? !numberOfHardCopies.equals(offer.numberOfHardCopies) : offer.numberOfHardCopies != null) {
             return false;
         }
         if (currency != offer.currency) {
@@ -932,6 +949,7 @@ public final class Offer extends AbstractVerification {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (livingCost != null ? livingCost.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (livingCostFrequency != null ? livingCostFrequency.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (canteen != null ? canteen.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (numberOfHardCopies != null ? numberOfHardCopies.hashCode() : 0);
 
         return hash;
     }
@@ -988,6 +1006,7 @@ public final class Offer extends AbstractVerification {
                 ", livingCost=" + livingCost +
                 ", livingCostFrequency=" + livingCostFrequency +
                 ", canteen=" + canteen +
+                ", numberOfHardCopies=" + numberOfHardCopies +
                 ", modified=" + modified +
                 ", created=" + created +
                 '}';

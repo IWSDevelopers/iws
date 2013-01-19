@@ -249,6 +249,9 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Column(name = "canteen")
     private Boolean canteen = null;
 
+    @Column(name = "number_of_hard_copies")
+    private Integer numberOfHardCopies = null;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(nullable = true, name = "group_id")
     private GroupEntity group = null;
@@ -267,6 +270,14 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
 
     public void setCanteen(final Boolean canteen) {
         this.canteen = canteen;
+    }
+
+    public void setNumberOfHardCopies(final Integer numberOfHardCopies) {
+        this.numberOfHardCopies = numberOfHardCopies;
+    }
+
+    public Integer getNumberOfHardCopies() {
+        return numberOfHardCopies;
     }
 
     public Currency getCurrency() {
@@ -704,6 +715,7 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
             livingCost = obj.livingCost;
             livingCostFrequency = obj.livingCostFrequency;
             canteen = obj.canteen;
+            numberOfHardCopies = obj.numberOfHardCopies;
             nominationDeadline = obj.nominationDeadline;
             fromDate = obj.fromDate;
             toDate = obj.toDate;

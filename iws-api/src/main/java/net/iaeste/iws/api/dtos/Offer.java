@@ -53,6 +53,13 @@ public final class Offer extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
+     * The Id of this Offer. If an Offer object is to be updated, then this
+     * value must be provided and both the Id and the RefNo must match up,
+     * otherwise it is an error.
+     */
+    private String id = null;
+
+    /**
      * Format of reference number is: {@code [country code]-[exchange year]-[identification number]-[additional code (optional)]} <br/>
      * {@code country code} should follow the {@link <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO_3166-1 Alpha 2 specification</a>}
      * <p/>
@@ -266,6 +273,7 @@ public final class Offer extends AbstractVerification {
     public Offer(final Offer offer) {
         if (offer != null) {
             // No id exist as refNo is unique
+            id = offer.id;
             refNo = offer.refNo;
             employerName = offer.employerName;
             employerAddress = offer.employerAddress;
@@ -325,6 +333,17 @@ public final class Offer extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
+    public void setId(final String id) throws IllegalArgumentException {
+        if ((id == null) || (id.length() != 36)) {
+            throw new IllegalArgumentException("Illegal value for the Id.");
+        }
+
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
     public void setCanteen(final Boolean canteen) {
         this.canteen = canteen;
     }
@@ -753,6 +772,9 @@ public final class Offer extends AbstractVerification {
 
         final Offer offer = (Offer) obj;
 
+        if (id != null ? !id.equals(offer.id) : offer.id != null) {
+            return false;
+        }
         if (canteen != null ? !canteen.equals(offer.canteen) : offer.canteen != null) {
             return false;
         }
@@ -903,7 +925,8 @@ public final class Offer extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + refNo.hashCode();
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (id != null ? id.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (refNo != null ? refNo.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nominationDeadline != null ? nominationDeadline.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (employerName != null ? employerName.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (employerAddress != null ? employerAddress.hashCode() : 0);
@@ -959,6 +982,7 @@ public final class Offer extends AbstractVerification {
      */
     @Override
     public String toString() {
+        // Id is left out of the offer toString value
         return "Offer{" +
                 "refNo='" + refNo + '\'' +
                 ", nominationDeadline=" + nominationDeadline +
@@ -1332,14 +1356,6 @@ public final class Offer extends AbstractVerification {
             check = false;
         }
 
-//        if (nominationDeadline != null) {
-//            // "nominationDeadline" must be before start of an internship
-//            if (((fromDate != null) && nominationDeadline.after(fromDate)) || ((fromDate2 != null) && nominationDeadline.after(fromDate2))) {
-//                addError(validation, "nominationDeadline", "should be before 'fromDate' and 'fromDate2'");
-//                check = false;
-//            }
-//        }
-
         return check;
     }
 
@@ -1415,37 +1431,4 @@ public final class Offer extends AbstractVerification {
 
         return check;
     }
-
-//    /**
-//     * Unavailable period must be inside one of internship date ranges
-//     * or between two ranges.
-//     *
-//     * @param type   Type of notification
-//     * @param action Kind of action (new, update)
-//     * @return generated String message
-//     */
-//    public String generateMessage(final NotificationType type, final String action) {
-//        final String message;
-//
-//        switch (type) {
-//            case EMAIL:
-//                message = generateEmailMessage(action);
-//                break;
-//            case IM:
-//                message = generateImMessage(action);
-//                break;
-//            default:
-//                message = "";
-//        }
-//
-//        return message;
-//    }
-//
-//    private String generateEmailMessage(final String action) {
-//        return "The offer " + refNo + " has been " + action;
-//    }
-//
-//    private String generateImMessage(final String action) {
-//        return "The offer " + refNo + " has been " + action;
-//    }
 }

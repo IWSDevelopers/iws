@@ -132,7 +132,7 @@ public final class ExchangeController extends CommonController implements Exchan
             verify(request);
 
             final ExchangeService service = factory.prepareOfferService();
-            response = service.manageOffer(authentication, request);
+            response = service.processOffer(authentication, request);
         } catch (IWSException e) {
             response = new OfferResponse(e.getError(), e.getMessage());
         }

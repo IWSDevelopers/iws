@@ -57,6 +57,11 @@ import java.util.List;
  * @noinspection OverlyComplexClass, AssignmentToDateFieldFromParameter, OverlyLongMethod
  */
 @NamedQueries({
+        @NamedQuery(
+                name = "offer.findByExternalIdAndRefNo",
+                query = "select o from OfferEntity o " +
+                        "where o.externalId = :eoid" +
+                        "  and o.refNo = :refno"),
         @NamedQuery(name = "OfferEntity.findAll", query = "SELECT o FROM OfferEntity o"),
         @NamedQuery(name = "OfferEntity.findById", query = "SELECT o FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM OfferEntity o WHERE o.id IN :ids"),
@@ -75,6 +80,9 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id = null;
+
+    @Column(name = "external_id", nullable = false, unique = true, length = 36)
+    private String externalId = null;
 
     @Column(name = "ref_no", nullable = false, unique = true)
     private String refNo = null;
@@ -392,13 +400,24 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         this.unavailableTo = unavailableTo;
     }
 
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    public void setExternalId(final String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getExternalId() {
+        return externalId;
     }
 
     public Language getLanguage1() {
@@ -679,8 +698,8 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Override
     public void merge(final OfferEntity obj) {
         // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && refNo.equals(obj.refNo)) {
-            // Note, Id & refno are *not* allowed to be updated!
+        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
+            // Note, Id, ExternalId & refno are *not* allowed to be updated!
             employerName = obj.employerName;
             employerAddress = obj.employerAddress;
             employerAddress2 = obj.employerAddress2;

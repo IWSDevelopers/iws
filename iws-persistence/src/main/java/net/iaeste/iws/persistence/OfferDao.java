@@ -42,7 +42,7 @@ public interface OfferDao extends BasicDao {
      * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
-    OfferEntity findOffer(final Long offerId);
+    OfferEntity findOffer(Long offerId);
 
     /**
      * Finds the entity in the database.
@@ -51,13 +51,24 @@ public interface OfferDao extends BasicDao {
      * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
-    OfferEntity findOffer(final String refNo);
+    OfferEntity findOffer(String refNo);
+
+    /**
+     * Finds an Offer in the database which has both the given ExternalId and
+     * RefNo. If no offer matching both was found, then a null value is
+     * returned, otherwise the found Entity is returned.
+     *
+     * @param externalId The External Id of the Offer
+     * @param refNo      The unique Offer Refence Number
+     * @return Found Offer Entity or null
+     */
+    OfferEntity findOffer(String externalId, String refNo);
 
     /**
      * @param offerIds list of primary keys for offers
      * @return list of {@code }OfferEntity}
      */
-    List<OfferEntity> findOffers(final List<Long> offerIds);
+    List<OfferEntity> findOffers(List<Long> offerIds);
 
     /**
      * Finds the entity in the database.
@@ -67,7 +78,7 @@ public interface OfferDao extends BasicDao {
      * @return list of {@code }OfferEntity}
      * @throws PersistenceException
      */
-    List<OfferEntity> findOffersByEmployerName(final String employerName, final Long ownerId);
+    List<OfferEntity> findOffersByEmployerName(String employerName, Long ownerId);
 
     /**
      * Finds the entity in the database.
@@ -77,7 +88,7 @@ public interface OfferDao extends BasicDao {
      * @return list of {@code }OfferEntity}
      * @throws PersistenceException
      */
-    List<OfferEntity> findOffersByLikeEmployerName(final String employerName, final Long ownerId);
+    List<OfferEntity> findOffersByLikeEmployerName(String employerName, Long ownerId);
 
     /**
      * Finds all offers which are owned by a group of given Id.
@@ -85,7 +96,7 @@ public interface OfferDao extends BasicDao {
      * @param   ownerId ownerId of a group owning offers
      * @return  list of {@link OfferEntity} which are owned by GroupEntity with {@code id = ownerId}
      */
-    List<OfferEntity> findOffersByOwnerId(final Long ownerId);
+    List<OfferEntity> findOffersByOwnerId(Long ownerId);
 
     /**
      * Finds all shared offers.
@@ -100,7 +111,7 @@ public interface OfferDao extends BasicDao {
      * @param  offerId id of the offer to get sharing info for
      * @return list of {@link OfferGroupEntity} which are shared
      */
-    List<OfferGroupEntity> findGroupsForSharedOffer(final Long offerId);
+    List<OfferGroupEntity> findGroupsForSharedOffer(Long offerId);
 
     /**
      * Finds information about sharing of the offer
@@ -108,7 +119,7 @@ public interface OfferDao extends BasicDao {
      * @param  refNo reference number of the offer to get sharing info for
      * @return list of {@link OfferGroupEntity} which are shared
      */
-    List<OfferGroupEntity> findGroupsForSharedOffer(final String refNo);
+    List<OfferGroupEntity> findGroupsForSharedOffer(String refNo);
 
     /**
      * Unshares the offer from all groups
@@ -116,7 +127,7 @@ public interface OfferDao extends BasicDao {
      * @param offerId id of the offer to get sharing info for
      * @return number of groups from which the offer was unshared
      */
-    Integer unshareFromAllGroups(final Long offerId);
+    Integer unshareFromAllGroups(Long offerId);
 
     /**
      * Unshares the offer from all groups
@@ -125,7 +136,7 @@ public interface OfferDao extends BasicDao {
      * @param  refNo reference number of the offer to get sharing info for
      * @return number of groups from which the offer was unshared
      */
-    Integer unshareFromAllGroups(final String refNo);
+    Integer unshareFromAllGroups(String refNo);
 
     /**
      * Unshares the offer from groups
@@ -134,7 +145,7 @@ public interface OfferDao extends BasicDao {
      * @param  groups list of groups from which the offer is unshared
      * @return number of groups from which the offer was unshared
      */
-    Integer unshareFromGroups(final Long offerId, final List<Long> groups);
+    Integer unshareFromGroups(Long offerId, List<Long> groups);
 
     /**
      * Unshares the offer from groups
@@ -144,7 +155,7 @@ public interface OfferDao extends BasicDao {
      * @param  groups list of groups from which the offer is unshared
      * @return number of groups from which the offer was unshared
      */
-    Integer unshareFromGroups(final String refNo, final List<Long> groups);
+    Integer unshareFromGroups(String refNo, List<Long> groups);
 
     /**
      * Deletes an offer from database.
@@ -152,7 +163,7 @@ public interface OfferDao extends BasicDao {
      * @param offerId id of the offer to delete
      * @return true if the offer has been deleted, otherwise false
      */
-    boolean delete(final Long offerId);
+    boolean delete(Long offerId);
 
     /**
      * Deletes an offer from database.
@@ -160,7 +171,7 @@ public interface OfferDao extends BasicDao {
      * @param offerIds ids of offers to delete
      * @return number of deleted objects
      */
-    Integer delete(final List<Long> offerIds);
+    Integer delete(List<Long> offerIds);
 
     /**
      * Finds all groups for given external ids
@@ -168,7 +179,7 @@ public interface OfferDao extends BasicDao {
      * @param externalIds list of external ids
      * @return list of {@link GroupEntity}
      */
-    List<GroupEntity> findGroupByExternalIds(final List<String> externalIds);
+    List<GroupEntity> findGroupByExternalIds(List<String> externalIds);
 
     /**
      * Finds group for given external id
@@ -176,5 +187,5 @@ public interface OfferDao extends BasicDao {
      * @param externalId group's external id
      * @return {@link GroupEntity}
      */
-    GroupEntity findGroupByExternalId(final String externalId);
+    GroupEntity findGroupByExternalId(String externalId);
 }

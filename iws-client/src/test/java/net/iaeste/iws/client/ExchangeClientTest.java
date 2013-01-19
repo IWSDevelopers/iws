@@ -34,15 +34,14 @@ import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -82,8 +81,9 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testProcessOfferCreateMinimalOffer() {
+        final String refNo = "PL-2012-0001";
         final Offer minimalOffer = OfferTestUtility.getMinimalOffer();
-        minimalOffer.setRefNo("PL-2012-0001");
+        minimalOffer.setRefNo(refNo);
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(minimalOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
@@ -94,15 +94,16 @@ public class ExchangeClientTest extends AbstractClientTest {
         // check if minimalOffer is persisted
         final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, request);
+        final Offer readOffer = findOfferFromResponse(refNo, fetchResponse);
 
-        assertThat(fetchResponse.getOffers().isEmpty(), is(false));
-        assertThat(fetchResponse.getOffers().contains(minimalOffer), is(true));
+        assertThat(readOffer, is(not(nullValue())));
     }
 
     @Test
     public void testProcessOfferCreateFullOffer() {
+        final String refNo = "PL-2012-0002";
         final Offer fullOffer = OfferTestUtility.getFullOffer();
-        fullOffer.setRefNo("PL-2012-0002");
+        fullOffer.setRefNo(refNo);
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(fullOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
@@ -113,9 +114,9 @@ public class ExchangeClientTest extends AbstractClientTest {
         // check if fullOffer is persisted
         final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, request);
+        final Offer readOffer = findOfferFromResponse(refNo, fetchResponse);
 
-        assertThat(fetchResponse.getOffers().isEmpty(), is(false));
-        assertThat(fetchResponse.getOffers().contains(fullOffer), is(true));
+        assertThat(readOffer, is(not(nullValue())));
     }
 
     @Test
@@ -200,8 +201,9 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testGetEmployerInformation() {
+        final String refNo = "PL-2012-0005";
         final Offer offer = OfferTestUtility.getFullOffer();
-        offer.setRefNo("PL-2012-0005");
+        offer.setRefNo(refNo);
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -210,16 +212,15 @@ public class ExchangeClientTest extends AbstractClientTest {
 
         final FetchOffersRequest request = new FetchOffersRequest(FetchType.OWNED);
         final FetchOffersResponse response = exchange.fetchOffers(token, request);
+        final Offer readOffer = findOfferFromResponse(refNo, response);
 
-        assertThat(response.getOffers().isEmpty(), is(false));
-        assertThat(response.getOffers().indexOf(offer)>-1, is(true));
-        assertThat(response.getOffers().get(response.getOffers().indexOf(offer)), is(offer));
+        assertThat(readOffer, is(not(nullValue())));
 
-        FetchEmployerInformationRequest employerRequest = new FetchEmployerInformationRequest(offer.getEmployerName());
-        FetchEmployerInformationResponse employerResponse = exchange.fetchEmployers(token, employerRequest);
+        final FetchEmployerInformationRequest employerRequest = new FetchEmployerInformationRequest(offer.getEmployerName());
+        final FetchEmployerInformationResponse employerResponse = exchange.fetchEmployers(token, employerRequest);
 
         assertThat(employerResponse.getEmployers().isEmpty(), is(false));
-        EmployerInformation employerInformation = employerResponse.getEmployers().get(0);
+        final EmployerInformation employerInformation = employerResponse.getEmployers().get(0);
         assertThat(employerInformation.getAddress(), is(offer.getEmployerAddress()));
         assertThat(employerInformation.getAddress2(), is(offer.getEmployerAddress2()));
         assertThat(employerInformation.getBusiness(), is(offer.getEmployerBusiness()));
@@ -251,6 +252,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         final Offer readOffer = findOfferFromResponse(refNo, findSavedResponse);
         assertThat(readOffer, is(not(nullValue())));
         assertThat(readOffer.getNumberOfHardCopies(), is(2));
+        assertThat(readOffer.getId(), is(not(nullValue())));
 
         // Update the Offer, with a new value for NumberOfHardCopies
         readOffer.setNumberOfHardCopies(3);
@@ -261,7 +263,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         final FetchOffersRequest findupdatedRequest = new FetchOffersRequest(FetchType.OWNED);
         final FetchOffersResponse findUpdatedResponse = exchange.fetchOffers(token, findupdatedRequest);
         final Offer updatedOffer = findOfferFromResponse(refNo, findUpdatedResponse);
-        assertThat(updatedOffer, CoreMatchers.is(not(nullValue())));
+        assertThat(updatedOffer, is(not(nullValue())));
         assertThat(updatedOffer.getNumberOfHardCopies(), is(3));
     }
 

@@ -14,11 +14,6 @@
  */
 package net.iaeste.iws.core.transformers;
 
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -35,6 +30,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author  Michal Knapik / last $Author:$
@@ -113,6 +114,7 @@ public class OfferTransformerTest {
     @Test
     public void testCopyingMinimalOfferToDto() {
         final OfferEntity entity = getMinimalOfferEntity();
+        entity.setExternalId(UUID.randomUUID().toString());
         final Offer offer = OfferTransformer.transform(entity);
 
         assertThat(offer.getRefNo(), is(entity.getRefNo()));
@@ -172,6 +174,7 @@ public class OfferTransformerTest {
     @Test
     public void testCopyingBackAndForthFromDto() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setId(UUID.randomUUID().toString());
         final OfferEntity entity = OfferTransformer.transform(offer);
         final Offer newOffer = OfferTransformer.transform(entity);
         // we rely on equals method
@@ -181,6 +184,7 @@ public class OfferTransformerTest {
     @Test
     public void testCopyingBackAndForthFromEmptyDto() {
         final Offer offer = new Offer();
+        offer.setId(UUID.randomUUID().toString());
         final OfferEntity entity = OfferTransformer.transform(offer);
         final Offer newOffer = OfferTransformer.transform(entity);
         // we rely on equals method

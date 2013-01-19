@@ -23,19 +23,35 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.*;
-import net.iaeste.iws.api.responses.*;
+import net.iaeste.iws.api.requests.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.FetchOffersRequest;
+import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.FetchPublishOfferRequest;
+import net.iaeste.iws.api.requests.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.PublishGroupRequest;
+import net.iaeste.iws.api.requests.PublishOfferRequest;
+import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
+import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.api.responses.OfferTemplateResponse;
+import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -64,23 +80,46 @@ public final class ExchangeService extends CommonService {
      * @param request        Offer Request information, i.e. OfferDTO
      * @return OfferResponse with error information
      */
-    public OfferResponse manageOffer(final Authentication authentication, final ProcessOfferRequest request) {
-        final OfferEntity existingEntity = dao.findOffer(request.getOffer().getRefNo());
+    public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
         final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
+        final Offer givenOffer = request.getOffer();
+        final String externalId = givenOffer.getId();
+        final String refNo = givenOffer.getRefNo();
 
-        if (existingEntity == null) {
-            // Add the Group to the Offer
-            newEntity.setGroup(authentication.getGroup());
-            // Before we can persist the Offer, we need to check that the refno
-            // is valid. Since the Country is part of the Group, we can simply
-            // compare the refno with that
-            verifyRefnoValidity(newEntity);
-            // Persist the Offer with history
-            dao.persist(authentication, newEntity);
+        if (externalId == null) {
+            final OfferEntity existingEntity = dao.findOffer(refNo);
+            if (existingEntity == null) {
+                // Create a new Offer
+                // Add the Group to the Offer
+                newEntity.setGroup(authentication.getGroup());
+                // Before we can persist the Offer, we need to check that the refno
+                // is valid. Since the Country is part of the Group, we can simply
+                // compare the refno with that
+                verifyRefnoValidity(newEntity);
+                // Set the ExternalId of the Offer
+                newEntity.setExternalId(UUID.randomUUID().toString());
+                // Persist the Offer with history
+                dao.persist(authentication, newEntity);
+            } else {
+                // An Offer exists with this RefNo, but the Id was not provided,
+                // hence we have the case where someone tries to create a new
+                // Offer using an existing RefNo, this is not allowed
+                throw new IdentificationException(String.format("An Offer with the Reference Number %s already exists.", refNo));
+            }
         } else {
             // Check if the user is allowed to work with the Object, if not -
             // then a Permission Exception is thrown
             permissionCheck(authentication, authentication.getGroup());
+
+            // Okay, user is permitted. Let's check if we can find this Offer
+            final OfferEntity existingEntity = dao.findOffer(externalId, refNo);
+
+            if (existingEntity == null) {
+                // We could not find an Offer matching the given criterias,
+                // hence we have a case, where the user have not provided the
+                // correct information, we cannot process this Offer
+                throw new IdentificationException(String.format("No Offer could be found with the Id %s and Refrefence Number %s.", externalId, refNo));
+            }
 
             // Persist the changes, the method takes the existing and merges the
             // new values into it, and finally it also writes an entry in the
@@ -106,6 +145,10 @@ public final class ExchangeService extends CommonService {
 
     // TODO Should perform the delete operation based on the refno
     public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {
+//        // Check if the user is allowed to work with the Object, if not -
+//        // then a Permission Exception is thrown
+//        permissionCheck(authentication, authentication.getGroup());
+
         final OfferEntity foundOffer = dao.findOffer(request.getOfferRefNo());
 
         if (foundOffer != null) {

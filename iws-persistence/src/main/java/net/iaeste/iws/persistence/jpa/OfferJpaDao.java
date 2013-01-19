@@ -70,6 +70,9 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
         return entity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OfferEntity findOffer(final String refNo) {
         OfferEntity entity = null;
@@ -83,6 +86,27 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
                 entity = found.get(0);
             }
         }
+
+        return entity;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OfferEntity findOffer(final String externalId, final String refNo) {
+        final Query query = entityManager.createNamedQuery("offer.findByExternalIdAndRefNo");
+        query.setParameter("eoid", externalId);
+        query.setParameter("refno", refNo);
+        final List<OfferEntity> found = query.getResultList();
+
+        final OfferEntity entity;
+        if (found.isEmpty()) {
+            entity = null;
+        } else {
+            entity = found.get(0);
+        }
+
         return entity;
     }
 

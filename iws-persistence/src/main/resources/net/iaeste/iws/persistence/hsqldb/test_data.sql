@@ -102,9 +102,9 @@ insert into user_to_group (user_id, group_id, role_id) values (31, 19, 2);
 INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
 ('AT-2013-0001-AB', '27d21139-c478-4c30-be57-aba0aa57ac2d', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Vienna University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 11);
 INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('AT-2013-0002-AB', '42dbdd0b-625a-4b97-b2c6-bf8f43bdc2b2', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Vienna University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', 'O', 'HUNGARIAN', 'F', 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 11);
+('AT-2013-0002-AB', '42dbdd0b-625a-4b97-b2c6-bf8f43bdc2b2', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Vienna University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', 'O', 'HUNGARIAN', 'F', 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B|M', 'IT|MATHEMATICS', '', 11);
 INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('AT-2013-0003-AB', '2768e03a-1574-4063-8d1f-3aae55df8cdd', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Vienna University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', 'A', 'HUNGARIAN', 'F', 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 11);
+('AT-2013-0003-AB', '2768e03a-1574-4063-8d1f-3aae55df8cdd', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Vienna University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', 'A', 'HUNGARIAN', 'F', 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B|M|E', 'IT|MATHEMATICS', '', 11);
 INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
 ('AT-2013-0004-AB', '636c7603-6706-460f-82e7-cba97298edeb', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Vienna University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 11);
 
@@ -135,13 +135,879 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
 INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
 ('PL-2013-0040-WS', '353bc1bf-2ac3-429d-9c9e-534dec476aa9', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Warsaw University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 19);
 
-INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0001', 'e53bc2bf-7ae6-4b62-8964-c7a4d9f47a1b', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Budapest University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 21);
-INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0002', '3c1ff1b3-1f5e-44b5-9c33-6b7398c25d3d', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Budapest of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', 'O', 'HUNGARIAN', 'F', 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 21);
-INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0003', 'cab649c0-470d-493e-a837-2355fe755ba9', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Budapest University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', 'A', 'HUNGARIAN', 'F', 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 21);
-INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0004', '3482517b-19ce-40e4-a607-982b1618cfa1', FALSE, 'EUR', 38.5, 7.7, 'approx. 30', 'Budapest University of Technology', 'Karlsplatz 13', '1040 Wien', 'University', 9000, 'www.tuwien.ac.at', '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, 'VIE', 'Karlsplatz', '2013-04-15', 'Needs to be funny\nExperience in JAVA', 1250.00, 'MONTHLY', FALSE, 'work bla bla - teis let your imagination lead you!', 'Vienna', 'R', 'B', 'IT|MATHEMATICS', '', 21);
+--SELECT `RefNo`, `Canteen`, `Currency`, `HoursWeekly`, `HoursDaily`, `Deduction`, `Employer`, `Address1`, `Address2`, `Business`, `Employees`, `ResponsibleWeb`, `From`, `To`, NULL, NULL, NULL, NULL, Language1, `Language1Level`, `Language1Or`, `Language2`, `Language2Level`, `Language2Or`, `Language3`, `Language3Level`, `LivingCost`, `LivingCostFrequency`, `Lodging`, `LodgingCost`, `LodgingCostFrequency`, `WeeksMin`, `WeeksMax`, `Airport`, `Transport`, `Deadline`, `OtherRequirements`, `Payment`, `PaymentFrequency`, `TrainingRequired`, `Workkind`, `Workplace`, `WorkType`, `Study`, `Faculty`, `Specialization`, 21 FROM `xs_Offer` where country = 'Hungary'
+--INSERT (ref_no, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website, from_date, to_date,
+--  language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
 
---SELECT `RefNo`, `Canteen`, `Currency`, `HoursWeekly`, `HoursDaily`, `Deduction`, `Employer`, `Address1`, `Address2`, `Business`, `Employees`, `ResponsibleWeb`, `From`, `To`,  FROM `xs_Offer` where country = 'Hungary'
+-- =============================================================================
+-- Offer Hungary
+-- =============================================================================
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0001', '4d81a4e1-adb3-4f42-b286-129024a82526', NULL, 'HUF', '40', '8', NULL, 'Elgoscar 2000 Ltd', NULL, '', 'Environmental analysis', '15', NULL,
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+20000, 'WEEKLY', 'arranged by IAESTE', 10000, 'WEEKLY', '8', '12', 'Budapest', NULL, '2013-03-31',
+NULL,
+25000, 'WEEKLY', NULL,
+'Chemical analysis of environmental samples (water, groundwater, soil). Instrumental analysis: GC (HP, ECO), GC/MS, HPLC. Development of water-purification technologies.',
+'Balatofüzfö', 'W', 'M', 'WATER_TREATMENT|CHEMISTRY', 'Analytic', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0002', 'b3e61e40-e822-42c6-8023-4da6c84caa87', FALSE, 'HUF', '40', '8', '0', 'Pannonpharma Ltd.', 'Hungary-7720 Pécsvárad; Pannonpharma', '', 'medicine making', '70', '',
+'2013-08-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', NULL, NULL, NULL, NULL, NULL,
+'20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '8', 'Budapest (Ferihegy)', 'Pécs', '2013-05-20',
+'-',
+'25', 'WEEKLY', NULL,
+'1. Training in pharmaceutical control laboratory. the job covers physical; physical-chemical and chemical drug control. 2. Training in tabletting plant.',
+'Pécsvárad', 'P', 'E', 'CHEMISTRY', '-', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0003', '908f2a4f-fa45-4f67-86f2-733ff56ef95c', FALSE, 'HUF', '40', '8', '0', 'MSc Ltd.', 'Hungary-1143 Budapest; Hungaria square 113.', '', 'Bridge and structural design', '30', '',
+'2013-06-01', '2013-08-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'FRENCH', 'G', NULL, NULL, NULL,
+'20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '8', 'Budapest (Ferihegy)', 'Budapest', '2013-05-10',
+'No smoking (if possible)',
+'25', 'WEEKLY', NULL,
+'Preparing detailed structural drawings for bridges or towers by AutoCad. Making statical calculation of existing or yet-to-be-bulit bridges by finite element programmes.',
+'Budapest', 'P', 'E', 'CIVIL_ENGINEERING', 'Bridge or structural', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0004', 'b54058da-8f1d-480b-a276-bca74a43879d', FALSE, 'HUF', '40', '8', '0', 'GE Healthcare', 'Hungary-2040 Budaörs; Akron str. 2.', '', 'Interventional X-ray machines', '400', '',
+'2013-06-01', '2013-06-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '40', '52', 'Budapest (Ferihegy)', 'Budapest', '2013-05-15',
+'-',
+'42', 'WEEKLY', NULL,
+'Design our next generation Cardiovascular X-Ray imaging systems. Software and hardware design and compliance to medical industry standards. Functional and architectural specification; Image quality. Risk retirement and feasibility. Coordinate the SW & HW implementation design teams. Design and execution of test; Clinical evaluations follow up.',
+'Budaörs', 'R', 'B', 'IT', 'MEdical Engineering; Image Processing (optional)', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0005', 'd1a95361-a373-40fa-a2a3-ea38104e6a46', FALSE, 'HUF', '40', '8', '0', 'Usity of Miskolc Departm. of Fluid and Heat Eng.', 'Hungary-3515 Miskolc; Egytemváros', '', 'Teaching; research', '23', '',
+'2013-06-26', '2013-08-06', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '6', '6', 'Budapest (Ferihegy)', 'Miskolc', '2013-05-10',
+'-',
+'25', 'WEEKLY', NULL,
+'Numerical simulation of the vacuum-cleaner. The trainee will use the CFD package FLUENT. The Gambit cemmercial Package will be used to mesh the body. Flow-field will be calculated by the FLUENT. the trainee will determine the acoustic power of the vacuum-cleaner. The trainee makes recommendation how to reduce the acoustic power.',
+'Miskolc', 'R', 'M', 'MECHANICAL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0006', '45222086-85de-4853-a22a-5d8e8e2ad214', FALSE, 'HUF', '40', '8', '0', 'Telemax GSm Service Kft.', 'Hungary-1145 Budapest; Szugló u. 47.', '', 'Service (Mainly mobil phone)', '80', '',
+'2013-06-01', '2013-06-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '52', 'Ferihegy (Budapest)', 'Budapest', '2013-05-30',
+'-',
+'25', 'WEEKLY', NULL,
+'Our company is the largest repair center in Hungary. We repair different brand mobile phones like Motorola; Siemens; Sharp; Samsung; LG. We repair OMRON PLC and entertainment electonics products (TV; DVD). We would like to change experience with a collegues; who have some working knowledge in this area.',
+'Hungary-2040 Budaörs; Kinizsi u. 2/b.', 'W', 'E', 'ELECTRICAL_ENGINEERING', 'Electroniccs (entertaining) knowledge', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0007', '091d2412-fcdd-4e00-b526-87adfb2a3813', FALSE, 'HUF', '40', '8', '0', 'DGS Kft.', 'Hungary-1118 Budapest; RegQs str. 13.', '', 'Security systems', '7', '',
+'2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '12', 'Ferihegy (Budapest)', 'Budapest', '2013-05-30',
+'Native speaker (from): US; England; Canada',
+'25', 'WEEKLY', NULL,
+'Installing; maintaining; programming any security systems.',
+'Hungary-1118 Budapest; RegQs u. 13.', 'P', 'M', 'SYSTEMS_ENGINEERING', 'Security Systems (DSC; Paradox; Pelco; Computar)', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0008', 'e3b8c20b-08d7-4326-a777-6e1532f6097a', FALSE, 'HUF', '25', '5', '0', 'Pécsi Mélyépít&#33', 'Hungary-7624 Pécs; Budai Nagy Antal str. 1.', '', 'Public utility designed', '5', '',
+'2013-06-01', '2013-10-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'F', NULL, NULL, NULL,
+'20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '12', 'Ferihegy (Budapest)', 'Pécs', '2013-05-30',
+'-',
+'25', 'WEEKLY', NULL,
+'The Pécsi Deep Constructive Office Co. Ltd. provides full range of quality engineering and consulting sevices. Our offices main activities are the public utilities of canalisation; water-supply and water-diversion. We would like to employ public utility designer; to the scope of duties bellow: on-site examination; plotting; longitudinal-section; cross-section; hydraulically and hydrological analyses. We need students who have experiences in AutoCad and MS Office software.',
+'Pécs', 'R', 'M', 'CIVIL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0009', 'f641dfb0-22e2-4a10-9811-ab2309917d1c', FALSE, 'HUF', '40', '8', '0', 'Microsoft Magyarország Kft.', 'H-1031 Budapest; Záhonyi street 3.', '', 'trading of commercial software products; consultin', '200', '',
+'2013-08-28', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
+'20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '52', '52', 'Budapest; Ferihegy', 'Budapest', '2013-09-12',
+'-',
+'190', 'MONTHLY', NULL,
+'Our new trainee; as a part of an international team will have the possibility to learn and use broad and indepth product knowledge to provide and facilitate the responsive delivery of technical solutions and information to Microsoft Enterprise Customers who use Microsoft Exchange Server and/or Outlokk products.  Responsibilities: - Participation and learing possibility in analyziong and solving complex product and solutions related technical problems.  Requirements: - Knowledge of Microsoft Exchange Server is an advantage; but not obligatory; E written and verbal GERMAN and ENGLISH language skills; Enthusiasm for Microsoft Products; and passion for Microsoft technologies; Quick learning and developing possibilities; Using cutting edge technology on a daily basis.',
+'Budapest', 'P', 'M', 'INFORMATION_TECHNOLOGY', 'IT', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0010', 'b674757d-c91a-485e-83d7-da58aa5efb8f', FALSE, 'HUF', '40', '8', '-', 'University of Pecs Tech. Fac. Inst. of Architecture', '7624 Pecs, Rokus u. 2/b', '', 'Architecure', '22', NULL,
+'2013-05-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '8', '12', 'Budapest', 'Bus', '2013-03-31',
+NULL,
+'25000.00', 'WEEKLY', NULL,
+'All kind of architectural works: study-plans permission / work plans teaching of architectural subjects: architecural design, interial design, drawing, cad. Working on projects: living facilities, world heritage surviving.',
+'7624 Pecs, Rokus u. 2/b', 'P', 'M', 'ARCHITECTURE', NULL, '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0011', '9405516c-8c0c-4ae3-8a97-553f034855f7', FALSE, 'HUF', '40', '8', '-', 'MEEI Ltd. TÜV Rheinland Group', '1132 Budapest, Vaci ut 48/a-b', '', 'Product safety service', '93', 'www.meet.hu',
+'2013-05-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
+'20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '6', '8', 'Budapest', 'Bus', '2013-03-31',
+NULL,
+'25000.00', 'WEEKLY', NULL,
+'Revition of available equipments, draft testing plan making, participation/assistance to develop new equipments, investigation assistance.\r\nMEEI is member of Group TÜV Rheinland Group, a global leader in independent testing and assessment services.',
+'1132 Budapest, Vaci ut 48/a-b', 'R', 'M|E', 'ELECTRICAL_ENGINEERING', NULL, '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0012', 'ebf97e4d-f5ee-46d8-835d-0c13b9e81fb5', FALSE, 'HUF', '40', '8', NULL, 'Mecsek-Öko Environmental Co.', '7633 Pecs, Esztergar', '', 'Recultivation', '135', NULL,
+'2013-07-01', '2013-08-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+NULL, NULL, NULL, NULL, NULL, '6', '7', 'Budapest', 'Bus', '2013-03-31',
+NULL,
+NULL, NULL, NULL,
+'Environmental damage assessment and examination, remediation of damage, recultivation, environmental monitoring, technological control, treatment of contaminated mine water, mining activities.',
+'7633 Pecs, Esztergar', 'P', 'E', 'MINING|GEOLOGY', 'Hidrogeology', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0013', '582f9cb5-f752-4265-8bc8-286f8b469450', NULL, 'HUF', '40', '8', '-', 'Hepenix Ltd', '2049 Diosd, Petofi S. u. 39', '', 'company', '15', 'www.hepenix.hu',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', NULL, NULL, NULL, NULL, NULL,
+'20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '8', '8', 'Budapest (Ferihegy)', 'Bus', '2013-03-31',
+'CAD knowledge',
+'26000.00', 'WEEKLY', NULL,
+'During our past decade, the main areas of activity have been the delivery of technical and engineering services and the design, manufacturing, commissioning and maintenance of tailor-made automated production machinery and purpose-built equipment. In the course of our everday work we are regardful of our quality directives set forth in our Quality Policies: we create the products of the company at the highest possible standards, we reach the satisfaction of our customers through the creation of new know-how and we wish to make our brand well-known in our domestic and foreign markets. The main task of the student will be to take part in the development process of the mechanical design of automatic components which are development process of the mechanical design of automatic components with are developed to replace manual work.',
+NULL, 'P', 'E', 'MECHANICAL_ENGINEERING', '-', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0014', 'e42a427d-5838-40a1-866d-1e764c90af40', FALSE, 'HUF', '40', '8', '0', 'E-Word Ltd.', 'H-1028 Budapest,', 'Vízesés u. 10.', 'Translation, project management software', '4', '',
+'2013-01-01', '2013-04-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-12-01',
+FALSE,
+'25000', 'WEEKLY', NULL,
+'To develope a project management system used locally. Previous experience in SAP might be an advantage. The system requirements are already set, we are in the development stage already.',
+'H-1028 Budapest, Vízesés u. 10.', 'P', 'M', 'IT', 'Software Development', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0015', '1411e970-1d5a-4ab6-baa7-865f746a2e65', FALSE, 'HUF', '40', '8', '0%', 'Meditcom Ltd.', 'Robert Karoly krt. 59.', '1134 Budapest', 'IT, Healthcare', '20', 'www.meditcom.hu',
+'2013-03-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+NULL,
+'40000', 'WEEKLY', NULL,
+'Design, development, testing and support of healthcare connected IT products. Java, C# development. UML software design. Hospital administration systems. System integration projects. ',
+'4025 Debrecen, Hatvan u. 58', 'R', 'M|E', 'IT|MEDICAL_ENGINEERING', NULL, '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0016', 'b91cb245-639e-4146-b1a2-07cc0bf71384', FALSE, 'HUF', '40', '8', NULL, 'Finta and Partners Architect Studio Ltd.', 'Szt. Istvan krt. 11', '1055 Budapest', 'Architectural design', '30', 'www.fintastudio.hu',
+'2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G',
+'20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc', '2013-03-31',
+'A portfolio is required with the nomination',
+'28000', 'WEEKLY', NULL,
+'To take part in the process of architectural design (in designing of houses), to work on CAD station, designing with architectural planning software. ',
+'Budapest', 'P', 'E', 'ARCHITECTURE', NULL, '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0017', '472c2d01-7bce-4c4c-9518-bf09cdbca717', FALSE, 'HUF', '40', '8', '0', 'Gamaxcom Ltd.', 'Pazsit u. 6', '1026 Budapest', NULL, NULL, NULL,
+'2013-08-03', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '8', 'Budapest', 'Bus, tram, etc.', '2013-03-31',
+NULL,
+'27000', 'WEEKLY', NULL,
+'Our company deals mainly with software development and consulting activities. We are looking for a sudent who is interested in Computer Science and in Marketing, management areas as well. The main tasks are preparing company brochures, communication for IT-F in Berlin.',
+NULL, 'P', 'M|E', 'IT', NULL, '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0018', 'a1fa311f-9a63-4a89-91f0-3dc00663f9d0', FALSE, 'HUF', '40', '8', '0%', 'Alfred Schuon Lt.d.', 'Hazgyari u. 16', '8200 Veszprem', 'Logistics', '30', 'www.schuon.com',
+'2013-04-01', '2013-07-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '10', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+NULL,
+'25000.00', 'WEEKLY', NULL,
+'The companys main activity is the international forwarding and logistics. Its main partners are from GERMANy and Austria. the expectations of the scope of activities: taking care of the extant partnerships, looking for new partners, acquisition and administration.',
+'Veszprem', 'P', 'M', 'ECONOMICS_OR_TECHNICAL_MANAGEMENT', 'Logistics', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0019', '95e52081-9397-4ce5-9355-6aafd9f51986', TRUE, 'HUF', '40', '8', '0', 'GE Hungary Lpc. Healthcare Division', '2040 Budaörs, Akron u. 2.', '', 'Vascular X-ray Imaging Systems', '450', '',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '26', '52', 'Budapest, Ferihegy', 'Bus', '2013-03-31',
+'Programming experiance and HUNGARIAN or FRENCH language knowledge are advantages.',
+'39000', 'WEEKLY', NULL,
+'Image Quality Engineer. Design Image Quality improvements to our next generation Cardiovascular X-ray imaging systems. Improve the optimization of x-ray techniques and the real-time exposure management algorithm to obtain more information with the same dose level. Develop, prototype and optimize image processing algorithm to ensure optimal visibility of anatomy and objects and implementation teams, finally design and execute tests to ensure customer satisfaction and compliance to medical industry standards. Follow-up clinical evaluations.',
+'2040 Budaörs, Akron u. 2.', 'R', 'M', 'IT', 'Medical Eng., Image Processing', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0020', '33211598-fa09-4a47-a8c5-30e9c1e2df6d', FALSE, 'HUF', '40', '8', '0', 'GE Hungary Lpc. Healthcare Division', '2040 Budaörs, Akron u. 2.', '', 'X-ray Imaging Systems', '450', '',
+'2013-01-01', '2013-05-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '26', '52', 'Budapest, Ferihegy', 'Bus', '2013-05-10',
+'Faculty: Computer Science, Electrical or Mechanical Engineering, Physics. Specialisation: Medical Engineering, Image Processing. Programming experience, HUNGARIAN or FRENCH language knowledge are advantages.',
+'39000', 'WEEKLY', NULL,
+'1 kind of training place is open: Image Quality Engineer. Design Image Quality improvements to our next generation Cardiovascular X-ray imaging systems. Improve the optimization of x-ray techniques and the real-time exposure management algorithm to obtain more information with the same dose level. Develop, prototype and optimize image processing algorithm to ensure optimal visibility of anatomy and objects and implementation teams, finally design and execute tests to ensure customer satisfaction and compliance to medical industry standards. Follow-up clinical evaluations.',
+'2040 Budaörs, Akron u. 2.', 'R', 'B', 'IT', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0021', '9c5f5c03-342b-46ff-9a95-9a732ebdf70c', FALSE, 'HUF', '40', '8', '0', 'Pioneer Hi-Bred Ltd.', '2040 Budaörs, Neumann J. u. 1.', '', 'Production, marketing and sales of commercial seed', '150', '',
+'2013-03-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'UKRAINIAN', 'E', NULL, NULL, NULL,
+'20000', 'MONTHLY', 'IAESTE Hungary', '10000', 'MONTHLY', '26', '26', 'Budapest, Ferihegy', 'Bus', '2013-03-15',
+FALSE,
+'27000', 'WEEKLY', NULL,
+'Participation in plant breeding, product testing and characterization. Data management and field work are also part of intern program.',
+'2040 Budaörs, Neumann J. u. 1.', 'R', 'M', 'AGRONOMY', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0022', 'cbbb79d0-bdd8-494f-b392-004c44bc970f', FALSE, 'HUF', '40', '8', '0', 'MFKK Invention & Research Center', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '22', '',
+'2013-03-18', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+FALSE,
+'35000', 'WEEKLY', NULL,
+'We are looking for a person to help design and create websites for our running and new projects. They would have to work with our engineers and be able to have a basic understanding of the technologies used in the projects. Their main task would be to design the webpage and to update it with new information. The candidate is required to have Php, MySQL, JavaScript, & Flash programming knowledge. MFKK is a very dynamic company with around 20 running projects in different areas. In addition to the website related tasks the candidate will have the opportunity to get involved in projects related to his/her abilities. MFKK offers a very flexible and diverse job that truly helps develop the intern in many fields and ensures a variety of different task with the opportunity to travel, but we require somebody who is up for the challenge. We prefer somebody who has a social personality as has no trouble to communicate with strangers.',
+'1119 Budapest, Tétényi út 93.', 'R', 'M', 'IT', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0023', 'af2c2c8e-daaa-4879-a91c-45c5a51c3771', FALSE, 'HUF', '40', '8', '0', 'MFKK Invention & Research Center', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '22', '',
+'2013-03-18', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+FALSE,
+'35000', 'WEEKLY', NULL,
+'We are looking for a person to help carry out research and development tasks in a specific project and if possible get involved in other projects as well. It is essential that the candidate has Multiphysics MEMS Simulation background as this would the main field of activity. The main task will be to model and to simulate a given electrostatic MEMS actuator combined with micro-fluidics. MFKK is a very dynamic company with around 20 running projects in different areas. The candidate will be involved in a specific project but has to be open to help in other ones as well if required. The candidate will be required to help the company all-around, which means when not doing technical work, the candidate will have to help with the development of new project concepts. MFKK offers a very flexible and diverse job that truly helps develop the intern in many fields and ensures a variety of different task with the opportunity to travel, but we require somebody who is up for the challenge. We prefe',
+'1119 Budapest, Tétényi út 93.', 'R', 'M', 'MECHANICAL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0024', '082be01f-3ebc-42a9-ac54-45145ad294da', FALSE, 'HUF', '40', '8', '0', '4 Hungar Agri-Tech Ltd.', '7621 Pécs, Zrínyi u. 1.', '', 'Agricultural Facility', '15', '',
+'2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '10', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-10',
+FALSE,
+'27000', 'WEEKLY', NULL,
+'The student is going to take part in our usual work including sheet metal fabrication, facility design, part design, workshop work, electrical wiring field installation.',
+'7621 Pécs, Zrínyi u. 1.', 'P', 'M', 'MECHANICAL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0025', '7a435549-d417-4317-a344-a0af8126cdee', TRUE, 'HUF', '40', '8', '0', 'American Appraisal Hungary Ltd.', 'H-1132 Budapest, Váci út 18.', '', 'Valuation', '20', '',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-10',
+FALSE,
+'25000', 'WEEKLY', NULL,
+'To take part in the work of the collective in the field of real estate valuation, to take part in market research and site inspection.',
+'H-1132 Budapest, Váci út 18.', 'P', 'M', 'CIVIL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0026', 'a89b7e53-3707-46e8-a8cf-ebeb722b7591', FALSE, 'HUF', '40', '8', '0', 'Hídtechnika Ltd.', '1138 Budapest, Karikás Frigyes u. 20.', '', 'Building industry', '33', '',
+'2013-07-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-06-10',
+'HUNGARIAN is an advantage.',
+'27000', 'WEEKLY', NULL,
+'We offer a position as foreman or expert of technology. The student will work in a project connected with reinforce concrete insulation, steel insulation or bridge and road insulation.',
+'1138 Budapest, Karikás Frigyes u. 20.', 'P', 'M', 'CIVIL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0027', '5e47fbb4-6d0c-47c4-9460-e1b415ebaf98', TRUE, 'HUF', '40', '8', '0', 'BUTE, Dep. of Automation and Applied Informatics', 'H-1111 Budapest, Goldmann György tér 1.', '', 'Higher education', '15', '',
+'2013-05-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-31',
+'Native ENGLISH!',
+'27000', 'WEEKLY', NULL,
+'Software modeling, software model processing.',
+'1117 Budapest, Magyar Tudósok útja 2', 'R', 'E', 'ELECTRICAL_ENGINEERING', 'Computer Science', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0028', '923e0ea2-3054-4567-bb57-23df46b436c2', TRUE, 'HUF', '40', '8', '0', 'BUTE, Dep. of Automation and Applied Informatics', 'H-1111 Budapest, Goldmann György tér 1.', '', 'Higher education', '15', '',
+'2013-05-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-31',
+'Native ENGLISH!',
+'27000', 'WEEKLY', NULL,
+'Software modeling, software model processing.',
+'1117 Budapest, Magyar Tudósok útja 2', 'R', 'E', 'ELECTRICAL_ENGINEERING', 'Computer Science', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0029', '6aa86093-9ff3-4584-87d1-dd2c79b703fa', FALSE, 'HUF', '40', '8', '0', 'Art Vital Ltd.', 'H-4400 Nyíregyháza, Selyem u. 21.', '', 'Architecture', '18', '',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'RUSSIAN', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, train', '2013-05-31',
+'CAD program knowledge',
+'27000', 'WEEKLY', NULL,
+'To take part in the architectural design process, to work with CAN (ArchiCAD).',
+'H-4400 Nyíregyháza, Selyem u. 21.', 'P', 'E', 'ARCHITECTURE', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0030', '06d821fa-e590-490a-8f2a-aa9370ba1061', FALSE, 'HUF', '45', '9', '0', 'Bálint és Társa Architect Office Ltd.', '1051 Budapest, Október 6. u. 3.', '', 'Architectural design', '10', '',
+'2013-08-10', '2013-10-04', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-06-30',
+'Portfolio',
+'27000', 'WEEKLY', NULL,
+'We are busy with designing buildings, developing areas. Our office is also interested in urban developing plans. We design family houses, too, so we are working in all the fields of architecture.',
+'1051 Budapest, Október 6. u. 3.', 'P', 'E', 'ARCHITECTURE', 'Architectural design', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0031', '4e0ed24d-b39b-4fc1-bac4-a629d4442af3', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+'2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'MONTHLY', 'IAESTE Hungary', '10000', 'MONTHLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-07-30',
+FALSE,
+'27000', 'WEEKLY', NULL,
+'The MFKK Invention and Research Center Ltd. is a private research and development organisation based in Budapest. MFKK is active in initiating and implementing R&D projects co-financed by the Seventh Framework Programme of the European Commission. We invite applications for the following position: Project Assistant. Part-time (20hrs/week, flexible working hours between 8-18), contract renewal is an option. Starting date: as soon as possible. There are currently several openings available. General Description of the Position: The candidates will support the preparation of 2-3 R&D project  proposals in close cooperation with the Project Managers.  Responsibilities: Identify possible project partners with relevant expertise all over Europe through web based research/databases etc. Establish first contact via e-mail and over the phone. Provide project information and answer inquires. Collect specific data in aid of proposal writing, literature research. What we are looking for: Fluent in ',
+'1119 Budapest, Tétényi út 93.', 'R', 'B', 'MANAGEMENT', '-', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0032', '39f24d20-d083-4a95-b07c-55ef3ee3d6c5', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+'2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-01',
+FALSE,
+'27000', 'WEEKLY', NULL,
+'The MFKK Invention and Research Center Ltd. is a private research and development organisation based in Budapest. MFKK is active in initiating and implementing R&D projects co-financed by the Seventh Framework Programme of the European Commission. We invite applications for the following position: Project Assistant. Part-time (20hrs/week, flexible working hours between 8-18), contract renewal is an option. Starting date: as soon as possible. There are currently several openings available. General Description of the Position: The candidates will support the preparation of 2-3 R&D project  proposals in close cooperation with the Project Managers.  Responsibilities: Identify possible project partners with relevant expertise all over Europe through web based research/databases etc. Establish first contact via e-mail and over the phone. Provide project information and answer inquires. Collect specific data in aid of proposal writing, literature research. What we are looking for: Fluent in ',
+'1119 Budapest, Tétényi út 93.', 'R', 'B', 'MANAGEMENT', '-', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0033', '7cad7e1f-e4c3-42cd-a365-723a7c3f6803', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+'2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-01',
+FALSE,
+'27000', 'WEEKLY', NULL,
+'The MFKK Invention and Research Center Ltd. is a private research and development organisation based in Budapest. MFKK is active in initiating and implementing R&D projects co-financed by the Seventh Framework Programme of the European Commission. We invite applications for the following position: Project Assistant. Part-time (20hrs/week, flexible working hours between 8-18), contract renewal is an option. Starting date: as soon as possible. There are currently several openings available. General Description of the Position: The candidates will support the preparation of 2-3 R&D project  proposals in close cooperation with the Project Managers.  Responsibilities: Identify possible project partners with relevant expertise all over Europe through web based research/databases etc. Establish first contact via e-mail and over the phone. Provide project information and answer inquires. Collect specific data in aid of proposal writing, literature research. What we are looking for: Fluent in ',
+'1119 Budapest, Tétényi út 93.', 'R', 'B', 'MANAGEMENT', '-', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0034', '99d64946-f40d-4577-89d5-8ac0a8ffe206', TRUE, 'HUF', '40', '8', NULL, 'Amri Hungary Ltd.', '1031 Budapest, Záhony utca 7', ' ', 'Preparative organic chemistry', '100', NULL,
+'2013-06-15', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+NULL,
+'27000', 'WEEKLY', NULL,
+'preparative heterocyclic organic chemistry lab work. Synthesizing known compounds efficiently using literature or in-house notebook procedures. Modifying reaction conditions in order to improve yields. (Designing of new or alternate reaction sequences is not a normal expectation, but will enchance the performance evaluation of the trainee). Purifying synthesized chemicals to an appropriate degree. The trainee will be able to use the full range og chromatographic, crystallization and distillation techniques.',
+'Budapest', 'R', 'E', 'CHEMISTRY', 'Oganic Chemistry, Drug Chemistry, Heterocyclic Ch', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0035', '71affb3c-cf0e-414b-a07f-0b7cefd1261c', FALSE, 'HUF', '40', '8', NULL, 'MFKK Invention and Research Center ltd.', '1119 Budapest, Tétényi street 93.', ' ', 'Research and Development', '22', NULL,
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'Php, MySQL, javaScript & amp, Flash program',
+'35000', NULL, NULL,
+'We are looking for a person to help design and create website for our running and new projects. They would have to work with our engineers and be able to have a basic understanding of the technologies used in the projects. Their main task would be to design the webpage and to update it with new information, the website related tasks the candidate will have the opportunity to get involve in projects related to his/her abilities.',
+'Budapest', 'R', 'M', 'IT', NULL, '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0036', 'ce87a1dc-baa3-4c91-9edd-86486d9f37ca', TRUE, 'HUF', '40', '8', NULL, 'BME - Dept. of Hydrodynamic System', '111 Budapest, Mqegyetem rkp.3.', ' ', 'Education - research', '25', NULL,
+'2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', 'O', 'HUNGARIAN', 'E',
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+NULL,
+'27000', 'WEEKLY', NULL,
+'Computer simulations or laboratory experiment in the field of fluid mechanics. For example hydraulic transents, cavitation, fluid machinery, aeroacustics, hemodynamics. Knowledge of Matlab or _Ansys-CFX is an advantage.',
+'Budapest', 'R', 'E', 'MECHANICAL_ENGINEERING', 'Fluid mechanics', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0037', '0d94f54d-1a3c-4c57-b1a5-4a8ccc44485d', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', NULL, ' Budapest', NULL, '650', NULL,
+'2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'O', 'ENGLISH', 'F', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '38', 'Budapest', 'bus, train, etc.', '2013-04-01',
+NULL,
+'27000', 'WEEKLY', NULL,
+'System development for airbag-systems:\r\n- conception, development, testing and documentation of airbag-algorithm and software parts\r\n- broaden and automation of test plans for evaluation of robustness and signals of the algorithm\r\n- configuration and adaptation of simulation and test tool for airbag-systems\r\n\r\nRequirements:\r\nknowledge in digital signal processing, Matlab, LabWindows/CVI, C++, able to work independently, good team work ability, high motivation level, responsibility, skills of systematical processing and coordination',
+'Budapest', 'R', 'M', 'IT|ELECTRICAL_ENGINEERING|PHYSICS', NULL, '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0038', 'd09b9b4a-b67e-417f-92fe-80ba1ff94e19', TRUE, 'HUF', '40', '8', '0', 'Cental food Research Institute', '1022 Budapest, Herman Ott&oacute; &uacute;t 15.', '', 'Food research', '100', '',
+'2013-09-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'The food economy and quality department is responsible for sensory evaluation, investigation of consumer reference and bahaviour examination. This department owns a well equied laboratory where these eaminations are going on. A high qualified team works in the department the title topic; questing for the experimental auction method. The tasks of the student include the following topics; literature searching, literature synthesizyng, participation in the organizing and transaction of the experimental auction.',
+'Budapest', 'R', 'E', 'FOOD_TECHNOLOGY', 'Food science and agriculture', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0039', '21670340-8939-4719-8555-a4a6320779f0', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', 'Hungary', 'Automative Tool Development', '650', '',
+'2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '38', 'Budapest', 'bus, train, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'Mechanical engineering or Mechatronics -Supporting engineering work with simulations -Writing engineering reports -Finite element simulations -Electric engines for windscreen wipers',
+'Budapest', 'R', 'B', 'SEE_`KIND_OF_WORK`', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0040', '16fecda2-6e61-4233-a85a-fa753d42bfb2', FALSE, 'HUF', '40', '8', '', 'Bal&aacute;zs &eacute;s V&eacute;csey Ltd.', '4026 Budapest, K&aacute;lvin t&eacute;r 14. fsz. 2.', '', 'Architectural design', '7', '',
+'2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'CAD program knowledge. A portfolio is required with the nomination.',
+'27000', 'WEEKLY', NULL,
+'To take part in the process of arcitectural design (in designing of house), to work on CAD station, designing with architectural planning software.',
+'Debrecen', 'P', 'E', 'ARCHITECTURE', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0041', '4e6dd27d-e42b-4653-bf74-72cf27372b7a', FALSE, 'HUF', '40', '8', '', 'Bachman and Bachmann Ltd.', '7625 P&eacute;cs, B&ouml;ckh J&aacute;nos utca 17.', '', 'Architectural', '0', '',
+'2013-06-01', '2013-09-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '4', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'Conceptual design, architectural details, design in 3D application (archicad or autocad, 3D MAX)',
+'P&eacute;cs', 'P', 'M', 'ARCHITECTURE', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0042', 'd9feac04-9deb-4927-96e9-85a8ea9b6cfe', FALSE, 'HUF', '40', '8', '0', 'Art Vital Ltd.', '4400 Ny&iacute;regyh&aacute;za, Selyem utca 21.', '', 'Architectural', '18', '',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'HUNGARIAN', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'To take part of architectural design process, to work on lad (archicad)',
+'Ny&iacute;regyh&aacute;za', 'P', 'E', 'ARCHITECTURE', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0043', '98f7baf9-a47f-4692-8625-540ded8ecad9', TRUE, 'HUF', '40', '8', '', 'University of Miskolc, Dept. of Fluid Mech.', '3515 Miskolc - University Campus (Egyetemv&aacute;ros)', '', 'CFD Analyse', '0', '',
+'2013-05-24', '2013-07-04', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '6', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'- Numerical analyse in the fluid-technical items - Preparation of Geometry and numerical net (with GAMBIT software) - Numerical analyse with the FLUENT program - Processing and evaluation',
+'Miskolc', 'R', 'M', 'MECHANICAL_ENGINEERING', 'Fluid engineering', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0044', '1df6e0aa-09b2-4239-8d65-8a70e5bb417b', TRUE, 'HUF', '40', '8', '', 'Naturen Ltd.', '1163 Budapest, Czir&aacute;ki u. 32.', '', 'Engineering services, automated test equipment', '10', '',
+'2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'Software developmet, Mechanical engineering, System design, Requirement engineering, Product development and research can be involved. Naturen Ltd. deals primarly with R&amp;amp;D and engineering services. Our experience ranges from the design, development, simulation, virtual and rapid prototype of automated measurement and date acquisition system, customized test equipment and inelligent machines to actual manufacturing, installation and support of complex industrial systems, using of National Instr.products.',
+'Budapest', 'R', 'M', 'MECHANICAL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0045', '5cad010f-ad8b-419c-8e27-b7cae023a788', TRUE, 'HUF', '40', '8', '', '4 Hungar-Tech Ltd.', '7621 P&eacute;cs, Zr&iacute;nyi u. 1.', '', 'Agricultural postharrest technology', '15', '',
+'2013-06-01', '2013-09-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '10', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'Sheet metal fabrication, welding, field installation, design with 3D CAD automation basics',
+'P&eacute;cs', 'W', 'M', 'MECHANICAL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0046', '7a982d95-474a-4654-a5b3-c799b02222ac', FALSE, 'HUF', '40', '8', '', 'MFKK Invention and Research Center ltd.', '1119 Budapest, T&eacute;t&eacute;nyi street 93.', '', 'Research and Development', '22', '',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'Php, MySQL, javaScript and Flash program',
+'35000', 'WEEKLY', NULL,
+'We are looking for a person to help design and create website for our running and new projects. They would have to work with our engineers and be able to have a basic understanding of the technologies used in the projects. Their main task would be to design the webpage and to update it with new information, the website related tasks the candidate will have the opportunity to get involve in projects related to his/her abilities.',
+'Budapest', 'R', 'M', 'IT', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0047', '33413d11-a7a0-4a6b-9830-6ab028cd216a', FALSE, 'HUF', '40', '8', '', 'MSc LTD.', '1106 Budapest, Feh&eacute;r &uacute;t 10/a-b', '', 'Bridge and structural design', '30', '',
+'2013-06-01', '2013-08-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'FRENCH', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'No smoking (if possible)',
+'27000', 'WEEKLY', NULL,
+'Preparing details structural drawing for bridges or rowers by AutoCAD or making statical cakculations of existing or a new bridges by finete element programs.',
+'Budapest', 'P', 'E', 'CIVIL_ENGINEERING', 'Bridge and structural', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0048', '9cb1fff1-c6c1-4f01-a19e-14f645172f98', FALSE, 'HUF', '40', '8', '', 'M&aacute;v&eacute;pcell Kft.', '9500 Celld&ouml;m&ouml;k, Nagy S&aacute;ndor t&eacute;r 14.', '', 'Railway construction and engineering', '250', '',
+'2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '10', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'Railway construction, practical and site experience, performance orientated tasks. The trainee can get familiar with current construction technology and methods.',
+'Celld&ouml;m&ouml;k', 'W', 'M', 'CIVIL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0049', '21dfc2d0-129d-475a-9aa9-e82a9ef98b7c', FALSE, 'HUF', '40', '8', '', 'ASA Construction Ltd.', '6800 H&oacute;dmez&amp;#337;v&aacute;rs&aacute;lyhely, Erzs&eacute;bet &uacute;t 9.', '', 'Precast concrete elements', '370', '',
+'2013-07-01', '2013-09-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'The prospective construction project in summer we are looking for a trainee in the position of a project assistent, partly working in the plenty partly on the building site.',
+'H&oacute;dmez&amp;#337;v&aacute;s&aacute;rhely', 'W', 'E', 'CIVIL_ENGINEERING', 'Construction; building, bridge, infrastructure', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0050', '173883db-aada-4f79-ad66-e4a20b1660e4', FALSE, 'HUF', '40', '8', '', 'MFKK Invention and Research Center ltd.', '1119 Budapest, T&eacute;t&eacute;nyi street 93.', '', 'Research and Development', '22', '',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'ENGLISH', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'E internet based research skills',
+'35000', 'WEEKLY', NULL,
+'We invite application for the following position; Project Assistant. The candidates will support the preparation of 2-3 R&amp;amp;amp;D project proposalsin close cooperation with the Project Managers.  Responsibilities; Identify possible project partners with relevant expertise all over Europe through web based research/datebases etc. Establish first contact via e-mail and over the phone. Provide project information and answer inquires. Collect specific data in aid of proposal writing, literature research.',
+'Budapest', 'R', 'B', 'PROJECT_ASSISTANT', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0051', 'e23811bb-4629-42e1-b361-2abe218fc6bc', FALSE, 'HUF', '40', '8', '', 'BME - Dept. of Oganic Chemical Technology', '1111 Budapest, M&amp;#369;egyetem rakpart 3.', '', 'Chemical engineering, research and laboratory eng.', '12', '',
+'2013-02-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'30000', 'WEEKLY', NULL,
+'Laboratory work in polymer technology, polymer compositen, pharmaceutical application of polymers, fire retardancy of polymers, recycling of polymers',
+'Budapest', 'R', 'M', 'CHEMISTRY', 'Polymer technology', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0052', 'a429746b-c898-4159-8bff-b080d0ddc2ab', FALSE, 'HUF', '40', '8', '', 'Bravogroup  Rendszerhaz Ltd.', '1145 Budapest, &Uacute;jvil&aacute;g utca 50-52', '', 'Sales of office machines', '200', '',
+'2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'HUNGARIAN', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'34500', 'WEEKLY', NULL,
+'Get acquinted with the organisation and the processes of the company, a kind of consumer research in the EU region; find possible partners, contacts from the student\\s country, If the cooperation with the student is succesful, he/she can be a future contact of the company.',
+'Budapest', 'P', 'M', 'TECHNOLOGICAL_MANAGEMENT', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0053', '5a603b99-6aac-4878-927b-a4a59484fd9f', FALSE, 'HUF', '40', '8', '', 'Designsoft Inc.', '1067 Budapest, csengery u. 53.', '', 'Software development', '17', '',
+'2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '16', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
+'',
+'27000', 'WEEKLY', NULL,
+'Elektronics, Physics or Architectural software localization from ENGLISH to one of the following language, RUSSIAN, Italian, Dutch',
+'Budapest', 'P', 'M', 'ELECTRICAL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0054', 'e2dc061d-fe65-41f2-8f47-db9d10458f84', TRUE, 'HUF', '40', '8', '0', 'Robert Bosch Elektronikai Ltd.', '3000 Hatvan, Robert Bosch &uacute;t 1.', '', 'Production/automotive division', '2700', '',
+'2013-04-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-01-01',
+'MS Office, Benefit: SAP knowledge',
+'27000', 'WEEKLY', NULL,
+'1.Muster dates analisys -&amp;amp;gt; the store of producer items/spare parts. Make report those dates in GERMAN. Keep the contact with the Bosch of GERMANy\\s industries and the process engineering of Hatvan. 2. Make thesis plan; - Requirements in the electronic manufacturing/environment - Which environment is needs? - examination and comparison - experiment nad evaluation',
+'Hatvan', 'P', 'B', 'ELECTRICAL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0055', '7cf02279-c26d-409e-8fe8-578a5674df6d', TRUE, 'HUF', '40', '8', '', 'Robert Bosch Elektronikai Ltd.', '3000 Hatvan, Robert Bosch &uacute;t 1.', '', 'Production/automotive division', '2700', '',
+'2013-09-01', '2013-11-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-15',
+'MS Office, Benefit: SAP knowledge',
+'27000', 'WEEKLY', NULL,
+'1.Muster dates analisys -&amp;amp;gt; the store of producer items/spare parts. Make report those dates in GERMAN. Keep the contact with the Bosch of GERMANys industries and the process engineering of Hatvan. 2. Make thesis plan; - Requirements in the electronic manufacturing/environment - Which environment is needs? - examination and comparison - experiment nad evaluation',
+'Hatvan', 'P', 'M', 'ELECTRICAL_ENGINEERING', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0056', '3a8241cf-0b53-488e-b458-b7425c380ba6', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', '', 'Automative Tool Development', '650', '',
+'2013-04-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '52', 'Budapest', 'bus, train, etc.', '2013-04-01',
+FALSE,
+'27000', 'WEEKLY', NULL,
+'See attached.',
+'Budapest', 'R', 'M', 'IT', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0057', 'c68b2071-663d-4e2d-ada0-76d58b462277', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', '', 'Automative Tool Development', '650', '',
+'2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'O', 'ENGLISH', 'F', NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '38', 'Budapest', 'but, train, etc.', '2013-04-01',
+FALSE,
+'27000', 'WEEKLY', NULL,
+'Studies: electrical engineering, telecommunication, computer science, physics Tester for video based driver assistant system: -broaden and automation of test specifications -configuration and adaption of test tool-environment for video systems Requirements: knowledge in digital  signal and image processing - knowledge of analytical and test-methods, PERL, CAPL, C - able to work independently,  - good team wok ability - high motivation level, - responsibility - analytical way of thinking,  - skills of systematical processing and coordination',
+'Budapest', 'R', 'M', 'SEE_KIND_OF_WORK', '', '21');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('H-2013-0058', '0f40a9b3-c640-49ec-8025-71ca919f1263', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', 'Hungary', 'Automative Tool Development', '650', '',
+'2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '38', 'Budapest', 'bus, train, etc.', '2013-03-31',
+'knowledge of programming, and FPGA',
+'27000', 'WEEKLY', NULL,
+'Tasks: Sensors (acceleration, rotation, pressure, etc.). Measuring development. New measurement concepts, procedures for the new products. The further development of existing measurement techniques. Complex electronic regulator development and planning. Developing and programming measurement results evaluation procedures and routines . Improved procedures, electronics, software, equipment installation, commissioning. Laboratory tool calibration. Team work with the GERMAN and HUNGARIAN engineers.   Requirements: Studies in electrical engineering or physics  Knowledge of at least one high-level programming language (eg C, CVI) FPGA knowledge Communication level GERMAN language skills',
+'Budapest', 'R', 'M', 'SEE_&QUOT;KIND_OF_WORK&QUOT;', '', '21');

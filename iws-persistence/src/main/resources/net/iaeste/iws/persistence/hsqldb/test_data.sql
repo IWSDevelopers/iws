@@ -149,7 +149,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0001', '4d81a4e1-adb3-4f42-b286-129024a82526', NULL, 'HUF', '40', '8', NULL, 'Elgoscar 2000 Ltd', NULL, '', 'Environmental analysis', '15', NULL,
+('HU-2013-0001', '1994f91b-b497-4349-aa3b-35c099351899', NULL, 'HUF', '40', '8', NULL, 'Elgoscar 2000 Ltd', NULL, '', 'Environmental analysis', '15', NULL,
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 20000, 'WEEKLY', 'arranged by IAESTE', 10000, 'WEEKLY', '8', '12', 'Budapest', NULL, '2013-03-31',
 NULL,
@@ -164,7 +164,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0002', 'b3e61e40-e822-42c6-8023-4da6c84caa87', FALSE, 'HUF', '40', '8', '0', 'Pannonpharma Ltd.', 'Hungary-7720 Pécsvárad; Pannonpharma', '', 'medicine making', '70', '',
+('HU-2013-0002', '89eaf391-54d5-4bc1-997a-c9949e0bfddc', FALSE, 'HUF', '40', '8', '0', 'Pannonpharma Ltd.', 'Hungary-7720 Pécsvárad; Pannonpharma', '', 'medicine making', '70', '',
 '2013-08-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '8', 'Budapest (Ferihegy)', 'Pécs', '2013-05-20',
 '-',
@@ -179,7 +179,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0003', '908f2a4f-fa45-4f67-86f2-733ff56ef95c', FALSE, 'HUF', '40', '8', '0', 'MSc Ltd.', 'Hungary-1143 Budapest; Hungaria square 113.', '', 'Bridge and structural design', '30', '',
+('HU-2013-0003', '9d7d489f-1ba6-424e-bad5-6228cf4eab14', FALSE, 'HUF', '40', '8', '0', 'MSc Ltd.', 'Hungary-1143 Budapest; Hungaria square 113.', '', 'Bridge and structural design', '30', '',
 '2013-06-01', '2013-08-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'FRENCH', 'G', NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '8', 'Budapest (Ferihegy)', 'Budapest', '2013-05-10',
 'No smoking (if possible)',
@@ -194,7 +194,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0004', 'b54058da-8f1d-480b-a276-bca74a43879d', FALSE, 'HUF', '40', '8', '0', 'GE Healthcare', 'Hungary-2040 Budaörs; Akron str. 2.', '', 'Interventional X-ray machines', '400', '',
+('HU-2013-0004', '4b8fc925-46ac-4715-98e8-c146bb3e8ea1', FALSE, 'HUF', '40', '8', '0', 'GE Healthcare', 'Hungary-2040 Budaörs; Akron str. 2.', '', 'Interventional X-ray machines', '400', '',
 '2013-06-01', '2013-06-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '40', '52', 'Budapest (Ferihegy)', 'Budapest', '2013-05-15',
 '-',
@@ -209,7 +209,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0005', 'd1a95361-a373-40fa-a2a3-ea38104e6a46', FALSE, 'HUF', '40', '8', '0', 'Usity of Miskolc Departm. of Fluid and Heat Eng.', 'Hungary-3515 Miskolc; Egytemváros', '', 'Teaching; research', '23', '',
+('HU-2013-0005', '99959015-56bf-4f15-9d97-cd04edf8a1eb', FALSE, 'HUF', '40', '8', '0', 'Usity of Miskolc Departm. of Fluid and Heat Eng.', 'Hungary-3515 Miskolc; Egytemváros', '', 'Teaching; research', '23', '',
 '2013-06-26', '2013-08-06', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '6', '6', 'Budapest (Ferihegy)', 'Miskolc', '2013-05-10',
 '-',
@@ -224,7 +224,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0006', '45222086-85de-4853-a22a-5d8e8e2ad214', FALSE, 'HUF', '40', '8', '0', 'Telemax GSm Service Kft.', 'Hungary-1145 Budapest; Szugló u. 47.', '', 'Service (Mainly mobil phone)', '80', '',
+('HU-2013-0006', 'fa667195-16cb-4bc5-8e15-caaed087c6b6', FALSE, 'HUF', '40', '8', '0', 'Telemax GSm Service Kft.', 'Hungary-1145 Budapest; Szugló u. 47.', '', 'Service (Mainly mobil phone)', '80', '',
 '2013-06-01', '2013-06-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '52', 'Ferihegy (Budapest)', 'Budapest', '2013-05-30',
 '-',
@@ -239,7 +239,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0007', '091d2412-fcdd-4e00-b526-87adfb2a3813', FALSE, 'HUF', '40', '8', '0', 'DGS Kft.', 'Hungary-1118 Budapest; RegQs str. 13.', '', 'Security systems', '7', '',
+('HU-2013-0007', '91d7ee9f-a95d-4e2d-80e8-91959d7cbd6d', FALSE, 'HUF', '40', '8', '0', 'DGS Kft.', 'Hungary-1118 Budapest; RegQs str. 13.', '', 'Security systems', '7', '',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '12', 'Ferihegy (Budapest)', 'Budapest', '2013-05-30',
 'Native speaker (from): US; England; Canada',
@@ -254,7 +254,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0008', 'e3b8c20b-08d7-4326-a777-6e1532f6097a', FALSE, 'HUF', '25', '5', '0', 'Pécsi Mélyépít&#33', 'Hungary-7624 Pécs; Budai Nagy Antal str. 1.', '', 'Public utility designed', '5', '',
+('HU-2013-0008', '82914e86-219e-41d7-a58e-f4bcc9f6ef88', FALSE, 'HUF', '25', '5', '0', 'Pécsi Mélyépít&#33', 'Hungary-7624 Pécs; Budai Nagy Antal str. 1.', '', 'Public utility designed', '5', '',
 '2013-06-01', '2013-10-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'F', NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '12', 'Ferihegy (Budapest)', 'Pécs', '2013-05-30',
 '-',
@@ -269,7 +269,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0009', 'f641dfb0-22e2-4a10-9811-ab2309917d1c', FALSE, 'HUF', '40', '8', '0', 'Microsoft Magyarország Kft.', 'H-1031 Budapest; Záhonyi street 3.', '', 'trading of commercial software products; consultin', '200', '',
+('HU-2013-0009', '7ae8875d-8941-4351-8936-1a3d3c272f75', FALSE, 'HUF', '40', '8', '0', 'Microsoft Magyarország Kft.', 'H-1031 Budapest; Záhonyi street 3.', '', 'trading of commercial software products; consultin', '200', '',
 '2013-08-28', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '52', '52', 'Budapest; Ferihegy', 'Budapest', '2013-09-12',
 '-',
@@ -284,7 +284,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0010', 'b674757d-c91a-485e-83d7-da58aa5efb8f', FALSE, 'HUF', '40', '8', '-', 'University of Pecs Tech. Fac. Inst. of Architecture', '7624 Pecs, Rokus u. 2/b', '', 'Architecure', '22', NULL,
+('HU-2013-0010', '97b4c0c5-112c-48c4-986e-bd43c17bfe5c', FALSE, 'HUF', '40', '8', '-', 'University of Pecs Tech. Fac. Inst. of Architecture', '7624 Pecs, Rokus u. 2/b', '', 'Architecure', '22', NULL,
 '2013-05-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '8', '12', 'Budapest', 'Bus', '2013-03-31',
 NULL,
@@ -299,7 +299,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0011', '9405516c-8c0c-4ae3-8a97-553f034855f7', FALSE, 'HUF', '40', '8', '-', 'MEEI Ltd. TÜV Rheinland Group', '1132 Budapest, Vaci ut 48/a-b', '', 'Product safety service', '93', 'www.meet.hu',
+('HU-2013-0011', 'f08b8abe-3978-406e-b7b5-6d6a539d1728', FALSE, 'HUF', '40', '8', '-', 'MEEI Ltd. TÜV Rheinland Group', '1132 Budapest, Vaci ut 48/a-b', '', 'Product safety service', '93', 'www.meet.hu',
 '2013-05-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '6', '8', 'Budapest', 'Bus', '2013-03-31',
 NULL,
@@ -314,13 +314,13 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0012', 'ebf97e4d-f5ee-46d8-835d-0c13b9e81fb5', FALSE, 'HUF', '40', '8', NULL, 'Mecsek-Öko Environmental Co.', '7633 Pecs, Esztergar', '', 'Recultivation', '135', NULL,
+('HU-2013-0012', '58332ddf-1ad6-4dd7-9ac3-0922f8b137c4', FALSE, 'HUF', '40', '8', NULL, 'Mecsek-Öko Environmental Co.', '7633 Pecs, Esztergar', '', 'Recultivation', '135', NULL,
 '2013-07-01', '2013-08-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 NULL, NULL, NULL, NULL, NULL, '6', '7', 'Budapest', 'Bus', '2013-03-31',
 NULL,
 NULL, NULL, NULL,
 'Environmental damage assessment and examination, remediation of damage, recultivation, environmental monitoring, technological control, treatment of contaminated mine water, mining activities.',
-'7633 Pecs, Esztergar', 'P', 'E', 'MINING|GEOLOGY', 'Hidrogeology', '21');
+'7633 Pecs, Esztergar', 'P', 'E', '_MINING|GEOLOGY', 'Hidrogeology', '21');
 
 INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
                     from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
@@ -329,7 +329,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0013', '582f9cb5-f752-4265-8bc8-286f8b469450', NULL, 'HUF', '40', '8', '-', 'Hepenix Ltd', '2049 Diosd, Petofi S. u. 39', '', 'company', '15', 'www.hepenix.hu',
+('HU-2013-0013', 'e665d011-38ae-4934-99e9-c61b89434ae6', NULL, 'HUF', '40', '8', '-', 'Hepenix Ltd', '2049 Diosd, Petofi S. u. 39', '', 'company', '15', 'www.hepenix.hu',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', NULL, NULL, NULL, NULL, NULL,
 '20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '8', '8', 'Budapest (Ferihegy)', 'Bus', '2013-03-31',
 'CAD knowledge',
@@ -344,7 +344,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0014', 'e42a427d-5838-40a1-866d-1e764c90af40', FALSE, 'HUF', '40', '8', '0', 'E-Word Ltd.', 'H-1028 Budapest,', 'Vízesés u. 10.', 'Translation, project management software', '4', '',
+('HU-2013-0014', '1d0e5f3f-968f-48a7-8cc7-8e5cb310f8ed', FALSE, 'HUF', '40', '8', '0', 'E-Word Ltd.', 'H-1028 Budapest,', 'Vízesés u. 10.', 'Translation, project management software', '4', '',
 '2013-01-01', '2013-04-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-12-01',
 FALSE,
@@ -359,7 +359,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0015', '1411e970-1d5a-4ab6-baa7-865f746a2e65', FALSE, 'HUF', '40', '8', '0%', 'Meditcom Ltd.', 'Robert Karoly krt. 59.', '1134 Budapest', 'IT, Healthcare', '20', 'www.meditcom.hu',
+('HU-2013-0015', 'a6ae3c5a-2543-4b5a-80bb-650b4c44d143', FALSE, 'HUF', '40', '8', '0%', 'Meditcom Ltd.', 'Robert Karoly krt. 59.', '1134 Budapest', 'IT, Healthcare', '20', 'www.meditcom.hu',
 '2013-03-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -374,7 +374,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0016', 'b91cb245-639e-4146-b1a2-07cc0bf71384', FALSE, 'HUF', '40', '8', NULL, 'Finta and Partners Architect Studio Ltd.', 'Szt. Istvan krt. 11', '1055 Budapest', 'Architectural design', '30', 'www.fintastudio.hu',
+('HU-2013-0016', '96d3fb7d-f08a-462c-8a57-bf0d5c413860', FALSE, 'HUF', '40', '8', NULL, 'Finta and Partners Architect Studio Ltd.', 'Szt. Istvan krt. 11', '1055 Budapest', 'Architectural design', '30', 'www.fintastudio.hu',
 '2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G',
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc', '2013-03-31',
 'A portfolio is required with the nomination',
@@ -389,7 +389,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0017', '472c2d01-7bce-4c4c-9518-bf09cdbca717', FALSE, 'HUF', '40', '8', '0', 'Gamaxcom Ltd.', 'Pazsit u. 6', '1026 Budapest', NULL, NULL, NULL,
+('HU-2013-0017', 'f7deb2e6-3901-44d7-b523-a22353046d9c', FALSE, 'HUF', '40', '8', '0', 'Gamaxcom Ltd.', 'Pazsit u. 6', '1026 Budapest', NULL, NULL, NULL,
 '2013-08-03', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '8', 'Budapest', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -404,7 +404,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0018', 'a1fa311f-9a63-4a89-91f0-3dc00663f9d0', FALSE, 'HUF', '40', '8', '0%', 'Alfred Schuon Lt.d.', 'Hazgyari u. 16', '8200 Veszprem', 'Logistics', '30', 'www.schuon.com',
+('HU-2013-0018', 'fa70cc64-68d3-4edd-b273-67707ffaa160', FALSE, 'HUF', '40', '8', '0%', 'Alfred Schuon Lt.d.', 'Hazgyari u. 16', '8200 Veszprem', 'Logistics', '30', 'www.schuon.com',
 '2013-04-01', '2013-07-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '10', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -419,7 +419,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0019', '95e52081-9397-4ce5-9355-6aafd9f51986', TRUE, 'HUF', '40', '8', '0', 'GE Hungary Lpc. Healthcare Division', '2040 Budaörs, Akron u. 2.', '', 'Vascular X-ray Imaging Systems', '450', '',
+('HU-2013-0019', '4c3f2ce8-0153-4ccf-ab2a-9b7870d0e2ba', TRUE, 'HUF', '40', '8', '0', 'GE Hungary Lpc. Healthcare Division', '2040 Budaörs, Akron u. 2.', '', 'Vascular X-ray Imaging Systems', '450', '',
 '2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '26', '52', 'Budapest, Ferihegy', 'Bus', '2013-03-31',
 'Programming experiance and HUNGARIAN or FRENCH language knowledge are advantages.',
@@ -434,7 +434,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0020', '33211598-fa09-4a47-a8c5-30e9c1e2df6d', FALSE, 'HUF', '40', '8', '0', 'GE Hungary Lpc. Healthcare Division', '2040 Budaörs, Akron u. 2.', '', 'X-ray Imaging Systems', '450', '',
+('HU-2013-0020', 'de2dbf58-6912-46a9-b93f-580203af5740', FALSE, 'HUF', '40', '8', '0', 'GE Hungary Lpc. Healthcare Division', '2040 Budaörs, Akron u. 2.', '', 'X-ray Imaging Systems', '450', '',
 '2013-01-01', '2013-05-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '26', '52', 'Budapest, Ferihegy', 'Bus', '2013-05-10',
 'Faculty: Computer Science, Electrical or Mechanical Engineering, Physics. Specialisation: Medical Engineering, Image Processing. Programming experience, HUNGARIAN or FRENCH language knowledge are advantages.',
@@ -449,7 +449,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0021', '9c5f5c03-342b-46ff-9a95-9a732ebdf70c', FALSE, 'HUF', '40', '8', '0', 'Pioneer Hi-Bred Ltd.', '2040 Budaörs, Neumann J. u. 1.', '', 'Production, marketing and sales of commercial seed', '150', '',
+('HU-2013-0021', '2de3b490-a647-4e91-8f70-4a9a001d0c5b', FALSE, 'HUF', '40', '8', '0', 'Pioneer Hi-Bred Ltd.', '2040 Budaörs, Neumann J. u. 1.', '', 'Production, marketing and sales of commercial seed', '150', '',
 '2013-03-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'UKRAINIAN', 'E', NULL, NULL, NULL,
 '20000', 'MONTHLY', 'IAESTE Hungary', '10000', 'MONTHLY', '26', '26', 'Budapest, Ferihegy', 'Bus', '2013-03-15',
 FALSE,
@@ -464,7 +464,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0022', 'cbbb79d0-bdd8-494f-b392-004c44bc970f', FALSE, 'HUF', '40', '8', '0', 'MFKK Invention & Research Center', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '22', '',
+('HU-2013-0022', '0a750e60-9c45-44d0-96eb-69c338fa5a83', FALSE, 'HUF', '40', '8', '0', 'MFKK Invention & Research Center', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '22', '',
 '2013-03-18', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 FALSE,
@@ -479,7 +479,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0023', 'af2c2c8e-daaa-4879-a91c-45c5a51c3771', FALSE, 'HUF', '40', '8', '0', 'MFKK Invention & Research Center', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '22', '',
+('HU-2013-0023', 'cad27704-6a3d-44a5-8a21-5f6f6e894903', FALSE, 'HUF', '40', '8', '0', 'MFKK Invention & Research Center', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '22', '',
 '2013-03-18', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 FALSE,
@@ -494,7 +494,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0024', '082be01f-3ebc-42a9-ac54-45145ad294da', FALSE, 'HUF', '40', '8', '0', '4 Hungar Agri-Tech Ltd.', '7621 Pécs, Zrínyi u. 1.', '', 'Agricultural Facility', '15', '',
+('HU-2013-0024', '6c66085c-6655-4d4c-a3ad-2e50150613dc', FALSE, 'HUF', '40', '8', '0', '4 Hungar Agri-Tech Ltd.', '7621 Pécs, Zrínyi u. 1.', '', 'Agricultural Facility', '15', '',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '10', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-10',
 FALSE,
@@ -509,7 +509,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0025', '7a435549-d417-4317-a344-a0af8126cdee', TRUE, 'HUF', '40', '8', '0', 'American Appraisal Hungary Ltd.', 'H-1132 Budapest, Váci út 18.', '', 'Valuation', '20', '',
+('HU-2013-0025', 'e1af9f34-bac5-41a9-84a6-b2e30f7ed92f', TRUE, 'HUF', '40', '8', '0', 'American Appraisal Hungary Ltd.', 'H-1132 Budapest, Váci út 18.', '', 'Valuation', '20', '',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-10',
 FALSE,
@@ -524,7 +524,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0026', 'a89b7e53-3707-46e8-a8cf-ebeb722b7591', FALSE, 'HUF', '40', '8', '0', 'Hídtechnika Ltd.', '1138 Budapest, Karikás Frigyes u. 20.', '', 'Building industry', '33', '',
+('HU-2013-0026', '52b6bb3a-39fe-4a94-a4f3-a7b545264610', FALSE, 'HUF', '40', '8', '0', 'Hídtechnika Ltd.', '1138 Budapest, Karikás Frigyes u. 20.', '', 'Building industry', '33', '',
 '2013-07-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-06-10',
 'HUNGARIAN is an advantage.',
@@ -539,7 +539,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0027', '5e47fbb4-6d0c-47c4-9460-e1b415ebaf98', TRUE, 'HUF', '40', '8', '0', 'BUTE, Dep. of Automation and Applied Informatics', 'H-1111 Budapest, Goldmann György tér 1.', '', 'Higher education', '15', '',
+('HU-2013-0027', '63276468-acf3-4a77-bb07-c44f817a4348', TRUE, 'HUF', '40', '8', '0', 'BUTE, Dep. of Automation and Applied Informatics', 'H-1111 Budapest, Goldmann György tér 1.', '', 'Higher education', '15', '',
 '2013-05-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-31',
 'Native ENGLISH!',
@@ -554,7 +554,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0028', '923e0ea2-3054-4567-bb57-23df46b436c2', TRUE, 'HUF', '40', '8', '0', 'BUTE, Dep. of Automation and Applied Informatics', 'H-1111 Budapest, Goldmann György tér 1.', '', 'Higher education', '15', '',
+('HU-2013-0028', 'ed7bccd5-74de-481c-ae30-fe7bed93f45c', TRUE, 'HUF', '40', '8', '0', 'BUTE, Dep. of Automation and Applied Informatics', 'H-1111 Budapest, Goldmann György tér 1.', '', 'Higher education', '15', '',
 '2013-05-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-31',
 'Native ENGLISH!',
@@ -569,7 +569,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0029', '6aa86093-9ff3-4584-87d1-dd2c79b703fa', FALSE, 'HUF', '40', '8', '0', 'Art Vital Ltd.', 'H-4400 Nyíregyháza, Selyem u. 21.', '', 'Architecture', '18', '',
+('HU-2013-0029', 'ec2967a1-3c86-4515-a588-46ce42139031', FALSE, 'HUF', '40', '8', '0', 'Art Vital Ltd.', 'H-4400 Nyíregyháza, Selyem u. 21.', '', 'Architecture', '18', '',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'RUSSIAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, train', '2013-05-31',
 'CAD program knowledge',
@@ -584,7 +584,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0030', '06d821fa-e590-490a-8f2a-aa9370ba1061', FALSE, 'HUF', '45', '9', '0', 'Bálint és Társa Architect Office Ltd.', '1051 Budapest, Október 6. u. 3.', '', 'Architectural design', '10', '',
+('HU-2013-0030', 'd7ed1785-b819-4c75-9895-526724c60fe6', FALSE, 'HUF', '45', '9', '0', 'Bálint és Társa Architect Office Ltd.', '1051 Budapest, Október 6. u. 3.', '', 'Architectural design', '10', '',
 '2013-08-10', '2013-10-04', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-06-30',
 'Portfolio',
@@ -599,7 +599,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0031', '4e0ed24d-b39b-4fc1-bac4-a629d4442af3', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+('HU-2013-0031', '0a759dae-c2bc-4ea6-abdb-d099811f04bf', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
 '2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'MONTHLY', 'IAESTE Hungary', '10000', 'MONTHLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-07-30',
 FALSE,
@@ -614,7 +614,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0032', '39f24d20-d083-4a95-b07c-55ef3ee3d6c5', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+('HU-2013-0032', 'c5612d3a-5467-4f05-88c0-8ece5526baa1', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
 '2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-01',
 FALSE,
@@ -629,7 +629,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0033', '7cad7e1f-e4c3-42cd-a365-723a7c3f6803', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+('HU-2013-0033', 'ef273a79-6cce-4b80-9cfb-ba5aee36f708', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
 '2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-01',
 FALSE,
@@ -644,7 +644,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0034', '99d64946-f40d-4577-89d5-8ac0a8ffe206', TRUE, 'HUF', '40', '8', NULL, 'Amri Hungary Ltd.', '1031 Budapest, Záhony utca 7', ' ', 'Preparative organic chemistry', '100', NULL,
+('HU-2013-0034', 'dd23dea0-c3ca-4cc3-a683-cf9339fd85d9', TRUE, 'HUF', '40', '8', NULL, 'Amri Hungary Ltd.', '1031 Budapest, Záhony utca 7', ' ', 'Preparative organic chemistry', '100', NULL,
 '2013-06-15', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -659,7 +659,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0035', '71affb3c-cf0e-414b-a07f-0b7cefd1261c', FALSE, 'HUF', '40', '8', NULL, 'MFKK Invention and Research Center ltd.', '1119 Budapest, Tétényi street 93.', ' ', 'Research and Development', '22', NULL,
+('HU-2013-0035', '7590c363-aa6a-40dd-9bca-e0e2c589cd95', FALSE, 'HUF', '40', '8', NULL, 'MFKK Invention and Research Center ltd.', '1119 Budapest, Tétényi street 93.', ' ', 'Research and Development', '22', NULL,
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'Php, MySQL, javaScript & amp, Flash program',
@@ -674,7 +674,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0036', 'ce87a1dc-baa3-4c91-9edd-86486d9f37ca', TRUE, 'HUF', '40', '8', NULL, 'BME - Dept. of Hydrodynamic System', '111 Budapest, Mqegyetem rkp.3.', ' ', 'Education - research', '25', NULL,
+('HU-2013-0036', '69c7b055-9070-496a-b892-64a0b9de46a1', TRUE, 'HUF', '40', '8', NULL, 'BME - Dept. of Hydrodynamic System', '111 Budapest, Mqegyetem rkp.3.', ' ', 'Education - research', '25', NULL,
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', 'O', 'HUNGARIAN', 'E',
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -689,7 +689,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0037', '0d94f54d-1a3c-4c57-b1a5-4a8ccc44485d', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', NULL, ' Budapest', NULL, '650', NULL,
+('HU-2013-0037', '8bb6c32a-1a6d-419d-9f2b-92e7f0745067', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', NULL, ' Budapest', NULL, '650', NULL,
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'O', 'ENGLISH', 'F', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '38', 'Budapest', 'bus, train, etc.', '2013-04-01',
 NULL,
@@ -704,7 +704,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0038', 'd09b9b4a-b67e-417f-92fe-80ba1ff94e19', TRUE, 'HUF', '40', '8', '0', 'Cental food Research Institute', '1022 Budapest, Herman Ott&oacute; &uacute;t 15.', '', 'Food research', '100', '',
+('HU-2013-0038', '0a8624d7-52f2-4670-804e-5b6d1d63c99b', TRUE, 'HUF', '40', '8', '0', 'Cental food Research Institute', '1022 Budapest, Herman Ott&oacute; &uacute;t 15.', '', 'Food research', '100', '',
 '2013-09-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -719,7 +719,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0039', '21670340-8939-4719-8555-a4a6320779f0', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', 'Hungary', 'Automative Tool Development', '650', '',
+('HU-2013-0039', '54eec7ee-486b-4991-bd10-de77d2a046dc', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', 'Hungary', 'Automative Tool Development', '650', '',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '38', 'Budapest', 'bus, train, etc.', '2013-03-31',
 '',
@@ -734,7 +734,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0040', '16fecda2-6e61-4233-a85a-fa753d42bfb2', FALSE, 'HUF', '40', '8', '', 'Bal&aacute;zs &eacute;s V&eacute;csey Ltd.', '4026 Budapest, K&aacute;lvin t&eacute;r 14. fsz. 2.', '', 'Architectural design', '7', '',
+('HU-2013-0040', '23a9a28d-be54-4521-ad50-2775cf593e10', FALSE, 'HUF', '40', '8', '', 'Bal&aacute;zs &eacute;s V&eacute;csey Ltd.', '4026 Budapest, K&aacute;lvin t&eacute;r 14. fsz. 2.', '', 'Architectural design', '7', '',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'CAD program knowledge. A portfolio is required with the nomination.',
@@ -749,7 +749,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0041', '4e6dd27d-e42b-4653-bf74-72cf27372b7a', FALSE, 'HUF', '40', '8', '', 'Bachman and Bachmann Ltd.', '7625 P&eacute;cs, B&ouml;ckh J&aacute;nos utca 17.', '', 'Architectural', '0', '',
+('HU-2013-0041', 'd51cfb5c-906a-4947-9a5e-ef6524e4a68d', FALSE, 'HUF', '40', '8', '', 'Bachman and Bachmann Ltd.', '7625 P&eacute;cs, B&ouml;ckh J&aacute;nos utca 17.', '', 'Architectural', '0', '',
 '2013-06-01', '2013-09-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '4', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -764,7 +764,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0042', 'd9feac04-9deb-4927-96e9-85a8ea9b6cfe', FALSE, 'HUF', '40', '8', '0', 'Art Vital Ltd.', '4400 Ny&iacute;regyh&aacute;za, Selyem utca 21.', '', 'Architectural', '18', '',
+('HU-2013-0042', '17f97570-a262-4cbc-9ce9-8ab7909b0696', FALSE, 'HUF', '40', '8', '0', 'Art Vital Ltd.', '4400 Ny&iacute;regyh&aacute;za, Selyem utca 21.', '', 'Architectural', '18', '',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'HUNGARIAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -779,7 +779,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0043', '98f7baf9-a47f-4692-8625-540ded8ecad9', TRUE, 'HUF', '40', '8', '', 'University of Miskolc, Dept. of Fluid Mech.', '3515 Miskolc - University Campus (Egyetemv&aacute;ros)', '', 'CFD Analyse', '0', '',
+('HU-2013-0043', 'f5d0feb1-8b3c-41ee-b638-cd8d4cf4bb68', TRUE, 'HUF', '40', '8', '', 'University of Miskolc, Dept. of Fluid Mech.', '3515 Miskolc - University Campus (Egyetemv&aacute;ros)', '', 'CFD Analyse', '0', '',
 '2013-05-24', '2013-07-04', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '6', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -794,7 +794,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0044', '1df6e0aa-09b2-4239-8d65-8a70e5bb417b', TRUE, 'HUF', '40', '8', '', 'Naturen Ltd.', '1163 Budapest, Czir&aacute;ki u. 32.', '', 'Engineering services, automated test equipment', '10', '',
+('HU-2013-0044', 'b47d9656-6f2c-41fa-82eb-b559c51bb14f', TRUE, 'HUF', '40', '8', '', 'Naturen Ltd.', '1163 Budapest, Czir&aacute;ki u. 32.', '', 'Engineering services, automated test equipment', '10', '',
 '2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -809,7 +809,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0045', '5cad010f-ad8b-419c-8e27-b7cae023a788', TRUE, 'HUF', '40', '8', '', '4 Hungar-Tech Ltd.', '7621 P&eacute;cs, Zr&iacute;nyi u. 1.', '', 'Agricultural postharrest technology', '15', '',
+('HU-2013-0045', 'db13f3d9-964a-4380-a456-04933eda1e8d', TRUE, 'HUF', '40', '8', '', '4 Hungar-Tech Ltd.', '7621 P&eacute;cs, Zr&iacute;nyi u. 1.', '', 'Agricultural postharrest technology', '15', '',
 '2013-06-01', '2013-09-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '10', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -824,7 +824,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0046', '7a982d95-474a-4654-a5b3-c799b02222ac', FALSE, 'HUF', '40', '8', '', 'MFKK Invention and Research Center ltd.', '1119 Budapest, T&eacute;t&eacute;nyi street 93.', '', 'Research and Development', '22', '',
+('HU-2013-0046', '0cc7712f-7e8c-4e4b-a206-86c3299ec29d', FALSE, 'HUF', '40', '8', '', 'MFKK Invention and Research Center ltd.', '1119 Budapest, T&eacute;t&eacute;nyi street 93.', '', 'Research and Development', '22', '',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'Php, MySQL, javaScript and Flash program',
@@ -839,7 +839,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0047', '33413d11-a7a0-4a6b-9830-6ab028cd216a', FALSE, 'HUF', '40', '8', '', 'MSc LTD.', '1106 Budapest, Feh&eacute;r &uacute;t 10/a-b', '', 'Bridge and structural design', '30', '',
+('HU-2013-0047', '251523a8-8a30-4475-a863-2783fe2c4d95', FALSE, 'HUF', '40', '8', '', 'MSc LTD.', '1106 Budapest, Feh&eacute;r &uacute;t 10/a-b', '', 'Bridge and structural design', '30', '',
 '2013-06-01', '2013-08-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'FRENCH', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'No smoking (if possible)',
@@ -854,7 +854,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0048', '9cb1fff1-c6c1-4f01-a19e-14f645172f98', FALSE, 'HUF', '40', '8', '', 'M&aacute;v&eacute;pcell Kft.', '9500 Celld&ouml;m&ouml;k, Nagy S&aacute;ndor t&eacute;r 14.', '', 'Railway construction and engineering', '250', '',
+('HU-2013-0048', '03ea7f5b-9de3-4e65-bda5-22d28f537b7e', FALSE, 'HUF', '40', '8', '', 'M&aacute;v&eacute;pcell Kft.', '9500 Celld&ouml;m&ouml;k, Nagy S&aacute;ndor t&eacute;r 14.', '', 'Railway construction and engineering', '250', '',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '10', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -869,7 +869,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0049', '21dfc2d0-129d-475a-9aa9-e82a9ef98b7c', FALSE, 'HUF', '40', '8', '', 'ASA Construction Ltd.', '6800 H&oacute;dmez&amp;#337;v&aacute;rs&aacute;lyhely, Erzs&eacute;bet &uacute;t 9.', '', 'Precast concrete elements', '370', '',
+('HU-2013-0049', 'dd43d0f5-bc41-4aa0-82c2-ec32946a4ece', FALSE, 'HUF', '40', '8', '', 'ASA Construction Ltd.', '6800 H&oacute;dmez&amp;#337;v&aacute;rs&aacute;lyhely, Erzs&eacute;bet &uacute;t 9.', '', 'Precast concrete elements', '370', '',
 '2013-07-01', '2013-09-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -884,7 +884,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0050', '173883db-aada-4f79-ad66-e4a20b1660e4', FALSE, 'HUF', '40', '8', '', 'MFKK Invention and Research Center ltd.', '1119 Budapest, T&eacute;t&eacute;nyi street 93.', '', 'Research and Development', '22', '',
+('HU-2013-0050', '4b4e4669-9d1c-4b0d-8c95-297e4d5143cc', FALSE, 'HUF', '40', '8', '', 'MFKK Invention and Research Center ltd.', '1119 Budapest, T&eacute;t&eacute;nyi street 93.', '', 'Research and Development', '22', '',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'ENGLISH', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'E internet based research skills',
@@ -899,7 +899,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0051', 'e23811bb-4629-42e1-b361-2abe218fc6bc', FALSE, 'HUF', '40', '8', '', 'BME - Dept. of Oganic Chemical Technology', '1111 Budapest, M&amp;#369;egyetem rakpart 3.', '', 'Chemical engineering, research and laboratory eng.', '12', '',
+('HU-2013-0051', '008ee3ae-ce10-4076-97d5-a82edb4246f4', FALSE, 'HUF', '40', '8', '', 'BME - Dept. of Oganic Chemical Technology', '1111 Budapest, M&amp;#369;egyetem rakpart 3.', '', 'Chemical engineering, research and laboratory eng.', '12', '',
 '2013-02-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -914,7 +914,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0052', 'a429746b-c898-4159-8bff-b080d0ddc2ab', FALSE, 'HUF', '40', '8', '', 'Bravogroup  Rendszerhaz Ltd.', '1145 Budapest, &Uacute;jvil&aacute;g utca 50-52', '', 'Sales of office machines', '200', '',
+('HU-2013-0052', 'c3600a8e-6c4f-4a11-b6a4-33612a3fe197', FALSE, 'HUF', '40', '8', '', 'Bravogroup  Rendszerhaz Ltd.', '1145 Budapest, &Uacute;jvil&aacute;g utca 50-52', '', 'Sales of office machines', '200', '',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'HUNGARIAN', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -929,7 +929,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0053', '5a603b99-6aac-4878-927b-a4a59484fd9f', FALSE, 'HUF', '40', '8', '', 'Designsoft Inc.', '1067 Budapest, csengery u. 53.', '', 'Software development', '17', '',
+('HU-2013-0053', '34018f53-2990-4e1e-8da5-15ffcca636a3', FALSE, 'HUF', '40', '8', '', 'Designsoft Inc.', '1067 Budapest, csengery u. 53.', '', 'Software development', '17', '',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '16', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -944,7 +944,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0054', 'e2dc061d-fe65-41f2-8f47-db9d10458f84', TRUE, 'HUF', '40', '8', '0', 'Robert Bosch Elektronikai Ltd.', '3000 Hatvan, Robert Bosch &uacute;t 1.', '', 'Production/automotive division', '2700', '',
+('HU-2013-0054', 'cf3b48bf-ebef-4f0c-bff4-0983e5a23d5e', TRUE, 'HUF', '40', '8', '0', 'Robert Bosch Elektronikai Ltd.', '3000 Hatvan, Robert Bosch &uacute;t 1.', '', 'Production/automotive division', '2700', '',
 '2013-04-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-01-01',
 'MS Office, Benefit: SAP knowledge',
@@ -959,7 +959,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0055', '7cf02279-c26d-409e-8fe8-578a5674df6d', TRUE, 'HUF', '40', '8', '', 'Robert Bosch Elektronikai Ltd.', '3000 Hatvan, Robert Bosch &uacute;t 1.', '', 'Production/automotive division', '2700', '',
+('HU-2013-0055', '116672a3-e5b5-4086-83a1-cb094336b214', TRUE, 'HUF', '40', '8', '', 'Robert Bosch Elektronikai Ltd.', '3000 Hatvan, Robert Bosch &uacute;t 1.', '', 'Production/automotive division', '2700', '',
 '2013-09-01', '2013-11-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-15',
 'MS Office, Benefit: SAP knowledge',
@@ -974,7 +974,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0056', '3a8241cf-0b53-488e-b458-b7425c380ba6', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', '', 'Automative Tool Development', '650', '',
+('HU-2013-0056', '54385a25-232b-427f-ae00-f0cf8532bb6b', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', '', 'Automative Tool Development', '650', '',
 '2013-04-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '52', 'Budapest', 'bus, train, etc.', '2013-04-01',
 FALSE,
@@ -989,7 +989,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0057', 'c68b2071-663d-4e2d-ada0-76d58b462277', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', '', 'Automative Tool Development', '650', '',
+('HU-2013-0057', '08c0939e-6f2e-4d41-8b9a-8ce613301680', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', '', 'Automative Tool Development', '650', '',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'O', 'ENGLISH', 'F', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '38', 'Budapest', 'but, train, etc.', '2013-04-01',
 FALSE,
@@ -1004,7 +1004,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('H-2013-0058', '0f40a9b3-c640-49ec-8025-71ca919f1263', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', 'Hungary', 'Automative Tool Development', '650', '',
+('HU-2013-0058', '68efbbef-0a2d-4e7a-ae87-f010517580f7', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', 'Hungary', 'Automative Tool Development', '650', '',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '38', 'Budapest', 'bus, train, etc.', '2013-03-31',
 'knowledge of programming, and FPGA',

@@ -140,7 +140,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0001', '72449120-2f84-4a36-b8b0-20c1932e1120', FALSE, 'PLN', '35', '7', NULL, 'Centrum Diagnostyki i Terapii Laserowej', NULL, '', 'Center of laser diagnostics and therapy in medicin', '50', 'www.p.lodz.pl/laser',
+('PL-2013-0001', 'bef370cf-f3af-41a9-b806-bcbec12594da', FALSE, 'PLN', '35', '7', NULL, 'PL Employer1', 'Address1', 'Address2', 'Center of laser diagnostics and therapy in medicin', '50', 'www.employer1.com',
 '2013-07-01', '2013-08-12', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 900, 'MONTHLY', 'arranged by IAESTE', 300, 'MONTHLY', '6', '6', 'Warszawa', NULL, '2013-03-31',
 'MUST START ON 1st OF JULY!!! Team work!!',
@@ -155,7 +155,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0002', '71797b56-b1d2-42ac-82c3-53f7b9080bd7', FALSE, 'PLN', '30', '6', NULL, 'Pracownia Uslugowa Planowania i Architektury ARCHEX', 'Braci Gierymskich 143', '51-640 Wro Wroclaw', 'Architectural and Convervation Office', '6', NULL,
+('PL-2013-0002', 'd916d2fa-9487-4043-9a5c-85e49c90c660', FALSE, 'PLN', '30', '6', NULL, 'PL Employer2', 'Address1', 'Address2', 'Architectural and Convervation Office', '6', 'www.employer2.com',
 '2013-07-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '900', 'MONTHLY', 'arranged by IAESTE', 350, 'MONTHLY', '6', '6', 'Wroclaw', 'Bus, Tram, Taxi', '2013-03-31',
 NULL,
@@ -170,7 +170,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0003', '8bfdf805-57bc-45e6-bb30-c13e99fb4010', TRUE, 'PLN', '40', '8', NULL, 'COMARCH S.A.', NULL, '', 'IT Solutions to Telecommunications, Finance and Ba', '2200', 'www.comarch.com',
+('PL-2013-0003', 'e939d9a8-3ac6-474e-8c6d-2b45477fe189', TRUE, 'PLN', '40', '8', NULL, 'PL Employer3', 'Address1', 'Address2', 'IT Solutions to Telecommunications, Finance and Ba', '2200', 'www.employer3.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 880, 'MONTHLY', 'arranged by IAESTE', 330, 'MONTHLY', '8', '12', 'Krakow', NULL, '2013-03-31',
 'Information Systems faculty prefered. G average grade at studies. Intention of further employment in one of Comarch Group companies after training.',
@@ -185,7 +185,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0004', '2abe881f-9f8e-4e33-a799-4854336106b8', TRUE, 'PLN', '30', '6', '20%', 'Warsaw University of Technology, Faculty of Civil Engineering, Dept. of Cnstruction and materials En', NULL, '', 'Civil Engineering', '25', 'www.il.pw.edu.pl',
+('PL-2013-0004', '4d9158f1-f885-4aec-b652-89a497b57bc0', TRUE, 'PLN', '30', '6', '20%', 'PL Employer4', 'Address1', 'Address2', 'Civil Engineering', '25', 'www.employer4.com',
 '2013-05-14', '2013-07-18', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 1000, 'WEEKLY', 'arranged by IAESTE', 450, 'MONTHLY', '6', '6', 'Warszawa', NULL, '2013-03-31',
 NULL,
@@ -200,7 +200,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0005', 'd43611b3-d156-4366-af33-b46698126d2c', FALSE, 'PLN', '40', '8', '20%', 'ANT Sp.z.o.o.', NULL, '', 'Integration and data exchange in automatic systems', '8', 'www.ant.iss.pl',
+('PL-2013-0005', 'aa2c2fb0-98a6-4266-b3d1-5571bb4bdf38', FALSE, 'PLN', '40', '8', '20%', 'PL Employer5', 'Address1', 'Address2', 'Integration and data exchange in automatic systems', '8', 'www.employer5.com',
 '2013-06-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 880, 'MONTHLY', 'arranged by IAESTE', 300, 'MONTHLY', '6', '12', 'Krakow', NULL, '2013-03-31',
 'Knowledge of measurement and control equipment trade, data exchange protocol (MODBUS, M-BUS, OPC, DDE, SQL)',
@@ -215,7 +215,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0006', '6560c1d2-c7c9-4e84-bc3b-81ffa850793b', TRUE, 'PLN', '40', '8', '0 %', 'Comarch S.A.', 'Al. Jana Pawla II 39', '31-864 Krakow', 'International Software House', '2200', 'www.comarch.com',
+('PL-2013-0006', '07855852-0a30-47e9-87d3-cbdfd0abb4e5', TRUE, 'PLN', '40', '8', '0 %', 'PL Employer6', 'Address1', 'Address2', 'International Software House', '2200', 'www.employer6.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '880', 'MONTHLY', 'IAESTE', '330', 'MONTHLY', '8', '12', 'Krakow Balice (KRK)', 'Krakow train/coach', '2013-03-31',
 'Computer Science (or related) faculty preferred.\r\nG average grade at studies.\r\nIntention of further employment in one of Comarch Group companies after training.\r\nPerson from any UE country.',
@@ -230,7 +230,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0007', 'b84105f3-4061-47f9-a4ee-ce6609493c43', FALSE, 'PLN', '40', '8', '20%', 'ANT Sp. z.o.o.', 'Wadowicka 8a', '30-415  Krakow', 'Integration and data exchange in automatic systems', '8', 'www.ant-iss.pl',
+('PL-2013-0007', '9ee20f30-2969-4c28-9070-8ad313c2ff99', FALSE, 'PLN', '40', '8', '20%', 'PL Employer7', 'Address1', 'Address2', 'Integration and data exchange in automatic systems', '8', 'www.employer7.com',
 '2013-06-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '880', 'MONTHLY', 'arranged by IAESTE', '300', 'MONTHLY', '6', '12', 'Krakow - Balice intenational', 'Bus', '2013-03-31',
 'Experience in programming in C/C++, java, SQL bases',
@@ -245,7 +245,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0008', '7ad87d75-d56f-4e1c-bc49-a87bfb3ca940', FALSE, 'PLN', '35', '7', NULL, 'Instytut Chemii Ogolnej i Ekilogicznej Pt.', NULL, '', 'Research Institute of general and ecological chemi', '4000', NULL,
+('PL-2013-0008', 'c71099ab-3a5d-4e52-9814-6ffd9d57fbeb', FALSE, 'PLN', '35', '7', NULL, 'PL Employer8', 'Address1', 'Address2', 'Research Institute of general and ecological chemi', '4000', 'www.employer8.com',
 '2013-06-15', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 900, 'MONTHLY', 'arranged by IAESTE', 300, 'MONTHLY', '6', '6', 'Warszawa', NULL, '2013-03-31',
 NULL,
@@ -260,7 +260,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0009', '071caaa0-a3da-46c7-9ba5-f730a2132123', FALSE, 'PLN', '30', '6', '0 %', 'Szczecin University of Technology, Faculty of Civil Engineering and Architecture', NULL, ' Szczecin', 'Civil Engineering', '20', 'www.wbia.ps.pl',
+('PL-2013-0009', 'aa4d0712-4c05-47ff-833b-87356a5229fa', FALSE, 'PLN', '30', '6', '0 %', 'PL Employer9', 'Address1', 'Address2', 'Civil Engineering', '20', 'www.employer9.com',
 '2013-03-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '700', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '8', 'Berling, Goleniow, Warsaw', 'railway', '2013-03-31',
 NULL,
@@ -275,7 +275,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0010', '87d6b57c-c935-4430-9d45-1f1e9133ad34', TRUE, 'PLN', '40', '8', '20', 'Nokia Siemens Networks Sp. z o.o.', 'Zupnicza 11', '03-821 Warszawa', 'telecommunication', '1000', '',
+('PL-2013-0010', 'df16f5f9-68a4-4236-89fa-c281125e949e', TRUE, 'PLN', '40', '8', '20', 'PL Employer10', 'Address1', 'Address2', 'telecommunication', '1000', 'www.employer10.com',
 '2013-06-18', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '300', NULL, '6', '8', 'Wroslaw', 'Bus', '2013-06-30',
 'preferred ENGLISH NATIVE SPEAKER',
@@ -290,7 +290,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0011', '10efa841-cef2-426a-ad62-9f1c68da5acb', FALSE, 'PLN', '40', '8', '0', 'ROMAG Gryziski; Wieczorek s.j.', 'Zlotniki; ul Radosna 1A', '62-002  Suchy Las', 'Designing and manufacturing machinery and equipmen', '50', NULL,
+('PL-2013-0011', '06e5862b-0e03-4d72-85fc-c202a3b9788f', FALSE, 'PLN', '40', '8', '0', 'PL Employer11', 'Address1', 'Address2', 'Designing and manufacturing machinery and equipmen', '50', 'www.employer11.com',
 '2013-07-01', '2013-09-01', NULL, NULL, NULL, NULL, 'GERMAN', 'E', 'A', 'ENGLISH', 'F', 'A', NULL, 'F',
 '950', 'MONTHLY', 'IAESTE', '250', NULL, '4', '8', 'Poznan', 'Bus', '2013-06-15',
 'Knowledge of technical drawing; MS Excell',
@@ -305,7 +305,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0012', '02d1b18b-900f-40b4-8bd2-d9de33bddb9f', FALSE, 'PLN', '40', '8', '0', 'ROMAG Gryzinski; Wieczorek s.j.', 'Zlotniki; ul Radosna 1A', '62-002 Suchy Las', 'Designing and manufacturing machinery and equipmen', '50', '',
+('PL-2013-0012', 'ab367c53-cfda-4d26-99d0-301080b4eec0', FALSE, 'PLN', '40', '8', '0', 'PL Employer12', 'Address1', 'Address2', 'Designing and manufacturing machinery and equipmen', '50', 'www.employer12.com',
 '2013-06-18', '2013-09-21', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '950', 'MONTHLY', 'IAESTE', '250', NULL, '9', '12', 'Poznan', 'Bus', '2013-06-14',
 '',
@@ -320,7 +320,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0013', '1ac9d15c-a4ed-4c9c-bd9f-d8ff7c4628fc', TRUE, 'PLN', '40', '8', '0', 'FQS Poland Sp. z o.o. (LTD)', 'Starowislna 13 - 15', '31-038 Krakow', 'sales;marketing;research&development', '20', '',
+('PL-2013-0013', 'd6bc8bf7-ade3-4258-a61e-25173bc14884', TRUE, 'PLN', '40', '8', '0', 'PL Employer13', 'Address1', 'Address2', 'sales;marketing;research&development', '20', 'www.employer13.com',
 '2013-06-01', '2013-05-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'GERMAN', 'E', 'O', 'SPANISH', 'E',
 '880', 'MONTHLY', 'IAESTE', '330', NULL, '12', '52', 'Krakow', 'train/coach', '2013-06-14',
 'student with deep knowledge of chemistry as it is required to be well prepared during dealing with clients.',
@@ -335,7 +335,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0014', '3f5f9720-5cf8-4d43-b26e-609df0abd805', FALSE, 'PLN', '40', '8', '0', 'DRQ S.A.', 'Podwale 3', '31-118 Krakow', 'advanced technolog. to develop big scale IT solut.', '140', '',
+('PL-2013-0014', '2d9582f6-0c32-4abc-b6c0-f53521b9d25f', FALSE, 'PLN', '40', '8', '0', 'PL Employer14', 'Address1', 'Address2', 'advanced technolog. to develop big scale IT solut.', '140', 'www.employer14.com',
 '2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'POLISH', 'G', NULL, NULL, NULL,
 '550', 'MONTHLY', 'IAESTE', '0', NULL, '11', '12', 'Krakow', 'train/coach', '2013-06-14',
 '',
@@ -350,7 +350,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0015', 'e940eb24-2ec1-47d6-8118-5916eb2b6592', FALSE, 'PLN', '40', '8', '0', 'Union Square Internet Development Polska Sp. z o.o', 'Grodzka 50/3', '31-044  Krakow', 'IT consulting; web site and application developmen', '30', NULL,
+('PL-2013-0015', '78774724-aef7-4b87-868e-76121d103895', FALSE, 'PLN', '40', '8', '0', 'PL Employer15', 'Address1', 'Address2', 'IT consulting; web site and application developmen', '30', 'www.employer15.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '550', 'MONTHLY', 'IAESTE', '0', NULL, '8', '12', 'Krakow', 'train', '2013-06-14',
 NULL,
@@ -365,7 +365,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0016', '8f4a2af9-e1d8-41ae-8f68-a7354092f12a', TRUE, 'PLN', '40', '8', '0', 'Design Office PROMOST CONSULTING', 'Slowackiego 20', 'Rzeszow', 'Civil Engineering Design and Consulting', '50', '',
+('PL-2013-0016', 'b917f1e8-bafe-4f20-9305-bea4b0d15a96', TRUE, 'PLN', '40', '8', '0', 'PL Employer16', 'Address1', 'Address2', 'Civil Engineering Design and Consulting', '50', 'www.employer16.com',
 '2013-06-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '350', NULL, '4', '8', 'Rzeszow - Jasionka', 'Bus', '2013-06-30',
 'A student needs to have a good knowledge of such programs as: Auto Cad; Math Cad; 3D Studio. He/She should also be able to use computer programs for analysis of engineering constructions',
@@ -380,7 +380,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0017', 'c48d542c-44eb-401f-b6eb-b08a5ec3d566', FALSE, 'PLN', '40', '8', '20', 'Gemius SA', 'Domaniewska 41', 'Warsaw', 'market and public opinion research', '125', '',
+('PL-2013-0017', '38475101-ff7b-4db5-aa7d-06e19fe85ce6', FALSE, 'PLN', '40', '8', '20', 'PL Employer17', 'Address1', 'Address2', 'market and public opinion research', '125', 'www.employer17.com',
 '2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '8', '12', 'Warsaw', 'bus; train', '2013-01-01',
 '',
@@ -395,7 +395,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0018', '5f24884c-df4f-417c-8c21-6464c93ff6d6', FALSE, 'PLN', '40', '8', '20', 'MAAS S.C. Architecture Office', 'Lekarska 4', '01-610  Warszawa', 'Architecture Office', '7', NULL,
+('PL-2013-0018', '78619c37-0340-4405-9591-b66945947ff8', FALSE, 'PLN', '40', '8', '20', 'PL Employer18', 'Address1', 'Address2', 'Architecture Office', '7', 'www.employer18.com',
 '2013-07-01', '2013-07-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '4', 'Warsaw', 'bus', '2013-06-14',
 'Previous training in architecture office working at preparation of technical documentation. Experience with AUTOCAD; ARCHICAD',
@@ -410,7 +410,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0019', 'd10759e9-c476-4885-8171-22e02a8186e2', TRUE, 'PLN', '35', '7', '20', 'Isotops Research and Development Centre POLATOM', 'Swierk 24 A', '05-400 Otwock', 'Research on chemistry;radiochemistry&radiophar', '46', '',
+('PL-2013-0019', '6b9b23a2-8e2b-4b96-af50-28669acb1000', TRUE, 'PLN', '35', '7', '20', 'PL Employer19', 'Address1', 'Address2', 'Research on chemistry;radiochemistry&radiophar', '46', 'www.employer19.com',
 '2013-07-01', '2013-08-16', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '6', 'Warsaw', 'bus', '2013-06-14',
 '',
@@ -425,7 +425,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0020', '69f57150-e209-4b35-8e79-4715d05e1d97', FALSE, 'PLN', '40', '8', '20', 'POLISH Geological Institute', 'Rakowiecka 4', '00-975 Warsaw', 'earth Sciences:geology; hydrogeology; environment', '730', '',
+('PL-2013-0020', 'd2ce950d-a9b7-45ec-8dce-aa58e29d5bd4', FALSE, 'PLN', '40', '8', '20', 'PL Employer20', 'Address1', 'Address2', 'earth Sciences:geology; hydrogeology; environment', '730', 'www.employer20.com',
 '2013-08-01', '2013-08-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '4', 'Warsaw', 'bus', '2013-06-14',
 '',
@@ -440,7 +440,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0021', '1ecae0ef-7127-49df-901d-da1c839f9ee0', FALSE, 'PLN', '40', '8', '20', 'Institute of Electron Technology', 'Al. Lotnikow 32/46', '02-668 Warsaw', 'Electronics;construction&techn. of semico', '292', '',
+('PL-2013-0021', '09587d4c-0db4-4659-9980-b466f1c27b2e', FALSE, 'PLN', '40', '8', '20', 'PL Employer21', 'Address1', 'Address2', 'Electronics;construction&techn. of semico', '292', 'www.employer21.com',
 '2013-09-01', '2013-11-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '8', 'Warsaw', 'bus', '2013-06-14',
 '',
@@ -455,7 +455,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0022', '672b3e67-1e8d-4daa-ac06-4f2cc0e7d4f3', FALSE, 'PLN', '40', '8', '20', 'PROART Anna Rostkowska', 'Sniadeckich 10', '00-656 Warsaw', 'Architecture', '10', '',
+('PL-2013-0022', 'f22ef7c0-a68b-4f17-b163-572f9cc4c238', FALSE, 'PLN', '40', '8', '20', 'PL Employer22', 'Address1', 'Address2', 'Architecture', '10', 'www.employer22.com',
 '2013-06-14', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '6', '8', 'Warsaw', 'bus', '2013-06-14',
 '',
@@ -470,7 +470,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0023', 'e2c8d8f9-0525-4412-ba6f-7a0fc698d101', TRUE, 'PLN', '40', '8', '20', 'Jasinski Kruszewski Architekci', 'Rakowiecka 45/11', '02-528  Warsaw', 'Architecture', '10', NULL,
+('PL-2013-0023', 'fa7d3d7e-0d10-40d8-8d3a-2e7047547cbc', TRUE, 'PLN', '40', '8', '20', 'PL Employer23', 'Address1', 'Address2', 'Architecture', '10', 'www.employer23.com',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', 'A', NULL, 'F', 'A', NULL, 'F',
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '6', '12', 'Warsaw', 'Underground', '2013-06-14',
 'Knowledge of AutoCad and Adobe Photoshop; portfolio.',
@@ -485,7 +485,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0024', '27854535-711d-4c52-8caf-367719946265', FALSE, 'PLN', '40', '8', '20', 'POLISH Geological Institute', 'Rakowiecka 4', '00-975 Warsaw', 'earth Sciences:geology; hydrogeology; environment', '730', '',
+('PL-2013-0024', 'c454fe2e-8468-4103-8dbe-4431ea3acfd7', FALSE, 'PLN', '40', '8', '20', 'PL Employer24', 'Address1', 'Address2', 'earth Sciences:geology; hydrogeology; environment', '730', 'www.employer24.com',
 '2013-08-01', '2013-08-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '4', 'Warsaw', 'bus', '2013-06-14',
 '',
@@ -500,7 +500,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0025', '2bdd1cbd-8e63-4f8c-ba62-d977fbc820b0', FALSE, 'PLN', '30', '6', '0', 'Szczecin TU; Faculty of Electrical Engineering', '26-Kwietnia 10', '71-126 Szczecin', 'Electronics; Telecommunication', '0', '',
+('PL-2013-0025', '42555529-674e-4fdf-a050-d215024fbf16', FALSE, 'PLN', '30', '6', '0', 'PL Employer25', 'Address1', 'Address2', 'Electronics; Telecommunication', '0', 'www.employer25.com',
 '2013-09-03', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', NULL, NULL, NULL, NULL, NULL, NULL,
 '700', 'MONTHLY', 'IAESTE', '300', NULL, '6', '8', 'Warsaw; Berlin; Goleniow', 'Szczecin Railway Station', '2013-06-15',
 'Basic knowledge of optoelectronics or optical telecommunication; knowledge of MathCad; MatLab; Labview',
@@ -515,7 +515,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0026', 'c3b98fbf-3eea-4bca-9440-58e0f3fe0450', FALSE, 'PLN', '40', '8', '20', 'Gemius SA', 'Domaniewska 41', 'Warsaw', 'market and public opinion research', '125', '',
+('PL-2013-0026', '3137ca3c-1f1b-4821-aaf4-61b996f417fa', FALSE, 'PLN', '40', '8', '20', 'PL Employer26', 'Address1', 'Address2', 'market and public opinion research', '125', 'www.employer26.com',
 '2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', NULL, '8', '12', 'Warsaw', 'bus; train', '2013-01-01',
 '',
@@ -530,7 +530,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0027', '3d33656e-af82-46cb-843a-1f4f555306d2', TRUE, 'PLN', '40', '8', '0', 'Tukaj Mapping Central Europe sp. z o.o.', 'Odrzanska 7', '30-408 Krakow', 'Geographical Information Systems', '69', '',
+('PL-2013-0027', '4b8b2075-0740-4650-b391-288225d427ec', TRUE, 'PLN', '40', '8', '0', 'PL Employer27', 'Address1', 'Address2', 'Geographical Information Systems', '69', 'www.employer27.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '550', 'MONTHLY', 'IAESTE', '0', NULL, '8', '12', 'Krakow', 'train.coach', '2013-06-20',
 'knowledge of the Intergraph Corp software especially Image Station; GeoMedia or Othopro or Visual Basic or Oacle',
@@ -545,7 +545,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0028', '979671c1-8220-4de9-9cc1-3fd423ddfbe7', TRUE, 'PLN', '40', '8', '0', 'Tukaj Mapping Central Europe sp. z o.o.', 'Odrzanska 7', '30-408 Krakow', 'Geographical Information Systems', '69', '',
+('PL-2013-0028', '4a6b4f07-a4e8-4a83-8fe0-70e4df28b75c', TRUE, 'PLN', '40', '8', '0', 'PL Employer28', 'Address1', 'Address2', 'Geographical Information Systems', '69', 'www.employer28.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '550', 'MONTHLY', 'IAESTE', '0', NULL, '8', '12', 'Krakow', 'train.coach', '2013-06-20',
 'knowledge of the Intergraph Corp software especially Image Station; GeoMedia or Othopro or Visual Basic or Oacle',
@@ -560,7 +560,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0029', 'b5d30715-8466-43cc-8755-01e7bd535e34', FALSE, 'PLN', '40', '8', '0', 'Przedsibiorstwo Wdra|ania Innow', 'Zgrzebnioka 5', '41-500 Chorzow', 'related to transportation; storage and processing', '18', '',
+('PL-2013-0029', '12421af3-59a8-4554-a92b-64a3ba474395', FALSE, 'PLN', '40', '8', '0', 'PL Employer29', 'Address1', 'Address2', 'related to transportation; storage and processing', '18', 'www.employer29.com',
 '2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'RUSSIAN', 'G', 'O', 'UKRAINIAN', 'G',
 '800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '6', 'Katowice', 'train', '2013-06-20',
 'Basic previous training required; ability to use AUTOCAD',
@@ -575,7 +575,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0030', 'ba6a2ca8-0837-4f14-8764-251ca4f91ed1', FALSE, 'PLN', '40', '8', '0', 'ALDEC-ADT Sp. z. o.o.', 'Widok 23', '40-118 Katowice', 'Product. of software for autom. of electr. project', '61', '',
+('PL-2013-0030', 'a232f3f6-2bd4-4cab-8d92-a5859eb04e04', FALSE, 'PLN', '40', '8', '0', 'PL Employer30', 'Address1', 'Address2', 'Product. of software for autom. of electr. project', '61', 'www.employer30.com',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '12', 'Katowice', 'City bus; Train', '2013-06-20',
 'Knowledge of C++; HDL (VHDL; Verilog) or Systemc.',
@@ -590,7 +590,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0031', '086d2886-e29b-4907-8edb-48aad16ec1f1', FALSE, 'PLN', '40', '8', '0', 'Comarch S.A.', 'Al. Jana PawBa II 39A', '31-864 Kraków (subsidiary Katowice)', 'IT Solutions to Telecommunications', '2200', '',
+('PL-2013-0031', '358ce287-cf94-46cf-9dbf-d2c94713a7d6', FALSE, 'PLN', '40', '8', '0', 'PL Employer31', 'Address1', 'Address2', 'IT Solutions to Telecommunications', '2200', 'www.employer31.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '350', NULL, '8', '12', 'Katowice', 'bus', '2013-06-20',
 'G average grade at studies.Intention of further employment in one of Comatch Group companies after training.',
@@ -605,7 +605,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0032', '50347514-5bb1-4130-8296-720b1a8f4a00', FALSE, 'PLN', '40', '8', '0', 'DASTA S.C. Stanislaw Lakota; Stanislaw Radwan', 'WladysBawa Sobocinskiego 5/2', '40-687 Katowice', 'Electronical devices for industry', '17', '',
+('PL-2013-0032', '46b7449c-366e-41ed-b0cf-6fc98cf873f6', FALSE, 'PLN', '40', '8', '0', 'PL Employer32', 'Address1', 'Address2', 'Electronical devices for industry', '17', 'www.employer32.com',
 '2013-06-04', '2013-09-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', 'O', 'RUSSIAN', 'F', 'O', 'POLISH', 'F',
 '800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '8', 'Katowice', 'bus', '2013-06-20',
 '',
@@ -620,7 +620,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0033', '860a08aa-527b-4d09-b001-9b67dc8b220c', FALSE, 'PLN', '40', '8', '0', 'Towarzystwo Gospodarcze MEGART Sp. z o.o', 'Wyzwolenia 5', '43-190 Mikolów', 'Trade-technical', '12', '',
+('PL-2013-0033', 'ef7690ae-6c04-4431-bee1-bb82d8cdb5ee', FALSE, 'PLN', '40', '8', '0', 'PL Employer33', 'Address1', 'Address2', 'Trade-technical', '12', 'www.employer33.com',
 '2013-07-01', '2013-01-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'RUSSIAN', 'F', NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '31', 'Katowice', 'train', '2013-07-20',
 'driving license (valid in Poland); good skills in MS Office',
@@ -635,7 +635,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0034', '5f83d099-e9ff-4247-9b65-cf36c65d18a5', FALSE, 'PLN', '40', '8', '0', 'LGBS Polska Sp. z o.o', 'Toszecka 101/302', '44-100 Gliwice', 'Informatics', '20', '',
+('PL-2013-0034', '1c0fdc4d-caa8-4c55-baac-1f104bd01039', FALSE, 'PLN', '40', '8', '0', 'PL Employer34', 'Address1', 'Address2', 'Informatics', '20', 'www.employer34.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '6', 'Katowice', 'bus', '2013-06-20',
 '',
@@ -650,7 +650,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0035', 'b046a990-c40b-431f-b3a9-30f4750da5f1', FALSE, 'PLN', '35', '7', '0', 'UL Department of General and Inorganic Chemistry', 'Narutowicza 68', '90-136 Lodz', 'University', '38', '',
+('PL-2013-0035', '76a2f01d-9afb-4a6d-8b17-aee0a44942c2', FALSE, 'PLN', '35', '7', '0', 'PL Employer35', 'Address1', 'Address2', 'University', '38', 'www.employer35.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'FRENCH', 'G', NULL, NULL, NULL,
 '600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
 'fundamental knowledge of laboratory techniques of electrochemistry (CVA; EIS; ESTM; STM; AFM); analytical methods',
@@ -665,7 +665,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0036', '54d0f8dd-06fd-447c-8f2e-faf6ba851a24', FALSE, 'PLN', '35', '7', '0', 'UL Department of Oganic Chemistry', 'Narutowicza 68', '90-136 Lodz', 'University', '27', '',
+('PL-2013-0036', 'aa1f029d-0d3a-45da-acc5-3198273cfeca', FALSE, 'PLN', '35', '7', '0', 'PL Employer36', 'Address1', 'Address2', 'University', '27', 'www.employer36.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'FRENCH', 'G', NULL, NULL, NULL,
 '600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
 'fundamental knowledge of laboratory techniques and spectroscopic (IR; NMR; MS) methods',
@@ -680,7 +680,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0037', 'd21f867b-cb25-40e4-a27f-45998d4ad788', FALSE, 'PLN', '30', '6', '0', 'UL Department of Chemical Technology and Environ.', 'Pomorska 163', '90-236 Lodz', 'University', '36', '',
+('PL-2013-0037', 'aca829ef-8006-4b54-8b93-c6617f6ed97d', FALSE, 'PLN', '30', '6', '0', 'PL Employer37', 'Address1', 'Address2', 'University', '36', 'www.employer37.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
 'Basic skills in the field of chemical laboratory work; easy operation of computers; basic knowledge in the field of chemistry and physics on the academic level',
@@ -695,7 +695,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0038', '819eefe0-298f-4793-b673-f14830b9d012', FALSE, 'PLN', '30', '6', '0', 'UL Department of Chemical Technology and Environ.', 'Pomorska 163', '90-236 Lodz', 'University', '36', '',
+('PL-2013-0038', '3488b9b8-f8bf-4c93-a9e2-0d19919651c1', FALSE, 'PLN', '30', '6', '0', 'PL Employer38', 'Address1', 'Address2', 'University', '36', 'www.employer38.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
 'Basic skills in the field of chemical laboratory work; easy operation of computers; basic knowledge in the field of chemistry and physics on the academic level',
@@ -710,7 +710,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0039', '16a6d58c-7473-41c6-91d7-3fd6ed0385f1', FALSE, 'PLN', '35', '7', '0', 'University of Lodz; Department of Mathematics', 'Banacha 22', '90-238 Lodz', 'Research and teaching', '142', '',
+('PL-2013-0039', 'ca843c41-2279-4142-9e9e-cfe1e1b544e6', FALSE, 'PLN', '35', '7', '0', 'PL Employer39', 'Address1', 'Address2', 'Research and teaching', '142', 'www.employer39.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'F', 'A', 'RUSSIAN', 'G',
 '600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
 '',
@@ -725,7 +725,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0040', '0b6d373b-4364-4d48-8096-c69f265d64fe', FALSE, 'PLN', '35', '7', '0', 'University of Lodz; Department of Mathematics', 'Banacha 22', '90-238 Lodz', 'University', '12', '',
+('PL-2013-0040', '42a42828-54db-4ff8-95f7-e8551b76c132', FALSE, 'PLN', '35', '7', '0', 'PL Employer40', 'Address1', 'Address2', 'University', '12', 'www.employer40.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
 '',
@@ -740,7 +740,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0041', 'a13373f0-1f14-4f83-b76d-de67284f109f', TRUE, 'PLN', '40', '8', '20', 'Nokia Siemens Networks Sp. z o.o.', 'Zupnicza 11', '03-821 Warszawa', 'telecommunication', '1000', '',
+('PL-2013-0041', '20d7f999-72ce-4e1d-b396-c0f028f3df96', TRUE, 'PLN', '40', '8', '20', 'PL Employer41', 'Address1', 'Address2', 'telecommunication', '1000', 'www.employer41.com',
 '2013-06-18', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '300', NULL, '6', '8', 'Wroslaw', 'Bus', '2013-06-30',
 'preferred ENGLISH NATIVE SPEAKER',
@@ -755,7 +755,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0042', '81013011-0295-4f8f-8cac-91151378d2b4', FALSE, 'PLN', '35', '7', '0', 'Institute of Material Science', 'Stefanowskiego 1/15', '90-924   Lodz', 'Material Sc./Material Eng', '70', NULL,
+('PL-2013-0042', 'fe404b23-f690-4d2b-abb9-b69e0ed478a5', FALSE, 'PLN', '35', '7', '0', 'PL Employer42', 'Address1', 'Address2', 'Material Sc./Material Eng', '70', 'www.employer42.com',
 '2013-06-15', '2013-09-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '300', NULL, '8', '12', 'Warszawa', 'Bus', '2013-06-15',
 NULL,
@@ -770,7 +770,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0043', '085b66c1-896a-4454-abbc-404176242939', FALSE, 'PLN', '40', '8', '20%', 'MAAS s.c. Architecture office', 'lekarska 4', '01-610 Warsaw', 'architecture office', '7', 'www.maas.com.pl',
+('PL-2013-0043', '4b14667c-6b64-41e0-a050-29cc6fe357d3', FALSE, 'PLN', '40', '8', '20%', 'PL Employer43', 'Address1', 'Address2', 'architecture office', '7', 'www.employer43.com',
 '2013-07-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '6', '8', 'warsaw', 'tram, bus, subway', '2013-03-31',
 NULL,
@@ -785,7 +785,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0044', 'ec27031b-a2db-4e1b-bbe2-08950773a65b', TRUE, 'PLN', '35', '7', '0', 'AGH University of science and technology', 'Al. Mickiewicza 30', '30-059 Krakow', 'university', '40', 'www.agh.edu.pl',
+('PL-2013-0044', 'f7df8874-3994-418b-9b6c-15e31f781642', TRUE, 'PLN', '35', '7', '0', 'PL Employer44', 'Address1', 'Address2', 'university', '40', 'www.employer44.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'RUSSIAN', 'G', NULL, NULL, NULL,
 '550', 'MONTHLY', 'IAESTE', '0', 'MONTHLY', '6', '6', 'krakow', 'train/coach', '2013-03-31',
 NULL,
@@ -800,7 +800,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0045', 'bd238537-98f1-45eb-9614-2c98f07cdd8e', NULL, 'PLN', '30', '6', '20%', 'Fabryka Substancji Zapachowych Pollena Aroma Spolka z.o.o.', 'Klasykow 10', '03-115 Warsaw', 'Aroma substances, food aromas, cosmetics', '85', 'www.pollenaaroma.com.pl',
+('PL-2013-0045', '067db9fa-be4e-408d-9881-2d2441ec63e4', NULL, 'PLN', '30', '6', '20%', 'PL Employer45', 'Address1', 'Address2', 'Aroma substances, food aromas, cosmetics', '85', 'www.employer45.com',
 '2013-02-02', '2013-08-22', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '6', '6', 'warsaw', 'bus tram', '2013-03-31',
 'basic knowledge of fragrance compounds and nomenclature used in perfume technology',
@@ -815,7 +815,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0046', '4aaa6510-dc55-4641-a2da-219a7a6b0d96', NULL, 'PLN', '35', '7', '0%', 'Instytut Podstaw Chemii Zywnosci', 'Stefanowskiego 4/10', '90-924 Lodz', 'Research Institute - biotechnology and general foo', '20', NULL,
+('PL-2013-0046', '23c9f150-d598-4117-a6bb-11f7608a2d80', NULL, 'PLN', '35', '7', '0%', 'PL Employer46', 'Address1', 'Address2', 'Research Institute - biotechnology and general foo', '20', 'www.employer46.com',
 '2013-07-02', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '8', 'Warszawa', 'City bus, tram', '2013-03-31',
 'none',
@@ -830,7 +830,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0047', '43e920a7-f900-42f5-9f52-d74633bf6d34', NULL, 'PLN', '30', '6', '0%', 'AGH University of Science and Technology', 'Al. Mickiewicza 30', '30-059 Krakow', 'University', '40', NULL,
+('PL-2013-0047', '71ee90f5-75b5-4bc8-a625-efff640ec0d7', NULL, 'PLN', '30', '6', '0%', 'PL Employer47', 'Address1', 'Address2', 'University', '40', 'www.employer47.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '550', 'MONTHLY', 'IAESTE', '0', 'MONTHLY', '6', '8', 'Krakow Balice (KRK)', 'Krakow Train/Coach', '2013-03-31',
 'none',
@@ -845,7 +845,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0048', 'ff14868e-9afe-4cfc-9a8b-e51c0c4fb0cc', NULL, 'PLN', '35', '7', '0%', 'Centrum Diagnostyki i Terapii Laserowej', 'Wolczanska 215', '93-005 Lodz', 'Center of Laser Diagnostics & Therapy in Medicine', '50', NULL,
+('PL-2013-0048', 'd0f61a5a-c696-4a20-9cb7-f75554561594', NULL, 'PLN', '35', '7', '0%', 'PL Employer48', 'Address1', 'Address2', 'Center of Laser Diagnostics & Therapy in Medicine', '50', 'www.employer48.com',
 '2013-07-02', '2013-08-12', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '6', 'Warszawa', 'City bus, tram', '2013-03-31',
 'Must start on 1st of July! - team work!',
@@ -860,7 +860,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0049', '8bb75ebf-cacf-453f-85c3-2eaf8a446220', TRUE, 'PLN', '40', '8', '0', 'KPG Ltd', 'Mogilska 80', '31-546 Krakow', 'company - Geodesy, Photogrammetry', '120', 'www.kpg.pl',
+('PL-2013-0049', '094136cc-45bd-489e-a99f-6dd67556dee2', TRUE, 'PLN', '40', '8', '0', 'PL Employer49', 'Address1', 'Address2', 'company - Geodesy, Photogrammetry', '120', 'www.employer49.com',
 '2013-06-20', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '950', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '4', '8', 'Krakow', 'Train/Coach', '2013-03-31',
 'G knowledge of MicroStation and/or Autocad software, knowledge of photoshop & 3D studio software will be highly appreciated, good knowledge of professional measurement equipment maintenance (total station/ level)',
@@ -875,7 +875,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0050', 'dc350f56-67e6-455e-9d1d-a0a6f4684a0b', FALSE, 'PLN', '40', '8', '0', 'Hartbex Przedsiebiorstwo Budowlane S.P.Z.O.O.', 'Adress 22', '36001 Trzebownisko', 'Building Construction', '425', 'www.hartbex.pl',
+('PL-2013-0050', '9e6e80a6-ae82-4d15-825f-c1d20ec7ef99', FALSE, 'PLN', '40', '8', '0', 'PL Employer50', 'Address1', 'Address2', 'Building Construction', '425', 'www.employer50.com',
 '2013-06-25', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '350', 'MONTHLY', '8', '10', 'Rzeszow Jasionka', 'Rzesow', '2013-03-31',
 NULL,
@@ -890,7 +890,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0051', '2d90a965-68d2-42dc-9f2f-8fbf140d7c65', TRUE, 'PLN', '40', '8', '20%', 'Capgemini Polska Sp zo.o.', 'al. Jana Pawla II 12', '00-124 Warszawa (subsidiary Wroclaw)', 'Informatics', '2000', 'www.pl.capgemini.com',
+('PL-2013-0051', 'd5d6458f-bec6-492e-bf40-10cf91e4a57c', TRUE, 'PLN', '40', '8', '20%', 'PL Employer51', 'Address1', 'Address2', 'Informatics', '2000', 'www.employer51.com',
 '2013-07-01', '2013-10-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'O', 'POLISH', 'F', NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '10', '12', 'Wroclaw', 'bus, tram', '2013-03-31',
 'advanced programming skills in JAVA, dotNET or C++\r\nA desire to work in Poland after graduation will be an advantage. Employer would like to verify knowledge of the candidate before acception',
@@ -905,7 +905,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0052', '4268e097-53e8-4050-b68f-1c3aabc9c5f5', FALSE, 'PLN', '40', '8', '0', 'BEST Construction Sp. z o.o.', 'Mikolaja Reja 12', '35-211 Rzeszow', 'Execution of complex construction projects', '200', '',
+('PL-2013-0052', '4fb5472a-0ee0-4ed2-9d05-7809fcbca085', FALSE, 'PLN', '40', '8', '0', 'PL Employer52', 'Address1', 'Address2', 'Execution of complex construction projects', '200', 'www.employer52.com',
 '2013-06-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', 'O', 'RUSSIAN', 'G',
 '850', 'MONTHLY', 'IAESTE', '400', 'MONTHLY', '8', '8', 'Jasionka', '', '2013-06-01',
 '',
@@ -920,7 +920,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0053', '369bfd88-183d-44a8-94ef-2d6c1913403e', FALSE, 'PLN', '40', '8', '20', 'Volvo Polska Sp. z o.o.', 'ul. Mydlana 2', '51-502 Wroclaw', 'automitive, finantial services center', '2600', '',
+('PL-2013-0053', '4b419665-7db4-4ed5-96fe-5a3365ee0891', FALSE, 'PLN', '40', '8', '20', 'PL Employer53', 'Address1', 'Address2', 'automitive, finantial services center', '2600', 'www.employer53.com',
 '2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'FINNISH', 'G', NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '400', 'MONTHLY', '52', '52', 'Wroclaw', '', '2013-05-20',
 '',
@@ -935,7 +935,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0054', '12d1ff38-2a0f-480b-9e97-c8126bee1c3f', FALSE, 'PLN', '40', '8', '0%', 'MakoLab M.i K. Sopek, Ltd.', 'Demokratyczna 46', '93-430 Lodz', 'Web graphics and software', '20', 'www.makolab.pl',
+('PL-2013-0054', '0c6cd4ba-d799-49e3-bae1-998ddf708c60', FALSE, 'PLN', '40', '8', '0%', 'PL Employer54', 'Address1', 'Address2', 'Web graphics and software', '20', 'www.employer54.com',
 '2013-06-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '12', '24', 'F.Chopin International Airport, Warsaw (WAW)', 'Bus, tram, metro', '2013-03-31',
 'Knowledge of DHTML, ASP, VBScript, SQL\r\ninterview possible',
@@ -950,7 +950,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0055', '290efe4c-5a14-421e-86ed-52db29c30944', TRUE, 'PLN', '25', '5', '0%', 'University of Lodz, Departement of Mathematics, Chair of Probability Theory and Statistics', 'Banacha 22', '90-238 Lodz', 'Mathematics', '12', 'www.math.uni.lodz.pl',
+('PL-2013-0055', '0ff9d6db-6a80-4bcb-8a8e-353c1eb53886', TRUE, 'PLN', '25', '5', '0%', 'PL Employer55', 'Address1', 'Address2', 'Mathematics', '12', 'www.employer55.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '650', 'MONTHLY', 'IAESTE', '0', 'MONTHLY', '4', '8', 'Warsaw Airport/Lodz, W. Reymont Airport', 'Tram, Bus', '2013-03-31',
 NULL,
@@ -965,7 +965,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0056', 'a12d2503-69f9-4e18-8217-631d64be4a06', TRUE, 'PLN', '40', '8', '20%', 'Are sp.z o.o.', 'Chmielna 24/3', '00-020 Warsaw', 'Architecture', '18', 'www.are.com.pl',
+('PL-2013-0056', '88f7cad7-e967-48b6-82d6-c941e545a41b', TRUE, 'PLN', '40', '8', '20%', 'PL Employer56', 'Address1', 'Address2', 'Architecture', '18', 'www.employer56.com',
 '2013-06-15', '2013-10-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', NULL, NULL, NULL, NULL, NULL, NULL,
 '1000', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '6', '8', 'F.Chopin International Airport, Warsaw (WAW)', 'Bus, tram, metro', '2013-03-31',
 'Required knowledge of AutoCAD and previous practice/work in architectural office. \r\nDesired previous experience in making projects.',
@@ -980,7 +980,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0057', 'e60b2405-cdda-4f8a-9cc3-cde4062e2563', FALSE, 'PLN', '35', '7', '0%', 'INWAT Zaklad Badawczo-Projektowy', 'Sienkiewicza 101', '90-310 LÃ³dz', 'Steam and gas turbines - parts manufacturing, desi', '115', 'www.inwat.com.pl',
+('PL-2013-0057', '4da0c75f-7527-44c5-b2f5-a57d50b7110f', FALSE, 'PLN', '35', '7', '0%', 'PL Employer57', 'Address1', 'Address2', 'Steam and gas turbines - parts manufacturing, desi', '115', 'www.employer57.com',
 '2013-07-01', '2013-08-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '8', 'Warszawa', 'City bus, tram', '2013-03-31',
 NULL,
@@ -995,7 +995,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0058', 'dd8e4f19-e591-471f-909b-3191d3e3c23d', FALSE, 'PLN', '40', '8', NULL, 'Geosat KrakÃ³w Sp,z.o.o.', 'Lukasiewicza 3', '31-429 Krakow', 'Geodesy, Cartography, Land Surveying', '100', 'www.geosat-krakow.pl',
+('PL-2013-0058', '99ca43b8-22b6-49dc-8478-b3e3735ca240', FALSE, 'PLN', '40', '8', NULL, 'PL Employer58', 'Address1', 'Address2', 'Geodesy, Cartography, Land Surveying', '100', 'www.employer58.com',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '0', 'MONTHLY', 'Company', '0', 'MONTHLY', '6', '12', 'Krakow Balice', 'Krakow public transport', '2013-03-31',
 'Studylevel: B/M/E',
@@ -1010,7 +1010,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0059', '7d855e3a-c8f0-43c7-905e-41bfd666f506', FALSE, 'PLN', '35', '7', '0%', 'Centrum Diagnostyki i Terapil Laserowej', 'Wolczanska 215', '93-005 Lodz', 'Center of laser diagnostics & therapy in medicine', '50', 'www.p.lodz.pl/laser',
+('PL-2013-0059', '74b0b2a7-79e6-4f9b-99cf-e949601a6741', FALSE, 'PLN', '35', '7', '0%', 'PL Employer59', 'Address1', 'Address2', 'Center of laser diagnostics & therapy in medicine', '50', 'www.employer59.com',
 '2013-06-15', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '6', 'Warzawa', 'City bus, tram', '2013-03-31',
 'Must start on 1st of July!\r\nTeamwork',
@@ -1025,7 +1025,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0060', '3e3586db-751a-4e45-81b8-a7143867b792', TRUE, 'PLN', '40', '8', '20', 'Robobat Polska Sp. z o. o.', 'Radzikowskiego 47A', '31-315 Krakow', 'Civil Eng., Computer Science', '50', '',
+('PL-2013-0060', '999f5400-a8eb-4504-aa45-aa67081f5161', TRUE, 'PLN', '40', '8', '20', 'PL Employer60', 'Address1', 'Address2', 'Civil Eng., Computer Science', '50', 'www.employer60.com',
 '2013-06-01', '2013-10-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '360', 'MONTHLY', '4', '12', 'Krakow Balice International Airport', 'Krakow', '2013-03-17',
 'Nationality: US/Canada, Western Europe, Australia, Japan',
@@ -1040,7 +1040,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0061', '9ce64a0a-6c3f-45a0-83aa-fd2680d5f5bc', TRUE, 'PLN', '40', '8', '15', 'SELFA GE S.A.', 'Bieszczadzka 14', '71-042 Szczecin', 'Elect. heating elements', '130', '',
+('PL-2013-0061', '817613a7-9574-4b32-bb7e-ede7b1ac31d1', TRUE, 'PLN', '40', '8', '15', 'PL Employer61', 'Address1', 'Address2', 'Elect. heating elements', '130', 'www.employer61.com',
 '2013-03-03', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '8', 'Szczecin, Berlin', 'Szczecin', '2013-03-17',
 '',
@@ -1055,7 +1055,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0062', 'e4143405-e113-44bc-a1ae-c58b5646d00a', TRUE, 'PLN', '36', '6', '0', 'Rzeszow University of Technology, Chair of Building Engineering', 'Wincentego Pola 2', '35-959   Rzeszow', 'University', '50', 'www.prz.edu.pl',
+('PL-2013-0062', '30c215c0-da1d-422d-98d1-ca21267f1fdc', TRUE, 'PLN', '36', '6', '0', 'PL Employer62', 'Address1', 'Address2', 'University', '50', 'www.employer62.com',
 '2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '6', '6', 'Rzeszow-Jasionka', 'Rzeszow', '2013-02-22',
 'Austrian nationality',
@@ -1070,7 +1070,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0063', '16e8e89b-ae91-4728-8cae-910fc5a89d2d', FALSE, 'PLN', '40', '8', '20', 'Are sp. z o.o.', 'Chmielna 24/3', '00-020   Warsaw', 'Architecture', '18', 'www.are.com.pl',
+('PL-2013-0063', '47b085c2-2ab7-4048-87b8-dc43d3412c10', FALSE, 'PLN', '40', '8', '20', 'PL Employer63', 'Address1', 'Address2', 'Architecture', '18', 'www.employer63.com',
 '2013-06-30', '2013-10-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '1100', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '4', '12', 'Warsaw F. Chopin Airport', 'Metro, tram, bus', '2013-02-22',
 'Knowledge of AutoCAD.\r\nNationality required: Austrian or GERMAN.',
@@ -1085,7 +1085,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0064', '430550c0-4755-42fc-bb81-50f04e70a381', TRUE, 'PLN', '40', '8', '0', 'MTA Engineering Sp. z o.o.', 'Poniatowskiego 14', '35-026   Rzeszow', 'Design office specializing in design of steel and ', '55', 'www.mta-online.net',
+('PL-2013-0064', 'd3230685-c4be-4e8d-b329-c0f09f93a198', TRUE, 'PLN', '40', '8', '0', 'PL Employer64', 'Address1', 'Address2', 'Design office specializing in design of steel and ', '55', 'www.employer64.com',
 '2013-06-01', '2013-10-31', NULL, NULL, NULL, NULL, 'GERMAN', 'E', 'A', 'ENGLISH', 'G', NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '8', '20', 'Rzeszow-Jasionka', 'Rzeszow', '2013-02-22',
 '- Very good Knowledge of AutoCad\r\n- Nationality of trainee: GERMAN, Swiss or Austrian.',
@@ -1100,7 +1100,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0065', '08fa1309-0fd9-4da8-b7e4-9c8c96370bb2', TRUE, 'PLN', '40', '8', '0', 'COMARCH S.A.', 'Al. Jana Pawla II 39a', '31-864   Kraków', 'International software house that provides innovat', '2900', 'www.comarch.com',
+('PL-2013-0065', 'b9ea55dd-4c1e-4d84-b35f-8db71db248d8', TRUE, 'PLN', '40', '8', '0', 'PL Employer65', 'Address1', 'Address2', 'International software house that provides innovat', '2900', 'www.employer65.com',
 '2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '950', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '8', '12', 'Krakow Balice (KRK)', 'bus/tram', '2013-02-22',
 '- Person from France, GERMANy, Austria, Switzerland\r\n- IT or related faculty preferred\r\n- technical skills: C#/.NET, SQL\r\n- good average grade at studies \r\n- intention of further employment in one of Comarch Group companies after training',
@@ -1115,7 +1115,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0066', 'b953b46e-2ea9-4aa2-b10c-65460b15d952', TRUE, 'PLN', '40', '8', '20', 'Floppy Computer Systems Sp. z o.o.', 'Grunwaldzka 345', '80-309   Gdañsk', 'IT,systems integration', '13', 'www.floppy.pl',
+('PL-2013-0066', 'bf7045b7-233f-4f0b-a306-7ee7bf116763', TRUE, 'PLN', '40', '8', '20', 'PL Employer66', 'Address1', 'Address2', 'IT,systems integration', '13', 'www.employer66.com',
 '2013-06-01', '2013-10-29', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '800', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '12', 'Gdañsk (GDN)', 'Tram', '2013-02-22',
 'Nationality: Norwegian, Swede, Dane, GERMAN, Austrian, Swiss.\r\n\r\nExperience in IT solutions especially IBM Lotus Notes and IBM WebSphere most welcome.G interpersonal and teamwork skills.',
@@ -1130,13 +1130,15 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('PL-2013-0067', '0bb1bc0c-e028-459a-ac35-6f303f254320', TRUE, 'PLN', '40', '8', '0', 'Miros&sup3;aw Wi&para;niewski Architektura i Urbanistyka', '&macr;eromskiego 10', '90-710 &pound;&oacute;d&frac14;', 'Biuro Architektoniczno-Urbanistyczne', '5', '',
+('PL-2013-0067', '4f47536f-4b1d-4c18-91b9-e916eefe4f4e', TRUE, 'PLN', '40', '8', '0', 'PL Employer67', 'Address1', 'Address2', 'Biuro Architektoniczno-Urbanistyczne', '5', 'www.employer67.com',
 '2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ITALIAN', 'G', 'O', 'FRENCH', 'G', NULL, NULL, NULL,
 '900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '6', 'Lodz W. Reymont Airport', 'city bus,tram', '2013-02-22',
 'Preffered knowledge of AutoCAD or ArchiCAD.There can be a possibility of extension period of traineeship if company will have more work for student.portfolio',
 '1000', 'MONTHLY', NULL,
 'designer - Student will support in tasks related to: - development of architectural projects, - technical documentation of town-planning, - architectural and interior designing together with a complete set of studies of structures of different scale and function, - participation in design work, - building planning, - urban projects- computer visualisations of designed structures.',
 '&pound;&oacute;d&frac14;', 'P', 'M', 'ARCHITECTURE', 'any', '19');
+
+
 
 
 -- =============================================================================
@@ -1149,7 +1151,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0001', '1994f91b-b497-4349-aa3b-35c099351899', NULL, 'HUF', '40', '8', NULL, 'Elgoscar 2000 Ltd', NULL, '', 'Environmental analysis', '15', NULL,
+('HU-2013-0001', '696ef516-765f-4659-b69a-c74bc0102c6d', NULL, 'HUF', '40', '8', NULL, 'HU Employer1', 'Address1', 'Address2', 'Environmental analysis', '15', 'www.employer1.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 20000, 'WEEKLY', 'arranged by IAESTE', 10000, 'WEEKLY', '8', '12', 'Budapest', NULL, '2013-03-31',
 NULL,
@@ -1164,7 +1166,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0002', '89eaf391-54d5-4bc1-997a-c9949e0bfddc', FALSE, 'HUF', '40', '8', '0', 'Pannonpharma Ltd.', 'Hungary-7720 Pécsvárad; Pannonpharma', '', 'medicine making', '70', '',
+('HU-2013-0002', '60f30b82-7e31-4b8a-9736-49b5f4f4acc9', FALSE, 'HUF', '40', '8', '0', 'HU Employer2', 'Address1', 'Address2', 'medicine making', '70', 'www.employer2.com',
 '2013-08-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '8', 'Budapest (Ferihegy)', 'Pécs', '2013-05-20',
 '-',
@@ -1179,7 +1181,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0003', '9d7d489f-1ba6-424e-bad5-6228cf4eab14', FALSE, 'HUF', '40', '8', '0', 'MSc Ltd.', 'Hungary-1143 Budapest; Hungaria square 113.', '', 'Bridge and structural design', '30', '',
+('HU-2013-0003', '9f0a2d92-4c2a-4f19-a60a-3ed9ba01dd37', FALSE, 'HUF', '40', '8', '0', 'HU Employer3', 'Address1', 'Address2', 'Bridge and structural design', '30', 'www.employer3.com',
 '2013-06-01', '2013-08-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'FRENCH', 'G', NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '8', 'Budapest (Ferihegy)', 'Budapest', '2013-05-10',
 'No smoking (if possible)',
@@ -1194,7 +1196,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0004', '4b8fc925-46ac-4715-98e8-c146bb3e8ea1', FALSE, 'HUF', '40', '8', '0', 'GE Healthcare', 'Hungary-2040 Budaörs; Akron str. 2.', '', 'Interventional X-ray machines', '400', '',
+('HU-2013-0004', '7dde83a6-1cd8-41b0-9a02-8b49acde4dbb', FALSE, 'HUF', '40', '8', '0', 'HU Employer4', 'Address1', 'Address2', 'Interventional X-ray machines', '400', 'www.employer4.com',
 '2013-06-01', '2013-06-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '40', '52', 'Budapest (Ferihegy)', 'Budapest', '2013-05-15',
 '-',
@@ -1209,7 +1211,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0005', '99959015-56bf-4f15-9d97-cd04edf8a1eb', FALSE, 'HUF', '40', '8', '0', 'Usity of Miskolc Departm. of Fluid and Heat Eng.', 'Hungary-3515 Miskolc; Egytemváros', '', 'Teaching; research', '23', '',
+('HU-2013-0005', '36716a36-924b-488d-bb19-b2c4fa1d2840', FALSE, 'HUF', '40', '8', '0', 'HU Employer5', 'Address1', 'Address2', 'Teaching; research', '23', 'www.employer5.com',
 '2013-06-26', '2013-08-06', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '6', '6', 'Budapest (Ferihegy)', 'Miskolc', '2013-05-10',
 '-',
@@ -1224,7 +1226,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0006', 'fa667195-16cb-4bc5-8e15-caaed087c6b6', FALSE, 'HUF', '40', '8', '0', 'Telemax GSm Service Kft.', 'Hungary-1145 Budapest; Szugló u. 47.', '', 'Service (Mainly mobil phone)', '80', '',
+('HU-2013-0006', '0bc8ffe0-6f71-4c3c-a5b6-fdd2cfce725e', FALSE, 'HUF', '40', '8', '0', 'HU Employer6', 'Address1', 'Address2', 'Service (Mainly mobil phone)', '80', 'www.employer6.com',
 '2013-06-01', '2013-06-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '52', 'Ferihegy (Budapest)', 'Budapest', '2013-05-30',
 '-',
@@ -1239,7 +1241,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0007', '91d7ee9f-a95d-4e2d-80e8-91959d7cbd6d', FALSE, 'HUF', '40', '8', '0', 'DGS Kft.', 'Hungary-1118 Budapest; RegQs str. 13.', '', 'Security systems', '7', '',
+('HU-2013-0007', 'f7ebdee0-0b20-4ae3-9519-b85bafccdf58', FALSE, 'HUF', '40', '8', '0', 'HU Employer7', 'Address1', 'Address2', 'Security systems', '7', 'www.employer7.com',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '12', 'Ferihegy (Budapest)', 'Budapest', '2013-05-30',
 'Native speaker (from): US; England; Canada',
@@ -1254,7 +1256,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0008', '82914e86-219e-41d7-a58e-f4bcc9f6ef88', FALSE, 'HUF', '25', '5', '0', 'Pécsi Mélyépít&#33', 'Hungary-7624 Pécs; Budai Nagy Antal str. 1.', '', 'Public utility designed', '5', '',
+('HU-2013-0008', 'bd277e96-8a8f-41f0-9075-27123c313219', FALSE, 'HUF', '25', '5', '0', 'HU Employer8', 'Address1', 'Address2', 'Public utility designed', '5', 'www.employer8.com',
 '2013-06-01', '2013-10-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'F', NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '8', '12', 'Ferihegy (Budapest)', 'Pécs', '2013-05-30',
 '-',
@@ -1269,7 +1271,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0009', '7ae8875d-8941-4351-8936-1a3d3c272f75', FALSE, 'HUF', '40', '8', '0', 'Microsoft Magyarország Kft.', 'H-1031 Budapest; Záhonyi street 3.', '', 'trading of commercial software products; consultin', '200', '',
+('HU-2013-0009', '10fb0aa2-6bee-4bb8-a8a8-61ce4168a4a6', FALSE, 'HUF', '40', '8', '0', 'HU Employer9', 'Address1', 'Address2', 'trading of commercial software products; consultin', '200', 'www.employer9.com',
 '2013-08-28', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
 '20', 'WEEKLY', 'IAESTE Hungary', '10', NULL, '52', '52', 'Budapest; Ferihegy', 'Budapest', '2013-09-12',
 '-',
@@ -1284,7 +1286,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0010', '97b4c0c5-112c-48c4-986e-bd43c17bfe5c', FALSE, 'HUF', '40', '8', '-', 'University of Pecs Tech. Fac. Inst. of Architecture', '7624 Pecs, Rokus u. 2/b', '', 'Architecure', '22', NULL,
+('HU-2013-0010', '4220df90-c4ac-473e-ac6b-a6ea23b100fd', FALSE, 'HUF', '40', '8', '-', 'HU Employer10', 'Address1', 'Address2', 'Architecure', '22', 'www.employer10.com',
 '2013-05-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '8', '12', 'Budapest', 'Bus', '2013-03-31',
 NULL,
@@ -1299,7 +1301,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0011', 'f08b8abe-3978-406e-b7b5-6d6a539d1728', FALSE, 'HUF', '40', '8', '-', 'MEEI Ltd. TÜV Rheinland Group', '1132 Budapest, Vaci ut 48/a-b', '', 'Product safety service', '93', 'www.meet.hu',
+('HU-2013-0011', 'a34761be-0a0c-4783-bff6-c082fc5f9d7a', FALSE, 'HUF', '40', '8', '-', 'HU Employer11', 'Address1', 'Address2', 'Product safety service', '93', 'www.employer11.com',
 '2013-05-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '6', '8', 'Budapest', 'Bus', '2013-03-31',
 NULL,
@@ -1314,7 +1316,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0012', '58332ddf-1ad6-4dd7-9ac3-0922f8b137c4', FALSE, 'HUF', '40', '8', NULL, 'Mecsek-Öko Environmental Co.', '7633 Pecs, Esztergar', '', 'Recultivation', '135', NULL,
+('HU-2013-0012', 'e8442735-8a5f-4d22-a7bd-4960cf17807d', FALSE, 'HUF', '40', '8', NULL, 'HU Employer12', 'Address1', 'Address2', 'Recultivation', '135', 'www.employer12.com',
 '2013-07-01', '2013-08-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 NULL, NULL, NULL, NULL, NULL, '6', '7', 'Budapest', 'Bus', '2013-03-31',
 NULL,
@@ -1329,7 +1331,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0013', 'e665d011-38ae-4934-99e9-c61b89434ae6', NULL, 'HUF', '40', '8', '-', 'Hepenix Ltd', '2049 Diosd, Petofi S. u. 39', '', 'company', '15', 'www.hepenix.hu',
+('HU-2013-0013', 'd0a29f0e-9958-4a6a-91e7-5fd783ca4306', NULL, 'HUF', '40', '8', '-', 'HU Employer13', 'Address1', 'Address2', 'company', '15', 'www.employer13.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', NULL, NULL, NULL, NULL, NULL,
 '20000.00', 'WEEKLY', 'IAESTE', '10000.00', 'WEEKLY', '8', '8', 'Budapest (Ferihegy)', 'Bus', '2013-03-31',
 'CAD knowledge',
@@ -1344,7 +1346,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0014', '1d0e5f3f-968f-48a7-8cc7-8e5cb310f8ed', FALSE, 'HUF', '40', '8', '0', 'E-Word Ltd.', 'H-1028 Budapest,', 'Vízesés u. 10.', 'Translation, project management software', '4', '',
+('HU-2013-0014', '2bfe936e-6347-4024-b563-d17aa921ad6c', FALSE, 'HUF', '40', '8', '0', 'HU Employer14', 'Address1', 'Address2', 'Translation, project management software', '4', 'www.employer14.com',
 '2013-01-01', '2013-04-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-12-01',
 FALSE,
@@ -1359,7 +1361,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0015', 'a6ae3c5a-2543-4b5a-80bb-650b4c44d143', FALSE, 'HUF', '40', '8', '0%', 'Meditcom Ltd.', 'Robert Karoly krt. 59.', '1134 Budapest', 'IT, Healthcare', '20', 'www.meditcom.hu',
+('HU-2013-0015', 'da9a910c-edb8-4dbf-a505-25775b007b3d', FALSE, 'HUF', '40', '8', '0%', 'HU Employer15', 'Address1', 'Address2', 'IT, Healthcare', '20', 'www.employer15.com',
 '2013-03-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -1374,7 +1376,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0016', '96d3fb7d-f08a-462c-8a57-bf0d5c413860', FALSE, 'HUF', '40', '8', NULL, 'Finta and Partners Architect Studio Ltd.', 'Szt. Istvan krt. 11', '1055 Budapest', 'Architectural design', '30', 'www.fintastudio.hu',
+('HU-2013-0016', '2771fe06-daf5-4842-9240-3584ca602527', FALSE, 'HUF', '40', '8', NULL, 'HU Employer16', 'Address1', 'Address2', 'Architectural design', '30', 'www.employer16.com',
 '2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G',
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc', '2013-03-31',
 'A portfolio is required with the nomination',
@@ -1389,7 +1391,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0017', 'f7deb2e6-3901-44d7-b523-a22353046d9c', FALSE, 'HUF', '40', '8', '0', 'Gamaxcom Ltd.', 'Pazsit u. 6', '1026 Budapest', NULL, NULL, NULL,
+('HU-2013-0017', '9900da6f-adf7-4bce-9ba1-31f42f8d4991', FALSE, 'HUF', '40', '8', '0', 'HU Employer17', 'Address1', 'Address2', NULL, NULL, 'www.employer17.com',
 '2013-08-03', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '8', '8', 'Budapest', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -1404,7 +1406,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0018', 'fa70cc64-68d3-4edd-b273-67707ffaa160', FALSE, 'HUF', '40', '8', '0%', 'Alfred Schuon Lt.d.', 'Hazgyari u. 16', '8200 Veszprem', 'Logistics', '30', 'www.schuon.com',
+('HU-2013-0018', '0fdc77f1-12a1-4926-95e5-bdbec78ef8ac', FALSE, 'HUF', '40', '8', '0%', 'HU Employer18', 'Address1', 'Address2', 'Logistics', '30', 'www.employer18.com',
 '2013-04-01', '2013-07-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '10', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -1419,7 +1421,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0019', '4c3f2ce8-0153-4ccf-ab2a-9b7870d0e2ba', TRUE, 'HUF', '40', '8', '0', 'GE Hungary Lpc. Healthcare Division', '2040 Budaörs, Akron u. 2.', '', 'Vascular X-ray Imaging Systems', '450', '',
+('HU-2013-0019', '6d56cfc7-b4a6-4d1b-8ccb-449daab35f95', TRUE, 'HUF', '40', '8', '0', 'HU Employer19', 'Address1', 'Address2', 'Vascular X-ray Imaging Systems', '450', 'www.employer19.com',
 '2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '26', '52', 'Budapest, Ferihegy', 'Bus', '2013-03-31',
 'Programming experiance and HUNGARIAN or FRENCH language knowledge are advantages.',
@@ -1434,7 +1436,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0020', 'de2dbf58-6912-46a9-b93f-580203af5740', FALSE, 'HUF', '40', '8', '0', 'GE Hungary Lpc. Healthcare Division', '2040 Budaörs, Akron u. 2.', '', 'X-ray Imaging Systems', '450', '',
+('HU-2013-0020', '9cd73273-b4f8-4182-93b7-1e4e4d5bf283', FALSE, 'HUF', '40', '8', '0', 'HU Employer20', 'Address1', 'Address2', 'X-ray Imaging Systems', '450', 'www.employer20.com',
 '2013-01-01', '2013-05-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '26', '52', 'Budapest, Ferihegy', 'Bus', '2013-05-10',
 'Faculty: Computer Science, Electrical or Mechanical Engineering, Physics. Specialisation: Medical Engineering, Image Processing. Programming experience, HUNGARIAN or FRENCH language knowledge are advantages.',
@@ -1449,7 +1451,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0021', '2de3b490-a647-4e91-8f70-4a9a001d0c5b', FALSE, 'HUF', '40', '8', '0', 'Pioneer Hi-Bred Ltd.', '2040 Budaörs, Neumann J. u. 1.', '', 'Production, marketing and sales of commercial seed', '150', '',
+('HU-2013-0021', '7bbf7e5f-6f85-478d-9c33-cd1cc62681d3', FALSE, 'HUF', '40', '8', '0', 'HU Employer21', 'Address1', 'Address2', 'Production, marketing and sales of commercial seed', '150', 'www.employer21.com',
 '2013-03-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'UKRAINIAN', 'E', NULL, NULL, NULL,
 '20000', 'MONTHLY', 'IAESTE Hungary', '10000', 'MONTHLY', '26', '26', 'Budapest, Ferihegy', 'Bus', '2013-03-15',
 FALSE,
@@ -1464,7 +1466,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0022', '0a750e60-9c45-44d0-96eb-69c338fa5a83', FALSE, 'HUF', '40', '8', '0', 'MFKK Invention & Research Center', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '22', '',
+('HU-2013-0022', '12c632c8-d2a0-405a-ae3a-762ec5b76d5b', FALSE, 'HUF', '40', '8', '0', 'HU Employer22', 'Address1', 'Address2', 'Research and development', '22', 'www.employer22.com',
 '2013-03-18', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 FALSE,
@@ -1479,7 +1481,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0023', 'cad27704-6a3d-44a5-8a21-5f6f6e894903', FALSE, 'HUF', '40', '8', '0', 'MFKK Invention & Research Center', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '22', '',
+('HU-2013-0023', '7cfbf499-7427-445f-9204-0b16e968b650', FALSE, 'HUF', '40', '8', '0', 'HU Employer23', 'Address1', 'Address2', 'Research and development', '22', 'www.employer23.com',
 '2013-03-18', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 FALSE,
@@ -1494,7 +1496,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0024', '6c66085c-6655-4d4c-a3ad-2e50150613dc', FALSE, 'HUF', '40', '8', '0', '4 Hungar Agri-Tech Ltd.', '7621 Pécs, Zrínyi u. 1.', '', 'Agricultural Facility', '15', '',
+('HU-2013-0024', '819dabe4-ee1a-43f0-9e58-e559682ce09b', FALSE, 'HUF', '40', '8', '0', 'HU Employer24', 'Address1', 'Address2', 'Agricultural Facility', '15', 'www.employer24.com',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '10', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-10',
 FALSE,
@@ -1509,7 +1511,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0025', 'e1af9f34-bac5-41a9-84a6-b2e30f7ed92f', TRUE, 'HUF', '40', '8', '0', 'American Appraisal Hungary Ltd.', 'H-1132 Budapest, Váci út 18.', '', 'Valuation', '20', '',
+('HU-2013-0025', '91c22180-bc95-41d0-a41b-b804d52aade3', TRUE, 'HUF', '40', '8', '0', 'HU Employer25', 'Address1', 'Address2', 'Valuation', '20', 'www.employer25.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '24', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-10',
 FALSE,
@@ -1524,7 +1526,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0026', '52b6bb3a-39fe-4a94-a4f3-a7b545264610', FALSE, 'HUF', '40', '8', '0', 'Hídtechnika Ltd.', '1138 Budapest, Karikás Frigyes u. 20.', '', 'Building industry', '33', '',
+('HU-2013-0026', 'c663d017-7b16-41bf-9895-c3deb69a043f', FALSE, 'HUF', '40', '8', '0', 'HU Employer26', 'Address1', 'Address2', 'Building industry', '33', 'www.employer26.com',
 '2013-07-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-06-10',
 'HUNGARIAN is an advantage.',
@@ -1539,7 +1541,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0027', '63276468-acf3-4a77-bb07-c44f817a4348', TRUE, 'HUF', '40', '8', '0', 'BUTE, Dep. of Automation and Applied Informatics', 'H-1111 Budapest, Goldmann György tér 1.', '', 'Higher education', '15', '',
+('HU-2013-0027', '86adcc20-16bc-4c55-96e7-cf257aea0c9b', TRUE, 'HUF', '40', '8', '0', 'HU Employer27', 'Address1', 'Address2', 'Higher education', '15', 'www.employer27.com',
 '2013-05-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-31',
 'Native ENGLISH!',
@@ -1554,7 +1556,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0028', 'ed7bccd5-74de-481c-ae30-fe7bed93f45c', TRUE, 'HUF', '40', '8', '0', 'BUTE, Dep. of Automation and Applied Informatics', 'H-1111 Budapest, Goldmann György tér 1.', '', 'Higher education', '15', '',
+('HU-2013-0028', 'f888e03f-1eb2-4827-b3ea-df041d965c6d', TRUE, 'HUF', '40', '8', '0', 'HU Employer28', 'Address1', 'Address2', 'Higher education', '15', 'www.employer28.com',
 '2013-05-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-05-31',
 'Native ENGLISH!',
@@ -1569,7 +1571,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0029', 'ec2967a1-3c86-4515-a588-46ce42139031', FALSE, 'HUF', '40', '8', '0', 'Art Vital Ltd.', 'H-4400 Nyíregyháza, Selyem u. 21.', '', 'Architecture', '18', '',
+('HU-2013-0029', 'd4c363a3-718f-41ee-9ff4-c20b09987199', FALSE, 'HUF', '40', '8', '0', 'HU Employer29', 'Address1', 'Address2', 'Architecture', '18', 'www.employer29.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'RUSSIAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, train', '2013-05-31',
 'CAD program knowledge',
@@ -1584,7 +1586,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0030', 'd7ed1785-b819-4c75-9895-526724c60fe6', FALSE, 'HUF', '45', '9', '0', 'Bálint és Társa Architect Office Ltd.', '1051 Budapest, Október 6. u. 3.', '', 'Architectural design', '10', '',
+('HU-2013-0030', '5ff0507c-758a-4d30-bbd9-3ae5a60c1540', FALSE, 'HUF', '45', '9', '0', 'HU Employer30', 'Address1', 'Address2', 'Architectural design', '10', 'www.employer30.com',
 '2013-08-10', '2013-10-04', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-06-30',
 'Portfolio',
@@ -1599,7 +1601,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0031', '0a759dae-c2bc-4ea6-abdb-d099811f04bf', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+('HU-2013-0031', '79177619-f33f-4115-ae09-80c58115356a', TRUE, 'HUF', '20', '4', '0', 'HU Employer31', 'Address1', 'Address2', 'Research and development', '25', 'www.employer31.com',
 '2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'MONTHLY', 'IAESTE Hungary', '10000', 'MONTHLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-07-30',
 FALSE,
@@ -1614,7 +1616,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0032', 'c5612d3a-5467-4f05-88c0-8ece5526baa1', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+('HU-2013-0032', '6e1a274f-932a-4c7c-b1bc-8de4ad146a7b', TRUE, 'HUF', '20', '4', '0', 'HU Employer32', 'Address1', 'Address2', 'Research and development', '25', 'www.employer32.com',
 '2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-01',
 FALSE,
@@ -1629,7 +1631,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0033', 'ef273a79-6cce-4b80-9cfb-ba5aee36f708', TRUE, 'HUF', '20', '4', '0', 'MFKK Invention & Research Center Ltd.', '1119 Budapest, Tétényi út 93.', '', 'Research and development', '25', '',
+('HU-2013-0033', '45e2b783-a79e-422e-808f-06e6d283ab2d', TRUE, 'HUF', '20', '4', '0', 'HU Employer33', 'Address1', 'Address2', 'Research and development', '25', 'www.employer33.com',
 '2013-08-01', '2013-11-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-01',
 FALSE,
@@ -1644,7 +1646,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0034', 'dd23dea0-c3ca-4cc3-a683-cf9339fd85d9', TRUE, 'HUF', '40', '8', NULL, 'Amri Hungary Ltd.', '1031 Budapest, Záhony utca 7', ' ', 'Preparative organic chemistry', '100', NULL,
+('HU-2013-0034', '09419f87-8812-4ad7-b016-8c70d8edc052', TRUE, 'HUF', '40', '8', NULL, 'HU Employer34', 'Address1', 'Address2', 'Preparative organic chemistry', '100', 'www.employer34.com',
 '2013-06-15', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -1659,7 +1661,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0035', '7590c363-aa6a-40dd-9bca-e0e2c589cd95', FALSE, 'HUF', '40', '8', NULL, 'MFKK Invention and Research Center ltd.', '1119 Budapest, Tétényi street 93.', ' ', 'Research and Development', '22', NULL,
+('HU-2013-0035', 'b9d19c3c-61ed-4593-9e8f-1a391e85a964', FALSE, 'HUF', '40', '8', NULL, 'HU Employer35', 'Address1', 'Address2', 'Research and Development', '22', 'www.employer35.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'Php, MySQL, javaScript & amp, Flash program',
@@ -1674,7 +1676,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0036', '69c7b055-9070-496a-b892-64a0b9de46a1', TRUE, 'HUF', '40', '8', NULL, 'BME - Dept. of Hydrodynamic System', '111 Budapest, Mqegyetem rkp.3.', ' ', 'Education - research', '25', NULL,
+('HU-2013-0036', 'ea636f9c-2e95-4c7e-a44d-c70175e0d815', TRUE, 'HUF', '40', '8', NULL, 'HU Employer36', 'Address1', 'Address2', 'Education - research', '25', 'www.employer36.com',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', 'O', 'HUNGARIAN', 'E',
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 NULL,
@@ -1689,7 +1691,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0037', '8bb6c32a-1a6d-419d-9f2b-92e7f0745067', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', NULL, ' Budapest', NULL, '650', NULL,
+('HU-2013-0037', '34ef6df1-8160-41cc-91d3-651553f3a3bf', FALSE, 'HUF', '40', '8', '0', 'HU Employer37', 'Address1', 'Address2', NULL, '650', 'www.employer37.com',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'O', 'ENGLISH', 'F', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '38', 'Budapest', 'bus, train, etc.', '2013-04-01',
 NULL,
@@ -1704,7 +1706,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0038', '0a8624d7-52f2-4670-804e-5b6d1d63c99b', TRUE, 'HUF', '40', '8', '0', 'Cental food Research Institute', '1022 Budapest, Herman Ott&oacute; &uacute;t 15.', '', 'Food research', '100', '',
+('HU-2013-0038', '48cdb54e-3cb0-4528-8226-c3fc34750701', TRUE, 'HUF', '40', '8', '0', 'HU Employer38', 'Address1', 'Address2', 'Food research', '100', 'www.employer38.com',
 '2013-09-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1719,7 +1721,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0039', '54eec7ee-486b-4991-bd10-de77d2a046dc', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', 'Hungary', 'Automative Tool Development', '650', '',
+('HU-2013-0039', 'bb436c85-a468-4f52-b2b0-341134678ee2', FALSE, 'HUF', '40', '8', '0', 'HU Employer39', 'Address1', 'Address2', 'Automative Tool Development', '650', 'www.employer39.com',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '38', 'Budapest', 'bus, train, etc.', '2013-03-31',
 '',
@@ -1734,7 +1736,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0040', '23a9a28d-be54-4521-ad50-2775cf593e10', FALSE, 'HUF', '40', '8', '', 'Bal&aacute;zs &eacute;s V&eacute;csey Ltd.', '4026 Budapest, K&aacute;lvin t&eacute;r 14. fsz. 2.', '', 'Architectural design', '7', '',
+('HU-2013-0040', 'f56560f3-27cf-4d16-ba18-ff0816ba349c', FALSE, 'HUF', '40', '8', '', 'HU Employer40', 'Address1', 'Address2', 'Architectural design', '7', 'www.employer40.com',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'CAD program knowledge. A portfolio is required with the nomination.',
@@ -1749,7 +1751,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0041', 'd51cfb5c-906a-4947-9a5e-ef6524e4a68d', FALSE, 'HUF', '40', '8', '', 'Bachman and Bachmann Ltd.', '7625 P&eacute;cs, B&ouml;ckh J&aacute;nos utca 17.', '', 'Architectural', '0', '',
+('HU-2013-0041', 'df97bd25-bdb2-4861-8a8a-6dbb5a063e75', FALSE, 'HUF', '40', '8', '', 'HU Employer41', 'Address1', 'Address2', 'Architectural', '0', 'www.employer41.com',
 '2013-06-01', '2013-09-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '4', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1764,7 +1766,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0042', '17f97570-a262-4cbc-9ce9-8ab7909b0696', FALSE, 'HUF', '40', '8', '0', 'Art Vital Ltd.', '4400 Ny&iacute;regyh&aacute;za, Selyem utca 21.', '', 'Architectural', '18', '',
+('HU-2013-0042', 'aadd4883-91c5-4cd2-97cf-caacd5380951', FALSE, 'HUF', '40', '8', '0', 'HU Employer42', 'Address1', 'Address2', 'Architectural', '18', 'www.employer42.com',
 '2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'HUNGARIAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1779,7 +1781,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0043', 'f5d0feb1-8b3c-41ee-b638-cd8d4cf4bb68', TRUE, 'HUF', '40', '8', '', 'University of Miskolc, Dept. of Fluid Mech.', '3515 Miskolc - University Campus (Egyetemv&aacute;ros)', '', 'CFD Analyse', '0', '',
+('HU-2013-0043', '33999803-e273-4a62-b300-ac48319cdd1e', TRUE, 'HUF', '40', '8', '', 'HU Employer43', 'Address1', 'Address2', 'CFD Analyse', '0', 'www.employer43.com',
 '2013-05-24', '2013-07-04', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '6', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1794,7 +1796,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0044', 'b47d9656-6f2c-41fa-82eb-b559c51bb14f', TRUE, 'HUF', '40', '8', '', 'Naturen Ltd.', '1163 Budapest, Czir&aacute;ki u. 32.', '', 'Engineering services, automated test equipment', '10', '',
+('HU-2013-0044', 'b82132c4-fb9f-41f5-8d4e-4afc73e39934', TRUE, 'HUF', '40', '8', '', 'HU Employer44', 'Address1', 'Address2', 'Engineering services, automated test equipment', '10', 'www.employer44.com',
 '2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1809,7 +1811,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0045', 'db13f3d9-964a-4380-a456-04933eda1e8d', TRUE, 'HUF', '40', '8', '', '4 Hungar-Tech Ltd.', '7621 P&eacute;cs, Zr&iacute;nyi u. 1.', '', 'Agricultural postharrest technology', '15', '',
+('HU-2013-0045', '2a97aba6-63db-47ab-86bf-2ea305059cad', TRUE, 'HUF', '40', '8', '', 'HU Employer45', 'Address1', 'Address2', 'Agricultural postharrest technology', '15', 'www.employer45.com',
 '2013-06-01', '2013-09-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '10', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1824,7 +1826,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0046', '0cc7712f-7e8c-4e4b-a206-86c3299ec29d', FALSE, 'HUF', '40', '8', '', 'MFKK Invention and Research Center ltd.', '1119 Budapest, T&eacute;t&eacute;nyi street 93.', '', 'Research and Development', '22', '',
+('HU-2013-0046', '94f8b983-9b89-4b61-9255-22695502e7bd', FALSE, 'HUF', '40', '8', '', 'HU Employer46', 'Address1', 'Address2', 'Research and Development', '22', 'www.employer46.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '20', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'Php, MySQL, javaScript and Flash program',
@@ -1839,7 +1841,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0047', '251523a8-8a30-4475-a863-2783fe2c4d95', FALSE, 'HUF', '40', '8', '', 'MSc LTD.', '1106 Budapest, Feh&eacute;r &uacute;t 10/a-b', '', 'Bridge and structural design', '30', '',
+('HU-2013-0047', '56be5ba8-7406-4745-975b-26732c4b7c5c', FALSE, 'HUF', '40', '8', '', 'HU Employer47', 'Address1', 'Address2', 'Bridge and structural design', '30', 'www.employer47.com',
 '2013-06-01', '2013-08-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'FRENCH', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'No smoking (if possible)',
@@ -1854,7 +1856,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0048', '03ea7f5b-9de3-4e65-bda5-22d28f537b7e', FALSE, 'HUF', '40', '8', '', 'M&aacute;v&eacute;pcell Kft.', '9500 Celld&ouml;m&ouml;k, Nagy S&aacute;ndor t&eacute;r 14.', '', 'Railway construction and engineering', '250', '',
+('HU-2013-0048', '4db38646-87be-49a1-a82f-aaf15d3ad113', FALSE, 'HUF', '40', '8', '', 'HU Employer48', 'Address1', 'Address2', 'Railway construction and engineering', '250', 'www.employer48.com',
 '2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '10', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1869,7 +1871,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0049', 'dd43d0f5-bc41-4aa0-82c2-ec32946a4ece', FALSE, 'HUF', '40', '8', '', 'ASA Construction Ltd.', '6800 H&oacute;dmez&amp;#337;v&aacute;rs&aacute;lyhely, Erzs&eacute;bet &uacute;t 9.', '', 'Precast concrete elements', '370', '',
+('HU-2013-0049', '2f352b44-3937-48d3-a814-67daf2ac6f7f', FALSE, 'HUF', '40', '8', '', 'HU Employer49', 'Address1', 'Address2', 'Precast concrete elements', '370', 'www.employer49.com',
 '2013-07-01', '2013-09-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1884,7 +1886,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0050', '4b4e4669-9d1c-4b0d-8c95-297e4d5143cc', FALSE, 'HUF', '40', '8', '', 'MFKK Invention and Research Center ltd.', '1119 Budapest, T&eacute;t&eacute;nyi street 93.', '', 'Research and Development', '22', '',
+('HU-2013-0050', 'b4c5ab89-78a8-4151-a0d4-8e5ae8170fcf', FALSE, 'HUF', '40', '8', '', 'HU Employer50', 'Address1', 'Address2', 'Research and Development', '22', 'www.employer50.com',
 '2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'ENGLISH', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 'E internet based research skills',
@@ -1899,7 +1901,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0051', '008ee3ae-ce10-4076-97d5-a82edb4246f4', FALSE, 'HUF', '40', '8', '', 'BME - Dept. of Oganic Chemical Technology', '1111 Budapest, M&amp;#369;egyetem rakpart 3.', '', 'Chemical engineering, research and laboratory eng.', '12', '',
+('HU-2013-0051', 'c277af5b-c25b-4ee7-a6a1-dc8ac65411aa', FALSE, 'HUF', '40', '8', '', 'HU Employer51', 'Address1', 'Address2', 'Chemical engineering, research and laboratory eng.', '12', 'www.employer51.com',
 '2013-02-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '6', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1914,7 +1916,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0052', 'c3600a8e-6c4f-4a11-b6a4-33612a3fe197', FALSE, 'HUF', '40', '8', '', 'Bravogroup  Rendszerhaz Ltd.', '1145 Budapest, &Uacute;jvil&aacute;g utca 50-52', '', 'Sales of office machines', '200', '',
+('HU-2013-0052', 'cbd0dbc6-806c-4365-a175-ae8eb17acee8', FALSE, 'HUF', '40', '8', '', 'HU Employer52', 'Address1', 'Address2', 'Sales of office machines', '200', 'www.employer52.com',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'HUNGARIAN', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '8', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
@@ -1929,12 +1931,12 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0053', '34018f53-2990-4e1e-8da5-15ffcca636a3', FALSE, 'HUF', '40', '8', '', 'Designsoft Inc.', '1067 Budapest, csengery u. 53.', '', 'Software development', '17', '',
+('HU-2013-0053', 'ed706942-69f4-41a0-a958-89e19f4c1975', FALSE, 'HUF', '40', '8', '', 'HU Employer53', 'Address1', 'Address2', 'Software development', '17', 'www.employer53.com',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '16', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-03-31',
 '',
 '27000', 'WEEKLY', NULL,
-'Elektronics, Physics or Architectural software localization from ENGLISH to one of the following language, RUSSIAN, Italian, Dutch',
+'Elektronics, Physics or Architectural software localization from ENGLISH to one of the following language, RUSSIAN, ITALIAN, Dutch',
 'Budapest', 'P', 'M', 'ELECTRICAL_ENGINEERING', '', '21');
 
 INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
@@ -1944,7 +1946,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0054', 'cf3b48bf-ebef-4f0c-bff4-0983e5a23d5e', TRUE, 'HUF', '40', '8', '0', 'Robert Bosch Elektronikai Ltd.', '3000 Hatvan, Robert Bosch &uacute;t 1.', '', 'Production/automotive division', '2700', '',
+('HU-2013-0054', '480031a2-1925-450b-93ff-b4567ec96110', TRUE, 'HUF', '40', '8', '0', 'HU Employer54', 'Address1', 'Address2', 'Production/automotive division', '2700', 'www.employer54.com',
 '2013-04-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-01-01',
 'MS Office, Benefit: SAP knowledge',
@@ -1959,7 +1961,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0055', '116672a3-e5b5-4086-83a1-cb094336b214', TRUE, 'HUF', '40', '8', '', 'Robert Bosch Elektronikai Ltd.', '3000 Hatvan, Robert Bosch &uacute;t 1.', '', 'Production/automotive division', '2700', '',
+('HU-2013-0055', 'ce524381-3758-4d2d-b681-37c23722b94b', TRUE, 'HUF', '40', '8', '', 'HU Employer55', 'Address1', 'Address2', 'Production/automotive division', '2700', 'www.employer55.com',
 '2013-09-01', '2013-11-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'Company', '10000', 'WEEKLY', '12', '12', 'Budapest, Ferihegy', 'Bus, tram, etc.', '2013-08-15',
 'MS Office, Benefit: SAP knowledge',
@@ -1974,7 +1976,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0056', '54385a25-232b-427f-ae00-f0cf8532bb6b', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', '', 'Automative Tool Development', '650', '',
+('HU-2013-0056', 'eaf1d101-e839-4d8b-8a7d-891058de0fc4', FALSE, 'HUF', '40', '8', '0', 'HU Employer56', 'Address1', 'Address2', 'Automative Tool Development', '650', 'www.employer56.com',
 '2013-04-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '52', 'Budapest', 'bus, train, etc.', '2013-04-01',
 FALSE,
@@ -1989,7 +1991,7 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0057', '08c0939e-6f2e-4d41-8b9a-8ce613301680', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', '', 'Automative Tool Development', '650', '',
+('HU-2013-0057', '9ba5bac1-ae6e-4c15-adf3-a368e6cdc471', FALSE, 'HUF', '40', '8', '0', 'HU Employer57', 'Address1', 'Address2', 'Automative Tool Development', '650', 'www.employer57.com',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'O', 'ENGLISH', 'F', NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE', '10000', 'WEEKLY', '26', '38', 'Budapest', 'but, train, etc.', '2013-04-01',
 FALSE,
@@ -2004,10 +2006,1979 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
                     payment, payment_frequency, prev_training_req,
                     work_description,
                     working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
-('HU-2013-0058', '68efbbef-0a2d-4e7a-ae87-f010517580f7', FALSE, 'HUF', '40', '8', '0', 'Robert Bosch Kft.', '1103 Budapest Gy&ouml;mr&amp;#337;i &uacute;t 120.', 'Hungary', 'Automative Tool Development', '650', '',
+('HU-2013-0058', 'a5a732de-3ad6-4b63-91d3-3b3e4f728dbb', FALSE, 'HUF', '40', '8', '0', 'HU Employer58', 'Address1', 'Address2', 'Automative Tool Development', '650', 'www.employer58.com',
 '2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
 '20000', 'WEEKLY', 'IAESTE Hungary', '10000', 'WEEKLY', '8', '38', 'Budapest', 'bus, train, etc.', '2013-03-31',
 'knowledge of programming, and FPGA',
 '27000', 'WEEKLY', NULL,
 'Tasks: Sensors (acceleration, rotation, pressure, etc.). Measuring development. New measurement concepts, procedures for the new products. The further development of existing measurement techniques. Complex electronic regulator development and planning. Developing and programming measurement results evaluation procedures and routines . Improved procedures, electronics, software, equipment installation, commissioning. Laboratory tool calibration. Team work with the GERMAN and HUNGARIAN engineers.   Requirements: Studies in electrical engineering or physics  Knowledge of at least one high-level programming language (eg C, CVI) FPGA knowledge Communication level GERMAN language skills',
 'Budapest', 'R', 'M', 'SEE_&QUOT;KIND_OF_WORK&QUOT;', '', '21');
+
+
+--===========================================
+-- GERMANY
+---================
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0001', '1c7cef53-0541-41a8-92a5-c3fe1685ac84', FALSE, NULL, '40', '8', '', 'DE Employer1', 'Address1', 'Address2', NULL, '0', 'www.employer1.com',
+'2006-12-01', '2006-11-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+600, 'MONTHLY', 'Employer', 300, NULL, '30', '52', 'Munich', 'F&uuml;rstenfeldbruck', '2006-12-15',
+'',
+720, 'MONTHLY', NULL,
+'Build forums (private portals) between distributors; channel marketing and product lines to facilitate new tools in managing the channel effectivity. Required: Experience of handling cross-browser and cross-platform web issues.  Understanding of HTML/XHTML; DHTML and Javascript. Basic Photo shop skills. Understanding of Macromedia Flash. Solid communication skills.',
+'F&uuml;rstenfeldbruck near Munich', 'P', 'B', 'IT_AND_ECONOMICS', 'Marketing', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0002', '907d0e8f-3606-4c86-8d98-f3f3b36e92ed', FALSE, 'EUR', '39', '8', 'www.iaeste.de/Englis', 'DE Employer2', 'Address1', 'Address2', 'Planning Services', '70', 'www.employer2.com',
+'2013-01-31', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Your reception committee', '220', 'MONTHLY', '12', '26', 'Hamburg', 'Baden (Kreis-Verden)', '2013-03-31',
+NULL,
+'500', 'MONTHLY', NULL,
+'Planning services (wastewater-treatment, waste-treatment and recycling).',
+'Achim', 'R', 'E', 'ENVIRONMENTAL_ENGINEERING', 'Environmental Engineering', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0003', 'eda06a89-2a48-45a1-b61b-60fa6c09f1ed', TRUE, 'EUR', '40', '8', NULL, 'DE Employer3', 'Address1', 'Address2', 'University Institute', '30', 'www.employer3.com',
+'2013-03-31', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '220', 'MONTHLY', '12', '12', 'Duesseldorf', 'Bochum', '2013-03-31',
+'Please refer to website: www.iaeste.de/ENGLISH pages',
+'650', 'MONTHLY', NULL,
+'Human Biomonitoring (Hg, Pb in Blood; As, Cd, Cr, Ni, Hg in Urine). Water quality control. Trace element analysis. Measurement by atomic absorption spectroskopy and photometry.',
+'Bochum', 'R', 'M|E', 'CHEMISTRY', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0004', '9871d337-c6df-4450-a863-3546bb15aa50', TRUE, 'EUR', '35', '7', NULL, 'DE Employer4', 'Address1', 'Address2', 'research institute', '250', 'www.employer4.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', NULL, 'F', 'A', NULL, 'F',
+'600', 'MONTHLY', 'LC', '220', 'MONTHLY', '12', '26', 'Köln', NULL, '2013-03-31',
+NULL,
+'600', 'MONTHLY', NULL,
+'various projects in the fields of medical systems; electronic consumer products; lighting',
+'Aachen', 'R', 'M', 'ELECTRICAL_ENGINEERING', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0005', '61859a52-17e1-43d8-932c-8f6f8d475913', TRUE, 'EUR', '40', '8', 'see', 'DE Employer5', 'Address1', 'Address2', 'Automobile Industry', '13', 'www.employer5.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'E', 'A', 'ENGLISH', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'arranged by employer', '250', 'MONTHLY', '12', '26', 'Stuttgart', 'Neckarsulm', '2013-03-31',
+'Basic knowledge of german is not sufficient.',
+'800', 'MONTHLY', NULL,
+'Training in technical development. Production (logistics, planning); quality protection',
+'Neckarsulm', 'P', 'M|E', 'ENGINEERING_(VEHICLE_ENG.|MECHANICAL_ENG.|ELECTRICAL_ENG.)', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0006', '52d80965-1c68-4f86-a43c-d1793c72756d', TRUE, 'EUR', '40', '8', '', 'DE Employer6', 'Address1', 'Address2', 'university institute', '8', 'www.employer6.com',
+'2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE LC', '220', NULL, '12', '12', 'Stuttgart', 'Stuttgart', '2013-05-20',
+'bachelor sc. or equivalent required; basic lab skills',
+'615', 'MONTHLY', NULL,
+'1. Membrane protein biochemistry 2. electron microscopy/tomography of single membrane proteins and membrane protein complexes 3. Electrophysiology/single channel analysis of protein translocases and gap-junctions.',
+'Stuttgart', 'R', 'E', 'BIOCHEMISTRY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0007', '0c762aa3-f6bd-44d7-89d8-9bcfc678f1a6', FALSE, 'EUR', '33', '6', '', 'DE Employer7', 'Address1', 'Address2', 'IAESTE LC', '8', 'www.employer7.com',
+'2013-06-01', '2013-11-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE LC', '220', NULL, '24', '24', 'München', 'München', '2013-05-31',
+'',
+'615', 'MONTHLY', NULL,
+'LC organization; responsibility for the trainees´ cares; organisation for trips and events',
+'Freising', 'N', 'B', 'BUSINESS_STUDIES', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0008', 'cf7c9911-f59b-4f46-b73c-d6f36c42e4e5', FALSE, 'EUR', '40', '8', '', 'DE Employer8', 'Address1', 'Address2', 'IAESTE LC', '50', 'www.employer8.com',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Lc', '220', NULL, '12', '12', 'Berlin', '', '2013-05-31',
+'',
+'615', 'MONTHLY', NULL,
+'Act as a link between the other IAESTE trainees and the LC; organising arrival and departure procedure of trainees; cultural programme; availability at all times (especially in the evenings and weekends; free days during the week).',
+'Berlin', 'N', 'M', 'GERMAN_STUDIES', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0009', '83e7233e-3424-49f7-99ae-a331426a1404', FALSE, 'EUR', '40', '8', '', 'DE Employer9', 'Address1', 'Address2', 'IAESTE LC', '50', 'www.employer9.com',
+'2013-08-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE LC', '220', NULL, '12', '12', 'Berlin', '', '2013-05-31',
+'',
+'615', 'MONTHLY', NULL,
+'Act as a link between the other trainees and the LC; organising arrival and departure procedure of trainees; cultural programme; availability at all times (especially in the evenings and weekends; free days during the week).',
+'Berlin', 'N', 'M', 'GERMAN_STUDIES', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0010', 'ad4bbbd1-95dd-4bab-9d0e-ba5531af7d0b', FALSE, 'EUR', '35', '7', '', 'DE Employer10', 'Address1', 'Address2', 'IAESTE LC', '15', 'www.employer10.com',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE LC', '220', NULL, '12', '12', 'Dortmund', '', '2013-05-31',
+'MS Office; Internet research; HTML knowledge',
+'615', 'MONTHLY', NULL,
+'contactperson for trainees; organization of summer events; troubleshooting; coordination of accomodation; reception; help with public authorities',
+'Bochum', 'N', 'M', 'BUSINESS_STUDIES', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0011', 'cfc5fee5-caf7-4c82-b93e-7e2299efb8d0', FALSE, 'EUR', '40', '8', '', 'DE Employer11', 'Address1', 'Address2', 'university institute', '0', 'www.employer11.com',
+'2013-06-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'reception committee', '220', NULL, '8', '8', 'Hamburg; Berlin', 'Wismar', '2013-06-30',
+'knowledge in matlab or  computer language required',
+'0', 'MONTHLY', NULL,
+'The candidate should work on data processing. Weather data should be interpreted to predict windpower earnings by the Method of Weiboll distribution. Subject will be teached; programming skills should be known before. The daily earnings should be stored in calendar format.',
+'Wismar', 'R', 'M', 'ELECTRICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0012', '39114518-c4e9-47ad-8bc8-e316ae5f49bc', FALSE, 'EUR', '40', '8', '', 'DE Employer12', 'Address1', 'Address2', 'university institute', '0', 'www.employer12.com',
+'2013-06-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'reception committee', '220', NULL, '8', '8', 'Hamburg; Berlin', 'Wismar', '2013-06-30',
+'knowledge in matlab or  computer language required',
+'0', 'MONTHLY', NULL,
+'The candidate should work on data processing. Weather data should be interpreted to predict windpower earnings by the Method of Weiboll distribution. Subject will be teached; programming skills should be known before. The daily earnings should be stored in calendar format.',
+'Wismar', 'R', 'M', 'ELECTRICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0013', 'cc48292b-2514-42c7-873f-56858cd57935', FALSE, 'EUR', '8', '40', '', 'DE Employer13', 'Address1', 'Address2', 'IT services', '5', 'www.employer13.com',
+'2013-06-01', '2013-04-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Freiburg', '220', NULL, '24', '24', 'Stuttgart', 'Freiburg', '2013-05-31',
+'Experience in Web technologies (xml; html; javascript; Sql databases',
+'600', 'MONTHLY', NULL,
+'Trainee will work in a small team of highly motivated people currently deploying and expanding of a web-based telecommunications consulting business.',
+'Freiburg', 'P', 'M', 'IT', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0014', 'fdcfc570-d7c5-471e-821b-7d550deb011f', FALSE, 'EUR', '40', '8', '', 'DE Employer14', 'Address1', 'Address2', 'internet marketplace; e-commerce', '10', 'www.employer14.com',
+'2013-05-01', '2013-04-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Aachen', '220', NULL, '24', '24', 'Cologne', 'Aachen', '2013-06-15',
+'experience in Linux beneficial',
+'600', 'MONTHLY', NULL,
+'antibodies-online is a marketplace for biomedical research supplies; i.e. research antibodies. Tasks: Adding new features to the marketplace; optimizing database structure; optimizing data imports and exports.',
+'Aachen', 'P', 'B', 'IT', 'php; mysql programming', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0015', 'd67b15d7-8fb4-46e6-9bd2-e71305a49e9a', FALSE, 'EUR', '40', '8', '', 'DE Employer15', 'Address1', 'Address2', 'university institute', '0', 'www.employer15.com',
+'2013-06-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'reception committee', '220', NULL, '8', '8', 'Hamburg; Berlin', 'Wismar', '2013-06-30',
+'knowledge in matlab or  computer language required',
+'0', 'MONTHLY', NULL,
+'The candidate should work on data processing. Weather data should be interpreted to predict windpower earnings by the Method of Weiboll distribution. Subject will be teached; programming skills should be known before. The daily earnings should be stored in calendar format.',
+'Wismar', 'R', 'M', 'ELECTRICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0016', '2b782dde-a873-4688-8878-4ff6cd07706e', TRUE, 'EUR', '40', '8', '', 'DE Employer16', 'Address1', 'Address2', 'research institute', '0', 'www.employer16.com',
+'2013-09-01', '2013-03-01', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Stuttgart', '220', NULL, '16', '16', '', '', '2013-06-15',
+'basic knowledge of composite materials desired',
+'615', 'MONTHLY', NULL,
+'Development of Ceramic Matrix Composites (CMCs); Liquid Silicon Infiltration Processes; Joining Methods; Coatings; Design and Manufacture of Components of reinforced Ceramics. Applications on Earth: High performance brake disks and clutches (Formula 1; civil engineering); Components with low thermal expansion (calibrating plates; telescopes); New components for engergy production (Heat exchanger; Combustion chambers). Aerospace Applications: Heat shields for re-entry capsules X 38/CRV; Aeronautic Applications: Gearing technique; flow profiles; diffuser.',
+'Stuttgart', 'R', 'M', 'AERONAUTICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0017', 'b58607fe-9292-4139-91b7-045ef41b9b23', TRUE, 'EUR', '40', '8', '', 'DE Employer17', 'Address1', 'Address2', 'university institute', '0', 'www.employer17.com',
+'2013-06-01', '2013-03-31', NULL, NULL, NULL, NULL, 'GERMAN', 'F', 'A', 'FRENCH', 'F', NULL, NULL, NULL,
+'600', 'MONTHLY', 'reception committee', '220', NULL, '16', '16', 'Frankfurt', 'Bingen', '2013-06-30',
+'knowledge of current PC software required',
+'615', 'MONTHLY', NULL,
+'Set up a data bank of environmental legislation of Maghreb countries Analyze options to improve recycling and treatment of electronic waste in developping countries',
+'Bingen', 'R', 'M', 'ECONOMICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0018', '105c4fa4-fed9-46d0-99f5-e42e1969ab6f', FALSE, 'EUR', '40', '8', '', 'DE Employer18', 'Address1', 'Address2', 'building contractors', '80', 'www.employer18.com',
+'2013-05-01', '2013-09-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Freiberg', '220', NULL, '8', '8', 'Dresden', 'Freiberg', '2013-05-15',
+'',
+'600', 'MONTHLY', NULL,
+'Assistance on building sites; customer contacts; coordination of capacities',
+'Freiberg', 'P', 'M', 'CIVIL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0019', '91dbc1d9-131c-4c4f-88de-448ef1a8a1ed', TRUE, 'EUR', '40', '8', '', 'DE Employer19', 'Address1', 'Address2', 'Dairy and vegetable farm', '2', 'www.employer19.com',
+'2013-01-01', '2013-02-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'F', NULL, NULL, NULL,
+'0', 'MONTHLY', 'Employer', '0', NULL, '24', '24', 'Hannover', 'Salzwedel', '2013-06-15',
+'one year of study completed',
+'500', 'MONTHLY', NULL,
+'working with dairy cattle; office work; quality assurance; documentation; accounting. Agricultural work in the field of potato and onion cultivation.  Free board and lodging; GERMAN language course possible.',
+'Lüchow', 'P', 'B', 'AGRONOMY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0020', '9ffea414-1809-4c79-81da-f0a295aed81e', TRUE, 'EUR', '40', '8', '', 'DE Employer20', 'Address1', 'Address2', 'research institute', '110', 'www.employer20.com',
+'2013-07-01', '2013-02-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Duisburg', '220', NULL, '8', '12', 'Duesseldorf', 'Muelheim', '2013-07-15',
+'E marks required',
+'615', 'MONTHLY', NULL,
+'Experimental research in laboratories in the fields of: bioinorganic chemistry; bioinorganic spectroscopy; bioorganic chemistry; biophysical chemistry; electrochemistry; electron transfer chemistry; EPR; inorganic chemistry; laser spectroscopy; magnetic susceptibility; metal-organic chemistry; metalproteins; moessbauer spectroscopy; photobiological; photochemistry; radical chemistry; synthetic organic chemistry.',
+'Muelheim/Ruhr', 'R', 'M', 'CHEMISTRY', 'bioorganic chemistry', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0021', '656424ca-3788-4ef5-9bd1-5a1aea7c1d8e', FALSE, 'EUR', '40', '8', '', 'DE Employer21', 'Address1', 'Address2', 'university institute', '0', 'www.employer21.com',
+'2013-07-01', '2013-12-14', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Freiburg', '220', NULL, '16', '16', 'Frankfurt', 'Freiburg', '2013-06-15',
+'',
+'615', 'MONTHLY', NULL,
+'The work comprises metallurgical analysis of solder structures for electronic deviceds; recrystalization; formatin of intermetallic compounds and recrystalization-assisted cracking of the bulk solder due to thermo-mechanical stress and flux of electric flux. Work consists mainly of practical work: preparation of metallographical cuts; but also of analysis of the results; photography; creation of plots; etc.',
+'Freiburg', 'R', 'M', 'SYSTEMS_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0022', '158e5f72-204e-42bc-b74e-5d0dd8ee5856', FALSE, 'EUR', '40', '8', '', 'DE Employer22', 'Address1', 'Address2', 'university institute', '0', 'www.employer22.com',
+'2013-07-01', '2013-12-14', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Freiburg', '220', NULL, '16', '16', 'Frankfurt', 'Freiburg', '2013-06-15',
+'',
+'615', 'MONTHLY', NULL,
+'The work comprises metallurgical analysis of solder structures for electronic deviceds; recrystalization; formatin of intermetallic compounds and recrystalization-assisted cracking of the bulk solder due to thermo-mechanical stress and flux of electric flux. Work consists mainly of practical work: preparation of metallographical cuts; but also of analysis of the results; photography; creation of plots; etc.',
+'Freiburg', 'R', 'M', 'SYSTEMS_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0023', '4212b070-61bc-4866-b067-46f43ad7f743', FALSE, 'EUR', '40', '8', '', 'DE Employer23', 'Address1', 'Address2', NULL, '0', 'www.employer23.com',
+'2013-09-01', '2013-11-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'LC Wilhelmshaven', '220', NULL, '8', '8', 'Hamburg', 'Wilhelmshaven', '2013-07-11',
+'',
+'615', 'MONTHLY', NULL,
+'Joining research in avian ecology; with special emphasis on spatio-temporal distribution of coastal birds; breeding and foraging  in coastal birds and sea birds; nutritional adaptions in migrating songbirds; scientific bird banding',
+'Wilhelmshaven', 'R', 'M', 'ZOOLOGY', 'ornithology', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0024', '0e0f012a-b41e-4e62-8ef7-9142a88f6fe4', FALSE, 'EUR', '40', '8', '', 'DE Employer24', 'Address1', 'Address2', 'University institute', '40', 'www.employer24.com',
+'2013-08-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Dresden', '220', NULL, '8', '8', 'Dresden', 'Dresden', '2013-07-11',
+'',
+'615', 'MONTHLY', NULL,
+'Investigation of Laserbeam-Ceramic-Interaction. Investigation of two phase flow phenomena in a circulation loop in special consideration of the Borate transport. Mathematical simulation of experimental results with codes (e.g. Matlab-Simulink)',
+'Dresden', 'R', 'E', 'POWER_ENGINEERING', 'laser technology', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0025', '49e91792-6b1f-4fa9-9d2b-2a43c27fe467', FALSE, 'EUR', '40', '8', '', 'DE Employer25', 'Address1', 'Address2', 'University institute', '0', 'www.employer25.com',
+'2013-08-01', '2013-03-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Freiberg', '220', NULL, '8', '8', 'Dresden', 'Freiberg', '2013-07-11',
+'',
+'615', 'MONTHLY', NULL,
+'digital processing of remote sensing data; geomorphological and environmental analyses; digital elevation model generation and processing',
+'Freiberg', 'R', 'B', 'GEOSCIENCE', 'Remote sensing', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0026', 'e1befbf7-8169-46c7-a365-affb4cdda376', FALSE, 'EUR', '40', '8', '', 'DE Employer26', 'Address1', 'Address2', 'University institute', '0', 'www.employer26.com',
+'2013-08-01', '2013-03-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Freiberg', '220', NULL, '8', '8', 'Dresden', 'Freiberg', '2013-07-11',
+'',
+'615', 'MONTHLY', NULL,
+'digital processing of remote sensing data; geomorphological and environmental analyses; digital elevation model generation and processing',
+'Freiberg', 'R', 'B', 'GEOSCIENCE', 'Remote sensing', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0027', '580bb6c7-94ec-4231-8f0c-bd94ebef5007', FALSE, 'EUR', '40', '8', '', 'DE Employer27', 'Address1', 'Address2', 'University institute', '0', 'www.employer27.com',
+'2013-08-01', '2013-03-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Freiberg', '220', NULL, '8', '8', 'Dresden', 'Freiberg', '2013-07-11',
+'',
+'615', 'MONTHLY', NULL,
+'digital processing of remote sensing data; geomorphological and environmental analyses; digital elevation model generation and processing',
+'Freiberg', 'R', 'B', 'GEOSCIENCE', 'Remote sensing', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0028', 'dbabd35a-6fb1-4408-849a-291835533542', TRUE, 'EUR', '40', '8', '', 'DE Employer28', 'Address1', 'Address2', 'university clinic', '2000', 'www.employer28.com',
+'2013-09-01', '2013-02-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '8', '8', 'Berlin', 'Greifswald', '2013-07-11',
+'experience in laboratory work. Native ENGLISH speaker if possible',
+'615', 'MONTHLY', NULL,
+'Practical training in a laboratory for molecular biology; biochemistry; histology. Examination of samples on the effect of drugs on certain types of tissue',
+'Greifswald', 'R', 'M', 'MOLECULAR_BIOLOGY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0029', '7b67d491-b73a-4005-81bb-01d9a9e3c60a', FALSE, 'EUR', '40', '8', '', 'DE Employer29', 'Address1', 'Address2', NULL, '0', 'www.employer29.com',
+'2013-08-01', '2013-02-28', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '220', NULL, '8', '16', 'Leipzig', 'Dollstädt/Erfurt', '2013-07-11',
+'',
+'615', 'MONTHLY', NULL,
+'Cooperation at the registration of the avifauna of special game-parks in Thuringia and Brandenburg; registration of lawn breeding birds ; cooperation at the development of protection and maintenance plans; working in the forest; consulting tasks for public administration and companies',
+'Gierstädt', 'N', 'M', 'ECOLOGY', 'forestry', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0030', 'e71f46e6-d73b-43fc-9a53-54cb84ea5319', FALSE, 'EUR', '40', '8', '0', 'DE Employer30', 'Address1', 'Address2', 'Radiation treatment', '58', 'www.employer30.com',
+'2013-09-01', '2013-02-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Dresden', '220', NULL, '12', '16', 'Dresden', '', '2013-07-11',
+'',
+'615', 'MONTHLY', NULL,
+'Investigations to the operation fo an industrial electron irradiation facility. Material research for high-dose irradiation. Measuring programmes and shielding design in radiation protection',
+'Radeberg near Dresden', 'R', 'E', 'PROCESS_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0031', '6f01284a-4d23-4a7b-bd9e-e6862b941e54', FALSE, 'EUR', '8', '40', '', 'DE Employer31', 'Address1', 'Address2', 'University', '0', 'www.employer31.com',
+'2013-09-01', '2013-03-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '12', '12', 'Hannover', 'Clausthal', '2013-07-11',
+'solid knowledge of mathematics and science',
+'615', 'MONTHLY', NULL,
+'Extractive metallurgy; foundry technology; thermodynamic and kinetic investigations; electrochemistry; corrosion; sensors; fuel cell technology',
+'Clausthal', 'R', 'M', 'PROCESS_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0032', '8952cb06-9a2a-4c5b-b340-6abe9ed7b683', TRUE, 'EUR', '40', '8', '', 'DE Employer32', 'Address1', 'Address2', 'University institute', '0', 'www.employer32.com',
+'2013-09-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Bochum', '220', NULL, '16', '16', 'Düsseldorf', 'Bochum', '2013-07-11',
+'',
+'615', 'MONTHLY', NULL,
+'Synthetic inorganic chemistry. The applicant should have experiences in synthetic chemistry; preferably also with inert-gas techniques (glove-box)',
+'Bochum', 'R', 'B', 'CHEMISTRY', 'organometallic chemistry', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0033', '3f71344a-1058-40ad-9cfd-ec79e6a3d7b6', FALSE, 'EUR', '40', '8', '', 'DE Employer33', 'Address1', 'Address2', 'biotechnology', '0', 'www.employer33.com',
+'2013-08-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '26', '26', '', '', '2013-07-11',
+'master student desired',
+'615', 'MONTHLY', NULL,
+'Practical training in the fields of chemical analysis; proof of drug substances and products; cell biology; physiochemistry and informatics',
+'Saarbrücken', 'R', 'B', 'PHARMACY', 'biotechnology', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0034', 'dd356f9e-15d4-4e0d-819b-3882bedfdb43', FALSE, 'EUR', '40', '8', '', 'DE Employer34', 'Address1', 'Address2', 'research institute', '400', 'www.employer34.com',
+'2013-08-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '220', NULL, '12', '12', 'Dresden', 'Dresden', '2013-07-11',
+'',
+'610', 'MONTHLY', NULL,
+'Production and characterisation of superconductors; magnetic materials and amorphous metals',
+'Dresden', 'R', 'E', 'PHYSICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0035', '65ebad2f-79d6-467f-a50e-24f50c1ac39b', FALSE, 'EUR', '40', '8', '', 'DE Employer35', 'Address1', 'Address2', 'Mining company', '0', 'www.employer35.com',
+'2013-01-01', '2013-01-01', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'0', 'MONTHLY', 'Reception committee', '220', NULL, '8', '8', 'Düsseldorf', '', '2013-08-01',
+'',
+'615', 'MONTHLY', NULL,
+'Working in a mine;only underground',
+'info later', 'P', 'M', 'MINING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0036', 'f3cdf27e-b1b7-405c-ae4f-c288ef73841c', FALSE, 'EUR', '40', '8', '', 'DE Employer36', 'Address1', 'Address2', 'Mining company', '0', 'www.employer36.com',
+'2013-01-01', '2013-01-01', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'0', 'MONTHLY', 'Reception committee', '220', NULL, '8', '8', 'Düsseldorf', '', '2013-08-01',
+'',
+'615', 'MONTHLY', NULL,
+'Working in a mine;only underground',
+'info later', 'P', 'M', 'MINING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0037', 'd1fa88b3-b348-4d08-b10b-4ead503d0363', FALSE, 'EUR', '40', '8', '', 'DE Employer37', 'Address1', 'Address2', 'Mining company', '0', 'www.employer37.com',
+'2013-01-01', '2013-01-01', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'0', 'MONTHLY', 'Reception committee', '220', NULL, '8', '8', 'Düsseldorf', '', '2013-08-01',
+'',
+'615', 'MONTHLY', NULL,
+'Working in a mine;only underground',
+'info later', 'P', 'M', 'MINING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0038', '92308e41-3a10-4027-a85f-1bb8f634816f', FALSE, 'EUR', '40', '8', '', 'DE Employer38', 'Address1', 'Address2', 'University institute', '41', 'www.employer38.com',
+'2013-08-01', '2013-02-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '8', '12', 'Dresden', 'Jena', '2013-07-11',
+'',
+'0', 'MONTHLY', NULL,
+'Glass science and technology. Research and development of optial glasses; glass ceramics and coloured glasses. Studies on structure of glass.',
+'Jena', 'R', 'E', 'CHEMISTRY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0039', '69d4c983-58c4-4ad0-9246-e2d3b2f96abd', FALSE, 'EUR', '40', '8', '', 'DE Employer39', 'Address1', 'Address2', 'Food company', '0', 'www.employer39.com',
+'2013-08-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '26', '26', 'München', 'München', '2013-07-11',
+'Internship has to be compulsory part of studies. Enrollment at university for whole period of training required. Skills in Microsoft office. Team worker.',
+'600', 'MONTHLY', NULL,
+'Internship Regulatory Affairs; Support in preparing and updation product packaging and labeling. Preparation of nutrive labeling. Support in getting technical specifications licence approval for raw materials and finished products. Support of the project and document management.',
+'München', 'P', 'M', 'FOOD_TECHNOLOGY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0040', 'faab7a37-30c0-41cf-b5c7-eb048fcbdb42', FALSE, 'EUR', '40', '8', '', 'DE Employer40', 'Address1', 'Address2', 'Food company', '0', 'www.employer40.com',
+'2013-08-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '26', '26', 'München', 'München', '2013-07-11',
+'Internship has to be compulsory part of studies. Enrollment at university for whole period of training required. Skills in Microsoft office. Team worker.',
+'600', 'MONTHLY', NULL,
+'Internship Regulatory Affairs; Support in preparing and updation product packaging and labeling. Preparation of nutrive labeling. Support in getting technical specifications licence approval for raw materials and finished products. Support of the project and document management.',
+'München', 'P', 'M', 'FOOD_TECHNOLOGY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0041', 'c85ff8c6-332a-4690-b0f8-f4f24e7d96c2', FALSE, 'EUR', '40', '8', '', 'DE Employer41', 'Address1', 'Address2', 'Food company', '0', 'www.employer41.com',
+'2013-08-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '26', '26', 'München', 'München', '2013-07-11',
+'Internship has to be compulsory part of studies. Enrollment at university for whole period of training required. Skills in Microsoft office. Team worker.',
+'600', 'MONTHLY', NULL,
+'Internship Confectionary Technology: Assist scientist in execution of ongoing confectionary projects. Run pilot plant equipment and perform measurements (e.g. rheology; particle size). Analysis of industrial processes for the production of chocolate. Working together with different R and D functions and production plants. Develop test methods related to physical properties of chocolate.',
+'München', 'P', 'M', 'MECHANICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0042', '67568261-ca2f-413d-8c2d-080ee58ae4ef', FALSE, 'EUR', '40', '8', '', 'DE Employer42', 'Address1', 'Address2', 'Food company', '0', 'www.employer42.com',
+'2013-08-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '26', '26', 'München', 'München', '2013-07-11',
+'Internship has to be compulsory part of studies. Enrollment at university for whole period of training required. Skills in Microsoft office. Team worker.',
+'600', 'MONTHLY', NULL,
+'Internship Confectionary Technology: Assist scientist in execution of ongoing confectionary projects. Run pilot plant equipment and perform measurements (e.g. rheology; particle size). Analysis of industrial processes for the production of chocolate. Working together with different R and D functions and production plants. Develop test methods related to physical properties of chocolate.',
+'München', 'P', 'M', 'MECHANICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0043', 'b6c796d4-64fd-4203-be9d-acfbd7269589', FALSE, 'EUR', '40', '8', '', 'DE Employer43', 'Address1', 'Address2', 'Food company', '0', 'www.employer43.com',
+'2013-08-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '26', '26', 'München', 'München', '2013-07-11',
+'Internship has to be compulsory part of studies. Enrollment at university for whole period of training required. Skills in Microsoft office. Team worker.',
+'600', 'MONTHLY', NULL,
+'Internship &quot;Confectionary Technology&quot;: Assist scientist in execution of ongoing confectionary projects. Run pilot plant equipment and perform measurements (e.g. rheology; particle size). Analysis of industrial processes for the production of chocolate. Working together with different R and D functions and production plants. Develop test methods related to physical properties of chocolate.',
+'München', 'P', 'M', 'MECHANICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0044', 'db9612fc-ea62-4814-94cd-4b4ee0192ebe', FALSE, 'EUR', '40', '8', '', 'DE Employer44', 'Address1', 'Address2', 'Food company', '0', 'www.employer44.com',
+'2013-08-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '26', '26', 'München', 'München', '2013-07-11',
+'Internship has to be compulsory part of studies. Enrollment at university for whole period of training required. Skills in Microsoft office. Team worker.',
+'600', 'MONTHLY', NULL,
+'Internship Packaging Laboratory. Determining and evaluatiing packaging material properties. Testing of interactions between  packaging and food. Making mock ups and test packages. Maintaining lab equípment.',
+'München', 'P', 'M', 'FOOD_TECHNOLOGY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0045', '13a821b7-6849-4e25-8501-cde2b84946ca', FALSE, 'EUR', '40', '8', '', 'DE Employer45', 'Address1', 'Address2', 'research institute', '0', 'www.employer45.com',
+'2013-07-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '26', '26', 'Dresden', 'Jena', '2013-01-01',
+'',
+'615', 'MONTHLY', NULL,
+'RoMA (Routine Measurements & Analysis) is one fo the service facilities of the Max-Planck-Institute for Biogeochemistry. Key aspects of activity in our lab comprise the determination of single elements (C; N); ions (nutrients; anions) as well as sum parameters (TOC. TIC; TNb) in liquids (e.g. groundwaters; seawaters; leachates and extracts) and solids (e.g. soils; sediments; rocks; plants and other biological materials). The analytical methods we offer are  Elemental Analysis; Sum Parameter Analysis; Continuous Flow Analysis and Ion Chromatography',
+'Jena', 'R', 'B', 'CHEMISTRY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0046', '98abe6f4-fdeb-46b7-852c-52d8c666e5c3', FALSE, 'EUR', '40', '8', '', 'DE Employer46', 'Address1', 'Address2', 'research institute', '0', 'www.employer46.com',
+'2013-07-01', '2013-10-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Reception committee', '220', NULL, '8', '8', 'Dresden', 'Jena', '2013-07-18',
+'',
+'615', 'MONTHLY', NULL,
+'Chemical synthesis of polymers and composites for biomedical applications; biological in vitro characterization of biomaterials',
+'Jena', 'R', 'M', 'CHEMISTRY', 'polymer chemistry; biomaterials', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0047', 'b9aab9f8-345a-47ed-a857-d89bc80c1b3b', TRUE, 'EUR', '40', '8', '', 'DE Employer47', 'Address1', 'Address2', 'university institute', '12', 'www.employer47.com',
+'2013-01-01', '2013-01-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'local committee', '220', NULL, '12', '12', 'Hamburg', 'Hamburg', '2013-07-15',
+'CAD',
+'615', 'MONTHLY', NULL,
+'Construction with CAD-Systems Interpretation and calculation of construction projects practical experiments with constructed conversion tools',
+'Hamburg', 'R', 'M', 'MECHANICAL_ENGINEERING', 'conversion technology', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0048', '8c7f4b03-bb17-435b-af21-9460032f0b60', TRUE, 'EUR', '40', '8', '', 'DE Employer48', 'Address1', 'Address2', 'university institute', '12', 'www.employer48.com',
+'2013-01-01', '2013-01-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'local committee', '220', NULL, '12', '12', 'Hamburg', 'Hamburg', '2013-07-15',
+'CAD',
+'615', 'MONTHLY', NULL,
+'Construction with CAD-Systems Interpretation and calculation of construction projects practical experiments with constructed conversion tools',
+'Hamburg', 'R', 'M', 'MECHANICAL_ENGINEERING', 'conversion technology', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0049', '355bc337-c30e-46be-8767-8b55c6f51d07', FALSE, 'EUR', '40', '8', '', 'DE Employer49', 'Address1', 'Address2', 'E-commerce', '12', 'www.employer49.com',
+'2013-07-01', '2013-03-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'reception committee', '220', NULL, '12', '12', 'Hamburg', 'Hamburg', '2013-08-01',
+'',
+'615', 'MONTHLY', NULL,
+'Web development. Programming in Linux; MySql; Java; php Experience required.',
+'Hamburg', 'P', 'M', 'IT', 'Web development', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0050', 'f1c10208-3974-4dc9-9dfc-aa6d0bf37d76', TRUE, 'EUR', '40', '8', '', 'DE Employer50', 'Address1', 'Address2', 'university institute', '12', 'www.employer50.com',
+'2013-07-01', '2013-03-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'local committee', '220', NULL, '12', '12', 'Hamburg', 'Hamburg', '2013-07-15',
+'CAD',
+'615', 'MONTHLY', NULL,
+'FEM simulation with MSC Superform 2005 Simulations of size effects in microtechnology Examination of simulation results by practical experiments',
+'Hamburg', 'R', 'M', 'MECHANICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0051', '9439ed13-0d89-40bf-adb3-7c98f91740a6', FALSE, 'EUR', '38', '8', '', 'DE Employer51', 'Address1', 'Address2', 'Informatics', '10500', 'www.employer51.com',
+'2013-12-01', '2013-06-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'A', 'ENGLISH', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE Muenchen', '220', NULL, '24', '24', 'Munich', '', '2013-07-31',
+'',
+'615', 'MONTHLY', NULL,
+'Work on international people development topics; support team concerning talentmanagement; upward appraisal; etc;  support team in administrative work; Languages: Fluent GERMAN and ENGLISH. MS office required Training period: 6 months',
+'Muenchen', 'P', 'M', 'INDUSTRIAL_ENGINEERING', 'personel development', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0052', '323a5ecd-e08c-46cb-8b42-64d4d3c6027d', FALSE, 'EUR', '40', '8', '', 'DE Employer52', 'Address1', 'Address2', 'architects office', '2', 'www.employer52.com',
+'2013-11-01', '2013-06-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '250', 'MONTHLY', '8', '24', 'Berlin', 'Berlin', '2013-11-09',
+'basic GERMAN desired, but not neccessary',
+'650', 'MONTHLY', NULL,
+'Planning and detailing of projects to be built, competitions, presentations, modelmaking. Student needed as soon as possible.',
+'Berlin', 'P', 'M', 'ARCHITECTURE', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0053', '28c72436-65ad-459e-ae93-926e0264e37b', TRUE, 'EUR', '40', '8', '', 'DE Employer53', 'Address1', 'Address2', 'Software Development', '20', 'www.employer53.com',
+'2013-02-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'630', 'MONTHLY', 'IAESTE Karlsruhe', '250', 'MONTHLY', '26', '26', 'Stuttgart', 'Karlsruhe', '2013-12-07',
+'E knowledge in C, C++, Java, C#, XML, Software design, Software specifications, Distributed Applications, TCP/IP',
+'650', 'MONTHLY', NULL,
+'Being part of the Quality Assurance team. Creating testsuites, analysing software, enhancing given test- and metric tools, testing, writing test reports, etc.',
+'Karlsruhe', 'P', 'E', 'SOFTWARE', 'software development', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0054', '2bc2309a-a392-4e7c-bed1-8b5110475c3c', TRUE, 'EUR', '40', '8', '', 'DE Employer54', 'Address1', 'Address2', 'University institute', '15', 'www.employer54.com',
+'2013-01-01', '2013-02-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE-LC', '220', 'MONTHLY', '8', '8', 'München', 'Freising', '2013-12-15',
+'',
+'650', 'MONTHLY', NULL,
+'Integration in a research project on Carbon storage on wetland ecosystems. Sampling of CO2-exchange via closed-chamber technique on different vegetation types along a degradation-restoration gradient, biomass sampling, determination of LAI, data-processing, parametization of CO2-exchange models, modelling of gas-exchange balances for part of the season, literature review in relevant fields.',
+'Freising', 'R', 'B', 'BIOLOGY', 'ecology, geography, ressource management, agricult', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0055', '72c22160-f557-451c-a273-92e1e1144dde', TRUE, 'EUR', '40', '8', '', 'DE Employer55', 'Address1', 'Address2', 'University institute', '15', 'www.employer55.com',
+'2013-01-01', '2013-02-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE-LC', '220', 'MONTHLY', '8', '8', 'München', 'Freising', '2013-12-15',
+'',
+'650', 'MONTHLY', NULL,
+'Integration in a research project on Carbon storage on wetland ecosystems. Sampling of CO2-exchange via closed-chamber technique on different vegetation types along a degradation-restoration gradient, biomass sampling, determination of LAI, data-processing, parametization of CO2-exchange models, modelling of gas-exchange balances for part of the season, literature review in relevant fields.',
+'Freising', 'R', 'B', 'BIOLOGY', 'ecology, geography, ressource management, agricult', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0056', '59cbf8c0-6785-4c1f-ac7a-12fae6356942', TRUE, 'EUR', '40', '8', '', 'DE Employer56', 'Address1', 'Address2', 'University institute', '15', 'www.employer56.com',
+'2013-03-01', '2013-04-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE-LC', '220', 'MONTHLY', '8', '8', 'München', 'Freising', '2013-12-15',
+'',
+'650', 'MONTHLY', NULL,
+'Integration in a research project on Carbon storage on wetland ecosystems. Sampling of CO2-exchange via closed-chamber technique on different vegetation types along a degradation-restoration gradient, biomass sampling, determination of LAI, data-processing, parametization of CO2-exchange models, modelling of gas-exchange balances for part of the season, literature review in relevant fields.',
+'Freising', 'R', 'B', 'BIOLOGY', 'ecology, geography, ressource management, agricult', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0057', 'd1a530d0-9eee-4031-9b8e-8e01cee1e94e', TRUE, 'EUR', '40', '8', '', 'DE Employer57', 'Address1', 'Address2', 'University institute', '15', 'www.employer57.com',
+'2013-03-01', '2013-04-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE-LC', '220', 'MONTHLY', '8', '8', 'München', 'Freising', '2013-12-15',
+'',
+'650', 'MONTHLY', NULL,
+'Integration in a research project on Carbon storage on wetland ecosystems. Sampling of CO2-exchange via closed-chamber technique on different vegetation types along a degradation-restoration gradient, biomass sampling, determination of LAI, data-processing, parametization of CO2-exchange models, modelling of gas-exchange balances for part of the season, literature review in relevant fields.',
+'Freising', 'R', 'B', 'BIOLOGY', 'ecology, geography, ressource management, agricult', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0058', '729006b9-d806-4712-8be2-639c29b0517a', FALSE, 'EUR', '40', '8', '', 'DE Employer58', 'Address1', 'Address2', 'semiconductor producer', '40000', 'www.employer58.com',
+'2013-01-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'F', 'O', 'PORTUGUESE', 'F',
+'650', 'MONTHLY', 'IAESTE München', '220', 'MONTHLY', '26', '26', 'Munich', 'Munich Central Station', '2013-01-15',
+'Technical school degree in electrical eng., electronics or equivalent qualification',
+'800', 'MONTHLY', NULL,
+'Performing EMC measurements and analysis. Characterization of ESD (Electrostatic  discharge) protection structures for automotive power ICs. Documentation and presentation of results. Automation of measurement setups and test benches using labview. Experience in test and measurement techniques, Labview programming, EMC, or semiconductor device physics or analog circuit design required.',
+'München', 'R', 'B', 'ELECTRICAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0059', '8bea8241-b460-478b-a4ef-fb51ba69a2ea', TRUE, 'EUR', '40', '8', '', 'DE Employer59', 'Address1', 'Address2', 'Food and beverages', '300', 'www.employer59.com',
+'2013-01-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE Muenchen', '250', 'MONTHLY', '8', '8', 'Munich', '', '2013-02-01',
+'Internship must be compulsory part of studies.',
+'880', 'MONTHLY', NULL,
+'Flavour research project. Identify key flavour compounds. Identify innovative routes of flavour management in industrial processes. Prepare research report and present technical recommendations to management.',
+'München', 'N', 'M', 'CHEMISTRY', 'Food chemistry', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0060', 'd86d995f-9d9e-4b32-ba79-78cbe742408b', TRUE, 'EUR', '40', '8', '', 'DE Employer60', 'Address1', 'Address2', 'Food and beverages', '300', 'www.employer60.com',
+'2013-01-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE Muenchen', '250', 'MONTHLY', '26', '26', 'Munich', '', '2013-02-01',
+'Internship must be compulsory part of studies.',
+'880', 'MONTHLY', NULL,
+'Image lab training. Support pilot project of 3D models from technical drawings or animatics to visualization of opening processes of packages. Support image lab in production of concept boards. Solid knowledge of 3D programme Light Wave from Newtec or similar. Working knowledge of Photoshop and Adobe Creative Suite required.',
+'München', 'R', 'M', 'IT', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0061', 'ee2d1fef-a206-40eb-a0fc-3c291f3959d9', FALSE, 'EUR', '40', '8', 'see www.iaeste.de/en', 'DE Employer61', 'Address1', 'Address2', 'university', '8', 'www.employer61.com',
+'2013-08-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, 'GERMAN', 'F', NULL, NULL, NULL,
+'600', 'MONTHLY', 'employer', '220', 'MONTHLY', '8', '8', 'Berlin', 'Berlin Ostbahnhof', '2013-03-31',
+'If possible please apply for full months. Experience in C-programming',
+'650', 'MONTHLY', NULL,
+'Nonlinear optimisation, algorithmic differentiation, differentiation, programm transformation',
+'Berlin-Adlershof', NULL, 'E', 'MATHEMATICS|IT|SCIENTIFIC_COMPUTING', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0062', '7319d8d6-6875-44f8-9d59-0ba3fdd8c56a', FALSE, 'EUR', '40', '8', 'please refer to webs', 'DE Employer62', 'Address1', 'Address2', 'university', '800', 'www.employer62.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'F', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '220', 'MONTHLY', '8', '8', 'Hamburg', 'Lüneburg', '2013-03-31',
+'If possible apply for full months',
+'650', 'MONTHLY', NULL,
+'Research and development work in : optics, medical technology, automotice assistence systems',
+'Lüneburg', NULL, 'M|E', 'MECHATRONICS|PHYSICS|TECHNICAL_OPTICS', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0063', '02c7be96-b60f-4549-b30d-8de3b08bfb77', TRUE, 'EUR', '40', '8', 'www.iaeste.de/Englis', 'DE Employer63', 'Address1', 'Address2', 'research institute', '120', 'www.employer63.com',
+'2013-10-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '260', 'MONTHLY', '8', '8', 'Hannover', 'Goslar Hbf', '2013-03-31',
+'If possible, please apply for full months.',
+'650', 'MONTHLY', NULL,
+'Waste water treatment; sewage sludge treatment; air purification processes; biological processes; thermal waste treatment; chemical/biological laboratories; energy processes',
+'Clausthal-Zellerhof', 'R', 'M|E', 'WASTE_WATER_TREATMENT|ENVIRONMENTAL_ENGINEERING', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0064', 'c9173049-9daf-4670-bb1f-9bb23b2d918f', TRUE, 'EUR', '40', '8', '', 'DE Employer64', 'Address1', 'Address2', 'electrical eng.', '0', 'www.employer64.com',
+'2013-04-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'630', 'MONTHLY', 'IAESTE Stuttart', '220', 'MONTHLY', '26', '26', 'Stuttgart', 'Stuttgart', '2013-03-31',
+'',
+'630', 'MONTHLY', NULL,
+'Subject of the internship is the sumulation and modeling of MEMS. Reduced-order models of MEMS inertial sensors are modeled with simulink. The ASIC that controls drive and sense of the sensor is modeled with an FPGA. Both models should be copled to allow for investigation of the interaction and full system simulation. Additionally the simuling model of the sensor should be transformed to VHDL-AMS to allow for a coupled simulation of sensor and ASIC within a VHDL-ASMS-Simulator. We are looking for a student with fundamental background in mathematics and physics. The student must have in depth knowledge of Matlab and Simulink. Preferalby the condidate should have knowledge of FPGA and of the programming language C.',
+'Stuttgart', 'P', 'E', 'ELECTRICAL_ENGINEERING', 'micro systems eng.', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0065', '555fb10a-f2fb-4928-961f-8d186789aea6', TRUE, 'EUR', '38', '8', '', 'DE Employer65', 'Address1', 'Address2', 'National Railway', '230000', 'www.employer65.com',
+'2013-05-01', '2013-03-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE Local committee', '220', 'MONTHLY', '12', '26', 'info later', '', '2013-04-15',
+'excellent student required',
+'650', 'MONTHLY', NULL,
+'Students will be matched individually with projects, eg. high speed train maintenance yards, rail car and infrastructure technical components and simulations, control system technology, organization and sales of Europe-wide rail freight services, international strategy, rail network planning and maintenance, communication techniques',
+'Berlin or Frankfurt or Hamburg or Munich or Essen', 'P', 'M', 'INDUSTRIAL_ENGINEERING', 'civil eng., mechanical eng., etc.', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0066', '7640a899-ac62-42ec-8e46-fd8f5ea715c7', TRUE, 'EUR', '38', '8', '', 'DE Employer66', 'Address1', 'Address2', 'National Railway', '230000', 'www.employer66.com',
+'2013-05-01', '2013-03-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE Local committee', '220', 'MONTHLY', '12', '26', 'info later', '', '2013-04-15',
+'excellent student required',
+'650', 'MONTHLY', NULL,
+'Students will be matched individually with projects, eg. high speed train maintenance yards, rail car and infrastructure technical components and simulations, control system technology, organization and sales of Europe-wide rail freight services, international strategy, rail network planning and maintenance, communication techniques',
+'Berlin or Frankfurt or Hamburg or Munich or Essen', 'P', 'M', 'INDUSTRIAL_ENGINEERING', 'civil eng., mechanical eng., etc.', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0067', '69393706-5c8c-4a03-8615-58934340158c', TRUE, 'EUR', '38', '8', '', 'DE Employer67', 'Address1', 'Address2', 'National Railway', '230000', 'www.employer67.com',
+'2013-05-01', '2013-03-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE Local committee', '220', 'MONTHLY', '12', '26', 'info later', '', '2013-04-15',
+'excellent student required',
+'650', 'MONTHLY', NULL,
+'Students will be matched individually with projects, eg. high speed train maintenance yards, rail car and infrastructure technical components and simulations, control system technology, organization and sales of Europe-wide rail freight services, international strategy, rail network planning and maintenance, communication techniques',
+'Berlin or Frankfurt or Hamburg or Munich or Essen', 'P', 'M', 'INDUSTRIAL_ENGINEERING', 'civil eng., mechanical eng., etc.', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0068', '1ac61d86-34a7-4317-bdf1-25fcf2dd790c', TRUE, 'EUR', '38', '8', '', 'DE Employer68', 'Address1', 'Address2', 'National Railway', '230000', 'www.employer68.com',
+'2013-05-01', '2013-03-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE Local committee', '220', 'MONTHLY', '12', '26', 'info later', '', '2013-04-15',
+'excellent student required',
+'650', 'MONTHLY', NULL,
+'Students will be matched individually with projects, eg. high speed train maintenance yards, rail car and infrastructure technical components and simulations, control system technology, organization and sales of Europe-wide rail freight services, international strategy, rail network planning and maintenance, communication techniques',
+'Berlin or Frankfurt or Hamburg or Munich or Essen', 'P', 'M', 'INDUSTRIAL_ENGINEERING', 'civil eng., mechanical eng., etc.', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0069', 'aa0d3409-c13c-453e-b7e7-91ef24b23ac1', TRUE, 'EUR', '38', '8', '', 'DE Employer69', 'Address1', 'Address2', 'National Railway', '230000', 'www.employer69.com',
+'2013-05-01', '2013-03-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE Local committee', '220', 'MONTHLY', '12', '26', 'info later', '', '2013-04-15',
+'excellent student required',
+'650', 'MONTHLY', NULL,
+'Students will be matched individually with projects, eg. high speed train maintenance yards, rail car and infrastructure technical components and simulations, control system technology, organization and sales of Europe-wide rail freight services, international strategy, rail network planning and maintenance, communication techniques',
+'Berlin or Frankfurt or Hamburg or Munich or Essen', 'P', 'M', 'INDUSTRIAL_ENGINEERING', 'civil eng., mechanical eng., etc.', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0070', '12f9bbcd-e220-464b-b235-c4e17c27e560', TRUE, 'EUR', '40', '8', '', 'DE Employer70', 'Address1', 'Address2', 'civil engineering', '40', 'www.employer70.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'400', 'MONTHLY', 'Employer', '0', 'MONTHLY', '12', '12', 'Frankfurt/M.', 'Rottweil', '2013-05-31',
+'',
+'450', 'MONTHLY', NULL,
+'Project management',
+'Rottweil', 'P', 'E', 'CIVIL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0071', '19307182-90fb-41a3-b64e-e74d7a7378c4', TRUE, 'EUR', '40', '8', '', 'DE Employer71', 'Address1', 'Address2', 'motorcycle helmets, ski goggles', '0', 'www.employer71.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'employer', '220', 'MONTHLY', '12', '24', 'Frankfurt', 'Chamerau', '2013-05-31',
+'Master student required',
+'650', 'MONTHLY', NULL,
+'Uvex Sports proposes different developement projects concerning plastic materials having tailor-made properties suitable for ski-goggles, ski-helmets and motorcycle-helmets. 1. Optimization of the plasma process for an effective surface activation of plastic, 2. Development of new polymeric material for ski goggles meeting the uvex requirements, 3. development of water-based paints and coatings for goggles and helmets, 4. development of transparent and elastic adhesives for goggle lens laminates.',
+'Chamerau', 'R', 'E', 'PLASTICS_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0072', '48ef13b9-e621-48c9-84f5-315eb9c506f1', TRUE, 'EUR', '40', '8', '', 'DE Employer72', 'Address1', 'Address2', 'motorcycle helmets, ski goggles', '0', 'www.employer72.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'employer', '220', 'MONTHLY', '12', '24', 'Frankfurt', 'Chamerau', '2013-05-31',
+'Master student required',
+'650', 'MONTHLY', NULL,
+'Implementation of the measurement system wavefront-sensor, comparison of different measurement systems, measurement systems analysis',
+'Chamerau', 'R', 'E', 'ENGINEERING_PHYSICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0073', 'e4b5e24a-def5-4e92-8c4c-f92e2ec07440', TRUE, 'EUR', '40', '8', '', 'DE Employer73', 'Address1', 'Address2', 'motorcycle helmets, ski goggles', '0', 'www.employer73.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'employer', '220', 'MONTHLY', '12', '24', 'Frankfurt', 'Chamerau', '2013-05-31',
+'Master student required',
+'650', 'MONTHLY', NULL,
+'Creating a scenario for the topic head protection and new media, related to products (ski goggles, motorcycle helmets) customers and markets',
+'Chamerau', 'R', 'E', 'INDUSTRIAL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0074', 'cc43a70c-b53a-4874-9af2-2607211259ed', TRUE, 'EUR', '40', '8', '', 'DE Employer74', 'Address1', 'Address2', 'university institute', '5', 'www.employer74.com',
+'2013-01-01', '2013-06-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '8', 'Berlin', '', '2013-03-31',
+'',
+'650', 'MONTHLY', NULL,
+'Research in the field of information systems, knowledge management, internet applications. Programming in  PHP, MySQL. Webdesign.',
+'Berlin', 'R', 'M', 'ELECTRONIC_BUSINESS|PROCESS_SC.|ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0075', '24e41635-1764-47c8-bfb7-1ae9bf14d53a', TRUE, 'EUR', '40', '0', '', 'DE Employer75', 'Address1', 'Address2', 'university institute', '0', 'www.employer75.com',
+'2013-03-09', '2013-06-26', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'0', 'MONTHLY', 'IAESTE-LC U Bremen', '240', 'MONTHLY', '8', '8', 'Bremen', '', '2013-01-31',
+'',
+'650', 'MONTHLY', NULL,
+'(Further) development of, e.g. a connection / integration of the local university library system into our learning platform AULIS/ILIAS: fluent php (very important), exchange protocols',
+'Bremen', 'R', 'M', 'IT', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0076', '1e6c2baf-e40a-4043-9ccf-a4cefa3fc593', TRUE, 'EUR', '40', '0', '', 'DE Employer76', 'Address1', 'Address2', 'university institute', '0', 'www.employer76.com',
+'2013-03-09', '2013-06-26', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'0', 'MONTHLY', 'IAESTE-LC U Bremen', '240', 'MONTHLY', '8', '8', 'Bremen', '', '2013-01-31',
+'Mathematics, MATLAB/Maple!',
+'650', 'MONTHLY', NULL,
+'(Further) development of a system to generate mathematical tests and to access learners answers (at least right/wrong) using a learning platform (ILIAS) and a computer algebra-system (Matlab/Maple) connected by JAVA',
+'Bremen', 'R', 'M', 'MATHEMATICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0077', 'b60dbf0f-a23f-46b8-a029-f05df824660e', TRUE, 'EUR', '40', '8', NULL, 'DE Employer77', 'Address1', 'Address2', NULL, '100', 'www.employer77.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '8', 'Stuttgart', NULL, '2013-03-31',
+'if possible please apply for full months',
+'650', 'MONTHLY', NULL,
+'Work group "Particle-Liquid-Systems": solid-liquid-separation; Agglomeration, Dispersion; Mixing; Nanoparticle-Systems; experimental work in the bench-and-pilot-scale.',
+'Karlsruhe', 'R', 'M|E', 'PROCESS_ENGINEERING', 'chemical engineering', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0078', 'af377b82-930f-4d88-859e-90dccc21388e', TRUE, 'EUR', '37.5', '8', NULL, 'DE Employer78', 'Address1', 'Address2', 'chemical industry', '33000', 'www.employer78.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '24', 'Frankfurt a. M.', NULL, '2013-03-31',
+'if possible please apply for full months',
+'800', 'MONTHLY', NULL,
+'chemical engineering, literature research; work in laboratory; pilot plant; process simulation; presentation of results; writing reports about the work done; planning and doing of experiments in pilot plant.',
+'Ludwigshafen', 'P', 'E', 'CHEMISTRY', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0079', '2d7a7432-4b12-4fab-ae11-4e18d6195db6', FALSE, 'EUR', '40', '8', NULL, 'DE Employer79', 'Address1', 'Address2', NULL, '12', 'www.employer79.com',
+'2013-01-01', '2013-09-01', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, 'ENGLISH', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '26', 'Stuttgart', NULL, '2013-03-31',
+'if possible please apply for full months',
+'700', 'MONTHLY', NULL,
+'back office and field work in geology and geophysics, reservoir, engineering and energy technology',
+'Karlsruhe', 'R', 'E', 'GEOSCIENCE', 'Geophysics, Geology', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0080', 'ff5e0501-8e10-494b-bd63-73665683cf0b', TRUE, 'EUR', '40', '8', NULL, 'DE Employer80', 'Address1', 'Address2', NULL, '120', 'www.employer80.com',
+'2013-01-01', '2013-06-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '8', 'Hamburg, Berlin', NULL, '2013-03-31',
+'If possible please apply for full months.\r\n\r\neither January-June or August to November!!!',
+'650', 'MONTHLY', NULL,
+'Calculation of dynamics of biomolecules on titanium dioxides surfaces on high performance computers; Experimental studies on surfaces in vacuum laboratory: Mass spectroscopy. Auger-spectroscopy and quartz crystal microbalance on titanium surfaces: Analysis of data from molecular dynamics simulation (Computer work, use of program packages and eventually script programming); Practical work in vacuum lab, assistance during experiments with vacuum and electronic equipment',
+'Greifswald', 'R', 'E', 'PHYSICAL_CHEMISTRY|COMPUTATIONAL_CHEMISTRY', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0081', '377c81fa-473a-4ad7-ae08-2ac6981cf817', TRUE, 'EUR', '40', '8', NULL, 'DE Employer81', 'Address1', 'Address2', NULL, '950', 'www.employer81.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', 'info later', NULL, '2013-03-31',
+'if possible please apply for full months. G knowledge in AUTOCAD and MS-Office, interest in general technical planning, very good knowledge in GERMAN',
+'800', 'MONTHLY', NULL,
+'participation in projects in the field of general technical planning, energy concepts and economy of energy',
+'info later', 'P', 'M|E', 'ELECTRICAL_ENGINEERING|ENVIRONMENTAL_ENGINEERING|FACILITY_MANAGEMENT', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0082', '834b410f-c787-4812-a22d-66be4926305b', TRUE, 'EUR', '40', '8', 'please refer to webs', 'DE Employer82', 'Address1', 'Address2', 'Real estate and construction', '950', 'www.employer82.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', NULL, NULL, '2013-03-31',
+'If possible please apply for full months.\r\nG knowledge in AUTOCAD and MS-Office\r\nInterest in general technical planning\r\nvery good knowledge in GERMAN',
+'800', 'MONTHLY', NULL,
+'Participation in projects in the field of general technical planning, energy conecpts and economy of energy.',
+'info later, after acceptance workplace will be in', 'P', 'M|E', 'ELECTRICAL_ENGINEERING|ENVIRONMENTAL_ENGINEERING|FACILITY_MANAGEMENT', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0083', '63987eb9-b90f-4241-b209-cf54767abd35', TRUE, 'EUR', '40', '8', 'please refer to webs', 'DE Employer83', 'Address1', 'Address2', 'Real estate and construction', '950', 'www.employer83.com',
+'2013-01-24', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', NULL, NULL, '2013-03-31',
+'If possible please apply for full months. G knowledge in AUTOCAD and MS-Office Interest in general technical planning very good knowledge in GERMAN',
+'800', 'MONTHLY', NULL,
+'Participation in projects in the field of general technical planning, energy conecpts and economy of energy.',
+'info later, after acceptance workplace will be in', 'P', 'M|E', 'ELECTRICAL_ENGINEERING|ENVIRONMENTAL_ENGINEERING|FACILITY_MANAGEMENT', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0084', '9769cff6-3809-4180-9e2f-4114b702cc05', FALSE, 'EUR', '40', '8', 'Please refer to our ', 'DE Employer84', 'Address1', 'Address2', 'Real estate and construction', '950', 'www.employer84.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'LC', '240', 'MONTHLY', '12', '52', 'info later', 'info later', '2013-03-31',
+'If possible please apply for full months: Practical experience desired.',
+'650', 'MONTHLY', NULL,
+'Participation in projects in the realm of project management, real estate consulting services and engineering.',
+'info later', 'P', 'M', 'CIVIL_ENGINEERING', 'architecture, industrial eng., management', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0085', 'f6cfc004-9d1a-4975-86eb-14ae94d8f22c', FALSE, 'EUR', '40', '8', 'Please refer to our ', 'DE Employer85', 'Address1', 'Address2', 'Real estate and construction', '950', 'www.employer85.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'LC', '240', 'MONTHLY', '12', '52', 'info later', 'info later', '2013-03-31',
+'If possible please apply for full months. Practical experience desired.',
+'650', 'MONTHLY', NULL,
+'Participation in projects in the realm of project management, real estate consulting services and engineering.',
+'info later', 'P', 'M', 'CIVIL_ENGINEERING', 'architecture, industrial eng., management', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0086', 'e6b3cbfd-05a8-4cde-9379-5914987173c5', FALSE, 'EUR', '40', '8', 'Please refer to our ', 'DE Employer86', 'Address1', 'Address2', 'Real estate and construction', '950', 'www.employer86.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'LC', '240', 'MONTHLY', '12', '52', 'info later', 'info later', '2013-03-31',
+'If possible please apply for full months. Practical experience desired.',
+'650', 'MONTHLY', NULL,
+'Participation in projects in the realm of project management, real estate consulting services and engineering.',
+'info later', 'P', 'M', 'CIVIL_ENGINEERING', 'architecture, industrial eng., management', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0087', 'ef4af672-03a6-472d-b2b5-76811516a23f', FALSE, 'EUR', '40', '8', 'Please refer to our ', 'DE Employer87', 'Address1', 'Address2', 'Real estate and construction', '950', 'www.employer87.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'LC', '240', 'MONTHLY', '12', '52', 'info later', 'info later', '2013-03-31',
+'If possible please apply for full months. Practical experience desired.',
+'650', 'MONTHLY', NULL,
+'Participation in projects in the realm of project management, real estate consulting services and engineering.',
+'info later', 'P', 'M', 'CIVIL_ENGINEERING', 'architecture, industrial eng., management', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0088', 'ebfe4128-9c66-4883-9448-3a374c122d9e', TRUE, 'EUR', '40', '8', '', 'DE Employer88', 'Address1', 'Address2', 'Research Institute', '4300', 'www.employer88.com',
+'2013-01-01', '2013-06-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'Reception Committee', '240', 'MONTHLY', '12', '12', 'Düsseldorf', 'Jülich', '2013-01-31',
+'student must agree to work with 14C labeled chemicals. Practical Lab experience required, independent working behaviour, ability to communicate',
+'650', 'MONTHLY', NULL,
+'Trainee will be involved in the ongoing research on pesticides  behaviour in soils. Sorption/desproption processes and extraction of aged 14C labeled xenobiotics, microbial access and mineralization of these compounds, physio-chemical analysis such as LC-MSMS, HPLC, Oxidzer, LSC, etc. will be major subjects of investigation.',
+'Jülich', 'R', 'M', 'ENVIRONMENTAL_SCIENCE', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0089', '9237e59a-fc47-40f7-a968-6d6b2babb8be', TRUE, 'EUR', '40', '8', '0', 'DE Employer89', 'Address1', 'Address2', 'National Metrology Institute', '30', 'www.employer89.com',
+'2013-02-01', '2013-01-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'F', NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '300', 'MONTHLY', '8', '8', 'Bremen', 'Braunschweig', '2013-01-31',
+'',
+'650', 'MONTHLY', NULL,
+'You will work on a new laser spectrometer (the measuring principle is TDLAS, Tuneable Diode Laser Absorption Spectroscopy) for the analysis of pressurized process gases to be used and applied to high pressure biomass gasification. For this purpose, a number of tasks has to be accomplished. Main task: to perform spectroscopic high pressure measurements and to improve the individual spectrometer components.',
+'Braunschweig', 'R', 'M', 'PHYSICS|LASER_TECHNOLOGY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0090', '7737ea20-3138-43bf-b9ed-1e9439a85bed', TRUE, 'EUR', '40', '8', '0', 'DE Employer90', 'Address1', 'Address2', 'National Metrology Institute', '30', 'www.employer90.com',
+'2013-01-01', '2013-01-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '300', 'MONTHLY', '8', '8', 'Bremen', 'Braunschweig', '2013-01-31',
+'',
+'650', 'MONTHLY', NULL,
+'You will work on a new laser spectrometer (the measuring principle is TDLAS, Tuneable Diode Laser Absorption Spectroscopy) for the analysis of pressurized process gases to be used and applied to high pressure biomass gasification.',
+'Braunschweig', 'R', 'M', 'PHYSICS|LASER_TECHNOLOGY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0091', '4d2a968c-f2ac-4881-ae54-3841040a223c', TRUE, 'EUR', '39', '8', '0', 'DE Employer91', 'Address1', 'Address2', 'university institute', '10', 'www.employer91.com',
+'2013-04-01', '2013-05-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '8', 'München', 'Freising', '2013-01-01',
+'good physical conditions (intensive field work/measuremente) balance between field / computer work',
+'650', 'MONTHLY', NULL,
+'Integration in a research project on Carbon storage of wetland ecosystems. Sampling of CO2-exchange via closed-chamber technique on different vegetation types along a degradation-restoration gradient, biomass sampling, determination of LAI, data-processing, parametization of CO2-exchange models, modelling of gas-exchange balances for part of the season, literature review in relevant fields.',
+'Freising', 'P', 'B', 'BIOLOGY|ECOLOGY|GEOGRAPHY|RESSOURCE_MANAGEMENT|AGRICULTURE', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0092', '1d544df9-4334-4edd-97e2-2416d2d33b99', TRUE, 'EUR', '39', '8', '0', 'DE Employer92', 'Address1', 'Address2', 'university institute', '10', 'www.employer92.com',
+'2013-04-01', '2013-05-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '8', 'München', 'Freising', '2013-01-01',
+'good physical conditions (intensive field work/measuremente) balance between field / computer work',
+'650', 'MONTHLY', NULL,
+'Integration in a research project on Carbon storage of wetland ecosystems. Sampling of CO2-exchange via closed-chamber technique on different vegetation types along a degradation-restoration gradient, biomass sampling, determination of LAI, data-processing, parametization of CO2-exchange models, modelling of gas-exchange balances for part of the season, literature review in relevant fields.',
+'Freising', 'P', 'B', 'BIOLOGY|ECOLOGY|GEOGRAPHY|RESSOURCE_MANAGEMENT|AGRICULTURE', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0093', '37e8cf0a-53be-4983-bd73-78fd4994a2c7', TRUE, 'EUR', '40', '8', '0', 'DE Employer93', 'Address1', 'Address2', 'research institute', '0', 'www.employer93.com',
+'2013-01-01', '2013-06-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '12', 'Köln/Bonn', 'Jülich', '2013-12-31',
+'Applicant must agree to work with 14C-labeled chemicals/under control area conditions; practical lab-experiences are strongly recommended; independent work behaviour, open and interested mind and the ability to communicate are required.',
+'650', 'MONTHLY', NULL,
+'The trainee will be involved in the ongoing research on pesticides behaviour in soils. Sorption/desorption processes and extraction of aged 14C-labeled xenobiotics, microbial access and mineralization of these compounds, physico-chemical analysis such as',
+'Jülich', 'R', 'E', 'ENVIRONMENTAL_SC.|CHEMISTRY|BIOLOGY|AGRICULTURAL_SC.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0094', '656dd33a-928a-48a0-94b7-f39989014728', FALSE, 'EUR', '40', '88', 'please refer to webs', 'DE Employer94', 'Address1', 'Address2', 'engineering office', '160', 'www.employer94.com',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '24', 'info later', 'info later', '2013-03-31',
+'If possible please apply for full months. Knowledge in CATIA V4/V5 Robcad or eM-plaber/process designer',
+'650', 'MONTHLY', NULL,
+'CAD-Construction, planning, robot simulation (automotion and manufactoring technique). Software: CATIA V4/V5, eM-Planner/ Process Designer, Robcad /Process Simulate',
+'Hannover or Wolfsburg or Bremen', 'R', 'M|E', 'MECHANICAL_ENGINEERING|MECHANOTRONICS', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0095', '57ae5c74-40ba-4df7-bc54-3b4f86f59abe', FALSE, 'EUR', '40', '8', 'please refer to webs', 'DE Employer95', 'Address1', 'Address2', 'project development', '12', 'www.employer95.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '240', 'MONTHLY', '8', '26', 'Stuttgart', 'Karlsruhe', '2013-03-31',
+'If possible please apply for full month.\r\n\r\nlanguages desired: ENGLISH good',
+'700', 'MONTHLY', NULL,
+'back office and field work in geology and geophysics, reservoir engineering and energy technology',
+'Karlsruhe', 'R', 'E', 'GEOLOGY|GEOPHYSICS|GEOLOGY|ENERGY-_AND_ENVIRONMENTAL_ENGINEERING|CIVIL_ENGINEERING|MINING_ENGIN', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0096', '945a2ebe-df1d-4ea4-abfa-9d59ec42844c', TRUE, 'EUR', '40', '8', '0', 'DE Employer96', 'Address1', 'Address2', 'planning office', '170', 'www.employer96.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', 'Köln/Bonn', 'Köln Hauptbahnhof', '2013-03-31',
+'Practical experience is not a must but is desired. Handling with CAD Software is required.+\r\n\r\nlanguage desired:\r\nFRENCH good',
+'800', 'MONTHLY', NULL,
+'- Detail design and technical dimensioning of building services installations in the fiels of sanitary engineering, heating, air cooling, ventialtion, fire protection, electrical and communications engineering.\r\n- development of technical concelts for heating, air conditioning and ventilation systems\r\n- development of concepts on indoor climate with compartision of different variants.\r\n- development of concepts on electrical and communications installations\r\n- analysis of profitability, eco-efficientcy and user comfort for teh developed concepts\r\n- presentation of the concepts in co-operation with the project engineer in charge\r\n- attend coordination meetings with architect and building owners\r\n- market analysis for technical products\r\n- participate in the development of bill of quanities and bid proposal',
+'Köln', 'P', 'M', 'BUILDING_SERVICES_ENG.|ELECTRICAL_ENG.|COMMUNICATIONS_ENG.', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0097', '38d73511-3fb2-4dd6-98d0-8ba7bdca53f6', TRUE, 'EUR', '38', '7.5', '0', 'DE Employer97', 'Address1', 'Address2', 'university institute', '0', 'www.employer97.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '200', 'MONTHLY', '12', '12', 'Dresden', 'Freiberg', '2013-03-31',
+'if possible please apply for full months. ',
+'650', 'MONTHLY', NULL,
+'The trainee will be integrated in one of the projects concerning mountain building and its interaction with climate and erosion. The candidate should be motivated to learn new methods and be flexible. Team work is fundamental. The main project concerns remote sensoring and modelling.',
+'Freiberg', 'R', 'E', 'GEOSCIEREMOTE_SENSING|GEOMODELLING|TECTONICS|GEOMORPHOLOGY', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0098', '597d2f3b-3c8b-4386-a4d6-1964072bbde5', TRUE, 'EUR', '38', '8', 'please refer to webs', 'DE Employer98', 'Address1', 'Address2', 'plastics industry', '330', 'www.employer98.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', 'Dortmund', 'Kaarst', '2013-03-31',
+'if possible pleas apply for full month.',
+'713', 'MONTHLY', NULL,
+'Projects in the field of research and development, process eng., product and application development.',
+'Willich', 'R', 'M', 'PLASTICS_ENGINEERING|PROCESS_ENG.|PRODUCT_MANAGEMENT|QUALITY_CONTROL', NULL, '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0099', 'd0bd3151-f800-41c5-9c76-20491716c90a', TRUE, 'EUR', '40', '8', '0', 'DE Employer99', 'Address1', 'Address2', 'university institute', '0', 'www.employer99.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'Employer', '240', 'MONTHLY', '12', '12', 'Dresden', 'Magdeburg', '2013-03-31',
+'Programming skills required.',
+'650', 'MONTHLY', NULL,
+'Usage of the Discrete Element Method in the a.m. field.',
+'Magdeburg', 'R', 'M', 'MATERIALS_HANDLING_ENG.|PROCESS_ENG.|CHEMICAL_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0100', 'b7f25db2-fda1-44d3-85ca-a772c7f01fb8', TRUE, 'EUR', '40', '8', '0', 'DE Employer100', 'Address1', 'Address2', 'telecommunication', '70', 'www.employer100.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '0', 'MONTHLY', '12', '26', 'info later', 'info later', '2013-03-31',
+'Knowledge of MS-Office. Employer will provide free accomodation.',
+'650', 'MONTHLY', NULL,
+'We are the market research department of T-Home, the devision of Deutsche Telekom for private customers and broad band solutions. We provide our marketing with field and desk research regarding to new products, the success of advertising or customers',
+'Bonn or Darmstadt', 'P', 'M', 'MARKET_RESEARCH', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0101', '2d72b6df-dfda-46b8-bf1a-915ee459889d', TRUE, 'EUR', '40', '8', '0', 'DE Employer101', 'Address1', 'Address2', 'telecommunication', '70', 'www.employer101.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '0', 'MONTHLY', '12', '26', 'info later', 'info later', '2013-03-31',
+'Knowledge of MS-Office. Employer will provide free accomodation.',
+'650', 'MONTHLY', NULL,
+'We are the market research department of T-Home, the devision of Deutsche Telekom for private customers and broad band solutions. We provide our marketing with field and desk research regarding to new products, the success of advertising or customers',
+'Bonn or Darmstadt', 'P', 'M', 'MARKET_RESEARCH', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0102', '00842646-9300-4f48-bcdb-bde061b61fdf', TRUE, 'EUR', '40', '8', '0', 'DE Employer102', 'Address1', 'Address2', 'engineering office', '114', 'www.employer102.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '24', 'M&uuml;nchen', 'N&uuml;rnberg', '2013-03-31',
+'Previous practical training is an advantage.',
+'650', 'MONTHLY', NULL,
+'Developing energy technological concepts. Planning of building services engineering. Calculation and detailing of technical systems.',
+'N&uuml;rnberg', 'P', 'E', 'ENERGY_TECHNOLOGY|CLIMATE_TECHNOLOGY|ELECTRICAL_ENERGY_TECHNOLOGY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0103', 'b14e2ebc-d49f-42c0-9569-4f77cbdd68b6', TRUE, 'EUR', '40', '8', '0', 'DE Employer103', 'Address1', 'Address2', 'survey office', '35', 'www.employer103.com',
+'2013-05-01', '2013-11-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '0', 'MONTHLY', '12', '12', 'Leipzig', 'Chemnitz', '2013-03-31',
+'Free accomodation',
+'650', 'MONTHLY', NULL,
+'surveying external work: handling with geodetic measuring instruments; surveying indoor service: analysis with CAD programms',
+'Chemnitz', 'R', 'B', 'GEODESY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0104', 'a330759c-87e3-4471-926f-cd3f7eb8a05a', TRUE, 'EUR', '40', '8', '0', 'DE Employer104', 'Address1', 'Address2', 'Manufacturer of semi-finished and special products', '6', 'www.employer104.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '240', 'MONTHLY', '8', '26', 'Stuttgart', 'Ulm', '2013-03-31',
+'',
+'650', 'MONTHLY', NULL,
+'According to students qualifications',
+'Ulm/V&ouml;hringen', 'P', 'M', 'ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0105', '77dd7fbe-fb8e-4fef-bf4f-8d6d1147c011', TRUE, 'EUR', '40', '8', '0', 'DE Employer105', 'Address1', 'Address2', 'architecture office', '45', 'www.employer105.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'F', NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '0', 'MONTHLY', '8', '24', 'Hamburg', 'Hamburg', '2013-03-31',
+'',
+'700', 'MONTHLY', NULL,
+'Support and assistance of engineers for planning and design and inspection of bridges',
+'Hamburg', 'P', 'E', 'CIVIL_ENGINEERING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0106', '45108a2b-4c84-4717-9351-06db0a2b76f9', TRUE, 'EUR', '40', '8', '0', 'DE Employer106', 'Address1', 'Address2', 'software development', '65', 'www.employer106.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '26', '26', 'M&uuml;nchen', 'Vierkirchen', '2013-03-31',
+'You can choose between to different sections: automation &amp; simulation / telecommunication &amp; netmanagement.',
+'800', 'MONTHLY', NULL,
+'The sector Automation &amp;amp; Simulation offers development services &amp;amp; systems to manufacturers/sub-conctractors in the industries automotive, railway, research &amp;amp; science as well as aerospace. We provide the complete hard-/software-equipment for the automated test of technical applications and/or of systems controlled electronically: Hardware-in-the-Loop simulation &amp;amp; testautomation. / The sector Telecommunication &amp;amp; Network Management provides our customer with high-quality development services &amp;amp; complete solutions for activation, operation, monitoring of telecommunication networks. Our gamut of services in this field include: E-to-E solutions, integration services &amp;amp; enterprise solutions.',
+'Vierkirchen', 'R', 'M', 'ELECTRICAL_ENG.|INFORMATION_TECHNOLOGY|INFORMATICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0107', '0ee3a2c1-4502-4593-8e76-a493ca51c753', TRUE, 'EUR', '40', '8', '0', 'DE Employer107', 'Address1', 'Address2', 'research institute', '270', 'www.employer107.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '24', 'Munich or Stuttgart', 'Freiburg', '2013-03-31',
+'Skills in either one or more following fields are required: FPGA development (VHDL/Verilog), &micro;C applications, C/C++ programming, PCB circuit design and layout, digital signal processing.',
+'700', 'MONTHLY', NULL,
+'Development of sub-systems for Pico/nano satellites (hardware and/or software): Power management system design. Developing and implementation of radiation tolerant main bus systems. Digital signal processing algorithms for data acquisition (sensor signals, image processing camera control). High speed communication sub-system design and implementation. Protocols and software for high-speed communication.',
+'Freiburg', 'R', 'M', 'ELECTRICAL_ENG.|COMPUTER_ENG.|SOFTWARE_ENG._/_IT|COMPUTER_SC.|TELECOMMUNICATIONS|COMMUNICATIONS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0108', '0bcc7dbd-0767-4353-8588-a4512ee4f05a', TRUE, 'EUR', '40', '8', '0', 'DE Employer108', 'Address1', 'Address2', 'engineer service supplier', '8', 'www.employer108.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '48', 'Frankfurt', 'Kassel', '2013-03-31',
+'MS Office.',
+'700', 'MONTHLY', NULL,
+'Active participation in current industrial and research projects in the areas of energy efficiency in production, energy monotoring, energy and material flow simulation. Regular visits to current customers offer insights into varous production plants.',
+'Kassel', 'P', 'E', 'MECHANICAL_ENG.|IT|ENERGY_TECHNOLOGY|ELECTRICAL_AND_ELECTRONICAL_ENG.|PROCESS_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0109', '523d5da7-b420-489f-8fac-146bcd90aa5b', TRUE, 'EUR', '40', '8', '0', 'DE Employer109', 'Address1', 'Address2', 'sales and marketing', '107', 'www.employer109.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '52', 'M&uuml;nchen', 'Freising', '2013-03-31',
+'Deep knowledge in object oriented programming, ideally in Python. G understanding of low-level (close to hardware) software development, ideally good understanding of JTAG/boundaary scan. Self-starter who feels comfortable with challenges.',
+'800', 'MONTHLY', NULL,
+'Gleichmann offers ASIC/FPGA develepment platforms and tools (www.ge-research.com). For instance a JTAG/boundary scan tool (www.hpe-jtag.com) allowing developers to setting up PCB prototypes or debugging Ics. These tools can be extended through',
+'Freising', 'P', 'M', 'COMPUTER_SC.|ELECTRICAL_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0110', 'ddb43f5f-9a91-433c-8d44-2d5e846fb416', TRUE, 'EUR', '40', '8', '0', 'DE Employer110', 'Address1', 'Address2', 'sales and marketing', '107', 'www.employer110.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '52', 'M&uuml;nchen', 'Freising', '2013-03-31',
+'Deep knowledge in object oriented programming, ideally in Python. G understanding of low-level (close to hardware) software development, ideally good understanding of JTAG/boundaary scan. Self-starter who feels comfortable with challenges.',
+'800', 'MONTHLY', NULL,
+'Gleichmann offers ASIC/FPGA develepment platforms and tools (www.ge-research.com). For instance a JTAG/boundary scan tool (www.hpe-jtag.com) allowing developers to setting up PCB prototypes or debugging Ics. These tools can be extended through',
+'Freising', 'P', 'M', 'COMPUTER_SC.|ELECTRICAL_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0111', 'c4316ef9-874a-470f-a431-29e14fbe6355', TRUE, 'EUR', '40', '8', '0', 'DE Employer111', 'Address1', 'Address2', 'steal construction', '200', 'www.employer111.com',
+'2013-05-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'Employer', '200', 'MONTHLY', '24', '32', 'Dresden', 'Plauen', '2013-03-31',
+'The student should be interested in both design and analysis and realisation (manufacturing and assembly) of bigger constructions for bridges (highways, railways).',
+'650', 'MONTHLY', NULL,
+'Participance in the phase of design and of determination of structural analysis for a big bridge construction for a Swedish highway project including manufacturing and assembly studies within our Bridge Construction  Division.',
+'Plauen', 'P', 'M', 'STRUCTURAL_ENG.|INFRASTRUCTURE_ENG.|CIVIL_ENG.|ARCHITECTURE', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0112', '984b481b-38db-4cc1-a755-7eb236052f0f', TRUE, 'EUR', '40', '8', '0', 'DE Employer112', 'Address1', 'Address2', 'automobile company', '0', 'www.employer112.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'GERMAN', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', 'M&uuml;nchen', 'Stuttgart', '2013-03-31',
+'',
+'700', 'MONTHLY', NULL,
+'Practical training in the fields of vehicle eng., aeronautical eng., mechanical eng., process eng., industrial eng.',
+'Stuttgart', 'P', 'M', 'VEHICLE_ENG.|AERONAUTICAL_ENG.|MECHANICAL_ENG.|PROCESS_ENG.|INDUSTRIAL_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0113', '4ea5cc8d-56e8-4754-be5a-f69c3b70dce3', TRUE, 'EUR', '40', '8', '0', 'DE Employer113', 'Address1', 'Address2', 'Software development', '15', 'www.employer113.com',
+'2013-07-01', '2013-04-30', NULL, NULL, NULL, NULL, 'GERMAN', 'F', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', 'Hamburg', 'L&uuml;neburg', '2013-07-31',
+'',
+'650', 'MONTHLY', NULL,
+'Forecast Developement. Task will include the analysis of real economic and financial time data as well as their prediction. Skills needed in at least one of the following topics: mathematics, mathematical economics, staticstics or business informatics. Student must be able to build computerized implementations.',
+'L&uuml;neburg', 'R', 'M', 'IT|MATHEMATICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0114', 'b77b303d-77b4-4179-9b25-ab21b4d19705', TRUE, 'EUR', '40', '8', '0', 'DE Employer114', 'Address1', 'Address2', 'Software development', '15', 'www.employer114.com',
+'2013-07-01', '2013-04-30', NULL, NULL, NULL, NULL, 'GERMAN', 'F', 'A', 'ENGLISH', 'F', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', 'Hamburg', 'L&uuml;neburg', '2013-07-31',
+'',
+'650', 'MONTHLY', NULL,
+'Java-Software development. Skills required: SQL (MySQL), JDBC, javascript, HTML, OR: struts, webservices, tomcat; good skills in Java 5 or 6. Company works with eclipse, SVN; student should be able to help increase the quality of companys data',
+'L&uuml;neburg', 'R', 'M', 'IT|MATHEMATICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0115', '3ecd3158-b110-4ea6-ba03-e6b14f615c3e', TRUE, 'EUR', '40', '8', '0', 'DE Employer115', 'Address1', 'Address2', 'Software development', '15', 'www.employer115.com',
+'2013-07-01', '2013-04-30', NULL, NULL, NULL, NULL, 'GERMAN', 'F', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '24', '24', 'Hamburg', 'L&uuml;neburg', '2013-07-31',
+'',
+'650', 'MONTHLY', NULL,
+'SQL-Database development. Skills required in SQL (MySQLwould be beneficial). Skills in Java 5 or 6 as well as in JDBC advantageous. A good linguistic proficiency in ENGLISH and perhaps even in GERMAN is neccessary due to companys international team. Student should be highly motivated and ambitional for new technology. Basic skills in PORTUGUESE, SPANISH, FRENCH or ITALIAN are advantageous. Company works with eclipse, SVN.',
+'L&uuml;neburg', 'R', 'M', 'IT|MATHEMATICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0116', '8f95405e-53a6-4706-a434-b536a95bbbf0', TRUE, 'EUR', '39', '8', '0', 'DE Employer116', 'Address1', 'Address2', 'university institute', '10', 'www.employer116.com',
+'2013-01-01', '2013-01-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '8', 'M&uuml;nchen', 'Freising', '2013-01-01',
+'good physical conditions (intensive field work/measuremente) balance between field / computer work',
+'650', 'MONTHLY', NULL,
+'Integration in a research project on Carbon storage of wetland ecosystems. Sampling of CO2-exchange via closed-chamber technique on different vegetation types along a degradation-restoration gradient, biomass sampling, determination of LAI, data-processing, parametization of CO2-exchange models, modelling of gas-exchange balances for part of the season, literature review in relevant fields.',
+'Freising', 'P', 'B', 'BIOLOGY|ECOLOGY|GEOGRAPHY|RESSOURCE_MANAGEMENT|AGRICULTURE', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0117', '97e4c158-16fb-4e28-99ee-0df1a8ba8574', TRUE, 'EUR', '40', '8', '0', 'DE Employer117', 'Address1', 'Address2', 'Zoo', '0', 'www.employer117.com',
+'2013-04-01', '2013-02-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '12', 'M&uuml;nchen', 'N&uuml;rnberg/Erlangen', '2013-03-31',
+'Computer knowledge and GERMAN are helpful.',
+'650', 'MONTHLY', NULL,
+'Our research group works with national parks and zoos in different areas. Work in our group concerns behaviour, management and ecology of endangered mammals both in- and ex situ, i.e. captive breeding and field work. Students will work in ethological data collection and analysis, animal husbandry, studbook management, literature research etc. Most works concerns marsupials, ungulates and some carnivores.',
+'Zoo in N&uuml;rnberg', 'R', 'B', 'ZOOLOGY|WILDLIFE_MANAGEMENT|VETERINARY_AGRICULTURE', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0118', 'bb677dde-e463-4df9-958d-1743583144b6', TRUE, 'EUR', '40', '8', '0', 'DE Employer118', 'Address1', 'Address2', 'Zoo', '0', 'www.employer118.com',
+'2013-04-01', '2013-02-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '12', 'M&uuml;nchen', 'N&uuml;rnberg/Erlangen', '2013-03-31',
+'Computer knowledge and GERMAN are helpful.',
+'650', 'MONTHLY', NULL,
+'Our research group works with national parks and zoos in different areas. Work in our group concerns behaviour, management and ecology of endangered mammals both in- and ex situ, i.e. captive breeding and field work. Students will work in ethological data collection and analysis, animal husbandry, studbook management, literature research etc. Most works concerns marsupials, ungulates and some carnivores.',
+'Zoo in N&uuml;rnberg', 'R', 'B', 'ZOOLOGY|WILDLIFE_MANAGEMENT|VETERINARY_AGRICULTURE', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0119', '29b89b20-2f0b-4fbd-b152-d754bd0b306f', TRUE, 'EUR', '40', '8', '0', 'DE Employer119', 'Address1', 'Address2', 'university institute', '60', 'www.employer119.com',
+'2013-04-01', '2013-01-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '8', 'Hannover', 'Clausthal-Zellerfeld', '2013-03-31',
+'No beginning in Aug.',
+'650', 'MONTHLY', NULL,
+'Laser spectroscopy, laser physics, development of fiber-optic sensor concepts, nano technology for photonic applications',
+'Goslar', 'R', 'E', 'PHYSICS', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0120', 'a465907d-2fd3-481b-81d0-028bb71f43c4', TRUE, 'EUR', '39', '8', '0', 'DE Employer120', 'Address1', 'Address2', 'research institute', '610', 'www.employer120.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '8', '8', 'K&ouml;ln/Bonn', 'Bonn-Mehlem', '2013-03-31',
+'knowledges in programming',
+'650', 'MONTHLY', NULL,
+'Software design and implementation: computer networks, wireless communications, C,C++ Linux, ns-2, matlab.',
+'Wachtberg', 'P', 'M', 'COMPUTER_SC.|IT_SECURITY|EE_(COMMUNICATIONS)', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0121', '1259f1b2-4306-4f61-a7d9-0c526dc4db7c', TRUE, 'EUR', '40', '8', '0', 'DE Employer121', 'Address1', 'Address2', 'polytechnic institute', '0', 'www.employer121.com',
+'2013-09-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '12', 'Hamburg', 'Heide', '2013-03-31',
+'The Student should have finished his/her basic study in electrical eng. and should have some practical programming experience with the the language C and/or VHDL. Experiences in microcontrol, FPGA and DSP are desired',
+'650', 'MONTHLY', NULL,
+'We are looking for a student with interest for the digital image processing. Especially the hardware algorithm design is the major topic of our research. We are developing 2D/3D optical inspection systems for quality control applications in the industry. These systems have to come with a low price tag and hence we are building specially designed hardware solutions for the customers. Standard machine vision algorithm cannot easily be executed on these hardware and have to be modified before they can run on these systems. Hence we are looking for a student with experience in microcontroller, DSP and FPGA programming. Furthermore it would be beneficial to have experience with layout systems and modelling tools such as PSPICE and Modelsim.',
+'Heide', 'P', 'E', 'ELECTRICAL_ENG._(MICROCONTROLPROGRAMMING;_DSP_AND_FPGA_PROGRAMMING)', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0122', '1949de94-4b1c-430e-a1e2-bbcfe66d302d', TRUE, 'EUR', '40', '8', '0', 'DE Employer122', 'Address1', 'Address2', 'university institute', '0', 'www.employer122.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '26', '26', 'M&uuml;nchen', 'Garching-Forschungszentrum', '2013-03-31',
+'',
+'650', 'MONTHLY', NULL,
+'Combustion in gas turbines; IC engines, two phase flows, heat and mass transfer.Activities for students: Experimental investigation by means of optical (LIF, chemiluminescence, PIV, holography etc.,) numerical simulation,',
+'Garching', 'R', 'E', 'MECHANICAL_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0123', '56f06c77-985a-4cd7-8d6b-7863e5c21b86', TRUE, 'EUR', '40', '8', '0', 'DE Employer123', 'Address1', 'Address2', 'university institute', '0', 'www.employer123.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '26', '26', 'M&uuml;nchen', 'Garching-Forschungszentrum', '2013-03-31',
+'',
+'650', 'MONTHLY', NULL,
+'Combustion in gas turbines; IC engines, two phase flows, heat and mass transfer.Activities for students: Experimental investigation by means of optical (LIF, chemiluminescence, PIV, holography etc.,) numerical simulation,',
+'Garching', 'R', 'E', 'MECHANICAL_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0124', '9466e733-d459-4838-bb14-f9d2396b0b4e', TRUE, 'EUR', '40', '8', '0', 'DE Employer124', 'Address1', 'Address2', 'university institute', '0', 'www.employer124.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '26', '26', 'M&uuml;nchen', 'Garching-Forschungszentrum', '2013-03-31',
+'',
+'650', 'MONTHLY', NULL,
+'Combustion in gas turbines; IC engines, two phase flows, heat and mass transfer.Activities for students: Experimental investigation by means of optical (LIF, chemiluminescence, PIV, holography etc.,) numerical simulation,',
+'Garching', 'R', 'E', 'MECHANICAL_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0125', '09bec9e8-65b6-4238-a947-32f240257830', TRUE, 'EUR', '39', '8', '0', 'DE Employer125', 'Address1', 'Address2', 'university institute', '200', 'www.employer125.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '12', 'K&ouml;ln/Bonnn', 'Aachen-West', '2013-03-31',
+'',
+'650', 'MONTHLY', NULL,
+'The trainee will participate in ongoing research projects. This can either involve experimental or theoretical work or computer simulations, depending on the trainee&amp;acute;s interests and qualifications. Our main areas of research are: spinning machinery, weaving',
+'Aachen', 'R', 'M', 'MECHANICAL_ENG.|TEXTILE_TECHNOLOGY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0126', 'ac702d2f-0019-4e47-a436-c4901b665516', TRUE, 'EUR', '39', '8', '0', 'DE Employer126', 'Address1', 'Address2', 'university institute', '50', 'www.employer126.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '16', 'Frankfurt a. M.', 'Erlangen/N&uuml;rnberg', '2013-03-31',
+'',
+'650', 'MONTHLY', NULL,
+'Experimental and theoretical work in the field of particle technology: adsorption, comminution, coating, sintering, particle characterization, crystallisation/precipitation of colloidal particles and nanoparticles.',
+'Erlangen/N&uuml;rnberg', 'R', 'E', 'MECHANICAL_ENG.|CHEMISTRY|CHEMICAL_ENG._(ADSORPTION|REDUCING|PARTICLE_TECHNOLOGY|PRECIPITATION)', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0127', '0ca205f2-a516-41fc-9e5a-c2aadb4e916f', TRUE, 'EUR', '40', '8', '0', 'DE Employer127', 'Address1', 'Address2', 'university institute', '0', 'www.employer127.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '12', '26', 'K&ouml;ln', 'Bochum', '2013-03-31',
+'Please see attached information.',
+'650', 'MONTHLY', NULL,
+'Please see attached information.',
+'Bochum', 'R', 'E', 'CHEMISTRY|BIOCHEMISTRY', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0128', '11436e36-7da4-42d2-8c93-c12ab98ef5b5', TRUE, 'EUR', '40', '8', '0', 'DE Employer128', 'Address1', 'Address2', 'Software development', '0', 'www.employer128.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '26', '52', 'Stuttgart', 'Freiburg', '2013-03-31',
+'programming experience required',
+'650', 'MONTHLY', NULL,
+'Software development (C++, CUDA, PHP, C#, Java), Database backend, user interface',
+'Freiburg', 'P', 'M', 'INFORMATICS|MARKETING', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0129', '4d36c8af-4196-4709-b555-bb977e7889c1', TRUE, 'EUR', '40', '8', '0', 'DE Employer129', 'Address1', 'Address2', 'electric industry', '0', 'www.employer129.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '0', 'MONTHLY', '12', '26', 'D&uuml;sseldorf', 'Wuppertal', '2013-03-31',
+'',
+'750', 'MONTHLY', NULL,
+'Traineeship in the field of research and development: basic research, theorectical and practical ; work in lab, building and tests of prototypes etc.',
+'Wuppertal-Oberbarmen', 'R', 'M', 'MECHANICAL_ENG.|ELECTRICAL_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0130', 'f2a3f6c8-30c6-409f-8c3b-8bbe5bd2d0c0', TRUE, 'EUR', '40', '8', '0', 'DE Employer130', 'Address1', 'Address2', 'software development', '20', 'www.employer130.com',
+'2013-01-01', '2013-03-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '240', 'MONTHLY', '26', '26', 'Stuttgart', 'Karlsruhe Hbf.', '2013-09-15',
+'Very good knowledge in: C/C++, Java, C#, Software Design, Software Specifications, Client/Server, Distributed Applications, TCP/IP, XML.',
+'650', 'MONTHLY', NULL,
+'Being part of the quality assurance (QA). This is: creating testsuites; analyzing software; enhancing given test- and metric tools; testing; writing testreports and much more.',
+'Karlsruhe', 'P', 'M', 'COMPUTER_SC.|SOFTWARE_ENG.', '', '17');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('DE-2013-0131', 'efac736a-d535-45e5-a8ce-54867ff818b2', TRUE, 'EUR', '40', '8', '0', 'DE Employer131', 'Address1', 'Address2', 'university institute', '6', 'www.employer131.com',
+'2013-01-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'Employer', '240', 'MONTHLY', '40', '40', 'Hannover', 'Wernigerode', '2013-03-31',
+'Interest and experiences in computer graphics',
+'650', 'MONTHLY', NULL,
+'Our company offers an internship in the field of computer sciences mainly focussing on computer graphics. The trainee will be part of a small team of developers and his main task will be the design and implementation of a new visualisation system for complex process states in the process industry (http://iai-wr.de/projekte/3dpid). The visualisation system already exists as a prototype in VRML and now this solution should be transferred into an industrial-suited version with a low level graphic engine like OpenGL or DirektX. First studies for these technologies have already been done by other students.For interaction with our staff members and our students, the trainee should have good ENGLISH skills and a basic knowledge of GERMAN language is helpful for the everyday life. Wernigerode is small village in the middle of GERMANy (www.wernigerode.de) with about 36000 inhabitants. Our company is a research institute of the Harz Uni- versity and therefore the trainee can easily connect to U',
+'Wernigerode', 'P', 'M', 'IT|COMPUTER_GRAPHICS', '', '17');

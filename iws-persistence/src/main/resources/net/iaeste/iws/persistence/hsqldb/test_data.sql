@@ -140,6 +140,1015 @@ INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_
 --  language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
 
 -- =============================================================================
+-- Offer Poland
+-- =============================================================================
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0001', '72449120-2f84-4a36-b8b0-20c1932e1120', FALSE, 'PLN', '35', '7', NULL, 'Centrum Diagnostyki i Terapii Laserowej', NULL, '', 'Center of laser diagnostics and therapy in medicin', '50', 'www.p.lodz.pl/laser',
+'2013-07-01', '2013-08-12', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+900, 'MONTHLY', 'arranged by IAESTE', 300, 'MONTHLY', '6', '6', 'Warszawa', NULL, '2013-03-31',
+'MUST START ON 1st OF JULY!!! Team work!!',
+1000, 'MONTHLY', NULL,
+'Student will be part of team working in a researching projects related to image analysis in medical applications. Investigation of optical properties of tissue, influence of laser light on living cells, introduction of new healing methods by means of laser technologies, photodynamic diagnostics. Results of these investigations are implemented in photodynamic diagnostics and laser theray of tumors of urinary bladder, rheumatic disease healing, muliplex sclerosis, surgical laser therapy of burns and others (see Cener web  site) wit cooperation with Lodz Medical University',
+'Lodz', NULL, 'M|E', 'PHYSICS', 'Applied Physics, Medicine', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0002', '71797b56-b1d2-42ac-82c3-53f7b9080bd7', FALSE, 'PLN', '30', '6', NULL, 'Pracownia Uslugowa Planowania i Architektury ARCHEX', 'Braci Gierymskich 143', '51-640 Wro Wroclaw', 'Architectural and Convervation Office', '6', NULL,
+'2013-07-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'900', 'MONTHLY', 'arranged by IAESTE', 350, 'MONTHLY', '6', '6', 'Wroclaw', 'Bus, Tram, Taxi', '2013-03-31',
+NULL,
+1000, 'MONTHLY', NULL,
+'Project Assistant\r\n\r\n-Helping in urban and landscape designing\r\n-Planning',
+'Wroclaw', 'P', 'M|E', 'ARCHITECTURE', 'Landscape Architecture', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0003', '8bfdf805-57bc-45e6-bb30-c13e99fb4010', TRUE, 'PLN', '40', '8', NULL, 'COMARCH S.A.', NULL, '', 'IT Solutions to Telecommunications, Finance and Ba', '2200', 'www.comarch.com',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+880, 'MONTHLY', 'arranged by IAESTE', 330, 'MONTHLY', '8', '12', 'Krakow', NULL, '2013-03-31',
+'Information Systems faculty prefered. G average grade at studies. Intention of further employment in one of Comarch Group companies after training.',
+1500, 'MONTHLY', NULL,
+'Telco platform\r\n\r\nAssistant and research work by the building modules of Telco networking management platform. Comarch offers complete suites of business support system (BSS) and operations support system (OSS) solutions that adress the critical strategic activities of fulfilment, assurance and billing, and enable communication providers to ensure new revenue streams. For our trainees we offer a very interesting work in production anddevelopment of our systems.',
+'Krakow', 'R', 'E', 'IT', 'Information Systems', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0004', '2abe881f-9f8e-4e33-a799-4854336106b8', TRUE, 'PLN', '30', '6', '20%', 'Warsaw University of Technology, Faculty of Civil Engineering, Dept. of Cnstruction and materials En', NULL, '', 'Civil Engineering', '25', 'www.il.pw.edu.pl',
+'2013-05-14', '2013-07-18', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+1000, 'WEEKLY', 'arranged by IAESTE', 450, 'MONTHLY', '6', '6', 'Warszawa', NULL, '2013-03-31',
+NULL,
+1300, 'MONTHLY', NULL,
+'Research and develop\r\n\r\nStudent will be involved in theoretical and practical work within self-compacting concrete, polymer-cement concrete, polymer concrete, bituminous composites. Road construction. Construction repairs-diagnosis and methods of repairs.',
+'Warsaw', 'R', 'M', 'CIVIL_ENGINEERING', 'Building Materials', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0005', 'd43611b3-d156-4366-af33-b46698126d2c', FALSE, 'PLN', '40', '8', '20%', 'ANT Sp.z.o.o.', NULL, '', 'Integration and data exchange in automatic systems', '8', 'www.ant.iss.pl',
+'2013-06-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+880, 'MONTHLY', 'arranged by IAESTE', 300, 'MONTHLY', '6', '12', 'Krakow', NULL, '2013-03-31',
+'Knowledge of measurement and control equipment trade, data exchange protocol (MODBUS, M-BUS, OPC, DDE, SQL)',
+900, 'MONTHLY', NULL,
+'Programmer\r\n\r\nStudents work will involve\r\n\r\n1)introduction to ANT STUDIO software\r\n2)creating data exchange applicaations by student , writing programs in TCL/TK\r\n3)introduction to applications\r\n4)introduction to telemetry GPRS systems',
+'Krakow', 'P', 'M|E', 'MECHANICAL_ENGINEERING', 'Drivers PLC, SCANDA Systems', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0006', '6560c1d2-c7c9-4e84-bc3b-81ffa850793b', TRUE, 'PLN', '40', '8', '0 %', 'Comarch S.A.', 'Al. Jana Pawla II 39', '31-864 Krakow', 'International Software House', '2200', 'www.comarch.com',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'880', 'MONTHLY', 'IAESTE', '330', 'MONTHLY', '8', '12', 'Krakow Balice (KRK)', 'Krakow train/coach', '2013-03-31',
+'Computer Science (or related) faculty preferred.\r\nG average grade at studies.\r\nIntention of further employment in one of Comarch Group companies after training.\r\nPerson from any UE country.',
+'1500', 'MONTHLY', NULL,
+'Assistant and research work by the building modules of Telco networking management platform. Comarch offers complete suites of business support system (BSS) and operations support system (OSS) solutions that adress the critical strategic activities of fulfilment, assurance and billing, and enable communication providers to ensure new revenue streams. For our trainees we offer a very intersting work in production and development of our systems.',
+'Krakow', 'P', 'E', 'IT', 'non specific', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0007', 'b84105f3-4061-47f9-a4ee-ce6609493c43', FALSE, 'PLN', '40', '8', '20%', 'ANT Sp. z.o.o.', 'Wadowicka 8a', '30-415  Krakow', 'Integration and data exchange in automatic systems', '8', 'www.ant-iss.pl',
+'2013-06-01', '2013-12-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'880', 'MONTHLY', 'arranged by IAESTE', '300', 'MONTHLY', '6', '12', 'Krakow - Balice intenational', 'Bus', '2013-03-31',
+'Experience in programming in C/C++, java, SQL bases',
+'900', 'MONTHLY', NULL,
+'Students work will involve\r\n1. introduction to ANT STUDIO software used in integration of devices, communication, data exchange.\r\n2. introduction to TLC/TK language - writing modules to ANT STUDIO\r\n3. development of the sofware - specific project',
+'Krakow', 'P', 'M|E', 'IT', 'Programming', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0008', '7ad87d75-d56f-4e1c-bc49-a87bfb3ca940', FALSE, 'PLN', '35', '7', NULL, 'Instytut Chemii Ogolnej i Ekilogicznej Pt.', NULL, '', 'Research Institute of general and ecological chemi', '4000', NULL,
+'2013-06-15', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+900, 'MONTHLY', 'arranged by IAESTE', 300, 'MONTHLY', '6', '6', 'Warszawa', NULL, '2013-03-31',
+NULL,
+1000, 'MONTHLY', NULL,
+'Member of one of the research teams working on the following projects (depending on student´s specialization and interests):\r\n1. Environmental Chemistry- electrochemical methods in the environmental protection. Student will apply electrochemical oxidation and/or reduction in the treatment of non-biodegradable components of wastewaters. Galwanostatic cyclic voltammetry and electrochemical impedance spectroscopy will be used in the investigations - asocha@p.lodz.pl\r\n2. Physics-chemical characterization of heterogeneous catalysts. Student will investigate various catalysts with application of temperature programmed reduction. XRD, TOF-SIMS, SEM, JCP jacryn@p.lodz.pl\r\n3. Crystal and molecular structure determination by XRD methods:-monocrystal diffractometers for data collection, computing data reduction, structure solution and refinement, structure description and anlysis-computer graphics- marekglo@p.lodz.pl',
+'Lodz', 'R', 'M|E', 'ECOLOGY', 'Chemistry', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0009', '071caaa0-a3da-46c7-9ba5-f730a2132123', FALSE, 'PLN', '30', '6', '0 %', 'Szczecin University of Technology, Faculty of Civil Engineering and Architecture', NULL, ' Szczecin', 'Civil Engineering', '20', 'www.wbia.ps.pl',
+'2013-03-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'700', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '8', 'Berling, Goleniow, Warsaw', 'railway', '2013-03-31',
+NULL,
+'800', 'MONTHLY', NULL,
+'Help in laboratory works (production and testing of samples made of asphalt and concrete; research of basic physical and mechenical properties of bitumes and asphalts). Help in field measurements of traffic noise.',
+'Szczecin', 'R', 'E', 'CIVIL_ENGINEERING', NULL, '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0010', '87d6b57c-c935-4430-9d45-1f1e9133ad34', TRUE, 'PLN', '40', '8', '20', 'Nokia Siemens Networks Sp. z o.o.', 'Zupnicza 11', '03-821 Warszawa', 'telecommunication', '1000', '',
+'2013-06-18', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '300', NULL, '6', '8', 'Wroslaw', 'Bus', '2013-06-30',
+'preferred ENGLISH NATIVE SPEAKER',
+'1200', 'MONTHLY', NULL,
+'Student will be involved in the documentation project for Intelligent Network. Student will be working as a technical writer and will be cooperating with software developers. Student will be also responsible for language correction of the existing documentation.  We offer:  - cutting edge technology;  - participation in a highly motivated and dynamic team;  - training period in multinational environment.',
+'Wroclaw', 'P', 'M', 'IT', 'any', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0011', '10efa841-cef2-426a-ad62-9f1c68da5acb', FALSE, 'PLN', '40', '8', '0', 'ROMAG Gryziski; Wieczorek s.j.', 'Zlotniki; ul Radosna 1A', '62-002  Suchy Las', 'Designing and manufacturing machinery and equipmen', '50', NULL,
+'2013-07-01', '2013-09-01', NULL, NULL, NULL, NULL, 'GERMAN', 'E', 'A', 'ENGLISH', 'F', 'A', NULL, 'F',
+'950', 'MONTHLY', 'IAESTE', '250', NULL, '4', '8', 'Poznan', 'Bus', '2013-06-15',
+'Knowledge of technical drawing; MS Excell',
+'250', NULL, NULL,
+'The preparation of orders to delivery. The negotiation by purchase of materials.',
+'Zlotniki/Poznan', 'P', 'M', 'MECHANICAL_ENGINEERING', 'Manufacturing Engineering', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0012', '02d1b18b-900f-40b4-8bd2-d9de33bddb9f', FALSE, 'PLN', '40', '8', '0', 'ROMAG Gryzinski; Wieczorek s.j.', 'Zlotniki; ul Radosna 1A', '62-002 Suchy Las', 'Designing and manufacturing machinery and equipmen', '50', '',
+'2013-06-18', '2013-09-21', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'950', 'MONTHLY', 'IAESTE', '250', NULL, '9', '12', 'Poznan', 'Bus', '2013-06-14',
+'',
+'250', 'WEEKLY', NULL,
+'Help with creating technical documentation. Modelling 3D in programme CATIA v.5. Participation in projects realized by the company. Participation in business trips to customers.',
+'Zlotniki/Poznan', 'P', 'E', 'MECHANICAL_ENGINEERING', 'Mechanical Eng.', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0013', '1ac9d15c-a4ed-4c9c-bd9f-d8ff7c4628fc', TRUE, 'PLN', '40', '8', '0', 'FQS Poland Sp. z o.o. (LTD)', 'Starowislna 13 - 15', '31-038 Krakow', 'sales;marketing;research&development', '20', '',
+'2013-06-01', '2013-05-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'GERMAN', 'E', 'O', 'SPANISH', 'E',
+'880', 'MONTHLY', 'IAESTE', '330', NULL, '12', '52', 'Krakow', 'train/coach', '2013-06-14',
+'student with deep knowledge of chemistry as it is required to be well prepared during dealing with clients.',
+'1500', 'MONTHLY', NULL,
+'We are offering a great opportunity for internship in international company; with solid chemistry background and business aspects included.  Responsibilities of the trainee would be:  - mainly helping with telesales and telemarketing (cold calling)  - sales and sales administration  - preparing marketing / training materials for customers  - organizing seminars and customers visits  - organizing promotions  - marketing research / sales projects  - preparing PP presentations  - helping with competitive analysis  - maintaining customer databases  - contacts with some of the clients  - web pages',
+'Krakow', 'N', 'M', 'CHEMISTRY', '', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0014', '3f5f9720-5cf8-4d43-b26e-609df0abd805', FALSE, 'PLN', '40', '8', '0', 'DRQ S.A.', 'Podwale 3', '31-118 Krakow', 'advanced technolog. to develop big scale IT solut.', '140', '',
+'2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'POLISH', 'G', NULL, NULL, NULL,
+'550', 'MONTHLY', 'IAESTE', '0', NULL, '11', '12', 'Krakow', 'train/coach', '2013-06-14',
+'',
+'880', 'MONTHLY', NULL,
+'Our expectations are:  - ability to code in Java - J2EE  - knowledge in code in one of the following products will be an advantage:  - WebMethods Integration/EAI  - PeopleSoft CRM  - Products of ATG Company (ATG Dynamo; ATG Portal)',
+'Krakow', 'P', 'M', 'IT', '', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0015', 'e940eb24-2ec1-47d6-8118-5916eb2b6592', FALSE, 'PLN', '40', '8', '0', 'Union Square Internet Development Polska Sp. z o.o', 'Grodzka 50/3', '31-044  Krakow', 'IT consulting; web site and application developmen', '30', NULL,
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'550', 'MONTHLY', 'IAESTE', '0', NULL, '8', '12', 'Krakow', 'train', '2013-06-14',
+NULL,
+'1000', 'MONTHLY', NULL,
+'-programming in object oriented languages  -learning extreme programming concepts in practice (pair programming; test first development; refactoring; etc.)  - working on web and desktop apllications  - helping with project management  - interacting with project teams and clients  - office management tasks  - other duties as assigned',
+'Krakow', 'N', 'M', 'IT', NULL, '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0016', '8f4a2af9-e1d8-41ae-8f68-a7354092f12a', TRUE, 'PLN', '40', '8', '0', 'Design Office PROMOST CONSULTING', 'Slowackiego 20', 'Rzeszow', 'Civil Engineering Design and Consulting', '50', '',
+'2013-06-01', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '350', NULL, '4', '8', 'Rzeszow - Jasionka', 'Bus', '2013-06-30',
+'A student needs to have a good knowledge of such programs as: Auto Cad; Math Cad; 3D Studio. He/She should also be able to use computer programs for analysis of engineering constructions',
+'2000', 'MONTHLY', NULL,
+'Promost Consulting provides investment services in scope of civil engineering and communication building. It specializes in bridge projecting; consulting and project management. The company provides testing services on existing bridges to assure their quality and on construction materials.  Student will focus on roads and bridges projecting (calculations; technical drawings; graphs; 3D pictures) using AutoCAD; Plateia; Sofistik; etc. He/ She will also check his/her models with the Inspection Office and cooperete with it at construction site.',
+'Rzeszow', 'P', 'E', 'CIVIL_ENGINEERING', 'Department of Bridges', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0017', 'c48d542c-44eb-401f-b6eb-b08a5ec3d566', FALSE, 'PLN', '40', '8', '20', 'Gemius SA', 'Domaniewska 41', 'Warsaw', 'market and public opinion research', '125', '',
+'2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '8', '12', 'Warsaw', 'bus; train', '2013-01-01',
+'',
+'2500', 'MONTHLY', NULL,
+'A trainee will have a chance to take part in computer science projects under supervision of an experienced programmer. Trainees duties will include participation in developing applications designed for data processing; analysis and presentation. Within the training; works connected with data bases; network protocols and user interfaces are expected',
+'Warsaw', 'P', 'E', 'IT', 'Software Engineering', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0018', '5f24884c-df4f-417c-8c21-6464c93ff6d6', FALSE, 'PLN', '40', '8', '20', 'MAAS S.C. Architecture Office', 'Lekarska 4', '01-610  Warszawa', 'Architecture Office', '7', NULL,
+'2013-07-01', '2013-07-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '4', 'Warsaw', 'bus', '2013-06-14',
+'Previous training in architecture office working at preparation of technical documentation. Experience with AUTOCAD; ARCHICAD',
+'1600', 'MONTHLY', NULL,
+'Working out technical documentation. Different tasks connected with project review. Student will be involved in designing process with the assistance of the staff.',
+'Warsaw', 'P', 'E', 'ARCHITECTURE', 'Architecture', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0019', 'd10759e9-c476-4885-8171-22e02a8186e2', TRUE, 'PLN', '35', '7', '20', 'Isotops Research and Development Centre POLATOM', 'Swierk 24 A', '05-400 Otwock', 'Research on chemistry;radiochemistry&radiophar', '46', '',
+'2013-07-01', '2013-08-16', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '6', 'Warsaw', 'bus', '2013-06-14',
+'',
+'1300', 'MONTHLY', NULL,
+'Works in research laboratory cover methods of quality control and biological activity of radiopharmaceutics.',
+'Otwock (near Warsaw)', 'R', 'M', 'BIOTECHNOLOGY', 'Biotechnology', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0020', '69f57150-e209-4b35-8e79-4715d05e1d97', FALSE, 'PLN', '40', '8', '20', 'POLISH Geological Institute', 'Rakowiecka 4', '00-975 Warsaw', 'earth Sciences:geology; hydrogeology; environment', '730', '',
+'2013-08-01', '2013-08-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '4', 'Warsaw', 'bus', '2013-06-14',
+'',
+'1300', 'MONTHLY', NULL,
+'At the beginning of the training; the Student will be acknowledged with the structure of Hydrogeology and Engineering Geology department. Different scopes of research; which are carried out by separate workshops; will be presented in a broad outline. The Department is divided into five workshops-the student will spend some time in each of them. If certain scope of research is particularly interesting for the student there is possibility of changing the schedule in order to dedicate more time to chosen workshop/scope of research. The main of research:   POLISH Hydro geological Survey (identifying; sustainable management and groundwater protection in order to obtain efficient utilization of water by society and industry)   Groundwater Monitoring (groundwater quantity and quality monitoring; the structure of the nationwide monitoring network; physical-chemical groundwater analysis; field work   Hydro geological Data Base  HYDRO Bank (collecting; managing and updating information about h',
+'Warsaw', 'R', 'E', 'GEOLOGY', 'Hydroheology; Engineering Geology', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0021', '1ecae0ef-7127-49df-901d-da1c839f9ee0', FALSE, 'PLN', '40', '8', '20', 'Institute of Electron Technology', 'Al. Lotnikow 32/46', '02-668 Warsaw', 'Electronics;construction&techn. of semico', '292', '',
+'2013-09-01', '2013-11-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '8', 'Warsaw', 'bus', '2013-06-14',
+'',
+'1450', 'MONTHLY', NULL,
+'Examination of MEMS structures:  Modeling and simulation of MEMS structures with ConventorWare environment using reducted models and finite-element method.  Computer simulatons of MEMS structures manufacture processes with SEMulator3D and Etch3D tools. Electromechanical measurements (voltage; displacement; strain) of microsystem structures. Examination of microelectronic structures:  Electrical measurement (I-V; C-V) of tested CMOS structures; detectors; ISFET devices at the computer controled site; analysis of measurement data. Implemantation; verification of algorithms of characterization of microelectronic structures and extraction of parameters of semiconductor device models; especially CMOS and ISFET devices. Computer simulations of microelectronic structures using tools:SSUPREM4; SPISCES (SILVACO) on Sun SparcStation4 machine or LIGAMENT; DESSIS (SYNOPSYS) on PC machine; especially analysis of radiation detector characteristics and phenomena during radiation',
+'Warsaw', 'N', 'M', 'ELECTRONICS', 'Microelectronics; microsystems', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0022', '672b3e67-1e8d-4daa-ac06-4f2cc0e7d4f3', FALSE, 'PLN', '40', '8', '20', 'PROART Anna Rostkowska', 'Sniadeckich 10', '00-656 Warsaw', 'Architecture', '10', '',
+'2013-06-14', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '6', '8', 'Warsaw', 'bus', '2013-06-14',
+'',
+'1300', 'MONTHLY', NULL,
+'Company specializes in renovation and modernization of the hidtorical buildings and monuments; as well as doing the projects of turn key buildings. Student will be involved in current ongoin projects including preparation of drawings; information sheets etc.',
+'Warsaw', 'P', 'M', 'ARCHITECTURE', 'Town planning', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0023', 'e2c8d8f9-0525-4412-ba6f-7a0fc698d101', TRUE, 'PLN', '40', '8', '20', 'Jasinski Kruszewski Architekci', 'Rakowiecka 45/11', '02-528  Warsaw', 'Architecture', '10', NULL,
+'2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', 'A', NULL, 'F', 'A', NULL, 'F',
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '6', '12', 'Warsaw', 'Underground', '2013-06-14',
+'Knowledge of AutoCad and Adobe Photoshop; portfolio.',
+'1300', 'MONTHLY', NULL,
+'Student will be involved in projects conducted in the office. Training includes work in team; designing; detailing; preparing drawings using architectural software.',
+'Warsaw', 'P', 'E', 'ARCHITECTURE', NULL, '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0024', '27854535-711d-4c52-8caf-367719946265', FALSE, 'PLN', '40', '8', '20', 'POLISH Geological Institute', 'Rakowiecka 4', '00-975 Warsaw', 'earth Sciences:geology; hydrogeology; environment', '730', '',
+'2013-08-01', '2013-08-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '4', '4', 'Warsaw', 'bus', '2013-06-14',
+'',
+'1300', 'MONTHLY', NULL,
+'At the beginning of the training; the Student will be acknowledged with the structure of Hydrogeology and Engineering Geology department. Different scopes of research; which are carried out by separate workshops; will be presented in a broad outline. The Department is divided into five workshops-the student will spend some time in each of them. If certain scope of research is particularly interesting for the student there is possibility of changing the schedule in order to dedicate more time to chosen workshop/scope of research. The main of research:   POLISH Hydro geological Survey (identifying; sustainable management and groundwater protection in order to obtain efficient utilization of water by society and industry)   Groundwater Monitoring (groundwater quantity and quality monitoring; the structure of the nationwide monitoring network; physical-chemical groundwater analysis; field work   Hydro geological Data Base  HYDRO Bank (collecting; managing and updating information about h',
+'Warsaw', 'R', 'E', 'GEOLOGY', 'Hydroheology; Engineering Geology', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0025', '2bdd1cbd-8e63-4f8c-ba62-d977fbc820b0', FALSE, 'PLN', '30', '6', '0', 'Szczecin TU; Faculty of Electrical Engineering', '26-Kwietnia 10', '71-126 Szczecin', 'Electronics; Telecommunication', '0', '',
+'2013-09-03', '2013-10-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', NULL, NULL, NULL, NULL, NULL, NULL,
+'700', 'MONTHLY', 'IAESTE', '300', NULL, '6', '8', 'Warsaw; Berlin; Goleniow', 'Szczecin Railway Station', '2013-06-15',
+'Basic knowledge of optoelectronics or optical telecommunication; knowledge of MathCad; MatLab; Labview',
+'800', 'MONTHLY', NULL,
+'Analysis of linear and nonlinear effects in the optical fiber systems (single and multiwavelenght transmission in the 3-rd window)  Numercial methods for optical waveguides analysis (beam propagation method; finite element method)  Measurements in optical fiber line (reflectometry)',
+'Szczecin', 'R', 'M', 'ELECTRONICS', 'Optoelectronics', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0026', 'c3b98fbf-3eea-4bca-9440-58e0f3fe0450', FALSE, 'PLN', '40', '8', '20', 'Gemius SA', 'Domaniewska 41', 'Warsaw', 'market and public opinion research', '125', '',
+'2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', NULL, '8', '12', 'Warsaw', 'bus; train', '2013-01-01',
+'',
+'2500', 'MONTHLY', NULL,
+'A trainee will have a chance to take part in computer science projects under supervision of an experienced programmer. Trainees duties will include participation in developing applications designed for data processing; analysis and presentation. Within the training; works connected with data bases; network protocols and user interfaces are expected',
+'Warsaw', 'P', 'E', 'IT', 'Software Engineering', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0027', '3d33656e-af82-46cb-843a-1f4f555306d2', TRUE, 'PLN', '40', '8', '0', 'Tukaj Mapping Central Europe sp. z o.o.', 'Odrzanska 7', '30-408 Krakow', 'Geographical Information Systems', '69', '',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'550', 'MONTHLY', 'IAESTE', '0', NULL, '8', '12', 'Krakow', 'train.coach', '2013-06-20',
+'knowledge of the Intergraph Corp software especially Image Station; GeoMedia or Othopro or Visual Basic or Oacle',
+'800', 'MONTHLY', NULL,
+'- Vector data compilation using photogrammetric station  - Digital orthophoto production  - Quality check and data processing',
+'Krakow', 'P', 'M', 'GEODESY', 'Photogrammetry and Remote Sensing', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0028', '979671c1-8220-4de9-9cc1-3fd423ddfbe7', TRUE, 'PLN', '40', '8', '0', 'Tukaj Mapping Central Europe sp. z o.o.', 'Odrzanska 7', '30-408 Krakow', 'Geographical Information Systems', '69', '',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'550', 'MONTHLY', 'IAESTE', '0', NULL, '8', '12', 'Krakow', 'train.coach', '2013-06-20',
+'knowledge of the Intergraph Corp software especially Image Station; GeoMedia or Othopro or Visual Basic or Oacle',
+'800', 'MONTHLY', NULL,
+'- Vector data compilation using photogrammetric station  - Digital orthophoto production  - Quality check and data processing',
+'Krakow', 'P', 'M', 'GEODESY', 'Photogrammetry and Remote Sensing', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0029', 'b5d30715-8466-43cc-8755-01e7bd535e34', FALSE, 'PLN', '40', '8', '0', 'Przedsibiorstwo Wdra|ania Innow', 'Zgrzebnioka 5', '41-500 Chorzow', 'related to transportation; storage and processing', '18', '',
+'2013-01-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'RUSSIAN', 'G', 'O', 'UKRAINIAN', 'G',
+'800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '6', 'Katowice', 'train', '2013-06-20',
+'Basic previous training required; ability to use AUTOCAD',
+'220', 'WEEKLY', NULL,
+'Full participation in work of company; projects in AUTOCAD; contacts with costumers and making buisiness documentation',
+'Chorzow', 'P', 'E', 'MECHANICAL_ENGINEERING', 'any', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0030', 'ba6a2ca8-0837-4f14-8764-251ca4f91ed1', FALSE, 'PLN', '40', '8', '0', 'ALDEC-ADT Sp. z. o.o.', 'Widok 23', '40-118 Katowice', 'Product. of software for autom. of electr. project', '61', '',
+'2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '12', 'Katowice', 'City bus; Train', '2013-06-20',
+'Knowledge of C++; HDL (VHDL; Verilog) or Systemc.',
+'220', 'WEEKLY', NULL,
+'Participation in production and testing of EDA (HDL simulator; UI environment). Preparing test HDL projects for students of electronics.',
+'Katowice', 'P', 'E', 'IT', 'Software; Programming', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0031', '086d2886-e29b-4907-8edb-48aad16ec1f1', FALSE, 'PLN', '40', '8', '0', 'Comarch S.A.', 'Al. Jana PawBa II 39A', '31-864 Kraków (subsidiary Katowice)', 'IT Solutions to Telecommunications', '2200', '',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '350', NULL, '8', '12', 'Katowice', 'bus', '2013-06-20',
+'G average grade at studies.Intention of further employment in one of Comatch Group companies after training.',
+'1500', 'MONTHLY', NULL,
+'Assistance and research work by the building modules of Comarch products.   Comarch offers CRM and loyalty systems based on AURUM product line. Their software ORLANDO supports the management of financial institutions and a complex IT support for insurance companies; both in terms of property and life insurance is provided by Comarch SUBREA.  For the treainees they offer a very interesting work in production and development of their systems.',
+'Katowice', 'R', 'E', 'IT', '', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0032', '50347514-5bb1-4130-8296-720b1a8f4a00', FALSE, 'PLN', '40', '8', '0', 'DASTA S.C. Stanislaw Lakota; Stanislaw Radwan', 'WladysBawa Sobocinskiego 5/2', '40-687 Katowice', 'Electronical devices for industry', '17', '',
+'2013-06-04', '2013-09-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', 'O', 'RUSSIAN', 'F', 'O', 'POLISH', 'F',
+'800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '8', 'Katowice', 'bus', '2013-06-20',
+'',
+'220', 'WEEKLY', NULL,
+'Working on creation and development of electronical devices for industry.',
+'Katowice', 'P', 'M', 'ELECTRONICS', '', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0033', '860a08aa-527b-4d09-b001-9b67dc8b220c', FALSE, 'PLN', '40', '8', '0', 'Towarzystwo Gospodarcze MEGART Sp. z o.o', 'Wyzwolenia 5', '43-190 Mikolów', 'Trade-technical', '12', '',
+'2013-07-01', '2013-01-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'RUSSIAN', 'F', NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '31', 'Katowice', 'train', '2013-07-20',
+'driving license (valid in Poland); good skills in MS Office',
+'300', 'WEEKLY', NULL,
+'Work in a trade company; in the department of specialized grease. Student will have to acquaint himself with the offer of one of the leading GERMAN producers; with possibility of the products application and methods of delivery to the end user. He will also be responsible for creating offers; providing expertise and for contacts with producers and clients.',
+'Mikolow', 'P', 'E', 'CHEMISTRY', '', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0034', '5f83d099-e9ff-4247-9b65-cf36c65d18a5', FALSE, 'PLN', '40', '8', '0', 'LGBS Polska Sp. z o.o', 'Toszecka 101/302', '44-100 Gliwice', 'Informatics', '20', '',
+'2013-06-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '350', NULL, '6', '6', 'Katowice', 'bus', '2013-06-20',
+'',
+'220', 'WEEKLY', NULL,
+'Programming with use of Microsoft technologies; especially .NET and ASP.NET.',
+'Gliwice', 'P', 'E', 'IT', '', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0035', 'b046a990-c40b-431f-b3a9-30f4750da5f1', FALSE, 'PLN', '35', '7', '0', 'UL Department of General and Inorganic Chemistry', 'Narutowicza 68', '90-136 Lodz', 'University', '38', '',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'FRENCH', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
+'fundamental knowledge of laboratory techniques of electrochemistry (CVA; EIS; ESTM; STM; AFM); analytical methods',
+'630', 'MONTHLY', NULL,
+'The objective of the training is student participation in various kinds of tasks in the field of modified electrodes; e.g. working on ones own research; modifying existing data; gathering new information.',
+'Lodz', 'R', 'M', 'CHEMISTRY', 'modified electrodes', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0036', '54d0f8dd-06fd-447c-8f2e-faf6ba851a24', FALSE, 'PLN', '35', '7', '0', 'UL Department of Oganic Chemistry', 'Narutowicza 68', '90-136 Lodz', 'University', '27', '',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'FRENCH', 'G', NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
+'fundamental knowledge of laboratory techniques and spectroscopic (IR; NMR; MS) methods',
+'630', 'MONTHLY', NULL,
+'The objective of the training is student participation in various kind of tasks in the field of Synthesis and characterization of the organoiron compounds (ferrocenes and sandwich complexes) displaying useful physicochemical or biological properties.',
+'Lodz', 'R', 'M', 'CHEMISTRY', 'Oganometallic chemistry', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0037', 'd21f867b-cb25-40e4-a27f-45998d4ad788', FALSE, 'PLN', '30', '6', '0', 'UL Department of Chemical Technology and Environ.', 'Pomorska 163', '90-236 Lodz', 'University', '36', '',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
+'Basic skills in the field of chemical laboratory work; easy operation of computers; basic knowledge in the field of chemistry and physics on the academic level',
+'630', 'MONTHLY', NULL,
+'Synthesis of ceramic and organo-ceramic thin and ultra thin layers based on:  - LB (Longmuir Blodgett) techniques  - SAM (self assemble monolayer)  - Sol-Gel techniques and chemistry  - Surface modification by specific compounds  Focused on their tribological properties; chemical analysis of these layers by: FT-IR (infrared spectroscopy) various surface techniques; MS mass spectroscopy (SIMS); analysis of structure of these layers by AFM (atomic force microscopy) and STM (scanning tunnelling microscopy); Triobological characterization of thin layers in nano-scale (AFM) and micro-macro scale by specialized tribometer devices.',
+'Lodz', 'R', 'M', 'CHEMISTRY', 'Advanced Materials', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0038', '819eefe0-298f-4793-b673-f14830b9d012', FALSE, 'PLN', '30', '6', '0', 'UL Department of Chemical Technology and Environ.', 'Pomorska 163', '90-236 Lodz', 'University', '36', '',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
+'Basic skills in the field of chemical laboratory work; easy operation of computers; basic knowledge in the field of chemistry and physics on the academic level',
+'630', 'MONTHLY', NULL,
+'Synthesis of ceramic and organo-ceramic thin and ultra thin layers based on:  - LB (Longmuir Blodgett) techniques  - SAM (self assemble monolayer)  - Sol-Gel techniques and chemistry  - Surface modification by specific compounds  Focused on their tribological properties; chemical analysis of these layers by: FT-IR (infrared spectroscopy) various surface techniques; MS mass spectroscopy (SIMS); analysis of structure of these layers by AFM (atomic force microscopy) and STM (scanning tunnelling microscopy); Triobological characterization of thin layers in nano-scale (AFM) and micro-macro scale by specialized tribometer devices.',
+'Lodz', 'R', 'M', 'CHEMISTRY', 'Advanced Materials', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0039', '16a6d58c-7473-41c6-91d7-3fd6ed0385f1', FALSE, 'PLN', '35', '7', '0', 'University of Lodz; Department of Mathematics', 'Banacha 22', '90-238 Lodz', 'Research and teaching', '142', '',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'F', 'A', 'RUSSIAN', 'G',
+'600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
+'',
+'630', 'MONTHLY', NULL,
+'The objective of the training is student participation in research or programming in nonlinear analysis; artificial neural network; numerical analysis',
+'Lodz', 'R', 'M', 'MATHEMATICS', 'nonlinear analysis;artificial neural network;num.', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0040', '0b6d373b-4364-4d48-8096-c69f265d64fe', FALSE, 'PLN', '35', '7', '0', 'University of Lodz; Department of Mathematics', 'Banacha 22', '90-238 Lodz', 'University', '12', '',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'600', 'MONTHLY', 'IAESTE', '0', NULL, '6', '8', 'Warsaw / Lodz', 'bus', '2013-06-05',
+'',
+'630', 'MONTHLY', NULL,
+'The objective of the training is student participation in:  - design of various linguistic algorithms and implementing them;  - taking part in a larger project of automatic speech recognition',
+'Lodz', 'R', 'M', 'IT', 'related to linguistics', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0041', 'a13373f0-1f14-4f83-b76d-de67284f109f', TRUE, 'PLN', '40', '8', '20', 'Nokia Siemens Networks Sp. z o.o.', 'Zupnicza 11', '03-821 Warszawa', 'telecommunication', '1000', '',
+'2013-06-18', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '300', NULL, '6', '8', 'Wroslaw', 'Bus', '2013-06-30',
+'preferred ENGLISH NATIVE SPEAKER',
+'1200', 'MONTHLY', NULL,
+'Student will be involved in the documentation project for Intelligent Network. Student will be working as a technical writer and will be cooperating with software developers. Student will be also responsible for language correction of the existing documentation.  We offer:  - cutting edge technology;  - participation in a highly motivated and dynamic team;  - training period in multinational environment.',
+'Wroclaw', 'P', 'M', 'IT', 'any', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0042', '81013011-0295-4f8f-8cac-91151378d2b4', FALSE, 'PLN', '35', '7', '0', 'Institute of Material Science', 'Stefanowskiego 1/15', '90-924   Lodz', 'Material Sc./Material Eng', '70', NULL,
+'2013-06-15', '2013-09-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '300', NULL, '8', '12', 'Warszawa', 'Bus', '2013-06-15',
+NULL,
+'1000', 'MONTHLY', NULL,
+'The training comprises an active participation of the student in a project concerning plasma enhanced chemical vapor deposition (PECVD) of thin oxide films for optical applications. A proper stack sequence of selected oxide films; characterized by well defined values of their thickness d index of refraction n and extinction coefficient k; results in a formation of an optical filter of a desired position and width ofthe windowo The following oxides: Ti02; Si02; Ta20S and Nb20s are of a particular interest and metal¬organic compounds the respective elements will be used as precursors. The student will be working in the phase of an assembly of a new large volume radio frequency PECVD equipment; built especially for the project; as well as in the phase oftesting this equipment.',
+'Lodz', 'R', 'M', 'PHYSICS', 'vacuum', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0043', '085b66c1-896a-4454-abbc-404176242939', FALSE, 'PLN', '40', '8', '20%', 'MAAS s.c. Architecture office', 'lekarska 4', '01-610 Warsaw', 'architecture office', '7', 'www.maas.com.pl',
+'2013-07-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '6', '8', 'warsaw', 'tram, bus, subway', '2013-03-31',
+NULL,
+'500', 'WEEKLY', NULL,
+'Architectural design. Initial industry training in both construction and drafting. participation in works currently in progress.',
+'warsaw', 'P', 'Begin', 'ARCHITECTURE', NULL, '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0044', 'ec27031b-a2db-4e1b-bbe2-08950773a65b', TRUE, 'PLN', '35', '7', '0', 'AGH University of science and technology', 'Al. Mickiewicza 30', '30-059 Krakow', 'university', '40', 'www.agh.edu.pl',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'RUSSIAN', 'G', NULL, NULL, NULL,
+'550', 'MONTHLY', 'IAESTE', '0', 'MONTHLY', '6', '6', 'krakow', 'train/coach', '2013-03-31',
+NULL,
+'680', 'MONTHLY', NULL,
+'Measurement of nuclear physics experiments. Experiments of radiation dosimetry. Computing, model calculations, simulation calculations of nuclear physics',
+'krakow', 'R', 'M|E', 'PHYSICS', 'Nuclear Physics, Nuclear Engineering', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0045', 'bd238537-98f1-45eb-9614-2c98f07cdd8e', NULL, 'PLN', '30', '6', '20%', 'Fabryka Substancji Zapachowych Pollena Aroma Spolka z.o.o.', 'Klasykow 10', '03-115 Warsaw', 'Aroma substances, food aromas, cosmetics', '85', 'www.pollenaaroma.com.pl',
+'2013-02-02', '2013-08-22', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '6', '6', 'warsaw', 'bus tram', '2013-03-31',
+'basic knowledge of fragrance compounds and nomenclature used in perfume technology',
+'325', 'WEEKLY', NULL,
+'lab work. student will be incolced in deceloping new fragrance compound used in companys products (fragrance compounds, aromas, essentials and food emulsions, synthesised flacours and essential oils for aromatherapy and natural herbal cosmetics flavourings healing cosmetics)',
+'Warsaw', 'R', 'M', 'BIOTECHNOLOGY|CHEMISTRY|BIOLOGY', 'Fragrance compounds, food flavourings healing cosmetics, synthetic flavourings', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0046', '4aaa6510-dc55-4641-a2da-219a7a6b0d96', NULL, 'PLN', '35', '7', '0%', 'Instytut Podstaw Chemii Zywnosci', 'Stefanowskiego 4/10', '90-924 Lodz', 'Research Institute - biotechnology and general foo', '20', NULL,
+'2013-07-02', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '8', 'Warszawa', 'City bus, tram', '2013-03-31',
+'none',
+'1000', 'MONTHLY', NULL,
+'Co-Worker.\r\nStudent will be based in research centre of Institute of Generals Food Chemistry and will become part of a project team with the responsibility of projects concerning electro-generated chemiluminescence in biochemical analysis. Trainee will take part in practical laboratory works assisting the university researchers.',
+'Lodz', 'R', 'M|E', 'BIOCHEMISTRY|PHARMACEUTICAL_STUDIES|FOOD_TECHNOLOGY', NULL, '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0047', '43e920a7-f900-42f5-9f52-d74633bf6d34', NULL, 'PLN', '30', '6', '0%', 'AGH University of Science and Technology', 'Al. Mickiewicza 30', '30-059 Krakow', 'University', '40', NULL,
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'550', 'MONTHLY', 'IAESTE', '0', 'MONTHLY', '6', '8', 'Krakow Balice (KRK)', 'Krakow Train/Coach', '2013-03-31',
+'none',
+'680', 'MONTHLY', NULL,
+'Multichannel audio and speech signal processing algorithms implementation in a real-time on Motorola DSP56399 and/or Analog Devices SHARC and/or Texas Instruments C6000 platform in a form suitable for laboratory courses. Design, simulation in Matlab and implementation of beam forming algorithms.',
+'Krakow', 'R', 'E', 'ELECTRICAL_ENGINEERING|ELECTRONICS', NULL, '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0048', 'ff14868e-9afe-4cfc-9a8b-e51c0c4fb0cc', NULL, 'PLN', '35', '7', '0%', 'Centrum Diagnostyki i Terapii Laserowej', 'Wolczanska 215', '93-005 Lodz', 'Center of Laser Diagnostics & Therapy in Medicine', '50', NULL,
+'2013-07-02', '2013-08-12', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '6', 'Warszawa', 'City bus, tram', '2013-03-31',
+'Must start on 1st of July! - team work!',
+'1000', 'MONTHLY', NULL,
+'Student will be part of team working in researching projects related to image analysis in medical applications.\r\nInvestigation of optical properties of tissue, influence of laser light on living cells, introduction of new healing methods by means of laser technologies, photodynamic diagnostics. Results of these investigations are implemented in photodynamic diagnostics and laser therapy of tumors of urinary bladder, rheumatic disease healing, multiplex sclerosis, surgical laser therapy of burns and others (see Cener web site) with cooperation with Lodz Medical University.',
+'Lodz', 'P', 'M|E', 'PHYSICS', 'Applied Physics, Medicine', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0049', '8bb75ebf-cacf-453f-85c3-2eaf8a446220', TRUE, 'PLN', '40', '8', '0', 'KPG Ltd', 'Mogilska 80', '31-546 Krakow', 'company - Geodesy, Photogrammetry', '120', 'www.kpg.pl',
+'2013-06-20', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'950', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '4', '8', 'Krakow', 'Train/Coach', '2013-03-31',
+'G knowledge of MicroStation and/or Autocad software, knowledge of photoshop & 3D studio software will be highly appreciated, good knowledge of professional measurement equipment maintenance (total station/ level)',
+'1100', 'MONTHLY', NULL,
+'Land surveying. Outdoor work, assistance with survey work (total station, level, laser scanner measurement) in and outside of Krakow. Office work: post- processing of collected date, maps editing in MicroStation and AutoCad, cartography data capturing using 3D digital station, maps printing, orthophoto production.',
+'Krakow', 'P', 'E', 'GEODESY', 'Surveying, Cartography, Photogrammetry, Terrestrial Surveying', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0050', 'dc350f56-67e6-455e-9d1d-a0a6f4684a0b', FALSE, 'PLN', '40', '8', '0', 'Hartbex Przedsiebiorstwo Budowlane S.P.Z.O.O.', 'Adress 22', '36001 Trzebownisko', 'Building Construction', '425', 'www.hartbex.pl',
+'2013-06-25', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '350', 'MONTHLY', '8', '10', 'Rzeszow Jasionka', 'Rzesow', '2013-03-31',
+NULL,
+'1200', 'MONTHLY', NULL,
+'Student will take part in firms current projects. Company is willing to pay for the ticket to Poland',
+NULL, 'P', 'E', 'ENVIRONMENTAL_ENGINEERING|CIVIL_ENGINEERING', 'Construction (halls no bridges) industrial engineering', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0051', '2d90a965-68d2-42dc-9f2f-8fbf140d7c65', TRUE, 'PLN', '40', '8', '20%', 'Capgemini Polska Sp zo.o.', 'al. Jana Pawla II 12', '00-124 Warszawa (subsidiary Wroclaw)', 'Informatics', '2000', 'www.pl.capgemini.com',
+'2013-07-01', '2013-10-31', NULL, NULL, NULL, NULL, 'GERMAN', 'G', 'O', 'POLISH', 'F', NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '10', '12', 'Wroclaw', 'bus, tram', '2013-03-31',
+'advanced programming skills in JAVA, dotNET or C++\r\nA desire to work in Poland after graduation will be an advantage. Employer would like to verify knowledge of the candidate before acception',
+'1700', 'MONTHLY', NULL,
+'Kind of work: programming\r\nStudent will take part in current programming projects. Trainee will be responsible for creating and testing IT solutions according to provided specification.',
+'Wroclaw', 'P', 'E', 'IT|ELECTRONICS', 'Programming, Software Design', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0052', '4268e097-53e8-4050-b68f-1c3aabc9c5f5', FALSE, 'PLN', '40', '8', '0', 'BEST Construction Sp. z o.o.', 'Mikolaja Reja 12', '35-211 Rzeszow', 'Execution of complex construction projects', '200', '',
+'2013-06-01', '2013-12-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'O', 'GERMAN', 'G', 'O', 'RUSSIAN', 'G',
+'850', 'MONTHLY', 'IAESTE', '400', 'MONTHLY', '8', '8', 'Jasionka', '', '2013-06-01',
+'',
+'1200', 'MONTHLY', NULL,
+'Student will:  - get familiar with organization of the company  - have short practise in everty department connected with production  - get familiar with technology and have training on selected building site  - get familiar with responsibilities of construction site engineer, foreman and manager  - get familiar with concrete, steel and brick technologies',
+'Rzeszow', 'P', 'M', 'CIVIL_ENGINEERING', '', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0053', '369bfd88-183d-44a8-94ef-2d6c1913403e', FALSE, 'PLN', '40', '8', '20', 'Volvo Polska Sp. z o.o.', 'ul. Mydlana 2', '51-502 Wroclaw', 'automitive, finantial services center', '2600', '',
+'2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'FINNISH', 'G', NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '400', 'MONTHLY', '52', '52', 'Wroclaw', '', '2013-05-20',
+'',
+'2700', 'MONTHLY', NULL,
+'Traineeship plan (for 12 months) Main responsibility - cooperation with FINNISH customers Volvo Finland AB in AR  accounting area.',
+'Wroclaw', 'R', 'E', 'ECONOMICS', '', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0054', '12d1ff38-2a0f-480b-9e97-c8126bee1c3f', FALSE, 'PLN', '40', '8', '0%', 'MakoLab M.i K. Sopek, Ltd.', 'Demokratyczna 46', '93-430 Lodz', 'Web graphics and software', '20', 'www.makolab.pl',
+'2013-06-01', '2013-12-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '12', '24', 'F.Chopin International Airport, Warsaw (WAW)', 'Bus, tram, metro', '2013-03-31',
+'Knowledge of DHTML, ASP, VBScript, SQL\r\ninterview possible',
+'1200', 'MONTHLY', NULL,
+'Web designer\r\n\r\nWeb design (DHTML, ASP, VBScript), working with MSSQL. Computer Graphic (PhotoShop), student will be involved in some scopes of company activity that includes:\r\n- Development and implementation of Web systems for management of business processes, \r\n- Creation of advanced visual projects for applications, web pages, multimedia presentations and DTP\r\n- Development of software developer tools based on genuine technologies\r\n- Providing advanced ISP services, including hosting and collocation provided in Data Center, as well as providing Internet access for companies. ',
+'Lodz', 'P', 'M|E', 'IT', 'Information Technology, Web desing with sql database', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0055', '290efe4c-5a14-421e-86ed-52db29c30944', TRUE, 'PLN', '25', '5', '0%', 'University of Lodz, Departement of Mathematics, Chair of Probability Theory and Statistics', 'Banacha 22', '90-238 Lodz', 'Mathematics', '12', 'www.math.uni.lodz.pl',
+'2013-06-01', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'650', 'MONTHLY', 'IAESTE', '0', 'MONTHLY', '4', '8', 'Warsaw Airport/Lodz, W. Reymont Airport', 'Tram, Bus', '2013-03-31',
+NULL,
+'710', 'MONTHLY', NULL,
+'Research project in infinitely divisible laws (classical probability theory) or in quantum statistics - quantum computing (quantum probability). ',
+'Lodz', 'R', 'M|E', 'MATHEMATICS', 'Probability Theory: Classical and Quantum', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0056', 'a12d2503-69f9-4e18-8217-631d64be4a06', TRUE, 'PLN', '40', '8', '20%', 'Are sp.z o.o.', 'Chmielna 24/3', '00-020 Warsaw', 'Architecture', '18', 'www.are.com.pl',
+'2013-06-15', '2013-10-15', NULL, NULL, NULL, NULL, 'ENGLISH', 'F', NULL, NULL, NULL, NULL, NULL, NULL,
+'1000', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '6', '8', 'F.Chopin International Airport, Warsaw (WAW)', 'Bus, tram, metro', '2013-03-31',
+'Required knowledge of AutoCAD and previous practice/work in architectural office. \r\nDesired previous experience in making projects.',
+'500', 'WEEKLY', NULL,
+'Trainee will gain experience collaborating with professionals at ongoing projects of the office, which includes projecting and planning of industrial, residential, office and public use buildings. ',
+'Warsaw', 'P', 'E', 'ARCHITECTURE', 'Architectural Projects', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0057', 'e60b2405-cdda-4f8a-9cc3-cde4062e2563', FALSE, 'PLN', '35', '7', '0%', 'INWAT Zaklad Badawczo-Projektowy', 'Sienkiewicza 101', '90-310 LÃ³dz', 'Steam and gas turbines - parts manufacturing, desi', '115', 'www.inwat.com.pl',
+'2013-07-01', '2013-08-28', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '8', 'Warszawa', 'City bus, tram', '2013-03-31',
+NULL,
+'1000', 'MONTHLY', NULL,
+'Co-worker\r\n\r\nTrainee will be a support in tasks related to:\r\n# preparation of technical drawings\r\n# participation in design work (determination of operating parameters & characteristics)\r\n# modernization and repair of turbines\r\n# testing & evaluation of the technical wear\r\n# cooperation in the development of turbines - determination of the optimal criteria of the turbo set start-up',
+'LÃ³dz', 'P', 'M|E', 'MECHANICAL_ENGINEERING', 'Mechanical Engineering, Fluid Flow Machines', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0058', 'dd8e4f19-e591-471f-909b-3191d3e3c23d', FALSE, 'PLN', '40', '8', NULL, 'Geosat KrakÃ³w Sp,z.o.o.', 'Lukasiewicza 3', '31-429 Krakow', 'Geodesy, Cartography, Land Surveying', '100', 'www.geosat-krakow.pl',
+'2013-06-01', '2013-08-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'0', 'MONTHLY', 'Company', '0', 'MONTHLY', '6', '12', 'Krakow Balice', 'Krakow public transport', '2013-03-31',
+'Studylevel: B/M/E',
+'1500', 'MONTHLY', NULL,
+'Student will familiarize himself with the company organization and structure. Training will cover general issues connected with geophysical project, especially geodetic measurements (using GPS, RTK technique). During week (mon-fri) work in open-area (field measurements) away from Krakow. Employer provide accomodation and meals at the hotel for free also transport to Krakow for weekends. Possibility to use games like billiard, darts at hotel. \r\nThere is a possibility to get full-time and well-paid job after practice in the students motherland in the company. ',
+'depends on the project (Krakow)', 'W', 'Begin', 'GEODESY', 'Geology', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0059', '7d855e3a-c8f0-43c7-905e-41bfd666f506', FALSE, 'PLN', '35', '7', '0%', 'Centrum Diagnostyki i Terapil Laserowej', 'Wolczanska 215', '93-005 Lodz', 'Center of laser diagnostics & therapy in medicine', '50', 'www.p.lodz.pl/laser',
+'2013-06-15', '2013-07-31', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '6', 'Warzawa', 'City bus, tram', '2013-03-31',
+'Must start on 1st of July!\r\nTeamwork',
+'1000', 'MONTHLY', NULL,
+'Student will be part of team working in a researching projects related to image analysis in medical appications.\r\nInvestigation of optical properties of tissue, influence of laser light on living cells, introduction of new healing methods by means of laser technologies, photodynamic diagnostics.\r\nResults of these investigations are implemented in photodynamic diagnostics and laser therapy of tumors of urinary bladder, rheumatic disease healing, multiplex sclerosis, surgical laser therapy of burns and others with cooperation with Lodz Medical University',
+'Lodz', 'R', 'M|E', 'PHYSICS', 'Applied Physics, Medicine', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0060', '3e3586db-751a-4e45-81b8-a7143867b792', TRUE, 'PLN', '40', '8', '20', 'Robobat Polska Sp. z o. o.', 'Radzikowskiego 47A', '31-315 Krakow', 'Civil Eng., Computer Science', '50', '',
+'2013-06-01', '2013-10-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '360', 'MONTHLY', '4', '12', 'Krakow Balice International Airport', 'Krakow', '2013-03-17',
+'Nationality: US/Canada, Western Europe, Australia, Japan',
+'2000', 'MONTHLY', NULL,
+'Construct. consultan - Providing guideline on product customization to reflect local codes and standards, preparing market analyse of competitor products, preparing product specyfications in local languages, co-operation with computer scientists at creating bespoke software for civil engeenering, testing new computer programs, find disadvantage of programs as computer science could improve those programe, team working is base.',
+'Krakow', 'R', 'E', 'CIVIL_ENG.', 'Construction', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0061', '9ce64a0a-6c3f-45a0-83aa-fd2680d5f5bc', TRUE, 'PLN', '40', '8', '15', 'SELFA GE S.A.', 'Bieszczadzka 14', '71-042 Szczecin', 'Elect. heating elements', '130', '',
+'2013-03-03', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', 'O', 'GERMAN', 'G', NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '8', 'Szczecin, Berlin', 'Szczecin', '2013-03-17',
+'',
+'1200', 'MONTHLY', NULL,
+'Trading Department - 1. Familiarize with the companys structure, operation range and offered products.2. Familiarize with the technology, construction and production of the heaters manufactured by the company.3. Familiarize with the circulation of documents: enquiries, orders, construction, technology, storage, shipping.4. Training in the Marketing Department and Sales Department (offer, calculation, invoicing).5. FRENCH market analysis in the field of heating elements and photovoltaic cells.',
+'Szczecin', 'N', 'E', 'POWER_ENGINEERING', 'Power engineering or Renewable energy', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0062', 'e4143405-e113-44bc-a1ae-c58b5646d00a', TRUE, 'PLN', '36', '6', '0', 'Rzeszow University of Technology, Chair of Building Engineering', 'Wincentego Pola 2', '35-959   Rzeszow', 'University', '50', 'www.prz.edu.pl',
+'2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', 'A', 'GERMAN', 'E', NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '6', '6', 'Rzeszow-Jasionka', 'Rzeszow', '2013-02-22',
+'Austrian nationality',
+'1000', 'MONTHLY', NULL,
+'- - Practice will involve working on Austrian military objects from the nineteenth century, Student will get familiar with the Austrian military objects of the nineteenth century, S/He will have to prepare inventarisation and historical studies of objects, S/He will also have to make some drawings and visualisations of buildings',
+'Rzeszow', 'R', 'M|E', 'ARCHITECTURE', '-', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0063', '16e8e89b-ae91-4728-8cae-910fc5a89d2d', FALSE, 'PLN', '40', '8', '20', 'Are sp. z o.o.', 'Chmielna 24/3', '00-020   Warsaw', 'Architecture', '18', 'www.are.com.pl',
+'2013-06-30', '2013-10-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'G', NULL, NULL, NULL, NULL, NULL, NULL,
+'1100', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '4', '12', 'Warsaw F. Chopin Airport', 'Metro, tram, bus', '2013-02-22',
+'Knowledge of AutoCAD.\r\nNationality required: Austrian or GERMAN.',
+'500', 'WEEKLY', NULL,
+'Office work - Student will work on ongoing projects of an architecture office, which are residential, industrial or public buildings and interior designs. Trainee will join the team composed of talented, experienced and enthusiastic  professionals, prepared to lead clients through the challenges and conflicts occurring during a design process in a way, which will fully satisfy both, the client and the company.  The office is on the market since 1991 and collaborates with many companies of different fields in Warsaw.',
+'Warsaw', 'P', 'E', 'ARCHITECTURE', 'architecture', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0064', '430550c0-4755-42fc-bb81-50f04e70a381', TRUE, 'PLN', '40', '8', '0', 'MTA Engineering Sp. z o.o.', 'Poniatowskiego 14', '35-026   Rzeszow', 'Design office specializing in design of steel and ', '55', 'www.mta-online.net',
+'2013-06-01', '2013-10-31', NULL, NULL, NULL, NULL, 'GERMAN', 'E', 'A', 'ENGLISH', 'G', NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '450', 'MONTHLY', '8', '20', 'Rzeszow-Jasionka', 'Rzeszow', '2013-02-22',
+'- Very good Knowledge of AutoCad\r\n- Nationality of trainee: GERMAN, Swiss or Austrian.',
+'1400', 'MONTHLY', NULL,
+'- - Trainee will be involved in the implementation of the technical documentation for steel construction projects realized by MTA - the performance of workshop drawings, lists of parts, assembly plans, etc. Besides, student can also familiarize oneself with the environment of the company and take part in the outside projects.',
+'Rzeszow', 'P', 'E', 'CIVIL_ENGINEERING', 'Steels constructions, Engineering constructions', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0065', '08fa1309-0fd9-4da8-b7e4-9c8c96370bb2', TRUE, 'PLN', '40', '8', '0', 'COMARCH S.A.', 'Al. Jana Pawla II 39a', '31-864   Kraków', 'International software house that provides innovat', '2900', 'www.comarch.com',
+'2013-07-01', '2013-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'950', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '8', '12', 'Krakow Balice (KRK)', 'bus/tram', '2013-02-22',
+'- Person from France, GERMANy, Austria, Switzerland\r\n- IT or related faculty preferred\r\n- technical skills: C#/.NET, SQL\r\n- good average grade at studies \r\n- intention of further employment in one of Comarch Group companies after training',
+'1500', 'MONTHLY', NULL,
+'Position: Assistant/ Researcher\r\n\r\nWe offer the opportunity to gain experience in writing code, complete programming, and performing testing and debugging of complex applications using current programming languages and technologies. This is also a great chance to embark on an internship in the friendly and dynamic work environment of an international software house with the highest working standards, in a modern office located in Krakow.',
+'Krakow', 'P', 'E', 'IT', 'nonspecific', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0066', 'b953b46e-2ea9-4aa2-b10c-65460b15d952', TRUE, 'PLN', '40', '8', '20', 'Floppy Computer Systems Sp. z o.o.', 'Grunwaldzka 345', '80-309   Gdañsk', 'IT,systems integration', '13', 'www.floppy.pl',
+'2013-06-01', '2013-10-29', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL,
+'800', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '12', 'Gdañsk (GDN)', 'Tram', '2013-02-22',
+'Nationality: Norwegian, Swede, Dane, GERMAN, Austrian, Swiss.\r\n\r\nExperience in IT solutions especially IBM Lotus Notes and IBM WebSphere most welcome.G interpersonal and teamwork skills.',
+'1200', 'MONTHLY', NULL,
+'Sales manager - Activities focused on Workgroups solutions based on IBM software platforms, mainly Lotus Notes applications. Software solutions promoting, selling, training and implementing. International business development, foreign Partners search and initial contacts. Product development and documentation, websites maintenance and content management. Other activities according to discussed and agreed scenario.',
+'Gdañsk', 'P', 'E', 'IT', 'Any', '19');
+
+INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,
+                    from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level,
+                    living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nearest_airport, nearest_pub_transport, nomination_deadline,
+                    other_requirements,
+                    payment, payment_frequency, prev_training_req,
+                    work_description,
+                    working_place, work_type, study_levels, study_fields, specializations, group_id) VALUES
+('PL-2013-0067', '0bb1bc0c-e028-459a-ac35-6f303f254320', TRUE, 'PLN', '40', '8', '0', 'Miros&sup3;aw Wi&para;niewski Architektura i Urbanistyka', '&macr;eromskiego 10', '90-710 &pound;&oacute;d&frac14;', 'Biuro Architektoniczno-Urbanistyczne', '5', '',
+'2013-06-01', '2013-10-01', NULL, NULL, NULL, NULL, 'ITALIAN', 'G', 'O', 'FRENCH', 'G', NULL, NULL, NULL,
+'900', 'MONTHLY', 'IAESTE', '300', 'MONTHLY', '6', '6', 'Lodz W. Reymont Airport', 'city bus,tram', '2013-02-22',
+'Preffered knowledge of AutoCAD or ArchiCAD.There can be a possibility of extension period of traineeship if company will have more work for student.portfolio',
+'1000', 'MONTHLY', NULL,
+'designer - Student will support in tasks related to: - development of architectural projects, - technical documentation of town-planning, - architectural and interior designing together with a complete set of studies of structures of different scale and function, - participation in design work, - building planning, - urban projects- computer visualisations of designed structures.',
+'&pound;&oacute;d&frac14;', 'P', 'M', 'ARCHITECTURE', 'any', '19');
+
+
+-- =============================================================================
 -- Offer Hungary
 -- =============================================================================
 INSERT INTO offers (ref_no, external_id, canteen, currency, weekly_hours, daily_hours, deduction, employer_name, employer_address, employer_address_2, employer_business, employer_employees_cnt, employer_website,

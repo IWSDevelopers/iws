@@ -334,7 +334,7 @@ public final class Offer extends AbstractVerification {
     // =========================================================================
 
     public void setId(final String id) throws IllegalArgumentException {
-        if ((id == null) || (id.length() != 36)) {
+        if (id != null && id.length() != 36) {
             throw new IllegalArgumentException("Illegal value for the Id.");
         }
 

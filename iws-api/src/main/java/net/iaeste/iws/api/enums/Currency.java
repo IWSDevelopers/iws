@@ -24,8 +24,8 @@ package net.iaeste.iws.api.enums;
 public enum Currency {
 
     // TODO add all currencies
-    AUD("Australian Dollar"),
     EUR("Euro"),
+    AUD("Australian Dollar"),
     HUF("Hungarian Forint"),
     HRK("Croatian Kuna"),
     PLN("Polish Złoty");

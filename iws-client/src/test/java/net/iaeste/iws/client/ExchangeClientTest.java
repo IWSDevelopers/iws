@@ -236,7 +236,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testNumberOfHardCopies() {
-        final String refNo = "PL-2013-0042";
+        final String refNo = "PL-2012-0042";
         final Offer newOffer = OfferTestUtility.getFullOffer();
         newOffer.setRefNo(refNo);
         newOffer.setNumberOfHardCopies(2);

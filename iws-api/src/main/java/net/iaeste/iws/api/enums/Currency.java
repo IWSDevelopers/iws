@@ -25,8 +25,10 @@ public enum Currency {
 
     // TODO add all currencies
     EUR("Euro"),
+    AUD("Australian Dollar"),
+    HUF("Hungarian Forint"),
     HRK("Croatian Kuna"),
-    AUD("Australian Dollar");
+    PLN("Polish Złoty");
 
     private final String description;
 

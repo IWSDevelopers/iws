@@ -26,10 +26,14 @@ package net.iaeste.iws.api.enums;
 public enum SortingField {
 
     /**
-     * All Objects have an Identifier in the IWS, so this is the default sort-by
-     * field to be used for sorting, unless a different is chosen.
+     * The default sort order is the date of creation (timestamp), i.e. at which
+     * time the Object was saved in the database.
      */
-    IDENTIFIER,
+    CREATED,
 
+    /**
+     * The principel name of the Object to sort by. For Offers, this is the
+     * Reference Number.
+     */
     NAME
 }

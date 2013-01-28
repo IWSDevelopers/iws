@@ -33,7 +33,7 @@ public abstract class AbstractPaginatable extends AbstractVerification implement
     private int pageNumber = Paginatable.FIRST_PAGE;
     private int pageSize = Paginatable.MAX_PAGE_SIZE;
     private boolean ascendingSortOrder = Paginatable.ASCENDING_SORT_ORDER;
-    private SortingField sortBy = SortingField.IDENTIFIER;
+    protected SortingField sortBy = SortingField.CREATED;
 
     /**
      * Sets the Current Page Number to be retrieved. If the Page Number is not
@@ -110,7 +110,7 @@ public abstract class AbstractPaginatable extends AbstractVerification implement
      *
      * @param sortBy Field to sort by
      */
-    abstract void setSortBy(SortingField sortBy);
+    public abstract void setSortBy(SortingField sortBy);
 
     /**
      * {@inheritDoc}

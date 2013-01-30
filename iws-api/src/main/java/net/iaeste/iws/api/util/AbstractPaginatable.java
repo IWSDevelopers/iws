@@ -25,15 +25,12 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public abstract class AbstractPaginatable extends AbstractVerification implements Paginatable {
+public abstract class AbstractPaginatable extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private int pageNumber = Paginatable.FIRST_PAGE;
-    private int pageSize = Paginatable.MAX_PAGE_SIZE;
-    private boolean ascendingSortOrder = Paginatable.ASCENDING_SORT_ORDER;
-    protected SortingField sortBy = SortingField.CREATED;
+    protected final Page page = new Page();
 
     /**
      * Sets the Current Page Number to be retrieved. If the Page Number is not
@@ -48,15 +45,7 @@ public abstract class AbstractPaginatable extends AbstractVerification implement
             throw new VerificationException("Invalid Page number.");
         }
 
-        this.pageNumber = pageNumber;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int pageNumber() {
-        return pageNumber;
+        page.setPageNumber(pageNumber);
     }
 
     /**
@@ -72,15 +61,7 @@ public abstract class AbstractPaginatable extends AbstractVerification implement
             throw new VerificationException("Invalid Page Size.");
         }
 
-        this.pageSize = pageSize;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int pageSize() {
-        return pageSize;
+        page.setPageSize(pageSize);
     }
 
     /**
@@ -92,15 +73,16 @@ public abstract class AbstractPaginatable extends AbstractVerification implement
      * @see Paginatable#ASCENDING_SORT_ORDER
      */
     public void setAscendingSortOrder(final boolean ascendingSortOrder) {
-        this.ascendingSortOrder = ascendingSortOrder;
+        page.setSortAscending(ascendingSortOrder);
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves all the Paging information required for the request.
+     *
+     * @return Paginatiable Object for this request
      */
-    @Override
-    public boolean sortAscending() {
-        return ascendingSortOrder;
+    public Page getPagingInformation() {
+        return page;
     }
 
     /**
@@ -111,12 +93,4 @@ public abstract class AbstractPaginatable extends AbstractVerification implement
      * @param sortBy Field to sort by
      */
     public abstract void setSortBy(SortingField sortBy);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SortingField sortBy() {
-        return sortBy;
-    }
 }

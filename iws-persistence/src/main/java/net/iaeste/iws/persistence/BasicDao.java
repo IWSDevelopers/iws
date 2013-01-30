@@ -14,10 +14,13 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.Mergeable;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
+import net.iaeste.iws.persistence.views.IWSView;
 
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -74,4 +77,21 @@ public interface BasicDao {
      * @return List of the Entity history
      */
     List<MonitoringEntity> findHistory(IWSEntity entity);
+
+    /**
+     * IWSViews should be used for all listings, since a View can be optimized
+     * in the database, and further - we need to add paginating information
+     * like page number, size, sorting by and sorting direction. This method
+     * takes a View, and extends the given Query with the pagination
+     * information.<br />
+     *   Note; that the queries given <b>must</b> also have the two fields
+     * sortBy and sortOrder available as parameters, otherwise an Exception
+     * will be thrown, as it is not possible to check the query by the logic
+     * before using it.
+     *
+     * @param query Query to invoke with the paging information
+     * @param page  Paginf information
+     * @return List of results from the Query
+     */
+    <T extends IWSView<T>> List<T> fetchList(Query query, Paginatable page);
 }

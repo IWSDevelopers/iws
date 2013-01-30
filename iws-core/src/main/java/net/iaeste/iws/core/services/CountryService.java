@@ -85,10 +85,10 @@ public final class CountryService {
 
         if (request.getMembership() != null) {
             final Membership membership = request.getMembership();
-            entities = dao.getCountries(membership);
+            entities = dao.getCountries(membership, request.getPagingInformation());
         } else {
             final List<String> countryIds = request.getCountryIds();
-            entities = dao.getCountries(countryIds);
+            entities = dao.getCountries(countryIds, request.getPagingInformation());
         }
 
         final List<Country> countries = transform(entities);

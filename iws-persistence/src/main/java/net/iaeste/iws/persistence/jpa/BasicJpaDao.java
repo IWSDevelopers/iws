@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.dtos.Field;
+import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -22,10 +23,12 @@ import net.iaeste.iws.persistence.entities.Mergeable;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
+import net.iaeste.iws.persistence.views.IWSView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -123,6 +126,23 @@ public class BasicJpaDao implements BasicDao {
         }
 
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends IWSView<T>> List<T> fetchList(final Query query, final Paginatable page) {
+        query.setFirstResult(page.pageNumber() * page.pageSize());
+        query.setMaxResults(page.pageSize());
+
+        final List<T> found = query.getResultList();
+        for (final T view : found) {
+            view.setSorting(page.sortBy(), page.sortAscending());
+        }
+        Collections.sort(found);
+
+        return found;
     }
 
     private void persistMonitoredData(final Authentication authentication, final List<Field> fields) {

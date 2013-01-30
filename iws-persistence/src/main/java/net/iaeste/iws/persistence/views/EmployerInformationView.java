@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.constants.IWSConstants;
@@ -24,13 +23,14 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection CompareToUsesNonFinalVariable
  */
 @Entity
 @Table(name = "employer_information")
-public class EmployerInformationView extends AbstractView {
+public class EmployerInformationView extends AbstractView<EmployerInformationView> {
 
     /** {@see IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -84,4 +84,15 @@ public class EmployerInformationView extends AbstractView {
     public Date getChangedOn() {
         return changedOn;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(final EmployerInformationView o) {
+        final int result = id.compareTo(o.id);
+
+        return sortAscending ? result : -result;
+    }
+
 }

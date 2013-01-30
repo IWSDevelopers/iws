@@ -34,18 +34,19 @@ import javax.persistence.Table;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection CompareToUsesNonFinalVariable
  */
 @Entity
 @NamedQueries({
         @NamedQuery(name = "view.findCountriesByMembership",
                 query = "select v from CountryView v " +
-                        "where v.membership = :type"),
+                        "where v.membership = :type "),
         @NamedQuery(name = "view.findCountriesByCountryIds",
                 query = "select v from CountryView v " +
                         "where v.countryId in :ids")
 })
 @Table(name = "country_details")
-public class CountryView extends AbstractView {
+public class CountryView extends AbstractView<CountryView> {
 
     /** {@see IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -208,5 +209,51 @@ public class CountryView extends AbstractView {
 
     public String getNsLastname() {
         return nsLastname;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(final CountryView o) {
+        final int result;
+
+        switch (sortField) {
+            case NAME:
+                result = countryName.compareTo(o.countryName);
+                break;
+            default:
+                result = countryId.compareTo(o.countryId);
+        }
+
+        return sortAscending ? result : -result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        // As the View is reading unique records from the database, it is
+        // enough to simply look at their unique Id
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof CountryView)) {
+            return false;
+        }
+
+        final CountryView view = (CountryView) obj;
+        return !(countryId != null ? !countryId.equals(view.countryId) : view.countryId != null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        // As the View is reading unique records from the database, it is
+        // enough to simply look at their unique Id
+        return countryId.hashCode();
     }
 }

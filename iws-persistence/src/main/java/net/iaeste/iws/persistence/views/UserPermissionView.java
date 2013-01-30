@@ -33,6 +33,7 @@ import java.io.Serializable;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection CompareToUsesNonFinalVariable, ClassEscapesDefinedScope
  */
 @Entity
 @NamedQueries({
@@ -45,7 +46,7 @@ import java.io.Serializable;
                         "  and v.externalGroupId = :egid")
 })
 @Table(name = "user_permissions")
-public class UserPermissionView extends AbstractView {
+public class UserPermissionView extends AbstractView<UserPermissionView> {
 
     /** {@see IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -202,11 +203,47 @@ public class UserPermissionView extends AbstractView {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof UserPermissionView)) {
+            return false;
+        }
+
+        final UserPermissionView that = (UserPermissionView) obj;
+
+        return id.equals(that.id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(final UserPermissionView o) {
+        final int result = permission.compareTo(o.permission);
+
+        return sortAscending ? result : -result;
+    }
+
+    /**
      * Internal Class, used as Embedded Id, it contains the combined Primary
      * Key for the View. This is required, since Views normally doesn't have a
      * single column, which can act as the primary key by itself. Hence, for
      * the UserPermission View, the combined UserId, GroupId & PermissionId
      * makes up the Primary Key.
+     * @noinspection JpaObjectClassSignatureInspection, PackageVisibleInnerClass
      */
     @Embeddable
     static class UserPermissionViewId implements Serializable {
@@ -249,6 +286,43 @@ public class UserPermissionView extends AbstractView {
 
         public Long getPermissionId() {
             return permissionId;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean equals(final Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof UserPermissionViewId)) {
+                return false;
+            }
+
+            final UserPermissionViewId that = (UserPermissionViewId) obj;
+
+            if (!groupId.equals(that.groupId)) {
+                return false;
+            }
+            if (!permissionId.equals(that.permissionId)) {
+                return false;
+            }
+
+            return userId.equals(that.userId);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int hashCode() {
+            int result = userId.hashCode();
+
+            result = IWSConstants.HASHCODE_MULTIPLIER * result + groupId.hashCode();
+            result = IWSConstants.HASHCODE_MULTIPLIER * result + permissionId.hashCode();
+
+            return result;
         }
     }
 }

@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Membership;
+import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.views.CountryView;
@@ -68,21 +69,21 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryView> getCountries(final List<String> countryIds) {
+    public List<CountryView> getCountries(final List<String> countryIds, final Paginatable page) {
         final Query query = entityManager.createNamedQuery("view.findCountriesByCountryIds");
         query.setParameter("ids", countryIds);
 
-        return query.getResultList();
+        return fetchList(query, page);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<CountryView> getCountries(final Membership membership) {
+    public List<CountryView> getCountries(final Membership membership, final Paginatable page) {
         final Query query = entityManager.createNamedQuery("view.findCountriesByMembership");
         query.setParameter("type", membership);
 
-        return query.getResultList();
+        return fetchList(query, page);
     }
 }

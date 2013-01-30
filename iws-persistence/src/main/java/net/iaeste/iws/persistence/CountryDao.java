@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.enums.Membership;
+import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.views.CountryView;
 
@@ -44,7 +45,7 @@ public interface CountryDao extends BasicDao {
      */
     CountryEntity findCountryByName(String countryName);
 
-    List<CountryView> getCountries(List<String> countryIds);
+    List<CountryView> getCountries(List<String> countryIds, Paginatable page);
 
-    List<CountryView> getCountries(Membership membership);
+    List<CountryView> getCountries(Membership membership, Paginatable page);
 }

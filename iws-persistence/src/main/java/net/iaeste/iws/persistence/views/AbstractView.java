@@ -16,17 +16,27 @@
 package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-
-import java.io.Serializable;
+import net.iaeste.iws.api.enums.SortingField;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public abstract class AbstractView implements Serializable {
+public abstract class AbstractView<T> implements IWSView<T> {
+
+    protected SortingField sortField = SortingField.CREATED;
+    protected boolean sortAscending = true;
 
     /** {@see IWBaseConstats#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSorting(final SortingField sortField, final boolean sortAscending) {
+        this.sortField = sortField;
+        this.sortAscending = sortAscending;
+    }
 }

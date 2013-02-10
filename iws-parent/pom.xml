@@ -118,7 +118,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
+                <version>2.12.4</version>
+                <configuration>
+                    <!-- The forkmode allows JUnit tests to be executed in
+                     parallel, which is good for checking that we have no
+                     Threading issues (at least in out tests). However, the
+                     Spring-framwork will then create multiple Beans, one for
+                     each Thread started - meaning that the overall time will be
+                     increased as the Spring overhead greatly exceeds the test
+                     execution time. If the tests becomes too slow, please use
+                     "never" instead of "always". However, this change should
+                     not be checked in, since the parallel execution is an
+                     important part of our tests. -->
+                    <forkMode>always</forkMode>
+                </configuration>
                 <goals>
                     <goal>test</goal>
                 </goals>

@@ -9,59 +9,60 @@
     </parent>
     <artifactId>iws-ear</artifactId>
     <name>IWS - EAR</name>
+    <packaging>ear</packaging>
     <description>IntraWeb Services - EAR Module</description>
 
-	<build>
-		<finalName>iws</finalName>
-		<plugins>
-			<plugin>
-				<artifactId>maven-ear-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<version>5</version>
-					<generateApplicationXml>true</generateApplicationXml>
-					<modules>
-						<ejbModule>
-							<groupId>net.iaeste.iws</groupId>
-							<artifactId>iws-ejb</artifactId>
-							<bundleFileName>iws-ejb.jar</bundleFileName>
-						</ejbModule>
-					</modules>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <finalName>iws</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <version>5</version>
+                    <generateApplicationXml>true</generateApplicationXml>
+                    <modules>
+                        <ejbModule>
+                            <groupId>net.iaeste.iws</groupId>
+                            <artifactId>iws-ejb</artifactId>
+                            <bundleFileName>iws-ejb.jar</bundleFileName>
+                        </ejbModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-	<dependencies>
-		<dependency>
-			<groupId>net.iaeste.iws</groupId>
-			<artifactId>iws-ejb</artifactId>
+    <profiles>
+        <profile>
+            <id>deployEar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.ashlux</groupId>
+                        <artifactId>oc4j-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>verify</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>deployEar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.iaeste.iws</groupId>
+            <artifactId>iws-ejb</artifactId>
             <version>1.0-SNAPSHOT</version>
-			<type>ejb</type>
-		</dependency>
-	</dependencies>
-
-	<profiles>
-		<profile>
-			<id>deployEar</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.ashlux</groupId>
-						<artifactId>oc4j-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>verify</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>deployEar</goal>
-								</goals>
-							</execution>
-						</executions>               
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+            <type>ejb</type>
+        </dependency>
+    </dependencies>
 
 </project>

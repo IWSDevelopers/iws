@@ -187,8 +187,8 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required, {@link #validateNotNullableFields(java.util.Map)}</li>
-     * <li>{@link #validateDates(java.util.Map)}</li>
+     * <li>required, {@link #validateNotNullableFields(Map)}</li>
+     * <li>{@link #validateDates(Map)}</li>
      * </ul>
      */
     private Date fromDate = null;
@@ -196,7 +196,7 @@ public final class Offer extends AbstractVerification {
      * validations:
      * <ul>
      * <li>required, {@link #validateNotNullableFields}</li>
-     * <li>{@link #validateDates(java.util.Map)}</li>
+     * <li>{@link #validateDates(Map)}</li>
      * </ul>
      */
     private Date toDate = null;
@@ -205,12 +205,12 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>{@link #validateUnavailableDatesOrder(java.util.Map)}</li></ul>
+     * <ul><li>{@link #validateUnavailableDatesOrder(Map)}</li></ul>
      */
     private Date unavailableFrom = null;
     /**
      * validations:
-     * <ul><li>{@link #validateUnavailableDatesOrder(java.util.Map)} )}</li></ul>
+     * <ul><li>{@link #validateUnavailableDatesOrder(Map)} )}</li></ul>
      */
     private Date unavailableTo = null;
     private String workingPlace = null;
@@ -219,7 +219,7 @@ public final class Offer extends AbstractVerification {
 
     /**
      * validations:
-     * <ul><li>required, {@link #validateNotNullableFields(java.util.Map)}</li></ul>
+     * <ul><li>required, {@link #validateNotNullableFields(Map)}</li></ul>
      */
     private Float weeklyHours = null;
     private Float dailyHours = null;
@@ -1039,14 +1039,14 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     * <li>required fields, {@link #validateNotNullableFields(java.util.Map)}</li>
-     * <li>refNo format, {@link #validateRefNo(java.util.Map)}</li>
-     * <li>order and presence of dates, {@link #validateDates(java.util.Map)}</li>
-     * <li>internship period, {@link #validateNumberOfWeeks(java.util.Map)}</li>
-     * <li>number of selected Fields of Studies, {@link #validateSizeOfFieldOfStudies(java.util.Map)}</li>
-     * <li>number of selected Specializations, {@link #validateSizeOfSpecializations(java.util.Map)}</li>
-     * <li>length of work description, {@link #validateLengthOfWorkDescription(java.util.Map)}</li>
-     * <li>dependencies: fields required only if other fields are provided, {@link #validateFieldDependencies(java.util.Map)}</li>
+     * <li>required fields, {@link #validateNotNullableFields(Map)}</li>
+     * <li>refNo format, {@link #validateRefNo(Map)}</li>
+     * <li>order and presence of dates, {@link #validateDates(Map)}</li>
+     * <li>internship period, {@link #validateNumberOfWeeks(Map)}</li>
+     * <li>number of selected Fields of Studies, {@link #validateSizeOfFieldOfStudies(Map)}</li>
+     * <li>number of selected Specializations, {@link #validateSizeOfSpecializations(Map)}</li>
+     * <li>length of work description, {@link #validateLengthOfWorkDescription(Map)}</li>
+     * <li>dependencies: fields required only if other fields are provided, {@link #validateFieldDependencies(Map)}</li>
      * </ul>
      */
     @Override

@@ -37,21 +37,17 @@ import java.util.Date;
  * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "role.findAll",
+        @NamedQuery(name = "role.findAll",
                 query = "select r from RoleEntity r"),
-        @NamedQuery(
-                name = "role.findById",
+        @NamedQuery(name = "role.findById",
                 query = "select r from RoleEntity r " +
                         "where r.id = :id"),
-        @NamedQuery(
-                name = "role.findByUserAndGroup",
+        @NamedQuery(name = "role.findByUserAndGroup",
                 query = "select r from UserGroupEntity ug, RoleEntity r " +
                         "where ug.role.id = r.id" +
                         "  and ug.user.externalId = :euid" +
                         "  and ug.group.id = :gid"),
-        @NamedQuery(
-                name = "role.findRoleByName",
+        @NamedQuery(name = "role.findRoleByName",
                 query = "select r from RoleEntity r " +
                         "where r.role = :role")
 })

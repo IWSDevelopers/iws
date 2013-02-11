@@ -18,7 +18,18 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationType;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -27,6 +38,7 @@ import java.util.Date;
  * @author Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
+ * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
         @NamedQuery(
@@ -56,26 +68,26 @@ public class NotificationMessageEntity implements IWSEntity {
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "subject")
-    private NotificationType type;
+    private NotificationType type = null;
 
     /**
      * Text of the message
      */
     @Column(name = "message")
-    private String message;
+    private String message = null;
 
     /**
      * Status of the message (new, processing, ...)
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private NotificationMessageStatus status;
+    private NotificationMessageStatus status = null;
 
     /**
      * Date after which the message should be processed (after this date, the message should be sent)md
      */
     @Column(name = "process_after")
-    private Date processAfter;
+    private Date processAfter = null;
 
     /**
      * Empty Constructor, JPA requirement.

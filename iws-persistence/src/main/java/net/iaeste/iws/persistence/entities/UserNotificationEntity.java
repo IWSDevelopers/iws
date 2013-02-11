@@ -18,21 +18,28 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.NotificationSubject;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * Entity for user's notification settings
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-@NamedQueries({
-        @NamedQuery(name = "notifications.findSettingByUserAndSubject",
-                query = "select un from UserNotificationEntity un " +
-                        "where un.user.id = :id " +
-                        "  and un.subject = :subject")
-})
+@NamedQueries(@NamedQuery(name = "notifications.findSettingByUserAndSubject",
+        query = "select un from UserNotificationEntity un " +
+                "where un.user.id = :id " +
+                "  and un.subject = :subject"))
 @Entity
 @Table(name = "user_notifications")
 public class UserNotificationEntity implements IWSEntity {

@@ -33,7 +33,7 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection StaticNonFinalField
+ * @noinspection StaticNonFinalField, SynchronizationOnStaticField
  */
 public final class NotificationSpy implements Notifications {
 
@@ -114,17 +114,9 @@ public final class NotificationSpy implements Notifications {
      * from the stack. As long as a non-null value is returned, the Stack is not
      * empty.
      *
-     * @return First Notitication from the Stack
+     * @return First Notitication from the Stack or null if stack is empty
      */
     public NotificationMessage getNext() {
-        final NotificationMessage message;
-
-        if (!notifiables.isEmpty()) {
-            message = notifiables.remove(0);
-        } else {
-            message = null;
-        }
-
-        return message;
+        return notifiables.isEmpty() ? null : notifiables.remove(0);
     }
 }

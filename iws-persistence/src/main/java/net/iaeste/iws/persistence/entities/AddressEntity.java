@@ -69,11 +69,11 @@ public class AddressEntity implements Mergeable<AddressEntity> {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "modified")
-    private Date modified;
+    private Date modified = null;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "created")
-    private Date created;
+    private Date created = null;
 
     public AddressEntity() {
     }
@@ -117,6 +117,14 @@ public class AddressEntity implements Mergeable<AddressEntity> {
 
     public String getCity() {
         return city;
+    }
+
+    public void setRegion(final String region) {
+        this.region = region;
+    }
+
+    public String getRegion() {
+        return region;
     }
 
     public void setZip(final String zip) {

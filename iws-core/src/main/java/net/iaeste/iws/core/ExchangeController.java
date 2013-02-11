@@ -18,8 +18,29 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.*;
-import net.iaeste.iws.api.responses.*;
+import net.iaeste.iws.api.requests.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.FacultyRequest;
+import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.FetchOffersRequest;
+import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.FetchPublishOfferRequest;
+import net.iaeste.iws.api.requests.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.PublishGroupRequest;
+import net.iaeste.iws.api.requests.PublishOfferRequest;
+import net.iaeste.iws.api.requests.StudentRequest;
+import net.iaeste.iws.api.responses.FacultyResponse;
+import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
+import net.iaeste.iws.api.responses.OfferResponse;
+import net.iaeste.iws.api.responses.OfferTemplateResponse;
+import net.iaeste.iws.api.responses.PublishGroupResponse;
+import net.iaeste.iws.api.responses.PublishOfferResponse;
+import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.FacultyService;
@@ -348,7 +369,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishOfferResponse fetchPublishedOfferInfo(AuthenticationToken token, FetchPublishOfferRequest request) {
+    public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {
         LOG.trace("Starting fetchPublishedOfferInfo()");
         FetchPublishOfferResponse response;
 

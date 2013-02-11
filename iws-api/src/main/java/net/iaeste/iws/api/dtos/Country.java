@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public final class Country extends AbstractVerification {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String countryId = null;

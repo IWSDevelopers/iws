@@ -76,7 +76,7 @@ public final class AccessService extends CommonService {
      *
      * @param request Request Object with User Credentials
      * @return New AuthenticationToken
-     * @throws net.iaeste.iws.core.exceptions.SessionException if an Active Session already exists
+     * @throws SessionException if an Active Session already exists
      */
     public AuthenticationToken generateSession(final AuthenticationRequest request) {
         final UserEntity user = findUserFromCredentials(request);

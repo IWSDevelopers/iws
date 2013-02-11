@@ -14,11 +14,12 @@
  */
 package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.NotificationType;
-import net.iaeste.iws.persistence.entities.*;
+import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 
 import java.util.Date;
 import java.util.List;

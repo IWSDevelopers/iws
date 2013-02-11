@@ -15,20 +15,20 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.util.*;
-
-import java.util.*;
+import net.iaeste.iws.api.util.AbstractFallible;
+import net.iaeste.iws.api.util.Copier;
+import net.iaeste.iws.api.util.DateTime;
 
 /**
  * Sharing info for the offer
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class OfferGroup extends AbstractFallible {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String offerRefNo = null;
@@ -68,15 +68,15 @@ public final class OfferGroup extends AbstractFallible {
         return offerRefNo;
     }
 
-    public void setOfferRefNo(String refNo) {
-        this.offerRefNo = refNo;
+    public void setOfferRefNo(final String offerRefNo) {
+        this.offerRefNo = offerRefNo;
     }
 
     public String getGroupExternalId() {
         return groupExternalId;
     }
 
-    public void setGroupExternalId(String groupExternalId) {
+    public void setGroupExternalId(final String groupExternalId) {
         this.groupExternalId = groupExternalId;
     }
 
@@ -84,7 +84,7 @@ public final class OfferGroup extends AbstractFallible {
         return answered;
     }
 
-    public void setAnswered(DateTime answered) {
+    public void setAnswered(final DateTime answered) {
         this.answered = answered;
     }
 

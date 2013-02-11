@@ -26,7 +26,7 @@ import java.util.Date;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CompareToUsesNonFinalVariable
+ * @noinspection CompareToUsesNonFinalVariable, AssignmentToDateFieldFromParameter
  */
 @Entity
 @Table(name = "employer_information")
@@ -83,6 +83,47 @@ public class EmployerInformationView extends AbstractView<EmployerInformationVie
 
     public Date getChangedOn() {
         return changedOn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof EmployerInformationView)) {
+            return false;
+        }
+
+        final EmployerInformationView that = (EmployerInformationView) obj;
+
+        if (changedOn != null ? !changedOn.equals(that.changedOn) : that.changedOn != null) {
+            return false;
+        }
+        if (employerName != null ? !employerName.equals(that.employerName) : that.employerName != null) {
+            return false;
+        }
+        if (groupId != null ? !groupId.equals(that.groupId) : that.groupId != null) {
+            return false;
+        }
+
+        return !(id != null ? !id.equals(that.id) : that.id != null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employerName != null ? employerName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupId != null ? groupId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (changedOn != null ? changedOn.hashCode() : 0);
+
+        return result;
     }
 
     /**

@@ -16,55 +16,52 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.OfferSharingStatus;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
- * @noinspection AssignmentToDateFieldFromParameter
+ * @since   1.7
+ * @noinspection AssignmentToDateFieldFromParameter, ClassWithTooManyFields
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "OfferGroupEntity.findAll",
+        @NamedQuery(name = "OfferGroupEntity.findAll",
                 query = "select og from OfferGroupEntity og "),
-        @NamedQuery(
-                name = "OfferGroupEntity.findById",
+        @NamedQuery(name = "OfferGroupEntity.findById",
                 query = "select og from OfferGroupEntity og " +
                         "where og.id = :id"),
-        @NamedQuery(
-                name = "OfferGroupEntity.findGroupsByOfferAndGroup",
+        @NamedQuery(name = "OfferGroupEntity.findGroupsByOfferAndGroup",
                 query = "select og from OfferGroupEntity og " +
                         "where og.group.id = :gid" +
                         "  and og.offer.id = :oid"),
-        @NamedQuery(
-                name = "OfferGroupEntity.findGroupsByOffer",
+        @NamedQuery(name = "OfferGroupEntity.findGroupsByOffer",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
-        @NamedQuery(
-                name = "OfferGroupEntity.findGroupsByOfferRefNo",
+        @NamedQuery(name = "OfferGroupEntity.findGroupsByOfferRefNo",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.refNo = :refno"),
-        @NamedQuery(
-                name = "OfferGroupEntity.deleteByIds",
-                query = "DELETE FROM OfferGroupEntity og WHERE og.id IN :ids"),
-        @NamedQuery(
-                name = "OfferGroupEntity.deleteByOffer",
-                query = "DELETE FROM OfferGroupEntity og WHERE og.offer.id = :oid"),
-        @NamedQuery(
-                name = "OfferGroupEntity.deleteByOfferAndGroups",
-                query = "DELETE FROM OfferGroupEntity og WHERE og.offer.id = :oid " +
+        @NamedQuery(name = "OfferGroupEntity.deleteByIds",
+                query = "delete from OfferGroupEntity og " +
+                        "where og.id in :ids"),
+        @NamedQuery(name = "OfferGroupEntity.deleteByOffer",
+                query = "delete from OfferGroupEntity og " +
+                        "where og.offer.id = :oid"),
+        @NamedQuery(name = "OfferGroupEntity.deleteByOfferAndGroups",
+                query = "delete from OfferGroupEntity og " +
+                        "where og.offer.id = :oid " +
                         " and og.group.id IN :gids")
-        /* TODO not working, getting 'unexpected token: CROSS'
-        @NamedQuery(
-                name = "OfferGroupEntity.deleteByOfferRefNo",
-                query = "DELETE FROM OfferGroupEntity og WHERE og.offer.refNo = :refno"),
-        @NamedQuery(
-                name = "OfferGroupEntity.deleteByOfferRefNoAndGroups",
-                query = "DELETE FROM OfferGroupEntity og WHERE og.offer.refNo = :refno " +
-                        " and og.group.id IN :gids")
-        */
 })
 @Entity
 @Table(name = "offer_to_group")
@@ -111,14 +108,14 @@ public class OfferGroupEntity implements IWSEntity {
     @Column(name = "modified")
     private Date modified = new Date();
 
-    @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "modified_by")
-    private UserEntity modifiedBy = null;
-
     /** Timestamp when the user was created. */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
     private Date created = new Date();
+
+    @ManyToOne(targetEntity = UserEntity.class)
+    @JoinColumn(nullable = false, name = "modified_by")
+    private UserEntity modifiedBy = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(nullable = false, name = "created_by")
@@ -238,6 +235,14 @@ public class OfferGroupEntity implements IWSEntity {
         return modified;
     }
 
+    public void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
     public void setModifiedBy(final UserEntity modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
@@ -252,9 +257,5 @@ public class OfferGroupEntity implements IWSEntity {
 
     public UserEntity getCreatedBy() {
         return createdBy;
-    }
-
-    public Date getCreated() {
-        return created;
     }
 }

@@ -73,7 +73,7 @@ public final class ProcessOfferRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final HashMap<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(0);
 
         isVerifiable(validation, "offer", offer);
 

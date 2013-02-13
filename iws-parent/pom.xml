@@ -47,7 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
+                <version>2.9</version>
                 <reportSets>
                     <reportSet>
                         <id>html</id>
@@ -63,12 +63,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.5</version>
+                <version>2.13</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.6.0.201210061924</version>
+                <version>0.6.2.201302030002</version>
             </plugin>
         </plugins>
     </reporting>
@@ -118,19 +118,31 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12.4</version>
+                <version>2.13</version>
                 <configuration>
-                    <!-- The forkmode allows JUnit tests to be executed in
-                     parallel, which is good for checking that we have no
-                     Threading issues (at least in our tests). However, the
-                     Spring-framwork will then create multiple Beans, one for
-                     each Thread started - meaning that the overall time will be
-                     increased as the Spring overhead greatly exceeds the test
-                     execution time. If the tests becomes too slow, please use
-                     "never" instead of "always". However, this change should
-                     not be checked in, since the parallel execution is an
-                     important part of our tests. -->
-                    <forkMode>always</forkMode>
+                    <!-- The surefire plugin supports running the execution of
+                         the JUnit tests in parallel, and with various options
+                         set. Although the "advertized" advantage is to speed up
+                         the test suite, is more or less crap, there is another
+                         advantage to running things in parallel. And that is
+                         to see how the system handles multiple threads that
+                         accesses it at the same time - in other words, how
+                         thread-safe is the system.
+                           Since each thread needs to build the Spring beans
+                         required by the tests, it means that the overall
+                         testing takes significantly longer and will eat more
+                         memory. If it makes the system too slow, please reduce
+                         the number of threads in the threadCount below. But
+                         note, that those changes should not be committed.
+                           Spring seems to have a problem with the in-memory
+                         database and running tests in parallel. Hence, these
+                         tests are not enabled by default. The setting is here
+                         merely to show how to configure it. An alternative to
+                         running the tests in parallel using Maven, is to use
+                         IntelliJ's forkmode for JUnit tests.
+                           Parallel supports 'classes', 'methods' or 'both' -->
+                    <parallel>none</parallel>
+                    <threadCount>5</threadCount>
                 </configuration>
                 <goals>
                     <goal>test</goal>
@@ -195,11 +207,6 @@
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>org.glassfish</groupId>
-                <artifactId>javax.javaee</artifactId>
-                <version>3.0-b54</version>
-            </dependency>
-            <dependency>
                 <groupId>javaee</groupId>
                 <artifactId>javaee-api</artifactId>
                 <version>5</version>
@@ -223,7 +230,7 @@
             <dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
-                <version>2.2.8</version>
+                <version>2.2.9</version>
             </dependency>
             <dependency>
                 <groupId>cglib</groupId>
@@ -233,37 +240,37 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>3.1.2.RELEASE</version>
+                <version>3.2.1.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>3.1.2.RELEASE</version>
+                <version>3.2.1.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>3.1.2.RELEASE</version>
+                <version>3.2.1.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>3.1.2.RELEASE</version>
+                <version>3.2.1.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
-                <version>3.1.2.RELEASE</version>
+                <version>3.2.1.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>3.1.2.RELEASE</version>
+                <version>3.2.1.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
-                <version>3.1.2.RELEASE</version>
+                <version>3.2.1.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.javaconfig</groupId>
@@ -283,7 +290,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.6.4</version>
+                <version>1.7.2</version>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
@@ -293,12 +300,12 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>1.6.4</version>
+                <version>1.7.2</version>
             </dependency>
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
-                <version>2.0</version>
+                <version>2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -308,7 +315,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.9</version>
+                <version>4.11</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -332,7 +339,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
-                <version>1.9.0</version>
+                <version>1.9.5</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

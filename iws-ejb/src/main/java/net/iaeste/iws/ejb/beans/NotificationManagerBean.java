@@ -17,20 +17,17 @@ package net.iaeste.iws.ejb.beans;
 import net.iaeste.iws.ejb.NotificationManagerLocal;
 import net.iaeste.iws.persistence.notification.Notifications;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import javax.ejb.*;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Local(NotificationManagerLocal.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionManagement
 public class NotificationManagerBean implements NotificationManagerLocal {
 
     private Notifications notifications = null;

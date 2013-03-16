@@ -30,7 +30,12 @@ import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.*;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,10 +55,9 @@ import javax.persistence.PersistenceContext;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Remote(CommitteeRemote.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@TransactionManagement
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class CommitteeBean extends AbstractBean implements CommitteeRemote {
 
     private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);

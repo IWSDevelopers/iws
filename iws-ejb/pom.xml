@@ -47,6 +47,10 @@
     <dependencies>
         <dependency>
             <groupId>net.iaeste.iws</groupId>
+            <artifactId>iws-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.iaeste.iws</groupId>
             <artifactId>iws-common</artifactId>
         </dependency>
         <dependency>

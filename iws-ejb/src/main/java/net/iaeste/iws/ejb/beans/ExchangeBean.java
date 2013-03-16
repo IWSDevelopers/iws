@@ -50,7 +50,12 @@ import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.*;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -71,10 +76,9 @@ import javax.persistence.PersistenceContext;
  * @since   1.7
  * @noinspection OverlyCoupledClass
  */
-@Local(ExchangeRemote.class)
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@TransactionManagement
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class ExchangeBean extends AbstractBean implements ExchangeRemote {
 
     private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);

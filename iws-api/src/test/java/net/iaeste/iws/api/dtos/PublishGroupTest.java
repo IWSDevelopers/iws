@@ -153,7 +153,7 @@ public final class PublishGroupTest {
     // Internal methods
     // =========================================================================
 
-    private List<Group> buildGroups(final int count) {
+    private static List<Group> buildGroups(final int count) {
         final List<Group> groups = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {

@@ -32,7 +32,7 @@ import org.junit.Before;
  */
 public abstract class AbstractClientTest {
 
-    protected static final Access access = new AccessClient();
+    private static final Access access = new AccessClient();
     protected final NotificationSpy spy = NotificationSpy.getInstance();
     protected AuthenticationToken token = null;
 

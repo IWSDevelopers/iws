@@ -213,7 +213,7 @@ public class OfferTransformerTest {
         assertThat(newEmployer, is(employer));
     }
 
-    private OfferEntity getMinimalOfferEntity() {
+    private static OfferEntity getMinimalOfferEntity() {
         final OfferEntity minimalOffer = new OfferEntity();
         minimalOffer.setRefNo(OfferTestUtility.REF_NO);
         minimalOffer.setEmployerName(OfferTestUtility.EMPLOYER_NAME);
@@ -234,8 +234,9 @@ public class OfferTransformerTest {
         return minimalOffer;
     }
 
-    private OfferEntity getFullOfferEntity() {
+    private static OfferEntity getFullOfferEntity() {
         final OfferEntity offer = getMinimalOfferEntity();
+
         offer.setNominationDeadline(OfferTestUtility.NOMINATION_DEADLINE.toDate());
         offer.setEmployerAddress(OfferTestUtility.EMPLOYER_ADDRESS);
         offer.setEmployerAddress2(OfferTestUtility.EMPLOYER_ADDRESS2);

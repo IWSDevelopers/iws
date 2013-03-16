@@ -248,16 +248,12 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public boolean delete(final Long offerId) {
+    public void delete(final Long offerId) {
         final OfferEntity offer = findOffer(offerId);
-        boolean result = false;
 
         if (offer != null) {
             entityManager.remove(offer);
-            result = true;
         }
-
-        return result;
     }
 
     /**
@@ -275,7 +271,7 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public List<GroupEntity> findGroupByExternalIds(List<String> externalIds) {
+    public List<GroupEntity> findGroupByExternalIds(final List<String> externalIds) {
         final Query query = entityManager.createNamedQuery("group.findByExternalGroupIds");
         query.setParameter("egids", externalIds);
 
@@ -287,9 +283,9 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      */
     @Override
     public GroupEntity findGroupByExternalId(final String externalId) {
-        List<String> externalIds = new ArrayList<>(1);
+        final List<String> externalIds = new ArrayList<>(1);
         externalIds.add(externalId);
-        List<GroupEntity> groups = findGroupByExternalIds(externalIds);
+        final List<GroupEntity> groups = findGroupByExternalIds(externalIds);
 
         GroupEntity group = null;
 

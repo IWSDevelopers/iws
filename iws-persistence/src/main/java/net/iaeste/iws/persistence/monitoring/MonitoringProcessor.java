@@ -274,7 +274,7 @@ public final class MonitoringProcessor {
      * @param obj    The IWSEntity to read the value from
      * @return The String representation of the Value or null
      */
-    private String readObjectValue(final java.lang.reflect.Field field, final IWSEntity obj) {
+    private static String readObjectValue(final java.lang.reflect.Field field, final IWSEntity obj) {
         // First, we store the Accessibility information for the IWSEntity, since
         // we need to set it to accessible before attempting to read it
         final boolean accessible = field.isAccessible();
@@ -304,7 +304,7 @@ public final class MonitoringProcessor {
      * @param obj2 The Second OBject
      * @return True if both Objects are identical, otherwise False
      */
-    private Boolean isValidIdenticalObjects(final IWSEntity obj1, final IWSEntity obj2) {
+    private static Boolean isValidIdenticalObjects(final IWSEntity obj1, final IWSEntity obj2) {
         return (obj1 != null) && (obj2 != null) && obj1.getClass().equals(obj2.getClass());
     }
 }

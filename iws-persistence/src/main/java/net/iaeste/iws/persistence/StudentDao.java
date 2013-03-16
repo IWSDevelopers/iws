@@ -38,5 +38,5 @@ public interface StudentDao {
      * @param name The name of the student to find
      * @return list of {@code StudentEntity}
      */
-    List<StudentEntity> findByName(final String name);
+    List<StudentEntity> findByName(String name);
 }

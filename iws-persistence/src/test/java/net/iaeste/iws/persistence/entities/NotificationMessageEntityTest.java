@@ -53,7 +53,7 @@ public class NotificationMessageEntityTest {
     @Transactional
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");
+        final UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");
         assertThat(user.getUserName(), is("austria"));
 
         final NotificationMessageEntity entity = new NotificationMessageEntity();
@@ -79,7 +79,7 @@ public class NotificationMessageEntityTest {
     @Transactional
     public void testUpdateQuery() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");
+        final UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");
         assertThat(user.getUserName(), is("austria"));
 
         final NotificationMessageEntity entity = new NotificationMessageEntity();
@@ -94,7 +94,7 @@ public class NotificationMessageEntityTest {
         Query query = entityManager.createNamedQuery("notifications.updateStatus");
         query.setParameter("id", entity.getId());
         query.setParameter("status", NotificationMessageStatus.PROCESSING);
-        int affectedRows = query.executeUpdate();
+        final int affectedRows = query.executeUpdate();
         assertThat(affectedRows, is(1));
 
         query = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");

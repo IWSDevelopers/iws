@@ -74,7 +74,7 @@ public class MonitoringEntityTest {
         assertThat(data.toString(), is(read.toString()));
     }
 
-    private List<Field> createMonitoringData(final int count) {
+    private static List<Field> createMonitoringData(final int count) {
         final List<Field> list = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {

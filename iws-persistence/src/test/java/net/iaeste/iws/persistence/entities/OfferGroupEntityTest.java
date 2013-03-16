@@ -15,7 +15,10 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.enums.*;
+import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
@@ -33,17 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * Contains tests for OfferEntity and OfferJpaDao
@@ -52,7 +50,6 @@ import static org.junit.Assert.fail;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@SuppressWarnings("ClassWithTooManyFields")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 public class OfferGroupEntityTest {
@@ -112,11 +109,11 @@ public class OfferGroupEntityTest {
     @Test
     @Transactional
     public void testFindGroup() {
-        List<String> externalIds = new ArrayList(1);
+        final List<String> externalIds = new ArrayList(1);
         externalIds.add(GROUP_EXTERNAL_ID);
-        List<GroupEntity> groups = offerDao.findGroupByExternalIds(externalIds);
+        final List<GroupEntity> groups = offerDao.findGroupByExternalIds(externalIds);
         assertThat(groups.size(), is(1));
-        GroupEntity group = groups.get(0);
+        final GroupEntity group = groups.get(0);
         assertThat(group.getExternalId(), is(GROUP_EXTERNAL_ID));
         assertThat(group.getGroupName(), is(GROUP_NAME));
 
@@ -130,14 +127,14 @@ public class OfferGroupEntityTest {
         offerDao.persist(authentication, offer);
 
         assertThat(offerDao.findAll().size(), is(1));
-        List<String> externalIds = new ArrayList(1);
+        final List<String> externalIds = new ArrayList(1);
         externalIds.add(GROUP_EXTERNAL_ID);
         externalIds.add(GROUP_EXTERNAL_ID_2);
 
         assertThat(offerDao.findGroupsForSharedOffer(offer.getId()).size(), is(0));
         assertThat(offerDao.findGroupsForSharedOffer(offer.getRefNo()).size(), is(0));
 
-        List<GroupEntity> groups = offerDao.findGroupByExternalIds(externalIds);
+        final List<GroupEntity> groups = offerDao.findGroupByExternalIds(externalIds);
         assertThat(groups.size(), is(2));
 
         OfferGroupEntity og = new OfferGroupEntity(offer, groups.get(0));
@@ -157,7 +154,7 @@ public class OfferGroupEntityTest {
         offerDao.persist(og2);
         assertThat(offerDao.findGroupsForSharedOffer(offer.getId()).size(), is(2));
 
-        List<Long> groupIdsToUnshare = new ArrayList<>(1);
+        final List<Long> groupIdsToUnshare = new ArrayList<>(1);
         groupIdsToUnshare.add(groups.get(0).getId());
         offerDao.unshareFromGroups(offer.getId(), groupIdsToUnshare);
         assertThat(offerDao.findGroupsForSharedOffer(offer.getId()).size(), is(1));

@@ -25,6 +25,7 @@ import java.util.List;
  * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
+ * @noinspection BooleanMethodNameMustStartWithQuestion
  */
 public interface OfferDao extends BasicDao {
 
@@ -161,9 +162,8 @@ public interface OfferDao extends BasicDao {
      * Deletes an offer from database.
      *
      * @param offerId id of the offer to delete
-     * @return true if the offer has been deleted, otherwise false
      */
-    boolean delete(Long offerId);
+    void delete(Long offerId);
 
     /**
      * Deletes an offer from database.

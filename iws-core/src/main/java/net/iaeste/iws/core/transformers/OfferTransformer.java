@@ -51,7 +51,7 @@ public final class OfferTransformer {
         return result;
     }
 
-    public static Date convert(final java.util.Date date) {
+    private static Date convert(final java.util.Date date) {
         final Date result;
 
         if (date != null) {

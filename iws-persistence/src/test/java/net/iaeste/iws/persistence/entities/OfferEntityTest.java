@@ -144,7 +144,7 @@ public class OfferEntityTest {
     }
 
 
-    public static OfferEntity getFullOffer() {
+    private static OfferEntity getFullOffer() {
         final OfferEntity offer = getMinimalOffer();
         offer.setNominationDeadline(NOMINATION_DEADLINE);
         offer.setEmployerAddress(EMPLOYER_ADDRESS);

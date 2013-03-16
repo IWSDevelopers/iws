@@ -371,7 +371,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     // Internal Methods
     // =========================================================================
 
-    private <T extends IWSEntity> T findUniqueResult(final Query query, final String name) {
+    private static <T extends IWSEntity> T findUniqueResult(final Query query, final String name) {
         final List<T> found = query.getResultList();
 
         if (found.isEmpty()) {

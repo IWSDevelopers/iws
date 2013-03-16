@@ -258,7 +258,7 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
         /**
          * Default Empty JPA Constructor.
          */
-        UserPermissionViewId() {
+        private UserPermissionViewId() {
             userId = null;
             groupId = null;
             permissionId = null;
@@ -272,19 +272,19 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
             return userId;
         }
 
-        public void setGroupId(final Long groupId) {
+        protected void setGroupId(final Long groupId) {
             this.groupId = groupId;
         }
 
-        public Long getGroupId() {
+        protected Long getGroupId() {
             return groupId;
         }
 
-        public void setPermissionId(final Long permissionId) {
+        protected void setPermissionId(final Long permissionId) {
             this.permissionId = permissionId;
         }
 
-        public Long getPermissionId() {
+        protected Long getPermissionId() {
             return permissionId;
         }
 

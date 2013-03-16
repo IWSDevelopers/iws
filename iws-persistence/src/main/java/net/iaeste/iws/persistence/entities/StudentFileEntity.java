@@ -36,7 +36,7 @@ public class StudentFileEntity {
 
     @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
-    private StudentEntity student;
+    private StudentEntity student = null;
 
     //TODO: Still working on this one...
 }

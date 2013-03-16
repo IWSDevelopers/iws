@@ -67,7 +67,7 @@ public class OfferTest {
         return Copier.copy(invalidRefNos);
     }
 
-    private void setUpDates() {
+    private static void setUpDates() {
         final Date now = new Date();
 
         for (int i = 1; i < dates.length; ++i) {
@@ -487,9 +487,10 @@ public class OfferTest {
     @Test(expected = VerificationException.class)
     public void testSizeOfSpecializations() {
         offer = getMinimalOffer();
-        final List<Specialization> specializationList = new ArrayList<>(
-                EnumSet.allOf(Specialization.class)).subList(0, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS + 1);
-        final Set<String> specializations = new HashSet<>();
+        final int max = IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS + 1;
+        final List<Specialization> specializationList = new ArrayList<>(EnumSet.allOf(Specialization.class)).subList(0, max);
+
+        final Set<String> specializations = new HashSet<>(specializationList.size());
         for (final Specialization specialization : specializationList) {
             specializations.add(specialization.toString());
         }
@@ -653,11 +654,14 @@ public class OfferTest {
     }
 
     public boolean isVerificationExceptionThrown() {
+        boolean result = false;
+
         try {
             offer.verify();
-            return false;
         } catch (VerificationException ignore) {
-            return true;
+            result = true;
         }
+
+        return result;
     }
 }

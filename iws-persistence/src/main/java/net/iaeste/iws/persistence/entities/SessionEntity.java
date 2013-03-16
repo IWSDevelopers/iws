@@ -54,8 +54,8 @@ import java.util.Date;
                         "where s.active = true " +
                         "  and s.user.id = :id"),
         @NamedQuery(name = "session.deleteUserSessions",
-                    query =  "delete from SessionEntity s " +
-                             "where s.user.id = :uid")
+                query = "delete from SessionEntity s " +
+                        "where s.user.id = :uid")
 })
 @Entity
 @Table(name = "sessions")

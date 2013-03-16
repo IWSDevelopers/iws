@@ -53,7 +53,7 @@ public class CollectionTransformerTest {
 
     @Test
     public void testExplodeEnumListAndSet() {
-        final List<Language> expectedList = new ArrayList<>();
+        final List<Language> expectedList = new ArrayList<>(2);
         expectedList.add(Language.ENGLISH);
         expectedList.add(Language.FRENCH);
         final Set<Language> expectedSet = EnumSet.copyOf(expectedList);

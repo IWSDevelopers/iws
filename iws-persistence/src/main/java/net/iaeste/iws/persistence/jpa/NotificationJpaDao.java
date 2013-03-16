@@ -69,10 +69,10 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
      */
     @Override
     public List<NotificationMessageEntity> findNotificationMessages(final NotificationType type, final NotificationMessageStatus status, final Date date) {
-        final Query query = entityManager.createNamedQuery("notifications.findMessagesByStatus");
+        final Query query = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");
+        query.setParameter("type", type);
         query.setParameter("status", status);
         query.setParameter("date", date);
-        query.setParameter("type", type);
 
         return query.getResultList();
     }

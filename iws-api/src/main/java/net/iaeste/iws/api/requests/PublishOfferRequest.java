@@ -39,13 +39,14 @@ public final class PublishOfferRequest extends AbstractVerification {
     private Offer offer = null;
 
     /** The group to which the user will be added.**/
-    private List<Group> groups = new ArrayList<>();
+    private List<Group> groups;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public PublishOfferRequest() {
+        groups = new ArrayList<>(10);
     }
 
     public PublishOfferRequest(final Offer offer, final List<Group> groups) {

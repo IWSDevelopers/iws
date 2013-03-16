@@ -99,7 +99,7 @@ public final class SessionDataRequest<T extends Serializable> extends AbstractVe
     // Standard Request Methods
     // =========================================================================
 
-    private <T extends Serializable> byte[] serialize(final T data) {
+    private static <T extends Serializable> byte[] serialize(final T data) {
         final byte[] result;
 
         if (data != null) {

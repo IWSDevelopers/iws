@@ -155,7 +155,7 @@ public final class NotificationManager implements Notifications {
 //        notifyObservers();
     }
 
-    private java.util.Date getNotificationTime(final NotificationFrequency frequency) {
+    private static java.util.Date getNotificationTime(final NotificationFrequency frequency) {
         Date result;
 
         switch (frequency) {

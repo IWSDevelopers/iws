@@ -94,7 +94,7 @@ public class NotificationEmailDelayedSender implements Observer {
 //        }
     }
 
-    private Map<UserEntity, List<NotificationMessageEntity>> groupByUser(final List<NotificationMessageEntity> messages) {
+    private static Map<UserEntity, List<NotificationMessageEntity>> groupByUser(final List<NotificationMessageEntity> messages) {
         final Map<UserEntity, List<NotificationMessageEntity>> result = new HashMap<>(0);
 
         for (final NotificationMessageEntity message : messages) {

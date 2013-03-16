@@ -26,7 +26,7 @@ import org.junit.Before;
  */
 public class StudentRequestTest {
 
-    private Student validStudent;
+    private Student validStudent = null;
 
     @Before
     public void setUp() {

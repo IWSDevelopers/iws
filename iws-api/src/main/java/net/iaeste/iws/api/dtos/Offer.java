@@ -1359,7 +1359,7 @@ public final class Offer extends AbstractVerification {
         return check;
     }
 
-    private Boolean isAfter(final Date first, final Date second) {
+    private static Boolean isAfter(final Date first, final Date second) {
         return (first != null) && (second != null) && first.isAfter(second);
     }
 

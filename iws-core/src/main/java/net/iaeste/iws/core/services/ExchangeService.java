@@ -222,7 +222,7 @@ public final class ExchangeService extends CommonService {
         return convertEntityList(found);
     }
 
-    private List<Offer> convertEntityList(final List<OfferEntity> found) {
+    private static List<Offer> convertEntityList(final List<OfferEntity> found) {
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
@@ -232,7 +232,7 @@ public final class ExchangeService extends CommonService {
         return result;
     }
 
-    private List<EmployerInformation> convertEntityListToEmployerInformationList(final List<OfferEntity> found) {
+    private static List<EmployerInformation> convertEntityListToEmployerInformationList(final List<OfferEntity> found) {
         final List<EmployerInformation> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
@@ -242,7 +242,7 @@ public final class ExchangeService extends CommonService {
         return result;
     }
 
-    private List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
+    private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
         final List<OfferGroup> result = new ArrayList<>(found.size());
 
         for (final OfferGroupEntity entity : found) {
@@ -290,15 +290,19 @@ public final class ExchangeService extends CommonService {
     private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {
         final OfferEntity offer = dao.findOffer(request.getOffer().getRefNo());
 
-        for(Group group : request.getGroups()) {
-            if(group.getGroupType() == GroupType.NATIONAL) {
-                GroupEntity groupEntity = dao.findGroupByExternalId(group.getGroupId());
-                OfferGroupEntity og = new OfferGroupEntity(offer, groupEntity);
-                og.setCreatedBy(authentication.getUser());
-
-                dao.persist(authentication, og);
+        for (final Group group : request.getGroups()) {
+            if (group.getGroupType() == GroupType.NATIONAL) {
+                persistPublisingGroup(authentication, offer, group);
             }
         }
+    }
+
+    private void persistPublisingGroup(final Authentication authentication, final OfferEntity offer, final Group group) {
+        final GroupEntity groupEntity = dao.findGroupByExternalId(group.getGroupId());
+        final OfferGroupEntity offerGroupEntity = new OfferGroupEntity(offer, groupEntity);
+        offerGroupEntity.setCreatedBy(authentication.getUser());
+
+        dao.persist(authentication, offerGroupEntity);
     }
 
     public FetchPublishOfferResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishOfferRequest request) {

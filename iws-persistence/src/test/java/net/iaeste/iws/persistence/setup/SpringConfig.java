@@ -40,7 +40,7 @@ import java.util.Properties;
 public class SpringConfig {
 
     @Bean
-    public DataSource dataSource() {
+    protected DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
@@ -52,7 +52,7 @@ public class SpringConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    protected LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
@@ -73,7 +73,7 @@ public class SpringConfig {
     }
 
     @Bean
-    public Properties jpaProperties() {
+    protected Properties jpaProperties() {
         final Properties properties = new Properties();
 
         // For testing the result, it is helpful to be able to see the queries

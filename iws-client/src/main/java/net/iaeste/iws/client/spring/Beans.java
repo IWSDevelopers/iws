@@ -39,7 +39,7 @@ import javax.sql.DataSource;
 public class Beans {
 
     @Bean(name = "dataSource")
-    public DataSource dataSource() {
+    protected DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
@@ -52,7 +52,7 @@ public class Beans {
     }
 
     @Bean(name = "entityManagerFactoryBean")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    protected LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 

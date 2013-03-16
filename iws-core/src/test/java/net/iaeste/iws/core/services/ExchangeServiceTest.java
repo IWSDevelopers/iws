@@ -219,7 +219,7 @@ public class ExchangeServiceTest {
     private static class OfferEntityMatcher extends BaseMatcher<OfferEntity> {
         private final OfferEntity entity;
 
-        OfferEntityMatcher(final OfferEntity entity) {
+        private OfferEntityMatcher(final OfferEntity entity) {
             this.entity = entity;
         }
 

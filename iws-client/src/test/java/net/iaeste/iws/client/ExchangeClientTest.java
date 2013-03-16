@@ -267,7 +267,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(updatedOffer.getNumberOfHardCopies(), is(3));
     }
 
-    private Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
+    private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
         final String refNoLowerCase = refno.toLowerCase(IWSConstants.DEFAULT_LOCALE);
         Offer offer = null;
 

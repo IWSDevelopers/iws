@@ -39,7 +39,7 @@ import java.util.List;
 public class BasicJpaDao implements BasicDao {
 
     protected EntityManager entityManager;
-    protected MonitoringProcessor monitoringProcessor;
+    private MonitoringProcessor monitoringProcessor;
 
     /**
      * Default Constructor.

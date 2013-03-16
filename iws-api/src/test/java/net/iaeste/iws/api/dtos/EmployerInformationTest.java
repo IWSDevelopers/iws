@@ -39,11 +39,11 @@ public class EmployerInformationTest {
 
     @Test
     public void testCopyConstructor() {
-        final EmployerInformation employer = getMinimalEmployer();
-        final EmployerInformation copy = new EmployerInformation(employer);
-        Assert.assertThat(employer, is(not(nullValue())));
+        final EmployerInformation minimalEmployer = getMinimalEmployer();
+        final EmployerInformation copy = new EmployerInformation(minimalEmployer);
+        Assert.assertThat(minimalEmployer, is(not(nullValue())));
         Assert.assertThat(copy, is(not(nullValue())));
-        Assert.assertThat(employer, is(copy));
+        Assert.assertThat(minimalEmployer, is(copy));
     }
 
     @Test
@@ -93,11 +93,14 @@ public class EmployerInformationTest {
     }
 
     public boolean isVerificationExceptionThrown() {
+        boolean result = false;
+
         try {
             employer.verify();
-            return false;
         } catch (VerificationException ignore) {
-            return true;
+            result = true;
         }
+
+        return result;
     }
 }

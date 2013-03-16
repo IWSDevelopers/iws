@@ -36,7 +36,7 @@ public class PersistenceException extends IWSException {
      * @param error   IWS Error
      * @param message Specific message, regarding the problem
      */
-    public PersistenceException(final IWSError error, final String message) {
+    protected PersistenceException(final IWSError error, final String message) {
         super(error, message);
     }
 }

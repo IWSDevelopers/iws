@@ -157,7 +157,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request) {
+    public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
         return exchange.processPublishOffer(token, request);
     }
 
@@ -165,7 +165,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishOfferResponse fetchPublishedOfferInfo(AuthenticationToken token, FetchPublishOfferRequest request) {
+    public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {
         return exchange.fetchPublishedOfferInfo(token, request);
     }
 }

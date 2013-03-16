@@ -32,7 +32,7 @@ public final class CountryResponse extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private List<Country> countries;
+    private List<Country> countries = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required

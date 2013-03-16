@@ -43,11 +43,11 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
     private static String username = null;
     private static String password = null;
 
-    public void setResponse(final T response) {
+    protected void setResponse(final T response) {
         this.response = response;
     }
 
-    public T getResponse() {
+    protected T getResponse() {
         return response;
     }
 
@@ -95,7 +95,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
      *
      * @return Response Obect from IWS
      */
-    public AuthenticationResponse createSession() {
+    protected AuthenticationResponse createSession() {
         return doCreateSession();
     }
 
@@ -170,7 +170,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
         }
     }
 
-    public static AuthenticationToken getToken() {
+    protected static AuthenticationToken getToken() {
         synchronized (LOCK) {
             return new AuthenticationToken(token.getToken());
         }

@@ -30,7 +30,7 @@ public final class FetchPublishOfferRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String refNo;
+    private String refNo = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required

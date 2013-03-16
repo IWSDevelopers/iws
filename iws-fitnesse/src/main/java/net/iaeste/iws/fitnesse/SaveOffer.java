@@ -44,6 +44,7 @@ import java.util.HashSet;
  * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection BooleanMethodNameMustStartWithQuestion
  */
 public final class SaveOffer extends AbstractFixture<OfferResponse> {
 

@@ -41,7 +41,7 @@ import java.util.Properties;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass, AccessOfSystemProperties
+ * @noinspection CastToConcreteClass, AccessOfSystemProperties, MethodMayBeStatic
  */
 @MessageDriven(mappedName = "iws-EmailQueue", activationConfig = @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"))
 public class EmailSender implements MessageListener {

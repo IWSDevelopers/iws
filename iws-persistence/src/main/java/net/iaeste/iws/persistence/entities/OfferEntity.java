@@ -65,6 +65,7 @@ import java.util.List;
         @NamedQuery(name = "OfferEntity.findAll", query = "SELECT o FROM OfferEntity o"),
         @NamedQuery(name = "OfferEntity.findById", query = "SELECT o FROM OfferEntity o WHERE o.id = :id"),
         @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM OfferEntity o WHERE o.id IN :ids"),
+        @NamedQuery(name = "OfferEntity.findByExternalIds", query = "SELECT o FROM OfferEntity o WHERE o.externalId IN :externalIds"),
         @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM OfferEntity o WHERE o.refNo = :refNo"),
         @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT ei.id FROM EmployerInformationView ei WHERE ei.employerName = :employerName AND ei.groupId = :groupId)"),
         @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT ei.id FROM EmployerInformationView ei WHERE lower(ei.employerName) LIKE :employerName AND ei.groupId = :groupId)"),

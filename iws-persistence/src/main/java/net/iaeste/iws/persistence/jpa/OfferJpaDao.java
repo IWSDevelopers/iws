@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Matej Kosco / last $Author:$
@@ -125,6 +126,17 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
+    public List<OfferEntity> findOffersByExternalId(final Set<String> externalIds) {
+        final Query query = entityManager.createNamedQuery("OfferEntity.findByExternalIds");
+        query.setParameter("externalIds", externalIds);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<OfferEntity> findOffersByEmployerName(final String employerName, final Long ownerId) {
         final Query query = entityManager.createNamedQuery("OfferEntity.findByEmployerName");
         query.setParameter("employerName", employerName);
@@ -181,9 +193,9 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferGroupEntity> findGroupsForSharedOffer(final String refNo) {
-        final Query query = entityManager.createNamedQuery("OfferGroupEntity.findGroupsByOfferRefNo");
-        query.setParameter("refno", refNo);
+    public List<OfferGroupEntity> findGroupsForSharedOffer(final String offerExternalId) {
+        final Query query = entityManager.createNamedQuery("OfferGroupEntity.findGroupsByOfferExternalId");
+        query.setParameter("externalId", offerExternalId);
 
         return query.getResultList();
     }
@@ -203,15 +215,11 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public Integer unshareFromAllGroups(final String refNo) {
-        /*
-        TODO not working, getting 'unexpected token: CROSS'
-        final Query query = entityManager.createNamedQuery("OfferGroupEntity.deleteByOfferRefNo");
-        query.setParameter("refno", refNo);
+    public Integer unshareFromAllGroups(final String externalId) {
+        final Query query = entityManager.createNamedQuery("OfferGroupEntity.deleteByOfferExternalIds");
+        query.setParameter("externalId", externalId);
 
         return query.executeUpdate();
-        */
-        return 0;
     }
 
     /**
@@ -231,17 +239,13 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public Integer unshareFromGroups(final String refNo, final List<Long> groups) {
-        /*
-        TODO not working, getting 'unexpected token: CROSS'
+    public Integer unshareFromGroups(final String offerExternalId, final List<Long> groups) {
         //TODO passing empty list fails, correct?
         final Query query = entityManager.createNamedQuery("OfferGroupEntity.deleteByOfferRefNoAndGroups");
-        query.setParameter("refno", refNo);
+        query.setParameter("offerExternalId", offerExternalId);
         query.setParameter("gids", groups);
 
         return query.executeUpdate();
-        */
-        return 0;
     }
 
     /**

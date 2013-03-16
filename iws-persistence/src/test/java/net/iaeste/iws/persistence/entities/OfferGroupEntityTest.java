@@ -39,6 +39,7 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -91,6 +92,8 @@ public class OfferGroupEntityTest {
 
     private static OfferEntity getMinimalOffer() {
         final OfferEntity offer = new OfferEntity();
+        //FIXME: auto UUID generation should be done in persist method
+        offer.setExternalId(UUID.randomUUID().toString());
         offer.setRefNo(REF_NO);
         offer.setEmployerName(EMPLOYER_NAME);
         offer.setStudyLevels(STUDY_LEVELS);
@@ -132,7 +135,7 @@ public class OfferGroupEntityTest {
         externalIds.add(GROUP_EXTERNAL_ID_2);
 
         assertThat(offerDao.findGroupsForSharedOffer(offer.getId()).size(), is(0));
-        assertThat(offerDao.findGroupsForSharedOffer(offer.getRefNo()).size(), is(0));
+        assertThat(offerDao.findGroupsForSharedOffer(offer.getExternalId()).size(), is(0));
 
         final List<GroupEntity> groups = offerDao.findGroupByExternalIds(externalIds);
         assertThat(groups.size(), is(2));
@@ -143,7 +146,7 @@ public class OfferGroupEntityTest {
         offerDao.persist(og2);
 
         assertThat(offerDao.findGroupsForSharedOffer(offer.getId()).size(), is(2));
-        assertThat(offerDao.findGroupsForSharedOffer(offer.getRefNo()).size(), is(2));
+        assertThat(offerDao.findGroupsForSharedOffer(offer.getExternalId()).size(), is(2));
 
         offerDao.unshareFromAllGroups(offer.getId());
         assertThat(offerDao.findGroupsForSharedOffer(offer.getId()).size(), is(0));

@@ -51,6 +51,7 @@ import net.iaeste.iws.persistence.notification.Notifications;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -276,23 +277,23 @@ public final class ExchangeService extends CommonService {
      * @param request
      */
     public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
-        final Offer offer = request.getOffer();
-        dao.findAll();
-        final List<OfferGroupEntity> groupsForSharedOffer = dao.findGroupsForSharedOffer(offer.getRefNo());
+        final Set<String> externalOfferIds = request.getOfferExternalIds();
 
-        if(!groupsForSharedOffer.isEmpty()) {
-            dao.unshareFromAllGroups(offer.getRefNo());
+        for (final String externalOfferId : externalOfferIds) {
+            dao.unshareFromAllGroups(externalOfferId);
         }
 
         publishOffer(authentication, request);
     }
 
     private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {
-        final OfferEntity offer = dao.findOffer(request.getOffer().getRefNo());
+        final List<OfferEntity> offers = dao.findOffersByExternalId(request.getOfferExternalIds());
 
-        for (final Group group : request.getGroups()) {
-            if (group.getGroupType() == GroupType.NATIONAL) {
-                persistPublisingGroup(authentication, offer, group);
+        for(Group group : request.getGroups()) {
+            if(group.getGroupType() == GroupType.NATIONAL) {
+                for (OfferEntity offer : offers) {
+                    persistPublisingGroup(authentication, offer, group);
+                }
             }
         }
     }

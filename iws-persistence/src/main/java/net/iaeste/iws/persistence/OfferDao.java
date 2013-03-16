@@ -20,6 +20,7 @@ import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Matej Kosco / last $Author:$
@@ -72,6 +73,12 @@ public interface OfferDao extends BasicDao {
     List<OfferEntity> findOffers(List<Long> offerIds);
 
     /**
+     * @param externalIds list of external IDs for fetching
+     * @return list of {@code }OfferEntity}
+     */
+    List<OfferEntity> findOffersByExternalId(Set<String> externalIds);
+
+    /**
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
@@ -117,10 +124,10 @@ public interface OfferDao extends BasicDao {
     /**
      * Finds information about sharing of the offer
      *
-     * @param  refNo reference number of the offer to get sharing info for
+     * @param  offerExternalId reference number of the offer to get sharing info for
      * @return list of {@link OfferGroupEntity} which are shared
      */
-    List<OfferGroupEntity> findGroupsForSharedOffer(String refNo);
+    List<OfferGroupEntity> findGroupsForSharedOffer(String offerExternalId);
 
     /**
      * Unshares the offer from all groups
@@ -132,12 +139,11 @@ public interface OfferDao extends BasicDao {
 
     /**
      * Unshares the offer from all groups
-     * TODO not working, see OfferGroupEntity
      *
-     * @param  refNo reference number of the offer to get sharing info for
+     * @param  offerExternalId reference number of the offer to get sharing info for
      * @return number of groups from which the offer was unshared
      */
-    Integer unshareFromAllGroups(String refNo);
+    Integer unshareFromAllGroups(String offerExternalId);
 
     /**
      * Unshares the offer from groups
@@ -150,13 +156,12 @@ public interface OfferDao extends BasicDao {
 
     /**
      * Unshares the offer from groups
-     * TODO not working, see OfferGroupEntity
      *
-     * @param  refNo reference number of the offer to get sharing info for
+     * @param  offerExternalId reference number of the offer to get sharing info for
      * @param  groups list of groups from which the offer is unshared
      * @return number of groups from which the offer was unshared
      */
-    Integer unshareFromGroups(String refNo, List<Long> groups);
+    Integer unshareFromGroups(String offerExternalId, List<Long> groups);
 
     /**
      * Deletes an offer from database.

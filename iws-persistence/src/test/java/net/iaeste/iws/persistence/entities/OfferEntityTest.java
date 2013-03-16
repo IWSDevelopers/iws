@@ -43,8 +43,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -128,6 +127,8 @@ public class OfferEntityTest {
 
     private static OfferEntity getMinimalOffer() {
         final OfferEntity offer = new OfferEntity();
+        //FIXME: auto UUID generation should be done in persist method
+        offer.setExternalId(UUID.randomUUID().toString());
         offer.setRefNo(REF_NO);
         offer.setEmployerName(EMPLOYER_NAME);
         offer.setStudyLevels(STUDY_LEVELS);
@@ -657,6 +658,19 @@ public class OfferEntityTest {
         //we want to retrieve only one row for each employer
         assertThat(offersFoundByLikeEmployerName.size(), is(1));
         assertThat(offerDao.findOffersByLikeEmployerName(EMPLOYER_NAME_LIKE_NONEXISTING, offer.getGroup().getId()).size(), is(0));
+    }
+    @Test
+    @Transactional
+    public void testFindByExternalIds() {
+        assertThat(offerDao.findAll().size(), is(0));
+        offerDao.persist(authentication, offer);
+        assertThat("fuck, this should be here!", offer.getExternalId(), is(notNullValue()));
+        Set<String> searchExternalIds = new HashSet<String>();
+        searchExternalIds.add(offer.getExternalId());
+        final List<OfferEntity> offerFoundByExtId = offerDao.findOffersByExternalId(searchExternalIds);
+        assertThat(offerFoundByExtId, is(notNullValue()));
+        assertThat(offerFoundByExtId.size(), is(1));
+        assertThat(offerFoundByExtId.get(0), is(offer));
     }
 
     @Test

@@ -16,7 +16,6 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
-import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Copier;
 
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -36,7 +36,7 @@ public final class PublishOfferRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** The Offer Object to published. */
-    private Offer offer = null;
+    private Set<String> offerExternalIds = null;
 
     /** The group to which the user will be added.**/
     private List<Group> groups;
@@ -49,8 +49,8 @@ public final class PublishOfferRequest extends AbstractVerification {
         groups = new ArrayList<>(10);
     }
 
-    public PublishOfferRequest(final Offer offer, final List<Group> groups) {
-        this.offer = new Offer(offer);
+    public PublishOfferRequest(final Set<String> offerExternalIds, final List<Group> groups) {
+        this.offerExternalIds = Copier.copy(offerExternalIds);
         this.groups = Copier.copy(groups);
     }
 
@@ -58,12 +58,12 @@ public final class PublishOfferRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOffer(final Offer offer) {
-        this.offer = new Offer(offer);
+    public void setOfferExternalIds(final Set<String> offerExternalIds) {
+        this.offerExternalIds = Copier.copy(offerExternalIds);
     }
 
-    public Offer getOffer() {
-        return new Offer(offer);
+    public Set<String> getOfferExternalIds() {
+        return Copier.copy(offerExternalIds);
     }
 
     public void setGroups(final List<Group> groups) {

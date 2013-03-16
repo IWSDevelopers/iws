@@ -37,7 +37,9 @@ import net.iaeste.iws.api.responses.PublishOfferResponse;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -165,7 +167,8 @@ public class ExchangeClientTest extends AbstractClientTest {
         final FetchOffersResponse response = exchange.fetchOffers(token, request);
         assertThat(response.getOffers().isEmpty(), is(false));
 
-        final Offer offerToShare = response.getOffers().get(0);
+        final Set<String> offersToShare = new HashSet<>();
+        offersToShare.add(response.getOffers().get(0).getId());
         final List<Group> groups = new ArrayList<>(1);
         Group group = new Group();
         group.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
@@ -176,19 +179,20 @@ public class ExchangeClientTest extends AbstractClientTest {
         group.setGroupType(GroupType.NATIONAL);
         groups.add(group);
 
-        PublishOfferRequest publishRequest = new PublishOfferRequest(offerToShare, groups);
+        PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groups);
         PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
 
+        assertThat(publishResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(publishResponse.isOk(), is(true));
 
-        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offerToShare.getRefNo());
+        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(response.getOffers().get(0).getId());
         FetchPublishOfferResponse fetchPublishResponse = exchange.fetchPublishedOfferInfo(token, fetchPublishRequest);
 
         //is it shared to two groups?
-        assertThat(fetchPublishResponse.getOfferGroups().size(), is(2));
+        assertThat(2, is(fetchPublishResponse.getOfferGroups().size()));
 
         groups.clear();
-        publishRequest = new PublishOfferRequest(offerToShare, groups);
+        publishRequest = new PublishOfferRequest(offersToShare, groups);
         publishResponse = exchange.processPublishOffer(token, publishRequest);
 
         //is it shared to two groups?
@@ -196,7 +200,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         fetchPublishResponse = exchange.fetchPublishedOfferInfo(token, fetchPublishRequest);
 
         //is it shared to nobody?
-        assertThat(fetchPublishResponse.getOfferGroups().size(), is(2));
+        assertThat(fetchPublishResponse.getOfferGroups().size(), is(0));
     }
 
     @Test

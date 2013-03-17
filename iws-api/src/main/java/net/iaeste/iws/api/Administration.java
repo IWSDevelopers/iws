@@ -22,6 +22,8 @@ import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 
+import javax.ejb.Remote;
+
 /**
  * Handles Administration of User Accounts, Groups, Roles and Countries.
  *
@@ -29,6 +31,7 @@ import net.iaeste.iws.api.util.Fallible;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Remote
 public interface Administration {
 
     /**

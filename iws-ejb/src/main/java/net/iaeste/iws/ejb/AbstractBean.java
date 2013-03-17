@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.beans.AbstractBean
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.AbstractBean
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.ejb.beans;
+package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.util.Fallible;
 

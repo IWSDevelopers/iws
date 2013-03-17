@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.beans.ExchangeBeanTest
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.CommitteeBeanTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,11 +12,13 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.ejb.beans;
+package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.FetchOffersRequest;
-import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.requests.CommitteeRequest;
+import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.ejb.CommitteeBean;
+import net.iaeste.iws.ejb.NotificationManagerBean;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,16 +34,16 @@ import static org.mockito.Mockito.mock;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class ExchangeBeanTest {
+public class CommitteeBeanTest {
 
     private final EntityManager mockedEntityManager = mock(EntityManager.class);
     private final Notifications notifications = mock(Notifications.class);
-    private ExchangeBean bean = null;
+    private CommitteeBean bean = null;
 
     @Before
     public void before() {
         final NotificationManagerBean notificationManagerBean = new NotificationManagerBean();
-        bean = new ExchangeBean();
+        bean = new CommitteeBean();
 
         notificationManagerBean.setNotifications(notifications);
         bean.setEntityManager(mockedEntityManager);
@@ -52,8 +54,8 @@ public class ExchangeBeanTest {
     @Test
     public void testDummy() {
         final AuthenticationToken token = null;
-        final FetchOffersRequest request = null;
-        final FetchOffersResponse response = bean.fetchOffers(token, request);
+        final CommitteeRequest request = null;
+        final Fallible response = bean.createCommittee(token, request);
         assertThat(response.isOk(), is(false));
     }
 }

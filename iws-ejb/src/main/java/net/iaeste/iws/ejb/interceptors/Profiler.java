@@ -29,7 +29,7 @@ import java.text.DecimalFormat;
  * @since   1.7
  * @noinspection ProhibitedExceptionDeclared
  */
-public final class Profiler {
+public class Profiler {
 
     private static final Logger LOG = LoggerFactory.getLogger(Profiler.class);
     private static final DecimalFormat format = new DecimalFormat("###,###.##");

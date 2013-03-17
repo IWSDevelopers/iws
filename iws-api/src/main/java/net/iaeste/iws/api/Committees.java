@@ -20,6 +20,8 @@ import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
 import net.iaeste.iws.api.util.Fallible;
 
+import javax.ejb.Remote;
+
 /**
  * Control of National Committees and Regional Groups are done via the
  * functionality provided by this Interface.<br />
@@ -54,6 +56,7 @@ import net.iaeste.iws.api.util.Fallible;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Remote
 public interface Committees {
 
     /**

@@ -32,13 +32,18 @@
                 <version>2.3</version>
                 <configuration>
                     <ejbVersion>3.1</ejbVersion>
-                    <generateClient>true</generateClient>
-					<clientIncludes>
-					   <clientInclude>net/iaeste/iws/ejb/**/*Remote.class</clientInclude>
-                       <clientInclude>net/iaeste/iws/ejb/**/*Local.class</clientInclude>
-                       <clientInclude>net/iaeste/iws/ejb/data/**/*.class</clientInclude>
-                       <clientInclude>net/iaeste/iws/ejb/exceptions/**/*.class</clientInclude>
-					</clientIncludes>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
+                    <!--<generateClient>true</generateClient>-->
+					<!--<clientIncludes>-->
+					   <!--<clientInclude>net/iaeste/iws/ejb/**/*Remote.class</clientInclude>-->
+                       <!--<clientInclude>net/iaeste/iws/ejb/**/*Local.class</clientInclude>-->
+                       <!--<clientInclude>net/iaeste/iws/ejb/data/**/*.class</clientInclude>-->
+                       <!--<clientInclude>net/iaeste/iws/ejb/exceptions/**/*.class</clientInclude>-->
+					<!--</clientIncludes>-->
                 </configuration>
             </plugin>
         </plugins>
@@ -62,7 +67,7 @@
             <artifactId>iws-persistence</artifactId>
         </dependency>
         <dependency>
-            <groupId>javaee</groupId>
+            <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
         </dependency>

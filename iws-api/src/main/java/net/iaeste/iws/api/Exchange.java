@@ -40,6 +40,8 @@ import net.iaeste.iws.api.responses.PublishOfferResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
 
+import javax.ejb.Remote;
+
 /**
  * ToDo Kim; Add JavaDoc for all requests.
  *
@@ -47,6 +49,7 @@ import net.iaeste.iws.api.util.Fallible;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Remote
 public interface Exchange {
 
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);

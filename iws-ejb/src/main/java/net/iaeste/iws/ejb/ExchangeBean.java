@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.beans.ExchangeBean
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.ExchangeBean
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.ejb.beans;
+package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -44,8 +44,6 @@ import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
-import net.iaeste.iws.ejb.ExchangeRemote;
-import net.iaeste.iws.ejb.NotificationManagerLocal;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +77,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class ExchangeBean extends AbstractBean implements ExchangeRemote {
+public class ExchangeBean extends AbstractBean implements Exchange {
 
     private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);
     private EntityManager entityManager = null;

@@ -18,10 +18,11 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.PermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.util.Fallible;
 
+import javax.ejb.Remote;
 import java.io.Serializable;
 
 /**
@@ -47,6 +48,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Remote
 public interface Access {
 
     /**

@@ -14,9 +14,16 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Offer;
@@ -34,18 +41,13 @@ import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -55,15 +57,21 @@ import static org.junit.Assert.fail;
 public class ExchangeClientTest extends AbstractClientTest {
 
     private final Exchange exchange = new ExchangeClient();
+    private AuthenticationToken austriaToken;
+    private AuthenticationToken croatiaToken;
 
     @Override
     public void before() {
         token = login("poland", "poland");
+        austriaToken = login("austria", "austria");
+        croatiaToken = login("croatia", "croatia");
     }
 
     @Override
     public void after() {
         logout(token);
+        logout(austriaToken);
+        logout(croatiaToken);
     }
 
     @Test
@@ -269,6 +277,25 @@ public class ExchangeClientTest extends AbstractClientTest {
         final Offer updatedOffer = findOfferFromResponse(refNo, findUpdatedResponse);
         assertThat(updatedOffer, is(not(nullValue())));
         assertThat(updatedOffer.getNumberOfHardCopies(), is(3));
+    }
+
+    @Test
+    @Ignore("missing security checks")
+    public void testFetchForeignOffer() {
+        final String refNo = "AT-2013-0001";
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo(refNo);
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse processResponse = exchange.processOffer(austriaToken, offerRequest);
+
+        assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
+
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(croatiaToken, request);
+        final Offer readOffer = findOfferFromResponse(refNo, fetchResponse);
+
+        assertThat("as the Austrian offer was not shared with Croatia, it shouldn't be loaded", readOffer, is(nullValue()));
     }
 
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {

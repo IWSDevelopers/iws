@@ -19,8 +19,6 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -43,7 +41,7 @@ import java.util.Properties;
  * @since   1.7
  * @noinspection CastToConcreteClass, AccessOfSystemProperties, MethodMayBeStatic
  */
-@MessageDriven(mappedName = "iws-EmailQueue", activationConfig = @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"))
+//@MessageDriven(mappedName = "iws-EmailQueue", activationConfig = @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"))
 public class EmailSender implements MessageListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailSender.class);

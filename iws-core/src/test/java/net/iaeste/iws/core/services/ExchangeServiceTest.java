@@ -14,6 +14,15 @@
  */
 package net.iaeste.iws.core.services;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -39,26 +48,17 @@ import net.iaeste.iws.persistence.notification.Notifications;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import java.util.UUID;
 
 /**
- * @author  Michal Knapik / last $Author:$
+ * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection unchecked, CastToConcreteClass
+ * @since 1.7
  */
 public class ExchangeServiceTest {
 
@@ -128,9 +128,9 @@ public class ExchangeServiceTest {
 
     /** Correct update request with one offer. */
     @Test
-    @Ignore("Kim 2013-01-19; Update process is updated, the test needs to be updated accordingly.")
     public void testProcessingOffersUpdateRequest() {
         final Offer offer = offers.get(0);
+        offer.setId(UUID.randomUUID().toString());
         // offer which currently exist in db
         offer.setCanteen(true);
         final OfferEntity existingEntity = OfferTransformer.transform(offer);
@@ -138,7 +138,9 @@ public class ExchangeServiceTest {
         offer.setCanteen(false);
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 
+        when(dao.findOffer(offer.getId())).thenReturn(existingEntity);
         when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
+        when(dao.findOffer(offer.getId(), offer.getRefNo())).thenReturn(existingEntity);
 
         final ProcessOfferRequest request = new ProcessOfferRequest(offer);
         request.verify(); // make sure that request is valid

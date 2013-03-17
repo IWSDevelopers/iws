@@ -23,19 +23,16 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.CreateUserRequest;
-import net.iaeste.iws.api.requests.FetchGroupRequest;
-import net.iaeste.iws.api.requests.FetchUserRequest;
-import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.common.utils.PasswordGenerator;
 import net.iaeste.iws.core.exceptions.PermissionException;
+import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.CountryEntity;
@@ -50,6 +47,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
@@ -429,5 +427,11 @@ public final class AdministrationService extends CommonService {
         user.setNotifications(request.getUser().getNotifications());
 
         dao.persist(user);
+    }
+
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(Authentication authentication, FetchGroupsForSharingRequest request) {
+        final List<Group> groupList = AdministrationTransformer.transform(dao.findGroupsForSharing(authentication.getGroup()));
+
+        return new FetchGroupsForSharingResponse(groupList);
     }
 }

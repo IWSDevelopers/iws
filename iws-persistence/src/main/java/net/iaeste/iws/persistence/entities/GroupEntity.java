@@ -79,7 +79,14 @@ import java.util.Date;
                         "where g.externalId = :egid"),
         @NamedQuery(name = "group.findByExternalGroupIds",
                 query = "select g from GroupEntity g " +
-                        "where g.externalId in :egids")
+                        "where g.externalId in :egids"),
+        // find all "member countries" for sharing and exclude the own group
+        @NamedQuery(name = "group.findGroupsForSharing",
+                query = "select g from GroupEntity g " +
+                        "where (g.groupType.grouptype = 'NATIONAL'" +
+                        "   or g.groupType.grouptype = 'SAR')" +
+                        "   and g.id <> :gid " +
+                        "order by g.groupName")
 })
 @Entity
 @Table(name = "groups")

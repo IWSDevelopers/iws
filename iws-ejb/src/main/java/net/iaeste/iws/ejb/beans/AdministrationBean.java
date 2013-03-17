@@ -17,18 +17,8 @@ package net.iaeste.iws.ejb.beans;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.CountryRequest;
-import net.iaeste.iws.api.requests.CreateUserRequest;
-import net.iaeste.iws.api.requests.FetchCountryRequest;
-import net.iaeste.iws.api.requests.FetchGroupRequest;
-import net.iaeste.iws.api.requests.FetchUserRequest;
-import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
-import net.iaeste.iws.api.responses.CountryResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.responses.*;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -255,6 +245,21 @@ public class AdministrationBean extends AbstractBean implements AdministrationRe
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
             response = new CountryResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    @Override
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
+        FetchGroupsForSharingResponse response;
+
+        try {
+            response = administration.fetchGroupsForSharing(token, request);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

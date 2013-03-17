@@ -16,16 +16,10 @@ package net.iaeste.iws.fitnesse.callers;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.CountryRequest;
-import net.iaeste.iws.api.requests.CreateUserRequest;
-import net.iaeste.iws.api.requests.FetchCountryRequest;
-import net.iaeste.iws.api.requests.FetchGroupRequest;
-import net.iaeste.iws.api.requests.FetchUserRequest;
-import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AdministrationClient;
@@ -137,6 +131,15 @@ public final class AdministrationCaller implements Administration {
     public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
         try {
             return administration.fetchCountries(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    @Override
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
+        try {
+            return administration.fetchGroupsForSharing(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

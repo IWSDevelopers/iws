@@ -20,6 +20,9 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -115,6 +118,16 @@ public final class AdministrationTransformer {
         return group;
     }
 
+    public static List<Group> transform(List<GroupEntity> entities) {
+        List<Group> ret = new ArrayList<>();
+
+        for (GroupEntity entity : entities) {
+            ret.add(transform(entity));
+        }
+
+        return ret;
+    }
+
     public static GroupEntity transform(final Group group) {
         final GroupEntity entity;
 
@@ -128,5 +141,4 @@ public final class AdministrationTransformer {
 
         return entity;
     }
-
 }

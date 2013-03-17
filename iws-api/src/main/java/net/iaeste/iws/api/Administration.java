@@ -15,16 +15,10 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.CountryRequest;
-import net.iaeste.iws.api.requests.CreateUserRequest;
-import net.iaeste.iws.api.requests.FetchCountryRequest;
-import net.iaeste.iws.api.requests.FetchGroupRequest;
-import net.iaeste.iws.api.requests.FetchUserRequest;
-import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.requests.*;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 
@@ -140,4 +134,17 @@ public interface Administration {
      * @return Response Object with the found countries and error information
      */
     CountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
+
+
+    /**
+     * Retrieves a list of all national groups. This is mainly needed in the front-end
+     * to display a list of groups (countries)
+     *
+     *
+     * @param token     Authentication information about the user invoking the request
+     * @param request   Fetch National Groups Request Object
+     * @return Response Object with the current national groups ordered by name
+     *                  and error information
+     */
+    FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request);
 }

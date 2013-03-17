@@ -111,4 +111,6 @@ public interface AccessDao extends BasicDao {
     GroupTypeEntity findGroupTypeByType(GroupType groupType);
 
     CountryEntity findCountryByCode(String countryId);
+
+    List<GroupEntity> findGroupsForSharing(GroupEntity group);
 }

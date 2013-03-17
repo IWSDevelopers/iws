@@ -367,6 +367,14 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         return list.isEmpty() ? null : list.get(0);
     }
 
+    @Override
+    public List<GroupEntity> findGroupsForSharing(final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("group.findGroupsForSharing");
+        query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
+
     // =========================================================================
     // Internal Methods
     // =========================================================================

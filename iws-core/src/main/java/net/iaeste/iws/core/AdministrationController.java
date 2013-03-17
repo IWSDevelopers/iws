@@ -16,20 +16,11 @@ package net.iaeste.iws.core;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.CountryRequest;
-import net.iaeste.iws.api.requests.CreateUserRequest;
-import net.iaeste.iws.api.requests.FetchCountryRequest;
-import net.iaeste.iws.api.requests.FetchGroupRequest;
-import net.iaeste.iws.api.requests.FetchUserRequest;
-import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
-import net.iaeste.iws.api.requests.UserRequest;
-import net.iaeste.iws.api.responses.CountryResponse;
-import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.responses.*;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AdministrationService;
 import net.iaeste.iws.core.services.CountryService;
@@ -241,6 +232,28 @@ public final class AdministrationController extends CommonController implements 
         }
 
         LOG.trace("Finished fetchCountries()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
+        LOG.trace("Starting fetchNationalGroups()");
+        FetchGroupsForSharingResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
+            verify(request);
+
+            final AdministrationService service = factory.prepareAdministrationService();
+            response = service.fetchGroupsForSharing(authentication, request);
+        } catch (IWSException e) {
+            response = new FetchGroupsForSharingResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished fetchNationalGroups()");
         return response;
     }
 

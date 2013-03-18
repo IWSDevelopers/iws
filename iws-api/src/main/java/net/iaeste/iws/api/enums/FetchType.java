@@ -27,7 +27,7 @@ public enum FetchType {
     ALL,
 
     /**
-     * Fetch all Objects belonging to the current Group, which has been shared.
+     * Fetch all Objects shared to the current Group,
      */
     SHARED
 

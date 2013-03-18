@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationType;
 import net.iaeste.iws.persistence.AccessDao;
@@ -33,9 +36,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Date;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -93,17 +93,18 @@ public class NotificationMessageEntityTest {
         entity.setUser(user);
         entityManager.persist(entity);
 
-        Query query = entityManager.createNamedQuery("notifications.updateStatus");
-        query.setParameter("id", entity.getId());
-        query.setParameter("status", NotificationMessageStatus.PROCESSING);
-        final int affectedRows = query.executeUpdate();
+        final Query query1 = entityManager.createNamedQuery("notifications.updateStatus");
+        query1.setParameter("id", entity.getId());
+        query1.setParameter("status", NotificationMessageStatus.PROCESSING);
+        final int affectedRows = query1.executeUpdate();
         assertThat(affectedRows, is(1));
 
-        query = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");
-        query.setParameter("type", NotificationType.EMAIL);
-        query.setParameter("status", NotificationMessageStatus.PROCESSING);
-        query.setParameter("date", new Date());
-        final List<NotificationMessageEntity> found = query.getResultList();
+        final Query query2 = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");
+        query2.setParameter("type", NotificationType.EMAIL);
+        query2.setParameter("status", NotificationMessageStatus.PROCESSING);
+        query2.setParameter("date", new Date());
+
+        final List<NotificationMessageEntity> found = query2.getResultList();
         assertThat(found.size(), is(1));
         assertThat(found.get(0), is(entity));
     }

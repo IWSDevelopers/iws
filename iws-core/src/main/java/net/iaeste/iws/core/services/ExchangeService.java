@@ -186,7 +186,7 @@ public final class ExchangeService extends CommonService {
     public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
         final FetchEmployerInformationResponse response;
 
-        response = new FetchEmployerInformationResponse(convertEntityListToEmployerInformationList(dao.findOffersByLikeEmployerName(authentication, request.getName())));
+        response = new FetchEmployerInformationResponse(convertToEmployerInformationList(dao.findOffersByLikeEmployerName(authentication, request.getName())));
 
         return response;
     }
@@ -203,12 +203,6 @@ public final class ExchangeService extends CommonService {
 
         return convertEntityList(found);
     }
-
-//    private List<Offer> findOwnedOffers(final Long ownerId) {
-//        final List<OfferEntity> found = dao.findOffersByOwnerId(ownerId);
-//
-//        return convertEntityList(found);
-//    }
 
     private List<Offer> findSharedOffers(final Authentication authentication, final FetchOffersRequest request) {
         // Must be extended with Pagination
@@ -239,7 +233,7 @@ public final class ExchangeService extends CommonService {
         return result;
     }
 
-    private static List<EmployerInformation> convertEntityListToEmployerInformationList(final List<OfferEntity> found) {
+    private static List<EmployerInformation> convertToEmployerInformationList(final List<OfferEntity> found) {
         final List<EmployerInformation> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
@@ -301,8 +295,8 @@ public final class ExchangeService extends CommonService {
     private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {
         final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
 
-        for(Group group : request.getGroups()) {
-            if(group.getGroupType() == GroupType.NATIONAL) {
+        for (Group group : request.getGroups()) {
+            if (group.getGroupType() == GroupType.NATIONAL) {
                 for (OfferEntity offer : offers) {
                     persistPublisingGroup(authentication, offer, group);
                 }

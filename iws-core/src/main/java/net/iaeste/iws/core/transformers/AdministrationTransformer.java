@@ -119,13 +119,13 @@ public final class AdministrationTransformer {
     }
 
     public static List<Group> transform(List<GroupEntity> entities) {
-        List<Group> ret = new ArrayList<>();
+        final List<Group> list = new ArrayList<>(entities.size());
 
-        for (GroupEntity entity : entities) {
-            ret.add(transform(entity));
+        for (final GroupEntity entity : entities) {
+            list.add(transform(entity));
         }
 
-        return ret;
+        return list;
     }
 
     public static GroupEntity transform(final Group group) {

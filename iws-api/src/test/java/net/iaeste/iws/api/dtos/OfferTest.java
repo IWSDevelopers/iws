@@ -14,6 +14,13 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.dtos.OfferTestUtility.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.hasKey;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
@@ -34,17 +41,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static net.iaeste.iws.api.dtos.OfferTestUtility.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.hasKey;
-import static org.junit.Assert.assertThat;
-
 /**
  * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
+ * @noinspection InstanceMethodNamingConvention, JUnitTestMethodWithNoAssertions
  */
 public class OfferTest {
 
@@ -55,9 +56,7 @@ public class OfferTest {
 
     private static final String[] invalidRefNos = { "GB-2011-00001", "UK-2011-00001", "INE-2011-0001-KU", "GB-2011-w001", "PL-201w-0001", "GB-2011-0001-101",
             "GB-10000-00001-01", "GB-2011-a000-01", "GB-20w1-0000-01", "U-2011-0000-01", "U9-2011-a000-01", "-2011-a000-01" };
-    static final String ERRMSG_NOT_NULL = " field cannot be null";
-    static final String ERRMSG_PRESENCE = "if 'from(2)' is present then 'to(2)' should be present";
-    private static final String ERRMSG_LENGTH = " incorrect length";
+    private static final String ERRMSG_PRESENCE = "if 'from(2)' is present then 'to(2)' should be present";
 
     private static String[] getValidRefNos() {
         return Copier.copy(validRefNos);
@@ -140,60 +139,67 @@ public class OfferTest {
         for (final String correctRefNo : getValidRefNos()) {
             offer.setRefNo(correctRefNo);
             assertThat(String.format("%s should be correct", correctRefNo), offer.validate().isEmpty(), Matchers.is(true));
-            assertThat(isVerificationExceptionThrown(), is(false));
+
+            offer.verify();
         }
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyInvalidRefNo() {
+
         for (final String incorrectRefNo : getInvalidRefNos()) {
             offer.setRefNo(incorrectRefNo);
             assertThat(String.format("%s should be incorrect", incorrectRefNo), offer.validate(), hasKey("refNo"));
-            assertThat(isVerificationExceptionThrown(), is(true));
+
+            offer.verify();
         }
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDatesNoFrom() {
         // --deadline--------------------------to-------------------------------------->
         offer.setNominationDeadline(dates[0]);
         offer.setFromDate(null);
         offer.setToDate(dates[2]);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("fromDate"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDatesNoFrom2() {
         // --deadline--------------------------to2------------------------------------->
         offer.setNominationDeadline(dates[0]);
         offer.setToDate2(dates[2]);
         offer.setFromDate2(null);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("fromDate2"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDatesNoTo() {
         // --deadline--------------------------from------------------------------------>
         offer.setNominationDeadline(dates[0]);
         offer.setFromDate(dates[2]);
         offer.setToDate(null);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("toDate"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDatesNoTo2() {
         // --deadline--------------------------from2----------------------------------->
         offer = getMinimalOffer();
         offer.setNominationDeadline(dates[0]);
         offer.setFromDate2(dates[2]);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("toDate2"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDates1() {
         // --deadline------------------from2---------------to-------------------------->
         offer = getMinimalOffer();
@@ -204,10 +210,11 @@ public class OfferTest {
         offer.setFromDate(null);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("toDate2"));
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("fromDate"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDates2() {
         // --deadline---------------from------------------to2-------------------------->
         offer = getMinimalOffer();
@@ -218,10 +225,11 @@ public class OfferTest {
         offer.setFromDate2(null);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("toDate"));
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("fromDate2"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDates3() {
         // --deadline------------from----------------------to--------------to2--------->
         offer = getMinimalOffer();
@@ -231,10 +239,11 @@ public class OfferTest {
         offer.setToDate2(dates[3]);
         offer.setFromDate(null);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("fromDate2"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDates4() {
         // --deadline------------from----------------------to--------------from2------->
         offer = getMinimalOffer();
@@ -244,10 +253,11 @@ public class OfferTest {
         offer.setFromDate2(dates[3]);
         offer.setToDate2(null);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("toDate2"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDates5() {
         // --deadline------------from-----------------------from2----------to2--------->
         offer = getMinimalOffer();
@@ -257,10 +267,11 @@ public class OfferTest {
         offer.setFromDate2(dates[2]);
         offer.setToDate2(dates[3]);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("toDate"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testVerifyPresenceOfDates6() {
         // --deadline--------------to-----------------------from2----------to2--------->
         offer = getMinimalOffer();
@@ -270,7 +281,8 @@ public class OfferTest {
         offer.setToDate2(dates[3]);
         offer.setFromDate(null);
         assertThat(ERRMSG_PRESENCE, offer.validate(), hasKey("fromDate"));
-        assertThat(isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
     @Test
@@ -439,39 +451,34 @@ public class OfferTest {
         assertThat("minimumWeeks can be equal to maximumWeeks", offer.validate(), not(hasKey("maximumWeeks")));
         offer.setMinimumWeeks(10);
         offer.setMaximumWeeks(12);
-        assertThat(isVerificationExceptionThrown(), is(false));
+        offer.verify();
+
         assertThat("minimumWeeks can be equal to maximumWeeks", offer.validate(), not(hasKey("minimumWeeks")));
         assertThat("minimumWeeks can be equal to maximumWeeks", offer.validate(), not(hasKey("maximumWeeks")));
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
-    @Test
-    public void testMinimalOfferShouldBeValid() {
-        offer = getMinimalOffer();
-        // "valid offer from helper should be valid"
-        offer.verify();
-    }
-
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableRefNo() {
         offer = getMinimalOffer();
         offer.setRefNo(null);
-        assertThat(String.format("refNo%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableEmployerName() {
         offer = getMinimalOffer();
         offer.setEmployerName(null);
-        assertThat(String.format("employerName%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableFieldOfStudies() {
         offer = getMinimalOffer();
         offer.setFieldOfStudies(null);
-        assertThat(String.format("fieldOfStudies%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
     @Test(expected = VerificationException.class)
@@ -500,45 +507,47 @@ public class OfferTest {
         offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableStudyLevels() {
         offer = getMinimalOffer();
         offer.setStudyLevels(null);
-        assertThat(String.format("studyLevels%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotEmptyStudyLevels() {
         offer = getMinimalOffer();
         offer.setStudyLevels(EnumSet.noneOf(StudyLevel.class));
-        assertThat("studyLevels list cannot be empty", isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableLanguage1() {
         offer = getMinimalOffer();
         offer.setLanguage1(null);
-        assertThat(String.format("language1%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableLanguage1Level() {
         offer = getMinimalOffer();
         offer.setLanguage1Level(null);
-        assertThat(String.format("language1Level%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableWorkDescription() {
         offer = getMinimalOffer();
         offer.setWorkDescription(null);
-        assertThat(String.format("workDescription%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testLengthOfWorkDescription() {
         offer = getMinimalOffer();
         final StringBuilder sb = new StringBuilder(IWSExchangeConstants.MAX_OFFER_WORK_DESCRIPTION_SIZE + 1);
@@ -546,7 +555,8 @@ public class OfferTest {
             sb.append('1');
         }
         offer.setWorkDescription(sb.toString());
-        assertThat(String.format("workDescription%s", ERRMSG_LENGTH), isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
     @Test
@@ -554,10 +564,10 @@ public class OfferTest {
         offer = getFullOffer();
         offer.setOtherRequirements(null);
         // allow to save offers with no other requirements specified
-        assertThat(isVerificationExceptionThrown(), is(false));
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testLengthOfOtherRequirements() {
         offer = getMinimalOffer();
         final StringBuilder sb = new StringBuilder(IWSExchangeConstants.MAX_OFFER_OTHER_REQUIREMENTS_SIZE + 1);
@@ -565,50 +575,50 @@ public class OfferTest {
             sb.append('1');
         }
         offer.setOtherRequirements(sb.toString());
-        assertThat(String.format("otherRequirements%s", ERRMSG_LENGTH), isVerificationExceptionThrown(), is(true));
+
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableMaximumWeeks() {
         offer = getMinimalOffer();
         offer.setMaximumWeeks(null);
-        assertThat(String.format("maximumWeeks%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableMinimumWeeks() {
         offer = getMinimalOffer();
         offer.setMinimumWeeks(null);
-        assertThat(String.format("minimumWeeks%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableWeeklyHours() {
         offer = getMinimalOffer();
         offer.setWeeklyHours(null);
-        assertThat(String.format("weeklyHours%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableFromDate() {
         offer = getMinimalOffer();
         offer.setFromDate(null);
-        assertThat(String.format("fromDate%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @Test
+    @Test(expected = VerificationException.class)
     public void testNotNullableToDate() {
         offer = getMinimalOffer();
         offer.setToDate(null);
-        assertThat(String.format("toDate%s", ERRMSG_NOT_NULL), isVerificationExceptionThrown(), is(true));
 
+        offer.verify();
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testNullPaymentFrequency() {
         offer.setPayment(null);
@@ -623,7 +633,6 @@ public class OfferTest {
         offer.verify();
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testNullLodgingCostFrequency() {
         offer.setLodgingCostFrequency(null);
@@ -638,7 +647,6 @@ public class OfferTest {
         offer.verify();
     }
 
-    @SuppressWarnings("JUnitTestMethodWithNoAssertions")
     @Test
     public void testNullLivingCostFrequency() {
         offer.setLivingCostFrequency(null);
@@ -651,17 +659,5 @@ public class OfferTest {
         offer.setLivingCostFrequency(null);
         offer.setLivingCost(LIVING_COST);
         offer.verify();
-    }
-
-    public boolean isVerificationExceptionThrown() {
-        boolean result = false;
-
-        try {
-            offer.verify();
-        } catch (VerificationException ignore) {
-            result = true;
-        }
-
-        return result;
     }
 }

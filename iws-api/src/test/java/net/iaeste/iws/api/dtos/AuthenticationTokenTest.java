@@ -14,18 +14,19 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import com.gargoylesoftware.base.testing.EqualsTester;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+
+import com.gargoylesoftware.base.testing.EqualsTester;
+import net.iaeste.iws.api.exceptions.VerificationException;
+import org.junit.Test;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection CastToConcreteClass
  */
 public final class AuthenticationTokenTest {
 
@@ -57,7 +58,7 @@ public final class AuthenticationTokenTest {
         final String mainValue = "1234567890ABCDEF1234567890ABCDEF";
         final AuthenticationToken original = new AuthenticationToken(mainValue);
         final AuthenticationToken result = new AuthenticationToken(original);
-        //noinspection CastToConcreteClass
+
         final AuthenticationToken nullResult = new AuthenticationToken((AuthenticationToken) null);
 
         assertThat(result, is(original));

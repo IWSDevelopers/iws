@@ -32,7 +32,6 @@ import net.iaeste.iws.persistence.jpa.OfferJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,7 +43,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -59,7 +62,6 @@ import static org.junit.Assert.fail;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@SuppressWarnings("ClassWithTooManyFields")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 public class OfferEntityTest {
@@ -666,7 +668,7 @@ public class OfferEntityTest {
         assertThat(offerDao.findAllOffers(authentication).size(), is(0));
         offerDao.persist(authentication, offer);
         assertThat("fuck, this should be here!", offer.getExternalId(), is(notNullValue()));
-        Set<String> searchExternalIds = new HashSet<String>();
+        Set<String> searchExternalIds = new HashSet<>(1);
         searchExternalIds.add(offer.getExternalId());
         final List<OfferEntity> offerFoundByExtId = offerDao.findOffersByExternalId(authentication, searchExternalIds);
         assertThat(offerFoundByExtId, is(notNullValue()));

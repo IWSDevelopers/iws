@@ -15,8 +15,6 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.SortingField;
-import net.iaeste.iws.api.util.AbstractPaginatable;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;

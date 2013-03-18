@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.ejb;
 
-import net.iaeste.iws.ejb.NotificationManagerLocal;
 import net.iaeste.iws.persistence.notification.Notifications;
 
 import javax.ejb.Stateless;

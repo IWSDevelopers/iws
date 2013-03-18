@@ -44,7 +44,6 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.core.services.AdministrationService;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.FacultyService;
 import net.iaeste.iws.core.services.ServiceFactory;

@@ -41,40 +41,26 @@ import java.util.Date;
                 name = "offerGroup.findSharedForGroup",
                 query = "select og.offer from OfferGroupEntity og " +
                         "where og.offer.group.id = :gid"),
-        @NamedQuery(name = "OfferGroupEntity.findAll",
-                query = "select og from OfferGroupEntity og "),
-        @NamedQuery(name = "OfferGroupEntity.findById",
-                query = "select og from OfferGroupEntity og " +
-                        "where og.id = :id"),
-        @NamedQuery(name = "OfferGroupEntity.findGroupsByOfferAndGroup",
-                query = "select og from OfferGroupEntity og " +
-                        "where og.group.id = :gid" +
-                        "  and og.offer.id = :oid"),
-        @NamedQuery(name = "OfferGroupEntity.findGroupsByOffer",
+        @NamedQuery(name = "offerGroup.findGroupsByOffer",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
-        @NamedQuery(name = "OfferGroupEntity.findGroupsByOfferExternalId",
+        @NamedQuery(name = "offerGroup.findGroupsByExternalOfferId",
                 query = "select og from OfferGroupEntity og " +
-                        "where og.offer.externalId = :externalId"),
-        @NamedQuery(name = "OfferGroupEntity.deleteByIds",
-                query = "delete from OfferGroupEntity og " +
-                        "where og.id in :ids"),
-        @NamedQuery(name = "OfferGroupEntity.deleteByOffer",
+                        "where og.offer.externalId = :eoid"),
+        @NamedQuery(name = "offerGroup.deleteByOffer",
                 query = "delete from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
-        @NamedQuery(name = "OfferGroupEntity.deleteByOfferAndGroups",
+        @NamedQuery(name = "offerGroup.deleteByOfferIdAndGroups",
                 query = "delete from OfferGroupEntity og " +
-                        "where og.offer.id = :oid " +
-                        " and og.group.id IN :gids"),
-        @NamedQuery(name = "OfferGroupEntity.deleteByOfferExternalIds",
+                        "where og.offer.id = :oid" +
+                        "  and og.group.id in :gids"),
+        @NamedQuery(name = "offerGroup.deleteByExternalOfferId",
                 query = "delete from OfferGroupEntity og " +
-                        "where og.offer.id = (select o.id from OfferEntity o " +
-                                            " where o.externalId = :externalId)"),
-        @NamedQuery(name = "OfferGroupEntity.deleteByOfferExternalIdAndGroups",
+                        "where og.offer.externalId = :eoid"),
+        @NamedQuery(name = "offerGroup.deleteByOfferExternalIdAndGroups",
                 query = "delete from OfferGroupEntity og " +
                         "where og.group.id in :gids " +
-                        " and og.offer.id = (select o.id from OfferEntity o " +
-                                           " where o.externalId = :externalId)")
+                        " and og.offer.externalId = :eoid")
 })
 @Entity
 @Table(name = "offer_to_group")

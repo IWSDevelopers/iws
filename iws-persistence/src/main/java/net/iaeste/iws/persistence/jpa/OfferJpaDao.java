@@ -164,17 +164,6 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
         return query.getResultList();
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public List<OfferEntity> findOffersByOwnerId(final Authentication authentication, final Long ownerId) {
-//        final Query query = entityManager.createNamedQuery("offer.findByOwnerId");
-//        query.setParameter("id", ownerId);
-//
-//        return query.getResultList();
-//    }
-
     /**
      * {@inheritDoc}
      */
@@ -191,7 +180,7 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      */
     @Override
     public List<OfferGroupEntity> findGroupsForSharedOffer(final Long offerId) {
-        final Query query = entityManager.createNamedQuery("OfferGroupEntity.findGroupsByOffer");
+        final Query query = entityManager.createNamedQuery("offerGroup.findGroupsByOffer");
         query.setParameter("oid", offerId);
 
         return query.getResultList();
@@ -201,9 +190,9 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferGroupEntity> findGroupsForSharedOffer(final String offerExternalId) {
-        final Query query = entityManager.createNamedQuery("OfferGroupEntity.findGroupsByOfferExternalId");
-        query.setParameter("externalId", offerExternalId);
+    public List<OfferGroupEntity> findGroupsForSharedOffer(final String externalOfferId) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findGroupsByExternalOfferId");
+        query.setParameter("eoid", externalOfferId);
 
         return query.getResultList();
     }
@@ -213,7 +202,7 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      */
     @Override
     public Integer unshareFromAllGroups(final Long offerId) {
-        final Query query = entityManager.createNamedQuery("OfferGroupEntity.deleteByOffer");
+        final Query query = entityManager.createNamedQuery("offerGroup.deleteByOffer");
         query.setParameter("oid", offerId);
 
         return query.executeUpdate();
@@ -224,8 +213,8 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      */
     @Override
     public Integer unshareFromAllGroups(final String externalId) {
-        final Query query = entityManager.createNamedQuery("OfferGroupEntity.deleteByOfferExternalIds");
-        query.setParameter("externalId", externalId);
+        final Query query = entityManager.createNamedQuery("offerGroup.deleteByExternalOfferId");
+        query.setParameter("eoid", externalId);
 
         return query.executeUpdate();
     }
@@ -236,7 +225,7 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
     @Override
     public Integer unshareFromGroups(final Long offerId, final List<Long> groups) {
         //TODO passing empty list fails, correct?
-        final Query query = entityManager.createNamedQuery("OfferGroupEntity.deleteByOfferAndGroups");
+        final Query query = entityManager.createNamedQuery("offerGroup.deleteByOfferIdAndGroups");
         query.setParameter("oid", offerId);
         query.setParameter("gids", groups);
 
@@ -247,10 +236,10 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public Integer unshareFromGroups(final String offerExternalId, final List<Long> groups) {
+    public Integer unshareFromGroups(final String externalId, final List<Long> groups) {
         //TODO passing empty list fails, correct?
-        final Query query = entityManager.createNamedQuery("OfferGroupEntity.deleteByOfferRefNoAndGroups");
-        query.setParameter("offerExternalId", offerExternalId);
+        final Query query = entityManager.createNamedQuery("offerGroup.deleteByOfferExternalIdAndGroups");
+        query.setParameter("eoid", externalId);
         query.setParameter("gids", groups);
 
         return query.executeUpdate();

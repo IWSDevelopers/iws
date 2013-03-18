@@ -96,14 +96,6 @@ public interface OfferDao extends BasicDao {
      */
     List<OfferEntity> findOffersByLikeEmployerName(Authentication authentication, String employerName);
 
-//    /**
-//     * Finds all offers which are owned by a group of given Id.
-//     *
-//     * @param   ownerId ownerId of a group owning offers
-//     * @return  list of {@link OfferEntity} which are owned by GroupEntity with {@code id = ownerId}
-//     */
-//    List<OfferEntity> findOffersByOwnerId(Authentication authentication, Long ownerId);
-
     /**
      * Finds all shared offers.
      *
@@ -122,10 +114,10 @@ public interface OfferDao extends BasicDao {
     /**
      * Finds information about sharing of the offer
      *
-     * @param  offerExternalId reference number of the offer to get sharing info for
+     * @param  externalOfferId reference number of the offer to get sharing info for
      * @return list of {@link OfferGroupEntity} which are shared
      */
-    List<OfferGroupEntity> findGroupsForSharedOffer(String offerExternalId);
+    List<OfferGroupEntity> findGroupsForSharedOffer(String externalOfferId);
 
     /**
      * Unshares the offer from all groups
@@ -138,10 +130,10 @@ public interface OfferDao extends BasicDao {
     /**
      * Unshares the offer from all groups
      *
-     * @param  offerExternalId reference number of the offer to get sharing info for
+     * @param  externalId reference number of the offer to get sharing info for
      * @return number of groups from which the offer was unshared
      */
-    Integer unshareFromAllGroups(String offerExternalId);
+    Integer unshareFromAllGroups(String externalId);
 
     /**
      * Unshares the offer from groups
@@ -155,11 +147,11 @@ public interface OfferDao extends BasicDao {
     /**
      * Unshares the offer from groups
      *
-     * @param  offerExternalId reference number of the offer to get sharing info for
-     * @param  groups list of groups from which the offer is unshared
+     * @param  externalId The External Id for the Offer
+     * @param  groups     List of groups from which the offer is unshared
      * @return number of groups from which the offer was unshared
      */
-    Integer unshareFromGroups(String offerExternalId, List<Long> groups);
+    Integer unshareFromGroups(String externalId, List<Long> groups);
 
     /**
      * Deletes an offer from database.

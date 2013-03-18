@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.GroupType;
@@ -237,6 +238,19 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("eid", externalGroupId);
 
         return (GroupEntity) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean hasGroupsWithSimilarName(final Long parentId, final String name) {
+        final Query query = entityManager.createNamedQuery("group.findGroupsWithSimilarNames");
+        query.setParameter("pid", parentId);
+        query.setParameter("name", name.toLowerCase(IWSConstants.DEFAULT_LOCALE));
+
+        final List<GroupEntity> result = query.getResultList();
+        return !result.isEmpty();
     }
 
     /**

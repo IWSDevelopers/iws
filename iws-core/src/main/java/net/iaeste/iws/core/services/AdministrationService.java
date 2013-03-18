@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
@@ -22,6 +24,7 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
@@ -51,8 +54,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.UUID;
-
-import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -166,6 +167,15 @@ public final class AdministrationService extends CommonService {
         }
     }
 
+    /**
+     * Fetches a User Object. The result from the request depends on the person
+     * who made the request, and the permissions. Please see the API description
+     * for more details.
+     *
+     * @param authentication User & Group information
+     * @param request        User Request information
+     * @return User Object
+     */
     public FetchUserResponse fetchUser(final Authentication authentication, final FetchUserRequest request) {
         final String externalId = authentication.getUser().getExternalId();
         final String userId = request.getUserId();
@@ -240,8 +250,21 @@ public final class AdministrationService extends CommonService {
                 throw new PermissionException("Not allowed to create a sub-group of type " + type);
             }
         } else {
+            final GroupEntity groupEntity = dao.findGroup(authentication.getUser(), externalGroupId);
+
             // Update existing Group. We allow that the name can be altered,
             // provided no other Groups exists with the same name in this scope
+            if (groupEntity != null) {
+                final String name = request.getGroup().getGroupName();
+                if (!dao.hasGroupsWithSimilarName(groupEntity.getParentId(), name)) {
+                    groupEntity.setGroupName(name);
+                    dao.persist(groupEntity);
+                } else {
+                    throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "Another Group exist with a similar name " + name);
+                }
+            } else {
+                throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "No Group exist with the Id " + externalGroupId);
+            }
         }
     }
 
@@ -280,6 +303,13 @@ public final class AdministrationService extends CommonService {
         dao.persist(userGroup);
     }
 
+    /**
+     * Retrieves the requested Group, and returns it.
+     *
+     * @param authentication User & Group information
+     * @param request        Group Request information
+     * @return Response Object with the requested Group (or null)
+     */
     public FetchGroupResponse fetchGroup(final Authentication authentication, final FetchGroupRequest request) {
         final GroupEntity entity = dao.findGroup(authentication.getUser(), request.getGroupId());
 
@@ -304,8 +334,8 @@ public final class AdministrationService extends CommonService {
      * are talking about updating a users relation, then the owner role is a
      * special case.
      *
-     * @param authentication
-     * @param request
+     * @param authentication User & Group information
+     * @param request        Group Request information
      */
     public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
         throw new NotImplementedException("Method pending implementation.");

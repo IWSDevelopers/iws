@@ -74,18 +74,19 @@ import java.util.Date;
                             "  and v.id.userId = :uid" +
                             "  and g.externalId = :egid" +
                             "  and v.permission = :permission"),
-        @NamedQuery(name = "group.findByExternalGroupId",
-                query = "select g from GroupEntity g " +
-                        "where g.externalId = :egid"),
+        @NamedQuery(name = "group.findGroupsWithSimilarNames",
+                    query = "select g from GroupEntity g " +
+                            "where g.parentId = :pid" +
+                            "  and lower(g.groupName) = :name"),
         @NamedQuery(name = "group.findByExternalGroupIds",
                 query = "select g from GroupEntity g " +
                         "where g.externalId in :egids"),
         // find all "member countries" for sharing and exclude the own group
         @NamedQuery(name = "group.findGroupsForSharing",
                 query = "select g from GroupEntity g " +
-                        "where (g.groupType.grouptype = 'NATIONAL'" +
-                        "   or g.groupType.grouptype = 'SAR')" +
-                        "   and g.id <> :gid " +
+                        "where g.id <> :gid" +
+                        "  and (g.groupType.grouptype = 'NATIONAL'" +
+                        "  or  g.groupType.grouptype = 'SAR')" +
                         "order by g.groupName")
 })
 @Entity

@@ -99,9 +99,11 @@ public interface IWSErrors {
     IWSError PERSISTENCE_ERROR = new IWSError(503, "Persistency Error");
 
     /**
-     * The Identification Error is passed when trying to edit unexisting {@code Entity}.
+     * The Identification Error is passed when trying to access Objects, that
+     * either doesn't exist, or where the requesting user do not have sufficient
+     * permissions.
      */
-    IWSError ENTITY_IDENTIFICATION_ERROR = new IWSError(504, "Entity Identification Error");
+    IWSError OBJECT_IDENTIFICATION_ERROR = new IWSError(504, "Object Identification Error");
 
     /**
      * The processing of the request failed.

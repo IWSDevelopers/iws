@@ -38,6 +38,6 @@ public final class IdentificationException extends PersistenceException {
      * @param message  Specific message, regarding the problem
      */
     public IdentificationException(final String message) {
-        super(IWSErrors.ENTITY_IDENTIFICATION_ERROR, message);
+        super(IWSErrors.OBJECT_IDENTIFICATION_ERROR, message);
     }
 }

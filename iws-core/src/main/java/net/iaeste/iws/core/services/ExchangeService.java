@@ -158,7 +158,7 @@ public final class ExchangeService extends CommonService {
         if (foundOffer != null) {
             dao.delete(authentication, foundOffer.getId());
         } else {
-            throw new IWSException(IWSErrors.ENTITY_IDENTIFICATION_ERROR, "Cannot delete Offer with refNo " + request.getOfferRefNo());
+            throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "Cannot delete Offer with refNo " + request.getOfferRefNo());
         }
     }
 

@@ -36,7 +36,7 @@ public final class PublishOfferRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /** The Offer Object to published. */
-    private Set<String> offerExternalIds = null;
+    private Set<String> offerIds = null;
 
     /** The group to which the user will be added.**/
     private List<Group> groups;
@@ -49,8 +49,8 @@ public final class PublishOfferRequest extends AbstractVerification {
         groups = new ArrayList<>(10);
     }
 
-    public PublishOfferRequest(final Set<String> offerExternalIds, final List<Group> groups) {
-        this.offerExternalIds = Copier.copy(offerExternalIds);
+    public PublishOfferRequest(final Set<String> offerIds, final List<Group> groups) {
+        this.offerIds = Copier.copy(offerIds);
         this.groups = Copier.copy(groups);
     }
 
@@ -58,12 +58,12 @@ public final class PublishOfferRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOfferExternalIds(final Set<String> offerExternalIds) {
-        this.offerExternalIds = Copier.copy(offerExternalIds);
+    public void setOfferIds(final Set<String> offerIds) {
+        this.offerIds = Copier.copy(offerIds);
     }
 
-    public Set<String> getOfferExternalIds() {
-        return Copier.copy(offerExternalIds);
+    public Set<String> getOfferIds() {
+        return Copier.copy(offerIds);
     }
 
     public void setGroups(final List<Group> groups) {

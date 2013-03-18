@@ -12,29 +12,25 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Application;
-import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.util.AbstractFallible;
 import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
 
 /**
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class ApplicationResponse extends AbstractFallible {
 
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
     private final Application application;
     private final List<String> errors;
@@ -71,6 +67,7 @@ public class ApplicationResponse extends AbstractFallible {
      */
     public ApplicationResponse(final Application failedApplication, final List<String> errors) {
         super(IWSErrors.PROCESSING_FAILURE, "processing of the Application failed");
+
         application = new Application(failedApplication);
         this.errors = Copier.copy(errors);
     }

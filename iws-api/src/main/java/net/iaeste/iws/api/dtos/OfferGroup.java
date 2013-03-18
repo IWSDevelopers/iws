@@ -32,7 +32,7 @@ public final class OfferGroup extends AbstractFallible {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String offerRefNo = null;
-    private String groupExternalId = null;
+    private String groupId = null;
     private DateTime answered = null;
     private DateTime modified = null;
     private DateTime created = null;
@@ -52,7 +52,7 @@ public final class OfferGroup extends AbstractFallible {
     public OfferGroup(final OfferGroup offerGroup) {
         if (offerGroup != null) {
             offerRefNo = offerGroup.offerRefNo;
-            groupExternalId = offerGroup.groupExternalId;
+            groupId = offerGroup.groupId;
             answered = Copier.copy(offerGroup.answered);
             modified = Copier.copy(offerGroup.modified);
             created = Copier.copy(offerGroup.created);
@@ -72,12 +72,12 @@ public final class OfferGroup extends AbstractFallible {
         this.offerRefNo = offerRefNo;
     }
 
-    public String getGroupExternalId() {
-        return groupExternalId;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setGroupExternalId(final String groupExternalId) {
-        this.groupExternalId = groupExternalId;
+    public void setGroupId(final String groupId) {
+        this.groupId = groupId;
     }
 
     public DateTime getAnswered() {
@@ -132,12 +132,13 @@ public final class OfferGroup extends AbstractFallible {
 
         final OfferGroup offerGroup = (OfferGroup) obj;
 
-        if (offerRefNo != null ? !offerRefNo.equalsIgnoreCase(offerGroup.offerRefNo) : offerGroup.offerRefNo != null) {
+        if ((offerRefNo != null) ? !offerRefNo.equalsIgnoreCase(offerGroup.offerRefNo) : (offerGroup.offerRefNo != null)) {
             return false;
         }
-        if (groupExternalId != null ? !groupExternalId.equalsIgnoreCase(offerGroup.groupExternalId) : offerGroup.groupExternalId != null) {
+        if ((groupId != null) ? !groupId.equals(offerGroup.groupId) : (offerGroup.groupId != null)) {
             return false;
         }
+
         // #modified and #created are not relevant for the equality of the offers.
         return true;
     }
@@ -150,7 +151,7 @@ public final class OfferGroup extends AbstractFallible {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offerRefNo != null ? offerRefNo.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupExternalId != null ? groupExternalId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupId != null ? groupId.hashCode() : 0);
 
         return hash;
     }
@@ -162,7 +163,7 @@ public final class OfferGroup extends AbstractFallible {
     public String toString() {
         return "OfferGroup{" +
                 "offerRefNo=" + offerRefNo +
-                ", group.externalId=" + groupExternalId +
+                ", groupId=" + groupId +
                 ", answered=" + answered +
                 ", modified=" + modified +
                 ", created=" + created +

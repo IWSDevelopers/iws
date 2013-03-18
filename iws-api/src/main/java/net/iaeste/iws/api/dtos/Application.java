@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
@@ -29,15 +28,13 @@ import java.util.Map;
  * when he/she applied, therefore student information
  * are duplicated for each application.
  *
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class Application extends AbstractVerification {
 
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
@@ -54,26 +51,26 @@ public final class Application extends AbstractVerification {
      */
     public Application(final Application application) {
         if (application != null) {
-            externalOfferId = application.getExternalOfferId();
-            studentId = application.getStudentId();
-            status = application.getStatus();
+            offerId = application.offerId;
+            studentId = application.studentId;
+            status = application.status;
         }
     }
 
     /**
-     * External ID of the {@link Offer} that the {@link Student} is applying for
+     * Id of the {@link Offer} that the {@link Student} is applying for
      */
-    private String externalOfferId;
+    private String offerId = null;
 
     /**
-     * ID of the {@link Student}
+     * Id of the {@link Student}
      */
-    private String studentId;
+    private String studentId = null;
 
     /**
      * Status of the {@link Application}
      */
-    private ApplicationStatus status;
+    private ApplicationStatus status = null;
 
     // TODO add a copy of student data
 
@@ -81,29 +78,28 @@ public final class Application extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-
-    public String getExternalOfferId() {
-        return externalOfferId;
+    public void setOfferId(final String offerId) {
+        this.offerId = offerId;
     }
 
-    public void setExternalOfferId(String externalOfferId) {
-        this.externalOfferId = externalOfferId;
+    public String getOfferId() {
+        return offerId;
+    }
+
+    public void setStudentId(final String studentId) {
+        this.studentId = studentId;
     }
 
     public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void setStatus(final ApplicationStatus status) {
+        this.status = status;
     }
 
     public ApplicationStatus getStatus() {
         return status;
-    }
-
-    public void setStatus(ApplicationStatus status) {
-        this.status = status;
     }
 
     // =========================================================================
@@ -117,12 +113,11 @@ public final class Application extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "externalOfferId", externalOfferId);
+        isNotNull(validation, "offerId", offerId);
         isNotNull(validation, "studentId", studentId);
 
         return validation;
     }
-
 
     /**
      * {@inheritDoc}
@@ -139,7 +134,7 @@ public final class Application extends AbstractVerification {
 
         final Application application = (Application) obj;
 
-        if (externalOfferId != null ? !externalOfferId.equals(application.externalOfferId) : application.externalOfferId != null) {
+        if (offerId != null ? !offerId.equals(application.offerId) : application.offerId != null) {
             return false;
         }
 
@@ -147,7 +142,7 @@ public final class Application extends AbstractVerification {
             return false;
         }
 
-        return !(status != null ? !status.equals(application.status) : application.status != null);
+        return !(status != null ? status != application.status : application.status != null);
     }
 
     /**
@@ -157,7 +152,7 @@ public final class Application extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (externalOfferId != null ? externalOfferId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offerId != null ? offerId.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (studentId != null ? studentId.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
 
@@ -170,7 +165,7 @@ public final class Application extends AbstractVerification {
     @Override
     public String toString() {
         return "Application{" +
-                "externalOfferId='" + externalOfferId + '\'' +
+                "offerId='" + offerId + '\'' +
                 ", studentId='" + studentId + '\'' +
                 ", status=" + status +
                 '}';

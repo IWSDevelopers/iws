@@ -242,7 +242,7 @@ public final class OfferTransformer {
             result = new OfferGroup();
 
             result.setOfferRefNo(offerGroupEntity.getOffer().getRefNo());
-            result.setGroupExternalId(offerGroupEntity.getGroup().getExternalId());
+            result.setGroupId(offerGroupEntity.getGroup().getExternalId());
             result.setAnswered(new DateTime(offerGroupEntity.getAnswered()));
             result.setModified(new DateTime(offerGroupEntity.getModified()));
             result.setCreated(new DateTime(offerGroupEntity.getCreated()));

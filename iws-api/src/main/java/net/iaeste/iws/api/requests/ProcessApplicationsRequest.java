@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
@@ -23,15 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class ProcessApplicationsRequest extends AbstractVerification {
 
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
@@ -61,12 +58,12 @@ public class ProcessApplicationsRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public Application getApplication() {
-        return application;
-    }
-
     public void setApplication(Application application) {
         this.application = application;
+    }
+
+    public Application getApplication() {
+        return application;
     }
 
     // =========================================================================

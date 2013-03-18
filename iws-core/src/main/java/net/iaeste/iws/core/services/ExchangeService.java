@@ -289,7 +289,7 @@ public final class ExchangeService extends CommonService {
      * @param request
      */
     public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
-        final Set<String> externalOfferIds = request.getOfferExternalIds();
+        final Set<String> externalOfferIds = request.getOfferIds();
 
         for (final String externalOfferId : externalOfferIds) {
             dao.unshareFromAllGroups(externalOfferId);
@@ -299,7 +299,7 @@ public final class ExchangeService extends CommonService {
     }
 
     private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {
-        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferExternalIds());
+        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
 
         for(Group group : request.getGroups()) {
             if(group.getGroupType() == GroupType.NATIONAL) {

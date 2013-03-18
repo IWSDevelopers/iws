@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
 
@@ -50,6 +50,7 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
     public List<OfferEntity> findAllOffers(final Authentication authentication) {
         final Query query = entityManager.createNamedQuery("offer.findAllForGroup");
         query.setParameter("gid", authentication.getGroup().getId());
+
         return query.getResultList();
     }
 

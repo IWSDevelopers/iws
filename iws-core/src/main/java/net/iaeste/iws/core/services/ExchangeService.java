@@ -44,7 +44,7 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
-import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
@@ -64,10 +64,10 @@ import java.util.UUID;
  */
 public final class ExchangeService extends CommonService {
 
-    private final OfferDao dao;
+    private final ExchangeDao dao;
     private final Notifications notifications;
 
-    public ExchangeService(final OfferDao dao, final Notifications notifications) {
+    public ExchangeService(final ExchangeDao dao, final Notifications notifications) {
         this.dao = dao;
         this.notifications = notifications;
     }

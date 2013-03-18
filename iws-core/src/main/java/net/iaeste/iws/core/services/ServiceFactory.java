@@ -16,11 +16,11 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.CountryDao;
-import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.CountryJpaDao;
-import net.iaeste.iws.persistence.jpa.OfferJpaDao;
+import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
 import net.iaeste.iws.persistence.notification.Notifications;
 
@@ -72,7 +72,7 @@ public final class ServiceFactory {
     }
 
     public ExchangeService prepareOfferService() {
-        final OfferDao dao = new OfferJpaDao(entityManager);
+        final ExchangeDao dao = new ExchangeJpaDao(entityManager);
         return new ExchangeService(dao, notifications);
     }
 

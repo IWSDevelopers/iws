@@ -21,9 +21,9 @@ import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
-import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
-import net.iaeste.iws.persistence.jpa.OfferJpaDao;
+import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.After;
 import org.junit.Before;
@@ -46,7 +46,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Contains tests for OfferEntity and OfferJpaDao
+ * Contains tests for OfferEntity and ExchangeJpaDao
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -73,14 +73,14 @@ public class OfferGroupEntityTest {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private OfferDao offerDao = null;
+    private ExchangeDao offerDao = null;
 
     private OfferEntity offer = null;
     private Authentication authentication = null;
 
     @Before
     public void before() {
-        offerDao = new OfferJpaDao(entityManager);
+        offerDao = new ExchangeJpaDao(entityManager);
         final AccessDao accessDao = new AccessJpaDao(entityManager);
 
         offer = getMinimalOffer();

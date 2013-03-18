@@ -30,7 +30,7 @@ import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
-import net.iaeste.iws.persistence.OfferDao;
+import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
@@ -62,7 +62,7 @@ import static org.mockito.Mockito.when;
  */
 public class ExchangeServiceTest {
 
-    private final OfferDao dao = mock(OfferDao.class);
+    private final ExchangeDao dao = mock(ExchangeDao.class);
     private final Notifications notifications = mock(Notifications.class);
     private final ExchangeService client = new ExchangeService(dao, notifications);
     private final List<Offer> offers = OfferRequestTestUtility.getValidOffersList();

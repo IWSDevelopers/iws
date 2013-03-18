@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
+ * @noinspection CastToConcreteClass, ResultOfObjectAllocationIgnored
  */
 public final class AuthenticationTokenTest {
 
@@ -49,7 +49,6 @@ public final class AuthenticationTokenTest {
         assertThat(result.toString(), is("AuthenticationToken[token=" + mainValue + ']'));
         assertThat(diff.toString(), is("AuthenticationToken[token=" + diffValue + ']'));
 
-        //noinspection ResultOfObjectAllocationIgnored
         new EqualsTester(result, same, diff, null);
     }
 

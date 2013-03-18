@@ -14,14 +14,12 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationType;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -35,6 +33,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Date;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -51,6 +52,7 @@ public class NotificationMessageEntityTest {
 
     @Test
     @Transactional
+    @Ignore("2013-03-18 by Kim - Reason: The test is unstable.")
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
         final UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");

@@ -49,7 +49,7 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
     @Override
     public List<OfferEntity> findAllOffers(final Authentication authentication) {
         final Query query = entityManager.createNamedQuery("offer.findAllForGroup");
-
+        query.setParameter("gid", authentication.getGroup().getId());
         return query.getResultList();
     }
 

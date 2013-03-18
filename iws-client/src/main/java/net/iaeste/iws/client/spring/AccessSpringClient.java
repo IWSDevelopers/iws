@@ -45,7 +45,7 @@ import java.io.Serializable;
 @Repository("accessSpringClient")
 public final class AccessSpringClient implements Access {
 
-    private Access access = null;
+    private Access client = null;
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
@@ -70,7 +70,7 @@ public final class AccessSpringClient implements Access {
 
         // Set our Access implementation to the Access EJB, running withing a
         // "Spring Container".
-        access = accessBean;
+        client = accessBean;
     }
 
     // =========================================================================
@@ -82,7 +82,7 @@ public final class AccessSpringClient implements Access {
      */
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        return access.generateSession(request);
+        return client.generateSession(request);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class AccessSpringClient implements Access {
      */
     @Override
     public Fallible requestResettingSession(final AuthenticationRequest request) {
-        return access.requestResettingSession(request);
+        return client.requestResettingSession(request);
     }
 
     /**
@@ -98,7 +98,7 @@ public final class AccessSpringClient implements Access {
      */
     @Override
     public AuthenticationResponse resetSession(final String resetSessionString) {
-        return access.resetSession(resetSessionString);
+        return client.resetSession(resetSessionString);
     }
 
     /**
@@ -106,7 +106,7 @@ public final class AccessSpringClient implements Access {
      */
     @Override
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
-        return access.saveSessionData(token, request);
+        return client.saveSessionData(token, request);
     }
 
     /**
@@ -114,7 +114,7 @@ public final class AccessSpringClient implements Access {
      */
     @Override
     public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
-        return access.fetchSessionData(token);
+        return client.fetchSessionData(token);
     }
 
     /**
@@ -122,7 +122,7 @@ public final class AccessSpringClient implements Access {
      */
     @Override
     public Fallible deprecateSession(final AuthenticationToken token) {
-        return access.deprecateSession(token);
+        return client.deprecateSession(token);
     }
 
     /**
@@ -130,6 +130,6 @@ public final class AccessSpringClient implements Access {
      */
     @Override
     public PermissionResponse fetchPermissions(final AuthenticationToken token) {
-        return access.fetchPermissions(token);
+        return client.fetchPermissions(token);
     }
 }

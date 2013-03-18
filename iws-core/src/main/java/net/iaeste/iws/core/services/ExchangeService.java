@@ -25,6 +25,7 @@ import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
@@ -34,11 +35,13 @@ import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.PublishOfferRequest;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.OfferTemplateResponse;
 import net.iaeste.iws.api.responses.PublishGroupResponse;
+import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
@@ -270,6 +273,12 @@ public final class ExchangeService extends CommonService {
 
     public PublishGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
         throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(Authentication authentication, FetchGroupsForSharingRequest request) {
+        final List<Group> groupList = AdministrationTransformer.transform(dao.findGroupsForSharing(authentication.getGroup()));
+
+        return new FetchGroupsForSharingResponse(groupList);
     }
 
     /**

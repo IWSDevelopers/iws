@@ -308,4 +308,15 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
 
         return group;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GroupEntity> findGroupsForSharing(final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("group.findGroupsForSharing");
+        query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
 }

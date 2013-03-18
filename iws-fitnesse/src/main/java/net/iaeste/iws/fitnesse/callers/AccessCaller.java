@@ -40,7 +40,7 @@ import java.io.Serializable;
 public final class AccessCaller implements Access {
 
     // The Client handles the IWS for us, we use use it
-    private final Access access = new AccessClient();
+    private final Access caller = new AccessClient();
 
     /**
      * {@inheritDoc}
@@ -48,7 +48,7 @@ public final class AccessCaller implements Access {
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         try {
-            return access.generateSession(request);
+            return caller.generateSession(request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -60,7 +60,7 @@ public final class AccessCaller implements Access {
     @Override
     public Fallible requestResettingSession(final AuthenticationRequest request) {
         try {
-            return access.requestResettingSession(request);
+            return caller.requestResettingSession(request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -72,7 +72,7 @@ public final class AccessCaller implements Access {
     @Override
     public AuthenticationResponse resetSession(final String resetSessionString) {
         try {
-            return access.resetSession(resetSessionString);
+            return caller.resetSession(resetSessionString);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -84,7 +84,7 @@ public final class AccessCaller implements Access {
     @Override
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         try {
-            return access.saveSessionData(token, request);
+            return caller.saveSessionData(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -96,7 +96,7 @@ public final class AccessCaller implements Access {
     @Override
     public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
         try {
-            return access.fetchSessionData(token);
+            return caller.fetchSessionData(token);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -108,7 +108,7 @@ public final class AccessCaller implements Access {
     @Override
     public Fallible deprecateSession(final AuthenticationToken token) {
         try {
-            return access.deprecateSession(token);
+            return caller.deprecateSession(token);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -120,7 +120,7 @@ public final class AccessCaller implements Access {
     @Override
     public PermissionResponse fetchPermissions(final AuthenticationToken token) {
         try {
-            return access.fetchPermissions(token);
+            return caller.fetchPermissions(token);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

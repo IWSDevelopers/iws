@@ -191,4 +191,6 @@ public interface OfferDao extends BasicDao {
      * @return {@link GroupEntity}
      */
     GroupEntity findGroupByExternalId(String externalId);
+
+    List<GroupEntity> findGroupsForSharing(GroupEntity group);
 }

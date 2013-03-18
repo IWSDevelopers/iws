@@ -20,6 +20,7 @@ import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
@@ -32,6 +33,7 @@ import net.iaeste.iws.api.requests.PublishOfferRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
@@ -63,7 +65,7 @@ import javax.persistence.PersistenceContext;
 @Repository("exchangeSpringClient")
 public final class ExchangeSpringClient implements Exchange {
 
-    private Exchange exchange = null;
+    private Exchange client = null;
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
@@ -88,7 +90,7 @@ public final class ExchangeSpringClient implements Exchange {
 
         // Set our Exchange implementation to the Exchange EJB, running withing
         // a "Spring Container".
-        exchange = exchangeBean;
+        client = exchangeBean;
     }
 
     /**
@@ -96,7 +98,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
-        return exchange.fetchEmployers(token, request);
+        return client.fetchEmployers(token, request);
     }
 
     /**
@@ -104,7 +106,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        return exchange.manageFaculties(token, request);
+        return client.manageFaculties(token, request);
     }
 
     /**
@@ -112,7 +114,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
-        return exchange.fetchFaculties(token, request);
+        return client.fetchFaculties(token, request);
     }
 
     /**
@@ -120,7 +122,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
-        return exchange.processOffer(token, request);
+        return client.processOffer(token, request);
     }
 
     /**
@@ -128,7 +130,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
-        return exchange.deleteOffer(token, request);
+        return client.deleteOffer(token, request);
     }
 
     /**
@@ -136,7 +138,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
-        return exchange.fetchOffers(token, request);
+        return client.fetchOffers(token, request);
     }
 
     /**
@@ -144,7 +146,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
-        return exchange.manageOfferTemplate(token, request);
+        return client.manageOfferTemplate(token, request);
     }
 
     /**
@@ -152,7 +154,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
-        return exchange.fetchOfferTemplates(token, request);
+        return client.fetchOfferTemplates(token, request);
     }
 
     /**
@@ -160,7 +162,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public Fallible managePublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
-        return exchange.managePublishGroup(token, request);
+        return client.managePublishGroup(token, request);
     }
 
     /**
@@ -168,7 +170,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
-        return exchange.fetchPublishGroups(token, request);
+        return client.fetchPublishGroups(token, request);
     }
 
     /**
@@ -176,7 +178,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public Fallible manageStudent(final AuthenticationToken token, final StudentRequest request) {
-        return exchange.manageStudent(token, request);
+        return client.manageStudent(token, request);
     }
 
     /**
@@ -184,7 +186,15 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        return exchange.fetchStudents(token, request);
+        return client.fetchStudents(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
+        return client.fetchGroupsForSharing(token, request);
     }
 
     /**
@@ -192,7 +202,7 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
-        return exchange.processPublishOffer(token, request);
+        return client.processPublishOffer(token, request);
     }
 
     /**
@@ -200,6 +210,6 @@ public final class ExchangeSpringClient implements Exchange {
      */
     @Override
     public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {
-        return exchange.fetchPublishedOfferInfo(token, request);
+        return client.fetchPublishedOfferInfo(token, request);
     }
 }

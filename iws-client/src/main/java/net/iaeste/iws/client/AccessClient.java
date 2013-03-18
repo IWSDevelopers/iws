@@ -36,13 +36,13 @@ import java.io.Serializable;
  */
 public final class AccessClient implements Access {
 
-    private final Access access;
+    private final Access client;
 
     /**
      * Default Constructor.
      */
     public AccessClient() {
-        access = ClientFactory.getInstance().getAccessImplementation();
+        client = ClientFactory.getInstance().getAccessImplementation();
     }
 
     /**
@@ -50,7 +50,7 @@ public final class AccessClient implements Access {
      */
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        return access.generateSession(request);
+        return client.generateSession(request);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class AccessClient implements Access {
      */
     @Override
     public Fallible requestResettingSession(final AuthenticationRequest request) {
-        return access.requestResettingSession(request);
+        return client.requestResettingSession(request);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class AccessClient implements Access {
      */
     @Override
     public AuthenticationResponse resetSession(final String resetSessionString) {
-        return access.resetSession(resetSessionString);
+        return client.resetSession(resetSessionString);
     }
 
     /**
@@ -74,7 +74,7 @@ public final class AccessClient implements Access {
      */
     @Override
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
-        return access.saveSessionData(token, request);
+        return client.saveSessionData(token, request);
     }
 
     /**
@@ -82,7 +82,7 @@ public final class AccessClient implements Access {
      */
     @Override
     public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
-        return access.fetchSessionData(token);
+        return client.fetchSessionData(token);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class AccessClient implements Access {
      */
     @Override
     public Fallible deprecateSession(final AuthenticationToken token) {
-        return access.deprecateSession(token);
+        return client.deprecateSession(token);
     }
 
     /**
@@ -98,6 +98,6 @@ public final class AccessClient implements Access {
      */
     @Override
     public PermissionResponse fetchPermissions(final AuthenticationToken token) {
-        return access.fetchPermissions(token);
+        return client.fetchPermissions(token);
     }
 }

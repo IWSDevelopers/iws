@@ -16,10 +16,16 @@ package net.iaeste.iws.fitnesse.callers;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.CreateUserRequest;
+import net.iaeste.iws.api.requests.FetchCountryRequest;
+import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchUserRequest;
+import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
+import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AdministrationClient;
@@ -38,7 +44,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 public final class AdministrationCaller implements Administration {
 
     // The Client handles the IWS for us, we use use it
-    private final Administration administration = new AdministrationClient();
+    private final Administration caller = new AdministrationClient();
 
     /**
      * {@inheritDoc}
@@ -46,7 +52,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
         try {
-            return administration.createUser(token, request);
+            return caller.createUser(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -58,7 +64,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public Fallible activateUser(final String activationString) {
         try {
-            return administration.activateUser(activationString);
+            return caller.activateUser(activationString);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -70,7 +76,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         try {
-            return administration.controlUserAccount(token, request);
+            return caller.controlUserAccount(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -82,7 +88,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
         try {
-            return administration.fetchUser(token, request);
+            return caller.fetchUser(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -94,7 +100,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
         try {
-            return administration.processGroup(token, request);
+            return caller.processGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -106,7 +112,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
         try {
-            return administration.fetchGroup(token, request);
+            return caller.fetchGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -118,7 +124,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
         try {
-            return administration.processCountries(token, request);
+            return caller.processCountries(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -130,16 +136,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
         try {
-            return administration.fetchCountries(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
-    }
-
-    @Override
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
-        try {
-            return administration.fetchGroupsForSharing(token, request);
+            return caller.fetchCountries(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -151,7 +148,7 @@ public final class AdministrationCaller implements Administration {
     @Override
     public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         try {
-            return administration.processUserGroupAssignment(token, request);
+            return caller.processUserGroupAssignment(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

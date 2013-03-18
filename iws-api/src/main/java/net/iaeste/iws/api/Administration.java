@@ -145,20 +145,4 @@ public interface Administration {
      * @return Response Object with the found countries and error information
      */
     CountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
-
-
-    /**
-     * Retrieves a list of all national groups. This is mainly needed in the
-     * front-end to display a list of groups (countries).<br />
-     *   Note, this method should be moved to the Exchange module, since the
-     * purpose of the Administration Module is to facilitate the actual
-     * Administration of Users & Groups, not provide things for the Exchange.
-     * TODO: Move to Exchange
-     *
-     * @param token     Authentication information about the user invoking the request
-     * @param request   Fetch National Groups Request Object
-     * @return Response Object with the current national groups ordered by name
-     *                  and error information
-     */
-    FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request);
 }

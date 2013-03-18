@@ -15,17 +15,11 @@
 package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Administration;
-import net.iaeste.iws.api.dtos.Group;
-import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.CreateUserRequest;
-import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
-import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.util.Fallible;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
@@ -83,20 +77,5 @@ public class AdministrationClientTest extends AbstractClientTest {
         assertThat(spy.size(), is(1));
         final String notification = spy.getNext().getMessage();
         assertThat(notification, containsString("Activation Code"));
-    }
-
-    @Test
-    public void testFetchGroupsForSharing() {
-        token.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
-        final FetchGroupsForSharingResponse response = administration.fetchGroupsForSharing(token, new FetchGroupsForSharingRequest());
-
-        assertThat(response.isOk(), is(true));
-        // 6 countries are entered in the test data, minus the own country (austria)
-        assertThat("Expect from test data to get all groups minus the own -> 5", response.getGroups().size(), is(6-1));
-        final GroupType[] groupTypes = {GroupType.NATIONAL, GroupType.SAR};
-        for (final Group group : response.getGroups()) {
-            assertThat(group.getGroupType(), Matchers.isIn(groupTypes));
-            assertThat(group.getCountryId(), Matchers.is(not("AT")));
-        }
     }
 }

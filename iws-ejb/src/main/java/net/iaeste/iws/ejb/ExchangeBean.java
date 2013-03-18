@@ -21,6 +21,7 @@ import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
@@ -34,6 +35,7 @@ import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
@@ -347,6 +349,28 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
+        FetchGroupsForSharingResponse response;
+
+        try {
+            response = exchange.fetchGroupsForSharing(token, request);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Interceptors(Profiler.class)
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
@@ -363,6 +387,9 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Interceptors(Profiler.class)
     public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {

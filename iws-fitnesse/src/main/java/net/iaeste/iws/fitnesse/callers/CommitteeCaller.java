@@ -36,7 +36,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 public final class CommitteeCaller implements Committees {
 
     // The Client handles the IWS for us, we use use it
-    private final Committees committees = new CommitteeClient();
+    private final Committees caller = new CommitteeClient();
 
     /**
      * {@inheritDoc}
@@ -44,7 +44,7 @@ public final class CommitteeCaller implements Committees {
     @Override
     public Fallible createCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         try {
-            return committees.createCommittee(token, request);
+            return caller.createCommittee(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -56,7 +56,7 @@ public final class CommitteeCaller implements Committees {
     @Override
     public Fallible manageCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         try {
-            return committees.manageCommittee(token, request);
+            return caller.manageCommittee(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -68,7 +68,7 @@ public final class CommitteeCaller implements Committees {
     @Override
     public Fallible upgradeCommittee(final AuthenticationToken token, final CommitteeRequest request) {
         try {
-            return committees.upgradeCommittee(token, request);
+            return caller.upgradeCommittee(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -80,7 +80,7 @@ public final class CommitteeCaller implements Committees {
     @Override
     public Fallible manageInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
         try {
-            return committees.manageInternationalGroup(token, request);
+            return caller.manageInternationalGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -92,7 +92,7 @@ public final class CommitteeCaller implements Committees {
     @Override
     public Fallible createRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
         try {
-            return committees.createRegionalGroup(token, request);
+            return caller.createRegionalGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -104,7 +104,7 @@ public final class CommitteeCaller implements Committees {
     @Override
     public Fallible manageRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
         try {
-            return committees.manageRegionalGroup(token, request);
+            return caller.manageRegionalGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

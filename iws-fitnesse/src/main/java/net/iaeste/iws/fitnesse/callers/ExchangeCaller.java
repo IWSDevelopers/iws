@@ -20,6 +20,7 @@ import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
@@ -32,6 +33,7 @@ import net.iaeste.iws.api.requests.PublishOfferRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
@@ -56,7 +58,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 public final class ExchangeCaller implements Exchange {
 
     // The Client handles the IWS for us, we use use it
-    private final Exchange exchange = new ExchangeClient();
+    private final Exchange caller = new ExchangeClient();
 
     /**
      * {@inheritDoc}
@@ -64,7 +66,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         try {
-            return exchange.fetchEmployers(token, request);
+            return caller.fetchEmployers(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -76,7 +78,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
         try {
-            return exchange.manageFaculties(token, request);
+            return caller.manageFaculties(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -88,7 +90,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         try {
-            return exchange.fetchFaculties(token, request);
+            return caller.fetchFaculties(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -100,7 +102,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         try {
-            return exchange.processOffer(token, request);
+            return caller.processOffer(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -112,7 +114,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         try {
-            return exchange.deleteOffer(token, request);
+            return caller.deleteOffer(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -124,7 +126,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         try {
-            return exchange.fetchOffers(token, request);
+            return caller.fetchOffers(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -136,7 +138,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         try {
-            return exchange.manageOfferTemplate(token, request);
+            return caller.manageOfferTemplate(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -148,7 +150,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         try {
-            return exchange.fetchOfferTemplates(token, request);
+            return caller.fetchOfferTemplates(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -160,7 +162,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public Fallible managePublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
         try {
-            return exchange.managePublishGroup(token, request);
+            return caller.managePublishGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -172,7 +174,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         try {
-            return exchange.fetchPublishGroups(token, request);
+            return caller.fetchPublishGroups(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -184,7 +186,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public Fallible manageStudent(final AuthenticationToken token, final StudentRequest request) {
         try {
-            return exchange.manageStudent(token, request);
+            return caller.manageStudent(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -196,7 +198,19 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
         try {
-            return exchange.fetchStudents(token, request);
+            return caller.fetchStudents(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
+        try {
+            return caller.fetchGroupsForSharing(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -208,7 +222,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
         try {
-            return exchange.processPublishOffer(token, request);
+            return caller.processPublishOffer(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -220,7 +234,7 @@ public final class ExchangeCaller implements Exchange {
     @Override
     public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {
         try {
-            return exchange.fetchPublishedOfferInfo(token, request);
+            return caller.fetchPublishedOfferInfo(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

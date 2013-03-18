@@ -22,6 +22,7 @@ import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
@@ -34,6 +35,7 @@ import net.iaeste.iws.api.requests.PublishOfferRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
@@ -42,6 +44,7 @@ import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
 import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.core.services.AdministrationService;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.FacultyService;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -339,6 +342,28 @@ public final class ExchangeController extends CommonController implements Exchan
         }
 
         LOG.trace("Finished fetchStudents()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
+        LOG.trace("Starting fetchNationalGroups()");
+        FetchGroupsForSharingResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
+            verify(request);
+
+            final ExchangeService service = factory.prepareOfferService();
+            response = service.fetchGroupsForSharing(authentication, request);
+        } catch (IWSException e) {
+            response = new FetchGroupsForSharingResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished fetchNationalGroups()");
         return response;
     }
 

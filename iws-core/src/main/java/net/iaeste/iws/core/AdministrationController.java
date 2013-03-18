@@ -239,28 +239,6 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
-        LOG.trace("Starting fetchNationalGroups()");
-        FetchGroupsForSharingResponse response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
-            verify(request);
-
-            final AdministrationService service = factory.prepareAdministrationService();
-            response = service.fetchGroupsForSharing(authentication, request);
-        } catch (IWSException e) {
-            response = new FetchGroupsForSharingResponse(e.getError(), e.getMessage());
-        }
-
-        LOG.trace("Finished fetchNationalGroups()");
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         LOG.trace("Starting processUserGroupAssignment()");
         Fallible response;

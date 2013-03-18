@@ -20,14 +20,12 @@ import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
-import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
-import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
@@ -52,7 +50,7 @@ import javax.persistence.PersistenceContext;
 @Repository("administrationSpringClient")
 public final class AdministrationSpringClient implements Administration {
 
-    private Administration administration = null;
+    private Administration client = null;
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
@@ -77,7 +75,7 @@ public final class AdministrationSpringClient implements Administration {
 
         // Set our Administration implementation to the Administration EJB,
         // running withing a "Spring Container".
-        administration = administrationBean;
+        client = administrationBean;
     }
 
     // =========================================================================
@@ -89,7 +87,7 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
-        return administration.createUser(token, request);
+        return client.createUser(token, request);
     }
 
     /**
@@ -97,7 +95,7 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public Fallible activateUser(final String activationString) {
-        return administration.activateUser(activationString);
+        return client.activateUser(activationString);
     }
 
     /**
@@ -105,7 +103,7 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
-        return administration.controlUserAccount(token, request);
+        return client.controlUserAccount(token, request);
     }
 
     /**
@@ -113,7 +111,7 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
-        return administration.fetchUser(token, request);
+        return client.fetchUser(token, request);
     }
 
     /**
@@ -121,7 +119,7 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
-        return administration.processGroup(token, request);
+        return client.processGroup(token, request);
     }
 
     /**
@@ -129,7 +127,7 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
-        return administration.fetchGroup(token, request);
+        return client.fetchGroup(token, request);
     }
 
     /**
@@ -137,7 +135,7 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
-        return administration.processCountries(token, request);
+        return client.processCountries(token, request);
     }
 
     /**
@@ -145,15 +143,7 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        return administration.fetchCountries(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
-        return administration.fetchGroupsForSharing(token, request);
+        return client.fetchCountries(token, request);
     }
 
     /**
@@ -161,6 +151,6 @@ public final class AdministrationSpringClient implements Administration {
      */
     @Override
     public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        return administration.processUserGroupAssignment(token, request);
+        return client.processUserGroupAssignment(token, request);
     }
 }

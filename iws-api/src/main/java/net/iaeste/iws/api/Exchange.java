@@ -19,6 +19,7 @@ import net.iaeste.iws.api.requests.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.FetchOffersRequest;
 import net.iaeste.iws.api.requests.FetchPublishGroupsRequest;
@@ -31,6 +32,7 @@ import net.iaeste.iws.api.requests.PublishOfferRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
 import net.iaeste.iws.api.responses.FacultyResponse;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
@@ -75,6 +77,17 @@ public interface Exchange {
     Fallible manageStudent(AuthenticationToken token, StudentRequest request);
 
     StudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
+
+    /**
+     * Retrieves a list of all national groups. This is mainly needed in the
+     * front-end to display a list of groups (countries).
+     *
+     * @param token     Authentication information about the user invoking the request
+     * @param request   Fetch National Groups Request Object
+     * @return Response Object with the current national groups ordered by name
+     *                  and error information
+     */
+    FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request);
 
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
 

@@ -260,21 +260,6 @@ public class AdministrationBean extends AbstractBean implements Administration {
         return response;
     }
 
-    @Override
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
-        FetchGroupsForSharingResponse response;
-
-        try {
-            response = administration.fetchGroupsForSharing(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
     /**
      * {@inheritDoc}
      */

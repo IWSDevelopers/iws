@@ -28,13 +28,13 @@ import net.iaeste.iws.api.util.Fallible;
  */
 public final class CommitteeClient implements Committees {
 
-    private final Committees committees;
+    private final Committees client;
 
     /**
      * Default Constructor.
      */
     public CommitteeClient() {
-        committees = ClientFactory.getInstance().getCommitteeImplementation();
+        client = ClientFactory.getInstance().getCommitteeImplementation();
     }
 
     /**
@@ -42,7 +42,7 @@ public final class CommitteeClient implements Committees {
      */
     @Override
     public Fallible createCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        return committees.createCommittee(token, request);
+        return client.createCommittee(token, request);
     }
 
     /**
@@ -50,7 +50,7 @@ public final class CommitteeClient implements Committees {
      */
     @Override
     public Fallible manageCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        return committees.manageCommittee(token, request);
+        return client.manageCommittee(token, request);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class CommitteeClient implements Committees {
      */
     @Override
     public Fallible upgradeCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        return committees.upgradeCommittee(token, request);
+        return client.upgradeCommittee(token, request);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class CommitteeClient implements Committees {
      */
     @Override
     public Fallible manageInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
-        return committees.manageInternationalGroup(token, request);
+        return client.manageInternationalGroup(token, request);
     }
 
     /**
@@ -74,7 +74,7 @@ public final class CommitteeClient implements Committees {
      */
     @Override
     public Fallible createRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        return committees.createRegionalGroup(token, request);
+        return client.createRegionalGroup(token, request);
     }
 
     /**
@@ -82,6 +82,6 @@ public final class CommitteeClient implements Committees {
      */
     @Override
     public Fallible manageRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        return committees.manageRegionalGroup(token, request);
+        return client.manageRegionalGroup(token, request);
     }
 }

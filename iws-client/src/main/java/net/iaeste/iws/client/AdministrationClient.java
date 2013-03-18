@@ -103,8 +103,11 @@ public final class AdministrationClient implements Administration {
         return administration.fetchCountries(token, request);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
         return administration.fetchGroupsForSharing(token, request);
     }
 

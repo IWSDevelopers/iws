@@ -37,6 +37,10 @@ import java.util.Date;
  * @noinspection AssignmentToDateFieldFromParameter, ClassWithTooManyFields
  */
 @NamedQueries({
+        @NamedQuery(
+                name = "offerGroup.findSharedForGroup",
+                query = "select og.offer from OfferGroupEntity og " +
+                        "where og.offer.group.id = :gid"),
         @NamedQuery(name = "OfferGroupEntity.findAll",
                 query = "select og from OfferGroupEntity og "),
         @NamedQuery(name = "OfferGroupEntity.findById",

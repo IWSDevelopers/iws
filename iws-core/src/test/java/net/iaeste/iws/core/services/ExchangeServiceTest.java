@@ -14,15 +14,6 @@
  */
 package net.iaeste.iws.core.services;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
@@ -54,6 +45,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 /**
  * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -83,11 +83,11 @@ public class ExchangeServiceTest {
         final List<OfferEntity> entities = new ArrayList<>(2);
         entities.add(null);
         entities.add(null);
-        when(dao.findAll()).thenReturn(entities);
+        when(dao.findAllOffers(auth)).thenReturn(entities);
 
         final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
 
-        final FetchOffersResponse result = client.fetchOffers(null, request);
+        final FetchOffersResponse result = client.fetchOffers(auth, request);
 
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffers().size(), is(entities.size()));
@@ -110,7 +110,7 @@ public class ExchangeServiceTest {
         final Offer offer = offers.get(0);
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 
-        when(dao.findOffer(offer.getRefNo())).thenReturn(null);
+        when(dao.findOffer(authentication, offer.getRefNo())).thenReturn(null);
 
         final ProcessOfferRequest request = new ProcessOfferRequest(offer);
         request.verify(); // make sure that request is valid
@@ -138,9 +138,9 @@ public class ExchangeServiceTest {
         offer.setCanteen(false);
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 
-        when(dao.findOffer(offer.getId())).thenReturn(existingEntity);
-        when(dao.findOffer(offer.getRefNo())).thenReturn(existingEntity);
-        when(dao.findOffer(offer.getId(), offer.getRefNo())).thenReturn(existingEntity);
+        when(dao.findOffer(auth, offer.getId())).thenReturn(existingEntity);
+        when(dao.findOffer(auth, offer.getRefNo())).thenReturn(existingEntity);
+        when(dao.findOffer(auth, offer.getId(), offer.getRefNo())).thenReturn(existingEntity);
 
         final ProcessOfferRequest request = new ProcessOfferRequest(offer);
         request.verify(); // make sure that request is valid
@@ -166,19 +166,19 @@ public class ExchangeServiceTest {
         offerForDeletion.setId(offerId);
         offerForDeletion.setRefNo(offerRefNo);
 
-        when(dao.findOffer(offerRefNo)).thenReturn(offerForDeletion);
+        when(dao.findOffer(auth, offerRefNo)).thenReturn(offerForDeletion);
         final DeleteOfferRequest request = new DeleteOfferRequest(offerRefNo);
         request.verify(); // make sure that request is valid
 
-        client.deleteOffer(null, request);
+        client.deleteOffer(auth, request);
 
-        verify(dao).delete(offerId);
+        verify(dao).delete(auth, offerId);
     }
 
     @Test(expected = IWSException.class)
     public void testDeleteNonexistentOffer() {
         final String offerRefNo = "AT-2012-0001";
-        when(dao.findOffer(offerRefNo)).thenReturn(null);
+        when(dao.findOffer(auth, offerRefNo)).thenReturn(null);
 
         final DeleteOfferRequest request = new DeleteOfferRequest(offerRefNo);
         request.verify(); // make sure that request is valid
@@ -192,7 +192,7 @@ public class ExchangeServiceTest {
         entities.add(null);
         entities.add(null);
 
-        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME, auth.getGroup().getId())).thenReturn(entities);
+        when(dao.findOffersByLikeEmployerName(auth, OfferTestUtility.EMPLOYER_NAME)).thenReturn(entities);
 
         final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest(OfferTestUtility.EMPLOYER_NAME);
         request.verify(); // make sure that request is valid
@@ -208,7 +208,7 @@ public class ExchangeServiceTest {
         entities.add(null);
         entities.add(null);
 
-        when(dao.findOffersByLikeEmployerName(OfferTestUtility.EMPLOYER_NAME, auth.getGroup().getId())).thenReturn(entities);
+        when(dao.findOffersByLikeEmployerName(auth, OfferTestUtility.EMPLOYER_NAME)).thenReturn(entities);
 
         final FetchEmployerInformationRequest request = new FetchEmployerInformationRequest("");
         request.verify(); // make sure that request is valid

@@ -18,7 +18,6 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
@@ -30,7 +29,6 @@ import net.iaeste.iws.client.notifications.NotificationSpy;
 import org.junit.Test;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -124,7 +122,7 @@ public class AccessClientTest {
         final AuthenticationToken token = new AuthenticationToken("9e107d9d372bb6826bd81d3542a419d6");
 
         final PermissionResponse response = access.fetchPermissions(token);
-        final List<Authorization> permissions = response.getAuthorizations();
+        //final List<Authorization> permissions = response.getAuthorizations();
 
         // Verify that the call went through - however, as we just invented a
         // "token", we should get an error back

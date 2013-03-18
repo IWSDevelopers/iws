@@ -35,7 +35,7 @@ public interface OfferDao extends BasicDao {
      *
      * @return list of {@code OfferEntity}
      */
-    List<OfferEntity> findAll();
+    List<OfferEntity> findAllOffers(Authentication authentication);
 
     /**
      * Finds the entity in the database.
@@ -44,7 +44,7 @@ public interface OfferDao extends BasicDao {
      * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
-    OfferEntity findOffer(Long offerId);
+    OfferEntity findOffer(Authentication authentication, Long offerId);
 
     /**
      * Finds the entity in the database.
@@ -53,7 +53,7 @@ public interface OfferDao extends BasicDao {
      * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
-    OfferEntity findOffer(String refNo);
+    OfferEntity findOffer(Authentication authentication, String refNo);
 
     /**
      * Finds an Offer in the database which has both the given ExternalId and
@@ -64,54 +64,52 @@ public interface OfferDao extends BasicDao {
      * @param refNo      The unique Offer Refence Number
      * @return Found Offer Entity or null
      */
-    OfferEntity findOffer(String externalId, String refNo);
+    OfferEntity findOffer(Authentication authentication, String externalId, String refNo);
 
     /**
      * @param offerIds list of primary keys for offers
      * @return list of {@code }OfferEntity}
      */
-    List<OfferEntity> findOffers(List<Long> offerIds);
+    List<OfferEntity> findOffers(Authentication authentication, List<Long> offerIds);
 
     /**
      * @param externalIds list of external IDs for fetching
      * @return list of {@code }OfferEntity}
      */
-    List<OfferEntity> findOffersByExternalId(Set<String> externalIds);
+    List<OfferEntity> findOffersByExternalId(Authentication authentication, Set<String> externalIds);
 
     /**
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
-     * @param ownerId ownerId of a group owning offers
      * @return list of {@code }OfferEntity}
      * @throws PersistenceException
      */
-    List<OfferEntity> findOffersByEmployerName(String employerName, Long ownerId);
+    List<OfferEntity> findOffersByEmployerName(Authentication authentication, String employerName);
 
     /**
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
-     * @param ownerId ownerId of a group owning offers
      * @return list of {@code }OfferEntity}
      * @throws PersistenceException
      */
-    List<OfferEntity> findOffersByLikeEmployerName(String employerName, Long ownerId);
+    List<OfferEntity> findOffersByLikeEmployerName(Authentication authentication, String employerName);
 
-    /**
-     * Finds all offers which are owned by a group of given Id.
-     *
-     * @param   ownerId ownerId of a group owning offers
-     * @return  list of {@link OfferEntity} which are owned by GroupEntity with {@code id = ownerId}
-     */
-    List<OfferEntity> findOffersByOwnerId(Long ownerId);
+//    /**
+//     * Finds all offers which are owned by a group of given Id.
+//     *
+//     * @param   ownerId ownerId of a group owning offers
+//     * @return  list of {@link OfferEntity} which are owned by GroupEntity with {@code id = ownerId}
+//     */
+//    List<OfferEntity> findOffersByOwnerId(Authentication authentication, Long ownerId);
 
     /**
      * Finds all shared offers.
      *
      * @return list of {@link OfferEntity} which are shared
      */
-    List<OfferEntity> findSharedOffers();
+    List<OfferEntity> findSharedOffers(Authentication authentication);
 
     /**
      * Finds information about sharing of the offer
@@ -168,7 +166,7 @@ public interface OfferDao extends BasicDao {
      *
      * @param offerId id of the offer to delete
      */
-    void delete(Long offerId);
+    Integer delete(Authentication authentication, Long offerId);
 
     /**
      * Deletes an offer from database.
@@ -176,7 +174,7 @@ public interface OfferDao extends BasicDao {
      * @param offerIds ids of offers to delete
      * @return number of deleted objects
      */
-    Integer delete(List<Long> offerIds);
+    Integer delete(Authentication authentication, List<Long> offerIds);
 
     /**
      * Finds all groups for given external ids

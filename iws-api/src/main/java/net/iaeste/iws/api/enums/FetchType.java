@@ -21,8 +21,14 @@ package net.iaeste.iws.api.enums;
  */
 public enum FetchType {
 
-    OWNED,
-    SHARED,
-    ALL
+    /**
+     * Fetch all Objects belonging to the current Group.
+     */
+    ALL,
+
+    /**
+     * Fetch all Objects belonging to the current Group, which has been shared.
+     */
+    SHARED
 
 }

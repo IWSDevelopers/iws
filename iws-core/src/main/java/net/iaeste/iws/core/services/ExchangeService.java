@@ -88,7 +88,7 @@ public final class ExchangeService extends CommonService {
         final String refNo = givenOffer.getRefNo();
 
         if (externalId == null) {
-            final OfferEntity existingEntity = dao.findOffer(refNo);
+            final OfferEntity existingEntity = dao.findOffer(authentication, refNo);
             if (existingEntity == null) {
                 // Create a new Offer
                 // Add the Group to the Offer
@@ -113,7 +113,7 @@ public final class ExchangeService extends CommonService {
             permissionCheck(authentication, authentication.getGroup());
 
             // Okay, user is permitted. Let's check if we can find this Offer
-            final OfferEntity existingEntity = dao.findOffer(externalId, refNo);
+            final OfferEntity existingEntity = dao.findOffer(authentication, externalId, refNo);
 
             if (existingEntity == null) {
                 // We could not find an Offer matching the given criterias,
@@ -150,10 +150,10 @@ public final class ExchangeService extends CommonService {
 //        // then a Permission Exception is thrown
 //        permissionCheck(authentication, authentication.getGroup());
 
-        final OfferEntity foundOffer = dao.findOffer(request.getOfferRefNo());
+        final OfferEntity foundOffer = dao.findOffer(authentication, request.getOfferRefNo());
 
         if (foundOffer != null) {
-            dao.delete(foundOffer.getId());
+            dao.delete(authentication, foundOffer.getId());
         } else {
             throw new IWSException(IWSErrors.ENTITY_IDENTIFICATION_ERROR, "Cannot delete Offer with refNo " + request.getOfferRefNo());
         }
@@ -164,16 +164,17 @@ public final class ExchangeService extends CommonService {
 
         switch (request.getFetchType()) {
             case ALL:
-                response = new FetchOffersResponse(findAllOffers());
+                response = new FetchOffersResponse(findAllOffers(authentication, request));
                 break;
-            case OWNED:
-                response = new FetchOffersResponse(findOwnedOffers(authentication.getGroup().getId()));
-                break;
+// Commented out, the "Owned" serve the same purpose as "all", since you can only view your own offers!
+//            case OWNED:
+//                response = new FetchOffersResponse(findOwnedOffers(authentication.getGroup().getId()));
+//                break;
             case SHARED:
-                response = new FetchOffersResponse(findSharedOffers());
+                response = new FetchOffersResponse(findSharedOffers(authentication, request));
                 break;
             default:
-                response = new FetchOffersResponse(IWSErrors.NOT_IMPLEMENTED, "TBD");
+                response = new FetchOffersResponse(IWSErrors.NOT_PERMITTED, "The search type is not permitted");
         }
 
         return response;
@@ -182,43 +183,45 @@ public final class ExchangeService extends CommonService {
     public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
         final FetchEmployerInformationResponse response;
 
-        response = new FetchEmployerInformationResponse(convertEntityListToEmployerInformationList(dao.findOffersByLikeEmployerName(request.getName(), authentication.getGroup().getId())));
+        response = new FetchEmployerInformationResponse(convertEntityListToEmployerInformationList(dao.findOffersByLikeEmployerName(authentication, request.getName())));
 
         return response;
     }
 
-    private List<Offer> findAllOffers() {
-        final List<OfferEntity> found = dao.findAll();
+    private List<Offer> findAllOffers(final Authentication authentication, final FetchOffersRequest request) {
+        // Must be extended with Pagination
+        final List<OfferEntity> found = dao.findAllOffers(authentication);
 
         return convertEntityList(found);
     }
 
-    private List<Offer> findOffers(final List<Long> ids) {
-        final List<OfferEntity> found = dao.findOffers(ids);
+    private List<Offer> findOffers(final Authentication authentication, final List<Long> ids) {
+        final List<OfferEntity> found = dao.findOffers(authentication, ids);
 
         return convertEntityList(found);
     }
 
-    private List<Offer> findOwnedOffers(final Long ownerId) {
-        final List<OfferEntity> found = dao.findOffersByOwnerId(ownerId);
+//    private List<Offer> findOwnedOffers(final Long ownerId) {
+//        final List<OfferEntity> found = dao.findOffersByOwnerId(ownerId);
+//
+//        return convertEntityList(found);
+//    }
+
+    private List<Offer> findSharedOffers(final Authentication authentication, final FetchOffersRequest request) {
+        // Must be extended with Pagination
+        final List<OfferEntity> found = dao.findSharedOffers(authentication);
 
         return convertEntityList(found);
     }
 
-    private List<Offer> findSharedOffers() {
-        final List<OfferEntity> found = dao.findSharedOffers();
+    private List<Offer> findOffersByEmployerName(final Authentication authentication, final String employerName) {
+        final List<OfferEntity> found = dao.findOffersByEmployerName(authentication, employerName);
 
         return convertEntityList(found);
     }
 
-    private List<Offer> findOffersByEmployerName(final String employerName, final Long ownerId) {
-        final List<OfferEntity> found = dao.findOffersByEmployerName(employerName, ownerId);
-
-        return convertEntityList(found);
-    }
-
-    private List<Offer> findOffersByLikeEmployerName(final String employerName, final Long ownerId) {
-        final List<OfferEntity> found = dao.findOffersByLikeEmployerName(employerName, ownerId);
+    private List<Offer> findOffersByLikeEmployerName(final Authentication authentication, final String employerName) {
+        final List<OfferEntity> found = dao.findOffersByLikeEmployerName(authentication, employerName);
 
         return convertEntityList(found);
     }
@@ -287,7 +290,7 @@ public final class ExchangeService extends CommonService {
     }
 
     private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {
-        final List<OfferEntity> offers = dao.findOffersByExternalId(request.getOfferExternalIds());
+        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferExternalIds());
 
         for(Group group : request.getGroups()) {
             if(group.getGroupType() == GroupType.NATIONAL) {

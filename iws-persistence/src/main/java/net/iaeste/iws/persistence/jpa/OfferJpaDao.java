@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.OfferDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
@@ -45,8 +47,8 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findAll() {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findAll");
+    public List<OfferEntity> findAllOffers(final Authentication authentication) {
+        final Query query = entityManager.createNamedQuery("offer.findAllForGroup");
 
         return query.getResultList();
     }
@@ -55,11 +57,12 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public OfferEntity findOffer(final Long offerId) {
+    public OfferEntity findOffer(final Authentication authentication, final Long offerId) {
         OfferEntity entity = null;
 
         if (offerId != null) {
-            final Query query = entityManager.createNamedQuery("OfferEntity.findById");
+            final Query query = entityManager.createNamedQuery("offer.findByGroupAndId");
+            query.setParameter("gid", authentication.getGroup().getId());
             query.setParameter("id", offerId);
 
             final List<OfferEntity> found = query.getResultList();
@@ -75,11 +78,12 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public OfferEntity findOffer(final String refNo) {
+    public OfferEntity findOffer(final Authentication authentication, final String refNo) {
         OfferEntity entity = null;
 
         if (refNo != null) {
-            final Query query = entityManager.createNamedQuery("OfferEntity.findByRefNo");
+            final Query query = entityManager.createNamedQuery("offer.findByGroupAndRefNo");
+            query.setParameter("gid", authentication.getGroup().getId());
             query.setParameter("refNo", refNo);
 
             final List<OfferEntity> found = query.getResultList();
@@ -95,8 +99,9 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public OfferEntity findOffer(final String externalId, final String refNo) {
-        final Query query = entityManager.createNamedQuery("offer.findByExternalIdAndRefNo");
+    public OfferEntity findOffer(final Authentication authentication, final String externalId, final String refNo) {
+        final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalIdAndRefNo");
+        query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("eoid", externalId);
         query.setParameter("refno", refNo);
         final List<OfferEntity> found = query.getResultList();
@@ -115,8 +120,9 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findOffers(final List<Long> offerIds) {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findByIds");
+    public List<OfferEntity> findOffers(final Authentication authentication, final List<Long> offerIds) {
+        final Query query = entityManager.createNamedQuery("offer.findByGroupAndIds");
+        query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("ids", offerIds);
 
         return query.getResultList();
@@ -126,9 +132,10 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findOffersByExternalId(final Set<String> externalIds) {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findByExternalIds");
-        query.setParameter("externalIds", externalIds);
+    public List<OfferEntity> findOffersByExternalId(final Authentication authentication, final Set<String> externalIds) {
+        final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalIds");
+        query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("eoids", externalIds);
 
         return query.getResultList();
     }
@@ -137,10 +144,10 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findOffersByEmployerName(final String employerName, final Long ownerId) {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findByEmployerName");
+    public List<OfferEntity> findOffersByEmployerName(final Authentication authentication, final String employerName) {
+        final Query query = entityManager.createNamedQuery("offer.findByGroupAndEmployerName");
+        query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("employerName", employerName);
-        query.setParameter("groupId", ownerId);
 
         return query.getResultList();
     }
@@ -149,31 +156,32 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findOffersByLikeEmployerName(final String employerName, final Long ownerId) {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findByLikeEmployerName");
-        query.setParameter("employerName", '%' + employerName.toLowerCase() + '%');
-        query.setParameter("groupId", ownerId);
+    public List<OfferEntity> findOffersByLikeEmployerName(final Authentication authentication, final String employerName) {
+        final Query query = entityManager.createNamedQuery("offer.findByGroupAndLikeEmployerName");
+        query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("employerName", '%' + employerName.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
 
         return query.getResultList();
     }
+
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public List<OfferEntity> findOffersByOwnerId(final Authentication authentication, final Long ownerId) {
+//        final Query query = entityManager.createNamedQuery("offer.findByOwnerId");
+//        query.setParameter("id", ownerId);
+//
+//        return query.getResultList();
+//    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findOffersByOwnerId(final Long ownerId) {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findByOwnerId");
-        query.setParameter("id", ownerId);
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<OfferEntity> findSharedOffers() {
-        final Query query = entityManager.createNamedQuery("OfferEntity.findShared");
+    public List<OfferEntity> findSharedOffers(final Authentication authentication) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findSharedForGroup");
+        query.setParameter("gid", authentication.getGroup().getId());
 
         return query.getResultList();
     }
@@ -252,20 +260,21 @@ public final class OfferJpaDao extends BasicJpaDao implements OfferDao {
      * {@inheritDoc}
      */
     @Override
-    public void delete(final Long offerId) {
-        final OfferEntity offer = findOffer(offerId);
+    public Integer delete(final Authentication authentication, final Long offerId) {
+        final Query query = entityManager.createNamedQuery("offer.deleteByGroupAndId");
+        query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("id", offerId);
 
-        if (offer != null) {
-            entityManager.remove(offer);
-        }
+        return query.executeUpdate();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Integer delete(final List<Long> offerIds) {
-        final Query query = entityManager.createNamedQuery("OfferEntity.deleteByIds");
+    public Integer delete(final Authentication authentication, final List<Long> offerIds) {
+        final Query query = entityManager.createNamedQuery("offer.deleteByGroupAndIds");
+        query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("ids", offerIds);
 
         return query.executeUpdate();

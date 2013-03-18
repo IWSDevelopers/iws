@@ -58,21 +58,57 @@ import java.util.List;
  */
 @NamedQueries({
         @NamedQuery(
-                name = "offer.findByExternalIdAndRefNo",
+                name = "offer.findAllForGroup",
                 query = "select o from OfferEntity o " +
-                        "where o.externalId = :eoid" +
+                        "where o.group.id = :gid"),
+        @NamedQuery(
+                name = "offer.findByGroupAndExternalIdAndRefNo",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.externalId = :eoid" +
                         "  and o.refNo = :refno"),
-        @NamedQuery(name = "OfferEntity.findAll", query = "SELECT o FROM OfferEntity o"),
-        @NamedQuery(name = "OfferEntity.findById", query = "SELECT o FROM OfferEntity o WHERE o.id = :id"),
-        @NamedQuery(name = "OfferEntity.findByIds", query = "SELECT o FROM OfferEntity o WHERE o.id IN :ids"),
-        @NamedQuery(name = "OfferEntity.findByExternalIds", query = "SELECT o FROM OfferEntity o WHERE o.externalId IN :externalIds"),
-        @NamedQuery(name = "OfferEntity.findByRefNo", query = "SELECT o FROM OfferEntity o WHERE o.refNo = :refNo"),
-        @NamedQuery(name = "OfferEntity.findByEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT ei.id FROM EmployerInformationView ei WHERE ei.employerName = :employerName AND ei.groupId = :groupId)"),
-        @NamedQuery(name = "OfferEntity.findByLikeEmployerName", query = "SELECT o FROM OfferEntity o WHERE o.id IN (SELECT ei.id FROM EmployerInformationView ei WHERE lower(ei.employerName) LIKE :employerName AND ei.groupId = :groupId)"),
-        @NamedQuery(name = "OfferEntity.findByOwnerId", query = "SELECT o FROM OfferEntity o WHERE o.group.id = :id"),
-        @NamedQuery(name = "OfferEntity.findShared", query = "SELECT o FROM OfferEntity o"), // TODO michal: correct shared offers query
-        @NamedQuery(name = "OfferEntity.deleteById", query = "DELETE FROM OfferEntity o WHERE o.id = :id"),
-        @NamedQuery(name = "OfferEntity.deleteByIds", query = "DELETE FROM OfferEntity o WHERE o.id IN :ids")
+        @NamedQuery(
+                name = "offer.findByGroupAndId",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.id = :id"),
+        @NamedQuery(
+                name = "offer.findByGroupAndIds",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.id in :ids"),
+        @NamedQuery(
+                name = "offer.findByGroupAndExternalIds",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.externalId in :eoids"),
+        @NamedQuery(
+                name = "offer.findByGroupAndRefNo",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.refNo = :refNo"),
+        // TODO 2013-03-18 by Kim; The following Query should be moved to a View
+        @NamedQuery(
+                name = "offer.findByGroupAndEmployerName",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.id in (select ei.id from EmployerInformationView ei where ei.employerName = :employerName and ei.groupId = :gid)"),
+        // TODO 2013-03-18 by Kim; The following Query should be moved to a View
+        @NamedQuery(
+                name = "offer.findByGroupAndLikeEmployerName",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.id in (select ei.id from EmployerInformationView ei where lower(ei.employerName) like :employerName and ei.groupId = :gid)"),
+        @NamedQuery(
+                name = "offer.deleteByGroupAndId",
+                query = "delete from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.id = :id"),
+        @NamedQuery(
+                name = "offer.deleteByGroupAndIds",
+                query = "delete from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.id in :ids")
 })
 @Entity
 @Table(name = "offers")

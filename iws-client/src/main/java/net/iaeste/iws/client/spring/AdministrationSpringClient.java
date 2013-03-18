@@ -16,7 +16,15 @@ package net.iaeste.iws.client.spring;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.*;
+import net.iaeste.iws.api.requests.CountryRequest;
+import net.iaeste.iws.api.requests.CreateUserRequest;
+import net.iaeste.iws.api.requests.FetchCountryRequest;
+import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchGroupsForSharingRequest;
+import net.iaeste.iws.api.requests.FetchUserRequest;
+import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
+import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
@@ -140,8 +148,11 @@ public final class AdministrationSpringClient implements Administration {
         return administration.fetchCountries(token, request);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request) {
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
         return administration.fetchGroupsForSharing(token, request);
     }
 

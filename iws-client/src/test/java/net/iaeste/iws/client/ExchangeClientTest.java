@@ -168,7 +168,6 @@ public class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
-    @Ignore("Ignored 2013-03-18 by Kim - Reason: The Offer logic has been extended with group checks.")
     public void testShareOffer() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo("PL-2012-0004");

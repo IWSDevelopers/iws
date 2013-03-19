@@ -56,7 +56,7 @@ import java.util.Date;
                         "  and og.group.id in :gids"),
         @NamedQuery(name = "offerGroup.deleteByExternalOfferId",
                 query = "delete from OfferGroupEntity og " +
-                        "where og.offer.externalId = :eoid"),
+                        "where og.offer.id = (select o.id from OfferEntity o where o.externalId = :eoid)"),
         @NamedQuery(name = "offerGroup.deleteByOfferExternalIdAndGroups",
                 query = "delete from OfferGroupEntity og " +
                         "where og.group.id in :gids " +

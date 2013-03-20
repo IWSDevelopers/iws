@@ -24,53 +24,47 @@ import java.util.Map;
 /**
  * Contains information about a Student applying for an Offer
  * <p/>
- * The application contains the student data for the time
+ * The studentApplication contains the student data for the time
  * when he/she applied, therefore student information
- * are duplicated for each application.
+ * are duplicated for each studentApplication.
  *
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class Application extends AbstractVerification {
+public final class StudentApplication extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    /** Id of the {@link Offer} that the {@link Student} is applying for */
+    private String offerId = null;
+
+    /** Id of the {@link Student} */
+    private String studentId = null;
+
+    /** Status of the {@link StudentApplication} */
+    private ApplicationStatus status = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public Application() {
+    public StudentApplication() {
     }
 
     /**
      * Copy Constructor.
      *
-     * @param application Application Object to copy
+     * @param studentApplication StudentApplication Object to copy
      */
-    public Application(final Application application) {
-        if (application != null) {
-            offerId = application.offerId;
-            studentId = application.studentId;
-            status = application.status;
+    public StudentApplication(final StudentApplication studentApplication) {
+        if (studentApplication != null) {
+            offerId = studentApplication.offerId;
+            studentId = studentApplication.studentId;
+            status = studentApplication.status;
         }
     }
-
-    /**
-     * Id of the {@link Offer} that the {@link Student} is applying for
-     */
-    private String offerId = null;
-
-    /**
-     * Id of the {@link Student}
-     */
-    private String studentId = null;
-
-    /**
-     * Status of the {@link Application}
-     */
-    private ApplicationStatus status = null;
 
     // TODO add a copy of student data
 
@@ -128,21 +122,21 @@ public final class Application extends AbstractVerification {
             return true;
         }
 
-        if (!(obj instanceof Application)) {
+        if (!(obj instanceof StudentApplication)) {
             return false;
         }
 
-        final Application application = (Application) obj;
+        final StudentApplication studentApplication = (StudentApplication) obj;
 
-        if (offerId != null ? !offerId.equals(application.offerId) : application.offerId != null) {
+        if (offerId != null ? !offerId.equals(studentApplication.offerId) : studentApplication.offerId != null) {
             return false;
         }
 
-        if (studentId != null ? !studentId.equals(application.studentId) : application.studentId != null) {
+        if (studentId != null ? !studentId.equals(studentApplication.studentId) : studentApplication.studentId != null) {
             return false;
         }
 
-        return !(status != null ? status != application.status : application.status != null);
+        return !(status != null ? status != studentApplication.status : studentApplication.status != null);
     }
 
     /**
@@ -164,7 +158,7 @@ public final class Application extends AbstractVerification {
      */
     @Override
     public String toString() {
-        return "Application{" +
+        return "StudentApplication{" +
                 "offerId='" + offerId + '\'' +
                 ", studentId='" + studentId + '\'' +
                 ", status=" + status +

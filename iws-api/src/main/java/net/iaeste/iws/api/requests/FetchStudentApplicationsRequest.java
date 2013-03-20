@@ -27,9 +27,9 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public class FetchApplicationsRequest extends AbstractVerification {
+public class FetchStudentApplicationsRequest extends AbstractVerification {
 
-    private FetchType fetchType;
+    private FetchType fetchType = null;
 
     /**
      * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
@@ -40,14 +40,13 @@ public class FetchApplicationsRequest extends AbstractVerification {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchApplicationsRequest() {
-        fetchType = null;
+    public FetchStudentApplicationsRequest() {
     }
 
     /**
      * Default Constructor.
      */
-    public FetchApplicationsRequest(final FetchType fetchType) {
+    public FetchStudentApplicationsRequest(final FetchType fetchType) {
         this.fetchType = fetchType;
     }
 
@@ -55,7 +54,17 @@ public class FetchApplicationsRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * Sets the Fetch Type for this request, if the value is null, then an
+     * IllegalArgument exception is thrown.
+     *
+     * @param fetchType Fetch Type
+     */
     public void setFetchType(final FetchType fetchType) {
+        if (fetchType == null) {
+            throw new IllegalArgumentException("The FetchType value may not be null.");
+        }
+
         this.fetchType = fetchType;
     }
 

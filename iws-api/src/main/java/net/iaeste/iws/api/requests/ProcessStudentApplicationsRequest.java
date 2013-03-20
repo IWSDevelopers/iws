@@ -15,7 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.dtos.Application;
+import net.iaeste.iws.api.dtos.StudentApplication;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -26,44 +26,53 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class ProcessApplicationsRequest extends AbstractVerification {
+public class ProcessStudentApplicationsRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
-     * The Application Object to process.
+     * The StudentApplication Object to process.
      */
-    private Application application;
+    private StudentApplication studentApplication = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public ProcessApplicationsRequest() {
-        application = null;
+    public ProcessStudentApplicationsRequest() {
     }
 
     /**
-     * Default Constructor, sets the Application to be processed. If the Application exists,
-     * it will be updated otherwise a new Application will be created.
+     * Default Constructor, sets the StudentApplication to be processed. If the StudentApplication exists,
+     * it will be updated otherwise a new StudentApplication will be created.
      *
-     * @param application object to create or update
+     * @param studentApplication object to create or update
      */
-    public ProcessApplicationsRequest(final Application application) {
-        this.application = new Application(application);
+    public ProcessStudentApplicationsRequest(final StudentApplication studentApplication) {
+        this.studentApplication = new StudentApplication(studentApplication);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setApplication(Application application) {
-        this.application = application;
+    /**
+     * Sets the Student Application for this request, if the value is null, then
+     * an IllegalArgument exception is thrown.
+     *
+     * @param studentApplication Student Application
+     */
+    public void setStudentApplication(final StudentApplication studentApplication) {
+        if (studentApplication == null) {
+            throw new IllegalArgumentException("The StudentApplication value may not be null.");
+        }
+
+        this.studentApplication = new StudentApplication(studentApplication);
     }
 
-    public Application getApplication() {
-        return application;
+    public StudentApplication getStudentApplication() {
+        return studentApplication;
     }
 
     // =========================================================================
@@ -77,7 +86,7 @@ public class ProcessApplicationsRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isVerifiable(validation, "application", application);
+        isVerifiable(validation, "studentApplication", studentApplication);
 
         return validation;
     }

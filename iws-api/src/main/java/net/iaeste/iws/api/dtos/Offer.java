@@ -76,8 +76,6 @@ public final class Offer extends AbstractVerification {
     /**
      * validations:
      * <ul>
-     *   <li>If set, it must be before {@code fromDate} and {@code fromDate2}
-     *   (@link #validateDatesNominationDeadline}.</li>
      * </ul>
      */
     private Date nominationDeadline = null;
@@ -1270,7 +1268,6 @@ public final class Offer extends AbstractVerification {
 
         check &= validateDatesPresence(validation);
         check &= validateDatesOrder(validation);
-        check &= validateDatesNominationDeadline(validation);
         check &= validateDatesGroupsOrder(validation);
         check &= validateUnavailableDatesOrder(validation);
 
@@ -1336,23 +1333,6 @@ public final class Offer extends AbstractVerification {
         }
         if (isAfter(unavailableFrom, unavailableTo)) {
             addError(validation, "unavailableFrom", "should be before unavailableTo");
-            check = false;
-        }
-
-        return check;
-    }
-
-    /**
-     * Checks if {@code nominationDeadline} if before {@code fromDate} and {@code fromDate2}.
-     *
-     * @param validation Map with Error information
-     * @return true if {@code nominationDeadline} is valid.
-     */
-    private boolean validateDatesNominationDeadline(final Map<String, String> validation) {
-        boolean check = true;
-
-        if (isAfter(nominationDeadline, fromDate) || isAfter(nominationDeadline, fromDate2)) {
-            addError(validation, "nominationDeadline", "should be before 'fromDate' and 'fromDate2'");
             check = false;
         }
 

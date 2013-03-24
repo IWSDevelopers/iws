@@ -33,6 +33,7 @@ import net.iaeste.iws.api.util.Date;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -319,6 +320,7 @@ public class OfferTest {
 
     }
 
+    @Ignore("Test has been revoked, since the nomination deadline has been removed from the validation. Some kind of validation should be present, but until the things has been clairified, the test remains ignored.")
     @Test
     public void testVerifyDeadlineOrder() {
         final String error = "'nominationDeadline' should be before 'from' and 'from2'";

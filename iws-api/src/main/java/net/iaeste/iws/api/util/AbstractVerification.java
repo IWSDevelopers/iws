@@ -207,7 +207,7 @@ public abstract class AbstractVerification implements Verifiable {
     protected boolean isNullOrVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
         boolean check = true;
 
-        if (validation != null) {
+        if (value != null) {
             final Map<String, String> newValidation = value.validate();
 
             if (!newValidation.isEmpty()) {

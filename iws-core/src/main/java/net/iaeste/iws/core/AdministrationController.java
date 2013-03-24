@@ -164,7 +164,7 @@ public final class AdministrationController extends CommonController implements 
 
         try {
             verify(request);
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SUB_GROUPS, request.getGroup());
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SUB_GROUPS);
 
             final AdministrationService service = factory.prepareAdministrationService();
             service.processGroup(authentication, request);

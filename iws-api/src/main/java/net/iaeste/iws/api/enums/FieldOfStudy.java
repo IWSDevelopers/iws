@@ -14,9 +14,7 @@
  */
 package net.iaeste.iws.api.enums;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Defines all Fields of Study together with their Specializations
@@ -301,5 +299,42 @@ public enum FieldOfStudy {
 
     public List<Specialization> getSpecializations() {
         return specializations;
+    }
+
+    /**
+     * Methods used to process the fields of study needed or that the student has when creating an
+     * offer or a student
+     */
+    public static List<FieldOfStudy> completeFieldsOfStudy(String query, Collection<FieldOfStudy> excluded) {
+        List<FieldOfStudy> matchingFields = new ArrayList<>();
+
+        for (FieldOfStudy f : FieldOfStudy.values()) {
+            if (f.name().toLowerCase().startsWith(query.toLowerCase()) && !excluded.contains(f)) {
+                matchingFields.add(f);
+            }
+        }
+        return matchingFields;
+    }
+
+    public static List<String> completeSpecialization(String query, Collection<FieldOfStudy> fieldsOfStudy,
+                                               Collection<String> excludeSpecializations) {
+        List<String> matchingFields = new ArrayList<>();
+
+        if (!excludeSpecializations.contains(query) && query != "") {
+            matchingFields.add(query);
+        }
+
+        List<Specialization> specializationsSubset = new ArrayList<>();
+
+        for (FieldOfStudy selectedFieldOfStudy : fieldsOfStudy) {
+            specializationsSubset.addAll(selectedFieldOfStudy.getSpecializations());
+        }
+
+        for (Specialization s : specializationsSubset) {
+            if (s.name().toLowerCase().startsWith(query.toLowerCase()) && !matchingFields.contains(s) && !excludeSpecializations.contains(s.toString())) {
+                matchingFields.add(s.toString());
+            }
+        }
+        return matchingFields;
     }
 }

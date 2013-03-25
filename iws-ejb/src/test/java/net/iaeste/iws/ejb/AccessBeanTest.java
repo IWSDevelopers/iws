@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.ejb;
 
-import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class AccessBeanTest {
 
     @Test
     public void testDummy() {
-        final PermissionResponse response = bean.fetchPermissions(null);
+        final FetchPermissionResponse response = bean.fetchPermissions(null);
         assertThat(response.isOk(), is(false));
     }
 

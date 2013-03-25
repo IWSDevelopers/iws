@@ -22,7 +22,7 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
@@ -73,8 +73,8 @@ public class AccessClientTest {
         assertThat(response.getToken(), is(not(nullValue())));
         assertThat(response.getToken().getToken().length(), is(64));
 
-        final PermissionResponse permissionResponse = access.fetchPermissions(response.getToken());
-        assertThat(permissionResponse.isOk(), is(true));
+        final FetchPermissionResponse fetchPermissionResponse = access.fetchPermissions(response.getToken());
+        assertThat(fetchPermissionResponse.isOk(), is(true));
 
         // Now, let's try to see if we can deprecate the Session, and thus
         // ensure that the first Object is properly persisted
@@ -95,8 +95,8 @@ public class AccessClientTest {
 
         // Generate a Session, and verify that it works
         final AuthenticationResponse response = client.generateSession(request);
-        final PermissionResponse permissionResponse = access.fetchPermissions(response.getToken());
-        assertThat(permissionResponse.isOk(), is(true));
+        final FetchPermissionResponse fetchPermissionResponse = access.fetchPermissions(response.getToken());
+        assertThat(fetchPermissionResponse.isOk(), is(true));
 
         // Now we've forgotten our session, so request a reset
         access.requestResettingSession(request);
@@ -106,12 +106,12 @@ public class AccessClientTest {
         final AuthenticationResponse newResponse = access.resetSession(code);
 
         // Now verify that control was handed over to the new Session
-        final PermissionResponse permissionResponse2 = access.fetchPermissions(newResponse.getToken());
-        final PermissionResponse permissionResponse3 = access.fetchPermissions(response.getToken());
-        assertThat(permissionResponse2.isOk(), is(true));
-        assertThat(permissionResponse3.isOk(), is(false));
-        assertThat(permissionResponse3.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
-        assertThat(permissionResponse3.getMessage(), is("No AuthenticationToken was found."));
+        final FetchPermissionResponse fetchPermissionResponse2 = access.fetchPermissions(newResponse.getToken());
+        final FetchPermissionResponse fetchPermissionResponse3 = access.fetchPermissions(response.getToken());
+        assertThat(fetchPermissionResponse2.isOk(), is(true));
+        assertThat(fetchPermissionResponse3.isOk(), is(false));
+        assertThat(fetchPermissionResponse3.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(fetchPermissionResponse3.getMessage(), is("No AuthenticationToken was found."));
 
         // And clean-up, so no sessions are lurking around
         assertThat(access.deprecateSession(newResponse.getToken()).isOk(), is(true));
@@ -121,7 +121,7 @@ public class AccessClientTest {
     public void testCallWithInvalidToken() {
         final AuthenticationToken token = new AuthenticationToken("9e107d9d372bb6826bd81d3542a419d6");
 
-        final PermissionResponse response = access.fetchPermissions(token);
+        final FetchPermissionResponse response = access.fetchPermissions(token);
         //final List<Authorization> permissions = response.getAuthorizations();
 
         // Verify that the call went through - however, as we just invented a
@@ -157,13 +157,13 @@ public class AccessClientTest {
         // Create a new Token, that we can use for the test
         final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria", "austria")).getToken();
 
-        final PermissionResponse responseAll = access.fetchPermissions(token);
+        final FetchPermissionResponse responseAll = access.fetchPermissions(token);
         assertThat(responseAll.isOk(), is(true));
         // Should add more assertions, however - there's still changes coming to
         // the Permission layer - so for now, we'll leave it Otherwise we will
         // constantly have to verify this.
         token.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
-        final PermissionResponse responseNational = access.fetchPermissions(token);
+        final FetchPermissionResponse responseNational = access.fetchPermissions(token);
         assertThat(responseNational.isOk(), is(true));
         assertThat(responseNational.getUserId(), is(userId));
 
@@ -174,7 +174,7 @@ public class AccessClientTest {
 
         // Finally, let's see what happens when we try to find the information
         // from a Group, that we are not a member of
-        final PermissionResponse responseInvalid = access.fetchPermissions(token);
+        final FetchPermissionResponse responseInvalid = access.fetchPermissions(token);
         assertThat(responseInvalid.isOk(), is(false));
         assertThat(responseInvalid.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
 

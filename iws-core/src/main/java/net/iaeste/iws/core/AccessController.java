@@ -21,7 +21,7 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccessService;
@@ -196,9 +196,9 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public PermissionResponse fetchPermissions(final AuthenticationToken token) {
+    public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
         LOG.trace("Starting fetchPermissions()");
-        PermissionResponse response;
+        FetchPermissionResponse response;
 
         try {
             final Authentication authentication = verifyPrivateAccess(token);
@@ -206,7 +206,7 @@ public final class AccessController extends CommonController implements Access {
             final AccessService service = factory.prepareAuthenticationService();
             response = service.findPermissions(authentication, token.getGroupId());
         } catch (IWSException e) {
-            response = new PermissionResponse(e.getError(), e.getMessage());
+            response = new FetchPermissionResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchPermissions()");

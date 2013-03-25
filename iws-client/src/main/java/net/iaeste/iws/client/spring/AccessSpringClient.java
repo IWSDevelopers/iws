@@ -19,7 +19,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
@@ -129,7 +129,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public PermissionResponse fetchPermissions(final AuthenticationToken token) {
+    public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
         return client.fetchPermissions(token);
     }
 }

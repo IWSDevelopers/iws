@@ -21,7 +21,7 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
-import net.iaeste.iws.api.responses.PermissionResponse;
+import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.AccessController;
@@ -214,15 +214,15 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public PermissionResponse fetchPermissions(final AuthenticationToken token) {
-        PermissionResponse response;
+    public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
+        FetchPermissionResponse response;
 
         try {
             response = access.fetchPermissions(token);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
-            response = new PermissionResponse(IWSErrors.ERROR, e.getMessage());
+            response = new FetchPermissionResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

@@ -31,7 +31,7 @@ import java.util.List;
  * @since   1.7
  * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
-public final class PermissionResponse extends AbstractFallible {
+public final class FetchPermissionResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -42,7 +42,7 @@ public final class PermissionResponse extends AbstractFallible {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public PermissionResponse() {
+    public FetchPermissionResponse() {
         userId = null;
         authorizations = new ArrayList<>(0);
     }
@@ -52,7 +52,7 @@ public final class PermissionResponse extends AbstractFallible {
      *
      * @param authorizations List of allowed Permission for a given user
      */
-    public PermissionResponse(final String userId, final List<Authorization> authorizations) {
+    public FetchPermissionResponse(final String userId, final List<Authorization> authorizations) {
         this.userId = userId;
         this.authorizations = Copier.copy(authorizations);
     }
@@ -63,7 +63,7 @@ public final class PermissionResponse extends AbstractFallible {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public PermissionResponse(final IWSError error, final String message) {
+    public FetchPermissionResponse(final IWSError error, final String message) {
         super(error, message);
 
         userId = null;
@@ -103,11 +103,11 @@ public final class PermissionResponse extends AbstractFallible {
             return true;
         }
 
-        if (!(obj instanceof PermissionResponse)) {
+        if (!(obj instanceof FetchPermissionResponse)) {
             return false;
         }
 
-        final PermissionResponse that = (PermissionResponse) obj;
+        final FetchPermissionResponse that = (FetchPermissionResponse) obj;
         return !(authorizations != null ? !authorizations.equals(that.authorizations) : that.authorizations != null);
     }
 
@@ -129,7 +129,7 @@ public final class PermissionResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "PermissionResponse{" +
+        return "FetchPermissionResponse{" +
                 "userId=" + userId +
                 "authorizations=" + authorizations +
                 '}';

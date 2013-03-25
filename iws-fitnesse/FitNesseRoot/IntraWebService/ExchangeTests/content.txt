@@ -2,15 +2,24 @@
 !define SLIM_VERSION {0.1}
 !define TEST_SYSTEM {slim}
 
-|script          |fetch offers                                 |
-|set username    |denmark                 |and password|denmark|
-|set request type|ALL                                          |
-|fetch                                                         |
-|ensure          |is request ok                                |
-|check           |number of fetched offers|0                   |
+|script          |fetch offers                                   |
+|set username    |denmark                 |and password|incorrect|
+|reject          |login                                          |
+|set request type|ALL                                            |
+|fetch                                                           |
+|reject          |is request ok                                  |
+|set username    |denmark                 |and password|denmark  |
+|ensure          |login                                          |
+|set request type|ALL                                            |
+|fetch                                                           |
+|ensure          |is request ok                                  |
+|check           |number of fetched offers|0                     |
+|ensure|logout                                                   |
+|reject|logout                                                   |
 
 |script              |save offer                  |
 |set username        |denmark|and password|denmark|
+|ensure              |login                       |
 |set ref no          |dk-2012-0001                |
 |set employer name   |test employer name          |
 |reject              |verify                      |
@@ -28,10 +37,13 @@
 |save                                             |
 |show                |error message               |
 |ensure              |is request ok               |
+|logout                                           |
 
 |script          |fetch offers                                 |
-|set username    |austria                 |and password|austria|
+|set username    |denmark                 |and password|denmark|
+|ensure          |login                                        |
 |set request type|ALL                                          |
 |fetch                                                         |
 |ensure          |is request ok                                |
 |check           |number of fetched offers|1                   |
+|logout                                                        |

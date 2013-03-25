@@ -172,6 +172,9 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
 
     protected static AuthenticationToken getToken() {
         synchronized (LOCK) {
+            if(token == null) {
+                return null;
+            }
             return new AuthenticationToken(token.getToken());
         }
     }
@@ -228,5 +231,26 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
             username = null;
             password = null;
         }
+    }
+
+    /**
+     * Method indicates if user was already logged in or can log in with current credentials.
+     *
+     * @return true if user is logged in
+     */
+    public boolean login() {
+        createSession();
+        return token != null;
+    }
+
+    /**
+     * Method deprecates session.
+     *
+     * Deprecating session always finishes with success but the method can return false if user was not logged in.
+     *
+     * @return true if user was logged out after calling the method
+     */
+    public boolean logout() {
+        return deprecateSession().isOk();
     }
 }

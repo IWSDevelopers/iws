@@ -301,6 +301,7 @@ public enum FieldOfStudy {
         return specializations;
     }
 
+    // @Arthur, please move the following into the IW4, as it has nothing to do in this enum.
     /**
      * Methods used to process the fields of study needed or that the student has when creating an
      * offer or a student

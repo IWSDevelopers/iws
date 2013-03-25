@@ -1,1 +1,1 @@
-java -cp fitnesse.jar fitnesseMain.FitNesseMain -p 80 -e 0
+java -cp fitnesse-standalone.jar fitnesseMain.FitNesseMain -p 80 -e 0

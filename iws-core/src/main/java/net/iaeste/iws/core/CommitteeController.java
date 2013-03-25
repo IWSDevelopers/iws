@@ -21,8 +21,8 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.core.services.CommitteeService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
@@ -66,7 +66,7 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.createCommittee(authentication, request);
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished createCommittee()");
@@ -88,7 +88,7 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.manageCommittee(authentication, request);
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished manageCommittee()");
@@ -110,7 +110,7 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.upgradeCommittee(authentication, request);
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished upgradeCommittee()");
@@ -132,7 +132,7 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.manageInternationalGroup(authentication, request);
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished manageInternationalGroup()");
@@ -154,7 +154,7 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.createRegionalGroup(authentication, request);
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished createRegionalGroup()");
@@ -176,7 +176,7 @@ public final class CommitteeController extends CommonController implements Commi
             final CommitteeService service = factory.prepareCommitteeService();
             response = service.manageRegionalGroup(authentication, request);
         } catch (IWSException e) {
-            response = new UserResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished manageRegionalGroup()");

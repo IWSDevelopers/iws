@@ -32,9 +32,9 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.UserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.common.utils.PasswordGenerator;
@@ -98,9 +98,9 @@ public final class AdministrationService extends CommonService {
             dao.persist(userGroup);
 
             notifications.notify(authentication, user, NotificationMessageType.ACTIVATE_USER);
-            result = new UserResponse();
+            result = new FallibleResponse();
         } else {
-            result = new UserResponse(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");
+            result = new FallibleResponse(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");
         }
 
         return result;

@@ -96,6 +96,12 @@ public class UserEntity implements IWSEntity, Notifiable {
     private String userName = null;
 
     /**
+     * The generated e-mail alias, that all users receive by the system.
+     */
+    @Column(nullable = false, name = "alias")
+    private String alias = null;
+
+    /**
      * The Password stored, is an SHA 256 bit Hashvalue of the users lowercased
      * password.
      */
@@ -230,6 +236,14 @@ public class UserEntity implements IWSEntity, Notifiable {
 
     public String getUserName() {
         return userName;
+    }
+
+    public void setAlias(final String alias) {
+        this.alias = alias;
+    }
+
+    public String getAlias() {
+        return alias;
     }
 
     public void setPassword(final String password) {

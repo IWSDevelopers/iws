@@ -43,6 +43,8 @@ public final class AdministrationTransformer {
             final UserEntity userEntity = entity.getUser();
             final GroupEntity groupEntity = entity.getGroup();
             user.setUserId(userEntity.getExternalId());
+            user.setUsername(userEntity.getUserName());
+            user.setAlias(userEntity.getAlias());
             user.setFirstname(userEntity.getFirstname());
             user.setLastname(userEntity.getLastname());
             user.setStatus(userEntity.getStatus());

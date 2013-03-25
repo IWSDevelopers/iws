@@ -49,6 +49,10 @@ public final class User extends AbstractFallible implements Verifiable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String userId = null;
+    // The Username is the users private e-mail address
+    private String username = null;
+    // The Alias is an e-mail address provided by the system
+    private String alias = null;
     private String firstname = null;
     private String lastname = null;
     private UserStatus status = null;
@@ -114,6 +118,8 @@ public final class User extends AbstractFallible implements Verifiable {
     public User(final User user) {
         if (user != null) {
             userId = user.userId;
+            username = user.username;
+            alias = user.alias;
             firstname = user.firstname;
             lastname = user.lastname;
             status = user.status;
@@ -133,6 +139,22 @@ public final class User extends AbstractFallible implements Verifiable {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setUsername(final String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setAlias(final String alias) {
+        this.alias = alias;
+    }
+
+    public String getAlias() {
+        return alias;
     }
 
     public void setFirstname(final String firstname) {
@@ -244,6 +266,12 @@ public final class User extends AbstractFallible implements Verifiable {
         if (userId != null ? !userId.equals(user.userId) : user.userId != null) {
             return false;
         }
+        if (username != null ? !username.equals(user.username) : user.username != null) {
+            return false;
+        }
+        if (alias != null ? !alias.equals(user.alias) : user.alias != null) {
+            return false;
+        }
         if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) {
             return false;
         }
@@ -271,6 +299,8 @@ public final class User extends AbstractFallible implements Verifiable {
         // not set for all views of this Object, and we need to verify that two
         // instances are identical, regardless of who is viewing them
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (userId != null ? userId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (username != null ? username.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (alias != null ? alias.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (firstname != null ? firstname.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (lastname != null ? lastname.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
@@ -290,6 +320,8 @@ public final class User extends AbstractFallible implements Verifiable {
         // instances are identical, regardless of who is viewing them
         return "User{" +
                 "userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
+                ", alias='" + alias + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", status=" + status +

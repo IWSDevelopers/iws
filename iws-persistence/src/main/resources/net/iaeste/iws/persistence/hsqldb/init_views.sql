@@ -18,7 +18,7 @@ create view user_permissions as
     u.username           as username,
     g.groupName          as groupName,
     g.group_description  as group_description,
-    g.country_id         as country,
+    c.country_id         as country,
     t.grouptype          as grouptype,
     u2g.custom_title     as rolename,
     p.permission         as permission
@@ -27,6 +27,7 @@ create view user_permissions as
     groups g,
     grouptypes t,
     roles r,
+    countries c,
     permissions p,
     user_to_group u2g,
     permission_to_role p2r,
@@ -34,6 +35,7 @@ create view user_permissions as
   where t.id = g.grouptype_id
     and u.id = u2g.user_id
     and g.id = u2g.group_id
+    and c.id = g.country_id
     and r.id = u2g.role_id
     and p.id = p2r.permission_id
     and r.id = p2r.role_id

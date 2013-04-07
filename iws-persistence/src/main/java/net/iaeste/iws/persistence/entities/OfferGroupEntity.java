@@ -54,13 +54,16 @@ import java.util.Date;
                 query = "delete from OfferGroupEntity og " +
                         "where og.offer.id = :oid" +
                         "  and og.group.id in :gids"),
+        // The HSQLDB has an annoying issues with delete queries, hence we have
+        // to create the query with a subselect, see:
+        // http://docs.jboss.org/hibernate/orm/4.1/devguide/en-US/html_single/#d5e1041
         @NamedQuery(name = "offerGroup.deleteByExternalOfferId",
                 query = "delete from OfferGroupEntity og " +
                         "where og.offer.id = (select o.id from OfferEntity o where o.externalId = :eoid)"),
         @NamedQuery(name = "offerGroup.deleteByOfferExternalIdAndGroups",
                 query = "delete from OfferGroupEntity og " +
                         "where og.group.id in :gids " +
-                        " and og.offer.externalId = :eoid")
+                        " and og.offer.id = (select o.id from OfferEntity o where o.externalId = :eoid)")
 })
 @Entity
 @Table(name = "offer_to_group")

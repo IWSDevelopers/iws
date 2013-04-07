@@ -102,6 +102,32 @@ public final class Copier {
     }
 
     /**
+     * Copies the given Map with Lists as value, to ensure that the new Map is
+     * not exposing any references. If the given Map is null, then a new empty
+     * Map is returned, to avoid a potential {@code NullPointerException}.<br />
+     *   This method is not following the "normal" name - the reason is that the
+     * Java Generics is rather primitive in comparison with C++ Templates, and
+     * thus cannot easily distinguish between Objects types.
+     *
+     * @param original The Map with Lists to copy
+     * @return Copy of the given Map, or an empty Map
+     */
+    public static <T extends Serializable, V extends Serializable> Map<T, List<V>> copyMapWithList(final Map<T, List<V>> original) {
+        final Map<T, List<V>> copy;
+
+        if (original != null) {
+            copy = new HashMap<>(original.size());
+            for (final Map.Entry<T, List<V>> entry : original.entrySet()) {
+                copy.put(copy(entry.getKey()), copy(entry.getValue()));
+            }
+        } else {
+            copy = new HashMap<>(0);
+        }
+
+        return copy;
+    }
+
+    /**
      * Copies the given Map, to ensure that the new Map is not exposing any
      * references. If the given Map is null, then a new empty Map is returned,
      * to avoid a potential {@code NullPointerException}.

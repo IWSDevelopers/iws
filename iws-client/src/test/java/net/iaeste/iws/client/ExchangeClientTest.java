@@ -93,7 +93,6 @@ public class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
-    @Ignore("Ignored 2013-03-18 by Kim - Reason: The Offer logic has been extended with group checks.")
     public void testProcessOfferCreateMinimalOffer() {
         final String refNo = "PL-2012-0001";
         final Offer minimalOffer = OfferTestUtility.getMinimalOffer();
@@ -114,7 +113,6 @@ public class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
-    @Ignore("Ignored 2013-03-18 by Kim - Reason: The Offer logic has been extended with group checks.")
     public void testProcessOfferCreateFullOffer() {
         final String refNo = "PL-2012-0002";
         final Offer fullOffer = OfferTestUtility.getFullOffer();
@@ -135,7 +133,6 @@ public class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
-    @Ignore("Ignored 2013-03-18 by Kim - Reason: The Offer logic has been extended with group checks.")
     public void testDeleteOffer() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo("PL-2012-0003");
@@ -220,7 +217,6 @@ public class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
-    @Ignore("Ignored 2013-03-18 by Kim - Reason: The Offer logic has been extended with group checks.")
     public void testGetEmployerInformation() {
         final String refNo = "PL-2012-0005";
         final Offer offer = OfferTestUtility.getFullOffer();
@@ -256,7 +252,6 @@ public class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
-    @Ignore("Ignored 2013-03-18 by Kim - Reason: The Offer logic has been extended with group checks.")
     public void testNumberOfHardCopies() {
         final String refNo = "PL-2012-0042";
         final Offer newOffer = OfferTestUtility.getFullOffer();

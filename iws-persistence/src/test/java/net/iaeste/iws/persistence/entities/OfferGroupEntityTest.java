@@ -126,7 +126,6 @@ public class OfferGroupEntityTest {
 
     @Test
     @Transactional
-    @Ignore("Ignored 2013-03-18 by Kim - Reason: The Offer logic has been extended with group checks.")
     public void testFindGroupsForSharedOffer() {
         assertThat(offerDao.findAllOffers(authentication).size(), is(0));
         offerDao.persist(authentication, offer);

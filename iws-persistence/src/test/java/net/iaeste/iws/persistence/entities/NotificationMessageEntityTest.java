@@ -52,7 +52,6 @@ public class NotificationMessageEntityTest {
 
     @Test
     @Transactional
-    @Ignore("2013-03-18 by Kim - Reason: The test is unstable.")
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
         final UserEntity user = dao.findUserByCredentials("austria", "7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266");

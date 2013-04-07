@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.constants;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * Generic constants, for the IW Services.
@@ -88,6 +89,7 @@ public interface IWSConstants {
      * The e-mail compliance regular expression.
      */
     String EMAIL_REGEX = "^[a-z0-9_\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|eu|mobi)$";
+    Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     /**
      * For the automatic password generator, we need a list of characters, that

@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 import com.gargoylesoftware.base.testing.EqualsTester;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
@@ -21,22 +26,22 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-
 /**
  * Test for the AuthenticationResponse Object.
  * 
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection ResultOfObjectAllocationIgnored
  */
-public class AuthenticationResultTest {
+public class AuthenticationResponseTest {
+
+    private static final String TOKEN_KEY = "12345678901234567890123456789012";
 
     @Test
     public void testClassFlow() {
         // Test preconditions
-        final AuthenticationToken token = new AuthenticationToken("KEY");
+        final AuthenticationToken token = new AuthenticationToken(TOKEN_KEY);
         final IWSError error = IWSErrors.VERIFICATION_ERROR;
         final String message = "ERROR";
 
@@ -54,13 +59,13 @@ public class AuthenticationResultTest {
         assertThat(result.getToken(), is(token));
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
-        assertThat(result.toString(), is("AuthenticationResponse[token=AuthenticationToken[token=KEY]]"));
-        assertThat(result.hashCode(), is(-545849611));
+        assertThat(result.toString(), is("AuthenticationResponse[token=AuthenticationToken{token='" + TOKEN_KEY + "', groupId='null'}]"));
+        assertThat(result.hashCode(), is(-2058928058));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));
         assertThat(diff.getError(), is(error));
         assertThat(diff.getMessage(), is(message));
-        //noinspection ResultOfObjectAllocationIgnored
+
         new EqualsTester(result, same, diff, null);
     }
 }

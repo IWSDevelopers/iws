@@ -19,7 +19,6 @@ import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * This is the Request Object for creating new User Accounts in IWS. The account
@@ -48,8 +47,12 @@ public final class CreateUserRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The e-mail compliance regular expression. */
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(IWSConstants.EMAIL_REGEX);
+    /** The maximum length for the username (e-mail address) allowed. */
+    public static final int USER_MAXIMUM_USERNAME = 100;
+    /** The maximum length for a users firstname that is allowed. */
+    public static final int USER_MAXIMUM_FIRSTNAME = 50;
+    /** The maximum length for a users lastname that is allowed. */
+    public static final int USER_MAXIMUM_LASTNAME = 50;
 
     private String username = null;
     private String password = null;
@@ -98,34 +101,95 @@ public final class CreateUserRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUsername(final String username) {
+    /**
+     *
+     * @param username
+     * @throws IllegalArgumentException
+     * @see #USER_MAXIMUM_USERNAME
+     * @see IWSConstants#EMAIL_PATTERN
+     */
+    public void setUsername(final String username) throws IllegalArgumentException {
+        assertNotNullOrEmptyOrTooLong("username", username, USER_MAXIMUM_USERNAME);
+
+        if (!IWSConstants.EMAIL_PATTERN.matcher(username).matches()) {
+            throw new IllegalArgumentException("invalid e-mail address.");
+        }
+
         this.username = username;
     }
 
+    /**
+     * Retrieves the Users Username (private e-mail address).
+     *
+     * @return The Users Username
+     */
     public String getUsername() {
         return username;
     }
 
-    public void setPassword(final String password) {
+    /**
+     * Sets the Users Password, the Password may neither be null nor empty, if
+     * so then an {@code IllegalArgumentException}. As for the length, then
+     * there are no limits, as the system only stores the cryptographical
+     * hash value of the Password.
+     *
+     * @param password The Users Password
+     * @throws IllegalArgumentException if the Password is invalid
+     */
+    public void setPassword(final String password) throws IllegalArgumentException {
+        assertNotNullOrEmpty("username", username);
         this.password = password;
     }
 
+    /**
+     * Retrieves the Users Password.
+     *
+     * @return The Users Password
+     */
     public String getPassword() {
         return password;
     }
 
-    public void setFirstname(final String firstname) {
+    /**
+     * Sets the Users Firstname, the Firstname may not be null, empty or longer
+     * than 50 chars long, if so an {@code IllegalArgumentException} is thrown.
+     *
+     * @param firstname The Users Firstname
+     * @throws IllegalArgumentException if the Firstname is invalid
+     * @see #USER_MAXIMUM_FIRSTNAME
+     */
+    public void setFirstname(final String firstname) throws IllegalArgumentException {
+        assertNotNullOrEmptyOrTooLong("username", username, USER_MAXIMUM_FIRSTNAME);
         this.firstname = firstname;
     }
 
+    /**
+     * Retrieves the Users Firstname.
+     *
+     * @return The Users Firstname
+     */
     public String getFirstname() {
         return firstname;
     }
 
-    public void setLastname(final String lastname) {
+    /**
+     * Sets the Users Lastname, the Lastname may not be null, empty or longer
+     * than 50 chars long, if so an {@code IllegalArgumentException} is thrown.
+     *
+     * @param lastname The Users Lastname
+     * @throws IllegalArgumentException if the Lastname is invalid
+     * @see #USER_MAXIMUM_LASTNAME
+     */
+    public void setLastname(final String lastname) throws IllegalArgumentException {
+        assertNotNullOrEmptyOrTooLong("lastname", lastname, USER_MAXIMUM_LASTNAME);
         this.lastname = lastname;
     }
 
+    /**
+     * Retrieves the Users Lastname.
+     *
+     * @return The Users Lastname
+     */
     public String getLastname() {
         return lastname;
     }
@@ -141,13 +205,10 @@ public final class CreateUserRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(5);
 
-        if (!EMAIL_PATTERN.matcher(username).matches()) {
-            validation.put("username", "invalid e-mail address.");
-        }
-        isWithinLimits(validation, "username", username, 1, 50);
-        isNotEmpty(validation, "password", password);
-        isWithinLimits(validation, "firstname", firstname, 1, 50);
-        isWithinLimits(validation, "lastname", lastname, 1, 50);
+        isNotNull(validation, "username", username);
+        isNotNull(validation, "password", password);
+        isNotNull(validation, "firstname", firstname);
+        isNotNull(validation, "lastname", lastname);
 
         return validation;
     }

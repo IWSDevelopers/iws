@@ -31,25 +31,49 @@ import org.junit.Test;
 public final class AuthenticationTokenTest {
 
     @Test
+    public void testClassflow() {
+        final String key = "1234567890ABCDEF1234567890ABCDEF";
+        final String groupId = "123";
+
+        final AuthenticationToken token = new AuthenticationToken();
+        token.setToken(key);
+        token.setGroupId(groupId);
+        token.verify();
+
+        assertThat(token.getToken(), is(key));
+        assertThat(token.getGroupId(), is(groupId));
+    }
+
+    @Test
     public void testClass() {
         final String mainValue = "1234567890ABCDEF1234567890ABCDEF";
         final String diffValue = "ABCDEF1234567890ABCDEF1234567890";
 
         final AuthenticationToken result = new AuthenticationToken(mainValue);
         final AuthenticationToken same = new AuthenticationToken();
-        final AuthenticationToken diff = new AuthenticationToken(diffValue);
+        final AuthenticationToken diff1 = new AuthenticationToken(diffValue);
+        final AuthenticationToken diff2 = new AuthenticationToken(diffValue, "groupId");
         same.setToken(mainValue);
 
         result.verify();
         assertThat(result, is(same));
-        assertThat(result, is(not(diff)));
+        assertThat(result, is(not(diff1)));
         assertThat(result.getToken(), is(mainValue));
-        assertThat(result.hashCode(), is(1018334091));
-        assertThat(diff.hashCode(), is(-2074407797));
-        assertThat(result.toString(), is("AuthenticationToken[token=" + mainValue + ']'));
-        assertThat(diff.toString(), is("AuthenticationToken[token=" + diffValue + ']'));
+        assertThat(result.hashCode(), is(1503585749));
+        assertThat(diff1.hashCode(), is(117867733));
+        assertThat(diff2.hashCode(), is(411295951));
+        assertThat(result.toString(), is("AuthenticationToken{token='" + mainValue + "', groupId='null'}"));
+        assertThat(diff1.toString(), is("AuthenticationToken{token='" + diffValue + "', groupId='null'}"));
+        assertThat(diff2.toString(), is("AuthenticationToken{token='" + diffValue + "', groupId='groupId'}"));
 
-        new EqualsTester(result, same, diff, null);
+        new EqualsTester(result, same, diff1, null);
+        new EqualsTester(result, same, diff2, null);
+    }
+
+    @Test(expected = VerificationException.class)
+    public void testEmptyConstructor() {
+        final AuthenticationToken token = new AuthenticationToken();
+        token.verify();
     }
 
     @Test
@@ -58,30 +82,29 @@ public final class AuthenticationTokenTest {
         final AuthenticationToken original = new AuthenticationToken(mainValue);
         final AuthenticationToken result = new AuthenticationToken(original);
 
-        final AuthenticationToken nullResult = new AuthenticationToken((AuthenticationToken) null);
-
         assertThat(result, is(original));
-        assertThat(result, is(not(nullResult)));
     }
 
-    @Test(expected = VerificationException.class)
+    @Test(expected = IllegalArgumentException.class)
+    public void testCopyConstructorNull() {
+        new AuthenticationToken((AuthenticationToken) null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testEmptytoken() {
         final String key = "";
-        final AuthenticationToken token = new AuthenticationToken(key);
-        token.verify();
+        new AuthenticationToken(key);
     }
 
-    @Test(expected = VerificationException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testIncorrectToken() {
         final String key = "invalid";
-        final AuthenticationToken token = new AuthenticationToken(key);
-        token.verify();
+        new AuthenticationToken(key);
     }
 
-    @Test(expected = VerificationException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullToken() {
         final String key = null;
-        final AuthenticationToken token = new AuthenticationToken(key);
-        token.verify();
+        new AuthenticationToken(key);
     }
 }

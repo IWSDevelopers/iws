@@ -22,9 +22,8 @@ import java.util.Map;
 
 /**
  * All requests (with the exception of the initial Authorization request) is
- * made with an Object if this type as the first parameter. The Token contains
- * enough information to positively identify the user, who initiated a given
- * Request.
+ * made with this Object as the first parameter. The Token contains  enough
+ * information to positively identify the user, who initiated a given Request.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -58,9 +57,10 @@ public final class AuthenticationToken extends AbstractVerification {
      * Default Constructor.
      *
      * @param  token  The Token, i.e. currently active Cryptographical Checksum
+     * @throws IllegalArgumentException if the token is invalid
      */
-    public AuthenticationToken(final String token) {
-        this.token = token;
+    public AuthenticationToken(final String token) throws IllegalArgumentException {
+        setToken(token);
     }
 
     /**
@@ -69,9 +69,11 @@ public final class AuthenticationToken extends AbstractVerification {
      *
      * @param  token  The Token, i.e. currently active Cryptographical Checksum
      * @param groupId GroupId for the Authorization check
+     * @throws IllegalArgumentException if the token is invalid
      */
-    public AuthenticationToken(final String token, final String groupId) {
-        this.token = token;
+    public AuthenticationToken(final String token, final String groupId) throws IllegalArgumentException {
+        // As the validation check is in the Token setter, we'll use that
+        setToken(token);
         this.groupId = groupId;
     }
 
@@ -79,9 +81,16 @@ public final class AuthenticationToken extends AbstractVerification {
      * Copy Constructor.
      *
      * @param authenticationToken  AuthenticationToken Object to copy
+     * @throws IllegalArgumentException if the token is invalid
      */
-    public AuthenticationToken(final AuthenticationToken authenticationToken) {
-        token = authenticationToken != null ? authenticationToken.token : null;
+    public AuthenticationToken(final AuthenticationToken authenticationToken) throws IllegalArgumentException {
+        if (authenticationToken == null) {
+            throw new IllegalArgumentException("Cannot process a null Object.");
+        }
+
+        // As the validation check is in the Token setter, we'll use that
+        setToken(authenticationToken.token);
+        groupId = authenticationToken.groupId;
     }
 
     // =========================================================================
@@ -89,12 +98,31 @@ public final class AuthenticationToken extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the users Cryptographical Authentication Token.
+     * Sets the users Cryptographical Authentication Token, the token must be
+     * valid, i.e. not null and matching one of the supported cryptographical
+     * algorithms. If the token is invalid, then the setter will throw an
+     * {@code IllegalArgumentException.
      *
      * @param  token  Cryptographical Authentication Token
+     * @throws IllegalArgumentException if the token is invalid
      */
-    public void setToken(final String token) {
-        this.token = token;
+    public void setToken(final String token) throws IllegalArgumentException {
+        if (token == null) {
+            throw new IllegalArgumentException("Token cannot be null.");
+        }
+
+        // The token should have a length, matching one of the allowed hashing
+        // algorithms. If not, then we'll throw an exception.
+        switch (token.length()) {
+            case LENGTH_SHA2_512:
+            case LENGTH_SHA2_384:
+            case LENGTH_SHA2_256:
+            case LENGTH_MD5:
+                this.token = token;
+                break;
+            default:
+                throw new IllegalArgumentException("The Token is invalid, the content is an unsupported or unallowed cryptographical hash value.");
+        }
     }
 
     /**
@@ -121,7 +149,7 @@ public final class AuthenticationToken extends AbstractVerification {
      * Retrieves the GroupId, for which the user wishes to invoke a
      * functionality.
      *
-     * @return GroupIs for the Authorization check
+     * @return GroupId for the Authorization check
      */
     public String getGroupId() {
         return groupId;
@@ -140,18 +168,6 @@ public final class AuthenticationToken extends AbstractVerification {
 
         if (token == null) {
             validation.put("token", "No token is present.");
-        } else {
-            // The token should have a length, matching one of the allowed hashing
-            // algorithms. If not, then we'll throw an exception.
-            switch (token.length()) {
-                case LENGTH_SHA2_512:
-                case LENGTH_SHA2_384:
-                case LENGTH_SHA2_256:
-                case LENGTH_MD5:
-                    break;
-                default:
-                    validation.put("token", "The Token is invalid, the content is an unsupported or unallowed cryptographical hash value.");
-            }
         }
 
         return validation;
@@ -165,14 +181,17 @@ public final class AuthenticationToken extends AbstractVerification {
         if (this == obj) {
             return true;
         }
-
-        if ((obj == null) || (getClass() != obj.getClass())) {
+        if (!(obj instanceof AuthenticationToken)) {
             return false;
         }
 
         final AuthenticationToken that = (AuthenticationToken) obj;
 
-        return token != null ? token.equals(that.token) : that.token == null;
+        if (groupId != null ? !groupId.equals(that.groupId) : that.groupId != null) {
+            return false;
+        }
+
+        return !(token != null ? !token.equals(that.token) : that.token != null);
     }
 
     /**
@@ -183,6 +202,7 @@ public final class AuthenticationToken extends AbstractVerification {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (token != null ? token.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupId != null ? groupId.hashCode() : 0);
 
         return hash;
     }
@@ -192,6 +212,9 @@ public final class AuthenticationToken extends AbstractVerification {
      */
     @Override
     public String toString() {
-        return "AuthenticationToken[token=" + token + ']';
+        return "AuthenticationToken{" +
+                "token='" + token + '\'' +
+                ", groupId='" + groupId + '\'' +
+                '}';
     }
 }

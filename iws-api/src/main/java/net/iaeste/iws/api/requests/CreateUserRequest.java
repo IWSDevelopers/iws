@@ -102,9 +102,12 @@ public final class CreateUserRequest extends AbstractVerification {
     // =========================================================================
 
     /**
+     * Sets the Users Username (e-mail address), the Username may not be null,
+     * empty or longer than 100 chars long, if so an
+     * {@code IllegalArgumentException} is thrown.
      *
-     * @param username
-     * @throws IllegalArgumentException
+     * @param username The Users Username (e-mail address)
+     * @throws IllegalArgumentException if the Username is invalid
      * @see #USER_MAXIMUM_USERNAME
      * @see IWSConstants#EMAIL_PATTERN
      */
@@ -128,16 +131,19 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Sets the Users Password, the Password may neither be null nor empty, if
-     * so then an {@code IllegalArgumentException}. As for the length, then
+     * Sets the Users Password, the Password may not be empty, if so then an
+     * {@code IllegalArgumentException} is thrown. As for the length, then
      * there are no limits, as the system only stores the cryptographical
-     * hash value of the Password.
+     * hash value of the Password.<br />
+     *   Note, that if no password is provided, i.e. if the value is null. Then
+     * the system will generate a standard password for the user, which will
+     * then be send to the user via e-mail.
      *
-     * @param password The Users Password
+     * @param password The Users Password or null
      * @throws IllegalArgumentException if the Password is invalid
      */
-    public void setPassword(final String password) throws IllegalArgumentException {
-        assertNotNullOrEmpty("username", username);
+    public void setPassword(final String password) {
+        assertNotEmpty("password", password);
         this.password = password;
     }
 
@@ -206,7 +212,6 @@ public final class CreateUserRequest extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(5);
 
         isNotNull(validation, "username", username);
-        isNotNull(validation, "password", password);
         isNotNull(validation, "firstname", firstname);
         isNotNull(validation, "lastname", lastname);
 

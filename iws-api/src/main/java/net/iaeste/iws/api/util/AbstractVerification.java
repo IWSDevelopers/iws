@@ -61,6 +61,19 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * Throws an {@code IllegalArgumentException} if the given value is empty.
+     *
+     * @param field Name of the field
+     * @param value The value for the field
+     * @throws IllegalArgumentException if the value is empty
+     */
+    protected static void assertNotEmpty(final String field, final String value) throws IllegalArgumentException {
+        if (value != null && value.isEmpty()) {
+            throw new IllegalArgumentException("The field " + field + " may not be be empty.");
+        }
+    }
+
+    /**
      * Throws an {@code IllegalArgumentException} if the given value is null or
      * empty.
      *

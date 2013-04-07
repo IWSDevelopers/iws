@@ -31,7 +31,8 @@ import static org.junit.Assert.assertThat;
 public class SaveOfferTest {
 
     @Test
-    @Ignore("Ignored 2013-03-18 by Kim - Reason: The Offer logic has been extended with group checks.")
+    @Ignore("Test works, but clean up of the added offer need to be done! Test FetchOffersTest.testFetchCall fails " +
+            "due to this misbehaviour. See #287")
     public void testSaveOffers() {
         final FetchOffers fetch = new FetchOffers();
         fetch.setUsername("austria");

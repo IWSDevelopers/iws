@@ -44,6 +44,56 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     // =========================================================================
+    // Assertion methods for setters, that throws IllegalArgumentExceptions
+    // =========================================================================
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is null.
+     *
+     * @param field Name of the field
+     * @param value The value for the field
+     * @throws IllegalArgumentException if the value is null
+     */
+    protected static void assertNotNull(final String field, final Object value) throws IllegalArgumentException {
+        if (value == null) {
+            throw new IllegalArgumentException("The field " + field + " may not be be null.");
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is null or
+     * empty.
+     *
+     * @param field Name of the field
+     * @param value The value of the field
+     * @throws IllegalArgumentException if the value is null or empty
+     */
+    protected static void assertNotNullOrEmpty(final String field, final String value) throws IllegalArgumentException {
+        assertNotNull(field, value);
+
+        if (field.isEmpty()) {
+            throw new IllegalArgumentException("The field " + field + " may not be empty.");
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * null, empty or too long.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The maximum length for the field
+     * @throws IllegalArgumentException if the value is null or empty or too long
+     */
+    protected static void assertNotNullOrEmptyOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
+        assertNotNullOrEmpty(field, value);
+
+        if (value.length() > length) {
+            throw new IllegalArgumentException("The field " + field + " may not be longer than " + length + '.');
+        }
+    }
+
+    // =========================================================================
     // Internal Verification methods
     // =========================================================================
 

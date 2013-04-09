@@ -223,8 +223,76 @@ public class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
+    public void testFailShareNonOwnedOffer() {
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2012-0005");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse response = exchange.fetchOffers(token, request);
+        assertThat(response.getOffers().isEmpty(), is(false));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        String offerIdToBeShared =response.getOffers().get(0).getId();
+        offersToShare.add(offerIdToBeShared);
+
+        final List<Group> groups = new ArrayList<>(1);
+        Group group;
+        group = new Group();
+        group.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
+        group.setGroupType(GroupType.NATIONAL);
+        groups.add(group);
+
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groups);
+        //try to share Polish offer by Austrian user
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(austriaToken, publishRequest1);
+
+        //the request cannot be OK here
+        assertThat(publishResponse1.isOk(), is(false));
+        assertThat("The request has to fail with verification error here", publishResponse1.getError(), is(IWSErrors.VERIFICATION_ERROR));
+        assertThat(publishResponse1.getMessage(), is("The offer with externalId '" + offerIdToBeShared + "' is not owned by the group 'Austria'."));
+    }
+
+    @Test
+    public void testFailShareOfferToNonNationalGroupType() {
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2012-0006");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse response = exchange.fetchOffers(token, request);
+        assertThat(response.getOffers().isEmpty(), is(false));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        String offerIdToBeShared =response.getOffers().get(0).getId();
+        offersToShare.add(offerIdToBeShared);
+
+        final List<Group> groups = new ArrayList<>(1);
+        Group group;
+        group = new Group();
+        group.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
+        group.setGroupType(GroupType.LOCAL);
+        groups.add(group);
+
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groups);
+        //try to share to non-National group type
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
+
+        //the request cannot be OK here
+        assertThat(publishResponse1.isOk(), is(false));
+        assertThat("The request has to fail with verification error here", publishResponse1.getError(), is(IWSErrors.VERIFICATION_ERROR));
+        assertThat(publishResponse1.getMessage(), is("The group type '" + groups.get(0).getGroupType() + "' is not allowed to be used for publishing of offers."));
+    }
+
+    @Test
     public void testGetEmployerInformation() {
-        final String refNo = "PL-2012-0005";
+        final String refNo = "PL-2012-0007";
         final Offer offer = OfferTestUtility.getFullOffer();
         offer.setRefNo(refNo);
 

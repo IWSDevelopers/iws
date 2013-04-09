@@ -54,6 +54,7 @@ import net.iaeste.iws.persistence.notification.Notifications;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -286,12 +287,42 @@ public final class ExchangeService extends CommonService {
      */
     public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
         final Set<String> externalOfferIds = request.getOfferIds();
+        verifyPublishRequest(authentication, request);
 
         for (final String externalOfferId : externalOfferIds) {
             dao.unshareFromAllGroups(externalOfferId);
         }
 
         publishOffer(authentication, request);
+    }
+
+    private void verifyPublishRequest(final Authentication authentication, final PublishOfferRequest request) {
+        //verify only allowed group type(s) are share to
+        verifyGroupTypeToBeShareTo(request.getGroups());
+        //verify that the user's group owns all offers before performing sharing
+        verifyOffersOwnership(authentication, request.getOfferIds());
+    }
+
+    private void verifyGroupTypeToBeShareTo(final List<Group> groups) {
+        for(Group group : groups) {
+            if(group.getGroupType() != GroupType.NATIONAL) {
+                throw new VerificationException("The group type '" + group.getGroupType() + "' is not allowed to be used for publishing of offers.");
+            }
+        }
+    }
+
+    private void verifyOffersOwnership(final Authentication authentication, final Set<String> offerExternalIds) {
+        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, offerExternalIds);
+        Set<String> fetchedOffersExtId = new HashSet<>(offers.size());
+        for (OfferEntity offer : offers) {
+            fetchedOffersExtId.add(offer.getExternalId());
+        }
+
+        for(String externalId : offerExternalIds) {
+            if(!fetchedOffersExtId.contains(externalId)) {
+                throw new VerificationException("The offer with externalId '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
+            }
+        }
     }
 
     private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {

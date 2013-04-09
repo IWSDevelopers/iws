@@ -22,6 +22,7 @@ import net.iaeste.iws.api.util.AbstractFallible;
 import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -35,7 +36,7 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
 
-    private List<OfferGroup> offerGroups;
+    private Map<String, List<OfferGroup>> offersGroups;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -43,16 +44,16 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
      */
     public FetchPublishOfferResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        offerGroups = null;
+        offersGroups = null;
     }
 
     /**
      * Default Constructor.
      *
-     * @param offerGroups List of Offers found
+     * @param offersGroups List of Offers found
      */
-    public FetchPublishOfferResponse(final List<OfferGroup> offerGroups) {
-        this.offerGroups = Copier.copy(offerGroups);
+    public FetchPublishOfferResponse(final Map<String, List<OfferGroup>> offersGroups) {
+        this.offersGroups = Copier.copyMapWithList(offersGroups);
     }
 
     /**
@@ -63,19 +64,19 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
      */
     public FetchPublishOfferResponse(final IWSError error, final String message) {
         super(error, message);
-        offerGroups = null;
+        offersGroups = null;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOfferGroups(final List<OfferGroup> offerGroups) {
-        this.offerGroups = Copier.copy(offerGroups);
+    public void setOffersGroups(final Map<String, List<OfferGroup>> offersGroups) {
+        this.offersGroups = Copier.copyMapWithList(offersGroups);
     }
 
-    public List<OfferGroup> getOfferGroups() {
-        return Copier.copy(offerGroups);
+    public Map<String, List<OfferGroup>> getOffersGroups() {
+        return Copier.copyMapWithList(offersGroups);
     }
 
     // =========================================================================
@@ -96,7 +97,7 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
         }
 
         final FetchPublishOfferResponse that = (FetchPublishOfferResponse) obj;
-        return !(offerGroups != null ? !offerGroups.equals(that.offerGroups) : that.offerGroups != null);
+        return !(offersGroups != null ? !offersGroups.equals(that.offersGroups) : that.offersGroups != null);
     }
 
     /**
@@ -106,7 +107,7 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offerGroups != null ? offerGroups.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offersGroups != null ? offersGroups.hashCode() : 0);
 
         return result;
     }
@@ -117,7 +118,7 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
     @Override
     public String toString() {
         return "FetchOffersResponse{" +
-                "offers=" + offerGroups +
+                "offers=" + offersGroups +
                 '}';
     }
 }

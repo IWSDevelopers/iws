@@ -21,6 +21,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.EmployerInformation;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.dtos.OfferGroup;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
@@ -198,22 +199,27 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
         assertThat(publishResponse1.isOk(), is(true));
 
-        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(response.getOffers().get(0).getId());
+        final List<String> offersExternalId = new ArrayList<>();
+        offersExternalId.add(response.getOffers().get(0).getId());
+        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offersExternalId);
         final FetchPublishOfferResponse fetchPublishResponse1 = exchange.fetchPublishedOfferInfo(token, fetchPublishRequest);
 
         //is it shared to two groups?
-        assertThat(2, is(fetchPublishResponse1.getOfferGroups().size()));
+        assertThat(fetchPublishResponse1.isOk(), is(true));
+        List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        assertThat(2, is(offerGroupsSharedTo.size()));
 
         groups.clear();
         final PublishOfferRequest publishRequest2 = new PublishOfferRequest(offersToShare, groups);
         final PublishOfferResponse publishResponse2 = exchange.processPublishOffer(token, publishRequest2);
 
-        //is it shared to two groups?
         assertThat(publishResponse2.isOk(), is(true));
         final FetchPublishOfferResponse fetchPublishResponse2 = exchange.fetchPublishedOfferInfo(token, fetchPublishRequest);
+        assertThat(fetchPublishResponse2.isOk(), is(true));
+        offerGroupsSharedTo = fetchPublishResponse2.getOffersGroups().get(offersExternalId.get(0));
 
         //is it shared to nobody?
-        assertThat(fetchPublishResponse2.getOfferGroups().size(), is(0));
+        assertThat(offerGroupsSharedTo.size(), is(0));
     }
 
     @Test

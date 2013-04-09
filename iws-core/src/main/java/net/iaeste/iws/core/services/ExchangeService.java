@@ -53,7 +53,9 @@ import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -315,7 +317,13 @@ public final class ExchangeService extends CommonService {
     public FetchPublishOfferResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishOfferRequest request) {
         final FetchPublishOfferResponse response;
 
-        response = new FetchPublishOfferResponse(convertOfferGroupEntityList(dao.findGroupsForSharedOffer(request.getRefNo())));
+        final List<String> externalIds = request.getOffersId();
+        Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?
+        for (String externalId : externalIds) {
+            result.put(externalId, convertOfferGroupEntityList(dao.findGroupsForSharedOffer(externalId)));
+        }
+
+        response = new FetchPublishOfferResponse(result);
 
         return response;
     }

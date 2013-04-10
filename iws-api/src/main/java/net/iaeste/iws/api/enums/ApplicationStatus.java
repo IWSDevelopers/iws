@@ -12,15 +12,14 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.enums;
 
 /**
  * Describes the status of a student application for an offer
  *
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public enum ApplicationStatus {
     // TODO the following states are just preliminary

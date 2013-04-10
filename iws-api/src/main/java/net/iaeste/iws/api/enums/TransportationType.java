@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.ApplicationStatus
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.TransportationType
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -16,22 +16,15 @@
 package net.iaeste.iws.api.enums;
 
 /**
- * Describes the status of a student application for an offer
- *
- * @author Matej Kosco / last $Author:$
+ * @author Arthur Sussmilch/ last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public enum ApplicationStatus {
-    // TODO the following states are just preliminary
+public enum TransportationType {
 
-    APPLIED,
-
-    NOMINATED,
-
-    FORWARDED_TO_EMPLOYER,
-
-    ACCEPTED,
-
-    REJECTED
+    FLIGHT,
+    BUS,
+    TRAIN,
+    SHIP,
+    CAR;
 }

@@ -1,3 +1,13 @@
+!path iws-fitnesse.jar
+!define SLIM_VERSION {0.1}
+!define TEST_SYSTEM {slim}
+
+
+!2 [[Authentication Tests][IntraWebService.AuthTests]]
+
+!2 [[Exchange Tests][IntraWebService.ExchangeTests]]
+
+
 !1 Welcome to [[FitNesse][FitNesse.FitNesse]]!
 !3 ''The fully integrated stand-alone acceptance testing framework and wiki.''
 

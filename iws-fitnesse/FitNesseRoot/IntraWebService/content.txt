@@ -2,6 +2,7 @@
 !define SLIM_VERSION {0.1}
 !define TEST_SYSTEM {slim}
 
+!contents -R2
 
 !2 [[Authentication Tests][IntraWebService.AuthTests]]
 

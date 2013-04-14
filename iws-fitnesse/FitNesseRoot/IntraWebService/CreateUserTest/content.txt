@@ -1,0 +1,12 @@
+!path iws-fitnesse.jar
+!define SLIM_VERSION {0.1}
+!define TEST_SYSTEM {slim}
+
+!|script          |create user                             |
+|set username     |denmark            |and password|denmark|
+|ensure           |login                                   |
+|set new username |john.doe@iaeste.org|and password|test   |
+|set new firstname|john               |and lastname|doe    |
+|create user                                               |
+|logout                                                    |
+

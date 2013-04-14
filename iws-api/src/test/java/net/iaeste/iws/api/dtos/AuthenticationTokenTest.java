@@ -33,7 +33,7 @@ public final class AuthenticationTokenTest {
     @Test
     public void testClassflow() {
         final String key = "1234567890ABCDEF1234567890ABCDEF";
-        final String groupId = "123";
+        final String groupId = "12qw43er-43wq-65tr-78ui-09qw87er65rt";
 
         final AuthenticationToken token = new AuthenticationToken();
         token.setToken(key);
@@ -44,15 +44,22 @@ public final class AuthenticationTokenTest {
         assertThat(token.getGroupId(), is(groupId));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidGroupId() {
+        final AuthenticationToken token = new AuthenticationToken();
+        token.setGroupId("123");
+    }
+
     @Test
     public void testClass() {
         final String mainValue = "1234567890ABCDEF1234567890ABCDEF";
         final String diffValue = "ABCDEF1234567890ABCDEF1234567890";
+        final String groupId = "12345678-1324-2341-3244-123443211234";
 
         final AuthenticationToken result = new AuthenticationToken(mainValue);
         final AuthenticationToken same = new AuthenticationToken();
         final AuthenticationToken diff1 = new AuthenticationToken(diffValue);
-        final AuthenticationToken diff2 = new AuthenticationToken(diffValue, "groupId");
+        final AuthenticationToken diff2 = new AuthenticationToken(diffValue, groupId);
         same.setToken(mainValue);
 
         result.verify();
@@ -61,10 +68,10 @@ public final class AuthenticationTokenTest {
         assertThat(result.getToken(), is(mainValue));
         assertThat(result.hashCode(), is(1503585749));
         assertThat(diff1.hashCode(), is(117867733));
-        assertThat(diff2.hashCode(), is(411295951));
+        assertThat(diff2.hashCode(), is(-571840010));
         assertThat(result.toString(), is("AuthenticationToken{token='" + mainValue + "', groupId='null'}"));
         assertThat(diff1.toString(), is("AuthenticationToken{token='" + diffValue + "', groupId='null'}"));
-        assertThat(diff2.toString(), is("AuthenticationToken{token='" + diffValue + "', groupId='groupId'}"));
+        assertThat(diff2.toString(), is("AuthenticationToken{token='" + diffValue + "', groupId='" + groupId + "'}"));
 
         new EqualsTester(result, same, diff1, null);
         new EqualsTester(result, same, diff2, null);

@@ -14,9 +14,10 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Permission;
-import net.iaeste.iws.api.util.Copier;
 
 import java.io.Serializable;
 import java.util.EnumSet;
@@ -51,8 +52,8 @@ public final class Authorization implements Serializable {
      * @param permissions Authorization
      */
     public Authorization(final Group group, final Set<Permission> permissions) {
-        this.group = group;
-        this.permissions = Copier.copy(permissions);
+        setGroup(group);
+        setPermissions(permissions);
     }
 
     /**
@@ -61,10 +62,12 @@ public final class Authorization implements Serializable {
      * @param authorization Authorization Object to copy
      */
     public Authorization(final Authorization authorization) {
-        if (authorization != null) {
-            permissions = Copier.copy(authorization.permissions);
-            group = authorization.group;
+        if (authorization == null) {
+            throw new IllegalArgumentException("the authorization Object cannot be null.");
         }
+
+        setGroup(authorization.group);
+        setPermissions(authorization.permissions);
     }
 
     // =========================================================================
@@ -72,19 +75,19 @@ public final class Authorization implements Serializable {
     // =========================================================================
 
     public void setGroup(final Group group) {
-        this.group = group;
+        this.group = copy(group);
     }
 
     public Group getGroup() {
-        return group;
+        return copy(group);
     }
 
     public void setPermissions(final Set<Permission> permissions) {
-        this.permissions = Copier.copy(permissions);
+        this.permissions = copy(permissions);
     }
 
     public Set<Permission> getPermission() {
-        return permissions;
+        return copy(permissions);
     }
 
     // =========================================================================
@@ -133,7 +136,7 @@ public final class Authorization implements Serializable {
     public String toString() {
         return "Authorization{" +
                 "group='" + group + '\'' +
-                ", permission='" + permissions + '\'' +
+                ", permissions='" + permissions + '\'' +
                 '}';
     }
 }

@@ -14,10 +14,11 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
 
 import java.security.Permissions;
 import java.util.Set;
@@ -39,22 +40,8 @@ public final class MetaGroup extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /**
-     * The Actual GroupType for this MetaGroup. The GroupType is also used as
-     * the internal Identifier.
-     */
     private GroupType groupType = null;
-
-    /**
-     * A description of the GroupType (MetaGroup), which correlates with the
-     * information written in the JavaDoc.
-     */
     private String description = null;
-
-    /**
-     * A GroupType is associated with a set of Permissions, which together with
-     * a Users Role will determine if a User may perform a given action or not.
-     */
     private Set<Permissions> permissions = null;
 
     /**
@@ -74,7 +61,7 @@ public final class MetaGroup extends AbstractFallible {
     public MetaGroup(final GroupType groupType, final String description, final Set<Permissions> permissions) {
         this.groupType = groupType;
         this.description = description;
-        this.permissions = Copier.copy(permissions);
+        this.permissions = copy(permissions);
     }
 
     /**
@@ -84,9 +71,9 @@ public final class MetaGroup extends AbstractFallible {
      */
     public MetaGroup(final MetaGroup metaGroup) {
         if (metaGroup != null) {
-            groupType = metaGroup.groupType;
+            groupType = copy(metaGroup.groupType);
             description = metaGroup.description;
-            permissions = Copier.copy(metaGroup.permissions);
+            permissions = copy(metaGroup.permissions);
         }
     }
 
@@ -94,28 +81,66 @@ public final class MetaGroup extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * Sets the Actual GroupType for this MetaGroup. The GroupType is also used
+     * as the internal Identifier.
+     *
+     * @param groupType Group Type
+     */
     public void setGroupType(final GroupType groupType) {
-        this.groupType = groupType;
+        this.groupType = copy(groupType);
     }
 
+    /**
+     * Retrieves the Actual GroupType for this MetaGroup. The GroupType is also
+     * used as the internal Identifier.
+     *
+     * @return Group Type
+     */
     public GroupType getGroupType() {
-        return groupType;
+        return copy(groupType);
     }
 
+    /**
+     * Sets the description of the GroupType (MetaGroup), which correlates with
+     * the information written in the JavaDoc.
+     *
+     * @param description MetaGroup description
+     */
     public void setDescription(final String description) {
         this.description = description;
     }
 
+    /**
+     * Retrieves the description of the GroupType (MetaGroup), which correlates
+     * with the information written in the JavaDoc.
+     *
+     * @return MetaGroup description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the Set of Permissions, which the GroupType is associated with.
+     * Together with the Users Role, this will determine if a User may perform
+     * a given action or not (from the common subset).
+     *
+     * @param permissions Set of Permissions
+     */
     public void setPermissions(final Set<Permissions> permissions) {
-        this.permissions = Copier.copy(permissions);
+        this.permissions = copy(permissions);
     }
 
+    /**
+     * Retrieves the Set of Permissions, which the GroupType is associated with.
+     * Together with the Users Role, this will determine if a User may perform
+     * a given action or not (from the common subset).
+     *
+     * @return Set of Permissions
+     */
     public Set<Permissions> getPermissions() {
-        return permissions;
+        return copy(permissions);
     }
 
     // =========================================================================

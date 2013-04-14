@@ -40,7 +40,7 @@ public final class Role extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Long roleId = null;
+    private String roleId = null;
     private String roleName = null;
     private Set<Permissions> permissions = null;
 
@@ -60,7 +60,7 @@ public final class Role extends AbstractVerification {
      * @param roleName    Name of the Role
      * @param permissions Associated Permissions for this Role
      */
-    public Role(final Long roleId, final String roleName, final Set<Permissions> permissions) {
+    public Role(final String roleId, final String roleName, final Set<Permissions> permissions) {
         this.roleId = roleId;
         this.roleName = roleName;
         this.permissions = Copier.copy(permissions);
@@ -83,11 +83,11 @@ public final class Role extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setRoleId(final Long roleId) {
+    public void setRoleId(final String roleId) {
         this.roleId = roleId;
     }
 
-    public Long getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
 

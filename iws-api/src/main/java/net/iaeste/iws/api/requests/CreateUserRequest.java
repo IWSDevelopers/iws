@@ -112,7 +112,7 @@ public final class CreateUserRequest extends AbstractVerification {
      * @see IWSConstants#EMAIL_PATTERN
      */
     public void setUsername(final String username) throws IllegalArgumentException {
-        assertNotNullOrEmptyOrTooLong("username", username, USER_MAXIMUM_USERNAME);
+        ensureNotNullOrEmptyOrTooLong("username", username, USER_MAXIMUM_USERNAME);
 
         if (!IWSConstants.EMAIL_PATTERN.matcher(username).matches()) {
             throw new IllegalArgumentException("invalid e-mail address.");
@@ -143,7 +143,7 @@ public final class CreateUserRequest extends AbstractVerification {
      * @throws IllegalArgumentException if the Password is invalid
      */
     public void setPassword(final String password) {
-        assertNotEmpty("password", password);
+        ensureNotEmpty("password", password);
         this.password = password;
     }
 
@@ -165,7 +165,7 @@ public final class CreateUserRequest extends AbstractVerification {
      * @see #USER_MAXIMUM_FIRSTNAME
      */
     public void setFirstname(final String firstname) throws IllegalArgumentException {
-        assertNotNullOrEmptyOrTooLong("username", username, USER_MAXIMUM_FIRSTNAME);
+        ensureNotNullOrEmptyOrTooLong("firstname", firstname, USER_MAXIMUM_FIRSTNAME);
         this.firstname = firstname;
     }
 
@@ -187,7 +187,7 @@ public final class CreateUserRequest extends AbstractVerification {
      * @see #USER_MAXIMUM_LASTNAME
      */
     public void setLastname(final String lastname) throws IllegalArgumentException {
-        assertNotNullOrEmptyOrTooLong("lastname", lastname, USER_MAXIMUM_LASTNAME);
+        ensureNotNullOrEmptyOrTooLong("lastname", lastname, USER_MAXIMUM_LASTNAME);
         this.lastname = lastname;
     }
 

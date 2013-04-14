@@ -64,6 +64,7 @@ public final class Group extends AbstractVerification {
     // =========================================================================
 
     public void setGroupId(final String groupId) {
+        ensureValidId("groupId", groupId);
         this.groupId = groupId;
     }
 
@@ -72,6 +73,7 @@ public final class Group extends AbstractVerification {
     }
 
     public void setGroupName(final String groupName) {
+        ensureNotNullOrEmptyOrTooLong("groupName", groupName, 50);
         this.groupName = groupName;
     }
 
@@ -80,6 +82,7 @@ public final class Group extends AbstractVerification {
     }
 
     public void setGroupType(final GroupType groupType) {
+        ensureNotNull("groupType", groupType);
         this.groupType = groupType;
     }
 
@@ -88,6 +91,7 @@ public final class Group extends AbstractVerification {
     }
 
     public void setDescription(final String description) {
+
         this.description = description;
     }
 
@@ -113,6 +117,8 @@ public final class Group extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+
         return validation;
     }
 

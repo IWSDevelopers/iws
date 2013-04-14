@@ -72,25 +72,26 @@ public final class AuthenticationToken extends AbstractVerification {
      * @throws IllegalArgumentException if the token is invalid
      */
     public AuthenticationToken(final String token, final String groupId) throws IllegalArgumentException {
-        // As the validation check is in the Token setter, we'll use that
+        // We use the setters to set the value, since they can properly handle
+        // all validation checks
         setToken(token);
-        this.groupId = groupId;
+        setGroupId(groupId);
     }
 
     /**
      * Copy Constructor.
      *
-     * @param authenticationToken  AuthenticationToken Object to copy
+     * @param token  AuthenticationToken Object to copy
      * @throws IllegalArgumentException if the token is invalid
      */
-    public AuthenticationToken(final AuthenticationToken authenticationToken) throws IllegalArgumentException {
-        if (authenticationToken == null) {
-            throw new IllegalArgumentException("Cannot process a null Object.");
-        }
+    public AuthenticationToken(final AuthenticationToken token) throws IllegalArgumentException {
+        // Check the given Object first
+        ensureNotNull("token", token);
 
-        // As the validation check is in the Token setter, we'll use that
-        setToken(authenticationToken.token);
-        groupId = authenticationToken.groupId;
+        // Since the purpose of the Copy Constructor, is to create an identical
+        // Object, we're not going to invoke the setters here.
+        setToken(token.token);
+        groupId = token.groupId;
     }
 
     // =========================================================================
@@ -107,9 +108,7 @@ public final class AuthenticationToken extends AbstractVerification {
      * @throws IllegalArgumentException if the token is invalid
      */
     public void setToken(final String token) throws IllegalArgumentException {
-        if (token == null) {
-            throw new IllegalArgumentException("Token cannot be null.");
-        }
+        ensureNotNull("token", token);
 
         // The token should have a length, matching one of the allowed hashing
         // algorithms. If not, then we'll throw an exception.
@@ -121,7 +120,7 @@ public final class AuthenticationToken extends AbstractVerification {
                 this.token = token;
                 break;
             default:
-                throw new IllegalArgumentException("The Token is invalid, the content is an unsupported or unallowed cryptographical hash value.");
+                throwIllegalArgumentException("token");
         }
     }
 
@@ -137,11 +136,16 @@ public final class AuthenticationToken extends AbstractVerification {
     /**
      * Sets the GroupId, for which the user wishes invoke a functionality. This
      * is required, if the functionality cannot be uniquely identified for the
-     * user based on the implicit UserId & PermissionId.
+     * user based on the implicit UserId & PermissionId.<br />
+     *   If the provided GroupId is not valid, then an
+     * {@code IllegalArgumentException} is thrown.
      *
      * @param groupId  GroupId for the Authorization check
+     * @throws IllegalArgumentException if the GroupId is invalid
      */
     public void setGroupId(final String groupId) {
+        ensureValidId("groupId", groupId);
+
         this.groupId = groupId;
     }
 
@@ -166,9 +170,9 @@ public final class AuthenticationToken extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        if (token == null) {
-            validation.put("token", "No token is present.");
-        }
+        // As the Setters are verifying all given values, we only
+        // need to run checks against nonnull fields here
+        isNotNull(validation, "token", token);
 
         return validation;
     }

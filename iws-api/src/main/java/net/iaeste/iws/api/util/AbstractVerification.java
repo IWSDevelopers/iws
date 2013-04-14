@@ -20,8 +20,37 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
+ * This class contains the methods that are used to check if the provided
+ * values are correct or not.<br />
+ *   There is two kinds of check methods, the "ensure" and the "validate":
+ * <ul>
+ *   <li><b></b>ensure</b>:<br />
+ *     These methods are suppose to be used by the Request & DTO setter methods,
+ *     since they make a check and throw an {@code IllegalArgumentException}, if
+ *     the given valus is invalid. The checks should be made against all fields
+ *     where potential problems may occur. Problems are identified as problems
+ *     which will prevent the logic from properly process the request with the
+ *     given data or may cause problems as data exceed allowed values for the
+ *     database.<br />
+ *       Please note, that the setters can set either single field values or
+ *     paired values - for example from to date that needs to be checked to
+ *     avoid a to date that occurs before an from date.</li>
+ *   <li><b>validate</b>:<br />
+ *     The validation methods take as first parameter an Error map, and rather
+ *     than throwing an Exception, the methods will add the error information
+ *     to the map. Thus allowing the response Object to reveal all errors.<br />
+ *       The errors that are caught here is only those that will prevent the
+ *     business logic from properly process the request, as it is assumed that
+ *     all setters are correctly invoking the "ensure" methods. Thus, for most
+ *     fields is will suffice to check to ensure that the values are not null.
+ *   </li>
+ * </ul>
+ * The main purpose of these checks, is to ensure that the IWS Objects fails as
+ * early as possible, so no unneeded requests are made to the IWS.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -31,16 +60,37 @@ public abstract class AbstractVerification implements Verifiable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    // Our internal error strings
+    private static final String ERROR_NOT_NULL = "The field %s may not be null.";
+    private static final String ERROR_NOT_EMPTY = "The field %s may not be empty.";
+    private static final String ERROR_NOT_LONGER = "The field %s may not be longer than %d";
+    private static final String ERROR_INVALID = "The field %s is invalid.";
+
+    // Our internal constants to verify the Id
+    private static final String UUID_FORMAT = "[\\da-z]{8}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{12}";
+    private static final Pattern UUID_PATTERN = Pattern.compile(UUID_FORMAT);
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void verify() {
+    public final void verify() throws VerificationException {
         final Map<String, String> validationResult = validate();
 
         if (!validationResult.isEmpty()) {
             throw new VerificationException("Validation failed: " + validationResult.toString());
         }
+    }
+
+    /**
+     * For those cases where an {@code IllegalArgumentException} should be
+     * thrown, but with a generic value, this method is used.
+     *
+     * @param field Name of the field
+     * @throws IllegalArgumentException as the field is invalid
+     */
+    protected static void throwIllegalArgumentException(final String field) throws IllegalArgumentException {
+        throw new IllegalArgumentException(format(ERROR_INVALID, field));
     }
 
     // =========================================================================
@@ -54,9 +104,9 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value for the field
      * @throws IllegalArgumentException if the value is null
      */
-    protected static void assertNotNull(final String field, final Object value) throws IllegalArgumentException {
+    protected static void ensureNotNull(final String field, final Object value) throws IllegalArgumentException {
         if (value == null) {
-            throw new IllegalArgumentException("The field " + field + " may not be be null.");
+            throw new IllegalArgumentException(format(ERROR_NOT_NULL, field));
         }
     }
 
@@ -67,9 +117,9 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value for the field
      * @throws IllegalArgumentException if the value is empty
      */
-    protected static void assertNotEmpty(final String field, final String value) throws IllegalArgumentException {
+    protected static void ensureNotEmpty(final String field, final String value) throws IllegalArgumentException {
         if (value != null && value.isEmpty()) {
-            throw new IllegalArgumentException("The field " + field + " may not be be empty.");
+            throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
         }
     }
 
@@ -81,11 +131,37 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value The value of the field
      * @throws IllegalArgumentException if the value is null or empty
      */
-    protected static void assertNotNullOrEmpty(final String field, final String value) throws IllegalArgumentException {
-        assertNotNull(field, value);
+    protected static void ensureNotNullOrEmpty(final String field, final String value) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureNotEmpty(field, value);
+    }
 
-        if (field.isEmpty()) {
-            throw new IllegalArgumentException("The field " + field + " may not be empty.");
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * empty or too long.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The maximum length for the field
+     * @throws IllegalArgumentException if the value is empty or too long
+     */
+    protected static void ensureNotEmptyOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
+        ensureNotEmpty(field, value);
+        ensureNotTooLong(field, value, length);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is too
+     * long.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The maximum length for the field
+     * @throws IllegalArgumentException if the value is too long
+     */
+    protected static void ensureNotTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
+        if ((value != null) && (value.length() > length)) {
+            throw new IllegalArgumentException(format(ERROR_NOT_LONGER, field, length));
         }
     }
 
@@ -98,16 +174,44 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The maximum length for the field
      * @throws IllegalArgumentException if the value is null or empty or too long
      */
-    protected static void assertNotNullOrEmptyOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
-        assertNotNullOrEmpty(field, value);
+    protected static void ensureNotNullOrEmptyOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
+        ensureNotNullOrEmpty(field, value);
+        ensureNotTooLong(field, value, length);
+    }
 
-        if (value.length() > length) {
-            throw new IllegalArgumentException("The field " + field + " may not be longer than " + length + '.');
+    /**
+     * Throws an {@code IllegalArgumentException} if the given Id is invalid,
+     * i.e. if it not null and the format doesn't match the required format.
+     *
+     * @param field Name of the Id
+     * @param value The value for the Id
+     * @throws IllegalArgumentException if the Id doesn't follow the correct format
+     */
+    protected static void ensureValidId(final String field, final String value) throws IllegalArgumentException {
+        if ((value != null) && !UUID_PATTERN.matcher(value).matches()) {
+            // The error message is deliberately not showing the format of our Id
+            // type - no need to grant hackers too much information, since all
+            // legal requests should not have a problem obtaining legal Id's
+            throw new IllegalArgumentException(format(ERROR_INVALID, field));
         }
     }
 
+    /**
+     * Throws an {@code IllegalArgumentException} if the given Id is invalid,
+     * i.e. if it is either null or doesn't match the required format.
+     *
+     * @param field Name of the Id
+     * @param value The value for the Id
+     * @throws IllegalArgumentException if the Id is invalid
+     */
+    protected static void ensureNotNullAndValidId(final String field, final String value) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureValidId(field, value);
+    }
+
     // =========================================================================
-    // Internal Verification methods
+    // Internal Validation methods, that assign errors to the given Error Map
+    // TODO Rename the following methods to validate, and drop the return part!
     // =========================================================================
 
     /**
@@ -243,10 +347,10 @@ public abstract class AbstractVerification implements Verifiable {
         boolean check = isNotNull(validation, field, value);
 
         if (check) {
-            final Map<String, String> newValidation = value.validate();
+            final Map<String, String> validationResult = value.validate();
 
-            if (!newValidation.isEmpty()) {
-                addAllErrors(validation, newValidation, field);
+            if (!validationResult.isEmpty()) {
+                addAllErrors(validation, validationResult, field);
                 check = false;
             }
         }
@@ -438,7 +542,7 @@ public abstract class AbstractVerification implements Verifiable {
      * IllegalFormatException. Otherwise, the method will return the result of
      * formatting the String.
      */
-    protected String format(final String message, final Object... args) {
+    protected static String format(final String message, final Object... args) {
         return String.format(message, args);
     }
 }

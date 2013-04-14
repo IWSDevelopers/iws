@@ -19,6 +19,8 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.notifications.NotificationMessage;
+import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.fitnesse.callers.AccessCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -26,11 +28,12 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
- * @noinspection StaticNonFinalField, SynchronizationOnStaticField
+ * @noinspection StaticNonFinalField, SynchronizationOnStaticField, BooleanMethodNameMustStartWithQuestion
  */
 abstract class AbstractFixture<T extends Fallible> implements Fixture {
 
     private static final Access ACCESS = new AccessCaller();
+    private static final NotificationSpy NOTIFICATION = NotificationSpy.getInstance();
     private T response = null;
     private String testId = null;
     private String testCase = null;
@@ -172,11 +175,33 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
 
     protected static AuthenticationToken getToken() {
         synchronized (LOCK) {
-            if(token == null) {
-                return null;
-            }
-            return new AuthenticationToken(token.getToken());
+            return token == null ? null : new AuthenticationToken(token.getToken());
         }
+    }
+
+    /**
+     * Clear the current Notifications.
+     */
+    public void clearNotifications() {
+        NOTIFICATION.clear();
+    }
+
+    /**
+     * Retrieve the number of pending notifications.
+     *
+     * @return Number of Notifications pending
+     */
+    public int getNotificationCount() {
+        return NOTIFICATION.size();
+    }
+
+    /**
+     * Read & remove the next Notification from the Notification Queue.
+     *
+     * @return First notification from the Queue or null if none exists
+     */
+    public NotificationMessage getNextNotification() {
+        return NOTIFICATION.getNext();
     }
 
     /**

@@ -46,11 +46,18 @@ public interface Administration {
      * e-mail is send to the user via the provided username. The e-mail will
      * contain an Activation Link, which is then used to activate the
      * account.<br />
-     * Note, the account cannot be used before it is activated. If the Account
+     *   Note, the account cannot be used before it is activated. If the Account
      * is been deleted before Activation is completed, then all information is
      * removed from the system. If the Account is deleted after activation, the
      * User Account Object will remain in the system, though all data will be
-     * removed.
+     * removed.<br />
+     *   By default, this method will create a new User for the IntraWeb.
+     * However, the Request Object contains a boolean field called
+     * studentAccount. If this is set, then the account will be created for a
+     * student, and not for a normal user. A student is assigned to the global
+     * Student members group, and additionally to a countries Student group. A
+     * student account is very limited in access, and can only see their own
+     * data as well as any offer they are linked to.
      *
      * @param token   Authentication information about the user invoking the
      *                request
@@ -64,7 +71,7 @@ public interface Administration {
      * Users cannot access the IWS, until their account has been activated, this
      * happens via an e-mail that is sent to their e-mail address (username),
      * with an activation link.<br />
-     * Once activation link is activated, this method should be invoked, which
+     *   Once activation link is activated, this method should be invoked, which
      * will handle the actual activation process. Meaning, that if an account is
      * found in status "new", and with the given activation code, then it is
      * being updated to status "active", the code is removed and the updates are

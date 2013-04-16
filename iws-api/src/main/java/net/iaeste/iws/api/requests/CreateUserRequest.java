@@ -58,6 +58,7 @@ public final class CreateUserRequest extends AbstractVerification {
     private String password = null;
     private String firstname = null;
     private String lastname = null;
+    private boolean studentAccount = false;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -198,6 +199,25 @@ public final class CreateUserRequest extends AbstractVerification {
      */
     public String getLastname() {
         return lastname;
+    }
+
+    /**
+     * Changes the type of account from being a normal user to a student
+     * account.
+     *
+     * @param studentAccount  True if a student, otherwise false (default)
+     */
+    public void setStudentAccount(final boolean studentAccount) {
+        this.studentAccount = studentAccount;
+    }
+
+    /**
+     * Returns true if this is a student account, otherwise false.
+     *
+     * @return True if this is a student account, otherwise false
+     */
+    public boolean isStudent() {
+        return studentAccount;
     }
 
     // =========================================================================

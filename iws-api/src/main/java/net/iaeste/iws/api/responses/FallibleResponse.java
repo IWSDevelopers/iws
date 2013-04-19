@@ -26,7 +26,7 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class FallibleResponse extends AbstractFallible {
+public final class FallibleResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -65,14 +65,7 @@ public class FallibleResponse extends AbstractFallible {
             return false;
         }
 
-        //final FallibleResponse that = (FallibleResponse) obj;
         return super.equals(obj);
-//
-//        if (error != null ? !error.equals(that.error) : that.error != null) {
-//            return false;
-//        }
-//
-//        return !(message != null ? !message.equals(that.message) : that.message != null);
     }
 
     /**

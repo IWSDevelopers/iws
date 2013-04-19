@@ -78,9 +78,9 @@ public final class CreateUserRequest extends AbstractVerification {
      * @param lastname  The users Family name, can only be altered by the DBA's
      */
     public CreateUserRequest(final String username, final String firstname, final String lastname) {
-        this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        setUsername(username);
+        setFirstname(firstname);
+        setLastname(lastname);
     }
 
     /**
@@ -92,10 +92,10 @@ public final class CreateUserRequest extends AbstractVerification {
      * @param lastname  The users Family name, can only be altered by the DBA's
      */
     public CreateUserRequest(final String username, final String password, final String firstname, final String lastname) {
-        this.username = username;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        setUsername(username);
+        setPassword(password);
+        setFirstname(firstname);
+        setLastname(lastname);
     }
 
     // =========================================================================

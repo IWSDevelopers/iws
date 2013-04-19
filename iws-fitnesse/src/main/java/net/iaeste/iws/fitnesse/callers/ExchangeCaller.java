@@ -31,16 +31,16 @@ import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.PublishOfferRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.FacultyResponse;
+import net.iaeste.iws.api.responses.FetchFacultyResponse;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
+import net.iaeste.iws.api.responses.FetchStudentResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.api.responses.OfferTemplateResponse;
-import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
-import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -88,7 +88,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
+    public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         try {
             return caller.fetchFaculties(token, request);
         } catch (Exception e) {
@@ -148,7 +148,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
+    public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         try {
             return caller.fetchOfferTemplates(token, request);
         } catch (Exception e) {
@@ -172,7 +172,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    public FetchPublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         try {
             return caller.fetchPublishGroups(token, request);
         } catch (Exception e) {
@@ -196,7 +196,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+    public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
         try {
             return caller.fetchStudents(token, request);
         } catch (Exception e) {

@@ -17,7 +17,7 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.StudentResponse;
+import net.iaeste.iws.api.responses.FetchStudentResponse;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.StudentDao;
 
@@ -38,7 +38,7 @@ public final class StudentService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public StudentResponse fetchStudents(final Authentication authenticationn, final FetchStudentsRequest request) {
+    public FetchStudentResponse fetchStudents(final Authentication authenticationn, final FetchStudentsRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

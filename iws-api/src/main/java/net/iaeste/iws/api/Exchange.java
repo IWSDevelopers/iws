@@ -30,16 +30,16 @@ import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.PublishOfferRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.FacultyResponse;
+import net.iaeste.iws.api.responses.FetchFacultyResponse;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
+import net.iaeste.iws.api.responses.FetchStudentResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.api.responses.OfferTemplateResponse;
-import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
-import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
@@ -58,7 +58,7 @@ public interface Exchange {
 
     Fallible manageFaculties(AuthenticationToken token, FacultyRequest request);
 
-    FacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
+    FetchFacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
 
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 
@@ -68,15 +68,15 @@ public interface Exchange {
 
     Fallible manageOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
 
-    OfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
+    FetchOfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
 
     Fallible managePublishGroup(AuthenticationToken token, PublishGroupRequest request);
 
-    PublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
+    FetchPublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
     Fallible manageStudent(AuthenticationToken token, StudentRequest request);
 
-    StudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
+    FetchStudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
 
     /**
      * Retrieves a list of all national groups. This is mainly needed in the

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.FacultyResponse
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.StudentResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -23,7 +23,7 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FacultyResponse extends AbstractFallible {
+public final class FetchStudentResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -32,7 +32,7 @@ public final class FacultyResponse extends AbstractFallible {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FacultyResponse() {
+    public FetchStudentResponse() {
     }
 
     /**
@@ -41,7 +41,7 @@ public final class FacultyResponse extends AbstractFallible {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public FacultyResponse(final IWSError error, final String message) {
+    public FetchStudentResponse(final IWSError error, final String message) {
         super(error, message);
     }
 

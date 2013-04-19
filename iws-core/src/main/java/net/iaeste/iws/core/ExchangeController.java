@@ -33,16 +33,16 @@ import net.iaeste.iws.api.requests.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.PublishGroupRequest;
 import net.iaeste.iws.api.requests.PublishOfferRequest;
 import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.FacultyResponse;
+import net.iaeste.iws.api.responses.FetchFacultyResponse;
 import net.iaeste.iws.api.responses.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.responses.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
+import net.iaeste.iws.api.responses.FetchStudentResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
-import net.iaeste.iws.api.responses.OfferTemplateResponse;
-import net.iaeste.iws.api.responses.PublishGroupResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
-import net.iaeste.iws.api.responses.StudentResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.FacultyService;
@@ -111,9 +111,9 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final FacultyService service = factory.prepareFacultyService();
             service.processFaculties(authentication, request);
-            response = new FacultyResponse();
+            response = new FetchFacultyResponse();
         } catch (IWSException e) {
-            response = new FacultyResponse(e.getError(), e.getMessage());
+            response = new FetchFacultyResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished manageFaculties()");
@@ -124,9 +124,9 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
+    public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         LOG.trace("Starting fetchFaculties()");
-        FacultyResponse response;
+        FetchFacultyResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_FACULTIES);
@@ -135,7 +135,7 @@ public final class ExchangeController extends CommonController implements Exchan
             final FacultyService service = factory.prepareFacultyService();
             response = service.fetchFaculties(authentication, request);
         } catch (IWSException e) {
-            response = new FacultyResponse(e.getError(), e.getMessage());
+            response = new FetchFacultyResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchFaculties()");
@@ -223,9 +223,9 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final ExchangeService service = factory.prepareOfferService();
             service.processOfferTemplates(authentication, request);
-            response = new OfferTemplateResponse();
+            response = new FetchOfferTemplateResponse();
         } catch (IWSException e) {
-            response = new OfferTemplateResponse(e.getError(), e.getMessage());
+            response = new FetchOfferTemplateResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished manageOfferTemplate()");
@@ -236,9 +236,9 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public OfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
+    public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         LOG.trace("Starting fetchOfferTemplates()");
-        OfferTemplateResponse response;
+        FetchOfferTemplateResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFER_TEMPLATES);
@@ -247,7 +247,7 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeService service = factory.prepareOfferService();
             response = service.fetchOfferTemplates(authentication, request);
         } catch (IWSException e) {
-            response = new OfferTemplateResponse(e.getError(), e.getMessage());
+            response = new FetchOfferTemplateResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchOfferTemplates()");
@@ -268,9 +268,9 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final ExchangeService service = factory.prepareOfferService();
             service.processPublishGroups(authentication, request);
-            response = new PublishGroupResponse();
+            response = new FetchPublishGroupResponse();
         } catch (IWSException e) {
-            response = new PublishGroupResponse(e.getError(), e.getMessage());
+            response = new FetchPublishGroupResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished managePublishGroup()");
@@ -281,9 +281,9 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public PublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    public FetchPublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         LOG.trace("Starting fetchPublishGroups()");
-        PublishGroupResponse response;
+        FetchPublishGroupResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFER_PUBLISH_GROUPS);
@@ -292,7 +292,7 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeService service = factory.prepareOfferService();
             response = service.fetchPublishGroups(authentication, request);
         } catch (IWSException e) {
-            response = new PublishGroupResponse(e.getError(), e.getMessage());
+            response = new FetchPublishGroupResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchPublishGroups()");
@@ -313,9 +313,9 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final StudentService service = factory.prepareStudentService();
             service.processStudents(authentication, request);
-            response = new StudentResponse();
+            response = new FetchStudentResponse();
         } catch (IWSException e) {
-            response = new StudentResponse(e.getError(), e.getMessage());
+            response = new FetchStudentResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished manageStudent()");
@@ -326,9 +326,9 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public StudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+    public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
         LOG.trace("Starting fetchStudents()");
-        StudentResponse response;
+        FetchStudentResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_STUDENTS);
@@ -337,7 +337,7 @@ public final class ExchangeController extends CommonController implements Exchan
             final StudentService service = factory.prepareStudentService();
             response = service.fetchStudents(authentication, request);
         } catch (IWSException e) {
-            response = new StudentResponse(e.getError(), e.getMessage());
+            response = new FetchStudentResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchStudents()");

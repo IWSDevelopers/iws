@@ -17,7 +17,7 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FacultyRequest;
 import net.iaeste.iws.api.requests.FetchFacultiesRequest;
-import net.iaeste.iws.api.responses.FacultyResponse;
+import net.iaeste.iws.api.responses.FetchFacultyResponse;
 import net.iaeste.iws.persistence.Authentication;
 
 import javax.persistence.EntityManager;
@@ -39,7 +39,7 @@ public class FacultyService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public FacultyResponse fetchFaculties(final Authentication authentication, final FetchFacultiesRequest request) {
+    public FetchFacultyResponse fetchFaculties(final Authentication authentication, final FetchFacultiesRequest request) {
         throw new NotImplementedException("Method pending implementation.");
     }
 }

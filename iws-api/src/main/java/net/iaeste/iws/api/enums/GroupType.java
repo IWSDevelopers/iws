@@ -149,18 +149,16 @@ public enum GroupType {
     ALUMNI,
 
     /**
-     * Students Group, for allowing externals access to limited parts of the
-     * IntraWeb. Students have their own global members group called "Students",
-     * and is then assigned to a subgroup to the national and possibly local
-     * group, which is called "Students".<br />
-     *   Students are granted only very limited permissions, so they can only
-     * work with data which they have been explicitly granted access to, for
-     * example Offers. A Student which is assigned to an Offer, cannot be
-     * deleted from the system, rather if their accounts are closed, their
-     * access is simply suspended.<br />
-     *   An unassigned Student account can be safely deleted, if not needed.
-     * However, assigned cannot - so if a Student is later re-added, and the
-     * account was suspended - the Account will be re-activated.
+     * The Student Group is for Offer Applicants, meaning that if a person
+     * wishes to apply for an Open Offer for a given Country, the person must be
+     * a member of the Country Student Group.<br />
+     *   Students who have been accepted for an Offer cannot be removed from the
+     * Student Group, only those accounts that are currently unassigned can be
+     * removed.<br />
+     *   When creating "new" Student Accounts, the user is automatically
+     * assigned to the Country's Student Group, and additionally to the Members
+     * group (with role Student). Normal members who wishes to apply for Offers,
+     * must also be added to the Student Group.
      */
     STUDENTS
 }

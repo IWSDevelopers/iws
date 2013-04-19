@@ -202,8 +202,10 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Changes the type of account from being a normal user to a student
-     * account.
+     * Changes the type of an Account from being a normal User to a Student
+     * Account. A Student Account will act as a normal Account, but the User is
+     * given the role as a "Student" in the National Members group, and instead
+     * of a Private Group, the user is assigned to the National Student group.
      *
      * @param studentAccount  True if a student, otherwise false (default)
      */
@@ -212,9 +214,9 @@ public final class CreateUserRequest extends AbstractVerification {
     }
 
     /**
-     * Returns true if this is a student account, otherwise false.
+     * Returns true if this is suppose to be a Student Account, otherwise false.
      *
-     * @return True if this is a student account, otherwise false
+     * @return True if Student Account, otherwise false
      */
     public boolean isStudent() {
         return studentAccount;

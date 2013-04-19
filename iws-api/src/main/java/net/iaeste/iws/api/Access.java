@@ -106,7 +106,7 @@ public interface Access {
      * @param token  User Authentication Request object
      * @return Session Response, with Error And Session data
      */
-    <T extends Serializable> SessionDataResponse<T> fetchSessionData(AuthenticationToken token);
+    <T extends Serializable> SessionDataResponse<T> readSessionData(AuthenticationToken token);
 
     /**
      * The IWS doesn't delete ongoing sessions, it only closes them for further

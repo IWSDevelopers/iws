@@ -145,7 +145,7 @@ public final class AccessService extends CommonService {
      * a Byte Array. The reason for converting the Byte Array already in the
      * API module, is to avoid needing knowledge about the Object later.<br />
      * The data is simply added (updated) to the currently active session,
-     * and saved. The data is then added to the response from a fetchSessionData
+     * and saved. The data is then added to the response from a readSessionData
      * request.
      *
      * @param token   User Token

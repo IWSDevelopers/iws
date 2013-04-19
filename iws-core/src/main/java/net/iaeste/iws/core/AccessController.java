@@ -153,8 +153,8 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
-        LOG.trace("Starting fetchSessionData()");
+    public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
+        LOG.trace("Starting readSessionData()");
         SessionDataResponse<T> response;
 
         try {
@@ -166,7 +166,7 @@ public final class AccessController extends CommonController implements Access {
             response = new SessionDataResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchSessionData()");
+        LOG.trace("Finished readSessionData()");
         return response;
     }
 

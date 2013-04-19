@@ -81,8 +81,8 @@ public final class AccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
-        return client.fetchSessionData(token);
+    public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
+        return client.readSessionData(token);
     }
 
     /**

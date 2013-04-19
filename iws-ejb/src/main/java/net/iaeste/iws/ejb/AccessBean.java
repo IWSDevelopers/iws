@@ -178,11 +178,11 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
+    public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
         SessionDataResponse<T> response;
 
         try {
-            response = access.fetchSessionData(token);
+            response = access.readSessionData(token);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

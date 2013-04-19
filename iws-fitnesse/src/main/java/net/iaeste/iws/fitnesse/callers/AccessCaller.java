@@ -94,9 +94,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
+    public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
         try {
-            return caller.fetchSessionData(token);
+            return caller.readSessionData(token);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

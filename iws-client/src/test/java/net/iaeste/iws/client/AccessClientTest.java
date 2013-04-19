@@ -144,7 +144,7 @@ public class AccessClientTest {
         assertThat(saving.isOk(), is(true));
 
         // Object saved, now - let's read it from the IWS
-        final SessionDataResponse<Date> response = access.fetchSessionData(token);
+        final SessionDataResponse<Date> response = access.readSessionData(token);
         assertThat(response.isOk(), is(true));
         assertThat(response.getSessionData(), is(data));
 

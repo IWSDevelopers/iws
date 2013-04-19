@@ -23,7 +23,7 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
-import net.iaeste.iws.api.responses.CountryResponse;
+import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
@@ -149,5 +149,5 @@ public interface Administration {
      * @param request Fetch Country Request Object
      * @return Response Object with the found countries and error information
      */
-    CountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
+    FetchCountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
 }

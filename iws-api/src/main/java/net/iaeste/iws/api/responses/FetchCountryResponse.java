@@ -27,7 +27,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class CountryResponse extends AbstractFallible {
+public final class FetchCountryResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -38,10 +38,10 @@ public final class CountryResponse extends AbstractFallible {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public CountryResponse() {
+    public FetchCountryResponse() {
     }
 
-    public CountryResponse(final List<Country> countries) {
+    public FetchCountryResponse(final List<Country> countries) {
         this.countries = Copier.copy(countries);
     }
 
@@ -51,7 +51,7 @@ public final class CountryResponse extends AbstractFallible {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public CountryResponse(final IWSError error, final String message) {
+    public FetchCountryResponse(final IWSError error, final String message) {
         super(error, message);
     }
 

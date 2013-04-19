@@ -25,7 +25,7 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
-import net.iaeste.iws.api.responses.CountryResponse;
+import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
@@ -244,15 +244,15 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        CountryResponse response;
+    public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
+        FetchCountryResponse response;
 
         try {
             response = administration.fetchCountries(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
-            response = new CountryResponse(IWSErrors.ERROR, e.getMessage());
+            response = new FetchCountryResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

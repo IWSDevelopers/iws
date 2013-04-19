@@ -26,7 +26,7 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
-import net.iaeste.iws.api.responses.CountryResponse;
+import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
@@ -213,9 +213,9 @@ public final class AdministrationController extends CommonController implements 
 
             final CountryService service = factory.prepareCountryService();
             service.processCountries(authentication, request);
-            response = new CountryResponse();
+            response = new FetchCountryResponse();
         } catch (IWSException e) {
-            response = new CountryResponse(e.getError(), e.getMessage());
+            response = new FetchCountryResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished processCountries()");
@@ -226,9 +226,9 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public CountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
+    public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
         LOG.trace("Starting fetchCountries()");
-        CountryResponse response;
+        FetchCountryResponse response;
 
         try {
             verifyAccess(token, Permission.FETCH_COUNTRIES);
@@ -237,7 +237,7 @@ public final class AdministrationController extends CommonController implements 
             final CountryService service = factory.prepareCountryService();
             response = service.fetchCountries(request);
         } catch (IWSException e) {
-            response = new CountryResponse(e.getError(), e.getMessage());
+            response = new FetchCountryResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished fetchCountries()");

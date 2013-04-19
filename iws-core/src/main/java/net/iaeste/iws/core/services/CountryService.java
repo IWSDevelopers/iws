@@ -19,7 +19,7 @@ import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
-import net.iaeste.iws.api.responses.CountryResponse;
+import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.CountryDao;
@@ -79,8 +79,8 @@ public final class CountryService {
      * @param request Fetch Country Request information
      * @return Response Object with found Countries
      */
-    public CountryResponse fetchCountries(final FetchCountryRequest request) {
-        final CountryResponse response;
+    public FetchCountryResponse fetchCountries(final FetchCountryRequest request) {
+        final FetchCountryResponse response;
         final List<CountryView> entities;
 
         if (request.getMembership() != null) {
@@ -92,7 +92,7 @@ public final class CountryService {
         }
 
         final List<Country> countries = transform(entities);
-        response = new CountryResponse(countries);
+        response = new FetchCountryResponse(countries);
 
         return response;
     }

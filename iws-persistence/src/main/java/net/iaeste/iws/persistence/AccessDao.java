@@ -121,4 +121,18 @@ public interface AccessDao extends BasicDao {
     GroupTypeEntity findGroupTypeByType(GroupType groupType);
 
     CountryEntity findCountryByCode(String countryId);
+
+    /**
+     * Attempts to find the Student Group, which is associated with given
+     * Members Group. The Members Group is the parent Group, and the lookup will
+     * find the Group with GroupType STUDENTS, that is associated with it. Only
+     * Country specific Members Groups have a Student Group associated, other
+     * Members Group (for example, Global Members), do not have a Student Group
+     * associated.<br />
+     *   If no Student Group is found, then a null value is returned.
+     *
+     * @param group The MemberGroup to find the associated Student Group for
+     * @return Student Group or null
+     */
+    GroupEntity findStudentGroup(GroupEntity group);
 }

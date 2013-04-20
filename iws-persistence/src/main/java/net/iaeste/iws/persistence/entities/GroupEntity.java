@@ -40,23 +40,23 @@ import java.util.Date;
  */
 @NamedQueries({
         @NamedQuery(name = "group.findAll",
-                    query = "select g from GroupEntity g"),
+                query = "select g from GroupEntity g"),
         @NamedQuery(name = "group.findById",
-                    query = "select g from GroupEntity g " +
-                            "where g.id = :id"),
+                query = "select g from GroupEntity g " +
+                        "where g.id = :id"),
         @NamedQuery(name = "group.findByExternalId",
-                    query = "select g from GroupEntity g " +
-                            "where g.externalId = :id"),
+                query = "select g from GroupEntity g " +
+                        "where g.externalId = :id"),
         @NamedQuery(name = "group.findByUserAndExternalId",
-                    query = "select g from GroupEntity g, UserGroupEntity ug " +
-                            "where g.id = ug.group.id" +
-                            "  and g.externalId = :eid" +
-                            "  and ug.user.id = :uid"),
+                query = "select g from GroupEntity g, UserGroupEntity ug " +
+                        "where g.id = ug.group.id" +
+                        "  and g.externalId = :eid" +
+                        "  and ug.user.id = :uid"),
         @NamedQuery(name = "group.findGroupByUserAndType",
-                    query = "select g from GroupEntity g, UserGroupEntity ug " +
-                            "where g.id = ug.group.id" +
-                            "  and g.groupType.grouptype = :type" +
-                            "  and ug.user.id = :uid"),
+                query = "select g from GroupEntity g, UserGroupEntity ug " +
+                        "where g.id = ug.group.id" +
+                        "  and g.groupType.grouptype = :type" +
+                        "  and ug.user.id = :uid"),
         @NamedQuery(name = "group.findNationalOrSarByUser",
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
                         "where g.id = ug.group.id" +
@@ -64,20 +64,24 @@ import java.util.Date;
                         "  and (g.groupType.grouptype = 'NATIONAL'" +
                         "   or g.groupType.grouptype = 'SAR')"),
         @NamedQuery(name = "group.findByPermission",
-                    query = "select g from GroupEntity g, UserPermissionView v " +
-                            "where g.id = v.id.groupId" +
-                            "  and v.id.userId = :uid" +
-                            "  and v.permission = :permission"),
+                query = "select g from GroupEntity g, UserPermissionView v " +
+                        "where g.id = v.id.groupId" +
+                        "  and v.id.userId = :uid" +
+                        "  and v.permission = :permission"),
         @NamedQuery(name = "group.findByExternalGroupIdAndPermission",
-                    query = "select g from GroupEntity g, UserPermissionView v " +
-                            "where g.id = v.id.groupId" +
-                            "  and v.id.userId = :uid" +
-                            "  and g.externalId = :egid" +
-                            "  and v.permission = :permission"),
+                query = "select g from GroupEntity g, UserPermissionView v " +
+                        "where g.id = v.id.groupId" +
+                        "  and v.id.userId = :uid" +
+                        "  and g.externalId = :egid" +
+                        "  and v.permission = :permission"),
+        @NamedQuery(name = "group.findStudentGroup",
+                query = "select g from GroupEntity g " +
+                        "where g.parentId = :gid" +
+                        "  and g.groupType.grouptype = 'STUDENTS'"),
         @NamedQuery(name = "group.findGroupsWithSimilarNames",
-                    query = "select g from GroupEntity g " +
-                            "where g.parentId = :pid" +
-                            "  and lower(g.groupName) = :name"),
+                query = "select g from GroupEntity g " +
+                        "where g.parentId = :pid" +
+                        "  and lower(g.groupName) = :name"),
         @NamedQuery(name = "group.findByExternalGroupIds",
                 query = "select g from GroupEntity g " +
                         "where g.externalId in :egids"),
@@ -127,12 +131,16 @@ public class GroupEntity implements IWSEntity {
     @Enumerated(EnumType.STRING)
     private GroupStatus status = GroupStatus.ACTIVE;
 
-    /** Last time the User Account was modified. */
+    /**
+     * Last time the User Account was modified.
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified")
     private Date modified = new Date();
 
-    /** Timestamp when the user was created. */
+    /**
+     * Timestamp when the user was created.
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
     private Date created = new Date();
@@ -152,7 +160,7 @@ public class GroupEntity implements IWSEntity {
     /**
      * Default Constructor, for creating new entity.
      *
-     * @param groupName  Group Name
+     * @param groupName Group Name
      */
     public GroupEntity(final String groupName) {
         id = null;

@@ -381,6 +381,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         return list.isEmpty() ? null : list.get(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findStudentGroup(final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("group.findStudentGroup");
+        query.setParameter("gid", group.getId());
+        final List<GroupEntity> list = query.getResultList();
+
+        return list.isEmpty() ? null : list.get(0);
+    }
+
     // =========================================================================
     // Internal Methods
     // =========================================================================

@@ -73,7 +73,10 @@ public final class AdministrationService extends CommonService {
 
     /**
      * Create a new User Account in the IWS. The user is automatically assigned
-     * to the same Members Group, as the person invoking the request.
+     * to the same Members Group, as the person invoking the request.<br />
+     *   If the request is made for a Student Account, then no private Group
+     * will be added, instead the user will be added to the Country's Student
+     * Group with the role "Student".
      *
      * @param authentication User & Group information
      * @param request        User Creation Request
@@ -85,17 +88,30 @@ public final class AdministrationService extends CommonService {
         // To avoid problems, all internal handling of the username is in lowercase
         final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
         if (dao.findUserByUsername(username) == null) {
-            final UserEntity user = createAndPersistUserEntity(username, request);
-            final GroupEntity privateGroup = createAndPersistPrivateGroup(user);
+            final UserEntity user;
+            if (request.isStudent()) {
+                final GroupEntity studentGroup = dao.findStudentGroup(authentication.getGroup());
+                if (studentGroup != null) {
+                    // The data model needs to be extended with Student Role,
+                    // Student Group & Permissions
+                    user = createAndPersistUserEntity(username, request);
+                    final RoleEntity student = dao.findRoleById(IWSConstants.ROLE_STUDENT);
 
-            final RoleEntity owner = dao.findRoleById(IWSConstants.ROLE_OWNER);
-            final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
-            dao.persist(privateUserGroup);
+                    addUserToGroup(user, authentication.getGroup(), student);
+                    addUserToGroup(user, studentGroup, student);
+                } else {
+                    throw new IWSException(IWSErrors.FATAL, "No StudentGroup exists, which can be used.");
+                }
+            } else {
+                final RoleEntity owner = dao.findRoleById(IWSConstants.ROLE_OWNER);
+                final RoleEntity member = dao.findRoleById(IWSConstants.ROLE_MEMBER);
 
-            final GroupEntity group = authentication.getGroup();
-            final RoleEntity member = dao.findRoleById(IWSConstants.ROLE_MEMBER);
-            final UserGroupEntity userGroup = new UserGroupEntity(user, group, member);
-            dao.persist(userGroup);
+                user = createAndPersistUserEntity(username, request);
+                final GroupEntity privateGroup = createAndPersistPrivateGroup(user);
+                final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
+                dao.persist(privateUserGroup);
+                addUserToGroup(user, authentication.getGroup(), member);
+            }
 
             notifications.notify(authentication, user, NotificationMessageType.ACTIVATE_USER);
             result = new FallibleResponse();
@@ -104,6 +120,11 @@ public final class AdministrationService extends CommonService {
         }
 
         return result;
+    }
+
+    private void addUserToGroup(final UserEntity user, final GroupEntity group, final RoleEntity role) {
+        final UserGroupEntity userGroup = new UserGroupEntity(user, group, role);
+        dao.persist(userGroup);
     }
 
     /**
@@ -355,7 +376,7 @@ public final class AdministrationService extends CommonService {
         if (request.getPassword() == null) {
             password = PasswordGenerator.generatePassword();
         } else {
-            password = request.getPassword();
+            password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
         }
 
         // To avoid misusage all Users have a unique external Id

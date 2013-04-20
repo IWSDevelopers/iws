@@ -24,6 +24,7 @@ insert into roles (id, role, description) values (1, 'Owner', 'Each group may ha
 insert into roles (id, role, description) values (2, 'Moderator', 'Moderators have access to all data and permissions, with the exception of being allowed to change the owner.');
 insert into roles (id, role, description) values (3, 'Member', 'Standard role for users, granted access to all data, and most common permissions that are related to administration of the Group.');
 insert into roles (id, role, description) values (4, 'Guest', 'Guests are only allowed to view or observe, they may not perform any operations, nor will be on the mailinglists.');
+insert into roles (id, role, description) values (5, 'Student', 'Students are granted permission to apply for open offers.');
 
 -- =============================================================================
 -- Permissions from net.iaeste.iws.api.enums.Permission
@@ -53,6 +54,7 @@ insert into permissions (id, permission) values (202, 'LOOKUP_OFFERS');
 --insert into permissions (id, permission) values (19, 'LOOKUP_STUDENTS');
 insert into permissions (id, permission) values (20, 'PROCESS_PUBLISH_OFFER');
 insert into permissions (id, permission) values (21, 'LOOKUP_PUBLISH_OFFER');
+insert into permissions (id, permission) values (22, 'APPLY_FOR_OPEN_OFFER');
 
 -- =============================================================================
 -- Linking the Permissions to both Roles & GroupTypes, so when we do perform a
@@ -214,6 +216,11 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 21)
 insert into permission_to_role (role_id, permission_id) values (1, 21);
 insert into permission_to_role (role_id, permission_id) values (2, 21);
 
+-- Permission: 22 - Apply For Open Offer
+--   -> GroupTypes: 9 Student
+--   -> Roles:      5 Student
+insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 22);
+insert into permission_to_role (role_id, permission_id) values (5, 22);
 
 -- =============================================================================
 -- Default Groups
@@ -239,16 +246,22 @@ insert into countries (country_id, country_name) values ('HU', 'Hungary');
 -- Couple of Member Groups, our Sequence starts with 25, so we only allow a limitted amount of test data
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (10, '2cc7e1bb-01e8-43a2-9643-2e964cbd41c5', 2, null, 1, 'Austria');
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (11, 'c7b15f81-4f83-48e8-9ffb-9e73255f5e5e', 5,   10, 1, 'Austria');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (12, 'adc8dfd4-bc3a-4b27-897b-87d3950db503', 2, null, 2, 'Croatia');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (13, '0cad3aa9-dc44-444d-be48-ec77a3cafef7', 5,   12, 2, 'Croatia');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (14, '3adbeb2b-05c0-456e-8809-1d1e4743f2c1', 2, null, 3, 'Denmark');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (15, '6f54e025-a703-41e3-b1ff-796a9f8ad04e', 5,   14, 3, 'Denmark');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (16, 'f1a223ee-7564-4ea4-b2fe-040e289d1f50', 2, null, 4, 'Germany');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (17, '17eb00ac-1386-4852-9934-e3dce3f57c13', 5,   16, 4, 'Germany');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (18, 'f36c1de6-e3ae-46da-83f4-f8259486dcf0', 2, null, 5, 'Poland');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (19, 'e60f9897-864b-4d1b-9c1a-1681fd35e97a', 5,   18, 5, 'Poland');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (20, 'b28aa7c1-4a39-4879-a881-13e130624857', 2, null, 6, 'Hungary');
-insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (21, '3b4bdadc-f157-4362-a370-c2191adfd86a', 5,   20, 6, 'Hungary');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (12, '278803ac-e21d-4bfc-8641-506a4b642114', 9,   10, 1, 'Students');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (13, 'adc8dfd4-bc3a-4b27-897b-87d3950db503', 2, null, 2, 'Croatia');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (14, '0cad3aa9-dc44-444d-be48-ec77a3cafef7', 5,   13, 2, 'Croatia');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (15, 'a0e3558e-9d21-49df-ab63-b54e80d72308', 9,   13, 2, 'Students');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (16, '3adbeb2b-05c0-456e-8809-1d1e4743f2c1', 2, null, 3, 'Denmark');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (17, '6f54e025-a703-41e3-b1ff-796a9f8ad04e', 5,   16, 3, 'Denmark');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (18, '7f16a4b0-eacd-4aa0-8526-ed2228b4b35b', 9,   16, 3, 'Students');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (19, 'f1a223ee-7564-4ea4-b2fe-040e289d1f50', 2, null, 4, 'Germany');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (20, '17eb00ac-1386-4852-9934-e3dce3f57c13', 5,   19, 4, 'Germany');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (21, 'fe4cf522-1d77-42ae-835d-023af948537b', 9,   19, 4, 'Students');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (22, 'f36c1de6-e3ae-46da-83f4-f8259486dcf0', 2, null, 5, 'Poland');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (23, 'e60f9897-864b-4d1b-9c1a-1681fd35e97a', 5,   22, 5, 'Poland');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (24, '98c792d4-4bf6-4348-9cbd-14f0d7d92c79', 9,   22, 5, 'Students');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (25, 'b28aa7c1-4a39-4879-a881-13e130624857', 2, null, 6, 'Hungary');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (26, '3b4bdadc-f157-4362-a370-c2191adfd86a', 5,   25, 6, 'Hungary');
+insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (27, '62fcf733-c905-4b64-806f-7ea341d93349', 9,   25, 6, 'Students');
 
 -- Couple of Users, password is the same as the username
 insert into users (external_id, status, username, password, firstname, lastname) values ('13452874-0c0f-4caf-8101-a8e9b41d6e69', 'ACTIVE', 'austria', '7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266', 'NS', 'Austria');
@@ -261,13 +274,19 @@ insert into users (external_id, status, username, password, firstname, lastname)
 -- User Group Associations
 insert into user_to_group (user_id, group_id, role_id) values ( 1, 10, 1);
 insert into user_to_group (user_id, group_id, role_id) values ( 1, 11, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 2, 12, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 1, 12, 1);
 insert into user_to_group (user_id, group_id, role_id) values ( 2, 13, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 3, 14, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 3, 15, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 4, 16, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 4, 17, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 5, 18, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 5, 19, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 6, 20, 1);
-insert into user_to_group (user_id, group_id, role_id) values ( 6, 21, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 2, 14, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 2, 15, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 3, 16, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 3, 17, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 3, 18, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 4, 19, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 4, 20, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 4, 21, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 5, 22, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 5, 23, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 5, 24, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 6, 25, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 6, 26, 1);
+insert into user_to_group (user_id, group_id, role_id) values ( 6, 27, 1);

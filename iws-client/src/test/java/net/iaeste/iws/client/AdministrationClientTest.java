@@ -22,9 +22,11 @@ import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
 
@@ -136,10 +138,11 @@ public class AdministrationClientTest extends AbstractClientTest {
         assertThat(response2.isOk(), is(true));
         assertThat(response2.getToken(), is(not(nullValue())));
 
-//        // Now, read the Permissions that the student has, basically, there is
-//        // only 1 permission - which is applying for Open Offers
-//        final FetchPermissionResponse permissionResponse = accessClient.fetchPermissions(response2.getToken());
-//        assertThat(permissionResponse.isOk(), is(true));
+        // Now, read the Permissions that the student has, basically, there is
+        // only 1 permission - which is applying for Open Offers
+        final FetchPermissionResponse permissionResponse = accessClient.fetchPermissions(response2.getToken());
+        assertThat(permissionResponse.isOk(), is(true));
+        assertThat(permissionResponse.getAuthorizations().get(0).getPermission().contains(Permission.APPLY_FOR_OPEN_OFFER), is(true));
 
         // Deprecate the Students Session, the test is over :-)
         final Fallible deprecateSessionResult = accessClient.deprecateSession(response2.getToken());

@@ -322,7 +322,7 @@ public final class ExchangeService extends CommonService {
 
     private void verifyGroupTypeToBeShareTo(final List<Group> groups) {
         for(final Group group : groups) {
-            if(group.getGroupType() != GroupType.NATIONAL) {
+            if(group.getGroupType() != GroupType.NATIONAL && group.getGroupType() != GroupType.SAR) {
                 throw new VerificationException("The group type '" + group.getGroupType() + "' is not allowed to be used for publishing of offers.");
             }
         }
@@ -348,7 +348,7 @@ public final class ExchangeService extends CommonService {
         final List<Group> groups = getAndVerifyGroupExist(request.getGroupIds());
 
         for (final Group group : groups) {
-            if (group.getGroupType() == GroupType.NATIONAL) {
+            if (group.getGroupType() == GroupType.NATIONAL || group.getGroupType() == GroupType.SAR) {
                 for (final OfferEntity offer : offers) {
                     persistPublisingGroup(authentication, offer, group);
                 }

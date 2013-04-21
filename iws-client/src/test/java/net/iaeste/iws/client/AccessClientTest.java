@@ -164,7 +164,7 @@ public class AccessClientTest {
         // Should add more assertions, however - there's still changes coming to
         // the Permission layer - so for now, we'll leave it Otherwise we will
         // constantly have to verify this.
-        token.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
+        token.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National groupId
         final FetchPermissionResponse responseNational = access.fetchPermissions(token);
         assertThat(responseNational.isOk(), is(true));
         assertThat(responseNational.getUserId(), is(userId));

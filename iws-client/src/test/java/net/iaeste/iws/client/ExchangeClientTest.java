@@ -39,7 +39,6 @@ import net.iaeste.iws.api.responses.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.OfferResponse;
 import net.iaeste.iws.api.responses.PublishOfferResponse;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -182,18 +181,11 @@ public class ExchangeClientTest extends AbstractClientTest {
         final Set<String> offersToShare = new HashSet<>(1);
         offersToShare.add(response.getOffers().get(0).getId());
 
-        final List<Group> groups = new ArrayList<>(2);
-        Group group;
-        group = new Group();
-        group.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
-        group.setGroupType(GroupType.NATIONAL);
-        groups.add(group);
-        group = new Group();
-        group.setGroupId("17eb00ac-1386-4852-9934-e3dce3f57c13");
-        group.setGroupType(GroupType.NATIONAL);
-        groups.add(group);
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
+        groupIds.add("17eb00ac-1386-4852-9934-e3dce3f57c13"); // Germany National
 
-        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groups);
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds);
         final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
 
         assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
@@ -209,8 +201,8 @@ public class ExchangeClientTest extends AbstractClientTest {
         List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
-        groups.clear();
-        final PublishOfferRequest publishRequest2 = new PublishOfferRequest(offersToShare, groups);
+        groupIds.clear();
+        final PublishOfferRequest publishRequest2 = new PublishOfferRequest(offersToShare, groupIds);
         final PublishOfferResponse publishResponse2 = exchange.processPublishOffer(token, publishRequest2);
 
         assertThat(publishResponse2.isOk(), is(true));
@@ -236,17 +228,14 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(response.getOffers().isEmpty(), is(false));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        String offerIdToBeShared =response.getOffers().get(0).getId();
+        final String offerIdToBeShared =response.getOffers().get(0).getId();
         offersToShare.add(offerIdToBeShared);
 
-        final List<Group> groups = new ArrayList<>(1);
-        Group group;
-        group = new Group();
-        group.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
-        group.setGroupType(GroupType.NATIONAL);
-        groups.add(group);
+        final String austriaNationalGroupId = "c7b15f81-4f83-48e8-9ffb-9e73255f5e5e";
+        final List<String> groupIds = new ArrayList<>(1);
+        groupIds.add(austriaNationalGroupId);
 
-        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groups);
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds);
         //try to share Polish offer by Austrian user
         final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(austriaToken, publishRequest1);
 
@@ -270,24 +259,22 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(response.getOffers().isEmpty(), is(false));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        String offerIdToBeShared =response.getOffers().get(0).getId();
+        final String offerIdToBeShared =response.getOffers().get(0).getId();
         offersToShare.add(offerIdToBeShared);
 
-        final List<Group> groups = new ArrayList<>(1);
-        Group group;
-        group = new Group();
-        group.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
-        group.setGroupType(GroupType.LOCAL);
-        groups.add(group);
+        final String austriaMemberGroupId = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
+        final GroupType austriaMemberGroupType = GroupType.MEMBER;
+        final List<String> groupIds = new ArrayList<>(1);
+        groupIds.add(austriaMemberGroupId);
 
-        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groups);
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds);
         //try to share to non-National group type
         final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
 
         //the request cannot be OK here
         assertThat(publishResponse1.isOk(), is(false));
         assertThat("The request has to fail with verification error here", publishResponse1.getError(), is(IWSErrors.VERIFICATION_ERROR));
-        assertThat(publishResponse1.getMessage(), is("The group type '" + groups.get(0).getGroupType() + "' is not allowed to be used for publishing of offers."));
+        assertThat(publishResponse1.getMessage(), is("The group type '" + austriaMemberGroupType + "' is not allowed to be used for publishing of offers."));
     }
 
     @Test

@@ -15,7 +15,6 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Copier;
 
@@ -39,19 +38,19 @@ public final class PublishOfferRequest extends AbstractVerification {
     private Set<String> offerIds = null;
 
     /** The group to which the user will be added.**/
-    private List<Group> groups;
+    private List<String> groupIds;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public PublishOfferRequest() {
-        groups = new ArrayList<>(10);
+        groupIds = new ArrayList<>(10);
     }
 
-    public PublishOfferRequest(final Set<String> offerIds, final List<Group> groups) {
+    public PublishOfferRequest(final Set<String> offerIds, final List<String> groupIds) {
         this.offerIds = Copier.copy(offerIds);
-        this.groups = Copier.copy(groups);
+        this.groupIds = Copier.copy(groupIds);
     }
 
     // =========================================================================
@@ -66,12 +65,12 @@ public final class PublishOfferRequest extends AbstractVerification {
         return Copier.copy(offerIds);
     }
 
-    public void setGroups(final List<Group> groups) {
-        this.groups = Copier.copy(groups);
+    public void setGroupIds(final List<String> groupIds) {
+        this.groupIds = Copier.copy(groupIds);
     }
 
-    public List<Group> getGroups() {
-        return Copier.copy(groups);
+    public List<String> getGroupIds() {
+        return Copier.copy(groupIds);
     }
 
     // =========================================================================

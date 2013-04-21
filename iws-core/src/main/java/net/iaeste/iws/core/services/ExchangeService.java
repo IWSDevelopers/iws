@@ -61,9 +61,9 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class ExchangeService extends CommonService {
 
@@ -272,7 +272,7 @@ public final class ExchangeService extends CommonService {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(Authentication authentication, FetchGroupsForSharingRequest request) {
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final Authentication authentication, final FetchGroupsForSharingRequest request) {
         final List<Group> groupList = AdministrationTransformer.transform(dao.findGroupsForSharing(authentication.getGroup()));
 
         return new FetchGroupsForSharingResponse(groupList);
@@ -297,14 +297,31 @@ public final class ExchangeService extends CommonService {
     }
 
     private void verifyPublishRequest(final Authentication authentication, final PublishOfferRequest request) {
+        //verify Group exist for given groupId
+        final List<Group> groups = getAndVerifyGroupExist(request.getGroupIds());
         //verify only allowed group type(s) are share to
-        verifyGroupTypeToBeShareTo(request.getGroups());
+        verifyGroupTypeToBeShareTo(groups);
         //verify that the user's group owns all offers before performing sharing
         verifyOffersOwnership(authentication, request.getOfferIds());
     }
 
+    private List<Group> getAndVerifyGroupExist(final List<String> groupIds) {
+        final List<Group> groups = new ArrayList<>();
+
+        for (final String groupId : groupIds) {
+            final GroupEntity groupEntity = dao.findGroupByExternalId(groupId);
+            if (groupEntity == null) {
+                throw new VerificationException("The group with id = '" + groupId + "' does not exist.");
+            }
+            final Group group = AdministrationTransformer.transform(groupEntity);
+            groups.add(group);
+        }
+
+        return groups;
+    }
+
     private void verifyGroupTypeToBeShareTo(final List<Group> groups) {
-        for(Group group : groups) {
+        for(final Group group : groups) {
             if(group.getGroupType() != GroupType.NATIONAL) {
                 throw new VerificationException("The group type '" + group.getGroupType() + "' is not allowed to be used for publishing of offers.");
             }
@@ -313,13 +330,13 @@ public final class ExchangeService extends CommonService {
 
     private void verifyOffersOwnership(final Authentication authentication, final Set<String> offerExternalIds) {
         final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, offerExternalIds);
-        Set<String> fetchedOffersExtId = new HashSet<>(offers.size());
-        for (OfferEntity offer : offers) {
+        final Set<String> fetchedOffersExtId = new HashSet<>(offers.size());
+        for (final OfferEntity offer : offers) {
             fetchedOffersExtId.add(offer.getExternalId());
         }
 
-        for(String externalId : offerExternalIds) {
-            if(!fetchedOffersExtId.contains(externalId)) {
+        for (final String externalId : offerExternalIds) {
+            if (!fetchedOffersExtId.contains(externalId)) {
                 throw new VerificationException("The offer with externalId '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
             }
         }
@@ -328,9 +345,11 @@ public final class ExchangeService extends CommonService {
     private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {
         final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
 
-        for (Group group : request.getGroups()) {
+        final List<Group> groups = getAndVerifyGroupExist(request.getGroupIds());
+
+        for (final Group group : groups) {
             if (group.getGroupType() == GroupType.NATIONAL) {
-                for (OfferEntity offer : offers) {
+                for (final OfferEntity offer : offers) {
                     persistPublisingGroup(authentication, offer, group);
                 }
             }
@@ -349,8 +368,8 @@ public final class ExchangeService extends CommonService {
         final FetchPublishOfferResponse response;
 
         final List<String> externalIds = request.getOffersId();
-        Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?
-        for (String externalId : externalIds) {
+        final Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?
+        for (final String externalId : externalIds) {
             result.put(externalId, convertOfferGroupEntityList(dao.findGroupsForSharedOffer(externalId)));
         }
 

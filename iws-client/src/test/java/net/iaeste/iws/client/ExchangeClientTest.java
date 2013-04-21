@@ -278,8 +278,39 @@ public class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
+    public void testFailShareOfferToSelf() {
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2012-0007");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse response = exchange.fetchOffers(token, request);
+        assertThat(response.getOffers().isEmpty(), is(false));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        final String offerIdToBeShared = response.getOffers().get(0).getId();
+        offersToShare.add(offerIdToBeShared);
+
+        final String polandNationalGroupId = "e60f9897-864b-4d1b-9c1a-1681fd35e97a";
+        final List<String> groupIds = new ArrayList<>(1);
+        groupIds.add(polandNationalGroupId);
+
+        //try to share to the owner of the offer
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groupIds);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
+
+        //the request cannot be OK here
+        assertThat(publishResponse.isOk(), is(false));
+        assertThat("The request has to fail with verification error here", publishResponse.getError(), is(IWSErrors.VERIFICATION_ERROR));
+        assertThat(publishResponse.getMessage(), is("Cannot publish offers to itself."));
+    }
+
+    @Test
     public void testGetEmployerInformation() {
-        final String refNo = "PL-2012-0007";
+        final String refNo = "PL-2012-0008";
         final Offer offer = OfferTestUtility.getFullOffer();
         offer.setRefNo(refNo);
 

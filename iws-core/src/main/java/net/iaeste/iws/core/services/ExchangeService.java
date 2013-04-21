@@ -287,43 +287,61 @@ public final class ExchangeService extends CommonService {
      */
     public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
         final Set<String> externalOfferIds = request.getOfferIds();
-        verifyPublishRequest(authentication, request);
+
+        //verify Group exist for given groupId
+        final List<GroupEntity> groups = getAndVerifyGroupExist(request.getGroupIds());
+
+        verifyPublishRequest(authentication, request, groups);
 
         for (final String externalOfferId : externalOfferIds) {
             dao.unshareFromAllGroups(externalOfferId);
         }
 
-        publishOffer(authentication, request);
+        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
+        publishOffer(authentication, offers, groups);
     }
 
-    private void verifyPublishRequest(final Authentication authentication, final PublishOfferRequest request) {
-        //verify Group exist for given groupId
-        final List<Group> groups = getAndVerifyGroupExist(request.getGroupIds());
+    private void verifyPublishRequest(final Authentication authentication, final PublishOfferRequest request, final List<GroupEntity> groupEntities) {
         //verify only allowed group type(s) are share to
-        verifyGroupTypeToBeShareTo(groups);
+        verifyGroupTypeToBeShareTo(groupEntities);
         //verify that the user's group owns all offers before performing sharing
         verifyOffersOwnership(authentication, request.getOfferIds());
+        //verify that an offer is not shared to the owner of the offer
+        verifyNotSharingToItself(authentication, groupEntities);
     }
 
-    private List<Group> getAndVerifyGroupExist(final List<String> groupIds) {
-        final List<Group> groups = new ArrayList<>();
+    private void verifyNotSharingToItself(final Authentication authentication, final List<GroupEntity> groupEntities) {
+        /*
+            TODO michal: @Kim shouldn't we fetch nationalGroup with accessDao.findNationalGroup(authentication.getUser())?
+            final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
+         */
+        final GroupEntity nationalGroup = authentication.getGroup();
+
+        for (final GroupEntity group : groupEntities) {
+            if(group.getExternalId().equals(nationalGroup.getExternalId())) {
+                throw new VerificationException("Cannot publish offers to itself.");
+            }
+        }
+    }
+
+    private List<GroupEntity> getAndVerifyGroupExist(final List<String> groupIds) {
+        final List<GroupEntity> groups = new ArrayList<>();
 
         for (final String groupId : groupIds) {
             final GroupEntity groupEntity = dao.findGroupByExternalId(groupId);
             if (groupEntity == null) {
                 throw new VerificationException("The group with id = '" + groupId + "' does not exist.");
             }
-            final Group group = AdministrationTransformer.transform(groupEntity);
-            groups.add(group);
+            groups.add(groupEntity);
         }
 
         return groups;
     }
 
-    private void verifyGroupTypeToBeShareTo(final List<Group> groups) {
-        for(final Group group : groups) {
-            if(group.getGroupType() != GroupType.NATIONAL && group.getGroupType() != GroupType.SAR) {
-                throw new VerificationException("The group type '" + group.getGroupType() + "' is not allowed to be used for publishing of offers.");
+    private void verifyGroupTypeToBeShareTo(final List<GroupEntity> groups) {
+        for(final GroupEntity group : groups) {
+            if(group.getGroupType().getGrouptype() != GroupType.NATIONAL && group.getGroupType().getGrouptype() != GroupType.SAR) {
+                throw new VerificationException("The group type '" + group.getGroupType().getGrouptype() + "' is not allowed to be used for publishing of offers.");
             }
         }
     }
@@ -342,13 +360,9 @@ public final class ExchangeService extends CommonService {
         }
     }
 
-    private void publishOffer(final Authentication authentication, final PublishOfferRequest request) {
-        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
-
-        final List<Group> groups = getAndVerifyGroupExist(request.getGroupIds());
-
-        for (final Group group : groups) {
-            if (group.getGroupType() == GroupType.NATIONAL || group.getGroupType() == GroupType.SAR) {
+    private void publishOffer(final Authentication authentication, final List<OfferEntity> offers, final List<GroupEntity> groups) {
+        for (final GroupEntity group : groups) {
+            if (group.getGroupType().getGrouptype() == GroupType.NATIONAL || group.getGroupType().getGrouptype() == GroupType.SAR) {
                 for (final OfferEntity offer : offers) {
                     persistPublisingGroup(authentication, offer, group);
                 }
@@ -356,9 +370,8 @@ public final class ExchangeService extends CommonService {
         }
     }
 
-    private void persistPublisingGroup(final Authentication authentication, final OfferEntity offer, final Group group) {
-        final GroupEntity groupEntity = dao.findGroupByExternalId(group.getGroupId());
-        final OfferGroupEntity offerGroupEntity = new OfferGroupEntity(offer, groupEntity);
+    private void persistPublisingGroup(final Authentication authentication, final OfferEntity offer, final GroupEntity group) {
+        final OfferGroupEntity offerGroupEntity = new OfferGroupEntity(offer, group);
         offerGroupEntity.setCreatedBy(authentication.getUser());
 
         dao.persist(authentication, offerGroupEntity);

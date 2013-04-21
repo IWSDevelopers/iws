@@ -3,8 +3,11 @@ package net.iaeste.iws.fitnesse;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.notifications.NotificationMessage;
 import net.iaeste.iws.fitnesse.callers.AdministrationCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +18,10 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  */
 public final class CreateUser extends AbstractFixture<Fallible> {
 
+    private static final Pattern STRING_PATTERN = Pattern.compile("=");
     private final Administration administration = new AdministrationCaller();
     private CreateUserRequest request = new CreateUserRequest();
+    private NotificationMessage notificationMessage = null;
 
     public void setUsernameAndPassword(final String username, final String password) {
         setUsername(username);
@@ -37,6 +42,19 @@ public final class CreateUser extends AbstractFixture<Fallible> {
         execute();
     }
 
+    public void readNotificationFromQueue() {
+        notificationMessage = getNextNotification();
+    }
+
+    public String readNotificationMessage() {
+        return notificationMessage != null ? notificationMessage.getMessage() : null;
+    }
+
+    public String getActivationCode()
+    {
+         return readActivationCode(notificationMessage.getMessage());
+    }
+
     @Override
     public void execute() throws StopTestException {
         createSession();
@@ -49,5 +67,11 @@ public final class CreateUser extends AbstractFixture<Fallible> {
         super.reset();
 
         request = null;
+    }
+
+    private static String readActivationCode(final String notificationMessage) {
+        final String[] array = STRING_PATTERN.split(notificationMessage);
+
+        return array[2].trim();
     }
 }

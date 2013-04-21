@@ -8,5 +8,16 @@
 |set new username |john.doe@iaeste.org|and password|test   |
 |set new firstname|john               |and lastname|doe    |
 |create user                                               |
+|read notification from queue                              |
+|show             |read notification message               |
+|$ActivationCode= |get activation code                     |
 |logout                                                    |
 
+!|script              |activate user  |
+|set activation string|$ActivationCode|
+|activate user                        |
+
+!|script     |create user                          |
+|set username|john.doe@iaeste.org|and password|test|
+|ensure      |login                                |
+|logout                                            |

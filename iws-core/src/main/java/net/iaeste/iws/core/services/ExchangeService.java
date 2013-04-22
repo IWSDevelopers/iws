@@ -364,10 +364,8 @@ public final class ExchangeService extends CommonService {
 
     private void publishOffer(final Authentication authentication, final List<OfferEntity> offers, final List<GroupEntity> groups) {
         for (final GroupEntity group : groups) {
-            if (group.getGroupType().getGrouptype() == GroupType.NATIONAL || group.getGroupType().getGrouptype() == GroupType.SAR) {
-                for (final OfferEntity offer : offers) {
-                    persistPublisingGroup(authentication, offer, group);
-                }
+            for (final OfferEntity offer : offers) {
+                persistPublisingGroup(authentication, offer, group);
             }
         }
     }

@@ -311,14 +311,16 @@ public final class ExchangeService extends CommonService {
     }
 
     private void verifyNotSharingToItself(final Authentication authentication, final List<GroupEntity> groupEntities) {
-        /*
-            TODO michal: @Kim shouldn't we fetch nationalGroup with accessDao.findNationalGroup(authentication.getUser())?
-            final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
-         */
+        // All operations in the Exchange module requires that a user is a
+        // member of either a National or SAR group. As it is only possible to
+        // be member of one, then the Authentication/Authorization module can
+        // easily extract this information, and does it as well. The Group from
+        // the Authentication Object is the users National / SAR Group
         final GroupEntity nationalGroup = authentication.getGroup();
 
         for (final GroupEntity group : groupEntities) {
-            if(group.getExternalId().equals(nationalGroup.getExternalId())) {
+            if (group.getExternalId().equals(nationalGroup.getExternalId())) {
+                // TODO 20130422 by Kim; @Michal, is it really needed to throw an Exception here ? Wouldn't it be more helpful to simply omit their own Group ?
                 throw new VerificationException("Cannot publish offers to itself.");
             }
         }

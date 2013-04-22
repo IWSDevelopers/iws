@@ -109,7 +109,7 @@ public interface ExchangeDao extends BasicDao {
      * @param  offerId id of the offer to get sharing info for
      * @return list of {@link OfferGroupEntity} which are shared
      */
-    List<OfferGroupEntity> findGroupsForSharedOffer(Long offerId);
+    List<OfferGroupEntity> findInfoForSharedOffer(Long offerId);
 
     /**
      * Finds information about sharing of the offer
@@ -117,7 +117,7 @@ public interface ExchangeDao extends BasicDao {
      * @param  externalOfferId reference number of the offer to get sharing info for
      * @return list of {@link OfferGroupEntity} which are shared
      */
-    List<OfferGroupEntity> findGroupsForSharedOffer(String externalOfferId);
+    List<OfferGroupEntity> findInfoForSharedOffer(String externalOfferId);
 
     /**
      * Unshares the offer from all groups

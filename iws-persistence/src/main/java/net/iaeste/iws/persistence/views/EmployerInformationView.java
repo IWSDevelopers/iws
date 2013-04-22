@@ -17,8 +17,10 @@ package net.iaeste.iws.persistence.views;
 import net.iaeste.iws.api.constants.IWSConstants;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -28,6 +30,22 @@ import java.util.Date;
  * @since   1.7
  * @noinspection CompareToUsesNonFinalVariable, AssignmentToDateFieldFromParameter
  */
+@NamedQueries({
+        // TODO 2013-04-20 by Pavel; @Kim: What should be the prefix of the query? Since it returns the whole offer,
+        //                                 I kept 'offer'
+        @NamedQuery(
+                name = "offer.findByGroupAndEmployerName",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.id in (select ei.id from EmployerInformationView ei where ei.employerName = :employerName and ei.groupId = :gid)"),
+        // TODO 2013-04-20 by Pavel; @Kim: What should be the prefix of the query? Since it returns the whole offer,
+        //                                 I kept 'offer'
+        @NamedQuery(
+                name = "offer.findByGroupAndLikeEmployerName",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.id in (select ei.id from EmployerInformationView ei where lower(ei.employerName) like :employerName and ei.groupId = :gid)")
+})
 @Entity
 @Table(name = "employer_information")
 public class EmployerInformationView extends AbstractView<EmployerInformationView> {

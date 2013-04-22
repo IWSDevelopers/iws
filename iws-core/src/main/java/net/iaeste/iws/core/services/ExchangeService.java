@@ -380,12 +380,15 @@ public final class ExchangeService extends CommonService {
     }
 
     public FetchPublishOfferResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishOfferRequest request) {
+        //TODO distinguish somehow a request for info about offers shared 'to me' and 'by me', now it's 'by me'
         final FetchPublishOfferResponse response;
+
+        verifyOffersOwnership(authentication, new HashSet<String>(request.getOffersId()));
 
         final List<String> externalIds = request.getOffersId();
         final Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?
         for (final String externalId : externalIds) {
-            result.put(externalId, convertOfferGroupEntityList(dao.findGroupsForSharedOffer(externalId)));
+            result.put(externalId, convertOfferGroupEntityList(dao.findInfoForSharedOffer(externalId)));
         }
 
         response = new FetchPublishOfferResponse(result);

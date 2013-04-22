@@ -87,18 +87,6 @@ import java.util.List;
                 query = "select o from OfferEntity o " +
                         "where o.group.id = :gid" +
                         "  and o.refNo = :refNo"),
-        // TODO 2013-03-18 by Kim; The following Query should be moved to a View
-        @NamedQuery(
-                name = "offer.findByGroupAndEmployerName",
-                query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
-                        "  and o.id in (select ei.id from EmployerInformationView ei where ei.employerName = :employerName and ei.groupId = :gid)"),
-        // TODO 2013-03-18 by Kim; The following Query should be moved to a View
-        @NamedQuery(
-                name = "offer.findByGroupAndLikeEmployerName",
-                query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
-                        "  and o.id in (select ei.id from EmployerInformationView ei where lower(ei.employerName) like :employerName and ei.groupId = :gid)"),
         @NamedQuery(
                 name = "offer.deleteByGroupAndId",
                 query = "delete from OfferEntity o " +

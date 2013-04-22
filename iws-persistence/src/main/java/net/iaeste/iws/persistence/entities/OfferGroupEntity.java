@@ -41,10 +41,10 @@ import java.util.Date;
                 name = "offerGroup.findSharedToGroup",
                 query = "select og.offer from OfferGroupEntity og " +
                         "where og.group.id = :gid"),
-        @NamedQuery(name = "offerGroup.findGroupsByOffer",
+        @NamedQuery(name = "offerGroup.findByOffer",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
-        @NamedQuery(name = "offerGroup.findGroupsByExternalOfferId",
+        @NamedQuery(name = "offerGroup.findByExternalOfferId",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.externalId = :eoid"),
         @NamedQuery(name = "offerGroup.deleteByOffer",

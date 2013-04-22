@@ -180,8 +180,8 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferGroupEntity> findGroupsForSharedOffer(final Long offerId) {
-        final Query query = entityManager.createNamedQuery("offerGroup.findGroupsByOffer");
+    public List<OfferGroupEntity> findInfoForSharedOffer(final Long offerId) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findByOffer");
         query.setParameter("oid", offerId);
 
         return query.getResultList();
@@ -191,8 +191,8 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferGroupEntity> findGroupsForSharedOffer(final String externalOfferId) {
-        final Query query = entityManager.createNamedQuery("offerGroup.findGroupsByExternalOfferId");
+    public List<OfferGroupEntity> findInfoForSharedOffer(final String externalOfferId) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findByExternalOfferId");
         query.setParameter("eoid", externalOfferId);
 
         return query.getResultList();

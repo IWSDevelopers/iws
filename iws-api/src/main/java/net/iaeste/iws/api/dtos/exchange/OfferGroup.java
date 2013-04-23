@@ -33,7 +33,6 @@ public final class OfferGroup extends AbstractFallible {
 
     private String offerRefNo = null;
     private String groupId = null;
-    private DateTime answered = null;
     private DateTime modified = null;
     private DateTime created = null;
 
@@ -53,7 +52,6 @@ public final class OfferGroup extends AbstractFallible {
         if (offerGroup != null) {
             offerRefNo = offerGroup.offerRefNo;
             groupId = offerGroup.groupId;
-            answered = Copier.copy(offerGroup.answered);
             modified = Copier.copy(offerGroup.modified);
             created = Copier.copy(offerGroup.created);
         }
@@ -78,14 +76,6 @@ public final class OfferGroup extends AbstractFallible {
 
     public void setGroupId(final String groupId) {
         this.groupId = groupId;
-    }
-
-    public DateTime getAnswered() {
-        return answered;
-    }
-
-    public void setAnswered(final DateTime answered) {
-        this.answered = answered;
     }
 
     /**
@@ -164,7 +154,6 @@ public final class OfferGroup extends AbstractFallible {
         return "OfferGroup{" +
                 "offerRefNo=" + offerRefNo +
                 ", groupId=" + groupId +
-                ", answered=" + answered +
                 ", modified=" + modified +
                 ", created=" + created +
                 '}';

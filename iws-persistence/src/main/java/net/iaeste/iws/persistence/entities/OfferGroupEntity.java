@@ -81,29 +81,8 @@ public class OfferGroupEntity implements IWSEntity {
     @JoinColumn(nullable = false, name = "group_id")
     private GroupEntity group = null;
 
-    @ManyToOne(targetEntity = StudentEntity.class)
-    @JoinColumn(nullable = false, name = "student_id")
-    private StudentEntity student = null;
-
-    @Column(nullable = true, name = "status")
-    private OfferSharingStatus status = null;
-
-    @Column(nullable = false, name = "is_archived")
-    private Boolean archived = false;
-
-    @Column(nullable = false, name = "visible")
-    private Boolean visible = true;
-
     @Column(name = "comment", length = 100)
     private String comment = null;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "answered")
-    private Date answered = new Date();
-
-    @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "answered_by")
-    private UserEntity answeredBy = null;
 
     /** Last time the User Account was modified. */
     @Temporal(TemporalType.TIMESTAMP)
@@ -173,60 +152,12 @@ public class OfferGroupEntity implements IWSEntity {
         return group;
     }
 
-    public void setStudent(final StudentEntity student) {
-        this.student = student;
-    }
-
-    public StudentEntity getStudent() {
-        return student;
-    }
-
-    public void setStatus(final OfferSharingStatus status) {
-        this.status = status;
-    }
-
-    public OfferSharingStatus getStatus() {
-        return status;
-    }
-
-    public void setArchived(final Boolean archived) {
-        this.archived = archived;
-    }
-
-    public Boolean getArchived() {
-        return archived;
-    }
-
-    public void setVisible(final Boolean visible) {
-        this.visible = visible;
-    }
-
-    public Boolean getVisible() {
-        return visible;
-    }
-
     public void setComment(final String comment) {
         this.comment = comment;
     }
 
     public String getComment() {
         return comment;
-    }
-
-    public void setAnswered(final Date answered) {
-        this.answered = answered;
-    }
-
-    public Date getAnswered() {
-        return answered;
-    }
-
-    public void setAnsweredBy(final UserEntity answeredBy) {
-        this.answeredBy = answeredBy;
-    }
-
-    public UserEntity getAnsweredBy() {
-        return answeredBy;
     }
 
     public void setModified(final Date modified) {

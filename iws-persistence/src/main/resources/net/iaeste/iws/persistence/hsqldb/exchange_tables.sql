@@ -56,6 +56,7 @@ create table offers (
     study_fields              varchar(1000) NOT NULL  CHECK(length(study_fields) > 0),
     specializations           varchar(1000),
     group_id                  integer       not null references groups (id) on delete cascade,
+    status                    varchar(10),
     modified                  timestamp default now(),
     created                   timestamp default now(),
 

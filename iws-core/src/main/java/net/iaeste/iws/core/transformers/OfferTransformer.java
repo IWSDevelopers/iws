@@ -125,6 +125,7 @@ public final class OfferTransformer {
             result.setCanteen(offer.getCanteen());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
+            result.setStatus(offer.getStatus());
             // modified&created are not copied to Entity as they cannot be changed manually
         }
 
@@ -191,6 +192,7 @@ public final class OfferTransformer {
             result.setCanteen(offer.getCanteen());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, offer.getStudyLevels()));
+            result.setStatus(offer.getStatus());
 
             result.setModified(new DateTime(offer.getModified()));
             result.setCreated(new DateTime(offer.getCreated()));

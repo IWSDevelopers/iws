@@ -21,6 +21,7 @@ import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
+import net.iaeste.iws.api.enums.OfferState;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;
@@ -239,6 +240,7 @@ public final class Offer extends AbstractVerification {
      * Number of Hard Copies.
      */
     private Integer numberOfHardCopies = null;
+    private OfferState status = null;
 
     /**
      * Date of last modification of the Offer in the database.
@@ -321,6 +323,7 @@ public final class Offer extends AbstractVerification {
             fieldOfStudies = Copier.copy(offer.fieldOfStudies);
             specializations = Copier.copy(offer.specializations);
             studyLevels = Copier.copy(offer.studyLevels);
+            status = offer.status;
 
             modified = Copier.copy(offer.modified);
             created = Copier.copy(offer.created);
@@ -723,6 +726,14 @@ public final class Offer extends AbstractVerification {
         return numberOfHardCopies;
     }
 
+    public void setStatus(final OfferState status) {
+        this.status = status;
+    }
+
+    public OfferState getStatus() {
+        return status;
+    }
+
     /**
      * For internal use only.
      *
@@ -911,6 +922,9 @@ public final class Offer extends AbstractVerification {
         if (workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null) {
             return false;
         }
+        if (status != offer.status) {
+            return false;
+        }
         // #modified and #created are not relevant for the equality of the offers.
 
         return !(workingPlace != null ? !workingPlace.equals(offer.workingPlace) : offer.workingPlace != null);
@@ -971,6 +985,7 @@ public final class Offer extends AbstractVerification {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (livingCostFrequency != null ? livingCostFrequency.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (canteen != null ? canteen.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (numberOfHardCopies != null ? numberOfHardCopies.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
 
         return hash;
     }
@@ -1029,6 +1044,7 @@ public final class Offer extends AbstractVerification {
                 ", livingCostFrequency=" + livingCostFrequency +
                 ", canteen=" + canteen +
                 ", numberOfHardCopies=" + numberOfHardCopies +
+                ", status=" + status +
                 ", modified=" + modified +
                 ", created=" + created +
                 '}';

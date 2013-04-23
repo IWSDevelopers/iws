@@ -166,6 +166,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testShareOffer() {
+        //TODO verify that offer status is changing when (un)sharing
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo("PL-2012-0004");
 

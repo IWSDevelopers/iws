@@ -19,6 +19,7 @@ import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;
 import net.iaeste.iws.api.enums.LanguageOperator;
 import net.iaeste.iws.api.enums.NotificationSubject;
+import net.iaeste.iws.api.enums.OfferState;
 import net.iaeste.iws.api.enums.PaymentFrequency;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.persistence.notification.Notifiable;
@@ -288,6 +289,10 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(nullable = true, name = "group_id")
     private GroupEntity group = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private OfferState status = OfferState.NEW;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
@@ -693,6 +698,14 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         this.workingPlace = workingPlace;
     }
 
+    public OfferState getStatus() {
+        return status;
+    }
+
+    public void setStatus(final OfferState status) {
+        this.status = status;
+    }
+
     public Date getModified() {
         return modified;
     }
@@ -771,6 +784,7 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
             fieldOfStudies = obj.fieldOfStudies;
             specializations = obj.specializations;
             studyLevels = obj.studyLevels;
+            status = obj.status;
 
             // Set the Modified value to 'now', so the time of
             // the last update is in the Record in the database.

@@ -20,6 +20,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
@@ -292,12 +293,14 @@ public final class ExchangeService extends CommonService {
         final List<GroupEntity> groups = getAndVerifyGroupExist(request.getGroupIds());
 
         verifyPublishRequest(authentication, request, groups);
+        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
 
-        for (final String externalOfferId : externalOfferIds) {
-            dao.unshareFromAllGroups(externalOfferId);
+        for (final OfferEntity offer : offers) {
+            offer.setStatus(OfferState.NEW);
+            dao.persist(authentication, offer);
+            dao.unshareFromAllGroups(offer.getExternalId());
         }
 
-        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
         publishOffer(authentication, offers, groups);
     }
 
@@ -363,8 +366,10 @@ public final class ExchangeService extends CommonService {
     }
 
     private void publishOffer(final Authentication authentication, final List<OfferEntity> offers, final List<GroupEntity> groups) {
-        for (final GroupEntity group : groups) {
-            for (final OfferEntity offer : offers) {
+        for (final OfferEntity offer : offers) {
+            offer.setStatus(OfferState.SHARED);
+            dao.persist(authentication, offer);
+            for (final GroupEntity group : groups) {
                 persistPublisingGroup(authentication, offer, group);
             }
         }

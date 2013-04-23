@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
+
 /**
  * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$

@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 

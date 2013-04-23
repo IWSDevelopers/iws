@@ -14,9 +14,10 @@
  */
 package net.iaeste.iws.api.requests;
 
-import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

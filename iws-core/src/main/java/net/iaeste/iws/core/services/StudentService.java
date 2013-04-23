@@ -15,9 +15,9 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.StudentRequest;
-import net.iaeste.iws.api.responses.FetchStudentResponse;
+import net.iaeste.iws.api.requests.exchange.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.exchange.StudentRequest;
+import net.iaeste.iws.api.responses.exchange.FetchStudentResponse;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.StudentDao;
 

@@ -16,8 +16,8 @@ package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.requests.FetchOffersRequest;
-import net.iaeste.iws.api.responses.FetchOffersResponse;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 

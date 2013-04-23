@@ -14,9 +14,9 @@
  */
 package net.iaeste.iws.core.transformers;
 
-import net.iaeste.iws.api.dtos.EmployerInformation;
-import net.iaeste.iws.api.dtos.Offer;
-import net.iaeste.iws.api.dtos.OfferGroup;
+import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
+import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.StudyLevel;
 import net.iaeste.iws.api.enums.TypeOfWork;

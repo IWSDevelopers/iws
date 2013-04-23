@@ -15,7 +15,7 @@
 
 package net.iaeste.iws.api.requests;
 
-import net.iaeste.iws.api.dtos.Student;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import org.junit.Before;
 
 /**

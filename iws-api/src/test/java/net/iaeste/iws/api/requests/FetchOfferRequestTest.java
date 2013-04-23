@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.enums.FetchType;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import org.junit.Test;
 
 import java.util.EnumSet;

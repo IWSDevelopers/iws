@@ -15,9 +15,9 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.FacultyRequest;
-import net.iaeste.iws.api.requests.FetchFacultiesRequest;
-import net.iaeste.iws.api.responses.FetchFacultyResponse;
+import net.iaeste.iws.api.requests.exchange.FacultyRequest;
+import net.iaeste.iws.api.requests.exchange.FetchFacultiesRequest;
+import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
 import net.iaeste.iws.persistence.Authentication;
 
 import javax.persistence.EntityManager;

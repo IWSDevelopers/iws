@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSExchangeConstants;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.LanguageLevel;

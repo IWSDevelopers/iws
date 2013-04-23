@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.api.requests;
 
-import net.iaeste.iws.api.dtos.Offer;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 
 import java.util.ArrayList;

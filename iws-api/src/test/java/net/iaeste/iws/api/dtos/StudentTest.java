@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 

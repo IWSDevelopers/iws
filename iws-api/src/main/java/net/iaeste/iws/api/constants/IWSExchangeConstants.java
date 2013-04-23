@@ -31,48 +31,48 @@ public interface IWSExchangeConstants {
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.FieldOfStudy}
-     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MAX_OFFER_FIELDS_OF_STUDY = 3;
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.Specialization}
-     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MAX_OFFER_SPECIALIZATIONS = 7;
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.Language}
-     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MAX_OFFER_LANGUAGES = 3;
 
     /**
      * Defines the minimum length of offer description
-     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MIN_OFFER_WORK_DESCRIPTION_SIZE = 1;
 
     /**
      * Defines the maximum length of offer description
-     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MAX_OFFER_WORK_DESCRIPTION_SIZE = 1000;
 
     /**
      * Defines the minimum length of other requirements
-     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MIN_OFFER_OTHER_REQUIREMENTS_SIZE = 0;
     /**
      * Defines the maximum length of other requirements
-     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MAX_OFFER_OTHER_REQUIREMENTS_SIZE = 500;
 
     /**
      * Defines the minimum number of weeks required
-     * for an {@link net.iaeste.iws.api.dtos.Offer}
+     * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MIN_OFFER_MINIMUM_WEEKS = 1;
 }

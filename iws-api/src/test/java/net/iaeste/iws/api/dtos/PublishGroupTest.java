@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
+import net.iaeste.iws.api.dtos.exchange.PublishGroup;
 import org.junit.Ignore;
 import org.junit.Test;
 

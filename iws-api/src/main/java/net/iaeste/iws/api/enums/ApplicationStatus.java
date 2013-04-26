@@ -17,20 +17,57 @@ package net.iaeste.iws.api.enums;
 /**
  * Describes the status of a student application for an offer
  *
- * @author  Matej Kosco / last $Author:$
+ * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public enum ApplicationStatus {
     // TODO the following states are just preliminary
 
+    /**
+     * A student applies for an offer in his local/national committee.
+     * The receiving country does not see the application yet.
+     */
     APPLIED,
 
+    /**
+     * The sending national committee selected the student to forward
+     * to the receiving country.
+     * Both countries can see the application.
+     */
     NOMINATED,
 
+    /**
+     * The receiving country forwarded the application to the employer.
+     * Both countries can see the application.
+     */
     FORWARDED_TO_EMPLOYER,
 
+    /**
+     * The employer accepted the student.
+     * Both countries can see the application.
+     */
     ACCEPTED,
 
-    REJECTED
+    /**
+     * The employer rejected the student.
+     * Both countries can see the application.
+     */
+    REJECTED_BY_EMPLOYER,
+
+    /**
+     * The receiving country rejected the student
+     * Both countries can see the application.
+     */
+    REJECTED_BY_RECEIVING_COUNTRY,
+
+    /**
+     * The student does no longer wish to take the internship.
+     * <p/>
+     * A precondition is that the student was already nominated
+     * by the sending country.
+     * <p/>
+     * Both countries can see the application.
+     */
+    WITHDRAWN
 }

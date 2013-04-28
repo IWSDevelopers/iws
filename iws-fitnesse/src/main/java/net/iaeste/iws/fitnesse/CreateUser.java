@@ -38,6 +38,11 @@ public final class CreateUser extends AbstractFixture<Fallible> {
         request.setPassword(password);
     }
 
+    public void setStudentAccount(boolean studentAccount)
+    {
+        request.setStudentAccount(studentAccount);
+    }
+
     public void createUser() {
         execute();
     }

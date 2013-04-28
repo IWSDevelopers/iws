@@ -20,4 +20,8 @@
 !|script     |create user                          |
 |set username|john.doe@iaeste.org|and password|test|
 |ensure      |login                                |
-|logout                                            |
+|$token=     |get authentication token             |
+
+!|script                 |create user|
+|set authentication token|$token     |
+|logout                              |

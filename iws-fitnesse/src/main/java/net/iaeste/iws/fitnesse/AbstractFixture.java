@@ -24,6 +24,8 @@ import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.fitnesse.callers.AccessCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
+import java.util.regex.Pattern;
+
 /**
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -34,6 +36,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
 
     private static final Access ACCESS = new AccessCaller();
     private static final NotificationSpy NOTIFICATION = NotificationSpy.getInstance();
+    private static final Pattern STRING_PATTERN = Pattern.compile("'");
     private T response = null;
     private String testId = null;
     private String testCase = null;
@@ -52,6 +55,38 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
 
     protected T getResponse() {
         return response;
+    }
+
+    public void setAuthenticationToken(String tokenString)
+    {
+        String token = readToken(tokenString);
+        String groupId = readGroupId(tokenString);
+
+        if(groupId.equalsIgnoreCase("null"))
+        {
+            this.token = new AuthenticationToken(token);
+        }
+        else
+        {
+            this.token = new AuthenticationToken(token, groupId);
+        }
+    }
+
+    public String getAuthenticationToken()
+    {
+        return token.toString();
+    }
+
+    private static String readToken(final String token) {
+        final String[] array = STRING_PATTERN.split(token);
+
+        return array[1].trim();
+    }
+
+    private static String readGroupId(final String token) {
+        final String[] array = STRING_PATTERN.split(token);
+
+        return array[3].trim();
     }
 
     /**

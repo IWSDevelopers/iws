@@ -17,7 +17,10 @@ package net.iaeste.iws.api.responses;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.util.AbstractFallible;
+
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -30,6 +33,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private Group group = null;
+    private List<User> users = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -38,8 +42,9 @@ public final class FetchGroupResponse extends AbstractFallible {
     public FetchGroupResponse() {
     }
 
-    public FetchGroupResponse(final Group group) {
+    public FetchGroupResponse(final Group group, final List<User> users) {
         this.group = group;
+        this.users = users;
     }
 
     /**
@@ -64,6 +69,14 @@ public final class FetchGroupResponse extends AbstractFallible {
         return group;
     }
 
+    public void setUsers(final List<User> users) {
+        this.users = users;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
     // =========================================================================
     // Standard Response Methods
     // =========================================================================
@@ -84,14 +97,23 @@ public final class FetchGroupResponse extends AbstractFallible {
         }
 
         final FetchGroupResponse that = (FetchGroupResponse) obj;
-        return !(group != null ? !group.equals(that.group) : that.group != null);
+
+        if (group != null ? !group.equals(that.group) : that.group != null) {
+            return false;
+        }
+
+        return !(users != null ? !users.equals(that.users) : that.users != null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int result = super.hashCode();
 
-        result = 31 * result + (group != null ? group.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (users != null ? users.hashCode() : 0);
 
         return result;
     }
@@ -103,6 +125,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     public String toString() {
         return "FetchGroupResponse{" +
                 "group=" + group +
+                ", users=" + users +
                 '}';
     }
 }

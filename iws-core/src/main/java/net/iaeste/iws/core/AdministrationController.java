@@ -186,8 +186,15 @@ public final class AdministrationController extends CommonController implements 
         FetchGroupResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
+            // First we verify the Object, where the mandatory information is.
+            // And then we can use this to extend the Token. As the request
+            // Object holds the GroupId that should be used for the later
+            // processing, we simply overwrite the Token provided GroupId, to
+            // ensure that they are identical and no spoofing attempts can be
+            // made against this request!
             verify(request);
+            token.setGroupId(request.getGroupId());
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
 
             final AdministrationService service = factory.prepareAdministrationService();
             response = service.fetchGroup(authentication, request);

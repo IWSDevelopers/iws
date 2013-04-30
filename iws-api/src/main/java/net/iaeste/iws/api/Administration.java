@@ -110,7 +110,8 @@ public interface Administration {
     Fallible controlUserAccount(AuthenticationToken token, UserRequest request);
 
     /**
-     * Retrieves a list of users from the system. The
+     * Retrieves a list of users from the system.
+     *
      * @param token   Authentication information about the user invoking the
      *                request
      * @param request Fetch User Request Object
@@ -120,6 +121,14 @@ public interface Administration {
 
     Fallible processGroup(AuthenticationToken token, GroupRequest request);
 
+    /**
+     * Retrieves the requested Group and the associated Users.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Fetch Group Request Object
+     * @return Response Object with the found group & users and error information
+     */
     FetchGroupResponse fetchGroup(AuthenticationToken token, FetchGroupRequest request);
 
     Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);

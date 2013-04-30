@@ -15,6 +15,7 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
+import static net.iaeste.iws.core.transformers.AdministrationTransformer.transformMembers;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -53,6 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -325,7 +327,14 @@ public final class AdministrationService extends CommonService {
     }
 
     /**
-     * Retrieves the requested Group, and returns it.
+     * Retrieves the requested Group, and returns it. Although the Request
+     * Object is containing the GroupId, we're ignoring it and using the one
+     * from the Authentication Object, since the Controller (that invoked this
+     * method), is altering the Authorisation Token to use the Request provided
+     * GroupId. This is done to avoid that any attempts are made at spoofing the
+     * system, i.e. use one GroupId in the token, and validate against that, and
+     * then a different in the Request, after our permission checks are
+     * completed.
      *
      * @param authentication User & Group information
      * @param request        Group Request information
@@ -333,21 +342,19 @@ public final class AdministrationService extends CommonService {
      */
     public FetchGroupResponse fetchGroup(final Authentication authentication, final FetchGroupRequest request) {
         final GroupEntity entity = dao.findGroup(authentication.getUser(), request.getGroupId());
+        final FetchGroupResponse response;
 
-        final Group group;
         if (entity != null) {
-            group = new Group();
+            final List<UserGroupEntity> members = dao.findGroupUsers(entity);
+            final Group group = transform(entity);
+            final List<User> users = transformMembers(members);
 
-            group.setGroupId(entity.getExternalId());
-            group.setGroupName(entity.getGroupName());
-            group.setGroupType(entity.getGroupType().getGrouptype());
-            group.setDescription(entity.getDescription());
-            group.setCountryId(entity.getCountry().getCountryId());
+            response = new FetchGroupResponse(group, users);
         } else {
-            group = null;
+            response = new FetchGroupResponse(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "No Group was found matching the requested Id.");
         }
 
-        return new FetchGroupResponse(group);
+        return response;
     }
 
     /**

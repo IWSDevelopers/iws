@@ -25,7 +25,9 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
+import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
@@ -39,6 +41,7 @@ import java.util.regex.Pattern;
  */
 public class AdministrationClientTest extends AbstractClientTest {
 
+    private static final String AUSTRIA_MEMBER_GROUP = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
     private static final Pattern STRING_PATTERN = Pattern.compile("=");
     private final Administration administration = new AdministrationClient();
 
@@ -87,6 +90,12 @@ public class AdministrationClientTest extends AbstractClientTest {
         assertThat(spy.size(), is(1));
         final String notification = spy.getNext().getMessage();
         assertThat(notification, containsString("Activation Code"));
+
+        // Check that the user is in the list of members
+        token.setGroupId(AUSTRIA_MEMBER_GROUP);
+        final FetchGroupRequest groupRequest = new FetchGroupRequest(AUSTRIA_MEMBER_GROUP);
+        final FetchGroupResponse groupResponse = administration.fetchGroup(token, groupRequest);
+        assertThat(groupResponse, is(not(nullValue())));
     }
 
     /**

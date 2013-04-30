@@ -35,8 +35,19 @@ public final class AdministrationTransformer {
      */
     private AdministrationTransformer() {}
 
+    public static List<User> transformMembers(final List<UserGroupEntity> members) {
+        final List<User> users = new ArrayList<>(members.size());
+
+        for (final UserGroupEntity member : members) {
+            users.add(transform(member));
+        }
+
+        return users;
+    }
+
     public static User transform(final UserGroupEntity entity) {
         final User user;
+
         if (entity != null) {
             user = new User();
 
@@ -57,11 +68,13 @@ public final class AdministrationTransformer {
         } else {
             user = null;
         }
+
         return user;
     }
 
     public static User transform(final UserEntity entity) {
         final User user;
+
         if (entity != null) {
             user = new User();
 
@@ -77,6 +90,7 @@ public final class AdministrationTransformer {
         } else {
             user = null;
         }
+
         return user;
     }
 

@@ -68,6 +68,8 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroup(UserEntity user, String externalGroupId);
 
+    List<UserGroupEntity> findGroupUsers(GroupEntity group);
+
     /**
      * Checks if there exists other groups with similar names (checked
      * case-insensitive), and returns true if so, otherwise false.

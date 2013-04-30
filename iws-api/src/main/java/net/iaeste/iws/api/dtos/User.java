@@ -237,7 +237,7 @@ public final class User extends AbstractFallible implements Verifiable {
         final Map<String, String> validation = new HashMap<>(0);
 
         if ((userId == null) || (userId.length() != 36)) {
-            validation.put("userId", "Invalid UserID.");
+            validation.put("userId", "Invalid UserId.");
         }
 
         return validation;

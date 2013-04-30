@@ -42,6 +42,7 @@ import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
@@ -106,6 +107,8 @@ public final class ExchangeService extends CommonService {
                 verifyRefnoValidity(newEntity);
                 // Set the ExternalId of the Offer
                 newEntity.setExternalId(UUID.randomUUID().toString());
+                // Set the Offer status to New
+                newEntity.setStatus(OfferState.NEW);
                 // Persist the Offer with history
                 dao.persist(authentication, newEntity);
             } else {
@@ -301,7 +304,7 @@ public final class ExchangeService extends CommonService {
             dao.unshareFromAllGroups(offer.getExternalId());
         }
 
-        publishOffer(authentication, offers, groups);
+        publishOffer(authentication, offers, groups, request.getNominationDeadline());
     }
 
     private void verifyPublishRequest(final Authentication authentication, final PublishOfferRequest request, final List<GroupEntity> groupEntities) {
@@ -365,10 +368,15 @@ public final class ExchangeService extends CommonService {
         }
     }
 
-    private void publishOffer(final Authentication authentication, final List<OfferEntity> offers, final List<GroupEntity> groups) {
+    private void publishOffer(final Authentication authentication, final List<OfferEntity> offers, final List<GroupEntity> groups, final Date nominationDeadline) {
         for (final OfferEntity offer : offers) {
-            offer.setStatus(OfferState.SHARED);
-            dao.persist(authentication, offer);
+            if (groups.size() > 0) {
+                offer.setStatus(OfferState.SHARED);
+                if(nominationDeadline != null)
+                    offer.setNominationDeadline(nominationDeadline.toDate());
+
+                dao.persist(authentication, offer);
+            }
             for (final GroupEntity group : groups) {
                 persistPublisingGroup(authentication, offer, group);
             }

@@ -17,6 +17,7 @@ package net.iaeste.iws.api.requests.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Copier;
+import net.iaeste.iws.api.util.Date;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +38,14 @@ public final class PublishOfferRequest extends AbstractVerification {
     /** The Offer Object to published. */
     private Set<String> offerIds = null;
 
-    /** The group to which the user will be added.**/
+    /** The group to which the offer will be published. */
     private List<String> groupIds;
+
+    /**
+     * New nomination deadline for submitted offers.
+     * If NULL is passed, the field is not updated.
+     * */
+    private Date nominationDeadline = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -48,9 +55,10 @@ public final class PublishOfferRequest extends AbstractVerification {
         groupIds = new ArrayList<>(10);
     }
 
-    public PublishOfferRequest(final Set<String> offerIds, final List<String> groupIds) {
+    public PublishOfferRequest(final Set<String> offerIds, final List<String> groupIds, final Date nominationDeadline) {
         this.offerIds = Copier.copy(offerIds);
         this.groupIds = Copier.copy(groupIds);
+        this.nominationDeadline = Copier.copy(nominationDeadline);
     }
 
     // =========================================================================
@@ -71,6 +79,14 @@ public final class PublishOfferRequest extends AbstractVerification {
 
     public List<String> getGroupIds() {
         return Copier.copy(groupIds);
+    }
+
+    public void setNominationDeadline(final Date nominationDeadline) {
+        this.nominationDeadline = Copier.copy(nominationDeadline);
+    }
+
+    public Date getNominationDeadline() {
+        return Copier.copy(nominationDeadline);
     }
 
     // =========================================================================

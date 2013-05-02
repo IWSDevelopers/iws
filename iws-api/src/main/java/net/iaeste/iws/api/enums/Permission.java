@@ -96,7 +96,6 @@ public enum Permission {
     PROCESS_USER_GROUP_ASSIGNMENT,
     FETCH_GROUP_MEMBERS,
     CHANGE_GROUP_OWNER,
-    MANAGE_USER_GROUP_ASSOCIATION,
 
     /***************************
      * Exchange

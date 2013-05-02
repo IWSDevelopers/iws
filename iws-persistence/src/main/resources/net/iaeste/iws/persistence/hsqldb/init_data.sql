@@ -35,13 +35,12 @@ insert into permissions (id, permission) values (111, 'PROCESS_SUB_GROUPS');
 insert into permissions (id, permission) values (112, 'FETCH_GROUPS');
 insert into permissions (id, permission) values (113, 'FETCH_GROUP_MEMBERS');
 insert into permissions (id, permission) values (114, 'CHANGE_GROUP_OWNER');
-insert into permissions (id, permission) values (115, 'MANAGE_USER_GROUP_ASSOCIATION');
+insert into permissions (id, permission) values (115, 'PROCESS_USER_GROUP_ASSIGNMENT');
 --insert into permissions (id, permission) values (121, 'CREATE_ROLE');
 --insert into permissions (id, permission) values (122, 'PROCESS_ROLE');
 --insert into permissions (id, permission) values (123, 'FETCH_ROLES');
 --insert into permissions (id, permission) values ( 7, 'FETCH_COUNTRIES');
 insert into permissions (id, permission) values ( 8, 'PROCESS_COUNTRIES');
-insert into permissions (id, permission) values ( 9, 'PROCESS_USER_GROUP_ASSIGNMENT');
 insert into permissions (id, permission) values (201, 'MANAGE_OFFERS');
 insert into permissions (id, permission) values (202, 'LOOKUP_OFFERS');
 --insert into permissions (id, permission) values (12, 'PROCESS_OFFER_TEMPLATES');
@@ -154,17 +153,17 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 114
 insert into permission_to_role (role_id, permission_id) values (1, 114);
 
 -- Permission: 115 - Process User Group Association
---   -> GroupTypes: All except Private & Student
+--   -> GroupTypes: All except Private & Member
 --   -> Roles:      1 Owner
 --                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 115);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 115);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 115);
 insert into permission_to_role (role_id, permission_id) values (1, 115);
 insert into permission_to_role (role_id, permission_id) values (2, 115);
 

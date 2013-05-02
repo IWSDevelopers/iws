@@ -22,10 +22,15 @@ import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Authorization;
+import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
@@ -38,6 +43,7 @@ import java.util.regex.Pattern;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection BreakStatement
  */
 public class AdministrationClientTest extends AbstractClientTest {
 
@@ -156,6 +162,37 @@ public class AdministrationClientTest extends AbstractClientTest {
         // Deprecate the Students Session, the test is over :-)
         final Fallible deprecateSessionResult = accessClient.deprecateSession(response2.getToken());
         assertThat(deprecateSessionResult.isOk(), is(true));
+    }
+
+    @Test
+    public void testAddingUserToGroup() {
+        final Group nsGroup = findNationalGroup(token);
+        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(nsGroup.getGroupId());
+        final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
+        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest(fetchGroupResponse.getUsers().get(3), nsGroup);
+        final Fallible userGroupResponse = administration.processUserGroupAssignment(token, userGroupAssignmentRequest);
+
+        assertThat(userGroupResponse, is(not(nullValue())));
+        assertThat(userGroupResponse.isOk(), is(false));
+        assertThat(userGroupResponse.getError(), is(IWSErrors.NOT_IMPLEMENTED));
+        assertThat(userGroupResponse.getMessage(), is("Method pending implementation."));
+    }
+
+    private static Group findNationalGroup(final AuthenticationToken authenticationToken) {
+        final AccessClient access = new AccessClient();
+        final FetchPermissionResponse permissionResponse = access.fetchPermissions(authenticationToken);
+        Group group = null;
+
+        for (final Authorization authorization : permissionResponse.getAuthorizations()) {
+            final GroupType type = authorization.getGroup().getGroupType();
+
+            if (type == GroupType.NATIONAL || type == GroupType.SAR) {
+                group = authorization.getGroup();
+                break;
+            }
+        }
+
+        return group;
     }
 
     private static String readActivationCode(final String notificationMessage) {

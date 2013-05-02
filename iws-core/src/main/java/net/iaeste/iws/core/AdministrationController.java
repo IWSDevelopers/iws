@@ -210,6 +210,30 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
+    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        LOG.trace("Starting processUserGroupAssignment()");
+        Fallible response;
+
+        try {
+            verify(request);
+            token.setGroupId(request.getGroup().getGroupId());
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
+
+            final AdministrationService service = factory.prepareAdministrationService();
+            service.processUserGroupAssignment(authentication, request);
+            response = new FetchGroupResponse();
+        } catch (IWSException e) {
+            response = new FetchGroupResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished processUserGroupAssignment()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
         LOG.trace("Starting processCountries()");
         Fallible response;
@@ -248,29 +272,6 @@ public final class AdministrationController extends CommonController implements 
         }
 
         LOG.trace("Finished fetchCountries()");
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        LOG.trace("Starting processUserGroupAssignment()");
-        Fallible response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
-            verify(request);
-
-            final AdministrationService service = factory.prepareAdministrationService();
-            service.processUserGroupAssignment(authentication, request);
-            response = new FetchGroupResponse();
-        } catch (IWSException e) {
-            response = new FetchGroupResponse(e.getError(), e.getMessage());
-        }
-
-        LOG.trace("Finished processUserGroupAssignment()");
         return response;
     }
 }

@@ -153,7 +153,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 114
 insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 114);
 insert into permission_to_role (role_id, permission_id) values (1, 114);
 
--- Permission: 115 - Manage User Group Association
+-- Permission: 115 - Process User Group Association
 --   -> GroupTypes: All except Private & Student
 --   -> Roles:      1 Owner
 --                  2 Moderator

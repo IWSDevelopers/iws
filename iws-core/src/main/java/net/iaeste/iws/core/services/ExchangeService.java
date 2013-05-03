@@ -213,7 +213,14 @@ public final class ExchangeService extends CommonService {
 
     private List<Offer> findSharedOffers(final Authentication authentication, final FetchOffersRequest request) {
         // Must be extended with Pagination
-        final List<OfferEntity> found = dao.findSharedOffers(authentication);
+        final List<OfferEntity> found = new ArrayList<>();
+        final java.util.Date now = new Date().toDate();
+
+        for (final OfferEntity offer : dao.findSharedOffers(authentication)) {
+            if (!offer.getNominationDeadline().before(now)) {
+                found.add(offer);
+            }
+        }
 
         return convertEntityList(found);
     }
@@ -394,7 +401,7 @@ public final class ExchangeService extends CommonService {
         //TODO distinguish somehow a request for info about offers shared 'to me' and 'by me', now it's 'by me'
         final FetchPublishOfferResponse response;
 
-        verifyOffersOwnership(authentication, new HashSet<String>(request.getOffersId()));
+        verifyOffersOwnership(authentication, new HashSet<>(request.getOffersId()));
 
         final List<String> externalIds = request.getOffersId();
         final Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?

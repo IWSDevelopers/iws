@@ -423,6 +423,92 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat("as the Austrian offer was not shared with Croatia, it shouldn't be loaded", readOffer, is(nullValue()));
     }
 
+    @Test
+    public void testFetchSharedOfferAfterDeadline() {
+        net.iaeste.iws.api.util.Date nominationDeadlineInThePast = new Date().plusDays(-20);
+
+        final String refNo = "PL-2012-0010";
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo(refNo);
+
+        final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
+        final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
+        final int size = fetchSharedResponse.getOffers().size();
+
+        final ProcessOfferRequest saveRequest1 = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse1 = exchange.processOffer(token, saveRequest1);
+
+        assertThat("verify that the offer was persisted", saveResponse1.isOk(), is(true));
+
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        final Offer offerToShare = findOfferFromResponse(offer.getRefNo(), allOffersResponse);
+
+        assertThat(offerToShare, is(notNullValue()));
+
+        final Set<String> offersToShare1 = new HashSet<>(1);
+        offersToShare1.add(offerToShare.getId());
+
+        final List<String> groupIds = new ArrayList<>(1);
+        groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
+
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare1, groupIds, nominationDeadlineInThePast);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
+
+        assertThat("verify that the offer has been shared to Austria", publishResponse.getError(), is(IWSErrors.SUCCESS));
+
+        final FetchOffersRequest fetchSharedRequest2 = new FetchOffersRequest(FetchType.SHARED);
+        final FetchOffersResponse fetchSharedResponse2 = exchange.fetchOffers(austriaToken, fetchSharedRequest2);
+        final Offer readOffer = findOfferFromResponse(refNo, fetchSharedResponse2);
+
+        assertThat(fetchSharedResponse2.getOffers().size(), is(size));
+        assertThat("Polish offer was shared with Croatia but it's after the nomination deadline, so it should not be loaded", readOffer, is(nullValue()));
+    }
+
+    @Test
+    public void testFetchSharedOfferDeadlineToday() {
+        net.iaeste.iws.api.util.Date nominationDeadlineToday = new Date();
+
+        final String refNo = "PL-2012-0011";
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo(refNo);
+
+        final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
+        final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
+        final int size = fetchSharedResponse.getOffers().size();
+
+        final ProcessOfferRequest saveRequest2 = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse2 = exchange.processOffer(token, saveRequest2);
+
+        assertThat("verify that the offer was persisted", saveResponse2.isOk(), is(true));
+
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        final Offer offerToShare = findOfferFromResponse(offer.getRefNo(), allOffersResponse);
+
+        assertThat(offerToShare, is(notNullValue()));
+
+        final Set<String> offersToShare2 = new HashSet<>(1);
+        offersToShare2.add(offerToShare.getId());
+
+        final List<String> groupIds = new ArrayList<>(1);
+        groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
+
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare2, groupIds, nominationDeadlineToday);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
+
+        assertThat("verify that the offer has been shared to Austria", publishResponse.getError(), is(IWSErrors.SUCCESS));
+
+        final FetchOffersRequest fetchSharedRequest2 = new FetchOffersRequest(FetchType.SHARED);
+        final FetchOffersResponse fetchSharedResponse2 = exchange.fetchOffers(austriaToken, fetchSharedRequest2);
+        final Offer readOffer = findOfferFromResponse(refNo, fetchSharedResponse2);
+
+        assertThat(fetchSharedResponse2.getOffers().size(), is(size + 1));
+        assertThat("Polish offer was shared with Croatia and today is the nomination deadline, so it should be loaded", readOffer, is(notNullValue()));
+    }
+
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
         final String refNoLowerCase = refno.toLowerCase(IWSConstants.DEFAULT_LOCALE);
         Offer offer = null;

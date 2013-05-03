@@ -94,7 +94,7 @@ public interface IWSConstants {
     /**
      * For the automatic password generator, we need a list of characters, that
      * cannot be misinterpreted when read, i.e. l and 1 should not be in the
-     * list, since they can too easily be misstaten for eachother.
+     * list, since they can too easily be mistaken for each other.
      */
     String PASSWORD_GENERATOR_CHARACTERS = "abcdefghjkmnpqrstuvwxzy23456789";
 

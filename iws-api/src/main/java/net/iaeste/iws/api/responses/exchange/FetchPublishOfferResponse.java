@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Response Object for returning sharing info for specified list of offers.
+ * Returned value is a Map with an offer ID as key and a list of OfferGroup
+ * as sharing details for particular offer in the map value.
+ *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7

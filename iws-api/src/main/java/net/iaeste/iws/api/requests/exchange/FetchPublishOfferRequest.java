@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Request Object for fetching sharing info for posted list of offers' ID.
+ * The offers have to be owned by the group to which the user is
+ * currently logged in otherwise the exception is thrown.
+ *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7

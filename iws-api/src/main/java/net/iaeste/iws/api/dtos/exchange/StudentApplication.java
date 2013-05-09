@@ -15,11 +15,11 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.ApplicationStatus;
+import net.iaeste.iws.api.enums.*;
 import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Date;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Contains information about a Student applying for an Offer
@@ -45,6 +45,36 @@ public final class StudentApplication extends AbstractVerification {
 
     /** Status of the {@link StudentApplication} */
     private ApplicationStatus status = null;
+
+    // TODO complete implementation
+    private String homeAddress;
+    private String email; // should be copied for an application if a student wants to use a different address for login
+    private String phoneNumber;
+    private String addressDuringTerms;
+    private Date dateOfBirth;
+    private String placeOfBirth;
+    private String passportNumber;
+    private String passportPlaceOfIssue;
+    private String passportValidUntil;
+
+    private String university;
+    private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
+    private Set<Specialization> specializations = EnumSet.noneOf(Specialization.class);
+    private Integer completedYearsOfStudy;
+    private Integer totalYearsOfStudy;
+    private Language language1 = null;
+    private LanguageLevel language1Level = null;
+    private Language language2 = null;
+    private LanguageLevel language2Level = null;
+    private Language language3 = null;
+    private LanguageLevel language3Level = null;
+
+    private Date internshipStart;
+    private Date internshipEnd;
+    private boolean lodgingByIaeste;
+
+    private StudentAcceptance acceptance;
+    private StudentAcceptanceConfirmation travelInformation;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -102,6 +132,9 @@ public final class StudentApplication extends AbstractVerification {
 
     /**
      * {@inheritDoc}
+     *
+     * It should be possible to create a partial application therefore
+     * only studentId and offerId are validated.
      */
     @Override
     public Map<String, String> validate() {

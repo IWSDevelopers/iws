@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class FetchStudentApplicationsRequest extends AbstractVerification {
 
-    private FetchType fetchType = null;
+    private String offerId = null;
 
     /**
      * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
@@ -46,8 +46,8 @@ public class FetchStudentApplicationsRequest extends AbstractVerification {
     /**
      * Default Constructor.
      */
-    public FetchStudentApplicationsRequest(final FetchType fetchType) {
-        this.fetchType = fetchType;
+    public FetchStudentApplicationsRequest(final String offerId) {
+        this.offerId = offerId;
     }
 
     // =========================================================================
@@ -55,24 +55,24 @@ public class FetchStudentApplicationsRequest extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Sets the Fetch Type for this request, if the value is null, then an
+     * Sets the OfferId, if the value is null, then an
      * IllegalArgument exception is thrown.
      *
-     * @param fetchType Fetch Type
+     * @param offerId OfferId
      */
-    public void setFetchType(final FetchType fetchType) {
-        if (fetchType == null) {
-            throw new IllegalArgumentException("The FetchType value may not be null.");
+    public void setOfferId(final String offerId) {
+        if (offerId == null) {
+            throw new IllegalArgumentException("The OfferId value may not be null.");
         }
 
-        this.fetchType = fetchType;
+        this.offerId = offerId;
     }
 
-    public FetchType getFetchType() {
-        return fetchType;
+    public String getOfferId() {
+        return offerId;
     }
 
-    // =========================================================================
+// =========================================================================
     // Standard Request Methods
     // =========================================================================
 
@@ -83,7 +83,7 @@ public class FetchStudentApplicationsRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "fetchType", fetchType);
+        isNotNull(validation, "offerId", offerId);
 
         return validation;
     }

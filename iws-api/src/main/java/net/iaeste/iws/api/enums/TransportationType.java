@@ -18,11 +18,10 @@ package net.iaeste.iws.api.enums;
  * @author Arthur Sussmilch/ last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
- * TODO only add things to the API, if it is also used in the API. As this is only used in IW4, it should be moved out of the IWS.
  */
 public enum TransportationType {
 
-    FLIGHT,
+    PLANE,
     BUS,
     TRAIN,
     SHIP,

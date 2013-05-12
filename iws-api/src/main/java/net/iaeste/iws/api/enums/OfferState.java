@@ -22,5 +22,15 @@ public enum OfferState {
     /**
      * If an offer is shared to one country only
      */
-    EXCHANGED
+    EXCHANGED,
+
+    /**
+     * If an offer has student applications
+     */
+    APPLICATIONS,
+
+    /**
+     * If an offer has student nominations
+     */
+    NOMINATIONS
 }

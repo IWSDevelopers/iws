@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import net.iaeste.iws.api.enums.OfferSharingStatus;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

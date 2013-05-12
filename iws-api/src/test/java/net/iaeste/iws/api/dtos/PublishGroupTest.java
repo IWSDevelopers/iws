@@ -27,6 +27,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 /**
  *
  * @author  Sondre Naustdal / last $Author:$
@@ -124,10 +126,9 @@ public final class PublishGroupTest {
      * three is working, and not causing any strange problems, i.e. Exceptions.
      */
     @Test
-    @Ignore("Test is failing")
     public void testStandardMethods() {
         // Test preconditions
-        final String id = "id";
+        final String id = UUID.randomUUID().toString();
         final String name = "name";
         final List<Group> groups = buildGroups(2);
 
@@ -136,7 +137,7 @@ public final class PublishGroupTest {
         final PublishGroup same = new PublishGroup(id, name, groups);
         final PublishGroup empty = new PublishGroup();
         final PublishGroup diff1 = new PublishGroup(name, groups);
-        final PublishGroup diff2 = new PublishGroup("2", name, groups);
+        final PublishGroup diff2 = new PublishGroup(UUID.randomUUID().toString(), name, groups);
         final PublishGroup diff3 = new PublishGroup(id, "diferent name", groups);
         final PublishGroup diff4 = new PublishGroup(id, name, buildGroups(4));
 
@@ -164,7 +165,7 @@ public final class PublishGroupTest {
 
         for (int i = 0; i < count; i++) {
             final Group group = new Group();
-            group.setGroupId(String.valueOf(i));
+            group.setGroupId(UUID.randomUUID().toString());
             groups.add(group);
         }
 

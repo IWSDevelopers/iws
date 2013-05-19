@@ -181,6 +181,29 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
+    public Fallible deleteGroup(final AuthenticationToken token, final GroupRequest request) {
+        LOG.trace("Starting deleteGroup()");
+        Fallible response;
+
+        try {
+            verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.DELETE_GROUP);
+
+            final AdministrationService service = factory.prepareAdministrationService();
+            service.deleteGroup(authentication, request);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished deleteGroup()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
         LOG.trace("Starting fetchGroup()");
         FetchGroupResponse response;

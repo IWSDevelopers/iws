@@ -165,6 +165,19 @@ public class AdministrationClientTest extends AbstractClientTest {
     }
 
     @Test
+    public void testAddingUserToMemberGroup() {
+        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(AUSTRIA_MEMBER_GROUP);
+        final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
+        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest(fetchGroupResponse.getUsers().get(3), fetchGroupResponse.getGroup());
+        final Fallible userGroupResponse = administration.processUserGroupAssignment(token, userGroupAssignmentRequest);
+
+        assertThat(userGroupResponse, is(not(nullValue())));
+        assertThat(userGroupResponse.isOk(), is(false));
+        assertThat(userGroupResponse.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
+        assertThat(userGroupResponse.getMessage(), is("User is not permitted to perform actions of type: PROCESS_USER_GROUP_ASSIGNMENT"));
+    }
+
+    @Test
     public void testAddingUserToGroup() {
         final Group nsGroup = findNationalGroup(token);
         final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(nsGroup.getGroupId());

@@ -32,6 +32,8 @@ public final class FetchGroupRequest extends AbstractPaginatable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String groupId = null;
+    private boolean fetchUsers = false;
+    private boolean fetchSubGroups = false;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -59,6 +61,22 @@ public final class FetchGroupRequest extends AbstractPaginatable {
 
     public String getGroupId() {
         return groupId;
+    }
+
+    public void setFetchUsers(final boolean fetchUsers) {
+        this.fetchUsers = fetchUsers;
+    }
+
+    public boolean isFetchUsers() {
+        return fetchUsers;
+    }
+
+    public void setFetchSubGroups(final boolean fetchSubGroups) {
+        this.fetchSubGroups = fetchSubGroups;
+    }
+
+    public boolean isFetchSubGroups() {
+        return fetchSubGroups;
     }
 
     // =========================================================================

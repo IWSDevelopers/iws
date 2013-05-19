@@ -90,6 +90,7 @@ public enum Permission {
      * Process SubGroups, includes the following: Create, Update, Delete & Assign Ownership
      */
     PROCESS_SUB_GROUPS,
+    DELETE_GROUP,
     FETCH_GROUPS,
     FETCH_COUNTRIES,
     PROCESS_COUNTRIES,

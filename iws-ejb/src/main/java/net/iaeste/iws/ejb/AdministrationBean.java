@@ -206,6 +206,25 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
+    public Fallible deleteGroup(final AuthenticationToken token, final GroupRequest request) {
+        Fallible response;
+
+        try {
+            response = administration.deleteGroup(token, request);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
         FetchGroupResponse response;
 

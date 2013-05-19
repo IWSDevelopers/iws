@@ -110,6 +110,18 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
+    public Fallible deleteGroup(final AuthenticationToken token, final GroupRequest request) {
+        try {
+            return caller.deleteGroup(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
         try {
             return caller.fetchGroup(token, request);

@@ -126,6 +126,14 @@ public final class AdministrationSpringClient implements Administration {
      * {@inheritDoc}
      */
     @Override
+    public Fallible deleteGroup(final AuthenticationToken token, final GroupRequest request) {
+        return client.deleteGroup(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
         return client.fetchGroup(token, request);
     }

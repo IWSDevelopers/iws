@@ -122,7 +122,19 @@ public interface Administration {
     Fallible processGroup(AuthenticationToken token, GroupRequest request);
 
     /**
-     * Retrieves the requested Group and the associated Users.
+     * Deletes a Groups from the system. This is done with a multitude of
+     * checks, to avoid that groups are removed needlessly.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Fetch Group Request Object
+     * @return Standard Error object
+     */
+    Fallible deleteGroup(AuthenticationToken token, GroupRequest request);
+
+    /**
+     * Retrieves the requested Group and the depending on the flags, it will
+     * also fetch the associated Users and/or subgroups.
      *
      * @param token   Authentication information about the user invoking the
      *                request

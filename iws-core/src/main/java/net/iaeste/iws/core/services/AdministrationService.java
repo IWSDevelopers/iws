@@ -326,6 +326,10 @@ public final class AdministrationService extends CommonService {
         dao.persist(userGroup);
     }
 
+    public void deleteGroup(final Authentication authentication, final GroupRequest request) {
+        throw new NotImplementedException("Awaiting implementation");
+    }
+
     /**
      * Retrieves the requested Group, and returns it. Although the Request
      * Object is containing the GroupId, we're ignoring it and using the one

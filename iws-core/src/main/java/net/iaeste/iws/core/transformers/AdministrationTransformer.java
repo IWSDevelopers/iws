@@ -134,7 +134,7 @@ public final class AdministrationTransformer {
         return group;
     }
 
-    public static List<Group> transform(List<GroupEntity> entities) {
+    public static List<Group> transform(final List<GroupEntity> entities) {
         final List<Group> list = new ArrayList<>(entities.size());
 
         for (final GroupEntity entity : entities) {

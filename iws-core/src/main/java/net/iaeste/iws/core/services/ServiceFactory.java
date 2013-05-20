@@ -55,8 +55,16 @@ public final class ServiceFactory {
         countryDao = new CountryJpaDao(entityManager);
     }
 
-    public AdministrationService prepareAdministrationService() {
-        return new AdministrationService(accessDao, notifications);
+    public AccountService prepareAccountService() {
+        return new AccountService(accessDao, notifications);
+    }
+
+    public GroupService prepareGroupService() {
+        return new GroupService(accessDao, notifications);
+    }
+
+    public CommitteeService prepareCommitteeService() {
+        return new CommitteeService();
     }
 
     public CountryService prepareCountryService() {
@@ -71,7 +79,7 @@ public final class ServiceFactory {
         return new FacultyService(entityManager);
     }
 
-    public ExchangeService prepareOfferService() {
+    public ExchangeService prepareExchangeService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager);
         return new ExchangeService(dao, notifications);
     }
@@ -83,9 +91,5 @@ public final class ServiceFactory {
 
     public AccessDao getAccessDao() {
         return accessDao;
-    }
-
-    public CommitteeService prepareCommitteeService() {
-        return new CommitteeService();
     }
 }

@@ -31,8 +31,9 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.core.services.AdministrationService;
+import net.iaeste.iws.core.services.AccountService;
 import net.iaeste.iws.core.services.CountryService;
+import net.iaeste.iws.core.services.GroupService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
 import org.slf4j.Logger;
@@ -72,7 +73,7 @@ public final class AdministrationController extends CommonController implements 
             final Authentication authentication = verifyAccess(token, Permission.CONTROL_USER_ACCOUNT);
             verify(request);
 
-            final AdministrationService service = factory.prepareAdministrationService();
+            final AccountService service = factory.prepareAccountService();
             response = service.createUser(authentication, request);
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
@@ -91,7 +92,7 @@ public final class AdministrationController extends CommonController implements 
         Fallible response;
 
         try {
-            final AdministrationService service = factory.prepareAdministrationService();
+            final AccountService service = factory.prepareAccountService();
             service.activateUser(activationString);
             response = new FallibleResponse();
         } catch (IWSException e) {
@@ -118,7 +119,7 @@ public final class AdministrationController extends CommonController implements 
             final Authentication authentication = verifyPrivateAccess(token);
             verify(request);
 
-            final AdministrationService service = factory.prepareAdministrationService();
+            final AccountService service = factory.prepareAccountService();
             service.controlUserAccount(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
@@ -144,7 +145,7 @@ public final class AdministrationController extends CommonController implements 
             final Authentication authentication = verifyPrivateAccess(token);
             verify(request);
 
-            final AdministrationService service = factory.prepareAdministrationService();
+            final AccountService service = factory.prepareAccountService();
             response = service.fetchUser(authentication, request);
         } catch (IWSException e) {
             response = new FetchUserResponse(e.getError(), e.getMessage());
@@ -166,7 +167,7 @@ public final class AdministrationController extends CommonController implements 
             verify(request);
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_SUB_GROUPS);
 
-            final AdministrationService service = factory.prepareAdministrationService();
+            final GroupService service = factory.prepareGroupService();
             service.processGroup(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
@@ -189,7 +190,7 @@ public final class AdministrationController extends CommonController implements 
             verify(request);
             final Authentication authentication = verifyAccess(token, Permission.DELETE_GROUP);
 
-            final AdministrationService service = factory.prepareAdministrationService();
+            final GroupService service = factory.prepareGroupService();
             service.deleteGroup(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
@@ -219,7 +220,7 @@ public final class AdministrationController extends CommonController implements 
             token.setGroupId(request.getGroupId());
             final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
 
-            final AdministrationService service = factory.prepareAdministrationService();
+            final GroupService service = factory.prepareGroupService();
             response = service.fetchGroup(authentication, request);
         } catch (IWSException e) {
             response = new FetchGroupResponse(e.getError(), e.getMessage());
@@ -242,7 +243,7 @@ public final class AdministrationController extends CommonController implements 
             token.setGroupId(request.getGroup().getGroupId());
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
 
-            final AdministrationService service = factory.prepareAdministrationService();
+            final GroupService service = factory.prepareGroupService();
             service.processUserGroupAssignment(authentication, request);
             response = new FetchGroupResponse();
         } catch (IWSException e) {

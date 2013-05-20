@@ -19,11 +19,14 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.*;
-import net.iaeste.iws.api.requests.exchange.FetchStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.exchange.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.exchange.StudentRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentResponse;
+import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.FacultyService;
@@ -286,8 +289,8 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageStudent(final AuthenticationToken token, final StudentRequest request) {
-        LOG.trace("Starting manageStudent()");
+    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
+        LOG.trace("Starting processStudent()");
         Fallible response;
 
         try {
@@ -301,7 +304,7 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchStudentResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished manageStudent()");
+        LOG.trace("Finished processStudent()");
         return response;
     }
 

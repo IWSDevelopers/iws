@@ -94,7 +94,7 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     // =========================================================================
-    // Assertion methods for setters, that throws IllegalArgumentExceptions
+    // Ensuring methods for setters, that throws IllegalArgumentExceptions
     // =========================================================================
 
     /**

@@ -26,14 +26,14 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.exchange.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.StudentRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
@@ -42,11 +42,11 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.FetchStudentApplicationsResponse;
-import net.iaeste.iws.api.responses.exchange.FetchStudentResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.StudentApplicationResponse;
+import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -322,11 +322,11 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible manageStudent(final AuthenticationToken token, final StudentRequest request) {
+    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
         Fallible response;
 
         try {
-            response = exchange.manageStudent(token, request);
+            response = exchange.processStudent(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

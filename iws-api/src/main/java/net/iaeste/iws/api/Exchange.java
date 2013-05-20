@@ -28,10 +28,6 @@ import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.exchange.FetchStudentsRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.exchange.StudentRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -39,12 +35,10 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.FetchStudentApplicationsResponse;
-import net.iaeste.iws.api.responses.exchange.FetchStudentResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.util.Students;
 
 import javax.ejb.Remote;
 
@@ -56,7 +50,7 @@ import javax.ejb.Remote;
  * @since   1.7
  */
 @Remote
-public interface Exchange {
+public interface Exchange extends Students {
 
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 
@@ -118,12 +112,4 @@ public interface Exchange {
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
 
     FetchPublishOfferResponse fetchPublishedOffer(AuthenticationToken token, FetchPublishOfferRequest request);
-
-    Fallible manageStudent(AuthenticationToken token, StudentRequest request);
-
-    FetchStudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
-
-    StudentApplicationResponse processStudentApplication(AuthenticationToken token, ProcessStudentApplicationsRequest request);
-
-    FetchStudentApplicationsResponse fetchStudentApplications(AuthenticationToken token, FetchStudentApplicationsRequest request);
 }

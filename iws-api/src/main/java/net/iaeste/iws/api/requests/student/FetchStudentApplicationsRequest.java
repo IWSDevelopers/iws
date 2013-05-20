@@ -12,8 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
-package net.iaeste.iws.api.requests.exchange;
+package net.iaeste.iws.api.requests.student;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
@@ -26,14 +25,12 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class FetchStudentApplicationsRequest extends AbstractVerification {
+public final class FetchStudentApplicationsRequest extends AbstractVerification {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String offerId = null;
-
-    /**
-     * {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}.
-     */
-    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -58,11 +55,10 @@ public class FetchStudentApplicationsRequest extends AbstractVerification {
      * IllegalArgument exception is thrown.
      *
      * @param offerId OfferId
+     * @throws IllegalArgumentException if the token is invalid
      */
-    public void setOfferId(final String offerId) {
-        if (offerId == null) {
-            throw new IllegalArgumentException("The OfferId value may not be null.");
-        }
+    public void setOfferId(final String offerId) throws IllegalArgumentException {
+        ensureValidId("offerId", offerId);
 
         this.offerId = offerId;
     }
@@ -71,7 +67,7 @@ public class FetchStudentApplicationsRequest extends AbstractVerification {
         return offerId;
     }
 
-// =========================================================================
+    // =========================================================================
     // Standard Request Methods
     // =========================================================================
 

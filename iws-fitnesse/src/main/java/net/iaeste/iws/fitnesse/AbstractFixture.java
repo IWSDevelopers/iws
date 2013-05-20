@@ -57,23 +57,18 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
         return response;
     }
 
-    public void setAuthenticationToken(String tokenString)
-    {
-        String token = readToken(tokenString);
-        String groupId = readGroupId(tokenString);
+    public void setAuthenticationToken(final String tokenString) {
+        final String token = readToken(tokenString);
+        final String groupId = readGroupId(tokenString);
 
-        if(groupId.equalsIgnoreCase("null"))
-        {
+        if ("null".equalsIgnoreCase(groupId)) {
             this.token = new AuthenticationToken(token);
-        }
-        else
-        {
+        } else {
             this.token = new AuthenticationToken(token, groupId);
         }
     }
 
-    public String getAuthenticationToken()
-    {
+    public String getAuthenticationToken() {
         return token.toString();
     }
 
@@ -305,7 +300,7 @@ abstract class AbstractFixture<T extends Fallible> implements Fixture {
 
     /**
      * Method deprecates session.
-     *
+     * <p/>
      * Deprecating session always finishes with success but the method can return false if user was not logged in.
      *
      * @return true if user was logged out after calling the method

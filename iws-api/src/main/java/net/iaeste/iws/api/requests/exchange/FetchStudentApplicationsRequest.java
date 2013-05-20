@@ -16,16 +16,15 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class FetchStudentApplicationsRequest extends AbstractVerification {
 

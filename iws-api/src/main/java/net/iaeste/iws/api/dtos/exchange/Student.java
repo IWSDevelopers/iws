@@ -47,9 +47,9 @@ public final class Student extends AbstractVerification {
     /**
      * Default Constructor.
      *
-     * @param studentId    Student Id
-     * @param studentName  Name of the Student
-     * @param group        National Group, which the student belongs to
+     * @param studentId   Student Id
+     * @param studentName Name of the Student
+     * @param group       National Group, which the student belongs to
      */
     public Student(final Long studentId, final String studentName, final Group group) {
         this.studentId = studentId;
@@ -63,7 +63,7 @@ public final class Student extends AbstractVerification {
      * @param student Student Object to copy
      */
     public Student(final Student student) {
-        if(student != null) {
+        if (student != null) {
             studentId = student.studentId;
             studentName = student.studentName;
             group = student.group;
@@ -121,21 +121,21 @@ public final class Student extends AbstractVerification {
      */
     @Override
     public boolean equals(final Object obj) {
-        if(this == obj) {
+        if (this == obj) {
             return true;
         }
 
-        if(!(obj instanceof Student)) {
+        if (!(obj instanceof Student)) {
             return false;
         }
 
         final Student student = (Student) obj;
 
-        if(studentId != null ? !studentId.equals(student.studentId) : student.studentId != null) {
+        if (studentId != null ? !studentId.equals(student.studentId) : student.studentId != null) {
             return false;
         }
 
-        if(group != null ? !group.equals(student.group) : student.group != null) {
+        if (group != null ? !group.equals(student.group) : student.group != null) {
             return false;
         }
 

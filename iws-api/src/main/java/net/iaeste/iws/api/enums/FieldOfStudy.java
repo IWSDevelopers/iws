@@ -14,7 +14,9 @@
  */
 package net.iaeste.iws.api.enums;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Defines all Fields of Study together with their Specializations

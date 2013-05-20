@@ -389,13 +389,47 @@ public final class ExchangeController extends CommonController implements Exchan
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StudentApplicationResponse processStudentApplication(AuthenticationToken token, ProcessStudentApplicationsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+    public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
+        LOG.trace("Starting processStudentApplication()");
+        StudentApplicationResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT_APPLICATION);
+            verify(request);
+
+            final ExchangeService service = factory.prepareOfferService();
+            response = service.processStudentApplication(authentication, request);
+        } catch (IWSException e) {
+            response = new StudentApplicationResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished processStudentApplication()");
+        return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public FetchStudentApplicationsResponse fetchStudentApplications(AuthenticationToken token, FetchStudentApplicationsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+    public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
+        LOG.trace("Starting fetchStudentApplications()");
+        FetchStudentApplicationsResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_STUDENT_APPLICATION);
+            verify(request);
+
+            final ExchangeService service = factory.prepareOfferService();
+            response = service.fetchStudentApplications(authentication, request);
+        } catch (IWSException e) {
+            response = new FetchStudentApplicationsResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished fetchStudentApplications()");
+        return response;
     }
 }

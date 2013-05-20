@@ -15,11 +15,18 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.*;
+import net.iaeste.iws.api.enums.ApplicationStatus;
+import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.enums.Specialization;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Contains information about a Student applying for an Offer

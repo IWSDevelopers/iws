@@ -327,7 +327,7 @@ public final class AdministrationService extends CommonService {
     }
 
     public void deleteGroup(final Authentication authentication, final GroupRequest request) {
-        throw new NotImplementedException("Awaiting implementation");
+        throw new NotImplementedException("Awaiting implementation, see ticket #278.");
     }
 
     /**

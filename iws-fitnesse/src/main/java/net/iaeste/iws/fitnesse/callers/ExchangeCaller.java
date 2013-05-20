@@ -16,9 +16,35 @@ package net.iaeste.iws.fitnesse.callers;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.exchange.*;
-import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.FacultyRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.exchange.FetchFacultiesRequest;
+import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
+import net.iaeste.iws.api.requests.exchange.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.requests.exchange.StudentRequest;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
+import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
+import net.iaeste.iws.api.responses.exchange.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.exchange.FetchStudentResponse;
+import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.api.responses.exchange.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -218,13 +244,27 @@ public final class ExchangeCaller implements Exchange {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StudentApplicationResponse processStudentApplication(AuthenticationToken token, ProcessStudentApplicationsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+    public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
+        try {
+            return caller.processStudentApplication(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public FetchStudentApplicationsResponse fetchStudentApplications(AuthenticationToken token, FetchStudentApplicationsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+    public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
+        try {
+            return caller.fetchStudentApplications(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
     }
 }

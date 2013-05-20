@@ -78,7 +78,6 @@ import javax.persistence.PersistenceContext;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyCoupledClass
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

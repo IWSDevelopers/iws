@@ -38,7 +38,7 @@ import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.api.util.Students;
+import net.iaeste.iws.api.util.Student;
 
 import javax.ejb.Remote;
 
@@ -50,7 +50,7 @@ import javax.ejb.Remote;
  * @since   1.7
  */
 @Remote
-public interface Exchange extends Students {
+public interface Exchange extends Student {
 
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 

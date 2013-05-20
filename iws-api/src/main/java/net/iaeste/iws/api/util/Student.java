@@ -31,7 +31,7 @@ import javax.ejb.Remote;
  * @since 1.7
  */
 @Remote
-public interface Students {
+public interface Student {
 
     Fallible processStudent(AuthenticationToken token, StudentRequest request);
 

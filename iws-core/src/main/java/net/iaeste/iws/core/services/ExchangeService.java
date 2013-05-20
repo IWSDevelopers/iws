@@ -15,8 +15,8 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.GroupType;
@@ -31,10 +31,8 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
@@ -43,9 +41,7 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.OfferTransformer;
@@ -67,9 +63,9 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class ExchangeService extends CommonService {
 
@@ -358,8 +354,8 @@ public final class ExchangeService extends CommonService {
     }
 
     private void verifyGroupTypeToBeShareTo(final List<GroupEntity> groups) {
-        for(final GroupEntity group : groups) {
-            if(group.getGroupType().getGrouptype() != GroupType.NATIONAL && group.getGroupType().getGrouptype() != GroupType.SAR) {
+        for (final GroupEntity group : groups) {
+            if (group.getGroupType().getGrouptype() != GroupType.NATIONAL && group.getGroupType().getGrouptype() != GroupType.SAR) {
                 throw new VerificationException("The group type '" + group.getGroupType().getGrouptype() + "' is not allowed to be used for publishing of offers.");
             }
         }
@@ -381,10 +377,11 @@ public final class ExchangeService extends CommonService {
 
     private void publishOffer(final Authentication authentication, final List<OfferEntity> offers, final List<GroupEntity> groups, final Date nominationDeadline) {
         for (final OfferEntity offer : offers) {
-            if (groups.size() > 0) {
+            if (!groups.isEmpty()) {
                 offer.setStatus(OfferState.SHARED);
-                if(nominationDeadline != null)
+                if (nominationDeadline != null) {
                     offer.setNominationDeadline(nominationDeadline.toDate());
+                }
 
                 dao.persist(authentication, offer);
             }
@@ -416,13 +413,5 @@ public final class ExchangeService extends CommonService {
         response = new FetchPublishOfferResponse(result);
 
         return response;
-    }
-
-    public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
-    }
-
-    public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
     }
 }

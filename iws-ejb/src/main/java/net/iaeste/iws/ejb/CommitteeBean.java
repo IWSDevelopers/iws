@@ -95,7 +95,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
     }
 
     // =========================================================================
-    // Implementation of methods from CommitteeRemote (Committees in API)
+    // Implementation of methods from Committees in the API
     // =========================================================================
 
     /**

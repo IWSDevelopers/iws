@@ -103,7 +103,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
     }
 
     // =========================================================================
-    // Implementation of methods from AccessRemote (Access in API)
+    // Implementation of methods from Administration in the API
     // =========================================================================
 
     /**

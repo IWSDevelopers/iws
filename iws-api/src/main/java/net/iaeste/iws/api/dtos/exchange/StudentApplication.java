@@ -54,21 +54,21 @@ public final class StudentApplication extends AbstractVerification {
     private ApplicationStatus status = null;
 
     // TODO complete implementation
-    private String homeAddress;
-    private String email; // should be copied for an application if a student wants to use a different address for login
-    private String phoneNumber;
-    private String addressDuringTerms;
-    private Date dateOfBirth;
-    private String placeOfBirth;
-    private String passportNumber;
-    private String passportPlaceOfIssue;
-    private String passportValidUntil;
+    private String homeAddress = null;
+    private String email = null; // should be copied for an application if a student wants to use a different address for login
+    private String phoneNumber = null;
+    private String addressDuringTerms = null;
+    private Date dateOfBirth = null;
+    private String placeOfBirth = null;
+    private String passportNumber = null;
+    private String passportPlaceOfIssue = null;
+    private String passportValidUntil = null;
 
-    private String university;
+    private String university = null;
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
     private Set<Specialization> specializations = EnumSet.noneOf(Specialization.class);
-    private Integer completedYearsOfStudy;
-    private Integer totalYearsOfStudy;
+    private Integer completedYearsOfStudy = null;
+    private Integer totalYearsOfStudy = null;
     private Language language1 = null;
     private LanguageLevel language1Level = null;
     private Language language2 = null;
@@ -76,12 +76,12 @@ public final class StudentApplication extends AbstractVerification {
     private Language language3 = null;
     private LanguageLevel language3Level = null;
 
-    private Date internshipStart;
-    private Date internshipEnd;
-    private boolean lodgingByIaeste;
+    private Date internshipStart = null;
+    private Date internshipEnd = null;
+    private boolean lodgingByIaeste = false;
 
-    private StudentAcceptance acceptance;
-    private StudentAcceptanceConfirmation travelInformation;
+    private StudentAcceptance acceptance = null;
+    private StudentAcceptanceConfirmation travelInformation = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required

@@ -121,7 +121,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     }
 
     // =========================================================================
-    // Implementation of methods from CommitteeRemote (Committees in API)
+    // Implementation of methods from Exchange in the API
     // =========================================================================
 
     /**

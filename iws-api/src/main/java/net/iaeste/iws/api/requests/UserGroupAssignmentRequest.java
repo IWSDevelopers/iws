@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.util.AbstractVerification;
 
@@ -38,6 +39,9 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
     /** The group to which the user will be added.**/
     private Group group = null;
 
+    /** The role which te user will be given in the Group. */
+    private Role role = null;
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
@@ -46,20 +50,37 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
     }
 
     /**
-     * TODO correct javadoc
+     *
      * @param user
      * @param group
+     * @deprecated since the role is missing.
      */
+    @Deprecated
     public UserGroupAssignmentRequest(final User user, final Group group) {
         this.user = new User(user);
         this.group = group;
+    }
+
+    /**
+     * Default Constructor.
+     *
+     * @param user  User
+     * @param group Group
+     * @param role  Role
+     */
+    public UserGroupAssignmentRequest(final User user, final Group group, final Role role) {
+        this.user = new User(user);
+        this.group = group;
+        this.role = role;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUser(final User user) {
+    public void setUser(final User user) throws IllegalArgumentException {
+        ensureNotNull("user", user);
+
         this.user = user;
     }
 
@@ -67,12 +88,24 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
         return user;
     }
 
-    public void setGroup(final Group group) {
+    public void setGroup(final Group group) throws IllegalArgumentException {
+        ensureNotNull("group", group);
+
         this.group = group;
     }
 
     public Group getGroup() {
         return group;
+    }
+
+    public void setRole(final Role role) throws IllegalArgumentException {
+        ensureNotNull("role", role);
+
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     // =========================================================================
@@ -85,6 +118,12 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "user", user);
+        isNotNull(validation, "group", group);
+        // TODO Correct the tests that uses this logic, so the commented line can be added again
+        //isNotNull(validation, "role", role);
+
         return validation;
     }
 }

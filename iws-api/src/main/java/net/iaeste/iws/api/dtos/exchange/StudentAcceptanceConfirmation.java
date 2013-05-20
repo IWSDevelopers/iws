@@ -14,23 +14,23 @@ public class StudentAcceptanceConfirmation {
 
     // TODO implement
 
-    private String applicationId;
+    private String applicationId = null;
 
-    private Date departure;
-    private TransportationType transportationType;
+    private Date departure = null;
+    private TransportationType transportationType = null;
 
-    private String departureFrom;
-    private String transportNumber;
+    private String departureFrom = null;
+    private String transportNumber = null;
 
-    private Date arrivalDateTime;
-    private String phoneNumberDuringTravel;
+    private Date arrivalDateTime = null;
+    private String phoneNumberDuringTravel = null;
 
-    private Date lodgingRequiredFrom;
-    private Date lodgingRequiredTo;
+    private Date lodgingRequiredFrom = null;
+    private Date lodgingRequiredTo = null;
 
-    private String otherInformation; // allow up to 5000 characters
+    private String otherInformation = null; // allow up to 5000 characters
 
-    private String insuranceCompany;
-    private String insuranceReceiptNumber;
+    private String insuranceCompany = null;
+    private String insuranceReceiptNumber = null;
 
 }

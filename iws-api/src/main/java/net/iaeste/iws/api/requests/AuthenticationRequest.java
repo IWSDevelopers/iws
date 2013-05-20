@@ -58,7 +58,9 @@ public final class AuthenticationRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUsername(final String username) {
+    public void setUsername(final String username) throws IllegalArgumentException {
+        ensureNotNullOrEmpty("username", username);
+
         this.username = username;
     }
 
@@ -66,7 +68,9 @@ public final class AuthenticationRequest extends AbstractVerification {
         return username;
     }
 
-    public void setPassword(final String password) {
+    public void setPassword(final String password) throws IllegalArgumentException {
+        ensureNotNullOrEmpty("password", password);
+
         this.password = password;
     }
 

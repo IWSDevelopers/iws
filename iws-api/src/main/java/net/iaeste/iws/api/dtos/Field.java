@@ -26,15 +26,15 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class Field<T extends Serializable> implements Serializable {
+public final class Field implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     // The field information; Name of the field with the old and new values
     private String field = null;
-    private T oldValue = null;
-    private T newValue = null;
+    private String oldValue = null;
+    private String newValue = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -63,7 +63,7 @@ public final class Field<T extends Serializable> implements Serializable {
      * @param oldValue The old value of the Field
      * @param newValue The new value of the Field
      */
-    public Field(final String field, final T oldValue, final T newValue) {
+    public Field(final String field, final String oldValue, final String newValue) {
         this.field = field;
         this.oldValue = oldValue;
         this.newValue = newValue;
@@ -74,7 +74,7 @@ public final class Field<T extends Serializable> implements Serializable {
      *
      * @param field Field Object to copy
      */
-    public Field(final Field<T> field) {
+    public Field(final Field field) {
         if (field != null) {
             this.field = field.field;
             this.oldValue = field.oldValue;
@@ -109,7 +109,7 @@ public final class Field<T extends Serializable> implements Serializable {
      *
      * @param oldValue  Old field value
      */
-    public void setOldValue(final T oldValue) {
+    public void setOldValue(final String oldValue) {
         this.oldValue = oldValue;
     }
 
@@ -118,7 +118,7 @@ public final class Field<T extends Serializable> implements Serializable {
      *
      * @return Old field value
      */
-    public T getOldValue() {
+    public String getOldValue() {
         return oldValue;
     }
 
@@ -127,7 +127,7 @@ public final class Field<T extends Serializable> implements Serializable {
      *
      * @param newValue New field value
      */
-    public void setNewValue(final T newValue) {
+    public void setNewValue(final String newValue) {
         this.newValue = newValue;
     }
 
@@ -136,7 +136,7 @@ public final class Field<T extends Serializable> implements Serializable {
      *
      * @return New field value
      */
-    public T getNewValue() {
+    public String getNewValue() {
         return newValue;
     }
 
@@ -157,7 +157,7 @@ public final class Field<T extends Serializable> implements Serializable {
             return false;
         }
 
-        final Field<T> other = (Field<T>) obj;
+        final Field other = (Field) obj;
 
         if (field != null ? !field.equals(other.field) : other.field != null) {
             return false;

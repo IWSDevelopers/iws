@@ -98,7 +98,7 @@ public class AccessBean extends AbstractBean implements Access {
     }
 
     // =========================================================================
-    // Implementation of methods from AccessRemote (Access in API)
+    // Implementation of methods from Access in the API
     // =========================================================================
 
     /**

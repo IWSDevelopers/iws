@@ -204,7 +204,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         final List<String> offersExternalId = new ArrayList<>();
         offersExternalId.add(sharedOffer.getId());
         final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offersExternalId);
-        final FetchPublishOfferResponse fetchPublishResponse1 = exchange.fetchPublishedOfferInfo(token, fetchPublishRequest);
+        final FetchPublishOfferResponse fetchPublishResponse1 = exchange.fetchPublishedOffer(token, fetchPublishRequest);
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
@@ -224,7 +224,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         final PublishOfferResponse publishResponse2 = exchange.processPublishOffer(token, publishRequest2);
 
         assertThat(publishResponse2.isOk(), is(true));
-        final FetchPublishOfferResponse fetchPublishResponse2 = exchange.fetchPublishedOfferInfo(token, fetchPublishRequest);
+        final FetchPublishOfferResponse fetchPublishResponse2 = exchange.fetchPublishedOffer(token, fetchPublishRequest);
         assertThat(fetchPublishResponse2.isOk(), is(true));
         offerGroupsSharedTo = fetchPublishResponse2.getOffersGroups().get(offersExternalId.get(0));
 

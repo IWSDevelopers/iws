@@ -24,13 +24,13 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.exchange.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.requests.exchange.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.exchange.StudentRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
@@ -49,7 +49,7 @@ import net.iaeste.iws.api.util.Fallible;
 import javax.ejb.Remote;
 
 /**
- * ToDo Kim; Add JavaDoc for all requests.
+ * ToDo by Kim; Add JavaDoc for all requests.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -60,8 +60,34 @@ public interface Exchange {
 
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 
+    /**
+     * Method is deprecated, since we're dealing with Faculties directly in the
+     * Code, meaning that we're not using the Database to control the allowed
+     * Faculties.<br />
+     *   Functionality is pending complete removal.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Faculty Request Object
+     * @return Standard Error object
+     * @deprecated functionality is considered obsolete
+     */
+    @Deprecated
     Fallible manageFaculties(AuthenticationToken token, FacultyRequest request);
 
+    /**
+     * Method is deprecated, since we're dealing with Faculties directly in the
+     * Code, meaning that we're not using the Database to control the allowed
+     * Faculties.<br />
+     *   Functionality is pending complete removal.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Fetch Faculties Request Object
+     * @return Fetch Faculty Response Object
+     * @deprecated functionality is considered obsolete
+     */
+    @Deprecated
     FetchFacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
 
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
@@ -70,17 +96,9 @@ public interface Exchange {
 
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
-    Fallible manageOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
+    Fallible processOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
 
     FetchOfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
-
-    Fallible managePublishGroup(AuthenticationToken token, PublishGroupRequest request);
-
-    FetchPublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
-
-    Fallible manageStudent(AuthenticationToken token, StudentRequest request);
-
-    FetchStudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
 
     /**
      * Retrieves a list of all national groups. This is mainly needed in the
@@ -93,13 +111,17 @@ public interface Exchange {
      */
     FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request);
 
+    Fallible managePublishGroup(AuthenticationToken token, PublishGroupRequest request);
+
+    FetchPublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
+
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
 
-    FetchPublishOfferResponse fetchPublishedOfferInfo(AuthenticationToken token, FetchPublishOfferRequest request);
+    FetchPublishOfferResponse fetchPublishedOffer(AuthenticationToken token, FetchPublishOfferRequest request);
 
-    /*
-    STUDENT APPLICATION
-     */
+    Fallible manageStudent(AuthenticationToken token, StudentRequest request);
+
+    FetchStudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
 
     StudentApplicationResponse processStudentApplication(AuthenticationToken token, ProcessStudentApplicationsRequest request);
 

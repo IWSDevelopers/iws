@@ -148,6 +148,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     @Interceptors(Profiler.class)
     public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
         Fallible response;
@@ -167,6 +168,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     @Interceptors(Profiler.class)
     public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         FetchFacultyResponse response;
@@ -244,11 +246,11 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         Fallible response;
 
         try {
-            response = exchange.manageOfferTemplate(token, request);
+            response = exchange.processOfferTemplate(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -396,11 +398,11 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
-    public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {
+    public FetchPublishOfferResponse fetchPublishedOffer(final AuthenticationToken token, final FetchPublishOfferRequest request) {
         FetchPublishOfferResponse response;
 
         try {
-            response = exchange.fetchPublishedOfferInfo(token, request);
+            response = exchange.fetchPublishedOffer(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

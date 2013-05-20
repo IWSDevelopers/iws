@@ -76,6 +76,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
         return client.manageFaculties(token, request);
     }
@@ -84,6 +85,7 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         return client.fetchFaculties(token, request);
     }
@@ -116,8 +118,8 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
-        return client.manageOfferTemplate(token, request);
+    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+        return client.processOfferTemplate(token, request);
     }
 
     /**
@@ -180,8 +182,8 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {
-        return client.fetchPublishedOfferInfo(token, request);
+    public FetchPublishOfferResponse fetchPublishedOffer(final AuthenticationToken token, final FetchPublishOfferRequest request) {
+        return client.fetchPublishedOffer(token, request);
     }
 
     @Override

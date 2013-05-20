@@ -80,6 +80,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
         try {
             return caller.manageFaculties(token, request);
@@ -92,6 +93,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         try {
             return caller.fetchFaculties(token, request);
@@ -140,9 +142,9 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         try {
-            return caller.manageOfferTemplate(token, request);
+            return caller.processOfferTemplate(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -236,9 +238,9 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {
+    public FetchPublishOfferResponse fetchPublishedOffer(final AuthenticationToken token, final FetchPublishOfferRequest request) {
         try {
-            return caller.fetchPublishedOfferInfo(token, request);
+            return caller.fetchPublishedOffer(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

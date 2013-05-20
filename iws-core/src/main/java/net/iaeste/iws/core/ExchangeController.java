@@ -18,8 +18,11 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.exchange.*;
+import net.iaeste.iws.api.requests.exchange.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.exchange.StudentRequest;
 import net.iaeste.iws.api.responses.exchange.*;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ExchangeService;
@@ -79,6 +82,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
         LOG.trace("Starting manageFaculties()");
         Fallible response;
@@ -102,6 +106,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
         LOG.trace("Starting fetchFaculties()");
         FetchFacultyResponse response;
@@ -191,8 +196,8 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible manageOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
-        LOG.trace("Starting manageOfferTemplate()");
+    public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
+        LOG.trace("Starting processOfferTemplate()");
         Fallible response;
 
         try {
@@ -206,7 +211,7 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchOfferTemplateResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished manageOfferTemplate()");
+        LOG.trace("Finished processOfferTemplate()");
         return response;
     }
 
@@ -371,8 +376,8 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishOfferResponse fetchPublishedOfferInfo(final AuthenticationToken token, final FetchPublishOfferRequest request) {
-        LOG.trace("Starting fetchPublishedOfferInfo()");
+    public FetchPublishOfferResponse fetchPublishedOffer(final AuthenticationToken token, final FetchPublishOfferRequest request) {
+        LOG.trace("Starting fetchPublishedOffer()");
         FetchPublishOfferResponse response;
 
         try {
@@ -385,7 +390,7 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchPublishOfferResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchPublishedOfferInfo()");
+        LOG.trace("Finished fetchPublishedOffer()");
         return response;
     }
 

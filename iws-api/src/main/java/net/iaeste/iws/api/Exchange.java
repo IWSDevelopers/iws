@@ -38,7 +38,6 @@ import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.api.util.Student;
 
 import javax.ejb.Remote;
 

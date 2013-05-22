@@ -24,7 +24,7 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.api.util.Student;
+import net.iaeste.iws.api.Student;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 

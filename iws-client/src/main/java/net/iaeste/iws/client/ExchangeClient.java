@@ -17,9 +17,7 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FacultyRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -30,7 +28,6 @@ import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -63,24 +60,6 @@ public final class ExchangeClient implements Exchange {
     @Override
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         return client.fetchEmployers(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        return client.manageFaculties(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
-        return client.fetchFaculties(token, request);
     }
 
     /**

@@ -19,9 +19,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FacultyRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -32,7 +30,6 @@ import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -42,7 +39,6 @@ import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ExchangeService;
-import net.iaeste.iws.core.services.FacultyService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
 import org.slf4j.Logger;
@@ -89,53 +85,6 @@ public final class ExchangeController extends CommonController implements Exchan
         }
 
         LOG.trace("Finished fetchEmployers()");
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        LOG.trace("Starting manageFaculties()");
-        Fallible response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_FACULTIES);
-            verify(request);
-
-            final FacultyService service = factory.prepareFacultyService();
-            service.processFaculties(authentication, request);
-            response = new FetchFacultyResponse();
-        } catch (IWSException e) {
-            response = new FetchFacultyResponse(e.getError(), e.getMessage());
-        }
-
-        LOG.trace("Finished manageFaculties()");
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
-        LOG.trace("Starting fetchFaculties()");
-        FetchFacultyResponse response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_FACULTIES);
-            verify(request);
-
-            final FacultyService service = factory.prepareFacultyService();
-            response = service.fetchFaculties(authentication, request);
-        } catch (IWSException e) {
-            response = new FetchFacultyResponse(e.getError(), e.getMessage());
-        }
-
-        LOG.trace("Finished fetchFaculties()");
         return response;
     }
 

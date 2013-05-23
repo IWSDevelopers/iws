@@ -18,9 +18,7 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FacultyRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -32,7 +30,6 @@ import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -131,46 +128,6 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
             response = new FetchEmployerInformationResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    @Interceptors(Profiler.class)
-    public Fallible manageFaculties(final AuthenticationToken token, final FacultyRequest request) {
-        Fallible response;
-
-        try {
-            response = controller.manageFaculties(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    @Interceptors(Profiler.class)
-    public FetchFacultyResponse fetchFaculties(final AuthenticationToken token, final FetchFacultiesRequest request) {
-        FetchFacultyResponse response;
-
-        try {
-            response = controller.fetchFaculties(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new FetchFacultyResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

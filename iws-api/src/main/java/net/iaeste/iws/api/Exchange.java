@@ -16,9 +16,7 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FacultyRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchFacultiesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -29,7 +27,6 @@ import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -52,36 +49,6 @@ import javax.ejb.Remote;
 public interface Exchange {
 
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
-
-    /**
-     * Method is deprecated, since we're dealing with Faculties directly in the
-     * Code, meaning that we're not using the Database to control the allowed
-     * Faculties.<br />
-     *   Functionality is pending complete removal.
-     *
-     * @param token   Authentication information about the user invoking the
-     *                request
-     * @param request Faculty Request Object
-     * @return Standard Error object
-     * @deprecated functionality is considered obsolete
-     */
-    @Deprecated
-    Fallible manageFaculties(AuthenticationToken token, FacultyRequest request);
-
-    /**
-     * Method is deprecated, since we're dealing with Faculties directly in the
-     * Code, meaning that we're not using the Database to control the allowed
-     * Faculties.<br />
-     *   Functionality is pending complete removal.
-     *
-     * @param token   Authentication information about the user invoking the
-     *                request
-     * @param request Fetch Faculties Request Object
-     * @return Fetch Faculty Response Object
-     * @deprecated functionality is considered obsolete
-     */
-    @Deprecated
-    FetchFacultyResponse fetchFaculties(AuthenticationToken token, FetchFacultiesRequest request);
 
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 

@@ -75,10 +75,6 @@ public final class ServiceFactory {
         return new AccessService(accessDao, notifications);
     }
 
-    public FacultyService prepareFacultyService() {
-        return new FacultyService(entityManager);
-    }
-
     public ExchangeService prepareExchangeService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager);
         return new ExchangeService(dao, notifications);

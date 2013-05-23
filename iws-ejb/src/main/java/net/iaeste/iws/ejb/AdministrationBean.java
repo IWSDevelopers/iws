@@ -69,7 +69,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
     private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
-    private Administration administration = null;
+    private Administration controller = null;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
@@ -99,7 +99,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
     @Override
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager.getNotifications());
-        administration = new AdministrationController(factory);
+        controller = new AdministrationController(factory);
     }
 
     // =========================================================================
@@ -115,7 +115,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         Fallible response;
 
         try {
-            response = administration.createUser(token, request);
+            response = controller.createUser(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -134,7 +134,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         Fallible response;
 
         try {
-            response = administration.activateUser(activationString);
+            response = controller.activateUser(activationString);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -153,7 +153,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         Fallible response;
 
         try {
-            response = administration.controlUserAccount(token, request);
+            response = controller.controlUserAccount(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -172,7 +172,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         FetchUserResponse response;
 
         try {
-            response = administration.fetchUser(token, request);
+            response = controller.fetchUser(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -191,7 +191,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         Fallible response;
 
         try {
-            response = administration.processGroup(token, request);
+            response = controller.processGroup(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -210,7 +210,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         Fallible response;
 
         try {
-            response = administration.deleteGroup(token, request);
+            response = controller.deleteGroup(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -229,7 +229,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         FetchGroupResponse response;
 
         try {
-            response = administration.fetchGroup(token, request);
+            response = controller.fetchGroup(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -248,7 +248,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         Fallible response;
 
         try {
-            response = administration.processCountries(token, request);
+            response = controller.processCountries(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -267,7 +267,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         FetchCountryResponse response;
 
         try {
-            response = administration.fetchCountries(token, request);
+            response = controller.fetchCountries(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -286,7 +286,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
         Fallible response;
 
         try {
-            response = administration.processUserGroupAssignment(token, request);
+            response = controller.processUserGroupAssignment(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

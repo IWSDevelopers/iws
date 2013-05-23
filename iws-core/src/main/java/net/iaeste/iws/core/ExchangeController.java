@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class ExchangeController extends StudentController implements Exchange {
+public final class ExchangeController extends CommonController implements Exchange {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeController.class);
     private final ServiceFactory factory;
@@ -65,8 +65,7 @@ public final class ExchangeController extends StudentController implements Excha
      * @param factory The ServiceFactory
      */
     public ExchangeController(final ServiceFactory factory) {
-        //super(factory.getAccessDao());
-        super(factory);
+        super(factory.getAccessDao());
 
         this.factory = factory;
     }

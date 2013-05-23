@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.CommitteeBean
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.StudentBean
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,15 +14,19 @@
  */
 package net.iaeste.iws.ejb;
 
-import net.iaeste.iws.api.Committees;
+import net.iaeste.iws.api.Student;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.CommitteeRequest;
-import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.RegionalGroupRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentResponse;
+import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.core.CommitteeController;
+import net.iaeste.iws.core.StudentController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
@@ -39,9 +43,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Committee Bean, serves as the default EJB for the IWS Committee interface.
- * It uses JDNI instances for the Persistence Context and the Notification
- * Manager Bean.<br />
+ * Exchange Bean, serves as the default EJB for the IWS Exchange interface. It
+ * uses JDNI instances for the Persistence Context and the Notification Manager
+ * Bean.<br />
  *   The default implemenentation will catch any uncaught Exception. However,
  * there are some types of Exceptions that should be handled by the Contained,
  * and not by our error handling. Thus, only Runtime exceptions are caught. If
@@ -56,12 +60,12 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class CommitteeBean extends AbstractBean implements Committees {
+public class StudentBean extends AbstractBean implements Student {
 
     private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
-    private Committees controller = null;
+    private Student controller = null;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
@@ -91,11 +95,11 @@ public class CommitteeBean extends AbstractBean implements Committees {
     @Override
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager.getNotifications());
-        controller = new CommitteeController(factory);
+        controller = new StudentController(factory);
     }
 
     // =========================================================================
-    // Implementation of methods from Committees in the API
+    // Implementation of methods from Student in the API
     // =========================================================================
 
     /**
@@ -103,11 +107,11 @@ public class CommitteeBean extends AbstractBean implements Committees {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible createCommittee(final AuthenticationToken token, final CommitteeRequest request) {
+    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
         Fallible response;
 
         try {
-            response = controller.createCommittee(token, request);
+            response = controller.processStudent(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -122,15 +126,15 @@ public class CommitteeBean extends AbstractBean implements Committees {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible manageCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        Fallible response;
+    public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+        FetchStudentResponse response;
 
         try {
-            response = controller.manageCommittee(token, request);
+            response = controller.fetchStudents(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new FetchStudentResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -141,15 +145,15 @@ public class CommitteeBean extends AbstractBean implements Committees {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible upgradeCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        Fallible response;
+    public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
+        StudentApplicationResponse response;
 
         try {
-            response = controller.upgradeCommittee(token, request);
+            response = controller.processStudentApplication(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;
@@ -160,53 +164,15 @@ public class CommitteeBean extends AbstractBean implements Committees {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible manageInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
-        Fallible response;
+    public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
+        FetchStudentApplicationsResponse response;
 
         try {
-            response = controller.manageInternationalGroup(token, request);
+            response = controller.fetchStudentApplications(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public Fallible createRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        Fallible response;
-
-        try {
-            response = controller.createRegionalGroup(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public Fallible manageRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        Fallible response;
-
-        try {
-            response = controller.manageRegionalGroup(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new FetchStudentApplicationsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

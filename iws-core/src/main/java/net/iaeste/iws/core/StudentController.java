@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class StudentController extends CommonController implements Student {
+public final class StudentController extends CommonController implements Student {
 
     private static final Logger LOG = LoggerFactory.getLogger(StudentController.class);
     private final ServiceFactory factory;

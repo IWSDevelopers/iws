@@ -26,14 +26,10 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchFacultyResponse;
@@ -42,11 +38,8 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
-import net.iaeste.iws.api.responses.student.FetchStudentResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
-import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -87,7 +80,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
-    private Exchange exchange = null;
+    private Exchange controller = null;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
@@ -117,7 +110,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager.getNotifications());
-        exchange = new ExchangeController(factory);
+        controller = new ExchangeController(factory);
     }
 
     // =========================================================================
@@ -133,7 +126,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         FetchEmployerInformationResponse response;
 
         try {
-            response = exchange.fetchEmployers(token, request);
+            response = controller.fetchEmployers(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -153,7 +146,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         Fallible response;
 
         try {
-            response = exchange.manageFaculties(token, request);
+            response = controller.manageFaculties(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -173,7 +166,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         FetchFacultyResponse response;
 
         try {
-            response = exchange.fetchFaculties(token, request);
+            response = controller.fetchFaculties(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -192,7 +185,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         OfferResponse response;
 
         try {
-            response = exchange.processOffer(token, request);
+            response = controller.processOffer(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -211,7 +204,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         OfferResponse response;
 
         try {
-            response = exchange.deleteOffer(token, request);
+            response = controller.deleteOffer(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -230,7 +223,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         FetchOffersResponse response;
 
         try {
-            response = exchange.fetchOffers(token, request);
+            response = controller.fetchOffers(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -249,7 +242,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         Fallible response;
 
         try {
-            response = exchange.processOfferTemplate(token, request);
+            response = controller.processOfferTemplate(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -268,7 +261,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         FetchOfferTemplateResponse response;
 
         try {
-            response = exchange.fetchOfferTemplates(token, request);
+            response = controller.fetchOfferTemplates(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -287,7 +280,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         Fallible response;
 
         try {
-            response = exchange.managePublishGroup(token, request);
+            response = controller.managePublishGroup(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -306,7 +299,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         FetchPublishGroupResponse response;
 
         try {
-            response = exchange.fetchPublishGroups(token, request);
+            response = controller.fetchPublishGroups(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -321,49 +314,11 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
-        Fallible response;
-
-        try {
-            response = exchange.processStudent(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        FetchStudentResponse response;
-
-        try {
-            response = exchange.fetchStudents(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new FetchStudentResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
         FetchGroupsForSharingResponse response;
 
         try {
-            response = exchange.fetchGroupsForSharing(token, request);
+            response = controller.fetchGroupsForSharing(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -382,7 +337,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         PublishOfferResponse response;
 
         try {
-            response = exchange.processPublishOffer(token, request);
+            response = controller.processPublishOffer(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -401,49 +356,11 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         FetchPublishOfferResponse response;
 
         try {
-            response = exchange.fetchPublishedOffer(token, request);
+            response = controller.fetchPublishedOffer(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
             response = new FetchPublishOfferResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
-        StudentApplicationResponse response;
-
-        try {
-            response = exchange.processStudentApplication(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
-        FetchStudentApplicationsResponse response;
-
-        try {
-            response = exchange.fetchStudentApplications(token, request);
-            LOG.info(generateResponseLog(response));
-        } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
-            response = new FetchStudentApplicationsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

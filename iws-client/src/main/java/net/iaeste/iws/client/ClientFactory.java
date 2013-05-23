@@ -18,6 +18,7 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.Student;
 import net.iaeste.iws.client.spring.Beans;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -26,7 +27,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * The ClientFactory will use the provided Properties, to determine which
  * instance or implementation of IWS to use for external testing.<br />
  *   Class is made package private, since it is only suppose to be used by the
- * actual Client Classes in this package.
+ * actual Client Classes in this package.<br />
+ *   Note, rather than public, the methods are package private, since this class
+ * is only supposed to be used by other Classes in this package.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -59,7 +62,7 @@ public final class ClientFactory {
      *
      * @return Client Settings instance
      */
-    public static ClientFactory getInstance() {
+    static ClientFactory getInstance() {
         synchronized (LOCK) {
             if (instance == null) {
                 instance = new ClientFactory();
@@ -73,19 +76,23 @@ public final class ClientFactory {
     // IWS API Implementations
     // =========================================================================
 
-    public Access getAccessImplementation() {
+    Access getAccessImplementation() {
         return (Access) context.getBean("accessSpringClient");
     }
 
-    public Administration getAdministrationImplementation() {
+    Administration getAdministrationImplementation() {
         return (Administration) context.getBean("administrationSpringClient");
     }
 
-    public Exchange getExchangeImplementation() {
+    Committees getCommitteeImplementation() {
+        return (Committees) context.getBean("committeeSpringClient");
+    }
+
+    Exchange getExchangeImplementation() {
         return (Exchange) context.getBean("exchangeSpringClient");
     }
 
-    public Committees getCommitteeImplementation() {
-        return (Committees) context.getBean("committeeSpringClient");
+    Student getStudentImplementation() {
+        return (Student) context.getBean("studentSpringClient");
     }
 }

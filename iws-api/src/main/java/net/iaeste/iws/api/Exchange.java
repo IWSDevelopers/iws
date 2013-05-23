@@ -49,7 +49,7 @@ import javax.ejb.Remote;
  * @since   1.7
  */
 @Remote
-public interface Exchange extends Student {
+public interface Exchange {
 
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 

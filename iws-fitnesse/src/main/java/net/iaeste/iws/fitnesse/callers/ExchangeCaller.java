@@ -52,7 +52,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class ExchangeCaller extends StudentCaller implements Exchange {
+public final class ExchangeCaller implements Exchange {
 
     // The Client handles the IWS for us, we use use it
     private final Exchange caller = new ExchangeClient();

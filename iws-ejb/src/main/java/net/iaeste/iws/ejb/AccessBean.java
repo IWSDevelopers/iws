@@ -64,7 +64,7 @@ public class AccessBean extends AbstractBean implements Access {
     private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
-    private Access access = null;
+    private Access controller = null;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
@@ -94,7 +94,7 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager.getNotifications());
-        access = new AccessController(factory);
+        controller = new AccessController(factory);
     }
 
     // =========================================================================
@@ -110,7 +110,7 @@ public class AccessBean extends AbstractBean implements Access {
         AuthenticationResponse response;
 
         try {
-            response = access.generateSession(request);
+            response = controller.generateSession(request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -128,7 +128,7 @@ public class AccessBean extends AbstractBean implements Access {
         Fallible response;
 
         try {
-            response = access.requestResettingSession(request);
+            response = controller.requestResettingSession(request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -146,7 +146,7 @@ public class AccessBean extends AbstractBean implements Access {
         AuthenticationResponse response;
 
         try {
-            response = access.resetSession(resetSessionString);
+            response = controller.resetSession(resetSessionString);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -164,7 +164,7 @@ public class AccessBean extends AbstractBean implements Access {
         Fallible response;
 
         try {
-            response = access.saveSessionData(token, request);
+            response = controller.saveSessionData(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -182,7 +182,7 @@ public class AccessBean extends AbstractBean implements Access {
         SessionDataResponse<T> response;
 
         try {
-            response = access.readSessionData(token);
+            response = controller.readSessionData(token);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -200,7 +200,7 @@ public class AccessBean extends AbstractBean implements Access {
         Fallible response;
 
         try {
-            response = access.deprecateSession(token);
+            response = controller.deprecateSession(token);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -218,7 +218,7 @@ public class AccessBean extends AbstractBean implements Access {
         FetchPermissionResponse response;
 
         try {
-            response = access.fetchPermissions(token);
+            response = controller.fetchPermissions(token);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

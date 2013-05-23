@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.callers.StudentCaller
+ * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.StudentSpringClient
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.fitnesse.callers;
+package net.iaeste.iws.client.spring;
 
 import net.iaeste.iws.api.Student;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
@@ -24,29 +24,63 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.client.StudentClient;
-import net.iaeste.iws.fitnesse.exceptions.StopTestException;
+import net.iaeste.iws.client.notifications.NotificationSpy;
+import net.iaeste.iws.ejb.NotificationManagerBean;
+import net.iaeste.iws.ejb.StudentBean;
+import net.iaeste.iws.persistence.notification.Notifications;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
+ * Spring based Exchange Client, which wraps the Exchange Controller from the
+ * IWS core module within a transactional layer.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection OverlyCoupledClass
  */
-public final class StudentCaller implements Student {
+@Transactional
+@Repository("studentSpringClient")
+public final class StudentSpringClient implements Student {
 
-    // The Client handles the IWS for us, we use use it
-    private final Student caller = new StudentClient();
+    private Student client = null;
+
+    /**
+     * Injects the {@code EntityManager} instance required to invoke our
+     * transactional daos. The EntityManager instance can only be injected into
+     * the Spring Beans, we cannot create a Spring Bean for the Exchange EJB
+     * otherwise.
+     *
+     * @param entityManager Spring controlled EntityManager instance
+     */
+    @PersistenceContext
+    public void init(final EntityManager entityManager) {
+        // Create the Notification Spy, and inject it
+        final Notifications notitications = NotificationSpy.getInstance();
+        final NotificationManagerBean notificationBean = new NotificationManagerBean();
+        notificationBean.setNotifications(notitications);
+
+        // Create an Exchange EJB, and inject the EntityManager & Notification Spy
+        final StudentBean studentBean = new StudentBean();
+        studentBean.setEntityManager(entityManager);
+        studentBean.setNotificationManager(notificationBean);
+        studentBean.postConstruct();
+
+        // Set our Exchange implementation to the Exchange EJB, running withing
+        // a "Spring Container".
+        client = studentBean;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
-        try {
-            return caller.processStudent(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return client.processStudent(token, request);
     }
 
     /**
@@ -54,11 +88,7 @@ public final class StudentCaller implements Student {
      */
     @Override
     public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        try {
-            return caller.fetchStudents(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return client.fetchStudents(token, request);
     }
 
     /**
@@ -66,11 +96,7 @@ public final class StudentCaller implements Student {
      */
     @Override
     public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
-        try {
-            return caller.processStudentApplication(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return client.processStudentApplication(token, request);
     }
 
     /**
@@ -78,10 +104,6 @@ public final class StudentCaller implements Student {
      */
     @Override
     public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
-        try {
-            return caller.fetchStudentApplications(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
+        return client.fetchStudentApplications(token, request);
     }
 }

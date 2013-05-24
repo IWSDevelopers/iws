@@ -25,7 +25,7 @@ import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.enums.OfferState;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;

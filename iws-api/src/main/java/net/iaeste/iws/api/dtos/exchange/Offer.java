@@ -15,16 +15,16 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSExchangeConstants;
+import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.Currency;
-import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.LanguageLevel;
-import net.iaeste.iws.api.enums.LanguageOperator;
-import net.iaeste.iws.api.enums.OfferState;
-import net.iaeste.iws.api.enums.PaymentFrequency;
-import net.iaeste.iws.api.enums.StudyLevel;
-import net.iaeste.iws.api.enums.TypeOfWork;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.LanguageOperator;
+import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
+import net.iaeste.iws.api.enums.exchange.StudyLevel;
+import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
@@ -98,7 +98,7 @@ public final class Offer extends AbstractVerification {
      * validations:
      * <ul>
      * <li>required, {@link #validateNotNullableFields}</li>
-     * <li>from 1 up to net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY values</li>
+     * <li>from 1 up to net.iaeste.iws.api.constants.exchange.IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY values</li>
      * </ul>
      */
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
@@ -115,7 +115,7 @@ public final class Offer extends AbstractVerification {
      * validations:
      * <ul>
      * <li>required, {@link #validateNotNullableFields}</li>
-     * <li>from 1 up to net.iaeste.iws.api.constants.IWSExchangeConstants#MAX_OFFER_STUDY_LEVELS values</li>
+     * <li>from 1 up to net.iaeste.iws.api.constants.exchange.IWSExchangeConstants#MAX_OFFER_STUDY_LEVELS values</li>
      * </ul>
      */
     private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);

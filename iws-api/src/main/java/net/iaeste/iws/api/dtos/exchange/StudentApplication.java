@@ -15,11 +15,11 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.ApplicationStatus;
-import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.LanguageLevel;
-import net.iaeste.iws.api.enums.Specialization;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 

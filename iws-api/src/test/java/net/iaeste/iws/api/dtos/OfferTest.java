@@ -21,13 +21,13 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.hasKey;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.constants.IWSExchangeConstants;
+import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.exchange.Offer;
-import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.LanguageLevel;
-import net.iaeste.iws.api.enums.Specialization;
-import net.iaeste.iws.api.enums.StudyLevel;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.Specialization;
+import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;

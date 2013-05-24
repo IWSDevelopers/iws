@@ -1,6 +1,6 @@
 package net.iaeste.iws.api.dtos.exchange;
 
-import net.iaeste.iws.api.enums.TransportationType;
+import net.iaeste.iws.api.enums.exchange.TransportationType;
 import net.iaeste.iws.api.util.Date;
 
 /**

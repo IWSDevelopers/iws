@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.api.enums;
 
+import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

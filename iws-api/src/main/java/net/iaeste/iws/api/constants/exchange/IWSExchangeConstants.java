@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.constants.IWSExchangeConstants
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.constants.exchange.IWSExchangeConstants
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -13,7 +13,7 @@
  * =============================================================================
  */
 
-package net.iaeste.iws.api.constants;
+package net.iaeste.iws.api.constants.exchange;
 
 import java.util.regex.Pattern;
 
@@ -30,13 +30,13 @@ public interface IWSExchangeConstants {
     Pattern REFNO_PATTERN = Pattern.compile(REFNO_FORMAT);
 
     /**
-     * Defines the maximum number of {@link net.iaeste.iws.api.enums.FieldOfStudy}
+     * Defines the maximum number of {@link net.iaeste.iws.api.enums.exchange.FieldOfStudy}
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MAX_OFFER_FIELDS_OF_STUDY = 3;
 
     /**
-     * Defines the maximum number of {@link net.iaeste.iws.api.enums.Specialization}
+     * Defines the maximum number of {@link net.iaeste.iws.api.enums.exchange.Specialization}
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MAX_OFFER_SPECIALIZATIONS = 7;

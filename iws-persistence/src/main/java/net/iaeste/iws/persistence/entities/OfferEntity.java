@@ -16,11 +16,11 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.LanguageLevel;
-import net.iaeste.iws.api.enums.LanguageOperator;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.NotificationSubject;
-import net.iaeste.iws.api.enums.OfferState;
-import net.iaeste.iws.api.enums.PaymentFrequency;
+import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.persistence.notification.Notifiable;
 import net.iaeste.iws.persistence.notification.NotificationMessageType;

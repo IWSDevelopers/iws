@@ -15,7 +15,7 @@
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.util.Date;
 import org.junit.Ignore;
 import org.junit.Test;

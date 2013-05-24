@@ -1,4 +1,4 @@
-package net.iaeste.iws.api.enums;
+package net.iaeste.iws.api.enums.exchange;
 
 /**
  * Defines the possible states for an Offer

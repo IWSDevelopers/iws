@@ -16,14 +16,14 @@ package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Currency;
-import net.iaeste.iws.api.enums.FieldOfStudy;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.LanguageLevel;
-import net.iaeste.iws.api.enums.LanguageOperator;
-import net.iaeste.iws.api.enums.PaymentFrequency;
-import net.iaeste.iws.api.enums.Specialization;
-import net.iaeste.iws.api.enums.StudyLevel;
-import net.iaeste.iws.api.enums.TypeOfWork;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.LanguageOperator;
+import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
+import net.iaeste.iws.api.enums.exchange.Specialization;
+import net.iaeste.iws.api.enums.exchange.StudyLevel;
+import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.util.Date;
 
 import java.math.BigDecimal;

@@ -17,9 +17,7 @@ package net.iaeste.iws.api.dtos;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Verifiable;
+import net.iaeste.iws.api.util.AbstractDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +41,7 @@ import java.util.Map;
  * @since   1.7
  * @noinspection OverlyComplexMethod
  */
-public final class User extends AbstractFallible implements Verifiable {
+public final class User extends AbstractDto {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -134,6 +132,7 @@ public final class User extends AbstractFallible implements Verifiable {
     // =========================================================================
 
     public void setUserId(final String userId) {
+        ensureValidId("userId", userId);
         this.userId = userId;
     }
 
@@ -150,6 +149,7 @@ public final class User extends AbstractFallible implements Verifiable {
     }
 
     public void setAlias(final String alias) {
+        ensureNotNullOrEmptyOrTooLong("alias", alias, 125);
         this.alias = alias;
     }
 
@@ -158,6 +158,7 @@ public final class User extends AbstractFallible implements Verifiable {
     }
 
     public void setFirstname(final String firstname) {
+        ensureNotNullOrEmptyOrTooLong("firstname", firstname, 50);
         this.firstname = firstname;
     }
 
@@ -166,6 +167,7 @@ public final class User extends AbstractFallible implements Verifiable {
     }
 
     public void setLastname(final String lastname) {
+        ensureNotNullOrEmptyOrTooLong("lastname", lastname, 50);
         this.lastname = lastname;
     }
 
@@ -174,6 +176,7 @@ public final class User extends AbstractFallible implements Verifiable {
     }
 
     public void setStatus(final UserStatus status) {
+        ensureNotNull("status", status);
         this.status = status;
     }
 
@@ -182,6 +185,7 @@ public final class User extends AbstractFallible implements Verifiable {
     }
 
     public void setPrivacy(final Privacy privacy) {
+        ensureNotNull("privacy", privacy);
         this.privacy = privacy;
     }
 
@@ -190,6 +194,7 @@ public final class User extends AbstractFallible implements Verifiable {
     }
 
     public void setNotifications(final String notifications) {
+        ensureNotNullOrEmptyOrTooLong("notifications", notifications, 25);
         this.notifications = notifications;
     }
 
@@ -206,6 +211,7 @@ public final class User extends AbstractFallible implements Verifiable {
     }
 
     public void setPerson(final Person person) {
+        ensureNotNull("person", person);
         this.person = person;
     }
 
@@ -221,24 +227,10 @@ public final class User extends AbstractFallible implements Verifiable {
      * {@inheritDoc}
      */
     @Override
-    public void verify() {
-        final Map<String, String> validationResult = validate();
-
-        if (!validationResult.isEmpty()) {
-            throw new VerificationException("Validation failed: " + validationResult.toString());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        if ((userId == null) || (userId.length() != 36)) {
-            validation.put("userId", "Invalid UserId.");
-        }
+        isNotNull(validation, "userId", userId);
 
         return validation;
     }

@@ -14,9 +14,10 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
-import net.iaeste.iws.api.util.Copier;
 
 import java.security.Permissions;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public final class Role extends AbstractVerification {
     public Role(final String roleId, final String roleName, final Set<Permissions> permissions) {
         this.roleId = roleId;
         this.roleName = roleName;
-        this.permissions = Copier.copy(permissions);
+        this.permissions = copy(permissions);
     }
 
     /**
@@ -84,6 +85,7 @@ public final class Role extends AbstractVerification {
     // =========================================================================
 
     public void setRoleId(final String roleId) {
+        ensureValidId("roleId", roleId);
         this.roleId = roleId;
     }
 
@@ -92,6 +94,7 @@ public final class Role extends AbstractVerification {
     }
 
     public void setRoleName(final String roleName) {
+        ensureNotNullOrEmptyOrTooLong("roleName", roleName, 50);
         this.roleName = roleName;
     }
 
@@ -100,11 +103,11 @@ public final class Role extends AbstractVerification {
     }
 
     public void setPermissions(final Set<Permissions> permissions) {
-        this.permissions = Copier.copy(permissions);
+        this.permissions = copy(permissions);
     }
 
     public Set<Permissions> getPermissions() {
-        return Copier.copy(permissions);
+        return copy(permissions);
     }
 
     // =========================================================================
@@ -117,6 +120,7 @@ public final class Role extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
 
         return validation;
     }

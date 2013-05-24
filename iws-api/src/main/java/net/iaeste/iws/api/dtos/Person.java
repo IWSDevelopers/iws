@@ -76,6 +76,8 @@ public final class Person extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+
         return validation;
     }
 
@@ -102,7 +104,9 @@ public final class Person extends AbstractVerification {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (alternateEmail != null ? alternateEmail.hashCode() : 0);
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (alternateEmail != null ? alternateEmail.hashCode() : 0);
+
         return result;
     }
 

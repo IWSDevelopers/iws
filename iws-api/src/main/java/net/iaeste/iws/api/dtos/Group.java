@@ -118,6 +118,9 @@ public final class Group extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
+        isNotNull(validation, "groupId", groupId);
+        isNotNull(validation, "groupName", groupName);
+        isNotNull(validation, "groupType", groupType);
 
         return validation;
     }

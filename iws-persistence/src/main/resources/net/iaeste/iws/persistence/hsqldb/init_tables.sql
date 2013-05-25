@@ -55,14 +55,14 @@ create table countries (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint country_pk primary key (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint country_unique_country_id   unique (country_id),
     constraint country_unique_country_name unique (country_name),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint country_notnull_id           check (id is not null),
     constraint country_notnull_country_id   check (country_id is not null),
     constraint country_notnull_country_name check (country_name is not null),
@@ -86,13 +86,13 @@ create table permissions (
     restricted          decimal(1) default 0,
     description         varchar(2048),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint permission_pk primary key (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint permission_unique_country_id unique (permission),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint permission_notnull_id         check (id is not null),
     constraint permission_notnull_permission check (permission is not null),
     constraint permission_notnull_restricted check (restricted is not null)
@@ -115,13 +115,13 @@ create table grouptypes (
     grouptype           varchar(50),
     description         varchar(2048),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint grouptype_pk primary key (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint grouptype_unique_grouptype unique (grouptype),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint grouptype_notnull_id        check (id is not null),
     constraint grouptype_notnull_grouptype check (grouptype is not null)
 );
@@ -171,15 +171,15 @@ create table groups (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint group_pk              primary key (id),
     constraint group_fk_grouptype_id foreign key (grouptype_id) references grouptypes (id),
     constraint group_fk_country_id   foreign key (country_id)   references countries (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint group_unique_external_id unique (external_id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint group_notnull_id           check (id is not null),
     constraint group_notnull_external_id  check (external_id is not null),
     constraint group_notnull_grouptype_id check (grouptype_id is not null),
@@ -220,15 +220,15 @@ create table roles (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint role_pk            primary key (id),
     constraint role_fk_group_id   foreign key (group_id)   references groups (id),
     constraint role_fk_country_id foreign key (country_id) references countries (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint group_unique_ids unique (role, country_id, group_id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint role_notnull_id       check (id is not null),
     constraint role_notnull_role     check (role is not null),
     constraint role_notnull_modified check (modified is not null),
@@ -252,12 +252,12 @@ create table permission_to_grouptype (
     permission_id       integer,
     grouptype_id        integer,
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint p2gt_pk               primary key (permission_id, grouptype_id),
     constraint p2gt_fk_permission_id foreign key (permission_id) references permissions (id),
     constraint p2gt_fk_grouptype_id  foreign key (grouptype_id)  references grouptypes (id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint p2gt_notnull_permission_id check (permission_id is not null),
     constraint p2gt_notnull_grouptype_id  check (grouptype_id is not null)
 );
@@ -282,15 +282,15 @@ create table permission_to_role (
     permission_id       integer,
     role_id             integer,
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint p2r_pk               primary key (id),
     constraint p2r_fk_permission_id foreign key (permission_id) references permissions (id),
     constraint p2r_fk_role_id       foreign key (role_id)       references roles (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint p2r_unique_ids unique (permission_id, role_id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint p2r_notnull_id            check (id is not null),
     constraint p2r_notnull_permission_id check (permission_id is not null),
     constraint p2r_notnull_role_id       check (role_id is not null)
@@ -321,16 +321,16 @@ create table users (
     modified            timestamp   default now(),
     created             timestamp   default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint user_pk primary key (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint user_unique_external_id unique (external_id),
     constraint user_unique_username    unique (username),
     constraint user_unique_alias       unique (alias),
     constraint user_unique_code        unique (temporary_code),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint user_notnull_id            check (id is not null),
     constraint user_notnull_external_id   check (external_id is not null),
     constraint user_notnull_username      check (username is not null),
@@ -365,14 +365,14 @@ create table sessions (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint session_pk         primary key (id),
     constraint session_fk_user_id foreign key (user_id) references users (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint session_unique_session_key unique (session_key),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint session_notnull_id          check (id is not null),
     constraint session_notnull_session_key check (session_key is not null),
     constraint session_notnull_user_id     check (user_id is not null),
@@ -406,16 +406,16 @@ create table user_to_group (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint u2g_pk          primary key (id),
     constraint u2g_fk_user_id  foreign key (user_id)  references users (id),
     constraint u2g_fk_group_id foreign key (group_id) references groups (id),
     constraint u2g_fk_role_id  foreign key (role_id)  references roles (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint u2g_unique_session_key unique (user_id, group_id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint u2g_notnull_id              check (id is not null),
     constraint u2g_notnull_user_idd        check (user_id is not null),
     constraint u2g_notnull_group_id        check (group_id is not null),
@@ -450,12 +450,12 @@ create table history (
     fields              varbinary(8192),
     changed             timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint history_pk          primary key (id),
     constraint history_fk_user_id  foreign key (user_id)  references users (id),
     constraint history_fk_group_id foreign key (group_id) references groups (id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint history_notnull_id        check (id is not null),
     constraint history_notnull_user_id   check (user_id is not null),
     constraint history_notnull_group_id  check (group_id is not null),
@@ -484,11 +484,11 @@ create table addresses (
     modified            timestamp    default now(),
     created             timestamp    default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint address_pk              primary key (id),
     constraint address_fk_countries_id foreign key (country_id) references countries (id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint address_notnull_id         check (id is not null),
     constraint address_notnull_country_id check (country_id is not null),
     constraint address_notnull_modified   check (modified is not null),
@@ -514,19 +514,19 @@ create table persons (
     modified         timestamp default now(),
     created          timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint persons_pk                 primary key (id),
     constraint persons_fk_private_address foreign key (private_address) references addresses (id),
     constraint persons_fk_work_address    foreign key (work_address)    references addresses (id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint persons_notnull_id       check (id is not null),
     constraint persons_notnull_modified check (modified is not null),
     constraint persons_notnull_created  check (created is not null)
 );
 
 
--- /*****************************************************************************\
+-- --****************************************************************************\
 -- * TABLE :: Users                                                              *
 -- * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- *
 -- * Fields in this table:                                                       *
@@ -540,7 +540,7 @@ create table persons (
 -- * General description of this table:                                          *
 -- *   This table contain all the information about a user, the Country and      *
 -- *   Nationality is keys for the "Countries" table.                            *
--- \*****************************************************************************/
+-- \****************************************************************************
 -- CREATE SEQUENCE UserSeq START 2;
 -- CREATE TABLE Users (
 --     UserID             INTEGER DEFAULT NextVal('UserSeq'::text) NOT NULL PRIMARY KEY,
@@ -590,7 +590,7 @@ create table persons (
 --     Modified           TIMESTAMP,
 --     Created            TIMESTAMP
 --
--- /*****************************************************************************\
+-- --****************************************************************************\
 -- * TABLE :: Profiles                                                           *
 -- * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- *
 -- * Fields in this table:                                                       *
@@ -619,7 +619,7 @@ create table persons (
 -- * General description of this table:                                          *
 -- *   This table contain the profile information for the user, i.e. the system  *
 -- *   dependent information which is not related to the users personal data.    *
--- \*****************************************************************************/
+-- \****************************************************************************
 -- CREATE TABLE Profiles (
 --     ProfileID              INTEGER PRIMARY KEY REFERENCES Users (UserID) ON DELETE CASCADE ON UPDATE CASCADE,
 --     Status                 VARCHAR(25)  DEFAULT 'New',
@@ -666,11 +666,11 @@ create table user_notifications (
     frequency        varchar(100),
     changed          timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint user_notifications_pk         primary key (id),
     constraint user_notifications_fk_user_id foreign key (user_id) references users (id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint user_notifications_notnull_id      check (id is not null),
     constraint user_notifications_notnull_user_id check (user_id is not null),
     constraint user_notifications_notnull_changed check (changed is not null)
@@ -692,11 +692,11 @@ create table notification_messages (
     process_after    timestamp default now(),
     changed          timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint notitication_messages_pk         primary key (id),
     constraint notitication_messages_fk_user_id foreign key (user_id) references users (id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint notitication_messages_notnull_id            check (id is not null),
     constraint notitication_messages_notnull_user_id       check (user_id is not null),
     constraint notitication_messages_notnull_process_after check (process_after is not null),

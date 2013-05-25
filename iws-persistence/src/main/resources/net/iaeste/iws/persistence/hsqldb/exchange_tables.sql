@@ -60,14 +60,14 @@ create table offers (
     modified                  timestamp default now(),
     created                   timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint offer_pk primary key (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint offer_unique_ref_no      unique (ref_no),
     constraint offer_unique_external_id unique (external_id),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint offer_notnull_id          check (id is not null),
     constraint offer_notnull_ref_no      check (ref_no is not null),
     constraint offer_notnull_external_id check (external_id is not null),
@@ -88,14 +88,14 @@ create table students (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint student_pk          primary key (id),
     constraint student_fk_group_id foreign key (group_id) references groups (id),
 
-    /* Unique Constraints */
+    -- Unique Constraints
     constraint student_student_name unique (student_name),
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint student_notnull_student_name check (student_name is not null),
     constraint student_notnull_group_id     check (group_id is not null),
     constraint student_notnull_modified     check (modified is not null),
@@ -114,14 +114,14 @@ create table offer_to_group (
     created            timestamp default now(),
     created_by         integer,
 
-    /* Primary & Foreign Keys */
+    -- Primary & Foreign Keys
     constraint offer_to_group_pk              primary key (id),
     constraint offer_to_group_fk_offer_id     foreign key (offer_id) references offers (id) ON DELETE CASCADE,
     constraint offer_to_group_fk_group_id     foreign key (group_id) references groups (id) ON DELETE CASCADE,
     constraint offer_to_group_fk_modified_by  foreign key (modified_by) references users (id) ON DELETE SET NULL,
     constraint offer_to_group_fk_created_by   foreign key (created_by) references users (id) ON DELETE SET NULL,
 
-    /* Not Null Constraints */
+    -- Not Null Constraints
     constraint offer_to_group_notnull_offer_id  check (offer_id is not null),
     constraint offer_to_group_notnull_group_id  check (group_id is not null),
     constraint offer_to_group_notnull_modified  check (modified is not null),

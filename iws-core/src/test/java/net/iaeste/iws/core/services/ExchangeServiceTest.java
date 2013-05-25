@@ -15,15 +15,15 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.OfferRequestTestUtility;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.OfferRequestTestUtility;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
@@ -110,7 +111,10 @@ public class ExchangeServiceTest {
         final Offer offer = offers.get(0);
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 
-        when(dao.findOffer(authentication, offer.getRefNo())).thenReturn(null);
+        final OfferEntity entityWithId = OfferTransformer.transform(OfferTransformer.transform(entityToPersist));
+        final String id = UUID.randomUUID().toString();
+        entityWithId.setExternalId(id);
+        when(dao.findOffer(authentication, offer.getRefNo())).thenReturn(null, entityWithId);
 
         final ProcessOfferRequest request = new ProcessOfferRequest(offer);
         request.verify(); // make sure that request is valid
@@ -120,7 +124,11 @@ public class ExchangeServiceTest {
 
         // expect correct response
         assertThat(result.isOk(), is(true));
-        assertThat(result.getOffer(), is(new Offer()));
+        assertThat(result.getOffer(), is(notNullValue()));
+        assertThat(result.getOffer().getId(), is(notNullValue()));
+        assertThat(result.getOffer().getId(), is(id));
+        assertThat(result.getOffer().getRefNo(), is(offer.getRefNo()));
+        assertThat(result.getOffer(), is(OfferTransformer.transform(entityWithId)));
 
         // verify that persist method was invoked
         verify(dao, times(1)).persist(any(Authentication.class), argThat(new OfferEntityMatcher(entityToPersist)));
@@ -130,7 +138,8 @@ public class ExchangeServiceTest {
     @Test
     public void testProcessingOffersUpdateRequest() {
         final Offer offer = offers.get(0);
-        offer.setId(UUID.randomUUID().toString());
+        final String id = UUID.randomUUID().toString();
+        offer.setId(id);
         // offer which currently exist in db
         offer.setCanteen(true);
         final OfferEntity existingEntity = OfferTransformer.transform(offer);
@@ -150,7 +159,9 @@ public class ExchangeServiceTest {
 
         // expect correct response
         assertThat(result.isOk(), is(true));
-        assertThat(result.getOffer(), is(new Offer()));
+        assertThat(result.getOffer(), is(notNullValue()));
+        assertThat(result.getOffer().getId(), is(id));
+        assertThat(result.getOffer().getRefNo(), is(offer.getRefNo()));
 
         // verify that persist method was invoked
         verify(dao, times(1)).persist(any(Authentication.class), argThat(new OfferEntityMatcher(existingEntity)),

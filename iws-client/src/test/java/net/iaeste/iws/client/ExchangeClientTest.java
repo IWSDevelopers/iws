@@ -298,7 +298,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         //try to share to non-National group type
         final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
 
-        //the request cannot be OK here
+        //the request is supposed to fail here
         assertThat(publishResponse1.isOk(), is(false));
         assertThat("The request has to fail with verification error here", publishResponse1.getError(), is(IWSErrors.VERIFICATION_ERROR));
         assertThat(publishResponse1.getMessage(), is("The group type '" + austriaMemberGroupType + "' is not allowed to be used for publishing of offers."));

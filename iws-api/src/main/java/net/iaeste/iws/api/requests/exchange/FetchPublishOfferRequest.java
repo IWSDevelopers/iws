@@ -77,6 +77,11 @@ public final class FetchPublishOfferRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        for(String offerId : offersId) {
+            ensureValidId("Offer Id", offerId);
+        }
+
         return validation;
     }
 }

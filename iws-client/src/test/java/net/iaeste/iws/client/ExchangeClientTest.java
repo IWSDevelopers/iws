@@ -501,6 +501,18 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat("Polish offer was shared with Croatia and today is the nomination deadline, so it should be loaded", readOffer, is(notNullValue()));
     }
 
+    @Test
+    public void testFetchSharedOfferBadExternalIdFormat() {
+        final List<String> offersExternalId = new ArrayList<>();
+        offersExternalId.add("pl-2012-0001");
+        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offersExternalId);
+        final FetchPublishOfferResponse fetchPublishResponse = exchange.fetchPublishedOffer(token, fetchPublishRequest);
+
+        assertThat(fetchPublishResponse.isOk(), is(false));
+        assertThat("The request has to fail with the error here", fetchPublishResponse.getError(), is(IWSErrors.ERROR));
+        assertThat(fetchPublishResponse.getMessage(), is("The field Offer Id is invalid."));
+    }
+
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
         final String refNoLowerCase = refno.toLowerCase(IWSConstants.DEFAULT_LOCALE);
         Offer offer = null;

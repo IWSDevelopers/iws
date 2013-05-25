@@ -142,7 +142,9 @@ public final class ExchangeService extends CommonService {
         // Interface, can the Object handle it itself
         notifications.notify(authentication, newEntity, NotificationMessageType.GENERAL);
 
-        return new OfferResponse();
+
+        final OfferEntity updatedOffer = dao.findOffer(authentication, refNo);
+        return new OfferResponse(OfferTransformer.transform(updatedOffer));
     }
 
     private static void verifyRefnoValidity(final OfferEntity offer) {
@@ -174,14 +176,14 @@ public final class ExchangeService extends CommonService {
 
         switch (request.getFetchType()) {
             case ALL:
-                response = new FetchOffersResponse(findAllOffers(authentication, request));
+                response = new FetchOffersResponse(findAllOffers(authentication));
                 break;
 // Commented out, the "Owned" serve the same purpose as "all", since you can only view your own offers!
 //            case OWNED:
 //                response = new FetchOffersResponse(findOwnedOffers(authentication.getGroup().getId()));
 //                break;
             case SHARED:
-                response = new FetchOffersResponse(findSharedOffers(authentication, request));
+                response = new FetchOffersResponse(findSharedOffers(authentication));
                 break;
             default:
                 response = new FetchOffersResponse(IWSErrors.NOT_PERMITTED, "The search type is not permitted");
@@ -198,7 +200,7 @@ public final class ExchangeService extends CommonService {
         return response;
     }
 
-    private List<Offer> findAllOffers(final Authentication authentication, final FetchOffersRequest request) {
+    private List<Offer> findAllOffers(final Authentication authentication) {
         // Must be extended with Pagination
         final List<OfferEntity> found = dao.findAllOffers(authentication);
 
@@ -211,7 +213,7 @@ public final class ExchangeService extends CommonService {
         return convertEntityList(found);
     }
 
-    private List<Offer> findSharedOffers(final Authentication authentication, final FetchOffersRequest request) {
+    private List<Offer> findSharedOffers(final Authentication authentication) {
         // Must be extended with Pagination
         final List<OfferEntity> found = new ArrayList<>();
         final java.util.Date now = new Date().toDate();
@@ -297,8 +299,6 @@ public final class ExchangeService extends CommonService {
      * @param request
      */
     public void processPublishOffer(final Authentication authentication, final PublishOfferRequest request) {
-        final Set<String> externalOfferIds = request.getOfferIds();
-
         //verify Group exist for given groupId
         final List<GroupEntity> groups = getAndVerifyGroupExist(request.getGroupIds());
 

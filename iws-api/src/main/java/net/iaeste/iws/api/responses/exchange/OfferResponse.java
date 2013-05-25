@@ -27,14 +27,16 @@ import java.util.List;
  * ToDo Kim; Michal, there is no way to create a positive response, i.e. without error
  * ToDo Kim; Michal, we need both setters and getters, including for the errors
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection CastToConcreteClass
+ * @since 1.7
  */
 public final class OfferResponse extends AbstractFallible {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
     private final Offer offer;
     private final List<String> errors;
@@ -42,10 +44,22 @@ public final class OfferResponse extends AbstractFallible {
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
+     * Constructor is used in {@link OfferResponse} when deleteing an offer.
      */
     public OfferResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
         offer = null;
+        errors = null;
+    }
+
+    /**
+     * Constructor is used when succeed on creating or updating an offer.
+     *
+     * @param offer offer which was saved
+     */
+    public OfferResponse(final Offer offer) {
+        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
+        this.offer = offer;
         errors = null;
     }
 

@@ -59,6 +59,10 @@ public final class FetchCountryResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
+    public List<Country> getCountries() {
+        return countries;
+    }
+
     // =========================================================================
     // Standard Response Methods
     // =========================================================================

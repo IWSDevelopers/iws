@@ -14,6 +14,16 @@
  */
 package net.iaeste.iws.core.services;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.dtos.exchange.Offer;
@@ -39,21 +49,12 @@ import net.iaeste.iws.persistence.notification.Notifications;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -101,6 +102,7 @@ public class ExchangeServiceTest {
     }
 
     @Test
+    @Ignore("Ignored by Kim 2013-06-02 - Reason: The test is using mocking, and thus is only verifying that the mocks are correct, not the logic!")
     public void testProcessingOffersCreateRequest() {
         final CountryEntity country = new CountryEntity();
         country.setCountryId("GB");

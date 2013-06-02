@@ -16,12 +16,8 @@ package net.iaeste.iws.api.responses.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
-
-import java.util.List;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -33,17 +29,14 @@ public final class EmployerResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private EmployerInformation employer;
-    private List<String> errors;
+
+    private EmployerInformation employer = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public EmployerResponse() {
-        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        employer = null;
-        errors = null;
     }
 
     /**
@@ -52,8 +45,7 @@ public final class EmployerResponse extends AbstractFallible {
      * @param employer EmployerInformation
      */
     public EmployerResponse(final EmployerInformation employer) {
-        this.employer = new EmployerInformation(employer);
-        errors = null;
+        setEmployer(employer);
     }
 
     /**
@@ -64,43 +56,18 @@ public final class EmployerResponse extends AbstractFallible {
      */
     public EmployerResponse(final IWSError error, final String message) {
         super(error, message);
-        employer = null;
-        errors = null;
-    }
-
-    /**
-     * Response is created when processing the employer failed.
-     * <p/>
-     * Incorrect EmployerInformation should never be passed to this constructor. Instead
-     * use constructor without list of errors parameter.
-     *
-     * @param failedEmployer EmployerInformation Object, which could not be processed
-     * @param errors         List of processing errors
-     */
-    public EmployerResponse(final EmployerInformation failedEmployer, final List<String> errors) {
-        super(IWSErrors.PROCESSING_FAILURE, "processing of the Offer failed");
-        employer = new EmployerInformation(failedEmployer);
-        this.errors = Copier.copy(errors);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public EmployerInformation getEmployer() {
-        return new EmployerInformation(employer);
-    }
-
     public void setEmployer(final EmployerInformation employer) {
         this.employer = new EmployerInformation(employer);
     }
 
-    public List<String> getErrors() {
-        return Copier.copy(errors);
-    }
-
-    public void setErrors(final List<String> errors) {
-        this.errors = Copier.copy(errors);
+    public EmployerInformation getEmployer() {
+        return new EmployerInformation(employer);
     }
 
     // =========================================================================
@@ -121,11 +88,6 @@ public final class EmployerResponse extends AbstractFallible {
         }
 
         final EmployerResponse that = (EmployerResponse) obj;
-
-        if (errors != null ? !errors.equals(that.errors) : that.errors != null) {
-            return false;
-        }
-
         return !(employer != null ? !employer.equals(that.employer) : that.employer != null);
     }
 
@@ -137,7 +99,6 @@ public final class EmployerResponse extends AbstractFallible {
         int result = super.hashCode();
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (errors != null ? errors.hashCode() : 0);
 
         return result;
     }
@@ -149,7 +110,6 @@ public final class EmployerResponse extends AbstractFallible {
     public String toString() {
         return "EmployerResponse{" +
                 "employer=" + employer +
-                ", errors=" + errors +
                 '}';
     }
 }

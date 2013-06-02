@@ -14,12 +14,12 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
 
@@ -33,15 +33,14 @@ public final class FetchOffersResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private List<Offer> offers;
+
+    private List<Offer> offers = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public FetchOffersResponse() {
-        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        offers = null;
     }
 
     /**
@@ -50,7 +49,7 @@ public final class FetchOffersResponse extends AbstractFallible {
      * @param offers List of Offers found
      */
     public FetchOffersResponse(final List<Offer> offers) {
-        this.offers = Copier.copy(offers);
+        setOffers(offers);
     }
 
     /**
@@ -61,7 +60,6 @@ public final class FetchOffersResponse extends AbstractFallible {
      */
     public FetchOffersResponse(final IWSError error, final String message) {
         super(error, message);
-        offers = null;
     }
 
     // =========================================================================
@@ -69,11 +67,11 @@ public final class FetchOffersResponse extends AbstractFallible {
     // =========================================================================
 
     public void setOffers(final List<Offer> offers) {
-        this.offers = Copier.copy(offers);
+        this.offers = copy(offers);
     }
 
     public List<Offer> getOffers() {
-        return Copier.copy(offers);
+        return copy(offers);
     }
 
     // =========================================================================

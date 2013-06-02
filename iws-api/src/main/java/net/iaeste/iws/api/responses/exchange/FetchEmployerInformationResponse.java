@@ -14,12 +14,12 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
 
@@ -33,15 +33,23 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private List<EmployerInformation> employers;
+
+    private List<EmployerInformation> employers = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public FetchEmployerInformationResponse() {
-        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        employers = null;
+    }
+
+    /**
+     * Default Constructor.
+     *
+     * @param employers List of Employers
+     */
+    public FetchEmployerInformationResponse(final List<EmployerInformation> employers) {
+        setEmployers(employers);
     }
 
     /**
@@ -52,16 +60,6 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
      */
     public FetchEmployerInformationResponse(final IWSError error, final String message) {
         super(error, message);
-        employers = null;
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param employers List of Employers
-     */
-    public FetchEmployerInformationResponse(final List<EmployerInformation> employers) {
-        this.employers = Copier.copy(employers);
     }
 
     // =========================================================================
@@ -69,11 +67,11 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
     // =========================================================================
 
     public void setEmployers(final List<EmployerInformation> employers) {
-        this.employers = Copier.copy(employers);
+        this.employers = copy(employers);
     }
 
     public List<EmployerInformation> getEmployers() {
-        return Copier.copy(employers);
+        return copy(employers);
     }
 
     // =========================================================================

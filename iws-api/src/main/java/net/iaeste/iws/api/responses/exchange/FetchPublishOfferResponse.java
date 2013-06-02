@@ -14,12 +14,12 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
+import static net.iaeste.iws.api.util.Copier.copyMapWithList;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
 import java.util.Map;
@@ -39,16 +39,13 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-
-    private Map<String, List<OfferGroup>> offersGroups;
+    private Map<String, List<OfferGroup>> offersGroups = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public FetchPublishOfferResponse() {
-        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        offersGroups = null;
     }
 
     /**
@@ -57,7 +54,7 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
      * @param offersGroups List of Offers found
      */
     public FetchPublishOfferResponse(final Map<String, List<OfferGroup>> offersGroups) {
-        this.offersGroups = Copier.copyMapWithList(offersGroups);
+        setOffersGroups(offersGroups);
     }
 
     /**
@@ -68,7 +65,6 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
      */
     public FetchPublishOfferResponse(final IWSError error, final String message) {
         super(error, message);
-        offersGroups = null;
     }
 
     // =========================================================================
@@ -76,11 +72,11 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
     // =========================================================================
 
     public void setOffersGroups(final Map<String, List<OfferGroup>> offersGroups) {
-        this.offersGroups = Copier.copyMapWithList(offersGroups);
+        this.offersGroups = copyMapWithList(offersGroups);
     }
 
     public Map<String, List<OfferGroup>> getOffersGroups() {
-        return Copier.copyMapWithList(offersGroups);
+        return copyMapWithList(offersGroups);
     }
 
     // =========================================================================

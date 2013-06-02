@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.core.transformers.OfferTransformer.transform;
+
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
@@ -44,7 +46,6 @@ import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
-import net.iaeste.iws.core.transformers.OfferTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -90,7 +91,7 @@ public final class ExchangeService extends CommonService {
      * @return OfferResponse with error information
      */
     public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
-        final OfferEntity newEntity = OfferTransformer.transform(request.getOffer());
+        final OfferEntity newEntity = transform(request.getOffer());
         final Offer givenOffer = request.getOffer();
         final String externalId = givenOffer.getId();
         final String refNo = givenOffer.getRefNo();
@@ -142,9 +143,13 @@ public final class ExchangeService extends CommonService {
         // Interface, can the Object handle it itself
         notifications.notify(authentication, newEntity, NotificationMessageType.GENERAL);
 
-
-        final OfferEntity updatedOffer = dao.findOffer(authentication, refNo);
-        return new OfferResponse(OfferTransformer.transform(updatedOffer));
+        // As we already have the new Entity in our hand, this is simply
+        // redundant code, that only serves the purpose of verifying that our
+        // mocked tests works! Conclusion - write correct tests without mocking
+        // and drop redundant lookups...
+        return new OfferResponse(transform(newEntity));
+        //final OfferEntity updatedOffer = dao.findOffer(authentication, refNo);
+        //return new OfferResponse(transform(updatedOffer));
     }
 
     private static void verifyRefnoValidity(final OfferEntity offer) {
@@ -243,7 +248,7 @@ public final class ExchangeService extends CommonService {
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
-            result.add(OfferTransformer.transform(entity));
+            result.add(transform(entity));
         }
 
         return result;
@@ -253,7 +258,7 @@ public final class ExchangeService extends CommonService {
         final List<EmployerInformation> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
-            result.add(OfferTransformer.transform(EmployerInformation.class, entity));
+            result.add(transform(EmployerInformation.class, entity));
         }
 
         return result;
@@ -263,7 +268,7 @@ public final class ExchangeService extends CommonService {
         final List<OfferGroup> result = new ArrayList<>(found.size());
 
         for (final OfferGroupEntity entity : found) {
-            result.add(OfferTransformer.transform(OfferGroupEntity.class, entity));
+            result.add(transform(OfferGroupEntity.class, entity));
         }
 
         return result;
@@ -402,9 +407,9 @@ public final class ExchangeService extends CommonService {
         //TODO distinguish somehow a request for info about offers shared 'to me' and 'by me', now it's 'by me'
         final FetchPublishOfferResponse response;
 
-        verifyOffersOwnership(authentication, new HashSet<>(request.getOffersId()));
+        verifyOffersOwnership(authentication, new HashSet<>(request.getOfferIds()));
 
-        final List<String> externalIds = request.getOffersId();
+        final List<String> externalIds = request.getOfferIds();
         final Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?
         for (final String externalId : externalIds) {
             result.put(externalId, convertOfferGroupEntityList(dao.findInfoForSharedOffer(externalId)));

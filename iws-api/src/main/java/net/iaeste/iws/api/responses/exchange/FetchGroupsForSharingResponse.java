@@ -14,11 +14,12 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public final class FetchGroupsForSharingResponse extends AbstractFallible {
     }
 
     public FetchGroupsForSharingResponse(final List<Group> groups) {
-        this.groups = Copier.copy(groups);
+        setGroups(groups);
     }
 
     /**
@@ -61,11 +62,11 @@ public final class FetchGroupsForSharingResponse extends AbstractFallible {
     // =========================================================================
 
     public void setGroups(final List<Group> groups) {
-        this.groups = Copier.copy(groups);
+        this.groups = copy(groups);
     }
 
     public List<Group> getGroups() {
-        return Copier.copy(groups);
+        return copy(groups);
     }
 
     // =========================================================================

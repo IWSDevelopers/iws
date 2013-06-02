@@ -330,6 +330,17 @@ public abstract class AbstractVerification implements Verifiable {
         return check;
     }
 
+    protected boolean isValidId(final Map<String, String> validation, final String field, final String value) {
+        boolean check = true;
+
+        if ((value == null) || !UUID_PATTERN.matcher(value).matches()) {
+            addError(validation, field, "The field may not be null or empty.");
+            check = false;
+        }
+
+        return check;
+    }
+
     /**
      * The method takes a value of type {@code Verifiable}, and verifies that
      * this value is not null, and then invokes the validation on it. If an

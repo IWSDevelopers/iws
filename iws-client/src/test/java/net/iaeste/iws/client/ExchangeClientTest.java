@@ -14,6 +14,13 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -47,13 +54,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -501,11 +501,19 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat("Polish offer was shared with Croatia and today is the nomination deadline, so it should be loaded", readOffer, is(notNullValue()));
     }
 
-    @Test
-    public void testFetchSharedOfferBadExternalIdFormat() {
-        final List<String> offersExternalId = new ArrayList<>();
-        offersExternalId.add("pl-2012-0001");
-        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offersExternalId);
+    /**
+     * The code has been altered, we're now making the primary validation checks
+     * in the setters, and throwin a standard Illegal Argument Exception if the
+     * value is crap.<br />
+     *   Secondly, the test was renamed, the API is only referring to one kind
+     * of Id's, this is internally known as the "External Id", but outside this
+     * distinction is not made.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testFetchSharedOfferBadIdFormat() {
+        final List<String> offerIds = new ArrayList<>(0);
+        offerIds.add("pl-2012-0001");
+        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offerIds);
         final FetchPublishOfferResponse fetchPublishResponse = exchange.fetchPublishedOffer(token, fetchPublishRequest);
 
         assertThat(fetchPublishResponse.isOk(), is(false));

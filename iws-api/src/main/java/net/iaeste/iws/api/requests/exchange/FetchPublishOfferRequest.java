@@ -14,9 +14,10 @@
  */
 package net.iaeste.iws.api.requests.exchange;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ public final class FetchPublishOfferRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private List<String> offersId = null;
+    private List<String> offerIds = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -48,24 +49,32 @@ public final class FetchPublishOfferRequest extends AbstractVerification {
     /**
      * Default Constructor.
      *
-     * @param offersId offersId of the offer for which the sharing info is to be fetched
+     * @param offerIds offerIds of the offer for which the sharing info is to be fetched
      */
-    public FetchPublishOfferRequest(final List<String> offersId) {
-        this.offersId = Copier.copy(offersId);
+    public FetchPublishOfferRequest(final List<String> offerIds) {
+        setOfferIds(offerIds);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public List<String> getOffersId() {
-        return Copier.copy(offersId);
+    /**
+     *
+     * @param offerIds List of Offer Ids
+     * @throws IllegalArgumentException if the given argument is invalid
+     */
+    public void setOfferIds(final List<String> offerIds) {
+        for (final String offerId : offerIds) {
+            ensureValidId("Offer Id", offerId);
+        }
+
+        this.offerIds = copy(offerIds);
     }
 
-    public void setOffersId(final List<String> offersId) {
-        this.offersId = Copier.copy(offersId);
+    public List<String> getOfferIds() {
+        return offerIds;
     }
-
 
     // =========================================================================
     // Standard Request Methods
@@ -78,8 +87,8 @@ public final class FetchPublishOfferRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        for(String offerId : offersId) {
-            ensureValidId("Offer Id", offerId);
+        for (final String offerId : offerIds) {
+            isNotNull(validation, "Offer Id", offerId);
         }
 
         return validation;

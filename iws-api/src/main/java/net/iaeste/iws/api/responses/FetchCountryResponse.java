@@ -14,11 +14,12 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public final class FetchCountryResponse extends AbstractFallible {
     }
 
     public FetchCountryResponse(final List<Country> countries) {
-        this.countries = Copier.copy(countries);
+        setCountries(countries);
     }
 
     /**
@@ -59,8 +60,12 @@ public final class FetchCountryResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
+    public void setCountries(final List<Country> countries) {
+        this.countries = copy(countries);
+    }
+
     public List<Country> getCountries() {
-        return countries;
+        return copy(countries);
     }
 
     // =========================================================================
@@ -72,7 +77,18 @@ public final class FetchCountryResponse extends AbstractFallible {
      */
     @Override
     public boolean equals(final Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof FetchCountryResponse)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+
+        final FetchCountryResponse that = (FetchCountryResponse) obj;
+        return !(countries != null ? !countries.equals(that.countries) : that.countries != null);
     }
 
     /**
@@ -80,7 +96,11 @@ public final class FetchCountryResponse extends AbstractFallible {
      */
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = super.hashCode();
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countries != null ? countries.hashCode() : 0);
+
+        return result;
     }
 
     /**
@@ -88,6 +108,8 @@ public final class FetchCountryResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "";
+        return "FetchCountryResponse{" +
+                "countries=" + countries +
+                '}';
     }
 }

@@ -14,42 +14,31 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
-
-import java.util.List;
 
 /**
- * ToDo Kim; Michal, there is no way to create a positive response, i.e. without error
- * ToDo Kim; Michal, we need both setters and getters, including for the errors
- *
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection CastToConcreteClass
  * @since 1.7
+ * @noinspection CastToConcreteClass
  */
 public final class OfferResponse extends AbstractFallible {
 
-    /**
-     * {@link IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-    private final Offer offer;
-    private final List<String> errors;
+    private Offer offer = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
-     * Constructor is used in {@link OfferResponse} when deleteing an offer.
+     * Constructor is used in {@code OfferResponse} when deleteing an offer.
      */
     public OfferResponse() {
-        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        offer = null;
-        errors = null;
     }
 
     /**
@@ -58,9 +47,7 @@ public final class OfferResponse extends AbstractFallible {
      * @param offer offer which was saved
      */
     public OfferResponse(final Offer offer) {
-        super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
-        this.offer = offer;
-        errors = null;
+        setOffer(offer);
     }
 
     /**
@@ -71,27 +58,15 @@ public final class OfferResponse extends AbstractFallible {
      */
     public OfferResponse(final IWSError error, final String message) {
         super(error, message);
-        offer = null;
-        errors = null;
-    }
-
-    /**
-     * Response is created when processing the offer failed.
-     * <p/>
-     * Incorrect Offer should never be passed to this constructor. Instead use
-     * constructor without list of errors parameter.
-     *
-     * @param failedOffer list of offer for which something went wrong
-     */
-    public OfferResponse(final Offer failedOffer, final List<String> errors) {
-        super(IWSErrors.PROCESSING_FAILURE, "processing of the Offer failed");
-        offer = new Offer(failedOffer);
-        this.errors = Copier.copy(errors);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setOffer(final Offer offer) {
+        this.offer = copy(offer);
+    }
 
     public Offer getOffer() {
         return new Offer(offer);
@@ -116,10 +91,6 @@ public final class OfferResponse extends AbstractFallible {
 
         final OfferResponse that = (OfferResponse) obj;
 
-        if (errors != null ? !errors.equals(that.errors) : that.errors != null) {
-            return false;
-        }
-
         return !(offer != null ? !offer.equals(that.offer) : that.offer != null);
     }
 
@@ -131,7 +102,6 @@ public final class OfferResponse extends AbstractFallible {
         int result = super.hashCode();
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (offer != null ? offer.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (errors != null ? errors.hashCode() : 0);
 
         return result;
     }
@@ -143,7 +113,6 @@ public final class OfferResponse extends AbstractFallible {
     public String toString() {
         return "OfferResponse{" +
                 "offer=" + offer +
-                ", errors=" + errors +
                 '}';
     }
 }

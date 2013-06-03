@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.setup;
 
+import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -40,14 +41,26 @@ import java.util.Properties;
 public class SpringConfig {
 
     @Bean
+    protected static DataSource pgDatasource() {
+        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+
+        dataSource.setServerName("localhost");
+        dataSource.setDatabaseName("iws");
+        dataSource.setUser("iws");
+        dataSource.setPassword("iws");
+
+        return dataSource;
+    }
+
+    @Bean
     protected DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
+                .addScript("net/iaeste/iws/persistence/init_views.sql")
+                .addScript("net/iaeste/iws/persistence/init_data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange_views.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange_data.sql")
+                .addScript("net/iaeste/iws/persistence/exchange_data.sql")
                 .build();
     }
 

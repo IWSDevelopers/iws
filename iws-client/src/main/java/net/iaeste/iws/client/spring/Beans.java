@@ -42,12 +42,12 @@ public class Beans {
     protected DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
                 .addScript("net/iaeste/iws/persistence/hsqldb/init_tables.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/init_views.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/init_data.sql")
+                .addScript("net/iaeste/iws/persistence/init_views.sql")
+                .addScript("net/iaeste/iws/persistence/init_data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange_tables.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/exchange_views.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/exchange_data.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/test_data.sql")
+                .addScript("net/iaeste/iws/persistence/exchange_data.sql")
+                .addScript("net/iaeste/iws/persistence/test_data.sql")
                 .build();
     }
 

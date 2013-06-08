@@ -263,12 +263,12 @@ insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupN
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (27, '62fcf733-c905-4b64-806f-7ea341d93349', 9,   25, 6, 'Students');
 
 -- Couple of Users, password is the same as the username
-insert into users (external_id, status, username, password, firstname, lastname) values ('13452874-0c0f-4caf-8101-a8e9b41d6e69', 'ACTIVE', 'austria', '7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266', 'NS', 'Austria');
-insert into users (external_id, status, username, password, firstname, lastname) values ('23d4c552-dce4-4941-9254-9b7b87712c0e', 'ACTIVE', 'croatia', 'f17f6b658c4b6feb54250a4266ee642d39b6ca2e2fbc7714a6dc36ae6e6b7c9a', 'NS', 'Croatia');
-insert into users (external_id, status, username, password, firstname, lastname) values ('a14bb076-c2f7-419d-bd28-1d453ac3fda5', 'ACTIVE', 'denmark', '5f0bf3ff6b72ac09f881221fc8bd88ba9f24a393c2e544716dbf792978a7f313', 'NS', 'Denmark');
-insert into users (external_id, status, username, password, firstname, lastname) values ('047fde56-f5f7-4811-8a3d-a9b12d207570', 'ACTIVE', 'germany', 'b2c01c8a8a0d9a99f145f099a963021f010dc608a8e992bd1a2aec958b48f32d', 'NS', 'Germany');
-insert into users (external_id, status, username, password, firstname, lastname) values ('4bb8499a-f0dd-44d8-929e-0a7dbd218ed2', 'ACTIVE', 'poland',  '9cbbdd6cbd5335f528ec9f858ee4ddd727186dca99e33f8fc3273d39681d54a8', 'NS', 'Poland');
-insert into users (external_id, status, username, password, firstname, lastname) values ('bc62b71e-2c33-4dee-887a-b204f2dd4db1', 'ACTIVE', 'hungary', 'aa0db396b7d5266b3919e6bde7fdb036efd6456f153568d36d884a372387f778', 'NS', 'Hungary');
+insert into users (external_id, status, username, alias, password, firstname, lastname) values ('13452874-0c0f-4caf-8101-a8e9b41d6e69', 'ACTIVE', 'austria', 'austria.ns@iaeste.org', '7112733729f24775a6e82d0a6ad7c8106643ad438fef97e33e069f23a2167266', 'NS', 'Austria');
+insert into users (external_id, status, username, alias, password, firstname, lastname) values ('23d4c552-dce4-4941-9254-9b7b87712c0e', 'ACTIVE', 'croatia', 'croatia.ns@iaeste.org', 'f17f6b658c4b6feb54250a4266ee642d39b6ca2e2fbc7714a6dc36ae6e6b7c9a', 'NS', 'Croatia');
+insert into users (external_id, status, username, alias, password, firstname, lastname) values ('a14bb076-c2f7-419d-bd28-1d453ac3fda5', 'ACTIVE', 'denmark', 'denmark.ns@iaeste.org', '5f0bf3ff6b72ac09f881221fc8bd88ba9f24a393c2e544716dbf792978a7f313', 'NS', 'Denmark');
+insert into users (external_id, status, username, alias, password, firstname, lastname) values ('047fde56-f5f7-4811-8a3d-a9b12d207570', 'ACTIVE', 'germany', 'germany.ns@iaeste.org', 'b2c01c8a8a0d9a99f145f099a963021f010dc608a8e992bd1a2aec958b48f32d', 'NS', 'Germany');
+insert into users (external_id, status, username, alias, password, firstname, lastname) values ('4bb8499a-f0dd-44d8-929e-0a7dbd218ed2', 'ACTIVE', 'poland',  'poland.ns@iaeste.org', '9cbbdd6cbd5335f528ec9f858ee4ddd727186dca99e33f8fc3273d39681d54a8', 'NS', 'Poland');
+insert into users (external_id, status, username, alias, password, firstname, lastname) values ('bc62b71e-2c33-4dee-887a-b204f2dd4db1', 'ACTIVE', 'hungary', 'hungary.ns@iaeste.org', 'aa0db396b7d5266b3919e6bde7fdb036efd6456f153568d36d884a372387f778', 'NS', 'Hungary');
 
 -- User Group Associations
 insert into user_to_group (user_id, group_id, role_id) values ( 1, 10, 1);

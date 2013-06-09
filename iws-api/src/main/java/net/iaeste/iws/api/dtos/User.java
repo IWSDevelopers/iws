@@ -149,7 +149,7 @@ public final class User extends AbstractDto {
     }
 
     public void setAlias(final String alias) {
-        ensureNotNullOrEmptyOrTooLong("alias", alias, 125);
+        ensureNotTooLong("alias", alias, 125);
         this.alias = alias;
     }
 

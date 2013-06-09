@@ -1,0 +1,14 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ffmq</groupId>
+  <artifactId>ffmq3-core</artifactId>
+  <version>3.0.2</version>
+  <name>FFMQ</name>
+  <description>
+    FFMQ dist
+  </description>
+  <url>http://ffmq.sourceforge.net/</url>
+  <distributionManagement>
+    <downloadUrl>http://ffmq.sourceforge.net/</downloadUrl>
+  </distributionManagement>
+</project>

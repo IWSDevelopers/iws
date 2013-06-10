@@ -16,6 +16,9 @@ package net.iaeste.iws.ejb.emails;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.core.notifications.IwsFfmqConstants;
+import net.iaeste.iws.core.notifications.EmailMessage;
+import net.timewalker.ffmq3.FFMQConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,11 +26,20 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueReceiver;
+import javax.jms.QueueSession;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.Hashtable;
 import java.util.Properties;
 
 /**
@@ -50,20 +62,63 @@ public class EmailSender implements MessageListener {
     private static final String SMTP_SERVER = "localhost";
     private static final String SMTP_PORT = "25";
 
+    //Temporary solution instead of the MessageDriven bean
+    private QueueConnectionFactory queueConnectionFactory = null;
+    private QueueConnection queueConnection = null;
+    private QueueSession queueSession = null;
+    private QueueReceiver queueReceiver = null;
+    private Queue queue;
+
+    /**
+     * Constructor to initialize connection to the message queue.
+     * Temporary solution instead of the MessageDriven bean.
+     */
+    public EmailSender() {
+        try {
+            final Hashtable<String, String> env = new Hashtable<>();
+            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
+//            env.put(Context.PROVIDER_URL, MessageServer.listenAddr+MessageServer.listenPort);
+            env.put(Context.PROVIDER_URL, "vm://"+ IwsFfmqConstants.engineName);
+            final Context context = new InitialContext(env);
+
+            queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
+            queueConnection = queueConnectionFactory.createQueueConnection();
+            queueConnection.start();
+            queue = (Queue)context.lookup(IwsFfmqConstants.queueNameForIws);
+            queueSession = queueConnection.createQueueSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+            queueReceiver = queueSession.createReceiver(queue);
+            queueReceiver.setMessageListener(this);
+        } catch (NamingException|JMSException e) {
+            throw new IWSException(IWSErrors.ERROR, "Queue recipient initialization failed.", e);
+        }
+    }
+
+    /**
+     * Method for unsubscibing from queue and closing connection
+     */
+    public void stop() {
+        try {
+            queueReceiver.close();
+            queueSession.close();
+            queueConnection.stop();
+        } catch (JMSException e) {
+            throw new IWSException(IWSErrors.ERROR, "Queue recipient stopping failed.", e);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void onMessage(final Message message) {
-        //To change body of implemented methods use File | Settings | File Templates.
         if (message instanceof ObjectMessage) {
             final ObjectMessage msg = (ObjectMessage) message;
             try {
                 final Object object = msg.getObjectProperty("emailMessage");
-                if (!(object instanceof EmailMessage)) {
-                    throw new IWSException(IWSErrors.ERROR, "Not a proper e-mail message.");
-                } else {
+                if ((object instanceof EmailMessage)) {
                     send((EmailMessage) object);
+                } else {
+                    throw new IWSException(IWSErrors.ERROR, "Not a proper e-mail message.");
                 }
             } catch (JMSException e) {
                 throw new IWSException(IWSErrors.ERROR, "Sending the email message failed.", e);

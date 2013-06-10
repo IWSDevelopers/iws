@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.ejb.emails.EmailMessage
+ * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.notifications.EmailMessage
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,12 +12,14 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.ejb.emails;
+package net.iaeste.iws.core.notifications;
 
 /**
  * These classes sind temporarily placed here. We need the functionality, but it
  * should rightly be placed in the EJB module. Until the EJB module is ready,
  * and we have a GlassFish instance to deploy to, we will keep it here.
+ *
+ * Move together with NotificationEmail(Delayed)Sender to the EJB module.
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$

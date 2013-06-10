@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.core.notifications;
 
-import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.util.Date;
@@ -81,78 +80,6 @@ public final class NotificationManager implements Notifications {
         }
 
         notifyObservers();
-    }
-
-    /**
-     * The method has been deprecated, since this design requires that each and
-     * every Object that we wish to send notifications about should be directly
-     * implemented here. Rather, than leaving it to the Object itself.
-     *
-     * @param offer Offer
-     * @deprecated Please see the notify method
-     */
-    @Deprecated
-    public void processUpdatedOffer(final Offer offer) {
-        //read from database who wants to be notified for the offer
-        //TODO: waiting for #97
-//        final List<User> users = new ArrayList<>(0);
-//
-//        for (final User user : users) {
-//            //get user settings
-//            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, NotificationSubject.OFFER);
-//            if (userNotification == null) {
-//                //user hasn't set any notification
-//                continue;
-//            }
-//
-//            final NotificationMessageEntity message = new NotificationMessageEntity();
-//            message.setStatus(NotificationMessageStatus.NEW);
-//            message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-//            //create message
-//            final String messageText = offer.generateMessage(NotificationType.EMAIL, "updated");
-//            message.setMessage(messageText);
-//
-//            //save messages into DB
-//            dao.persist(message);
-//        }
-//
-//        notifyObservers();
-    }
-
-    /**
-     * The method has been deprecated, since this design requires that each and
-     * every Object that we wish to send notifications about should be directly
-     * implemented here. Rather, than leaving it to the Object itself.
-     *
-     * @param offer Offer
-     * @deprecated Please see the notify method
-     */
-    @Deprecated
-    public void processNewOffer(final Offer offer) {
-        //read from database who wants to be notified for the offer
-        //TODO: waiting for #97
-//        final List<User> users = new ArrayList<>(10);
-//
-//        for (final User user : users) {
-//            //get user settings
-//            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, NotificationSubject.OFFER);
-//            if (userNotification == null) {
-//                //user hasn't set any notification
-//                continue;
-//            }
-//
-//            final NotificationMessageEntity message = new NotificationMessageEntity();
-//            message.setStatus(NotificationMessageStatus.NEW);
-//            message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-//            //create message
-//            final String messageText = offer.generateMessage(NotificationType.EMAIL, "new");
-//            message.setMessage(messageText);
-//
-//            //save messages into DB
-//            dao.persist(message);
-//        }
-//
-//        notifyObservers();
     }
 
     private static java.util.Date getNotificationTime(final NotificationFrequency frequency) {

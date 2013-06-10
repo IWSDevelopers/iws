@@ -14,20 +14,37 @@
  */
 package net.iaeste.iws.core.notifications;
 
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.timewalker.ffmq3.FFMQConstants;
 
+import javax.jms.JMSException;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.Session;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.List;
 
 /**
  * The Class requires an EJB framework to properly work. For this reason, large
  * parts of the code is commented out.
+ *
+ * This should probably go to the EJB module. It needs to subscribe to the NotificationManager.
+ * If the instance of the NotificationManager can be access from EJB, there is no reason against moving it.
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -37,29 +54,40 @@ import java.util.List;
 public class NotificationEmailDelayedSender implements Observer {
 
 //    @Resource(mappedName = "iws-EmailQueue")
-//    private Queue queue;
+    private Queue queue;
 
 //    @Resource(mappedName = "iws-QueueConnectionFactory")
-//    private QueueConnectionFactory queueConnectionFactory;
+    private QueueConnectionFactory queueConnectionFactory;
 
-//    QueueConnection connection = null;
-//    QueueSender sender = null;
-//    QueueSession session = null;
+    private QueueConnection queueConnection = null;
+    private QueueSender sender = null;
+    private QueueSession session = null;
 
     private final NotificationDao dao;
 
     public NotificationEmailDelayedSender(final NotificationDao dao) {
         this.dao = dao;
 
-//        QueueConnection queueConnection = null;
-//        try {
-//            queueConnection = queueConnectionFactory.createQueueConnection();
-//            queueConnection.start();
-//            session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-//            sender = session.createSender(queue);
-//        } catch (JMSException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            //FFMQ specific
+            final Hashtable<String, String> env = new Hashtable<>();
+            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
+            env.put(Context.PROVIDER_URL, "vm://"+ IwsFfmqConstants.engineName);
+            //connection using 'vm://' protocol should have better performance, if not working, use tcp connection instead
+//            env.put(Context.PROVIDER_URL, "tcp://" + MessageServer.listenAddr + ":" + MessageServer.listenPort);
+            final Context context = new InitialContext(env);
+
+            queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
+            queue = (Queue)context.lookup(IwsFfmqConstants.queueNameForIws);
+            // end FFMQ specific
+
+            queueConnection = queueConnectionFactory.createQueueConnection();
+            queueConnection.start();
+            session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+            sender = session.createSender(queue);
+        } catch (NamingException|JMSException e) {
+            throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailDelayedSender) initialization failed.", e);
+        }
     }
 
     /**

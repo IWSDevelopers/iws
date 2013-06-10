@@ -1,7 +1,9 @@
-package net.iaeste.iws.core.ffmq;
+package net.iaeste.iws.ejb.ffmq;
 
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.core.notifications.IwsFfmqConstants;
 import net.timewalker.ffmq3.FFMQCoreSettings;
-import net.timewalker.ffmq3.FFMQException;
 import net.timewalker.ffmq3.listeners.ClientListener;
 import net.timewalker.ffmq3.listeners.tcp.io.TcpListener;
 import net.timewalker.ffmq3.local.FFMQEngine;
@@ -13,6 +15,14 @@ import org.slf4j.LoggerFactory;
 import javax.jms.JMSException;
 
 /**
+ * To start the server, do following:
+ * MessageServer ms = new MessageServer();
+ * ms.start();
+ * while(!ms.isDeployed()) {
+ *     //maybe some counter for timeout
+ *     Thread.sleep(1000);
+ * }
+ *
  * @author Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
@@ -24,30 +34,26 @@ public class MessageServer {
     private ClientListener tcpListener;
 
     private boolean deployed = false;
-    private static final String queueName = "iws-EmailQueue";
 
-    public static final String engineName = "IwsFfmqMessageServer";
-    public static final String listenAddr = "0.0.0.0";
-    public static final int listenPort = 10002;
 
     public void run() {
         try {
             System.setProperty("FFMQ_BASE", "..");
 
             final Settings settings = createEngineSettings();
-            engine = new FFMQEngine(engineName, settings);
+            engine = new FFMQEngine(IwsFfmqConstants.engineName, settings);
 
             LOG.trace("Starting listener");
-            tcpListener = new TcpListener(engine, listenAddr, listenPort, settings, null);
+            tcpListener = new TcpListener(engine, IwsFfmqConstants.listenAddr, IwsFfmqConstants.listenPort, settings, null);
             tcpListener.start();
 
             final QueueDefinition queueDef = new QueueDefinition();
-            queueDef.setName(queueName);
+            queueDef.setName(IwsFfmqConstants.queueNameForFfmq);
             queueDef.setUseJournal(false);
             queueDef.setMaxNonPersistentMessages(1000);
             queueDef.check();
 
-            if(engine.getDestinationDefinitionProvider().hasQueueDefinition(queueName)) {
+            if(engine.getDestinationDefinitionProvider().hasQueueDefinition(IwsFfmqConstants.queueNameForFfmq)) {
                 engine.getDestinationDefinitionProvider().removeQueueDefinition(queueDef);
             }
 
@@ -58,10 +64,8 @@ public class MessageServer {
 
             deployed = true;
             LOG.trace("Running");
-        } catch (FFMQException e) {
-            LOG.error(e.getMessage());
         } catch (JMSException e) {
-            LOG.error(e.getMessage());
+            throw new IWSException(IWSErrors.ERROR, "Setting up FFMQ server failed.", e);
         }
     }
 
@@ -78,10 +82,6 @@ public class MessageServer {
 
     public boolean isDeployed() {
         return deployed;
-    }
-
-    public String getQueueName() {
-        return "queue/" + queueName;
     }
 
     private Settings createEngineSettings() {

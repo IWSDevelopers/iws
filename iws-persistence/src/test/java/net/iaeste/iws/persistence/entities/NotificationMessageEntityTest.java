@@ -62,7 +62,7 @@ public class NotificationMessageEntityTest {
         entity.setMessage("message text");
         entity.setProcessAfter(new Date());
         entity.setStatus(NotificationMessageStatus.NEW);
-        entity.setType(NotificationType.EMAIL);
+        entity.setNotificationType(NotificationType.EMAIL);
 
         entity.setUser(user);
         entityManager.persist(entity);
@@ -88,7 +88,7 @@ public class NotificationMessageEntityTest {
         entity.setMessage("message text");
         entity.setProcessAfter(new Date());
         entity.setStatus(NotificationMessageStatus.NEW);
-        entity.setType(NotificationType.EMAIL);
+        entity.setNotificationType(NotificationType.EMAIL);
 
         entity.setUser(user);
         entityManager.persist(entity);

@@ -44,7 +44,7 @@ import java.util.Date;
         @NamedQuery(
                 name = "notifications.findMessagesByTypeStatusAndDate",
                 query = "select nm from NotificationMessageEntity nm " +
-                        "where nm.type = :type" +
+                        "where nm.notificationType = :type" +
                         "  and nm.status = :status" +
                         "  and nm.processAfter < :date"),
         @NamedQuery(name = "notifications.updateStatus",
@@ -67,8 +67,14 @@ public class NotificationMessageEntity implements IWSEntity {
      * Notification channel (e-mail, instant message, ...)
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "subject")
-    private NotificationType type = null;
+    @Column(name = "notification_type")
+    private NotificationType notificationType = null;
+
+    /**
+     * Message title
+     */
+    @Column(name = "title")
+    private String messageTitle = null;
 
     /**
      * Text of the message
@@ -99,13 +105,13 @@ public class NotificationMessageEntity implements IWSEntity {
      * Default Constructor, for creating Message Entity without date of processing.
      *
      * @param user    The User to receive the notification
-     * @param type    Type of notification channel (i.e. e-mail, instant message, ...)
+     * @param notificationType    Type of notification channel (i.e. e-mail, instant message, ...)
      * @param message Text of the message to be sent
      * @param status  Current status of the notification message
      */
-    public NotificationMessageEntity(final UserEntity user, final NotificationType type, final String message, final NotificationMessageStatus status) {
+    public NotificationMessageEntity(final UserEntity user, final NotificationType notificationType, final String message, final NotificationMessageStatus status) {
         this.user = user;
-        this.type = type;
+        this.notificationType = notificationType;
         this.message = message;
         this.status = status;
     }
@@ -117,6 +123,14 @@ public class NotificationMessageEntity implements IWSEntity {
     @Override
     public Long getId() {
         return id;
+    }
+
+    public void setMessageTitle(final String messageTitle) {
+        this.messageTitle = messageTitle;
+    }
+
+    public String getMessageTitle() {
+        return messageTitle;
     }
 
     public void setMessage(final String message) {
@@ -135,12 +149,12 @@ public class NotificationMessageEntity implements IWSEntity {
         return user;
     }
 
-    public void setType(final NotificationType type) {
-        this.type = type;
+    public void setNotificationType(final NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 
-    public NotificationType getType() {
-        return type;
+    public NotificationType getNotificationType() {
+        return notificationType;
     }
 
     public void setStatus(final NotificationMessageStatus status) {

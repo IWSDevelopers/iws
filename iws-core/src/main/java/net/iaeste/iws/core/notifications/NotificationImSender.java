@@ -22,6 +22,8 @@ import net.iaeste.iws.persistence.NotificationDao;
  * The Class requires an EJB framework to properly work. For this reason, large
  * parts of the code is commented out.
  *
+ * This should probably go to the EJB module.
+ *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -35,7 +37,7 @@ public class NotificationImSender implements Observer {
 //    @Resource(mappedName = "jms/QueueConnectionFactory")
 //    private QueueConnectionFactory queueConnectionFactory;
 
-//    QueueConnection connection = null;
+//    QueueConnection queueConnection = null;
 //    QueueSender sender = null;
 //    QueueSession session = null;
 

@@ -1,3 +1,17 @@
+/*
+ * =============================================================================
+ * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
+ * -----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.ControlUserAccount
+ * -----------------------------------------------------------------------------
+ * This software is provided by the members of the IAESTE Internet Development
+ * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
+ * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
+ *
+ * This software is provided "as is"; the IDT or individuals within the IDT
+ * cannot be held legally responsible for any problems the software may cause.
+ * =============================================================================
+ */
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Administration;
@@ -11,22 +25,22 @@ import net.iaeste.iws.fitnesse.callers.AdministrationCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: martin
- * Date: 5/12/13
- * Time: 5:54 PM
- * To change this template use File | Settings | File Templates.
+ * @author  Martin Eisfeld / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since   1.7
+ * @noinspection RefusedBequest
  */
 public final class ControlUserAccount extends AbstractFixture<Fallible> {
 
     private final Administration administration = new AdministrationCaller();
     private UserRequest request = new UserRequest();
-    private User user = new User();
+    private final User user = new User();
 
     public void setUserId(final String userId) {
         user.setUserId(userId);
     }
 
+    @Override
     public void setUsername(final String username) {
         user.setUsername(username);
     }
@@ -56,12 +70,12 @@ public final class ControlUserAccount extends AbstractFixture<Fallible> {
     }
 
     public void setAlternateEmail(final String alternateEmail) {
-        Person person = new Person();
+        final Person person = new Person();
         person.setAlternateEmail(alternateEmail);
         user.setPerson(person);
     }
 
-    public void ControlUserAccount() {
+    public void controlUserAccount() {
         execute();
     }
 

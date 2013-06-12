@@ -1,3 +1,17 @@
+/*
+ * =============================================================================
+ * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
+ * -----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.FetchCountries
+ * -----------------------------------------------------------------------------
+ * This software is provided by the members of the IAESTE Internet Development
+ * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
+ * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
+ *
+ * This software is provided "as is"; the IDT or individuals within the IDT
+ * cannot be held legally responsible for any problems the software may cause.
+ * =============================================================================
+ */
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Administration;
@@ -9,26 +23,24 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.regex.Pattern;
 
 /**
- * Created with IntelliJ IDEA.
- * User: martin
- * Date: 5/12/13
- * Time: 5:57 PM
- * To change this template use File | Settings | File Templates.
+ * @author  Martin Eisfeld / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since   1.7
  */
 public final class FetchCountries extends AbstractFixture<FetchCountryResponse> {
 
+    private static final Pattern SPLIT_ON_COMMA = Pattern.compile(",");
     private final Administration administration = new AdministrationCaller();
     private FetchCountryRequest request = new FetchCountryRequest();
 
-    public void setCountryIds(final String countryIds)
-    {
-        request.setCountryIds(new ArrayList<String>(Arrays.asList(countryIds.split(","))));
+    public void setCountryIds(final String countryIds) {
+        request.setCountryIds(new ArrayList<>(Arrays.asList(SPLIT_ON_COMMA.split(countryIds))));
     }
 
-    public void setMembership(final String membership)  {
+    public void setMembership(final String membership) {
         request.setMembership(Membership.valueOf(membership));
     }
 

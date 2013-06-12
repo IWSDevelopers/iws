@@ -26,6 +26,8 @@ import org.junit.Test;
  */
 public class HashcodeGeneratorTest {
 
+    private static final String USER_SALT = "";
+
     /**
      * Tests the MD5 generator method in the HashCode Generator library. The
      * raw text, and expected information are taken from the MD5 Wikipedia
@@ -46,10 +48,10 @@ public class HashcodeGeneratorTest {
         final String expectedNull = null;
 
         // Perform the testing
-        final String resultWithoutDot = HashcodeGenerator.generateMD5(textWithoutDot);
-        final String resultWithDot = HashcodeGenerator.generateMD5(textWithDot);
-        final String resultEmpty = HashcodeGenerator.generateMD5(textEmpty);
-        final String resultNull = HashcodeGenerator.generateMD5(textNull);
+        final String resultWithoutDot = HashcodeGenerator.generateMD5(textWithoutDot, USER_SALT);
+        final String resultWithDot = HashcodeGenerator.generateMD5(textWithDot, USER_SALT);
+        final String resultEmpty = HashcodeGenerator.generateMD5(textEmpty, USER_SALT);
+        final String resultNull = HashcodeGenerator.generateMD5(textNull, USER_SALT);
 
         // Assertion checks against the responses with our predefined expectations
         assertThat(resultWithoutDot, is(expectedWithoutDot));
@@ -78,10 +80,10 @@ public class HashcodeGeneratorTest {
         final String expectedNull = null;
 
         // Perform the testing
-        final String resultWithoutDot = HashcodeGenerator.generateSHA256(textWithoutDot);
-        final String resultWithDot = HashcodeGenerator.generateSHA256(textWithDot);
-        final String resultEmpty = HashcodeGenerator.generateSHA256(textEmpty);
-        final String resultNull = HashcodeGenerator.generateSHA256(textNull);
+        final String resultWithoutDot = HashcodeGenerator.generateSHA256(textWithoutDot, USER_SALT);
+        final String resultWithDot = HashcodeGenerator.generateSHA256(textWithDot, USER_SALT);
+        final String resultEmpty = HashcodeGenerator.generateSHA256(textEmpty, USER_SALT);
+        final String resultNull = HashcodeGenerator.generateSHA256(textNull, USER_SALT);
 
         // Assertion checks against the responses with our predefined expectations
         assertThat(resultWithoutDot, is(expectedWithoutDot));
@@ -110,10 +112,10 @@ public class HashcodeGeneratorTest {
         final String expectedNull = null;
 
         // Perform the testing
-        final String resultWithoutDot = HashcodeGenerator.generateSHA384(textWithoutDot);
-        final String resultWithDot = HashcodeGenerator.generateSHA384(textWithDot);
-        final String resultEmpty = HashcodeGenerator.generateSHA384(textEmpty);
-        final String resultNull = HashcodeGenerator.generateSHA384(textNull);
+        final String resultWithoutDot = HashcodeGenerator.generateSHA384(textWithoutDot, USER_SALT);
+        final String resultWithDot = HashcodeGenerator.generateSHA384(textWithDot, USER_SALT);
+        final String resultEmpty = HashcodeGenerator.generateSHA384(textEmpty, USER_SALT);
+        final String resultNull = HashcodeGenerator.generateSHA384(textNull, USER_SALT);
 
         // Assertion checks against the responses with our predefined expectations
         assertThat(resultWithoutDot, is(expectedWithoutDot));
@@ -142,10 +144,10 @@ public class HashcodeGeneratorTest {
         final String expectedNull = null;
 
         // Perform the testing
-        final String resultWithoutDot = HashcodeGenerator.generateSHA512(textWithoutDot);
-        final String resultWithDot = HashcodeGenerator.generateSHA512(textWithDot);
-        final String resultEmpty = HashcodeGenerator.generateSHA512(textEmpty);
-        final String resultNull = HashcodeGenerator.generateSHA512(textNull);
+        final String resultWithoutDot = HashcodeGenerator.generateSHA512(textWithoutDot, USER_SALT);
+        final String resultWithDot = HashcodeGenerator.generateSHA512(textWithDot, USER_SALT);
+        final String resultEmpty = HashcodeGenerator.generateSHA512(textEmpty, USER_SALT);
+        final String resultNull = HashcodeGenerator.generateSHA512(textNull, USER_SALT);
 
         // Assertion checks against the responses with our predefined expectations
         assertThat(resultWithoutDot, is(expectedWithoutDot));

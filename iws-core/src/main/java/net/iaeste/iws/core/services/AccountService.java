@@ -102,6 +102,8 @@ public final class AccountService extends CommonService {
                 final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
                 dao.persist(privateUserGroup);
                 addUserToGroup(user, authentication.getGroup(), member);
+                //notifications.notify(authentication, user, NotificationMessageType.PROCESS_EMAIL_ALIAS);
+                //notifications.notify(authentication, authentication.getGroup(), NotificationMessageType.PROCESS_MAILING_LIST);
             }
 
             notifications.notify(authentication, user, NotificationMessageType.ACTIVATE_USER);
@@ -228,6 +230,7 @@ public final class AccountService extends CommonService {
     // Internal Methods
     // =========================================================================
 
+    // TODO Add alias check, and persist it as well.
     private UserEntity createAndPersistUserEntity(final String username, final CreateUserRequest request) {
         final UserEntity user = new UserEntity();
 

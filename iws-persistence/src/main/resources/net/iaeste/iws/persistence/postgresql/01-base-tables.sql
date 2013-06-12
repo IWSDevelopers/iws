@@ -4,14 +4,14 @@
 -- Revision History:
 -- 0.01 June 4, 2013 - Kim Jensen <kim@dawn.dk>
 --   - Initial revision, based on the hsqldb
--- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 -- The script uses PostgreSQL 9+ specific commands, it will not work with
 -- previous versions of PostgreSQL, nor with any other database system.
 --   To install, please do the following:
 -- $ psql <DATABASE_NAME> < core.sql
--- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 -- To view the comments, please invoke the enhanced descriptor command: \d+
--- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 -- Country Model:
 --     - countries
 -- Permission Model:
@@ -23,14 +23,15 @@
 --     - Users
 --     - Groups
 --     - User 2 GroupTypes
--- ============================================================================
+-- =============================================================================
 
 
--- ============================================================================
--- Drop & Create the public schema for clean up
--- As long as we use this, the user needs to have SuperUser rights for this
--- operation
--- ============================================================================
+-- =============================================================================
+-- Drop & Create the public schema for clean up. Although the user requires
+-- super-user rights perform, we do no care - since the production database
+-- will be instantiated via a super-user, and for development, the developer is
+--  expected to be superuser.
+-- =============================================================================
 drop schema if exists public cascade;
 create schema public;
 
@@ -529,15 +530,17 @@ create table addresses (
 create sequence person_sequence start with 1 increment by 1;
 create table persons (
     id               integer default nextval('person_sequence'),
-    private_address  integer,
-    work_address     integer,
+    address          integer,
+    email            varchar(100),
+    phone            varchar(25),
+    mobile           varchar(25),
+    fax              varchar(25),
     modified         timestamp default now(),
     created          timestamp default now(),
 
     /* Primary & Foreign Keys */
-    constraint persons_pk                 primary key (id),
-    constraint persons_fk_private_address foreign key (private_address) references addresses (id),
-    constraint persons_fk_work_address    foreign key (work_address)    references addresses (id),
+    constraint persons_pk         primary key (id),
+    constraint persons_fk_address foreign key (address) references addresses (id),
 
     /* Not Null Constraints */
     constraint persons_notnull_id       check (id is not null),
@@ -579,21 +582,23 @@ create table user_notifications (
 -- =============================================================================
 create sequence notification_message_sequence start with 1 increment by 1;
 create table notification_messages (
-    id               integer default nextval('notification_message_sequence'),
-    user_id          integer,
-    subject          varchar(100),
-    message          varchar(100),
-    status           varchar(100),
-    process_after    timestamp default now(),
-    changed          timestamp default now(),
+    id                 integer default nextval('notification_message_sequence'),
+    user_id            integer,
+    title              varchar(100),
+    message            varchar(100),
+    notification_type  varchar(100),
+    status             varchar(100),
+    process_after      timestamp default now(),
+    changed            timestamp default now(),
 
     /* Primary & Foreign Keys */
     constraint notitication_messages_pk         primary key (id),
     constraint notitication_messages_fk_user_id foreign key (user_id) references users (id),
 
     /* Not Null Constraints */
-    constraint notitication_messages_notnull_id            check (id is not null),
-    constraint notitication_messages_notnull_user_id       check (user_id is not null),
-    constraint notitication_messages_notnull_process_after check (process_after is not null),
-    constraint notitication_messages_notnull_changed       check (changed is not null)
+    constraint notitication_messages_notnull_id                check (id is not null),
+    constraint notitication_messages_notnull_user_id           check (user_id is not null),
+    constraint notitication_messages_notnull_notification_type check (notification_type is not null),
+    constraint notitication_messages_notnull_process_after     check (process_after is not null),
+    constraint notitication_messages_notnull_changed           check (changed is not null)
 );

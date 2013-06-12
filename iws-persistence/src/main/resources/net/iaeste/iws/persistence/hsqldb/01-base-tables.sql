@@ -86,10 +86,10 @@ create table permissions (
     restricted          decimal(1) default 0,
     description         varchar(2048),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint permission_pk primary key (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint permission_unique_country_id unique (permission),
 
     /* Not Null Constraints */
@@ -115,10 +115,10 @@ create table grouptypes (
     grouptype           varchar(50),
     description         varchar(2048),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint grouptype_pk primary key (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint grouptype_unique_grouptype unique (grouptype),
 
     /* Not Null Constraints */
@@ -171,12 +171,12 @@ create table groups (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint group_pk              primary key (id),
     constraint group_fk_grouptype_id foreign key (grouptype_id) references grouptypes (id),
     constraint group_fk_country_id   foreign key (country_id)   references countries (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint group_unique_external_id unique (external_id),
 
     /* Not Null Constraints */
@@ -220,12 +220,12 @@ create table roles (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint role_pk            primary key (id),
     constraint role_fk_group_id   foreign key (group_id)   references groups (id),
     constraint role_fk_country_id foreign key (country_id) references countries (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint group_unique_ids unique (role, country_id, group_id),
 
     /* Not Null Constraints */
@@ -252,7 +252,7 @@ create table permission_to_grouptype (
     permission_id       integer,
     grouptype_id        integer,
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint p2gt_pk               primary key (permission_id, grouptype_id),
     constraint p2gt_fk_permission_id foreign key (permission_id) references permissions (id),
     constraint p2gt_fk_grouptype_id  foreign key (grouptype_id)  references grouptypes (id),
@@ -282,12 +282,12 @@ create table permission_to_role (
     permission_id       integer,
     role_id             integer,
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint p2r_pk               primary key (id),
     constraint p2r_fk_permission_id foreign key (permission_id) references permissions (id),
     constraint p2r_fk_role_id       foreign key (role_id)       references roles (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint p2r_unique_ids unique (permission_id, role_id),
 
     /* Not Null Constraints */
@@ -321,10 +321,10 @@ create table users (
     modified            timestamp   default now(),
     created             timestamp   default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint user_pk primary key (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint user_unique_external_id unique (external_id),
     constraint user_unique_username    unique (username),
     constraint user_unique_alias       unique (alias),
@@ -365,11 +365,11 @@ create table sessions (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint session_pk         primary key (id),
     constraint session_fk_user_id foreign key (user_id) references users (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint session_unique_session_key unique (session_key),
 
     /* Not Null Constraints */
@@ -406,13 +406,13 @@ create table user_to_group (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint u2g_pk          primary key (id),
     constraint u2g_fk_user_id  foreign key (user_id)  references users (id),
     constraint u2g_fk_group_id foreign key (group_id) references groups (id),
     constraint u2g_fk_role_id  foreign key (role_id)  references roles (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint u2g_unique_session_key unique (user_id, group_id),
 
     /* Not Null Constraints */
@@ -450,7 +450,7 @@ create table history (
     fields              varbinary(8192),
     changed             timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint history_pk          primary key (id),
     constraint history_fk_user_id  foreign key (user_id)  references users (id),
     constraint history_fk_group_id foreign key (group_id) references groups (id),
@@ -484,7 +484,7 @@ create table addresses (
     modified            timestamp    default now(),
     created             timestamp    default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint address_pk              primary key (id),
     constraint address_fk_countries_id foreign key (country_id) references countries (id),
 
@@ -509,146 +509,23 @@ create table addresses (
 create sequence person_sequence start with 1 increment by 1;
 create table persons (
     id               integer generated by default as sequence person_sequence,
-    private_address  integer,
-    work_address     integer,
+    address          integer,
+    email            varchar(100),
+    phone            varchar(25),
+    mobile           varchar(25),
+    fax              varchar(25),
     modified         timestamp default now(),
     created          timestamp default now(),
 
-    -- Primary & Foreign Keys
-    constraint persons_pk                 primary key (id),
-    constraint persons_fk_private_address foreign key (private_address) references addresses (id),
-    constraint persons_fk_work_address    foreign key (work_address)    references addresses (id),
+    /* Primary & Foreign Keys */
+    constraint persons_pk         primary key (id),
+    constraint persons_fk_address foreign key (address) references addresses (id),
 
     /* Not Null Constraints */
     constraint persons_notnull_id       check (id is not null),
     constraint persons_notnull_modified check (modified is not null),
     constraint persons_notnull_created  check (created is not null)
 );
-
-
--- --****************************************************************************\
--- * TABLE :: Users                                                              *
--- * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- *
--- * Fields in this table:                                                       *
--- *   UserID             :: The system ID                                       *
--- *   UserName           :: The users e-mail address                            *
--- *   Password           :: The Users password, using MD5 encryption            *
--- *   Country            :: CountryID, the users country of residence           *
--- *   Nationality        :: CountryID, the users nationality                    *
--- *   Volunteer          :: If a user is an IAESTE volunteer or employed        *
--- * --------------------------------------------------------------------------- *
--- * General description of this table:                                          *
--- *   This table contain all the information about a user, the Country and      *
--- *   Nationality is keys for the "Countries" table.                            *
--- \****************************************************************************
--- CREATE SEQUENCE UserSeq START 2;
--- CREATE TABLE Users (
---     UserID             INTEGER DEFAULT NextVal('UserSeq'::text) NOT NULL PRIMARY KEY,
---     UserName           TEXT         NOT NULL,
---     Password           VARCHAR(32)  NOT NULL,
---     FirstName          TEXT         NOT NULL,
---     LastName           TEXT         NOT NULL,
---     MiddleName         TEXT         DEFAULT '',
---     NickName           TEXT         DEFAULT '',
---     Gender             VARCHAR(10)  DEFAULT '',
---     Title              TEXT         DEFAULT '',
---     University         TEXT         DEFAULT '',
---     Subject            TEXT         DEFAULT '',
---     GradYear           INTEGER      DEFAULT -1,
---     Nationality        VARCHAR(2)   NOT NULL REFERENCES Countries (CountryID) ON DELETE RESTRICT ON UPDATE CASCADE,
---     Phone              VARCHAR(25)  DEFAULT '',
---     Fax                TEXT         DEFAULT '',
---     Mobile             VARCHAR(25)  DEFAULT '',
---     Homepage           TEXT         DEFAULT '',
---     AlternativeMail    TEXT         DEFAULT '',
---     PassportNumber     TEXT         DEFAULT '',
---     PassportIssued     TEXT         DEFAULT '',
---     PassportValidity   DATE,
---     Work_Company       TEXT         DEFAULT '',
---     Work_Department    TEXT         DEFAULT '',
---     Work_Title         TEXT         DEFAULT '',
---     Work_POBox         TEXT         DEFAULT '',
---     Work_Street1       TEXT         DEFAULT '',
---     Work_Street2       TEXT         DEFAULT '',
---     Work_Zip           VARCHAR(10)  DEFAULT '',
---     Work_City          TEXT         DEFAULT '',
---     Work_Region        TEXT         DEFAULT '',
---     Work_Country       VARCHAR(2)   NOT NULL,
---     Work_Phone         VARCHAR(25)  DEFAULT '',
---     Work_Mobile        VARCHAR(25)  DEFAULT '',
---     Work_Fax           TEXT         DEFAULT '',
---     Work_Email         TEXT         DEFAULT '',
---     Work_Homepage      TEXT         DEFAULT '',
---     Type               VARCHAR(1)   DEFAULT 'v',
---     IM_Name1           TEXT         DEFAULT '',
---     IM_User1           TEXT         DEFAULT '',
---     IM_Name2           TEXT         DEFAULT '',
---     IM_User2           TEXT         DEFAULT '',
---     Birthday           DATE,
---     Comments           TEXT         DEFAULT '',
---     LastPasswordChange TIMESTAMP,
---     Modified           TIMESTAMP,
---     Created            TIMESTAMP
---
--- --****************************************************************************\
--- * TABLE :: Profiles                                                           *
--- * -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- *
--- * Fields in this table:                                                       *
--- *   ProfileID              :: The system ID (same as the UserID for the user) *
--- *   Status                 :: User Status either "New", "Active" or "Revoked" *
--- *   Picture                :: A picture of the user, this is just the "link"  *
--- *   Locale                 :: Localization, the two-letter country code       *
--- *   ListSize               :: The size of lists in the IntraWeb               *
--- *   CSVDelimiter           :: Allows the user to change their CSV delimiter   *
--- *   PaperType              :: For PDF files, default A4                       *
--- *   DateFormat             :: To allow different ways to display dates        *
--- *   UserName               :: Used for changing UserName (E-mail address)     *
--- *   Password               :: The new Password if a user forgot it            *
--- *   Checksum               :: Used to verify chaging the Username or Password *
--- *   DiscSize               :: The KB amount of space the user is granted      *
--- *   DiscUsed               :: The KB amount of space the user is using        *
--- *   Logins                 :: Number of logins the user had (statistics)      *
--- *   OnlineTime             :: The amount of time the user has spend online    *
--- *   MailAlias              :: This is the users personal e-mail alias         *
--- *   NotificationFrequency  :: For the MessageQueue 'n'ever, 'e'veryone,       *
--- *                          :: 'h'our, 'd'aily, 'w'eekly, 'm'onthly.           *
--- *   Private_Address        :: If address should be visible to all             *
--- *   Private_Phones         :: If phones should be vissibile to all            *
--- *   Private_Work           :: If work information should be private           *
--- * --------------------------------------------------------------------------- *
--- * General description of this table:                                          *
--- *   This table contain the profile information for the user, i.e. the system  *
--- *   dependent information which is not related to the users personal data.    *
--- \****************************************************************************
--- CREATE TABLE Profiles (
---     ProfileID              INTEGER PRIMARY KEY REFERENCES Users (UserID) ON DELETE CASCADE ON UPDATE CASCADE,
---     Status                 VARCHAR(25)  DEFAULT 'New',
---     Picture                VARCHAR(250) DEFAULT '',
---     Locale                 VARCHAR(2)   DEFAULT 'en',
---     Theme                  VARCHAR(25)  DEFAULT 'standard',
---     FontSize               INTEGER      DEFAULT 11,
---     ListSize               INTEGER      DEFAULT 15,
---     CSVDelimiter           CHAR(1)      DEFAULT ';',
---     PaperType              VARCHAR(10)  DEFAULT 'A4',
---     DateFormat             TEXT         DEFAULT 'Y-m-d',
---     TimeFormat             TEXT         DEFAULT 'H:i',
---     TimeZone               TEXT         DEFAULT 'CET',
---     UserName               VARCHAR(75)  DEFAULT '',
---     Password               VARCHAR(32)  DEFAULT '',
---     Checksum               VARCHAR(32)  DEFAULT '',
---     DiscSize               INTEGER      DEFAULT 26214400,
---     DiscUsed               INTEGER      DEFAULT 0,
---     Logins                 INTEGER      DEFAULT 0,
---     OnlineTime             TIMESTAMP,
---     MailAlias              VARCHAR(100) DEFAULT '',
---     NotificationFrequency  CHAR(1)      DEFAULT 'e',
---     PrivateAddress         BOOLEAN      DEFAULT true,
---     PrivatePhones          BOOLEAN      DEFAULT true,
---     PrivateWork            BOOLEAN      DEFAULT true,
---     TermsOfUsage           INTEGER      DEFAULT 0,
---     Modified               TIMESTAMP,
---     Created                TIMESTAMP
--- );
 
 
 -- =============================================================================
@@ -666,7 +543,7 @@ create table user_notifications (
     frequency        varchar(100),
     changed          timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint user_notifications_pk         primary key (id),
     constraint user_notifications_fk_user_id foreign key (user_id) references users (id),
 
@@ -684,23 +561,23 @@ create table user_notifications (
 -- =============================================================================
 create sequence notification_message_sequence start with 1 increment by 1;
 create table notification_messages (
-    id               integer generated by default as sequence notification_message_sequence,
-    user_id          integer,
-    title            varchar(100),
-    message          varchar(100),
-    notification_type   varchar(100),
-    status           varchar(100),
-    process_after    timestamp default now(),
-    changed          timestamp default now(),
+    id                 integer generated by default as sequence notification_message_sequence,
+    user_id            integer,
+    title              varchar(100),
+    message            varchar(100),
+    notification_type  varchar(100),
+    status             varchar(100),
+    process_after      timestamp default now(),
+    changed            timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint notitication_messages_pk         primary key (id),
     constraint notitication_messages_fk_user_id foreign key (user_id) references users (id),
 
-    -- Not Null Constraints
-    constraint notitication_messages_notnull_id             check (id is not null),
-    constraint notitication_messages_notnull_user_id        check (user_id is not null),
+    /* Not Null Constraints */
+    constraint notitication_messages_notnull_id                check (id is not null),
+    constraint notitication_messages_notnull_user_id           check (user_id is not null),
     constraint notitication_messages_notnull_notification_type check (notification_type is not null),
-    constraint notitication_messages_notnull_process_after  check (process_after is not null),
-    constraint notitication_messages_notnull_changed        check (changed is not null)
+    constraint notitication_messages_notnull_process_after     check (process_after is not null),
+    constraint notitication_messages_notnull_changed           check (changed is not null)
 );

@@ -2,6 +2,49 @@
 -- Please add the initialization of all Exchange related tables here
 -- =============================================================================
 
+
+-- =============================================================================
+-- Employers
+-- -----------------------------------------------------------------------------
+-- This table contain the information about an employer. The main idea is that
+-- an employer is fairly static, so the name combined with the GroupId must be
+-- unique.
+--   All static employer information is listed here, and removed from the actual
+-- Offer table, to make for a cleaner and more normalized design.
+-- =============================================================================
+create sequence employer_sequence start with 1 increment by 1;
+create table employers (
+    id                        integer default nextval('employer_sequence'),
+    external_id               varchar(36),
+    group_id                  integer,
+    contact_person_id         integer,
+    name                      varchar(255),
+    address_id                integer,
+    business                  varchar(255),
+    number_of_employees       integer,
+    website                   varchar(255),
+    modified                  timestamp default now(),
+    created                   timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint employer_pk            primary key (id),
+    constraint employer_fk_group_id   foreign key (group_id) references groups (id),
+    constraint employer_fk_person_id  foreign key (contact_person_id) references persons (id),
+    constraint employer_fk_address_id foreign key (address_id) references addresses (id),
+
+    /* Unique Constraints */
+    constraint employer_unique_external_id   unique (external_id),
+    constraint employer_unique_name_group_id unique (name, group_id),
+
+    /* Not Null Constraints */
+    constraint employer_notnull_id          check (id is not null),
+    constraint employer_notnull_external_id check (external_id is not null),
+    constraint employer_notnull_name        check (name is not null),
+    constraint employer_notnull_modified    check (modified is not null),
+    constraint employer_notnull_created     check (created is not null)
+);
+
+
 create sequence offers_sequence start with 100 increment by 1;
 create table offers (
     id                        integer default nextval('offers_sequence'),
@@ -58,14 +101,14 @@ create table offers (
     modified                  timestamp default now(),
     created                   timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint offer_pk primary key (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint offer_unique_ref_no      unique (ref_no),
     constraint offer_unique_external_id unique (external_id),
 
-    -- Not Null Constraints
+    /* Not Null Constraints */
     constraint offer_notnull_id          check (id is not null),
     constraint offer_notnull_ref_no      check (ref_no is not null),
     constraint offer_notnull_external_id check (external_id is not null),
@@ -87,14 +130,14 @@ create table students (
     modified            timestamp default now(),
     created             timestamp default now(),
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint student_pk          primary key (id),
     constraint student_fk_group_id foreign key (group_id) references groups (id),
 
-    -- Unique Constraints
+    /* Unique Constraints */
     constraint student_student_name unique (student_name),
 
-    -- Not Null Constraints
+    /* Not Null Constraints */
     constraint student_notnull_student_name check (student_name is not null),
     constraint student_notnull_group_id     check (group_id is not null),
     constraint student_notnull_modified     check (modified is not null),
@@ -113,14 +156,14 @@ create table offer_to_group (
     created            timestamp default now(),
     created_by         integer,
 
-    -- Primary & Foreign Keys
+    /* Primary & Foreign Keys */
     constraint offer_to_group_pk              primary key (id),
     constraint offer_to_group_fk_offer_id     foreign key (offer_id) references offers (id) ON DELETE CASCADE,
     constraint offer_to_group_fk_group_id     foreign key (group_id) references groups (id) ON DELETE CASCADE,
     constraint offer_to_group_fk_modified_by  foreign key (modified_by) references users (id) ON DELETE SET NULL,
     constraint offer_to_group_fk_created_by   foreign key (created_by) references users (id) ON DELETE SET NULL,
 
-    -- Not Null Constraints
+    /* Not Null Constraints */
     constraint offer_to_group_notnull_offer_id  check (offer_id is not null),
     constraint offer_to_group_notnull_group_id  check (group_id is not null),
     constraint offer_to_group_notnull_modified  check (modified is not null),

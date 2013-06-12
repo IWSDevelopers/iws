@@ -104,7 +104,9 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         setPassword(password);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setRefNo(final String refNo) {
         offer.setRefNo(refNo);
     }
@@ -113,7 +115,9 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setNominationDeadline(new Date(nominationDeadline));
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setEmployerName(final String employerName) {
         offer.setEmployerName(employerName);
     }
@@ -138,7 +142,9 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setEmployerWebsite(employerWebsite);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setFieldOfStudies(final String fieldOfStudies) {
         offer.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, fieldOfStudies));
     }
@@ -147,7 +153,9 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setSpecializations(new HashSet<>(CollectionTransformer.explodeStringList(specializations)));
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setStudyLevels(final String studyLevels) {
         offer.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, studyLevels));
     }
@@ -160,12 +168,16 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setOtherRequirements(otherRequirements);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setLanguage1(final Language language1) {
         offer.setLanguage1(language1);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setLanguage1Level(final LanguageLevel language1Level) {
         offer.setLanguage1Level(language1Level);
     }
@@ -194,7 +206,9 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setLanguage3Level(language3Level);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setWorkDescription(final String workDescription) {
         offer.setWorkDescription(workDescription);
     }
@@ -203,22 +217,30 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setTypeOfWork(typeOfWork);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setMinimumWeeks(final Integer minimumWeeks) {
         offer.setMinimumWeeks(minimumWeeks);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setMaximumWeeks(final Integer maximumWeeks) {
         offer.setMaximumWeeks(maximumWeeks);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setFromDate(final String fromDate) {
         offer.setFromDate(new Date(fromDate));
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setToDate(final String toDate) {
         offer.setToDate(new Date(toDate));
     }
@@ -251,7 +273,9 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setNearestPubTransport(nearestPubTransport);
     }
 
-    /** not null */
+    /**
+     * not null
+     */
     public void setWeeklyHours(final Float weeklyHours) {
         offer.setWeeklyHours(weeklyHours);
     }

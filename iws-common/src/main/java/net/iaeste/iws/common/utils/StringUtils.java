@@ -23,7 +23,9 @@ package net.iaeste.iws.common.utils;
  */
 public final class StringUtils {
 
-    /** Private Constructor, this is a utility class. */
+    /**
+     * Private Constructor, this is a utility class.
+     */
     private StringUtils() {
     }
 

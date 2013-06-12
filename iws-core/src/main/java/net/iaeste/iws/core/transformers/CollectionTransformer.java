@@ -115,7 +115,7 @@ public final class CollectionTransformer {
      * @param collection Collection of Strings to be concatenated
      * @return concatenated String
      */
-    public static String join(final Collection<?> collection) {
+    public static String join(final Collection<String> collection) {
         return StringUtils.join(collection, DELIMITER);
     }
 

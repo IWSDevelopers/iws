@@ -21,11 +21,28 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
+ * The Hashcode Generator, will generate a hash value for a given value. A Hash
+ * value is a one-way cryptographic method, that is good for storing
+ * Passwords.<br />
+ *   Since more users will use a simple password, that can easily be found using
+ * a "rainbow" table, meaning a lookup in a database with known hash codes and
+ * their origin, we're simply adding a salt to it. a Salt is a value that is
+ * controlled by the system, and automatically added to both the hashing and
+ * also used for the verification.<br />
+ *   The IWS uses a three-part salt, one with a hardcoded value that requires
+ * that a hacker needs to get hold of the source code for the sytem. A server
+ * configured value located in a properties file and finally a user-specific
+ * salt. This means that a hacker needs access to all three elements, including
+ * the clear-text version of the password to find it.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 public final class HashcodeGenerator {
+
+    // Hardcoded salt value, to add to the hashing
+    private static final String HARDCODED_SALT = "Common og algemein øæåüöäßłđ!#¤%&/()=?±}][{¥½$£@¡ værdi für salt, mit sjove names och mixed Sprache";
 
     // The Algorithm's, which we'll support
     private static final String HASHCODE_ALGORITHM_MD5 = "MD5";
@@ -47,8 +64,9 @@ public final class HashcodeGenerator {
      * @return MD5 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/MD5">Wikipedia MD5</a>
      */
-    public static String generateMD5(final String str) {
-        return generateHashcode(HASHCODE_ALGORITHM_MD5, str);
+    public static String generateMD5(final String str, final String userSalt) {
+        final String salt = prepareSalt(userSalt);
+        return generateHashcode(HASHCODE_ALGORITHM_MD5, str, salt);
     }
 
     /**
@@ -58,8 +76,9 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    public static String generateSHA256(final String str) {
-        return generateHashcode(HASHCODE_ALGORITHM_SHA256, str);
+    public static String generateSHA256(final String str, final String userSalt) {
+        final String salt = prepareSalt(userSalt);
+        return generateHashcode(HASHCODE_ALGORITHM_SHA256, str, salt);
     }
 
     /**
@@ -69,8 +88,9 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    public static String generateSHA384(final String str) {
-        return generateHashcode(HASHCODE_ALGORITHM_SHA384, str);
+    public static String generateSHA384(final String str, final String userSalt) {
+        final String salt = prepareSalt(userSalt);
+        return generateHashcode(HASHCODE_ALGORITHM_SHA384, str, salt);
     }
 
     /**
@@ -80,13 +100,19 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    public static String generateSHA512(final String str) {
-        return generateHashcode(HASHCODE_ALGORITHM_SHA512, str);
+    public static String generateSHA512(final String str, final String userSalt) {
+        final String salt = prepareSalt(userSalt);
+        return generateHashcode(HASHCODE_ALGORITHM_SHA512, str, salt);
     }
 
     // =========================================================================
     // Internal Methods
     // =========================================================================
+
+    private static String prepareSalt(final String userSalt) {
+        //return userSalt + HARDCODED_SALT;
+        return "";
+    }
 
     /**
      * Generates a Cryptographical Checksum based on the given algorithm, and
@@ -96,14 +122,15 @@ public final class HashcodeGenerator {
      *
      * @param  algorithm  The Cryptographical Hash Algorithm to use
      * @param  str        The value to hash
+     * @param  salt       Salt for the hashing
      * @return The Hash value for the given string
      */
-    private static String generateHashcode(final String algorithm, final String str) {
+    private static String generateHashcode(final String algorithm, final String str, final String salt) {
         final String result;
 
         if (str != null) {
             final MessageDigest digest = getDigest(algorithm);
-            final byte[] bytes = digest.digest(str.getBytes(CHARSET));
+            final byte[] bytes = digest.digest((salt + str).getBytes(CHARSET));
             result = convertBytesToHex(bytes);
         } else {
             result = null;

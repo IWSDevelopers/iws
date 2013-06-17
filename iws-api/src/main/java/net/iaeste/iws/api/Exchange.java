@@ -48,10 +48,41 @@ import javax.ejb.Remote;
 @Remote
 public interface Exchange {
 
+    /**
+     * Get a list of employer information based on a substring of the employer name. This is basically used to provide
+     * an auto-completion function when entering offers. This list only contains the latest entered employer information.
+     * So the returned result is selected by distinct names of the employer. This also means, if the employer name
+     * is changed, an additional entry is generated.
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request Request object contains only a string representing a substring of the employers name for which
+     *                all possible results a re aggregated.
+     * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.EmployerInformation}
+     */
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 
+    /**
+     * Creates or updates an Offer, dependent on the {@code id}. If the id is set, an update is assumed, otherwise
+     * a create will be performed.
+     *
+     * On error the {@link OfferResponse} object contains only error information. No information about the Offer is returned.
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request contains a {@link net.iaeste.iws.api.dtos.exchange.Offer}
+     * @return the persisted {@link net.iaeste.iws.api.dtos.exchange.Offer} including the generated ID
+     */
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 
+    /**
+     * Performs a deletion of the offer.
+     *
+     * TODO: this should only be under certain circumstances: only if the offer is in state new. Doesn't matter if it
+     * was once shared. But it should never be able to be deleted once a student was nominated.
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request contains a field with the RefNo (will be changed to id #359)
+     * @return emtpy {@link OfferResponse} on success
+     */
     OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);

@@ -80,7 +80,7 @@ public final class ExchangeService extends CommonService {
 
     /**
      * Will attempt to persist a new Offer, meaning that if the Offer already
-     * exists (check against the given refno) and the user is allowed to work
+     * exists (check against the given externalId) and the user is allowed to work
      * with it, then it us updated. If no such Offer exists, then a new Offer
      * is created and assigned to the given Group.<br />
      * The method returns an OfferResponse object with error information. No

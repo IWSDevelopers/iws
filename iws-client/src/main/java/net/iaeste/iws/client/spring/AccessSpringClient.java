@@ -97,8 +97,8 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public AuthenticationResponse resetSession(final String resetSessionString) {
-        return client.resetSession(resetSessionString);
+    public AuthenticationResponse resetSession(final String resetSessionToken) {
+        return client.resetSession(resetSessionToken);
     }
 
     /**
@@ -123,6 +123,30 @@ public final class AccessSpringClient implements Access {
     @Override
     public Fallible deprecateSession(final AuthenticationToken token) {
         return client.deprecateSession(token);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible forgotPassword() {
+        return client.forgotPassword();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible resetPassword(final String resetPasswordToken, final String newPassword) {
+        return client.resetPassword(resetPasswordToken, newPassword);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible updatePassword(final AuthenticationToken token, final String newPassword) {
+        return client.updatePassword(token, newPassword);
     }
 
     /**

@@ -99,7 +99,9 @@ public interface Administration {
      * account, requires that the user has the right permissions.<br />
      *   Note; Regardless of who is making the request, it is not possible to
      * alter the status of someone who is currently having the role Owner, of
-     * the Members Group.
+     * the Members Group.<br />
+     *   Note; Updating or resetting Passwords, is handled via a set of methods
+     * defined in the {@code Access} interface.
      *
      * @param token   Authentication information about the user invoking the
      *                request

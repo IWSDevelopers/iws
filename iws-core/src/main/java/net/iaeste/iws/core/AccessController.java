@@ -111,13 +111,13 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public AuthenticationResponse resetSession(final String resetSessionString) {
+    public AuthenticationResponse resetSession(final String resetSessionToken) {
         LOG.trace("Starting resetSession()");
         AuthenticationResponse response;
 
         try {
             final AccessService service = factory.prepareAuthenticationService();
-            final AuthenticationToken token = service.resetSession(resetSessionString);
+            final AuthenticationToken token = service.resetSession(resetSessionToken);
             response = new AuthenticationResponse(token);
         } catch (IWSException e) {
             response = new AuthenticationResponse(e.getError(), e.getMessage());
@@ -189,6 +189,68 @@ public final class AccessController extends CommonController implements Access {
         }
 
         LOG.trace("Finished deprecateSession()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible forgotPassword() {
+        LOG.trace("Starting forgotPassword()");
+        Fallible response;
+
+        try {
+            final AccessService service = factory.prepareAuthenticationService();
+            service.forgotPassword();
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished forgotPassword()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible resetPassword(final String resetPasswordToken, final String newPassword) {
+        LOG.trace("Starting resetPassword()");
+        Fallible response;
+
+        try {
+            final AccessService service = factory.prepareAuthenticationService();
+            service.resetPassword(resetPasswordToken, newPassword);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished resetPassword()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible updatePassword(final AuthenticationToken token, final String newPassword) {
+        LOG.trace("Starting updatePassword()");
+        Fallible response;
+
+        try {
+            verifyPrivateAccess(token);
+
+            final AccessService service = factory.prepareAuthenticationService();
+            service.updatePassword(token, newPassword);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished updatePassword()");
         return response;
     }
 

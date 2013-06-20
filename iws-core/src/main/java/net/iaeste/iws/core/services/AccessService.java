@@ -39,6 +39,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 import net.iaeste.iws.persistence.views.UserPermissionView;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -193,6 +194,39 @@ public final class AccessService extends CommonService {
         if (updated > 1) {
             throw new AuthorizationException("Multiple Active Sessions was found.");
         }
+    }
+
+    public void forgotPassword() {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Resets the usersession, by finding the Account via the token. Only
+     * accounts that are currently Active can have their passwords reset.
+     *
+     * @param resetPasswordToken Reset Password Token, from the notification
+     * @param newPassword        New Password for the user
+     */
+    public void resetPassword(final String resetPasswordToken, final String newPassword) {
+        final UserEntity user = dao.findUserByCodeAndStatus(resetPasswordToken, UserStatus.ACTIVE);
+
+        if (user != null) {
+            final String password = newPassword.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+            final String salt = UUID.randomUUID().toString();
+
+            user.setPassword(generateSHA256(password, salt));
+            user.setSalt(salt);
+            user.setCode(null);
+            user.setModified(new Date());
+
+            dao.persist(user);
+        } else {
+            throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for this user was found.");
+        }
+    }
+
+    public void updatePassword(final AuthenticationToken token, final String newPassword) {
+        throw new NotImplementedException();
     }
 
     /**

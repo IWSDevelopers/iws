@@ -142,11 +142,11 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public AuthenticationResponse resetSession(final String resetSessionString) {
+    public AuthenticationResponse resetSession(final String resetSessionToken) {
         AuthenticationResponse response;
 
         try {
-            response = controller.resetSession(resetSessionString);
+            response = controller.resetSession(resetSessionToken);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -201,6 +201,60 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.deprecateSession(token);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible forgotPassword() {
+        Fallible response;
+
+        try {
+            response = controller.forgotPassword();
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible resetPassword(final String resetPasswordToken, final String newPassword) {
+        Fallible response;
+
+        try {
+            response = controller.resetPassword(resetPasswordToken, newPassword);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible updatePassword(final AuthenticationToken token, final String newPassword) {
+        Fallible response;
+
+        try {
+            response = controller.updatePassword(token, newPassword);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

@@ -85,10 +85,10 @@ public interface Access {
      * currently exists a Session and if so, then it will close the existing
      * Session, create a new and return this.
      *
-     * @param resetSessionString The Reset token sent to the user
+     * @param resetSessionToken The Reset token sent to the user
      * @return Authentication Result Object
      */
-    AuthenticationResponse resetSession(String resetSessionString);
+    AuthenticationResponse resetSession(String resetSessionToken);
 
     /**
      * Used to save a users session Data in the IWS.
@@ -119,6 +119,34 @@ public interface Access {
      * @return Standard Error object
      */
     Fallible deprecateSession(AuthenticationToken token);
+
+    /**
+     * If a user forgot the password, then this request will send a notification
+     * to the Users registered e-mail address (username). The e-mail will
+     * contain a reset Token, that can be used when invoking the
+     * {@code #resetPassword(resetPasswordToken, newPassword} method.
+     *
+     * @return Standard Error object
+     */
+    Fallible forgotPassword();
+
+    /**
+     * Resets a users password in the system.
+     *
+     * @param resetPasswordToken Reset Password Token, from the notification
+     * @param newPassword        New Password for the user
+     * @return Standard Error object
+     */
+    Fallible resetPassword(String resetPasswordToken, String newPassword);
+
+    /**
+     * Updates a users password in the system.
+     *
+     * @param token       User {@code AuthenticationToken}
+     * @param newPassword new Password for the user
+     * @return Standard Error object
+     */
+    Fallible updatePassword(AuthenticationToken token, String newPassword);
 
     /**
      * Retrieves the list of permissions for a given user, identified by the

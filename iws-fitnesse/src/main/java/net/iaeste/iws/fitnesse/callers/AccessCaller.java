@@ -70,9 +70,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public AuthenticationResponse resetSession(final String resetSessionString) {
+    public AuthenticationResponse resetSession(final String resetSessionToken) {
         try {
-            return caller.resetSession(resetSessionString);
+            return caller.resetSession(resetSessionToken);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -109,6 +109,42 @@ public final class AccessCaller implements Access {
     public Fallible deprecateSession(final AuthenticationToken token) {
         try {
             return caller.deprecateSession(token);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible forgotPassword() {
+        try {
+            return caller.forgotPassword();
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible resetPassword(final String resetPasswordToken, final String newPassword) {
+        try {
+            return caller.resetPassword(resetPasswordToken, newPassword);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible updatePassword(final AuthenticationToken token, final String newPassword) {
+        try {
+            return caller.updatePassword(token, newPassword);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

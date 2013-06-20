@@ -62,6 +62,17 @@ public final class HashcodeGenerator {
     }
 
     /**
+     * Wrapper for our default Hash algorithm.
+     *
+     * @param  str      The string to generate an HashCode value for
+     * @param  userSalt User specific salt value
+     * @return MD5 Hashcode value
+     */
+    public static String generateHash(final String str, final String... userSalt) {
+        return generateSHA256(str, userSalt);
+    }
+
+    /**
      * Generates a new MD5 hashcode for the given String.
      *
      * @param  str      The string to generate an MD5 HashCode value for
@@ -69,7 +80,7 @@ public final class HashcodeGenerator {
      * @return MD5 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/MD5">Wikipedia MD5</a>
      */
-    public static String generateMD5(final String str, final String... userSalt) {
+    static String generateMD5(final String str, final String... userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_MD5, str, salt);
     }
@@ -82,7 +93,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    public static String generateSHA256(final String str, final String... userSalt) {
+    static String generateSHA256(final String str, final String... userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA256, str, salt);
     }
@@ -95,7 +106,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    public static String generateSHA384(final String str, final String... userSalt) {
+    static String generateSHA384(final String str, final String... userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA384, str, salt);
     }
@@ -108,7 +119,7 @@ public final class HashcodeGenerator {
      * @return SHA-2 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">Wikipedia SHA-2</a>
      */
-    public static String generateSHA512(final String str, final String... userSalt) {
+    static String generateSHA512(final String str, final String... userSalt) {
         final String salt = prepareSalt(userSalt);
         return generateHashcode(HASHCODE_ALGORITHM_SHA512, str, salt);
     }

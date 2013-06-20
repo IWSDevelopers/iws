@@ -241,10 +241,10 @@ public final class AccessController extends CommonController implements Access {
         Fallible response;
 
         try {
-            verifyPrivateAccess(token);
+            final Authentication authentication = verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
-            service.updatePassword(token, newPassword);
+            service.updatePassword(authentication, newPassword);
             response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());

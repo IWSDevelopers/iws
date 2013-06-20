@@ -115,7 +115,7 @@ public interface Access {
      *   When deprecating the Session, all data assigned to the Session is being
      * removed.
      *
-     * @param token  The {@code AuthenticationToken} to deprecate the session for
+     * @param token The {@code AuthenticationToken} to deprecate the session for
      * @return Standard Error object
      */
     Fallible deprecateSession(AuthenticationToken token);
@@ -143,7 +143,7 @@ public interface Access {
      * Updates a users password in the system.
      *
      * @param token       User {@code AuthenticationToken}
-     * @param newPassword new Password for the user
+     * @param newPassword New Password for the user
      * @return Standard Error object
      */
     Fallible updatePassword(AuthenticationToken token, String newPassword);

@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 
 import net.iaeste.iws.api.constants.IWSConstants;
@@ -30,7 +31,6 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.common.utils.PasswordGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -285,7 +285,7 @@ public final class AccountService extends CommonService {
         // Now, set all the information about the user and persist the Account
         user.setUserName(username);
         user.setTemporary(password);
-        user.setPassword(HashcodeGenerator.generateSHA256(password, salt));
+        user.setPassword(generateHash(password, salt));
         user.setSalt(salt);
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
@@ -321,7 +321,7 @@ public final class AccountService extends CommonService {
                            + request.getLastname()
                            + UUID.randomUUID().toString();
 
-        return HashcodeGenerator.generateSHA512(clear);
+        return generateHash(clear);
     }
 
     private GroupEntity createAndPersistPrivateGroup(final UserEntity user) {

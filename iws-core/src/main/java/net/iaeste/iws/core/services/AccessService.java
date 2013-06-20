@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.common.utils.HashcodeGenerator.generateSHA256;
+import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -30,7 +30,6 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
-import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.SessionException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -113,7 +112,7 @@ public final class AccessService extends CommonService {
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if (activeSession != null) {
-            user.setCode(HashcodeGenerator.generateSHA512(UUID.randomUUID().toString()));
+            user.setCode(generateHash(UUID.randomUUID().toString()));
             dao.persist(user);
             final Authentication authentication = new Authentication(user);
             notifications.notify(authentication, user, NotificationMessageType.RESET_SESSION);
@@ -214,7 +213,7 @@ public final class AccessService extends CommonService {
             final String password = newPassword.toLowerCase(IWSConstants.DEFAULT_LOCALE);
             final String salt = UUID.randomUUID().toString();
 
-            user.setPassword(generateSHA256(password, salt));
+            user.setPassword(generateHash(password, salt));
             user.setSalt(salt);
             user.setCode(null);
             user.setModified(new Date());
@@ -225,8 +224,22 @@ public final class AccessService extends CommonService {
         }
     }
 
-    public void updatePassword(final AuthenticationToken token, final String newPassword) {
-        throw new NotImplementedException();
+    /**
+     * Updates a users Password (and Salt).
+     *
+     * @param authentication Authentication Object, with User & optinal Group
+     * @param newPassword    New Password for the user
+     */
+    public void updatePassword(final Authentication authentication, final String newPassword) {
+        final String password = newPassword.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        final String salt = UUID.randomUUID().toString();
+        final UserEntity user = authentication.getUser();
+
+        user.setPassword(generateHash(password, salt));
+        user.setSalt(salt);
+        user.setModified(new Date());
+
+        dao.persist(user);
     }
 
     /**
@@ -266,7 +279,7 @@ public final class AccessService extends CommonService {
     private String generateAndPersistSessionKey(final UserEntity user) {
         // Generate new Hashcode from the User Credentials, and some other entropy
         final String entropy = UUID.randomUUID().toString() + user.getPassword();
-        final String sessionKey = generateSHA256(entropy);
+        final String sessionKey = generateHash(entropy);
 
         // Generate the new Session, and persist it
         final SessionEntity entity = new SessionEntity(user, sessionKey);
@@ -303,7 +316,7 @@ public final class AccessService extends CommonService {
             // which we can then match directly with the stored value from the
             // UserEntity
             final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-            final String hashcode = generateSHA256(password, user.getSalt());
+            final String hashcode = generateHash(password, user.getSalt());
 
             if (!hashcode.equals(user.getPassword())) {
                 // Password mismatch, throw generic error

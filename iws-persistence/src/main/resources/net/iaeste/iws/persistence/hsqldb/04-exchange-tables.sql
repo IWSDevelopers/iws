@@ -22,6 +22,7 @@ create table employers (
     group_id                  integer,
     contact_person_id         integer,
     name                      varchar(255),
+    department                varchar(255),
     address_id                integer,
     business                  varchar(255),
     number_of_employees       integer,
@@ -37,7 +38,7 @@ create table employers (
 
     /* Unique Constraints */
     constraint employer_unique_external_id   unique (external_id),
-    constraint employer_unique_name_group_id unique (name, group_id),
+    constraint employer_unique_name_address_group_id unique (name, address_id, group_id),
 
     /* Not Null Constraints */
     constraint employer_notnull_id          check (id is not null),

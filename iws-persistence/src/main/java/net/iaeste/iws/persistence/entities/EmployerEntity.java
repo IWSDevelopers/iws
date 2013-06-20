@@ -52,6 +52,9 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
     @Column(name = "name", nullable = false)
     private String name = null;
 
+    @Column(name = "department")
+    private String department = null;
+
     //contact_person_id         integer,
     //address_id                integer,
 
@@ -131,6 +134,14 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
 
     public String getName() {
         return name;
+    }
+
+    public void setDepartment(final String department) {
+        this.department = department;
+    }
+
+    public String getDepartment() {
+        return department;
     }
 
     public void setBusiness(final String business) {

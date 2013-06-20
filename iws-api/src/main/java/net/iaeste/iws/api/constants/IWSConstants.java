@@ -57,6 +57,21 @@ public interface IWSConstants {
     int FOUNDING_YEAR = 1948;
 
     /**
+     * The public e-mail address, is for all public mailinglists and for all
+     * user aliases. The address is open for all e-mails by default. If a Group
+     * or User is suspended or removed, then the public address will cease to
+     * work.
+     */
+    String PUBLIC_EMAIL_ADDRESS = "iaeste.org";
+
+    /**
+     * The private e-mail address, is for all groups. This will allow a group to
+     * have a private way to communicate. If a Group is suspended or removed,
+     * then the private address will cease to work.
+     */
+    String PRIVATE_EMAIL_ADDRESS = "iaeste.net";
+
+    /**
      * A non-zero, odd number used as the initial value, when generating
      * HashCode values. See Item 9, from Effective Java 2nd Edition by
      * Joshua Bloch.

@@ -85,7 +85,7 @@ public final class AccountService extends CommonService {
                 if (studentGroup != null) {
                     // The data model needs to be extended with Student Role,
                     // Student Group & Permissions
-                    user = createAndPersistUserEntity(username, request);
+                    user = createAndPersistUserEntity(authentication, username, request);
                     final RoleEntity student = dao.findRoleById(IWSConstants.ROLE_STUDENT);
 
                     addUserToGroup(user, authentication.getGroup(), student);
@@ -97,7 +97,7 @@ public final class AccountService extends CommonService {
                 final RoleEntity owner = dao.findRoleById(IWSConstants.ROLE_OWNER);
                 final RoleEntity member = dao.findRoleById(IWSConstants.ROLE_MEMBER);
 
-                user = createAndPersistUserEntity(username, request);
+                user = createAndPersistUserEntity(authentication, username, request);
                 final GroupEntity privateGroup = createAndPersistPrivateGroup(user);
                 final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
                 dao.persist(privateUserGroup);
@@ -143,6 +143,8 @@ public final class AccountService extends CommonService {
             user.setCode(null);
             user.setModified(new Date());
             dao.persist(user);
+        } else {
+            throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for this user was found.");
         }
     }
 
@@ -230,8 +232,34 @@ public final class AccountService extends CommonService {
     // Internal Methods
     // =========================================================================
 
-    // TODO Add alias check, and persist it as well.
-    private UserEntity createAndPersistUserEntity(final String username, final CreateUserRequest request) {
+    /**
+     * Creates and persists a new UserEntity in the database. The Entity is
+     * based on the User Credentials, that is stored in the Request Object, with
+     * the exception of the Username, that due to a pre-processing, is provided
+     * as a parameter.<br />
+     *   The creation process will run some checks, and also generate some
+     * information by default. First, the user alias will be generated, if no
+     * alias can be generated (user provided information was not unique enough),
+     * then the create processs will fail.<br />
+     *   If no password was provided, then a random password is generated and
+     * returned to the user in the activation e-mail. Regardless, a salt is
+     * generated and used together with the password to create a cryptographical
+     * hashvalue that is then stored. The Salt is also stored in the database
+     * for verification when the user attempts to login.<br />
+     *   Finally, an Activation Code is generated, this is required for the user
+     * to activate the account, if an account is not activated, then it cannot
+     * be used.<br />
+     *   If no errors occurred during the creation, the new {@code UserEntity}
+     * is returned, otherwise an {@code IWSException} is thrown.
+     *
+     * @param authentication Authentication information from the requesting user
+     * @param username       Pre-processed username
+     * @param request        Request Object with remaining user information
+     * @return Newly created {@code UserEntity} Object
+     * @throws IWSException if unable to create the user
+     */
+    private UserEntity createAndPersistUserEntity(final Authentication authentication, final String username, final CreateUserRequest request) throws IWSException {
+        final String alias = generateUserAlias(authentication.getGroup(), request);
         final UserEntity user = new UserEntity();
 
         // First, the Password. If no password is specified, then we'll generate
@@ -247,19 +275,47 @@ public final class AccountService extends CommonService {
         // To avoid misusage all Users have a unique external Id
         user.setExternalId(UUID.randomUUID().toString());
 
+        // As we doubt that a user will provide enough entropy to enable us to
+        // generate a hash value that cannot be looked up in rainbow tables,
+        // we're "salting" it, and additionally storing the the random part of
+        // the salt in the Entity as well, the hardcoded part of the Salt is
+        // stored in the Hashcode Generator
+        final String salt = UUID.randomUUID().toString();
+
         // Now, set all the information about the user and persist the Account
         user.setUserName(username);
         user.setTemporary(password);
-        user.setPassword(HashcodeGenerator.generateSHA256(password));
+        user.setPassword(HashcodeGenerator.generateSHA256(password, salt));
+        user.setSalt(salt);
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
-        user.setCode(generateActicationCode(request));
+        user.setAlias(alias);
+        user.setCode(generateActivationCode(request));
         dao.persist(user);
 
         return user;
     }
 
-    private static String generateActicationCode(final CreateUserRequest request) {
+    private String generateUserAlias(final GroupEntity group, final CreateUserRequest request) throws IWSException {
+        final String name = request.getFirstname() + '.' + request.getLastname();
+        final String address = '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+        final String alias;
+
+        if (dao.findUserByAlias(name + address) != null) {
+            final String country = group.getCountry().getCountryId();
+            if (dao.findUserByAlias(name + '.' + country + address) != null) {
+                throw new IWSException(IWSErrors.PROCESSING_FAILURE, "It was not possible to create an alias for this user, please provide more details.");
+            } else {
+                alias = name + '.' + country + address;
+            }
+        } else {
+            alias = name + address;
+        }
+
+        return alias;
+    }
+
+    private static String generateActivationCode(final CreateUserRequest request) {
         final String clear = request.getUsername()
                            + request.getFirstname()
                            + request.getLastname()

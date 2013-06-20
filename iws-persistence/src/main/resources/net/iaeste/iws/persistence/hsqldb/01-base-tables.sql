@@ -312,6 +312,7 @@ create table users (
     username            varchar(100),
     alias               varchar(125),
     password            varchar(128),
+    salt                varchar(36),
     firstname           varchar(50),
     lastname            varchar(50),
     status              varchar(25) default 'NEW',
@@ -334,6 +335,9 @@ create table users (
     constraint user_notnull_id            check (id is not null),
     constraint user_notnull_external_id   check (external_id is not null),
     constraint user_notnull_username      check (username is not null),
+    constraint user_notnull_alias         check (alias is not null),
+    constraint user_notnull_password      check (password is not null),
+    constraint user_notnull_salt          check (salt is not null),
     constraint user_notnull_firstname     check (firstname is not null),
     constraint user_notnull_lastname      check (lastname is not null),
     constraint user_notnull_status        check (status is not null),
@@ -470,6 +474,8 @@ create table history (
 -- -----------------------------------------------------------------------------
 -- All addresses that exists in the IWS, must be mapped into this Object. Which
 -- contain the most common information available.
+--   Although some of the fields combined could make up a unique address, we're
+-- ignoring this, since it will make f.x. a divorce harder to control later on.
 -- =============================================================================
 create sequence address_sequence start with 1 increment by 1;
 create table addresses (

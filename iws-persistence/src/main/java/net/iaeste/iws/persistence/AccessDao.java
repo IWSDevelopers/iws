@@ -18,6 +18,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
@@ -36,11 +37,37 @@ import java.util.List;
  */
 public interface AccessDao extends BasicDao {
 
-    UserEntity findUserByCredentials(String username, String passwordHashcode);
+    /**
+     * Finds a user based on the provided username and hashed version of the
+     * password. Note, that this method is purely for testing, since the stored
+     * hash value stored is a salted version of the plaintext password, so it
+     * cannot be used directly, but must use the salt that also exists in the
+     * user table.
+     *
+     * @param username         Username
+     * @param passwordHashcode Hashed version of the Password
+     * @return Found {@code UserEntity}
+     * @throws IWSException if no such account exists
+     * @deprecated please use the #findUserByUsername instead
+     */
+    @Deprecated
+    UserEntity findUserByCredentials(String username, String passwordHashcode) throws IWSException;
 
-    UserEntity findUserByUsername(String username);
+    /**
+     * Finds a {@code UserEntity} based on the given (unique) username. If no
+     * such Entity exists, then a null is returned, if more than one account (!)
+     * exists, then a fatal Exception is thrown, otherwise the found Entity is
+     * returned.
+     *
+     * @param username Username
+     * @return Found {@code UserEntity}
+     * @throws IWSException if multiple accounts exists
+     */
+    UserEntity findUserByUsername(String username) throws IWSException;
 
     UserEntity findUserByCodeAndStatus(String code, UserStatus status);
+
+    UserEntity findUserByAlias(String alias);
 
     SessionEntity findActiveSession(UserEntity user);
 

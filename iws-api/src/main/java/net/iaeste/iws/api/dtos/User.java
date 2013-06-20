@@ -122,6 +122,7 @@ public final class User extends AbstractDto {
             lastname = user.lastname;
             status = user.status;
             privacy = user.privacy;
+            notifications = user.notifications;
             memberCountryId = user.memberCountryId;
             person = new Person(user.person);
         }

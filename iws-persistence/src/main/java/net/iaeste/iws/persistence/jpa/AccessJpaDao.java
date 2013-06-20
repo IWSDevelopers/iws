@@ -60,7 +60,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public UserEntity findUserByCredentials(final String username, final String passwordHashcode) {
+    @Deprecated
+    public UserEntity findUserByCredentials(final String username, final String passwordHashcode) throws IWSException {
         final Query query = entityManager.createNamedQuery("user.loginCredentials");
         query.setParameter("username", username);
         query.setParameter("password", passwordHashcode);
@@ -82,16 +83,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("username", username);
         final List<UserEntity> list = query.getResultList();
 
-        final UserEntity user;
-        if (list.size() == 1) {
-            user = list.get(0);
-        } else if (list.isEmpty()) {
-            user = null;
-        } else {
-            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "There exists multiple records for a user with username " + username);
-        }
-
-        return user;
+        return resolveResultList(list);
     }
 
     /**
@@ -104,16 +96,19 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("status", status);
         final List<UserEntity> list = query.getResultList();
 
-        final UserEntity user;
-        if (list.size() == 1) {
-            user = list.get(0);
-        } else if (list.isEmpty()) {
-            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "No user records were found with the code " + code);
-        } else {
-            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "There exists multiple records for a user with the code " + code);
-        }
+        return resolveResultList(list);
+    }
 
-        return user;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserEntity findUserByAlias(final String alias) {
+        final Query query = entityManager.createNamedQuery("user.findByAlias");
+        query.setParameter("alias", alias);
+        final List<UserEntity> list = query.getResultList();
+
+        return resolveResultList(list);
     }
 
     /**
@@ -420,5 +415,19 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         }
 
         return found.get(0);
+    }
+
+    private static <T extends IWSEntity> T resolveResultList(final List<T> list) {
+        final T user;
+
+        if (list.size() == 1) {
+            user = list.get(0);
+        } else if (list.isEmpty()) {
+            user = null;
+        } else {
+            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "Although Record should be unique, multiple records exists.");
+        }
+
+        return user;
     }
 }

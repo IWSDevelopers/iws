@@ -71,7 +71,12 @@ import java.util.List;
                 name = "user.findByCodeAndStatus",
                 query = "select u from UserEntity u " +
                         "where u.code = :code" +
-                        "  and u.status = :status")
+                        "  and u.status = :status"),
+        @NamedQuery(
+                name = "user.findByAlias",
+                query = "select u from UserEntity u " +
+                        "where u.alias = :alias" +
+                        "  and u.status <> 'DELETED'")
 })
 @Entity
 @Table(name = "users")
@@ -107,6 +112,9 @@ public class UserEntity implements IWSEntity, Notifiable {
      */
     @Column(nullable = false, name = "password")
     private String password = null;
+
+    @Column(nullable = false, name = "salt")
+    private String salt = null;
 
     /**
      * The users firstname, can only be altered by the DBA's. Although the
@@ -252,6 +260,14 @@ public class UserEntity implements IWSEntity, Notifiable {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setSalt(final String salt) {
+        this.salt = salt;
+    }
+
+    public String getSalt() {
+        return salt;
     }
 
     public void setFirstname(final String firstname) {

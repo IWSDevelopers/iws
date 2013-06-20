@@ -42,9 +42,9 @@ public class HashcodeGeneratorTest {
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "9e107d9d372bb6826bd81d3542a419d6";
-        final String expectedWithDot = "e4d909c290d0fb1ca068ffaddf22cbd0";
-        final String expectedEmpty = "d41d8cd98f00b204e9800998ecf8427e";
+        final String expectedWithoutDot = "5db5bb9b3580b9f48f92edeef5e2d2db";
+        final String expectedWithDot = "bfea007164e4532e89402307c26f7304";
+        final String expectedEmpty = "e72842c87d534d45937e7b0ae0f9df11";
         final String expectedNull = null;
 
         // Perform the testing
@@ -63,7 +63,9 @@ public class HashcodeGeneratorTest {
     /**
      * Tests the SHA-2 generator 256 bit method in the HashCode Generator
      * library. The raw text, and expected information are taken from the SHA-2
-     * Wikipedia page.
+     * Wikipedia page.<br />
+     *   Note, that due to the addition of salt, the expected result will differ
+     * from the result of the wikipedia page.
      *
      * @see <a href="http://en.wikipedia.org/wiki/Sha-2">SHA-2</a>
      */
@@ -74,9 +76,9 @@ public class HashcodeGeneratorTest {
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592";
-        final String expectedWithDot = "ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c";
-        final String expectedEmpty = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+        final String expectedWithoutDot = "4d1c414c460ed037f175ca887b1bc49c60e6b9b9b26196b2e481b28e532be5a2";
+        final String expectedWithDot = "16e05355a6e334fc4598ec349f8eeb1e975e0786eca7cf9780e713f5c8ff709b";
+        final String expectedEmpty = "d43dafe0ff3f8a1f81d2b39b6a13e63414b28882872a9b818d37c7d93a4497b3";
         final String expectedNull = null;
 
         // Perform the testing
@@ -106,9 +108,9 @@ public class HashcodeGeneratorTest {
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "ca737f1014a48f4c0b6dd43cb177b0afd9e5169367544c494011e3317dbf9a509cb1e5dc1e85a941bbee3d7f2afbc9b1";
-        final String expectedWithDot = "ed892481d8272ca6df370bf706e4d7bc1b5739fa2177aae6c50e946678718fc67a7af2819a021c2fc34e91bdb63409d7";
-        final String expectedEmpty = "38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b";
+        final String expectedWithoutDot = "31d428bca45e9c0c10e7f60b25fa2f73f007c3ae5ada9404e20394861c80a984c316d45667f4a585397508213b2898ec";
+        final String expectedWithDot = "210accc9d0dfcd84d8bb9146e6bb3ce6a76444adcfc2c4147fdf2dbc7b5050eeed72e3d6c84bc417bf0564e9c85cc452";
+        final String expectedEmpty = "267bec1477cabf4c700165e7d801472e13dbccabe136c6628252d92259e8f2eed7061d275a3c414ff73d1a64800cdc89";
         final String expectedNull = null;
 
         // Perform the testing
@@ -138,9 +140,9 @@ public class HashcodeGeneratorTest {
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "07e547d9586f6a73f73fbac0435ed76951218fb7d0c8d788a309d785436bbb642e93a252a954f23912547d1e8a3b5ed6e1bfd7097821233fa0538f3db854fee6";
-        final String expectedWithDot = "91ea1245f20d46ae9a037a989f54f1f790f0a47607eeb8a14d12890cea77a1bbc6c7ed9cf205e67b7f2b8fd4c7dfd3a7a8617e45f3c463d481c7e586c39ac1ed";
-        final String expectedEmpty = "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e";
+        final String expectedWithoutDot = "51dac5d4ac42d315e16421c34f6e95213e0ad43a732e04d6cc7bd2b29a4049c68e7e4b2574385db735c985bbdea47ebfcfb51e82a20b395d11ef10411f036b62";
+        final String expectedWithDot = "cb2e94f53ec8a45683cef5d18248a83de019ae3cfd7d6f9ff2638ca46eb175a02323f2d16050b3b68fbe76374ed6e8fee24feb62b9ef81878ff1d5d8336a3e52";
+        final String expectedEmpty = "3723e235ab2e8113200a3d9b0ad800f2a3cf49b25004b03fa2f1820d6640c04af10bd9e1d73fb3bfce53e883e22431a188258518e98a0f4dcc421382f8f02e4e";
         final String expectedNull = null;
 
         // Perform the testing
@@ -156,19 +158,40 @@ public class HashcodeGeneratorTest {
         assertThat(resultNull, is(expectedNull));
     }
 
-// Following is not really test code, but used to generage User accounts.
-//    private static final String USER_INSERT = "insert into users (external_id, status, username, password, firstname, lastname) values ('";
-//    private static final String USER_FORMAT = USER_INSERT + "%s', 'ACTIVE', '%s', '%s', '%s', '%s');";
+//Following is not really test code, but used to generage User accounts.
+//    private static final String USER_INSERT = "insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('";
+//    private static final String USER_FORMAT = USER_INSERT + "%s', 'ACTIVE', '%s', '%s', '%s', '%s', '%s', '%s');";
 //
 //    @Test
 //    public void testPasswords() {
-//        final String country = "Germany";
+//        final String country = "Austria";
+//
 //        for (int i = 1; i <= 5; i++) {
 //            final String euid = UUID.randomUUID().toString();
+//            final String salt = UUID.randomUUID().toString();
 //            final String username = country.toLowerCase(IWSConstants.DEFAULT_LOCALE) + i;
+//            final String password = HashcodeGenerator.generateSHA256(username, salt);
 //            final String firstname = "User" + i;
-//            final String password = HashcodeGenerator.generateSHA256(username);
-//            final String query = String.format(USER_FORMAT, euid, username, password, firstname, country);
+//            final String alias = firstname + '.' + country + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+//            final String query = String.format(USER_FORMAT, euid, username, alias, password, salt, firstname, country);
+//
+//            System.out.println(query);
+//        }
+//    }
+//
+//    @Test
+//    public void generateStandardTestAccounts() {
+//        generatePasswords("Austria", "Croatia", "Denmark", "Germany", "Poland", "Hungary");
+//    }
+//
+//    private static void generatePasswords(final String... countries) {
+//        for (final String country : countries) {
+//            final String euid = UUID.randomUUID().toString();
+//            final String salt = UUID.randomUUID().toString();
+//            final String username = country.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+//            final String alias = username + ".ns@" + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+//            final String password = HashcodeGenerator.generateSHA256(username, salt);
+//            final String query = String.format(USER_FORMAT, euid, username, alias, password, salt, "NS", country);
 //
 //            System.out.println(query);
 //        }

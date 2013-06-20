@@ -41,7 +41,11 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class HashcodeGenerator {
 
-    // Hardcoded salt value, to add to the hashing
+    /**
+     * Hardcoded salt value, to add to the hashing. Note, that changing this
+     * salt value, will cause all passwords, sessions and other information
+     * where a hash value is needed, to fail!
+     */
     private static final String HARDCODED_SALT = "Common og algemein øæåüöäßłđ!#¤%&/()=?±}][{¥½$£@¡ værdi für salt, mit sjove names och mixed Sprache";
 
     // The Algorithm's, which we'll support
@@ -113,16 +117,24 @@ public final class HashcodeGenerator {
     // Internal Methods
     // =========================================================================
 
+    /**
+     * Prepares the combined salt for the hashcode generating. If a salt is
+     * provided from the user, then this is used together with the internal
+     * hardcoded salt, otherwise only the hardcoded salt is used.
+     *
+     * @param userSalt User specific salt (optional)
+     * @return salt for the hashcode generation
+     */
     private static String prepareSalt(final String... userSalt) {
         final String salt;
 
-        //if ((userSalt != null) && (userSalt.length == 1)) {
-        //    salt = userSalt[0] + HARDCODED_SALT;
-        //} else {
+        if ((userSalt != null) && (userSalt.length == 1)) {
+            salt = userSalt[0];
+        } else {
             salt = "";
-        //}
+        }
 
-        return salt;
+        return salt + HARDCODED_SALT;
     }
 
     /**

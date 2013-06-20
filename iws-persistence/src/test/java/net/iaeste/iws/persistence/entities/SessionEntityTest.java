@@ -14,6 +14,12 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.persistence.AccessDao;
@@ -32,12 +38,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.UUID;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -63,11 +63,13 @@ public class SessionEntityTest {
         final UserEntity user = new UserEntity();
         final SessionEntity session = new SessionEntity();
         final String key = HashcodeGenerator.generateSHA512("User Password, Date, IPNumber, and more");
+        user.setExternalId(UUID.randomUUID().toString());
         user.setUserName("alfa");
+        user.setAlias("alias");
         user.setPassword(HashcodeGenerator.generateSHA256("beta"));
+        user.setSalt(UUID.randomUUID().toString());
         user.setFirstname("Alpha");
         user.setLastname("Beta");
-        user.setExternalId(UUID.randomUUID().toString());
         session.setSessionKey(key);
         session.setUser(user);
         dao.persist(user);

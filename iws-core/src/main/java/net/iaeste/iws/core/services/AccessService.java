@@ -14,12 +14,16 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.common.utils.HashcodeGenerator.generateSHA256;
+
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
@@ -228,7 +232,7 @@ public final class AccessService extends CommonService {
     private String generateAndPersistSessionKey(final UserEntity user) {
         // Generate new Hashcode from the User Credentials, and some other entropy
         final String entropy = UUID.randomUUID().toString() + user.getPassword();
-        final String sessionKey = HashcodeGenerator.generateSHA256(entropy);
+        final String sessionKey = generateSHA256(entropy);
 
         // Generate the new Session, and persist it
         final SessionEntity entity = new SessionEntity(user, sessionKey);
@@ -238,15 +242,46 @@ public final class AccessService extends CommonService {
         return sessionKey;
     }
 
-    private UserEntity findUserFromCredentials(final AuthenticationRequest request) {
-        // First, let's read the Password in clear-text (lower cased), and
-        // generate the Hashcode value for it.
+    /**
+     * Finding a user based on the credentials requires that we first lookup the
+     * user, based on the username. The method then checks if the password
+     * matches the one stored for the user.<br />
+     *   The method makes no distinction between the existing of an Entity, or
+     * of the password was incorrect, this is to avoid that someone attempts to
+     * run a check against the system for known user accounts, which can then be
+     * further tested.<br />
+     *   If the user was found (Entity exists matching the credentials), then
+     * this Entity is returned, otherwise a {@code IWSException} is thrown.
+     *
+     * @param request Authentication Requst Object with username and password
+     * @return Found UserEntity
+     * @throws IWSException if no user account exists or matches the credentials
+     */
+    private UserEntity findUserFromCredentials(final AuthenticationRequest request) throws IWSException {
+        // First, find an Entity exists for the given (lowercased) username
         final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-        final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-        final String hashcode = HashcodeGenerator.generateSHA256(password);
+        final UserEntity user = dao.findUserByUsername(username);
 
-        // Now, let's find the user, based on the credentials
-        return dao.findUserByCredentials(username, hashcode);
+        if (user != null) {
+            // Okay, a UserEntity Object was found, now to match if the Password
+            // is correct, we first have to read it out of the Request Object,
+            // lowercase and generate a salted cryptographical hashvalue for it,
+            // which we can then match directly with the stored value from the
+            // UserEntity
+            final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+            final String hashcode = generateSHA256(password, user.getSalt());
+
+            if (!hashcode.equals(user.getPassword())) {
+                // Password mismatch, throw generic error
+                throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
+            }
+
+            // All good, return found UserEntity
+            return user;
+        } else {
+            // No account for this User, throw generic error
+            throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
+        }
     }
 
     private static Group readGroup(final UserPermissionView view) {

@@ -64,7 +64,10 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_NOT_NULL = "The field %s may not be null.";
     private static final String ERROR_NOT_EMPTY = "The field %s may not be empty.";
     private static final String ERROR_NOT_LONGER = "The field %s may not be longer than %d";
+    private static final String ERROR_NOT_EXACT_LENGTH = "The field %s is not matching the required length %d.";
+    private static final String ERROR_NOT_WITHIN_LIMITS = "The field %s is not within the required limits from %s to %d.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
+    private static final String ERROR_NOT_VERIFABLE = "The field %s is not verifiable.";
 
     // Our internal constants to verify the Id
     private static final String UUID_FORMAT = "[\\da-z]{8}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{12}";
@@ -167,6 +170,20 @@ public abstract class AbstractVerification implements Verifiable {
 
     /**
      * Throws an {@code IllegalArgumentException} if the given value is either
+     * null or too long.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The maximum length for the field
+     * @throws IllegalArgumentException if the value is null or too long
+     */
+    protected static void ensureNotNullOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureNotTooLong(field, value, length);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
      * null, empty or too long.
      *
      * @param field  Name of the field
@@ -177,6 +194,56 @@ public abstract class AbstractVerification implements Verifiable {
     protected static void ensureNotNullOrEmptyOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
         ensureNotNullOrEmpty(field, value);
         ensureNotTooLong(field, value, length);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * null or not the exact length.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The exact length of the field
+     * @throws IllegalArgumentException if the value is null not of exact length
+     */
+    protected static void ensureNotNullAndExactLength(final String field, final String value, final int length) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        if (value.length() != length) {
+            throw new IllegalArgumentException(format(ERROR_NOT_EXACT_LENGTH, field, length));
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * null or not within the given limits.
+     *
+     * @param field   Name of the field
+     * @param value   The value of the field
+     * @param minimum The minimally allowed value for the field
+     * @param maximum The maximally allowed value for the field
+     * @throws IllegalArgumentException if the value is null not of exact length
+     */
+    protected  <T extends Number>void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+
+        if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
+            throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * null or not verifiable.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @throws IllegalArgumentException if the value is either null or not verifiable
+     */
+    protected static void ensureNotNullAndVerifiable(final String field, final Verifiable value) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+
+        if (!value.validate().isEmpty()) {
+            throw new IllegalArgumentException(format(ERROR_NOT_VERIFABLE, field));
+        }
     }
 
     /**

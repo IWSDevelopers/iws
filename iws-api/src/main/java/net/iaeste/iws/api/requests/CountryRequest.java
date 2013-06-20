@@ -31,14 +31,13 @@ public final class CountryRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Country country;
+    private Country country = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
     public CountryRequest() {
-        country = null;
     }
 
     /**
@@ -47,23 +46,35 @@ public final class CountryRequest extends AbstractVerification {
      * @param country Country Object
      */
     public CountryRequest(final Country country) {
-        this.country = country;
+        setCountry(country);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * Sets the internal Country Object, provided that the given Object is
+     * valid, i.e. that it is not null and that it passes the verification
+     * test.<br />
+     *   Upon successfull verification, a copy of the given Object is stored
+     * internally.
+     *
+     * @param country Country
+     */
     public void setCountry(final Country country) {
-        if (country == null) {
-            throw new IllegalArgumentException("Null value for the Country is not allowed");
-        }
+        ensureNotNullAndVerifiable("country", country);
 
-        this.country = country;
+        this.country = new Country(country);
     }
 
+    /**
+     * Returns a copy of the internal Country Object.
+     *
+     * @return Copy of the Country Object
+     */
     public Country getCountry() {
-        return country;
+        return new Country(country);
     }
 
     // =========================================================================

@@ -91,6 +91,8 @@ public final class Country extends AbstractVerification {
     // =========================================================================
 
     public void setCountryId(final String countryId) {
+        ensureNotNullAndExactLength("countryId", countryId, 2);
+
         this.countryId = countryId;
     }
 
@@ -99,6 +101,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCountryName(final String countryName) {
+        ensureNotNullOrTooLong("countryName", countryName, 100);
+
         this.countryName = countryName;
     }
 
@@ -107,6 +111,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCountryNameFull(final String countryNameFull) {
+        ensureNotNullOrTooLong("countryNameFull", countryNameFull, 100);
+
         this.countryNameFull = countryNameFull;
     }
 
@@ -115,6 +121,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCountryNameNative(final String countryNameNative) {
+        ensureNotNullOrTooLong("countryNameNative", countryNameNative, 100);
+
         this.countryNameNative = countryNameNative;
     }
 
@@ -123,6 +131,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setNationality(final String nationality) {
+        ensureNotNullOrTooLong("nationality", nationality, 100);
+
         this.nationality = nationality;
     }
 
@@ -131,6 +141,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCitizens(final String citizens) {
+        ensureNotNullOrTooLong("citizens", citizens, 100);
+
         this.citizens = citizens;
     }
 
@@ -139,6 +151,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setPhonecode(final String phonecode) {
+        ensureNotNullOrTooLong("phonecode", phonecode, 5);
+
         this.phonecode = phonecode;
     }
 
@@ -147,6 +161,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCurrency(final String currency) {
+        ensureNotNullAndExactLength("currency", currency, 3);
+
         this.currency = currency;
     }
 
@@ -155,6 +171,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setLanguages(final String languages) {
+        ensureNotNullOrTooLong("languages", languages, 100);
+
         this.languages = languages;
     }
 
@@ -163,6 +181,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setMembership(final Membership membership) {
+        ensureNotNull("membership", membership);
+
         this.membership = membership;
     }
 
@@ -171,6 +191,9 @@ public final class Country extends AbstractVerification {
     }
 
     public void setMemberSince(final Integer memberSince) {
+        final int currentYear = new Date().getCurrentYear();
+        ensureNotNullAndWithinLimits("memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
+
         this.memberSince = memberSince;
     }
 
@@ -179,6 +202,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setListName(final String listName) {
+        // No checks for this field, since it is only used when reading data
+        // from the IWS, not for writing
         this.listName = listName;
     }
 
@@ -187,6 +212,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setNsFirstname(final String nsFirstname) {
+        // No checks for this field, since it is only used when reading data
+        // from the IWS, not for writing
         this.nsFirstname = nsFirstname;
     }
 
@@ -195,6 +222,8 @@ public final class Country extends AbstractVerification {
     }
 
     public void setNsLastname(final String nsLastname) {
+        // No checks for this field, since it is only used when reading data
+        // from the IWS, not for writing
         this.nsLastname = nsLastname;
     }
 

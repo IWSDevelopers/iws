@@ -302,4 +302,11 @@ public enum FieldOfStudy {
     public List<Specialization> getSpecializations() {
         return specializations;
     }
+
+    public String toString(){
+        String toReturn = this.name();
+        toReturn.toLowerCase();
+        toReturn.replace('_', ' ');
+        return toReturn;
+    }
 }

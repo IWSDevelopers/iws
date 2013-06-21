@@ -34,7 +34,6 @@ create table employers (
 
     /* Unique Constraints */
     constraint employer_unique_external_id   unique (external_id),
-    constraint employer_unique_name_group_id unique (name, group_id),
 
     /* Not Null Constraints */
     constraint employer_notnull_id          check (id is not null),

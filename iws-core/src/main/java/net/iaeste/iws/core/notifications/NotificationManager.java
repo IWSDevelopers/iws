@@ -82,6 +82,14 @@ public final class NotificationManager implements Notifications {
         notifyObservers();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notify(final UserEntity user) {
+
+    }
+
     private static java.util.Date getNotificationTime(final NotificationFrequency frequency) {
         Date result;
 

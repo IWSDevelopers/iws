@@ -52,6 +52,11 @@ public interface IWSConstants {
     Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     /**
+     * Passwords in the IWS must be at least this long.
+     */
+    int MINIMAL_PASSWORD_LENGTH = 5;
+
+    /**
      * The year that IAESTE was founded.
      */
     int FOUNDING_YEAR = 1948;

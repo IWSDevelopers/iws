@@ -17,6 +17,7 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
@@ -214,11 +215,11 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword() {
+    public Fallible forgotPassword(final String username) {
         Fallible response;
 
         try {
-            response = controller.forgotPassword();
+            response = controller.forgotPassword(username);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -232,11 +233,11 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final String newPassword) {
+    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
         Fallible response;
 
         try {
-            response = controller.resetPassword(resetPasswordToken, newPassword);
+            response = controller.resetPassword(resetPasswordToken, password);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
@@ -250,11 +251,11 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible updatePassword(final AuthenticationToken token, final String newPassword) {
+    public Fallible updatePassword(final AuthenticationToken token, final Password password) {
         Fallible response;
 
         try {
-            response = controller.updatePassword(token, newPassword);
+            response = controller.updatePassword(token, password);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

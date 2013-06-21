@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.notification;
 
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.entities.UserEntity;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -32,4 +33,12 @@ public interface Notifications extends Observable {
      * @param type           Type of Notification Message to send
      */
     void notify(Authentication authentication, Notifiable obj, NotificationMessageType type);
+
+    /**
+     * For the Forgot password functionality, we only hav a {@code UserEntity}
+     * Object at hand.
+     *
+     * @param user {@code UserEntity} Object
+     */
+    void notify(UserEntity user);
 }

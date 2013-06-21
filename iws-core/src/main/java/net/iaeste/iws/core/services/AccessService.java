@@ -21,6 +21,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -38,7 +39,6 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.notification.NotificationMessageType;
 import net.iaeste.iws.persistence.notification.Notifications;
 import net.iaeste.iws.persistence.views.UserPermissionView;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -162,6 +162,15 @@ public final class AccessService extends CommonService {
         dao.persist(entity);
     }
 
+    /**
+     * Retrieves the data that a client stored temporarily with the Session.
+     * The data is read out as a serializable Object, presuming that the
+     * invoking method is using the correct Object type for reading as was used
+     * for writing.
+     *
+     * @param token User Token
+     * @return SessionData Response
+     */
     public <T extends Serializable> SessionDataResponse<T> fetchSessionData(final AuthenticationToken token) {
         final SessionEntity entity = dao.findActiveSession(token);
         final byte[] data = entity.getSessionData();
@@ -195,8 +204,23 @@ public final class AccessService extends CommonService {
         }
     }
 
-    public void forgotPassword() {
-        throw new NotImplementedException();
+    /**
+     * Finds the user account for the user who forgot the password in the
+     * database, based on the provided username. If the username does not exist
+     * in the database, then the request is ignored and no error message is
+     * returned. This is to ensure that a caller cannot use this functionality
+     * to learn about possible accounts in the system.
+     *
+     * @param username Username to the users account
+     */
+    public void forgotPassword(final String username) {
+        final UserEntity user = dao.findUserByUsername(username);
+
+        if (user != null) {
+            user.setCode(UUID.randomUUID().toString());
+            dao.persist(user);
+            notifications.notify(user);
+        }
     }
 
     /**
@@ -204,16 +228,16 @@ public final class AccessService extends CommonService {
      * accounts that are currently Active can have their passwords reset.
      *
      * @param resetPasswordToken Reset Password Token, from the notification
-     * @param newPassword        New Password for the user
+     * @param password           New Password for the user
      */
-    public void resetPassword(final String resetPasswordToken, final String newPassword) {
+    public void resetPassword(final String resetPasswordToken, final Password password) {
         final UserEntity user = dao.findUserByCodeAndStatus(resetPasswordToken, UserStatus.ACTIVE);
 
         if (user != null) {
-            final String password = newPassword.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+            final String pwd = password.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
             final String salt = UUID.randomUUID().toString();
 
-            user.setPassword(generateHash(password, salt));
+            user.setPassword(generateHash(pwd, salt));
             user.setSalt(salt);
             user.setCode(null);
             user.setModified(new Date());
@@ -228,14 +252,14 @@ public final class AccessService extends CommonService {
      * Updates a users Password (and Salt).
      *
      * @param authentication Authentication Object, with User & optinal Group
-     * @param newPassword    New Password for the user
+     * @param password       New Password for the user
      */
-    public void updatePassword(final Authentication authentication, final String newPassword) {
-        final String password = newPassword.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+    public void updatePassword(final Authentication authentication, final Password password) {
+        final String pwd = password.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
         final String salt = UUID.randomUUID().toString();
         final UserEntity user = authentication.getUser();
 
-        user.setPassword(generateHash(password, salt));
+        user.setPassword(generateHash(pwd, salt));
         user.setSalt(salt);
         user.setModified(new Date());
 

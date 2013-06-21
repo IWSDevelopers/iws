@@ -16,12 +16,13 @@ package net.iaeste.iws.fitnesse.callers;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -118,9 +119,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword() {
+    public Fallible forgotPassword(final String username) {
         try {
-            return caller.forgotPassword();
+            return caller.forgotPassword(username);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -130,9 +131,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final String newPassword) {
+    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
         try {
-            return caller.resetPassword(resetPasswordToken, newPassword);
+            return caller.resetPassword(resetPasswordToken, password);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -142,9 +143,9 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible updatePassword(final AuthenticationToken token, final String newPassword) {
+    public Fallible updatePassword(final AuthenticationToken token, final Password password) {
         try {
-            return caller.updatePassword(token, newPassword);
+            return caller.updatePassword(token, password);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

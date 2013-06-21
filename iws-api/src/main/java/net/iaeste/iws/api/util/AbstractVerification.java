@@ -64,6 +64,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_NOT_NULL = "The field %s may not be null.";
     private static final String ERROR_NOT_EMPTY = "The field %s may not be empty.";
     private static final String ERROR_NOT_LONGER = "The field %s may not be longer than %d";
+    private static final String ERROR_TOO_SHORT = "The field %s must be at least %d characters long";
     private static final String ERROR_NOT_EXACT_LENGTH = "The field %s is not matching the required length %d.";
     private static final String ERROR_NOT_WITHIN_LIMITS = "The field %s is not within the required limits from %s to %d.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
@@ -117,7 +118,7 @@ public abstract class AbstractVerification implements Verifiable {
      * Throws an {@code IllegalArgumentException} if the given value is empty.
      *
      * @param field Name of the field
-     * @param value The value for the field
+     * @param value The value for the fieldERROR_TOO_SHORT
      * @throws IllegalArgumentException if the value is empty
      */
     protected static void ensureNotEmpty(final String field, final String value) throws IllegalArgumentException {
@@ -151,6 +152,23 @@ public abstract class AbstractVerification implements Verifiable {
     protected static void ensureNotEmptyOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
         ensureNotEmpty(field, value);
         ensureNotTooLong(field, value, length);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * null or too short.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The minimal length for the field
+     * @throws IllegalArgumentException if the value is empty or too long
+     */
+    protected static void ensureNotNullOrTooShort(final String field, final String value, final int length) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+
+        if (value.length() < length) {
+            throw new IllegalArgumentException(format(ERROR_TOO_SHORT, field, length));
+        }
     }
 
     /**

@@ -15,6 +15,7 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
@@ -126,27 +127,28 @@ public interface Access {
      * contain a reset Token, that can be used when invoking the
      * {@code #resetPassword(resetPasswordToken, newPassword} method.
      *
+     * @param username The users username, i.e. e-mail address
      * @return Standard Error object
      */
-    Fallible forgotPassword();
+    Fallible forgotPassword(String username);
 
     /**
      * Resets a users password in the system.
      *
      * @param resetPasswordToken Reset Password Token, from the notification
-     * @param newPassword        New Password for the user
+     * @param password           Password Object for the user
      * @return Standard Error object
      */
-    Fallible resetPassword(String resetPasswordToken, String newPassword);
+    Fallible resetPassword(String resetPasswordToken, Password password);
 
     /**
      * Updates a users password in the system.
      *
-     * @param token       User {@code AuthenticationToken}
-     * @param newPassword New Password for the user
+     * @param token    User {@code AuthenticationToken}
+     * @param password Password Object for the user
      * @return Standard Error object
      */
-    Fallible updatePassword(AuthenticationToken token, String newPassword);
+    Fallible updatePassword(AuthenticationToken token, Password password);
 
     /**
      * Retrieves the list of permissions for a given user, identified by the

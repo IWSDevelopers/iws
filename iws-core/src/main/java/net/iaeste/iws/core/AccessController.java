@@ -16,6 +16,7 @@ package net.iaeste.iws.core;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
@@ -196,13 +197,13 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword() {
+    public Fallible forgotPassword(final String username) {
         LOG.trace("Starting forgotPassword()");
         Fallible response;
 
         try {
             final AccessService service = factory.prepareAuthenticationService();
-            service.forgotPassword();
+            service.forgotPassword(username);
             response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
@@ -216,13 +217,15 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final String newPassword) {
+    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
         LOG.trace("Starting resetPassword()");
         Fallible response;
 
         try {
+            verify(password);
+
             final AccessService service = factory.prepareAuthenticationService();
-            service.resetPassword(resetPasswordToken, newPassword);
+            service.resetPassword(resetPasswordToken, password);
             response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
@@ -236,15 +239,16 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible updatePassword(final AuthenticationToken token, final String newPassword) {
+    public Fallible updatePassword(final AuthenticationToken token, final Password password) {
         LOG.trace("Starting updatePassword()");
         Fallible response;
 
         try {
+            verify(password);
             final Authentication authentication = verifyPrivateAccess(token);
 
             final AccessService service = factory.prepareAuthenticationService();
-            service.updatePassword(authentication, newPassword);
+            service.updatePassword(authentication, password);
             response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());

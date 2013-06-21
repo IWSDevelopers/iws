@@ -16,6 +16,7 @@ package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
@@ -97,24 +98,24 @@ public final class AccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible forgotPassword() {
-        return client.forgotPassword();
+    public Fallible forgotPassword(final String username) {
+        return client.forgotPassword(username);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Fallible resetPassword(final String resetPasswordToken, final String newPassword) {
-        return client.resetPassword(resetPasswordToken, newPassword);
+    public Fallible resetPassword(final String resetPasswordToken, final Password password) {
+        return client.resetPassword(resetPasswordToken, password);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Fallible updatePassword(final AuthenticationToken token, final String newPassword) {
-        return client.updatePassword(token, newPassword);
+    public Fallible updatePassword(final AuthenticationToken token, final Password password) {
+        return client.updatePassword(token, password);
     }
 
     /**

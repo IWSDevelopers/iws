@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * A Publishing Group, is a helping tool for the Exchange process, so it is
  * possible to save a selection of countries to make an exchange with. Examples
- * of usage, EU, Lating America, French Speaking countries, etc.<br />
+ * of usage, EU, Latin America, French Speaking countries, etc.<br />
  *   The Group consists of a name and the selection of countries. And it is
  * important to note, that a Publishing Group is only available for the country
  * of origin, meaning that no other Committees than the owning Committee may

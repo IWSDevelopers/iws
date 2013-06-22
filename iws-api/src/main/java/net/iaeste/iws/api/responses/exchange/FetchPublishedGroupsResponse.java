@@ -34,7 +34,7 @@ import java.util.Map;
  * @since   1.7
  * @noinspection CastToConcreteClass
  */
-public final class FetchPublishOfferResponse extends AbstractFallible {
+public final class FetchPublishedGroupsResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -45,7 +45,7 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchPublishOfferResponse() {
+    public FetchPublishedGroupsResponse() {
     }
 
     /**
@@ -53,7 +53,7 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
      *
      * @param offersGroups List of Offers found
      */
-    public FetchPublishOfferResponse(final Map<String, List<OfferGroup>> offersGroups) {
+    public FetchPublishedGroupsResponse(final Map<String, List<OfferGroup>> offersGroups) {
         setOffersGroups(offersGroups);
     }
 
@@ -63,7 +63,7 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public FetchPublishOfferResponse(final IWSError error, final String message) {
+    public FetchPublishedGroupsResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -92,11 +92,11 @@ public final class FetchPublishOfferResponse extends AbstractFallible {
             return true;
         }
 
-        if (!(obj instanceof FetchPublishOfferResponse)) {
+        if (!(obj instanceof FetchPublishedGroupsResponse)) {
             return false;
         }
 
-        final FetchPublishOfferResponse that = (FetchPublishOfferResponse) obj;
+        final FetchPublishedGroupsResponse that = (FetchPublishedGroupsResponse) obj;
         return !(offersGroups != null ? !offersGroups.equals(that.offersGroups) : that.offersGroups != null);
     }
 

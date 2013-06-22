@@ -26,24 +26,10 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
-import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.requests.exchange.*;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.Authentication;
@@ -403,9 +389,9 @@ public final class ExchangeService extends CommonService {
         dao.persist(authentication, offerGroupEntity);
     }
 
-    public FetchPublishOfferResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishOfferRequest request) {
+    public FetchPublishedGroupsResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishedGroupsRequest request) {
         //TODO distinguish somehow a request for info about offers shared 'to me' and 'by me', now it's 'by me'
-        final FetchPublishOfferResponse response;
+        final FetchPublishedGroupsResponse response;
 
         verifyOffersOwnership(authentication, new HashSet<>(request.getOfferIds()));
 
@@ -415,7 +401,7 @@ public final class ExchangeService extends CommonService {
             result.put(externalId, convertOfferGroupEntityList(dao.findInfoForSharedOffer(externalId)));
         }
 
-        response = new FetchPublishOfferResponse(result);
+        response = new FetchPublishedGroupsResponse(result);
 
         return response;
     }

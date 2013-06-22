@@ -33,19 +33,10 @@ import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.api.requests.exchange.*;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Date;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -203,8 +194,8 @@ public class ExchangeClientTest extends AbstractClientTest {
 
         final List<String> offersExternalId = new ArrayList<>();
         offersExternalId.add(sharedOffer.getId());
-        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offersExternalId);
-        final FetchPublishOfferResponse fetchPublishResponse1 = exchange.fetchPublishedOffer(token, fetchPublishRequest);
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
+        final FetchPublishedGroupsResponse fetchPublishResponse1 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
@@ -224,7 +215,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         final PublishOfferResponse publishResponse2 = exchange.processPublishOffer(token, publishRequest2);
 
         assertThat(publishResponse2.isOk(), is(true));
-        final FetchPublishOfferResponse fetchPublishResponse2 = exchange.fetchPublishedOffer(token, fetchPublishRequest);
+        final FetchPublishedGroupsResponse fetchPublishResponse2 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
         assertThat(fetchPublishResponse2.isOk(), is(true));
         offerGroupsSharedTo = fetchPublishResponse2.getOffersGroups().get(offersExternalId.get(0));
 
@@ -513,8 +504,8 @@ public class ExchangeClientTest extends AbstractClientTest {
     public void testFetchSharedOfferBadIdFormat() {
         final List<String> offerIds = new ArrayList<>(0);
         offerIds.add("pl-2012-0001");
-        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offerIds);
-        final FetchPublishOfferResponse fetchPublishResponse = exchange.fetchPublishedOffer(token, fetchPublishRequest);
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offerIds);
+        final FetchPublishedGroupsResponse fetchPublishResponse = exchange.fetchPublishedGroups(token, fetchPublishRequest);
 
         assertThat(fetchPublishResponse.isOk(), is(false));
         assertThat("The request has to fail with the error here", fetchPublishResponse.getError(), is(IWSErrors.ERROR));

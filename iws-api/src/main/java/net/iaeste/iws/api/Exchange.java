@@ -15,35 +15,15 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
-import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.api.requests.exchange.*;
+import net.iaeste.iws.api.responses.exchange.*;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
 
 /**
- * ToDo by Kim; Add JavaDoc for all requests.
- *
- * @author  Kim Jensen / last $Author:$
- * @version $Revision:$ / $Date:$
- * @since   1.7
+ * Exchange related functionality is covered with this interface. Only exception here, the
+ * handling of students is done vai the {@link Student} interface.
  */
 @Remote
 public interface Exchange {
@@ -81,32 +61,106 @@ public interface Exchange {
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a field with the RefNo (will be changed to id #359)
-     * @return emtpy {@link OfferResponse} on success
+     * @return emtpy {@link OfferResponse} (offer=null) on success
      */
     OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
+    /**
+     * Retrieves a list of offers. This can be either the list of owned offers or offers which are shared with your
+     * country.
+     *
+     * <dl>
+     *   <dt>{@link net.iaeste.iws.api.enums.FetchType#ALL}</dt>
+     *     <dd>Requests all own/domestic offers.</dd>
+     *   <dt>{@link net.iaeste.iws.api.enums.FetchType#SHARED}</dt>
+     *     <dd>Means that all shared offers are requested.</dd>
+     * </dl>
+     *
+     * TODO: Rename FetchType.ALL to FetchType.DOMESTIC for classifications
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request contains a {@link net.iaeste.iws.api.enums.FetchType} which indicates which type of offers
+     *                should be returned
+     * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer}
+     */
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
+    /**
+     * Not implemented
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request
+     * @return
+     */
     Fallible processOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
 
+    /**
+     * Not implemented
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request
+     * @return
+     */
     FetchOfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
 
     /**
-     * Retrieves a list of all national groups. This is mainly needed in the
-     * front-end to display a list of groups (countries).
+     * Retrieves a list of all groups to which an offer can be shared to. The group types of the groups are:
+     * <ul>
+     *     <li>{@link net.iaeste.iws.api.enums.GroupType#NATIONAL}</li>
+     *     <li>{@link net.iaeste.iws.api.enums.GroupType#SAR}</li>
+     * </ul>
      *
-     * @param token     Authentication information about the user invoking the request
+     * This is mainly needed in the front-end to display a list of groups (members) to which a offer can be shared to.
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request   Fetch National Groups Request Object
      * @return Response Object with the current national groups ordered by name
      *                  and error information
      */
     FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request);
 
-    Fallible managePublishGroup(AuthenticationToken token, PublishGroupRequest request);
+    /**
+     * Not implemented
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request
+     * @return
+     */
+    Fallible processPublishGroup(AuthenticationToken token, PublishGroupRequest request);
 
+    /**
+     * Not implemented
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request
+     * @return
+     */
     FetchPublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
+    /**
+     * Shares a list of offers to a list of members and defines the nomination deadline for
+     * the specified offers. From this very moment he offers are visible to the list of
+     * members until the {@code PublishOfferRequest#nominationDeadline} is reached. The
+     * {@link net.iaeste.iws.api.dtos.exchange.Offer#nominationDeadline} of each specified offer
+     * is updated to the specified {@code PublishOfferRequest#nominationDeadline}
+     *
+     * The list of offers is identified by the {@link net.iaeste.iws.api.dtos.exchange.Offer#id}.
+     * The list of members are identified by the {@link net.iaeste.iws.api.dtos.Group#groupId}
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request contains a list of offer, a list of members and a nomination deadline
+     * @return contains no data
+     */
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
 
-    FetchPublishOfferResponse fetchPublishedOffer(AuthenticationToken token, FetchPublishOfferRequest request);
+    /**
+     * Retrieves the list of groups to which offers are shared to. A list of offers is
+     * submitted and for each offer the groups are returned, to which the offer is shared to.
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer#id}s
+     * @return contains a map for each requested offer and the list of {@link net.iaeste.iws.api.dtos.exchange.OfferGroup}
+     *  to which the offer is shared to
+     */
+    FetchPublishedGroupsResponse fetchPublishedGroups(AuthenticationToken token, FetchPublishedGroupsRequest request);
 }

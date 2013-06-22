@@ -33,19 +33,10 @@ import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.api.requests.exchange.*;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Date;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -169,7 +160,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testShareOffer() {
-        final Date nominationDeadline = new Date().plusDays(20);
+        final net.iaeste.iws.api.util.Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo("PL-2012-0004");
@@ -189,7 +180,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        offersToShare.add(sharedOffer.getOfferId());
+        offersToShare.add(sharedOffer.getId());
 
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
@@ -202,9 +193,9 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(publishResponse1.isOk(), is(true));
 
         final List<String> offersExternalId = new ArrayList<>();
-        offersExternalId.add(sharedOffer.getOfferId());
-        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offersExternalId);
-        final FetchPublishOfferResponse fetchPublishResponse1 = exchange.fetchPublishedOffer(token, fetchPublishRequest);
+        offersExternalId.add(sharedOffer.getId());
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
+        final FetchPublishedGroupsResponse fetchPublishResponse1 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
@@ -224,7 +215,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         final PublishOfferResponse publishResponse2 = exchange.processPublishOffer(token, publishRequest2);
 
         assertThat(publishResponse2.isOk(), is(true));
-        final FetchPublishOfferResponse fetchPublishResponse2 = exchange.fetchPublishedOffer(token, fetchPublishRequest);
+        final FetchPublishedGroupsResponse fetchPublishResponse2 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
         assertThat(fetchPublishResponse2.isOk(), is(true));
         offerGroupsSharedTo = fetchPublishResponse2.getOffersGroups().get(offersExternalId.get(0));
 
@@ -239,7 +230,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testFailShareNonOwnedOffer() {
-        final Date nominationDeadline = new Date().plusDays(20);
+        final net.iaeste.iws.api.util.Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo("PL-2012-0005");
@@ -253,7 +244,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(response.getOffers().isEmpty(), is(false));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        final String offerIdToBeShared = response.getOffers().get(0).getOfferId();
+        final String offerIdToBeShared = response.getOffers().get(0).getId();
         offersToShare.add(offerIdToBeShared);
 
         final String austriaNationalGroupId = "c7b15f81-4f83-48e8-9ffb-9e73255f5e5e";
@@ -272,7 +263,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testFailShareOfferToNonNationalGroupType() {
-        final Date nominationDeadline = new Date().plusDays(20);
+        final net.iaeste.iws.api.util.Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo("PL-2012-0006");
@@ -286,7 +277,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(response.getOffers().isEmpty(), is(false));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        final String offerIdToBeShared = response.getOffers().get(0).getOfferId();
+        final String offerIdToBeShared = response.getOffers().get(0).getId();
         offersToShare.add(offerIdToBeShared);
 
         final String austriaMemberGroupId = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
@@ -306,7 +297,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testFailShareOfferToSelf() {
-        final Date nominationDeadline = new Date().plusDays(20);
+        final net.iaeste.iws.api.util.Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo("PL-2012-0007");
@@ -320,7 +311,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(response.getOffers().isEmpty(), is(false));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        final String offerIdToBeShared = response.getOffers().get(0).getOfferId();
+        final String offerIdToBeShared = response.getOffers().get(0).getId();
         offersToShare.add(offerIdToBeShared);
 
         final String polandNationalGroupId = "e60f9897-864b-4d1b-9c1a-1681fd35e97a";
@@ -390,7 +381,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         final Offer readOffer = findOfferFromResponse(refNo, findSavedResponse);
         assertThat(readOffer, is(not(nullValue())));
         assertThat(readOffer.getNumberOfHardCopies(), is(2));
-        assertThat(readOffer.getOfferId(), is(not(nullValue())));
+        assertThat(readOffer.getId(), is(not(nullValue())));
 
         // Update the Offer, with a new value for NumberOfHardCopies
         readOffer.setNumberOfHardCopies(3);
@@ -425,7 +416,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testFetchSharedOfferAfterDeadline() {
-        final Date nominationDeadlineInThePast = new Date().plusDays(-20);
+        final net.iaeste.iws.api.util.Date nominationDeadlineInThePast = new Date().plusDays(-20);
 
         final String refNo = "PL-2012-0010";
         final Offer offer = OfferTestUtility.getMinimalOffer();
@@ -444,7 +435,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(offerToShare, is(notNullValue()));
 
         final Set<String> offersToShare1 = new HashSet<>(1);
-        offersToShare1.add(offerToShare.getOfferId());
+        offersToShare1.add(offerToShare.getId());
 
         final List<String> groupIds = new ArrayList<>(1);
         groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
@@ -464,7 +455,7 @@ public class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testFetchSharedOfferDeadlineToday() {
-        final Date nominationDeadlineToday = new Date();
+        final net.iaeste.iws.api.util.Date nominationDeadlineToday = new Date();
 
         final String refNo = "PL-2012-0011";
         final Offer offer = OfferTestUtility.getMinimalOffer();
@@ -483,7 +474,7 @@ public class ExchangeClientTest extends AbstractClientTest {
         assertThat(offerToShare, is(notNullValue()));
 
         final Set<String> offersToShare2 = new HashSet<>(1);
-        offersToShare2.add(offerToShare.getOfferId());
+        offersToShare2.add(offerToShare.getId());
 
         final List<String> groupIds = new ArrayList<>(1);
         groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
@@ -513,8 +504,8 @@ public class ExchangeClientTest extends AbstractClientTest {
     public void testFetchSharedOfferBadIdFormat() {
         final List<String> offerIds = new ArrayList<>(0);
         offerIds.add("pl-2012-0001");
-        final FetchPublishOfferRequest fetchPublishRequest = new FetchPublishOfferRequest(offerIds);
-        final FetchPublishOfferResponse fetchPublishResponse = exchange.fetchPublishedOffer(token, fetchPublishRequest);
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offerIds);
+        final FetchPublishedGroupsResponse fetchPublishResponse = exchange.fetchPublishedGroups(token, fetchPublishRequest);
 
         assertThat(fetchPublishResponse.isOk(), is(false));
         assertThat("The request has to fail with the error here", fetchPublishResponse.getError(), is(IWSErrors.ERROR));

@@ -32,7 +32,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchPublishOfferRequest extends AbstractVerification {
+public final class FetchPublishedGroupsRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -43,7 +43,7 @@ public final class FetchPublishOfferRequest extends AbstractVerification {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchPublishOfferRequest() {
+    public FetchPublishedGroupsRequest() {
     }
 
     /**
@@ -51,7 +51,7 @@ public final class FetchPublishOfferRequest extends AbstractVerification {
      *
      * @param offerIds offerIds of the offer for which the sharing info is to be fetched
      */
-    public FetchPublishOfferRequest(final List<String> offerIds) {
+    public FetchPublishedGroupsRequest(final List<String> offerIds) {
         setOfferIds(offerIds);
     }
 

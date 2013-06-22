@@ -18,25 +18,10 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishOfferRequest;
-import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
-import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
-import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
-import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
-import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishOfferResponse;
-import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.api.requests.exchange.*;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -204,8 +189,8 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible managePublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
-        LOG.trace("Starting managePublishGroup()");
+    public Fallible processPublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
+        LOG.trace("Starting processPublishGroup()");
         Fallible response;
 
         try {
@@ -219,7 +204,7 @@ public final class ExchangeController extends CommonController implements Exchan
             response = new FetchPublishGroupResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished managePublishGroup()");
+        LOG.trace("Finished processPublishGroup()");
         return response;
     }
 
@@ -294,9 +279,9 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishOfferResponse fetchPublishedOffer(final AuthenticationToken token, final FetchPublishOfferRequest request) {
-        LOG.trace("Starting fetchPublishedOffer()");
-        FetchPublishOfferResponse response;
+    public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
+        LOG.trace("Starting fetchPublishedGroups()");
+        FetchPublishedGroupsResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.LOOKUP_PUBLISH_OFFER);
@@ -305,10 +290,10 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeService service = factory.prepareExchangeService();
             response = service.fetchPublishedOfferInfo(authentication, request);
         } catch (IWSException e) {
-            response = new FetchPublishOfferResponse(e.getError(), e.getMessage());
+            response = new FetchPublishedGroupsResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchPublishedOffer()");
+        LOG.trace("Finished fetchPublishedGroups()");
         return response;
     }
 }

@@ -118,8 +118,6 @@ public final class Group extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        // TODO see #362 - persisting groups does not work because groupId is null
-        //isNotNull(validation, "groupId", groupId);
         isNotNull(validation, "groupName", groupName);
         isNotNull(validation, "groupType", groupType);
 

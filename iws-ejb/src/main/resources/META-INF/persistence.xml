@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="iwsDatabase" transaction-type="JTA">
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <jta-data-source>iws</jta-data-source>
+
+        <class>net.iaeste.iws.persistence.entities.AddressEntity</class>
+        <class>net.iaeste.iws.persistence.entities.CountryEntity</class>
+        <class>net.iaeste.iws.persistence.entities.EmployerEntity</class>
+        <class>net.iaeste.iws.persistence.entities.GroupEntity</class>
+        <class>net.iaeste.iws.persistence.entities.GroupTypeEntity</class>
+        <class>net.iaeste.iws.persistence.entities.MonitoringEntity</class>
+        <class>net.iaeste.iws.persistence.entities.NotificationMessageEntity</class>
+        <class>net.iaeste.iws.persistence.entities.OfferEntity</class>
+        <class>net.iaeste.iws.persistence.entities.OfferGroupEntity</class>
+        <class>net.iaeste.iws.persistence.entities.RoleEntity</class>
+        <class>net.iaeste.iws.persistence.entities.SessionEntity</class>
+        <class>net.iaeste.iws.persistence.entities.StudentEntity</class>
+        <class>net.iaeste.iws.persistence.entities.StudentFileEntity</class>
+        <class>net.iaeste.iws.persistence.entities.UserEntity</class>
+        <class>net.iaeste.iws.persistence.entities.UserGroupEntity</class>
+        <class>net.iaeste.iws.persistence.entities.UserNotificationEntity</class>
+
+        <class>net.iaeste.iws.persistence.views.UserPermissionView</class>
+        <class>net.iaeste.iws.persistence.views.EmployerInformationView</class>
+        <class>net.iaeste.iws.persistence.views.CountryView</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

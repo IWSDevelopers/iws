@@ -32,6 +32,7 @@ import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -93,6 +94,7 @@ public class StudentBean extends AbstractBean implements Student {
      * {@inheritDoc}
      */
     @Override
+    @PostConstruct
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager.getNotifications());
         controller = new StudentController(factory);

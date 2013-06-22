@@ -58,7 +58,7 @@ public final class Offer extends AbstractVerification {
      * value must be provided and both the Id and the RefNo must match up,
      * otherwise it is an error.
      */
-    private String id = null;
+    private String offerId = null;
 
     /**
      * Format of reference number is: {@code [country code]-[exchange year]-[identification number]-[additional code (optional)]} <br/>
@@ -273,7 +273,7 @@ public final class Offer extends AbstractVerification {
     public Offer(final Offer offer) {
         if (offer != null) {
             // No id exist as refNo is unique
-            id = offer.id;
+            offerId = offer.offerId;
             refNo = offer.refNo;
             employerName = offer.employerName;
             employerAddress = offer.employerAddress;
@@ -334,17 +334,18 @@ public final class Offer extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setId(final String id) throws IllegalArgumentException {
-        if (id != null && id.length() != 36) {
+    public void setofferId(final String offerId) throws IllegalArgumentException {
+        if (offerId != null && offerId.length() != 36) {
             throw new IllegalArgumentException("Illegal value for the Id.");
         }
 
-        this.id = id;
+        this.offerId = offerId;
     }
 
-    public String getId() {
-        return id;
+    public String getOfferId() {
+        return offerId;
     }
+
     public void setCanteen(final Boolean canteen) {
         this.canteen = canteen;
     }
@@ -781,7 +782,7 @@ public final class Offer extends AbstractVerification {
 
         final Offer offer = (Offer) obj;
 
-        if (id != null ? !id.equals(offer.id) : offer.id != null) {
+        if (offerId != null ? !offerId.equals(offer.offerId) : offer.offerId != null) {
             return false;
         }
         if (canteen != null ? !canteen.equals(offer.canteen) : offer.canteen != null) {
@@ -937,7 +938,7 @@ public final class Offer extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (id != null ? id.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offerId != null ? offerId.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (refNo != null ? refNo.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nominationDeadline != null ? nominationDeadline.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (employerName != null ? employerName.hashCode() : 0);

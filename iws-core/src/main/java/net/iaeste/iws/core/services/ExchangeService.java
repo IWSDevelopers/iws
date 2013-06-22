@@ -93,7 +93,7 @@ public final class ExchangeService extends CommonService {
     public OfferResponse processOffer(final Authentication authentication, final ProcessOfferRequest request) {
         final OfferEntity newEntity = transform(request.getOffer());
         final Offer givenOffer = request.getOffer();
-        final String externalId = givenOffer.getId();
+        final String externalId = givenOffer.getOfferId();
         final String refNo = givenOffer.getRefNo();
 
         if (externalId == null) {

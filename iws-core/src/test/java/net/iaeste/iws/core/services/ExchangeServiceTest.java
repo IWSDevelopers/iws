@@ -127,8 +127,8 @@ public class ExchangeServiceTest {
         // expect correct response
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffer(), is(notNullValue()));
-        assertThat(result.getOffer().getId(), is(notNullValue()));
-        assertThat(result.getOffer().getId(), is(id));
+        assertThat(result.getOffer().getOfferId(), is(notNullValue()));
+        assertThat(result.getOffer().getOfferId(), is(id));
         assertThat(result.getOffer().getRefNo(), is(offer.getRefNo()));
         assertThat(result.getOffer(), is(OfferTransformer.transform(entityWithId)));
 
@@ -141,7 +141,7 @@ public class ExchangeServiceTest {
     public void testProcessingOffersUpdateRequest() {
         final Offer offer = offers.get(0);
         final String id = UUID.randomUUID().toString();
-        offer.setId(id);
+        offer.setofferId(id);
         // offer which currently exist in db
         offer.setCanteen(true);
         final OfferEntity existingEntity = OfferTransformer.transform(offer);
@@ -149,9 +149,9 @@ public class ExchangeServiceTest {
         offer.setCanteen(false);
         final OfferEntity entityToPersist = OfferTransformer.transform(offer);
 
-        when(dao.findOffer(auth, offer.getId())).thenReturn(existingEntity);
+        when(dao.findOffer(auth, offer.getOfferId())).thenReturn(existingEntity);
         when(dao.findOffer(auth, offer.getRefNo())).thenReturn(existingEntity);
-        when(dao.findOffer(auth, offer.getId(), offer.getRefNo())).thenReturn(existingEntity);
+        when(dao.findOffer(auth, offer.getOfferId(), offer.getRefNo())).thenReturn(existingEntity);
 
         final ProcessOfferRequest request = new ProcessOfferRequest(offer);
         request.verify(); // make sure that request is valid
@@ -162,7 +162,7 @@ public class ExchangeServiceTest {
         // expect correct response
         assertThat(result.isOk(), is(true));
         assertThat(result.getOffer(), is(notNullValue()));
-        assertThat(result.getOffer().getId(), is(id));
+        assertThat(result.getOffer().getOfferId(), is(id));
         assertThat(result.getOffer().getRefNo(), is(offer.getRefNo()));
 
         // verify that persist method was invoked

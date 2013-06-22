@@ -61,5 +61,10 @@ public enum Language {
     TURKISH,
     VIETNAMESE,
     UKRAINIAN,
-    ANY
+    ANY;
+
+
+    public String stringCSV(){
+        return this.name().charAt(0) + this.name().toLowerCase().replace('_', ' ').substring(1);
+    }
 }

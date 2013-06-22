@@ -303,10 +303,7 @@ public enum FieldOfStudy {
         return specializations;
     }
 
-    public String toString(){
-        String toReturn = this.name();
-        toReturn.toLowerCase();
-        toReturn.replace('_', ' ');
-        return toReturn;
+    public String stringCSV(){
+        return this.name().charAt(0) + this.name().toLowerCase().replace('_', ' ').substring(1);
     }
 }

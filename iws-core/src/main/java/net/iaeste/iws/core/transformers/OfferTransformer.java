@@ -144,7 +144,7 @@ public final class OfferTransformer {
         if (offer != null) {
             result = new Offer();
 
-            result.setofferId(offer.getExternalId());
+            result.setOfferId(offer.getExternalId());
             result.setRefNo(offer.getRefNo());
             result.setNominationDeadline(convert(offer.getNominationDeadline()));
             result.setEmployerName(offer.getEmployerName());

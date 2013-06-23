@@ -141,7 +141,7 @@ public class ExchangeServiceTest {
     public void testProcessingOffersUpdateRequest() {
         final Offer offer = offers.get(0);
         final String id = UUID.randomUUID().toString();
-        offer.setofferId(id);
+        offer.setOfferId(id);
         // offer which currently exist in db
         offer.setCanteen(true);
         final OfferEntity existingEntity = OfferTransformer.transform(offer);

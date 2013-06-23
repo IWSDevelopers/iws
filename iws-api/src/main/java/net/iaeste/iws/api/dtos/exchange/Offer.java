@@ -334,7 +334,7 @@ public final class Offer extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setofferId(final String offerId) throws IllegalArgumentException {
+    public void setOfferId(final String offerId) throws IllegalArgumentException {
         if (offerId != null && offerId.length() != 36) {
             throw new IllegalArgumentException("Illegal value for the Id.");
         }

@@ -174,7 +174,7 @@ public class OfferTransformerTest {
     @Test
     public void testCopyingBackAndForthFromDto() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setofferId(UUID.randomUUID().toString());
+        offer.setOfferId(UUID.randomUUID().toString());
         final OfferEntity entity = OfferTransformer.transform(offer);
         final Offer newOffer = OfferTransformer.transform(entity);
         // we rely on equals method
@@ -184,7 +184,7 @@ public class OfferTransformerTest {
     @Test
     public void testCopyingBackAndForthFromEmptyDto() {
         final Offer offer = new Offer();
-        offer.setofferId(UUID.randomUUID().toString());
+        offer.setOfferId(UUID.randomUUID().toString());
         final OfferEntity entity = OfferTransformer.transform(offer);
         final Offer newOffer = OfferTransformer.transform(entity);
         // we rely on equals method

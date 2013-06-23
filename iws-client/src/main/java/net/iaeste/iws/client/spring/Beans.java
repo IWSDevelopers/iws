@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.client.spring;
 
+import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -38,8 +39,25 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class Beans {
 
-    @Bean(name = "dataSource")
+    private static final Boolean USE_INMEMORY_DATABASE = true;
+
+    @Bean
     protected DataSource dataSource() {
+        return USE_INMEMORY_DATABASE ? hsqldbDataSource() : postgreDataSource();
+    }
+
+    private static DataSource postgreDataSource() {
+        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+
+        dataSource.setServerName("localhost");
+        dataSource.setDatabaseName("iws");
+        dataSource.setUser("kim");
+        //dataSource.setPassword("iws");
+
+        return dataSource;
+    }
+
+    private static DataSource hsqldbDataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
                 .addScript("net/iaeste/iws/persistence/hsqldb/01-base-tables.sql")
                 .addScript("net/iaeste/iws/persistence/02-base-views.sql")

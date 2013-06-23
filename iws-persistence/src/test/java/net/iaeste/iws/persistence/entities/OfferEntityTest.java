@@ -56,7 +56,20 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Contains tests for OfferEntity and ExchangeJpaDao
+ * Contains tests for OfferEntity and ExchangeJpaDao.<br />
+ *   Notes by Kim: When testing this class under PostgreSQL, there seems to be
+ * some strange errors, well, more likely - lack of errors! The reason for this,
+ * is that Hibernate sucks when it comes to properly implementing support for
+ * PostgreSQL, meaning that in the same transaction, they don't allow for dirty
+ * reads, i.e. uncommitted things. And Spring freaks out when setting isolation
+ * level to uncommitted reads. The correct actions from the database can be seen
+ * when running the tests directly against the database, using an SQL editor. Or
+ * it can be seen, if using flushing constantly.<br />
+ *   Question: Are there tests designed at verifying that the database is
+ * working properly, or is it aiming at verifying that our entities are working?
+ * If we aim at seeing if the database works. Then we should try to add these
+ * tests into the Client layer. If we try to test that the entity is working,
+ * then this entire test is crap.
  *
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$

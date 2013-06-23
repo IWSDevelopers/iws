@@ -30,7 +30,7 @@
 -- Drop & Create the public schema for clean up. Although the user requires
 -- super-user rights perform, we do no care - since the production database
 -- will be instantiated via a super-user, and for development, the developer is
---  expected to be superuser.
+-- expected to be superuser.
 -- =============================================================================
 drop schema if exists public cascade;
 create schema public;
@@ -104,7 +104,7 @@ create table countries (
 create table permissions (
     id                  integer,
     permission          varchar(50),
-    restricted          decimal(1) default 0,
+    restricted          boolean default false,
     description         varchar(2048),
 
     /* Primary & Foreign Keys */
@@ -425,9 +425,9 @@ create table user_to_group (
     group_id            integer,
     role_id             integer,
     custom_title        varchar(50),
-    on_public_list      decimal(1) default 0,
-    on_private_list     decimal(1) default 1,
-    status              decimal(1) default 1,
+    on_public_list      boolean default false,
+    on_private_list     boolean default true,
+    status              boolean default true,
     modified            timestamp default now(),
     created             timestamp default now(),
 

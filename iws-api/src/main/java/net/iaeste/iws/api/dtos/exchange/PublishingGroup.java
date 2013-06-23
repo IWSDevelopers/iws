@@ -125,7 +125,7 @@ public final class PublishingGroup extends AbstractVerification {
     }
 
     public void setGroups(final List<Group> groups) {
-        ensureNotNullOrEmpty("groups", groups);
+        ensureNotNull("groups", groups);
 
         this.groups = copy(groups);
     }

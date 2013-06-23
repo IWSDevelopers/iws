@@ -24,7 +24,7 @@ import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationMessageType;
+import net.iaeste.iws.persistence.notification.NotificationType;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTimeConstants;
@@ -58,7 +58,7 @@ public final class NotificationManager implements Notifications {
      * {@inheritDoc}
      */
     @Override
-    public void notify(final Authentication authentication, final Notifiable obj, final NotificationMessageType type) {
+    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
         // Save the general information about the Object to be notified.
         final List<UserEntity> users = obj.getRecipients();
 

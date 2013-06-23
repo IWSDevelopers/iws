@@ -18,6 +18,7 @@ import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.persistence.entities.UserEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Please note, that the current information here is very much incomplete. A
@@ -26,13 +27,25 @@ import java.util.List;
  * to the name of the Template that holds the required information, and by
  * combining the Object with the Template, it should be possible to generate it
  * all.
- *   Example for Templating Engine: Velocity
+ *   Example for Templating Engine: Velocity, Freemaker
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 public interface Notifiable {
+
+    /**
+     * Notifications are templates that needs processing before being sent of.
+     * This method will prepare the required fields for a given Notification
+     * Type. Since not all types of notifications need the same fields, it is
+     * required that only the necessary fields for a given Notification Type
+     * should be present.
+     *
+     * @param type Notification Type
+     * @return Map with required fields for the given Notification Type
+     */
+    Map<String, Object> prepareNotifiableFields(NotificationType type);
 
     /**
      * The Notification relies on a message being sent in some sort of format.
@@ -43,9 +56,12 @@ public interface Notifiable {
      *
      * @return Simple Message
      */
-    String generateNotificationMessage(NotificationMessageType type);
+    @Deprecated
+    String generateNotificationMessage(NotificationType type);
 
+    @Deprecated
     NotificationSubject getNotificationSubject();
 
+    @Deprecated
     List<UserEntity> getRecipients();
 }

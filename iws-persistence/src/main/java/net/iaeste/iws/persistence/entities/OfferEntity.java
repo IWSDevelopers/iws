@@ -23,7 +23,7 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationMessageType;
+import net.iaeste.iws.persistence.notification.NotificationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +42,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -796,7 +798,15 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
      * {@inheritDoc}
      */
     @Override
-    public String generateNotificationMessage(final NotificationMessageType type) {
+    public Map<String, Object> prepareNotifiableFields(final NotificationType type) {
+        return new HashMap<>(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String generateNotificationMessage(final NotificationType type) {
         //TODO: generate message according to the state of the offer in exchange
         return "Offer " + refNo;
     }

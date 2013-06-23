@@ -38,7 +38,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
-import net.iaeste.iws.persistence.notification.NotificationMessageType;
+import net.iaeste.iws.persistence.notification.NotificationType;
 import net.iaeste.iws.persistence.notification.Notifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,11 +102,11 @@ public final class AccountService extends CommonService {
                 final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
                 dao.persist(privateUserGroup);
                 addUserToGroup(user, authentication.getGroup(), member);
-                //notifications.notify(authentication, user, NotificationMessageType.PROCESS_EMAIL_ALIAS);
-                //notifications.notify(authentication, authentication.getGroup(), NotificationMessageType.PROCESS_MAILING_LIST);
+                //notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
+                //notifications.notify(authentication, authentication.getGroup(), NotificationType.PROCESS_MAILING_LIST);
             }
 
-            notifications.notify(authentication, user, NotificationMessageType.ACTIVATE_USER);
+            notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
             result = new FallibleResponse();
         } else {
             result = new FallibleResponse(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");

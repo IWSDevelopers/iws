@@ -36,7 +36,7 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.notification.NotificationMessageType;
+import net.iaeste.iws.persistence.notification.NotificationType;
 import net.iaeste.iws.persistence.notification.Notifications;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
@@ -115,7 +115,7 @@ public final class AccessService extends CommonService {
             user.setCode(generateHash(UUID.randomUUID().toString()));
             dao.persist(user);
             final Authentication authentication = new Authentication(user);
-            notifications.notify(authentication, user, NotificationMessageType.RESET_SESSION);
+            notifications.notify(authentication, user, NotificationType.RESET_SESSION);
         } else {
             throw new SessionException("No Session exists for this user.");
         }

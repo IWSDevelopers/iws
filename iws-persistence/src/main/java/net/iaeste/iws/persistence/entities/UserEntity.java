@@ -19,7 +19,7 @@ import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.persistence.exceptions.NotificationException;
 import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationMessageType;
+import net.iaeste.iws.persistence.notification.NotificationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +36,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -349,7 +351,15 @@ public class UserEntity implements IWSEntity, Notifiable {
      * {@inheritDoc}
      */
     @Override
-    public String generateNotificationMessage(final NotificationMessageType type) {
+    public Map<String, Object> prepareNotifiableFields(final NotificationType type) {
+        return new HashMap<>(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String generateNotificationMessage(final NotificationType type) {
         final String message;
 
         switch (type) {

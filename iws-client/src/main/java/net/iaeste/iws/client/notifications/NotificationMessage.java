@@ -15,7 +15,7 @@
 package net.iaeste.iws.client.notifications;
 
 import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationMessageType;
+import net.iaeste.iws.persistence.notification.NotificationType;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -25,9 +25,9 @@ import net.iaeste.iws.persistence.notification.NotificationMessageType;
 public class NotificationMessage {
 
     private final Notifiable notifiable;
-    private final NotificationMessageType type;
+    private final NotificationType type;
 
-    public NotificationMessage(final Notifiable notifiable, final NotificationMessageType type) {
+    public NotificationMessage(final Notifiable notifiable, final NotificationType type) {
         this.notifiable = notifiable;
         this.type = type;
     }
@@ -36,7 +36,7 @@ public class NotificationMessage {
         return notifiable;
     }
 
-    public NotificationMessageType getType() {
+    public NotificationType getType() {
         return type;
     }
 

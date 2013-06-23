@@ -32,7 +32,7 @@ public interface Notifications extends Observable {
      * @param obj            Instance to notify about changes for
      * @param type           Type of Notification Message to send
      */
-    void notify(Authentication authentication, Notifiable obj, NotificationMessageType type);
+    void notify(Authentication authentication, Notifiable obj, NotificationType type);
 
     /**
      * For the Forgot password functionality, we only hav a {@code UserEntity}

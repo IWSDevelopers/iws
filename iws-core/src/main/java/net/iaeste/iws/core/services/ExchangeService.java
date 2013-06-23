@@ -38,7 +38,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
-import net.iaeste.iws.persistence.notification.NotificationMessageType;
+import net.iaeste.iws.persistence.notification.NotificationType;
 import net.iaeste.iws.persistence.notification.Notifications;
 
 import java.util.ArrayList;
@@ -127,7 +127,7 @@ public final class ExchangeService extends CommonService {
 
         // Send a notification to the users who so desire. Via the Notifiable
         // Interface, can the Object handle it itself
-        notifications.notify(authentication, newEntity, NotificationMessageType.GENERAL);
+        notifications.notify(authentication, newEntity, NotificationType.GENERAL);
 
         // As we already have the new Entity in our hand, this is simply
         // redundant code, that only serves the purpose of verifying that our

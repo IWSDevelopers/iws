@@ -18,11 +18,11 @@ package net.iaeste.iws.persistence.notification;
  * The same Objects can have many different types of Notifications, this will
  * help the Class determine, exactly which one is suppose to be generated.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public enum NotificationMessageType {
+public enum NotificationType {
 
     /**
      * If the Object only supports a single type of Notifications, then this

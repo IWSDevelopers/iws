@@ -29,6 +29,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -55,8 +56,11 @@ import java.util.Date;
 @Entity
 @Table(name = "notification_messages")
 public class NotificationMessageEntity implements IWSEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "pk_sequence", sequenceName = "notification_message_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
+    @Column(name = "id", unique = true, nullable = false)
     private Long id = null;
 
     @ManyToOne(targetEntity = UserEntity.class)

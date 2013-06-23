@@ -56,7 +56,7 @@ public final class ExchangeController extends CommonController implements Exchan
      */
     @Override
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
-        LOG.trace("Starting fetchFaculties()");
+        LOG.trace("Starting fetchEmployers()");
         FetchEmployerInformationResponse response;
 
         try {

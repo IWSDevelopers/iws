@@ -30,6 +30,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -85,7 +86,9 @@ import java.util.Map;
 public class UserEntity implements IWSEntity, Notifiable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "pk_sequence", sequenceName = "user_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
+    @Column(name = "id", unique = true, nullable = false)
     private Long id = null;
 
     /**

@@ -7,11 +7,20 @@
 -- appropriate table(s), and replace the view with something better.
 --   If the view is attempted to be used in PostgreSQL, it will result in an
 -- error!
-CREATE VIEW employer_information AS
-SELECT id, employer_name, group_id, modified
-FROM offers o
-INNER JOIN (
-  SELECT distinct (employer_name) employer_name, max(modified) modified
-  FROM offers
-  GROUP BY employer_name
-) AS t2 ON o.employer_name = t2.employer_name AND o.modified = t2.modified;
+--CREATE VIEW employer_information AS
+--SELECT id, employer_name, group_id, modified
+--FROM offers o
+--INNER JOIN (
+--  SELECT distinct (employer_name) employer_name, max(modified) modified
+--  FROM offers
+--  GROUP BY employer_name
+--) AS t2 ON o.employer_name = t2.employer_name AND o.modified = t2.modified;
+
+create view employer_information as
+  select
+    e.id       as id,
+    e.employer_name     as employer_name,
+    e.group_id as group_id,
+    e.modified as modified
+  from
+    offers e;

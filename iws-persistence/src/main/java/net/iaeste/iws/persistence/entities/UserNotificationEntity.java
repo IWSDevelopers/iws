@@ -20,6 +20,8 @@ import net.iaeste.iws.api.enums.NotificationSubject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +29,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -45,7 +48,9 @@ import javax.persistence.Table;
 public class UserNotificationEntity implements IWSEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "pk_sequence", sequenceName = "user_notification_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
+    @Column(name = "id", unique = true, nullable = false)
     private Long id = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
@@ -53,9 +58,11 @@ public class UserNotificationEntity implements IWSEntity {
     private UserEntity user = null;
 
     @Column(name = "subject")
+    @Enumerated(EnumType.STRING)
     private NotificationSubject subject = null;
 
     @Column(name = "frequency")
+    @Enumerated(EnumType.STRING)
     private NotificationFrequency frequency = null;
 
     /**

@@ -21,6 +21,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,7 +40,9 @@ import java.util.Date;
 public class EmployerEntity implements Mergeable<EmployerEntity> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "pk_sequence", sequenceName = "employer_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @Column(name = "external_id", nullable = false)

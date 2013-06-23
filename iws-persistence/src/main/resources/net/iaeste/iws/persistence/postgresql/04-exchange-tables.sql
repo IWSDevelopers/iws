@@ -49,9 +49,9 @@ create table employers (
 -- -----------------------------------------------------------------------------
 -- Description of Table
 -- =============================================================================
-create sequence offers_sequence start with 100 increment by 1;
+create sequence offer_sequence start with 100 increment by 1;
 create table offers (
-    id                        integer default nextval('offers_sequence'),
+    id                        integer default nextval('offer_sequence'),
     external_id               varchar(36),
     group_id                  integer,
     ref_no                    varchar(255),

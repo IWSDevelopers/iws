@@ -22,8 +22,8 @@ import static org.junit.Assert.fail;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Currency;
-import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
@@ -662,6 +662,7 @@ public class OfferEntityTest {
         assertThat(offersFoundByLikeEmployerName.size(), is(1));
         assertThat(offerDao.findOffersByLikeEmployerName(authentication, EMPLOYER_NAME_LIKE_NONEXISTING).size(), is(0));
     }
+
     @Test
     @Transactional
     public void testFindByExternalIds() {

@@ -150,7 +150,8 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("employerName", employerName);
 
-        return query.getResultList();
+        return removeDuplicateNames(query.getResultList());
+        //return query.getResultList();
     }
 
     /**
@@ -162,7 +163,22 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("employerName", '%' + employerName.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
 
-        return query.getResultList();
+        return removeDuplicateNames(query.getResultList());
+        //return query.getResultList();
+    }
+
+    private List<OfferEntity> removeDuplicateNames(final List<OfferEntity> found) {
+        final List<OfferEntity> result = new ArrayList<>(found.size());
+        final List<String> names = new ArrayList<>(found.size());
+
+        for (final OfferEntity entity : found) {
+            if (!names.contains(entity.getEmployerName())) {
+                result.add(entity);
+                names.add(entity.getEmployerName());
+            }
+        }
+
+        return result;
     }
 
     /**

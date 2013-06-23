@@ -385,7 +385,7 @@ create table sessions (
     id                  integer default nextval('session_sequence'),
     session_key         varchar(128),
     user_id             integer,
-    active              decimal(1) default 1,
+    active              boolean default true,
     session_data        bytea,
     modified            timestamp default now(),
     created             timestamp default now(),

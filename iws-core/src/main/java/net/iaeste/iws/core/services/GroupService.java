@@ -41,6 +41,7 @@ import net.iaeste.iws.persistence.notification.Notifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -174,16 +175,42 @@ public final class GroupService {
         final FetchGroupResponse response;
 
         if (entity != null) {
-            final List<UserGroupEntity> members = dao.findGroupUsers(entity);
             final Group group = transform(entity);
-            final List<User> users = transformMembers(members);
+            final List<User> users = findGroupMembers(request.isFetchUsers(), entity);
+            final List<Group> groups = findSubGroups(request.isFetchSubGroups(), entity);
 
-            response = new FetchGroupResponse(group, users);
+            response = new FetchGroupResponse(group, users, groups);
         } else {
             response = new FetchGroupResponse(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "No Group was found matching the requested Id.");
         }
 
         return response;
+    }
+
+    private List<User> findGroupMembers(final boolean fetchUsers, final GroupEntity entity) {
+        final List<User> result;
+
+        if (fetchUsers) {
+            final List<UserGroupEntity> members = dao.findGroupUsers(entity);
+            result = transformMembers(members);
+        } else {
+            result = new ArrayList<>(0);
+        }
+
+        return result;
+    }
+
+    private List<Group> findSubGroups(final boolean fetchSubGroups, final GroupEntity entity) {
+        final List<Group> result;
+
+        if (fetchSubGroups) {
+            final List<GroupEntity> subGroups = dao.findSubGroups(entity.getParentId());
+            result = transform(subGroups);
+        } else {
+            result = new ArrayList<>(0);
+        }
+
+        return result;
     }
 
     /**

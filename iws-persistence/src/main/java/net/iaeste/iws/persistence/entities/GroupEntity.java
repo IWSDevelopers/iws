@@ -63,6 +63,10 @@ import java.util.Date;
                         "  and ug.user.id = :uid" +
                         "  and (g.groupType.grouptype = 'NATIONAL'" +
                         "   or g.groupType.grouptype = 'SAR')"),
+        @NamedQuery(name = "group.findSubGroupsByParentId",
+                    query = "select g from GroupEntity g " +
+                        "where g.status <> 'DELETED'" +
+                        "  and g.parentId = :pid"),
         @NamedQuery(name = "group.findByPermission",
                 query = "select g from GroupEntity g, UserPermissionView v " +
                         "where g.id = v.id.groupId" +

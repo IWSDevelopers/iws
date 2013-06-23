@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
@@ -34,6 +36,7 @@ public final class FetchGroupResponse extends AbstractFallible {
 
     private Group group = null;
     private List<User> users = null;
+    private List<Group> subGroups = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -42,9 +45,18 @@ public final class FetchGroupResponse extends AbstractFallible {
     public FetchGroupResponse() {
     }
 
-    public FetchGroupResponse(final Group group, final List<User> users) {
-        this.group = group;
-        this.users = users;
+    /**
+     * Default Constructor, for creating this Object with a Group and all known
+     * Users and Subgroups.
+     *
+     * @param group     Requested Group
+     * @param users     List of Users belonging to the Group
+     * @param subGroups List of SubGroups belonging to the Group
+     */
+    public FetchGroupResponse(final Group group, final List<User> users, final List<Group> subGroups) {
+        setGroup(group);
+        setUsers(users);
+        setSubGroups(subGroups);
     }
 
     /**
@@ -62,19 +74,27 @@ public final class FetchGroupResponse extends AbstractFallible {
     // =========================================================================
 
     public void setGroup(final Group group) {
-        this.group = group;
+        this.group = new Group(group);
     }
 
     public Group getGroup() {
-        return group;
+        return new Group(group);
     }
 
     public void setUsers(final List<User> users) {
-        this.users = users;
+        this.users = copy(users);
     }
 
     public List<User> getUsers() {
-        return users;
+        return copy(users);
+    }
+
+    public void setSubGroups(final List<Group> subGroups) {
+        this.subGroups = copy(subGroups);
+    }
+
+    public List<Group> getSubGroups() {
+        return copy(subGroups);
     }
 
     // =========================================================================
@@ -101,6 +121,9 @@ public final class FetchGroupResponse extends AbstractFallible {
         if (group != null ? !group.equals(that.group) : that.group != null) {
             return false;
         }
+        if (subGroups != null ? !subGroups.equals(that.subGroups) : that.subGroups != null) {
+            return false;
+        }
 
         return !(users != null ? !users.equals(that.users) : that.users != null);
     }
@@ -114,6 +137,7 @@ public final class FetchGroupResponse extends AbstractFallible {
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (users != null ? users.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (subGroups != null ? subGroups.hashCode() : 0);
 
         return result;
     }
@@ -126,6 +150,7 @@ public final class FetchGroupResponse extends AbstractFallible {
         return "FetchGroupResponse{" +
                 "group=" + group +
                 ", users=" + users +
+                ", subGroups=" + subGroups +
                 '}';
     }
 }

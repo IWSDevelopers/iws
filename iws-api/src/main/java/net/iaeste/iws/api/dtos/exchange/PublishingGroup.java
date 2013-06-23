@@ -14,10 +14,11 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractVerification;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,13 +37,17 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class PublishGroup extends AbstractVerification {
+public final class PublishingGroup extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The Id of the Publishing Group. If null, then a new will be created. */
-    private String id = null;
+    private static final int MAX_NAME_LENGTH = 50;
+
+    /**
+     * The Id of the Publishing Group. If null, then a new will be created.
+     */
+    private String publishingGroupId = null;
 
     /**
      * The name of the Publishing Group, the name must be non-null and unique
@@ -56,7 +61,7 @@ public final class PublishGroup extends AbstractVerification {
     /**
      * Empty Constructor, required for some communication frameworks.
      */
-    public PublishGroup() {
+    public PublishingGroup() {
     }
 
     /**
@@ -65,34 +70,34 @@ public final class PublishGroup extends AbstractVerification {
      * @param name   Name of the Group
      * @param groups List of Countries to be part of this Publishing Group
      */
-    public PublishGroup(final String name, final List<Group> groups) {
-        this.name = name;
-        this.groups = Copier.copy(groups);
+    public PublishingGroup(final String name, final List<Group> groups) {
+        setName(name);
+        setGroups(groups);
     }
 
     /**
      * Default Constructor, for maintaining a Publishing Group.
      *
-     * @param id     The Id of the existing Publishing Group
-     * @param name   Name of the Group
-     * @param groups List of Countries to be part of this Publishing Group
+     * @param publishingGroupId The Id of the existing Publishing Group
+     * @param name              Name of the Group
+     * @param groups            List of Countries to be part of this Publishing Group
      */
-    public PublishGroup(final String id, final String name, final List<Group> groups) {
-        this.id = id;
-        this.name = name;
-        this.groups = Copier.copy(groups);
+    public PublishingGroup(final String publishingGroupId, final String name, final List<Group> groups) {
+        setPublishingGroupId(publishingGroupId);
+        setName(name);
+        setGroups(groups);
     }
 
     /**
      * Copy Constructor.
      *
-     * @param publishGroup PublishGroup Object to copy
+     * @param publishingGroup PublishingGroup Object to copy
      */
-    public PublishGroup(final PublishGroup publishGroup) {
-        if (publishGroup != null) {
-            id = publishGroup.id;
-            name = publishGroup.name;
-            groups = Copier.copy(publishGroup.groups);
+    public PublishingGroup(final PublishingGroup publishingGroup) {
+        if (publishingGroup != null) {
+            publishingGroupId = publishingGroup.publishingGroupId;
+            name = publishingGroup.name;
+            groups = copy(publishingGroup.groups);
         }
     }
 
@@ -100,15 +105,18 @@ public final class PublishGroup extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setId(final String id) {
-        this.id = id;
+    public void setPublishingGroupId(final String publishingGroupId) {
+        ensureValidId("publishingGroupId", publishingGroupId);
+
+        this.publishingGroupId = publishingGroupId;
     }
 
-    public String getId() {
-        return id;
+    public String getPublishingGroupId() {
+        return publishingGroupId;
     }
 
     public void setName(final String name) {
+        ensureNotNullOrTooLong("name", name, MAX_NAME_LENGTH);
         this.name = name;
     }
 
@@ -117,11 +125,13 @@ public final class PublishGroup extends AbstractVerification {
     }
 
     public void setGroups(final List<Group> groups) {
-        this.groups = Copier.copy(groups);
+        ensureNotNullOrEmpty("groups", groups);
+
+        this.groups = copy(groups);
     }
 
     public List<Group> getGroups() {
-        return Copier.copy(groups);
+        return copy(groups);
     }
 
     // =========================================================================
@@ -135,24 +145,10 @@ public final class PublishGroup extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        // The Id is internally generated, and thus never updated. If set, it
-        // should just not be empty
-        isNotEmpty(validation, "id", id);
-        // The Name must be a none-null and none-empty value, of max 50 chars
-        isWithinLimits(validation, "name", name, 1, 50);
-        // The Collection of Groups, can be empty but not null
+        // As all fields are validated, if set - we just need to check that the
+        // required fields are not null
+        isNotNull(validation, "name", name);
         isNotNull(validation, "groups", groups);
-
-        // Now, check the individual Groups in the Collection Since we only
-        // care for the Id's - we'll just check those. The null check, is to
-        // avoid a null pointer exception, the validation against null was made
-        // earlier. It is important to note, that the checks against the type of
-        // Groups, is made in the Business Logic.
-        if (groups != null) {
-            for (final Group group : groups) {
-                isNotNullOrEmpty(validation, "groups", group.getGroupId());
-            }
-        }
 
         return validation;
     }
@@ -166,17 +162,17 @@ public final class PublishGroup extends AbstractVerification {
             return true;
         }
 
-        if (!(obj instanceof PublishGroup)) {
+        if (!(obj instanceof PublishingGroup)) {
             return false;
         }
 
-        final PublishGroup that = (PublishGroup) obj;
+        final PublishingGroup that = (PublishingGroup) obj;
 
         if (groups != null ? !groups.equals(that.groups) : that.groups != null) {
             return false;
         }
 
-        if (id != null ? !id.equals(that.id) : that.id != null) {
+        if (publishingGroupId != null ? !publishingGroupId.equals(that.publishingGroupId) : that.publishingGroupId != null) {
             return false;
         }
 
@@ -190,7 +186,7 @@ public final class PublishGroup extends AbstractVerification {
     public int hashCode() {
         int result;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * (id != null ? id.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * (publishingGroupId != null ? publishingGroupId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (name != null ? name.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (groups != null ? groups.hashCode() : 0);
 
@@ -202,8 +198,8 @@ public final class PublishGroup extends AbstractVerification {
      */
     @Override
     public String toString() {
-        return "PublishGroup{" +
-                "id='" + id + '\'' +
+        return "PublishingGroup{" +
+                "publishingGroupId='" + publishingGroupId + '\'' +
                 ", name='" + name + '\'' +
                 ", groups=" + groups +
                 '}';

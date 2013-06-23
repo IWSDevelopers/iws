@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -303,7 +305,7 @@ public enum FieldOfStudy {
         return specializations;
     }
 
-    public String stringCSV(){
-        return this.name().charAt(0) + this.name().toLowerCase().replace('_', ' ').substring(1);
+    public String stringCSV() {
+        return name().charAt(0) + name().toLowerCase(IWSConstants.DEFAULT_LOCALE).replace('_', ' ').substring(1);
     }
 }

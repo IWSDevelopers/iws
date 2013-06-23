@@ -15,8 +15,25 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.exchange.*;
-import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
@@ -88,18 +105,18 @@ public interface Exchange {
     /**
      * Not implemented
      *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request
-     * @return
+     * @param token   User Authentication Token
+     * @param request Request Object
+     * @return Response Object
      */
     Fallible processOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
 
     /**
      * Not implemented
      *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request
-     * @return
+     * @param token   User Authentication Token
+     * @param request Request Object
+     * @return Response Object
      */
     FetchOfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
 
@@ -122,18 +139,18 @@ public interface Exchange {
     /**
      * Not implemented
      *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request
-     * @return
+     * @param token   User Authentication Token
+     * @param request Request Object
+     * @return Response Object
      */
     Fallible processPublishGroup(AuthenticationToken token, PublishGroupRequest request);
 
     /**
      * Not implemented
      *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request
-     * @return
+     * @param token   User Authentication Token
+     * @param request Request Object
+     * @return Response Object
      */
     FetchPublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
@@ -144,7 +161,7 @@ public interface Exchange {
      * {@link net.iaeste.iws.api.dtos.exchange.Offer#nominationDeadline} of each specified offer
      * is updated to the specified {@code PublishOfferRequest#nominationDeadline}
      *
-     * The list of offers is identified by the {@link net.iaeste.iws.api.dtos.exchange.Offer#id}.
+     * The list of offers is identified by the {@link net.iaeste.iws.api.dtos.exchange.Offer#offerId}.
      * The list of members are identified by the {@link net.iaeste.iws.api.dtos.Group#groupId}
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
@@ -158,7 +175,7 @@ public interface Exchange {
      * submitted and for each offer the groups are returned, to which the offer is shared to.
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer#id}s
+     * @param request contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer#offerId}s
      * @return contains a map for each requested offer and the list of {@link net.iaeste.iws.api.dtos.exchange.OfferGroup}
      *  to which the offer is shared to
      */

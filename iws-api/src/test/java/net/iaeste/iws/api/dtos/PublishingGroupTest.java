@@ -20,7 +20,7 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import com.gargoylesoftware.base.testing.EqualsTester;
-import net.iaeste.iws.api.dtos.exchange.PublishGroup;
+import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ import java.util.UUID;
  * @since   1.7
  * @noinspection ResultOfObjectAllocationIgnored, ObjectAllocationInLoop
  */
-public final class PublishGroupTest {
+public final class PublishingGroupTest {
 
     @Test
     @Ignore("Test is failing")
@@ -46,9 +46,9 @@ public final class PublishGroupTest {
         final List<Group> groups = buildGroups(4);
 
         // Fill a couple of Objects, that we can then verify
-        final PublishGroup unknown = new PublishGroup(name, groups);
-        final PublishGroup filled = new PublishGroup(id, name, groups);
-        final PublishGroup empty = new PublishGroup();
+        final PublishingGroup unknown = new PublishingGroup(name, groups);
+        final PublishingGroup filled = new PublishingGroup(id, name, groups);
+        final PublishingGroup empty = new PublishingGroup();
         empty.setName(name);
         empty.setGroups(groups);
 
@@ -67,26 +67,26 @@ public final class PublishGroupTest {
     @Ignore("Test is failing")
     public void testCopyConstructor() {
         // Build the Object to copy
-        final PublishGroup original = new PublishGroup();
-        original.setId("bla");
+        final PublishingGroup original = new PublishingGroup();
+        original.setPublishingGroupId("bla");
         original.setName("my name");
         original.setGroups(buildGroups(5));
 
         // Create a Copy of the original
-        final PublishGroup copy = new PublishGroup(original);
+        final PublishingGroup copy = new PublishingGroup(original);
 
         // Run checks, most importantly, is verify that the mutable fields are
         // not the same instance, meaning that they cannot be altered
         assertThat(copy, is(original));
         assertThat(copy, is(not(sameInstance(original))));
-        assertThat(copy.getId(), is(original.getId()));
+        assertThat(copy.getPublishingGroupId(), is(original.getPublishingGroupId()));
         assertThat(copy.getName(), is(original.getName()));
         assertThat(copy.getGroups(), is(original.getGroups()));
         assertThat(copy.getGroups(), is(not(sameInstance(original.getGroups()))));
     }
 
     /**
-     * The PublishGroup Object has the following Validation rules:
+     * The PublishingGroup Object has the following Validation rules:
      * <ul>
      *     <li>Id: if set, then it must not be empty</li>
      *     <li>Name: Not empty, and length between 1 and 50</li>
@@ -97,12 +97,12 @@ public final class PublishGroupTest {
     @Ignore("Test is failing")
     public void testValidationErrors() {
         // Let's just use the same for our tests
-        final PublishGroup cut = new PublishGroup();
+        final PublishingGroup cut = new PublishingGroup();
         // All fields null, should result in 2 errors (name & groups)
         final Map<String, String> nullTest = cut.validate();
 
         // Set the values, should result in 3 errors (id, name & groupId)
-        cut.setId("");
+        cut.setPublishingGroupId("");
         cut.setName("");
         final List<Group> groups = buildGroups(1);
         groups.get(0).setGroupId(null);
@@ -111,7 +111,7 @@ public final class PublishGroupTest {
         final Map<String, String> emptyTest = cut.validate();
 
         // Set too long values, should result in 2 errors (id and name)
-        cut.setId("123459098612345790987654321234578908765432");
+        cut.setPublishingGroupId("123459098612345790987654321234578908765432");
         cut.setName("12345789098765432123457890986412356789864211235789876543212345678987643234567898765432");
         final Map<String, String> overflowTest = cut.validate();
 
@@ -133,13 +133,13 @@ public final class PublishGroupTest {
         final List<Group> groups = buildGroups(2);
 
         // Test Objects
-        final PublishGroup result = new PublishGroup(id, name, groups);
-        final PublishGroup same = new PublishGroup(id, name, groups);
-        final PublishGroup empty = new PublishGroup();
-        final PublishGroup diff1 = new PublishGroup(name, groups);
-        final PublishGroup diff2 = new PublishGroup(UUID.randomUUID().toString(), name, groups);
-        final PublishGroup diff3 = new PublishGroup(id, "diferent name", groups);
-        final PublishGroup diff4 = new PublishGroup(id, name, buildGroups(4));
+        final PublishingGroup result = new PublishingGroup(id, name, groups);
+        final PublishingGroup same = new PublishingGroup(id, name, groups);
+        final PublishingGroup empty = new PublishingGroup();
+        final PublishingGroup diff1 = new PublishingGroup(name, groups);
+        final PublishingGroup diff2 = new PublishingGroup(UUID.randomUUID().toString(), name, groups);
+        final PublishingGroup diff3 = new PublishingGroup(id, "diferent name", groups);
+        final PublishingGroup diff4 = new PublishingGroup(id, name, buildGroups(4));
 
         // Assertion Checks
         assertThat(result.hashCode(), is(same.hashCode()));

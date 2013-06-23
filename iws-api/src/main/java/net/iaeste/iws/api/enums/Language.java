@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 /**
  * All languages that can be selected in the system
  *
@@ -63,8 +65,7 @@ public enum Language {
     UKRAINIAN,
     ANY;
 
-
-    public String stringCSV(){
-        return this.name().charAt(0) + this.name().toLowerCase().replace('_', ' ').substring(1);
+    public String stringCSV() {
+        return name().charAt(0) + name().toLowerCase(IWSConstants.DEFAULT_LOCALE).replace('_', ' ').substring(1);
     }
 }

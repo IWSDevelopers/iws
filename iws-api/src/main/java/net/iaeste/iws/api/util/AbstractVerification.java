@@ -128,6 +128,19 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * Throws an {@code IllegalArgumentException} if the given value is empty.
+     *
+     * @param field Name of the field
+     * @param value The value for the fieldERROR_TOO_SHORT
+     * @throws IllegalArgumentException if the value is empty
+     */
+    protected static void ensureNotEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
+        if (value != null && value.isEmpty()) {
+            throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
+        }
+    }
+
+    /**
      * Throws an {@code IllegalArgumentException} if the given value is null or
      * empty.
      *
@@ -136,6 +149,19 @@ public abstract class AbstractVerification implements Verifiable {
      * @throws IllegalArgumentException if the value is null or empty
      */
     protected static void ensureNotNullOrEmpty(final String field, final String value) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureNotEmpty(field, value);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is null or
+     * empty.
+     *
+     * @param field Name of the field
+     * @param value The value of the field
+     * @throws IllegalArgumentException if the value is null or empty
+     */
+    protected static void ensureNotNullOrEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
         ensureNotNull(field, value);
         ensureNotEmpty(field, value);
     }

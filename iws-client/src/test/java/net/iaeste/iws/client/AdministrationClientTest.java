@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.client;
 
+import static net.iaeste.iws.client.CommonTestMethods.readActivationCode;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -38,8 +39,6 @@ import net.iaeste.iws.api.util.Fallible;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.regex.Pattern;
-
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -49,7 +48,6 @@ import java.util.regex.Pattern;
 public class AdministrationClientTest extends AbstractClientTest {
 
     private static final String AUSTRIA_MEMBER_GROUP = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
-    private static final Pattern STRING_PATTERN = Pattern.compile("=");
     private final Administration administration = new AdministrationClient();
 
     @Override
@@ -119,7 +117,6 @@ public class AdministrationClientTest extends AbstractClientTest {
      * </ol>
      */
     @Test
-    @Ignore("Ignored by Kim 2013-06-19 - Reason: Adding salt to the User account passwords, seems to have a bug...")
     public void testCreateStudentAccount() {
         // For this test, we also need the Access Client
         final AccessClient accessClient = new AccessClient();
@@ -143,7 +140,7 @@ public class AdministrationClientTest extends AbstractClientTest {
         final AuthenticationRequest request = new AuthenticationRequest(username, password);
         final AuthenticationResponse response1 = accessClient.generateSession(request);
         assertThat(response1.isOk(), is(false));
-        assertThat(response1.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
+        assertThat(response1.getError(), is(IWSErrors.NO_USER_ACCOUNT_FOUND));
 
         // Activate the Account
         final String activationCode = readActivationCode(notification);
@@ -210,11 +207,5 @@ public class AdministrationClientTest extends AbstractClientTest {
         }
 
         return group;
-    }
-
-    private static String readActivationCode(final String notificationMessage) {
-        final String[] array = STRING_PATTERN.split(notificationMessage);
-
-        return array[2].trim();
     }
 }

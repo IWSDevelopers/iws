@@ -57,11 +57,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public class ExchangeClientTest extends AbstractClientTest {
+public final class ExchangeClientTest extends AbstractClientTest {
 
     private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;

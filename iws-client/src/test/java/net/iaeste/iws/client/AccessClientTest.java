@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.client;
 
+import static net.iaeste.iws.client.CommonTestMethods.readActivationCode;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -24,8 +25,10 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
+import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
@@ -42,7 +45,7 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class AccessClientTest {
+public final class AccessClientTest {
 
     private final NotificationSpy spy = NotificationSpy.getInstance();
     private final Access access = new AccessClient();
@@ -150,6 +153,53 @@ public class AccessClientTest {
 
         // Finalize the test, by deprecating the token
         assertThat(access.deprecateSession(token).isOk(), is(true));
+    }
+
+    @Test
+    public void testUpdatePassword() {
+        // For this test, we also need the Administration Client
+        final AdministrationClient administration = new AdministrationClient();
+
+        // Create a new Token, that we can use for the test
+        final AuthenticationToken adminToken = access.generateSession(new AuthenticationRequest("austria", "austria")).getToken();
+
+        // First, create a new Account, so we don't mess up any other tests
+        final String username = "updating@iaeste.at";
+        final String oldPassword = "oldPassword";
+        final CreateUserRequest createUserRequest = new CreateUserRequest(username, oldPassword, "testFirstName", "testLastName");
+        final Fallible createUserResponse = administration.createUser(adminToken, createUserRequest);
+        assertThat(createUserResponse.isOk(), is(true));
+        // Now, we don't need the old token anymore
+        access.deprecateSession(adminToken);
+
+        // Activate the Account
+        final String notification = spy.getNext().getMessage();
+        final String activationCode = readActivationCode(notification);
+        final Fallible acticationResult = administration.activateUser(activationCode);
+        assertThat(acticationResult.isOk(), is(true));
+
+        // Now we can start the actual testing. First, we're trying up update the
+        // users password without providing the old password. This should fail
+        final AuthenticationToken userToken = access.generateSession(new AuthenticationRequest(username, oldPassword)).getToken();
+        final String newPassword = "newPassword";
+        final Fallible update1 = access.updatePassword(userToken, new Password(newPassword));
+        assertThat(update1.isOk(), is(false));
+        assertThat(update1.getError(), is(IWSErrors.CANNOT_UPDATE_PASSWORD));
+
+        // Now, we're trying to update the password by providing a false old password
+        final Fallible update2 = access.updatePassword(userToken, new Password(newPassword, "bla"));
+        assertThat(update2.isOk(), is(false));
+        assertThat(update2.getError(), is(IWSErrors.CANNOT_UPDATE_PASSWORD));
+
+        // Finally, let's update the password using the correct old password
+        final Fallible update3 = access.updatePassword(userToken, new Password(newPassword, oldPassword));
+        assertThat(update3.isOk(), is(true));
+
+        // Let's check that it also works... Logout, and log in again :-)
+        access.deprecateSession(userToken);
+        final AuthenticationResponse response = access.generateSession(new AuthenticationRequest(username, newPassword));
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getError(), is(IWSErrors.SUCCESS));
     }
 
     @Test

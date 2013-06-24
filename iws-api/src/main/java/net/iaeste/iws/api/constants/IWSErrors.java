@@ -121,6 +121,8 @@ public interface IWSErrors {
 
     IWSError INVALID_NOTIFICATION = new IWSError(603, "Notification Type is not allowed in this context.");
 
+    IWSError CANNOT_UPDATE_PASSWORD = new IWSError(604, "The provided old Password is invalid.");
+
     /**
      * The current method is not yet implemented.
      */

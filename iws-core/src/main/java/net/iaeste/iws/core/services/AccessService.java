@@ -234,7 +234,7 @@ public final class AccessService extends CommonService {
         final UserEntity user = dao.findUserByCodeAndStatus(resetPasswordToken, UserStatus.ACTIVE);
 
         if (user != null) {
-            final String pwd = password.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+            final String pwd = password.getNewPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
             final String salt = UUID.randomUUID().toString();
 
             user.setPassword(generateHash(pwd, salt));
@@ -249,21 +249,29 @@ public final class AccessService extends CommonService {
     }
 
     /**
-     * Updates a users Password (and Salt).
+     * Updates a users Password (and Salt). The method checks the users current
+     * Password against the one provided, and only if there is a match, will
+     * the syste update the new Password. If the old Password is invalid, then
+     * the check should catch it.<br />
+     *   If the old Password is invalid, then an Invalid
      *
      * @param authentication Authentication Object, with User & optinal Group
      * @param password       New Password for the user
      */
     public void updatePassword(final Authentication authentication, final Password password) {
-        final String pwd = password.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        final String newPassword = password.getNewPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
         final String salt = UUID.randomUUID().toString();
         final UserEntity user = authentication.getUser();
 
-        user.setPassword(generateHash(pwd, salt));
-        user.setSalt(salt);
-        user.setModified(new Date());
+        if (isOldPasswordValid(user, password)) {
+            user.setPassword(generateHash(newPassword, salt));
+            user.setSalt(salt);
+            user.setModified(new Date());
 
-        dao.persist(user);
+            dao.persist(user);
+        } else {
+            throw new IWSException(IWSErrors.CANNOT_UPDATE_PASSWORD, "The system cannot update Password.");
+        }
     }
 
     /**
@@ -334,25 +342,44 @@ public final class AccessService extends CommonService {
         final UserEntity user = dao.findUserByUsername(username);
 
         if (user != null) {
-            // Okay, a UserEntity Object was found, now to match if the Password
-            // is correct, we first have to read it out of the Request Object,
-            // lowercase and generate a salted cryptographical hashvalue for it,
-            // which we can then match directly with the stored value from the
-            // UserEntity
-            final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-            final String hashcode = generateHash(password, user.getSalt());
+            if (user.getStatus() == UserStatus.ACTIVE) {
+                // Okay, an Active  UserEntity Object was found, now to match if
+                // the Password is correct, we first have to read it out of the
+                // Request Object, lowercase and generate a salted
+                // cryptographical hashvalue for it, which we can then match
+                // directly with the stored value from the UserEntity
+                final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+                final String hashcode = generateHash(password, user.getSalt());
 
-            if (!hashcode.equals(user.getPassword())) {
-                // Password mismatch, throw generic error
-                throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
+                if (!hashcode.equals(user.getPassword())) {
+                    // Password mismatch, throw generic error
+                    throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
+                }
+
+                // All good, return found UserEntity
+                return user;
+            } else {
+                // No active account exist! Error condition
+                throw new IWSException(IWSErrors.NO_USER_ACCOUNT_FOUND, "The account is not active, and can therfore not be used.");
             }
-
-            // All good, return found UserEntity
-            return user;
         } else {
             // No account for this User, throw generic error
             throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
         }
+    }
+
+    private static boolean isOldPasswordValid(final UserEntity user, final Password password) {
+        final String oldPassword = password.getOldPassword();
+        final boolean result;
+
+        if (oldPassword != null) {
+            final String pwd = generateHash(oldPassword.toLowerCase(IWSConstants.DEFAULT_LOCALE), user.getSalt());
+            result = user.getPassword().equals(pwd);
+        } else {
+            result = false;
+        }
+
+        return result;
     }
 
     private static Group readGroup(final UserPermissionView view) {

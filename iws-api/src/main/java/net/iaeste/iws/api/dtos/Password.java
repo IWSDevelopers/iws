@@ -19,7 +19,6 @@ import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * This Object is used for the requests, where a user needs to change the
@@ -36,8 +35,20 @@ public final class Password extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The actual password, stored as a plaintext value. */
-    private String password = null;
+    /**
+     * The new Password for the user. This field is mandatory for both the
+     * update Password and reset Password requests.
+     */
+    private String newPassword = null;
+
+    /**
+     * When updating the Password, it is important that the old Password is also
+     * set, since anyone gaining access to an open Session may attempt to hijack
+     * it.<br />
+     *   Note, this field is only used when invoking the update Password, if the
+     * forgot password functionality was used, then it is a different matter.
+     */
+    private String oldPassword = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -47,12 +58,23 @@ public final class Password extends AbstractVerification {
     }
 
     /**
-     * Default Constructor.
+     * Default Constructor for the reset Password request.
      *
-     * @param password New Password for the user
+     * @param newPassword New Password for the user
      */
-    public Password(final String password) {
-        setPassword(password);
+    public Password(final String newPassword) {
+        setNewPassword(newPassword);
+    }
+
+    /**
+     * Default Constructor for the update Password request.
+     *
+     * @param newPassword New Password for the user
+     * @param oldPassword Old Password for the user
+     */
+    public Password(final String newPassword, final String oldPassword) {
+        setNewPassword(newPassword);
+        setOldPassword(oldPassword);
     }
 
     /**
@@ -62,7 +84,8 @@ public final class Password extends AbstractVerification {
      */
     public Password(final Password password) {
         if (password != null) {
-            this.password = password.password;
+            this.newPassword = password.newPassword;
+            this.oldPassword = password.oldPassword;
         }
     }
 
@@ -71,24 +94,48 @@ public final class Password extends AbstractVerification {
     // =========================================================================
 
     /**
-     * Ensures that the given Password is valid, and sets it.
+     * Ensures that the given New Password is valid, and sets it. This value is
+     * required for both the update Password and the reset Password requests.
      *
-     * @param password New Password for a user
+     * @param newPassword New Password for a user
      * @throws IllegalArgumentException if the given value is invalid
      */
-    public void setPassword(final String password) throws IllegalArgumentException {
-        ensureNotNullOrTooShort("password", password, IWSConstants.MINIMAL_PASSWORD_LENGTH);
+    public void setNewPassword(final String newPassword) throws IllegalArgumentException {
+        ensureNotNullOrTooShort("newPassword", newPassword, IWSConstants.MINIMAL_PASSWORD_LENGTH);
 
-        this.password = password;
+        this.newPassword = newPassword;
     }
 
     /**
-     * Retrieves the internal Password value.
+     * Retrieves the New Password, required for both the update Password and the
+     * reset Password requests.
      *
      * @return New Password for a user
      */
-    public String getPassword() {
-        return password;
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    /**
+     * Ensures that the given Old Password is valid, and sets it. This value is
+     * required for the update Password request.
+     *
+     * @param oldPassword Old Password for a user
+     * @throws IllegalArgumentException if the given value is invalid
+     */
+    public void setOldPassword(final String oldPassword) throws IllegalArgumentException {
+        ensureNotNull("oldPassword", oldPassword);
+
+        this.oldPassword = oldPassword;
+    }
+
+    /**
+     * Retrieves the Old Password, required for the update Password request.
+     *
+     * @return Old Password for a user
+     */
+    public String getOldPassword() {
+        return oldPassword;
     }
 
     // =========================================================================
@@ -104,7 +151,7 @@ public final class Password extends AbstractVerification {
 
         // As the Setters are verifying all given values, we only
         // need to run checks against nonnull fields here
-        isNotNull(validation, "password", password);
+        isNotNull(validation, "newPassword", newPassword);
 
         return validation;
     }
@@ -130,7 +177,7 @@ public final class Password extends AbstractVerification {
         // compare this Object with something else, we wish to convey that it is
         // a sensitive Object, hence standards methods are returning negative
         // information only
-        return UUID.randomUUID().hashCode();
+        return 0;
     }
 
     /**

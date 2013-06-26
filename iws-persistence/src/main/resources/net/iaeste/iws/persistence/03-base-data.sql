@@ -235,12 +235,12 @@ insert into groups (id, external_id, grouptype_id, groupName, full_name) values 
 -- Test Data
 -- =============================================================================
 -- Country Data
-insert into countries (country_id, country_name) values ('AT', 'Austria');
-insert into countries (country_id, country_name) values ('HR', 'Croatia');
-insert into countries (country_id, country_name) values ('DK', 'Denmark');
-insert into countries (country_id, country_name) values ('DE', 'Germany');
-insert into countries (country_id, country_name) values ('PL', 'Poland');
-insert into countries (country_id, country_name) values ('HU', 'Hungary');
+insert into countries (country_code, country_name) values ('AT', 'Austria');
+insert into countries (country_code, country_name) values ('HR', 'Croatia');
+insert into countries (country_code, country_name) values ('DK', 'Denmark');
+insert into countries (country_code, country_name) values ('DE', 'Germany');
+insert into countries (country_code, country_name) values ('PL', 'Poland');
+insert into countries (country_code, country_name) values ('HU', 'Hungary');
 
 -- Couple of Member Groups, our Sequence starts with 25, so we only allow a limitted amount of test data
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (10, '2cc7e1bb-01e8-43a2-9643-2e964cbd41c5', 2, null, 1, 'Austria');

@@ -102,10 +102,10 @@ public class ExchangeServiceTest {
     }
 
     @Test
-    @Ignore("Ignored by Kim 2013-06-02 - Reason: The test is using mocking, and thus is only verifying that the mocks are correct, not the logic!")
+    @Ignore("Ignored 2013-06-02 by Kim - Reason: The test is using mocking, and thus is only verifying that the mocks are correct, not the logic!")
     public void testProcessingOffersCreateRequest() {
         final CountryEntity country = new CountryEntity();
-        country.setCountryId("GB");
+        country.setCountryCode("GB");
         final GroupEntity group = new GroupEntity();
         group.setCountry(country);
         final AuthenticationToken token = new AuthenticationToken();
@@ -243,11 +243,11 @@ public class ExchangeServiceTest {
          * Except for PK and UK only Offer#getCanteen() is checked as it's the only fields which can differ for the example data.
          */
         @Override
-        public boolean matches(final Object o) {
+        public boolean matches(final Object item) {
             boolean result = false;
 
-            if (o instanceof OfferEntity) {
-                final OfferEntity e = (OfferEntity) o;
+            if (item instanceof OfferEntity) {
+                final OfferEntity e = (OfferEntity) item;
                 if (e.getId() == null ? entity.getId() == null : e.getId().equals(entity.getId())) {
                     if (e.getRefNo().equals(entity.getRefNo())) {
                         result = e.getCanteen() == null ? entity.getCanteen() == null : e.getCanteen().equals(entity.getCanteen());

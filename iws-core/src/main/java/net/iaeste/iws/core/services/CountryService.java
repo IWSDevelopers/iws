@@ -54,7 +54,7 @@ public final class CountryService {
      */
     public void processCountries(final Authentication authentication, final CountryRequest request) {
         final CountryEntity newEntity = transform(request.getCountry());
-        final CountryEntity existingWithId = dao.findCountry(newEntity.getCountryId());
+        final CountryEntity existingWithId = dao.findCountry(newEntity.getCountryCode());
         final CountryEntity existingWithName = dao.findCountryByName(newEntity.getCountryName());
 
         if (existingWithId == null) {
@@ -64,7 +64,7 @@ public final class CountryService {
                 throw new IdentificationException("Cannot save Country, the name and id's are conflicting with existing records.");
             }
         } else {
-            if ((existingWithName == null) || existingWithName.getCountryId().equals(existingWithId.getCountryId())) {
+            if ((existingWithName == null) || existingWithName.getCountryCode().equals(existingWithId.getCountryCode())) {
                 dao.persist(authentication, existingWithId, newEntity);
             } else {
                 throw new IdentificationException("Cannot save Country, the name and id's are conflicting with existing records.");
@@ -130,7 +130,7 @@ public final class CountryService {
     private static Country transform(final CountryView view) {
         final Country country = new Country();
 
-        country.setCountryId(view.getCountryId());
+        country.setCountryId(view.getCountryCode());
         country.setCountryName(view.getCountryName());
         country.setCountryNameFull(view.getCountryNameFull());
         country.setCountryNameNative(view.getCountryNameNative());
@@ -160,7 +160,7 @@ public final class CountryService {
     private static CountryEntity transform(final Country country) {
         final CountryEntity entity = new CountryEntity();
 
-        entity.setCountryId(country.getCountryId().toUpperCase(IWSConstants.DEFAULT_LOCALE));
+        entity.setCountryCode(country.getCountryId().toUpperCase(IWSConstants.DEFAULT_LOCALE));
         entity.setCountryName(country.getCountryName());
         entity.setCountryNameFull(country.getCountryNameFull());
         entity.setCountryNameNative(country.getCountryNameNative());

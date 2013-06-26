@@ -18,7 +18,7 @@ create view user_permissions as
     u.username           as username,
     g.groupName          as groupName,
     g.group_description  as group_description,
-    c.country_id         as country,
+    c.country_code       as country,
     t.grouptype          as grouptype,
     u2g.custom_title     as rolename,
     p.permission         as permission
@@ -67,7 +67,7 @@ create view group_permissions as
 -- =============================================================================
 create view country_details as
   select
-    c.country_id           as country_id,
+    c.country_code         as country_code,
     c.country_name         as country_name,
     c.country_name_full    as country_name_full,
     c.country_name_native  as country_name_native,

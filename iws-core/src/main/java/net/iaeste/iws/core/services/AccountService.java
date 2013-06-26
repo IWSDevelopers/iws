@@ -302,7 +302,7 @@ public final class AccountService extends CommonService {
         final String alias;
 
         if (dao.findUserByAlias(name + address) != null) {
-            final String country = group.getCountry().getCountryId();
+            final String country = group.getCountry().getCountryCode();
             if (dao.findUserByAlias(name + '.' + country + address) != null) {
                 throw new IWSException(IWSErrors.PROCESSING_FAILURE, "It was not possible to create an alias for this user, please provide more details.");
             } else {

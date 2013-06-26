@@ -48,9 +48,9 @@ import java.util.Date;
         @NamedQuery(name = "country.findByName",
                 query = "select c from CountryEntity c " +
                         "where lower(c.countryName) = lower(:name)"),
-        @NamedQuery(name = "country.findByCountryId",
+        @NamedQuery(name = "country.findByCountryCode",
                 query = "select c from CountryEntity c " +
-                        "where c.countryId = :cid")
+                        "where c.countryCode = :code")
 })
 @Entity
 @Monitored(name = "countries", level = MonitoringLevel.MARKED)
@@ -63,8 +63,8 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @Column(name = "id", unique = true, nullable = false)
     private Long id = null;
 
-    @Column(name = "country_id", nullable = false, unique = true)
-    private String countryId = null;
+    @Column(name = "country_code", nullable = false, unique = true)
+    private String countryCode = null;
 
     @Monitored(name="country name", level = MonitoringLevel.MARKED)
     @Column(nullable = false, name = "country_name")
@@ -128,10 +128,11 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     /**
      * Default Constructor.
      *
-     * @param countryName  The name of the Country
+     * @param countryCode The two-letter UN specificed Country Code
+     * @param countryName The name of the Country
      */
-    public CountryEntity(final String countryId, final String countryName) {
-        this.countryId = countryId;
+    public CountryEntity(final String countryCode, final String countryName) {
+        this.countryCode = countryCode;
         this.countryName = countryName;
     }
 
@@ -148,12 +149,12 @@ public class CountryEntity implements Mergeable<CountryEntity> {
         return id;
     }
 
-    public void setCountryId(final String countryId) {
-        this.countryId = countryId;
+    public void setCountryCode(final String countryCode) {
+        this.countryCode = countryCode;
     }
 
-    public String getCountryId() {
-        return countryId;
+    public String getCountryCode() {
+        return countryCode;
     }
 
     public void setCountryName(final String countryName) {

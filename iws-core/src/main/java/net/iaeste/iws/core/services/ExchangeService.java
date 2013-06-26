@@ -139,7 +139,7 @@ public final class ExchangeService extends CommonService {
     }
 
     private static void verifyRefnoValidity(final OfferEntity offer) {
-        final String countryCode = offer.getGroup().getCountry().getCountryId();
+        final String countryCode = offer.getGroup().getCountry().getCountryCode();
         final String refno = offer.getRefNo();
 
         if (!refno.startsWith(countryCode)) {

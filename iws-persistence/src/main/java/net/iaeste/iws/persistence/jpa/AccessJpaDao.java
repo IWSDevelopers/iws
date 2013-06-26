@@ -390,9 +390,9 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public CountryEntity findCountryByCode(final String countryId) {
-        final Query query = entityManager.createNamedQuery("country.findByCountryId");
-        query.setParameter("cid", countryId);
+    public CountryEntity findCountryByCode(final String countryCode) {
+        final Query query = entityManager.createNamedQuery("country.findByCountryCode");
+        query.setParameter("code", countryCode);
         final List<CountryEntity> list = query.getResultList();
 
         return list.isEmpty() ? null : list.get(0);

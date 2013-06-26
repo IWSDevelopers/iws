@@ -14,6 +14,10 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +31,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -49,7 +49,7 @@ public class CountryEntityTest {
     @Transactional
     public void testClassflow() {
         final CountryEntity entity = new CountryEntity();
-        entity.setCountryId("my");
+        entity.setCountryCode("my");
         entity.setCountryName("Land");
         entityManager.persist(entity);
 

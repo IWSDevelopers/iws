@@ -61,7 +61,7 @@ public final class AdministrationTransformer {
             user.setStatus(userEntity.getStatus());
             user.setPrivacy(userEntity.getPrivateData());
             user.setNotifications(userEntity.getNotifications());
-            user.setMemberCountryId(groupEntity.getCountry().getCountryId());
+            user.setMemberCountryId(groupEntity.getCountry().getCountryCode());
 
             // TODO; Implement the Person Object
             //user.setPerson(transform(entity.getPerson()));
@@ -125,7 +125,7 @@ public final class AdministrationTransformer {
             group.setGroupId(entity.getExternalId());
             group.setGroupName(entity.getGroupName());
             group.setGroupType(entity.getGroupType().getGrouptype());
-            group.setCountryId(entity.getCountry().getCountryId());
+            group.setCountryId(entity.getCountry().getCountryCode());
             group.setDescription(entity.getDescription());
         } else {
             group = null;

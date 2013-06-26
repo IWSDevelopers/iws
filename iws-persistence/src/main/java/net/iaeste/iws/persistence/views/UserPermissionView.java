@@ -71,7 +71,7 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
     private GroupType groupType = null;
 
     @Column(name = "country")
-    private String countryId = null;
+    private String countryCode = null;
 
     @Column(name = "group_description")
     private String groupDescription = null;
@@ -162,12 +162,12 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
         return groupType;
     }
 
-    public void setCountryId(final String countryId) {
-        this.countryId = countryId;
+    public void setCountryCode(final String countryCode) {
+        this.countryCode = countryCode;
     }
 
-    public String getCountryId() {
-        return countryId;
+    public String getCountryCode() {
+        return countryCode;
     }
 
     public void setGroupDescription(final String groupDescription) {

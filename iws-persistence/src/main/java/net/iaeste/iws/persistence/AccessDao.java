@@ -151,7 +151,7 @@ public interface AccessDao extends BasicDao {
 
     GroupTypeEntity findGroupTypeByType(GroupType groupType);
 
-    CountryEntity findCountryByCode(String countryId);
+    CountryEntity findCountryByCode(String countryCode);
 
     /**
      * Attempts to find the Student Group, which is associated with given

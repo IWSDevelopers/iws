@@ -43,7 +43,7 @@ import javax.persistence.Table;
                         "where v.membership = :type "),
         @NamedQuery(name = "view.findCountriesByCountryIds",
                 query = "select v from CountryView v " +
-                        "where v.countryId in :ids")
+                        "where v.countryCode in :codes")
 })
 @Table(name = "country_details")
 public class CountryView extends AbstractView<CountryView> {
@@ -53,7 +53,7 @@ public class CountryView extends AbstractView<CountryView> {
 
     @Id
     @Column
-    private String countryId = null;
+    private String countryCode = null;
 
     @Column(name = "country_name")
     private String countryName = null;
@@ -99,12 +99,12 @@ public class CountryView extends AbstractView<CountryView> {
     // Entity Setters & Getters
     // =========================================================================
 
-    public void setCountry_id(final String countryId) {
-        this.countryId = countryId;
+    public void setCountryCode(final String countryCode) {
+        this.countryCode = countryCode;
     }
 
-    public String getCountryId() {
-        return countryId;
+    public String getCountryCode() {
+        return countryCode;
     }
 
     public void setCountryName(final String countryName) {
@@ -223,7 +223,7 @@ public class CountryView extends AbstractView<CountryView> {
                 result = countryName.compareTo(o.countryName);
                 break;
             default:
-                result = countryId.compareTo(o.countryId);
+                result = countryCode.compareTo(o.countryCode);
         }
 
         return sortAscending ? result : -result;
@@ -244,7 +244,7 @@ public class CountryView extends AbstractView<CountryView> {
         }
 
         final CountryView view = (CountryView) obj;
-        return !(countryId != null ? !countryId.equals(view.countryId) : view.countryId != null);
+        return !(countryCode != null ? !countryCode.equals(view.countryCode) : view.countryCode != null);
     }
 
     /**
@@ -254,6 +254,6 @@ public class CountryView extends AbstractView<CountryView> {
     public int hashCode() {
         // As the View is reading unique records from the database, it is
         // enough to simply look at their unique Id
-        return countryId.hashCode();
+        return countryCode.hashCode();
     }
 }

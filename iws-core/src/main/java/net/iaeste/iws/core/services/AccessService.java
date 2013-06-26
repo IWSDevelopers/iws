@@ -388,7 +388,7 @@ public final class AccessService extends CommonService {
         group.setGroupId(view.getExternalGroupId());
         group.setGroupType(view.getGroupType());
         group.setGroupName(view.getGroupName());
-        group.setCountryId(view.getCountryId());
+        group.setCountryId(view.getCountryCode());
         group.setDescription(view.getGroupDescription());
 
         return group;

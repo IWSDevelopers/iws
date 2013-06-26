@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.FetchGroupResponse
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -26,6 +26,7 @@ import java.util.List;
 /**
  * Returns a list of national groups. The list is ordered by name.
  *
+ * @author  Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

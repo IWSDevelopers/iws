@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchGroupRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -24,6 +24,7 @@ import java.util.Map;
  * Retrieve a list of all national groups. This is mainly needed in the front-end to display a list of groups (countries)
  * to choose for sharing the offer.
  *
+ * @author  Michael Pickelbauer / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */

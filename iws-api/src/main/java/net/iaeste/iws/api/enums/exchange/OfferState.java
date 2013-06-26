@@ -1,5 +1,7 @@
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 /**
  * Defines the possible states for an Offer
  *
@@ -32,5 +34,9 @@ public enum OfferState {
     /**
      * If an offer has student nominations
      */
-    NOMINATIONS
+    NOMINATIONS;
+
+    public String getDescription() {
+        return name().substring(0,1) + name().substring(1).toLowerCase(IWSConstants.DEFAULT_LOCALE);
+    }
 }

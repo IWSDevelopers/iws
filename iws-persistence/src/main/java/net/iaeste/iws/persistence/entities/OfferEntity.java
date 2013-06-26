@@ -809,15 +809,6 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
      * {@inheritDoc}
      */
     @Override
-    public String generateNotificationMessage(final NotificationType type) {
-        //TODO: generate message according to the state of the offer in exchange
-        return "Offer " + refNo;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public NotificationSubject getNotificationSubject() {
         return NotificationSubject.OFFER;
     }

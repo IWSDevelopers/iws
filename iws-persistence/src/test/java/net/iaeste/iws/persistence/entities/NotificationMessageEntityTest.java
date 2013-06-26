@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
-import net.iaeste.iws.api.enums.NotificationType;
+import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
@@ -62,13 +62,13 @@ public class NotificationMessageEntityTest {
         entity.setMessage("message text");
         entity.setProcessAfter(new Date());
         entity.setStatus(NotificationMessageStatus.NEW);
-        entity.setNotificationType(NotificationType.EMAIL);
+        entity.setNotificationDeliveryMode(NotificationDeliveryMode.EMAIL);
 
         entity.setUser(user);
         entityManager.persist(entity);
 
         final Query query = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");
-        query.setParameter("type", NotificationType.EMAIL);
+        query.setParameter("type", NotificationDeliveryMode.EMAIL);
         query.setParameter("status", NotificationMessageStatus.NEW);
         query.setParameter("date", new Date());
         final List<NotificationMessageEntity> found = query.getResultList();
@@ -88,7 +88,7 @@ public class NotificationMessageEntityTest {
         entity.setMessage("message text");
         entity.setProcessAfter(new Date());
         entity.setStatus(NotificationMessageStatus.NEW);
-        entity.setNotificationType(NotificationType.EMAIL);
+        entity.setNotificationDeliveryMode(NotificationDeliveryMode.EMAIL);
 
         entity.setUser(user);
         entityManager.persist(entity);
@@ -100,7 +100,7 @@ public class NotificationMessageEntityTest {
         assertThat(affectedRows, is(1));
 
         final Query query2 = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");
-        query2.setParameter("type", NotificationType.EMAIL);
+        query2.setParameter("deliveryMode", NotificationDeliveryMode.EMAIL);
         query2.setParameter("status", NotificationMessageStatus.PROCESSING);
         query2.setParameter("date", new Date());
 

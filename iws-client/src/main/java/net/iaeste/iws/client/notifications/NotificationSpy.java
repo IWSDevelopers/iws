@@ -61,7 +61,7 @@ public final class NotificationSpy implements Notifications {
      * {@inheritDoc}
      */
     @Override
-    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
+    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type, final boolean delayed) {
         LOG.info(authentication.getUser() + " has altered Object " + obj + " belonging to " + authentication.getGroup());
         final NotificationMessage message = new NotificationMessage(obj, type);
         notifiables.add(message);

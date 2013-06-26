@@ -31,6 +31,7 @@ import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Notes; It is good to see the notification system evolving. There is just a
@@ -48,17 +49,21 @@ import java.util.List;
 public final class NotificationManager implements Notifications {
 
     private final NotificationDao dao;
+    private final NotificationDirectEmailSender immedeateEmailSender;
+    private final NotificationMessageGenerator messageGenerator;
     private final List<Observer> observers = new ArrayList<>(10);
 
-    public NotificationManager(final NotificationDao dao) {
+    public NotificationManager(final NotificationDao dao, final NotificationDirectEmailSender immedeateEmailSender, final NotificationMessageGenerator messageGenerator) {
         this.dao = dao;
+        this.immedeateEmailSender = immedeateEmailSender;
+        this.messageGenerator = messageGenerator;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
+    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type, final boolean delayed) {
         // Save the general information about the Object to be notified.
         final List<UserEntity> users = obj.getRecipients();
 
@@ -71,11 +76,17 @@ public final class NotificationManager implements Notifications {
                 final NotificationMessageEntity message = new NotificationMessageEntity();
                 message.setStatus(NotificationMessageStatus.NEW);
                 message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-                final String messageText = obj.generateNotificationMessage(type);
-                message.setMessage(messageText);
 
-                //save messages into DB
-                dao.persist(message);
+                final Map<String, String> messageTexts = messageGenerator.generateFromTemplate(obj, type);
+                message.setMessage(messageTexts.get("body"));
+                message.setMessageTitle(messageTexts.get("title"));
+
+                if (delayed) {
+                    dao.persist(message);
+                }
+                else {
+                    immedeateEmailSender.send(message);
+                }
             }
         }
 

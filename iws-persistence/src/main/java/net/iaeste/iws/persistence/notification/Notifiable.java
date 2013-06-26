@@ -27,7 +27,7 @@ import java.util.Map;
  * to the name of the Template that holds the required information, and by
  * combining the Object with the Template, it should be possible to generate it
  * all.
- *   Example for Templating Engine: Velocity, Freemaker
+ *   Example for Templating Engine: Velocity, Freemarker
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -46,18 +46,6 @@ public interface Notifiable {
      * @return Map with required fields for the given Notification Type
      */
     Map<String, Object> prepareNotifiableFields(NotificationType type);
-
-    /**
-     * The Notification relies on a message being sent in some sort of format.
-     * However, this is not yet clarified exactly how it should be done. So
-     * for now - this is just a simple placeholder. So we at least can test
-     * those parts of the System, that relies on Notifications as part of the
-     * flow, i.e. Create User Account, Forgot Password, etc.
-     *
-     * @return Simple Message
-     */
-    @Deprecated
-    String generateNotificationMessage(NotificationType type);
 
     @Deprecated
     NotificationSubject getNotificationSubject();

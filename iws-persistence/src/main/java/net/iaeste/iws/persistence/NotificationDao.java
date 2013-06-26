@@ -16,7 +16,7 @@ package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationSubject;
-import net.iaeste.iws.api.enums.NotificationType;
+import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
@@ -45,12 +45,12 @@ public interface NotificationDao extends BasicDao {
      * Finds all NotificationMessageEntity for selected notification channel
      * with specific status and processing date
      *
-     * @param type   Type of notification channel
+     * @param deliveryMode   Type of notification channel
      * @param status Status of the message (i.e. new, processing, ...)
      * @param date   Date when to process the message
      * @return       List of NotificationMessageEntity
      */
-    List<NotificationMessageEntity> findNotificationMessages(NotificationType type, NotificationMessageStatus status, Date date);
+    List<NotificationMessageEntity> findNotificationMessages(NotificationDeliveryMode deliveryMode, NotificationMessageStatus status, Date date);
 
     /**
      * Updates the notification message to the new specified status

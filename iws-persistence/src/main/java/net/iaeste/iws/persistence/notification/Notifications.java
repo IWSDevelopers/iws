@@ -31,8 +31,9 @@ public interface Notifications extends Observable {
      * @param authentication Authentication information (user + group)
      * @param obj            Instance to notify about changes for
      * @param type           Type of Notification Message to send
+     * @param delayed        Is the sending of the notification delayed (true) or immediately (false)
      */
-    void notify(Authentication authentication, Notifiable obj, NotificationType type);
+    void notify(Authentication authentication, Notifiable obj, NotificationType type, boolean delayed);
 
     /**
      * For the Forgot password functionality, we only hav a {@code UserEntity}

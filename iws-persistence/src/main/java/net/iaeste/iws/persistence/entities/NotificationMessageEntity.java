@@ -16,7 +16,7 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
-import net.iaeste.iws.api.enums.NotificationType;
+import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +45,7 @@ import java.util.Date;
         @NamedQuery(
                 name = "notifications.findMessagesByTypeStatusAndDate",
                 query = "select nm from NotificationMessageEntity nm " +
-                        "where nm.notificationType = :type" +
+                        "where nm.notificationDeliveryMode = :deliveryMode" +
                         "  and nm.status = :status" +
                         "  and nm.processAfter < :date"),
         @NamedQuery(name = "notifications.updateStatus",
@@ -72,7 +72,7 @@ public class NotificationMessageEntity implements IWSEntity {
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "notification_type")
-    private NotificationType notificationType = null;
+    private NotificationDeliveryMode notificationDeliveryMode = null;
 
     /**
      * Message title
@@ -109,13 +109,13 @@ public class NotificationMessageEntity implements IWSEntity {
      * Default Constructor, for creating Message Entity without date of processing.
      *
      * @param user    The User to receive the notification
-     * @param notificationType    Type of notification channel (i.e. e-mail, instant message, ...)
+     * @param notificationDeliveryMode    Type of notification channel (i.e. e-mail, instant message, ...)
      * @param message Text of the message to be sent
      * @param status  Current status of the notification message
      */
-    public NotificationMessageEntity(final UserEntity user, final NotificationType notificationType, final String message, final NotificationMessageStatus status) {
+    public NotificationMessageEntity(final UserEntity user, final NotificationDeliveryMode notificationDeliveryMode, final String message, final NotificationMessageStatus status) {
         this.user = user;
-        this.notificationType = notificationType;
+        this.notificationDeliveryMode = notificationDeliveryMode;
         this.message = message;
         this.status = status;
     }
@@ -153,12 +153,12 @@ public class NotificationMessageEntity implements IWSEntity {
         return user;
     }
 
-    public void setNotificationType(final NotificationType notificationType) {
-        this.notificationType = notificationType;
+    public void setNotificationDeliveryMode(final NotificationDeliveryMode notificationDeliveryMode) {
+        this.notificationDeliveryMode = notificationDeliveryMode;
     }
 
-    public NotificationType getNotificationType() {
-        return notificationType;
+    public NotificationDeliveryMode getNotificationDeliveryMode() {
+        return notificationDeliveryMode;
     }
 
     public void setStatus(final NotificationMessageStatus status) {

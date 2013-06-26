@@ -17,7 +17,6 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.persistence.exceptions.NotificationException;
 import net.iaeste.iws.persistence.notification.Notifiable;
 import net.iaeste.iws.persistence.notification.NotificationType;
 
@@ -350,36 +349,16 @@ public class UserEntity implements IWSEntity, Notifiable {
         this.temporary = temporary;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, Object> prepareNotifiableFields(final NotificationType type) {
-        return new HashMap<>(0);
+    public String getTemporary() {
+        return temporary;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateNotificationMessage(final NotificationType type) {
-        final String message;
-
-        switch (type) {
-            case ACTIVATE_USER:
-                message = "New User Account generated, with password = '" + temporary + "' and Activation Code = " + code;
-                break;
-            case RESET_PASSWORD:
-                message = "Reset Password Code = " + code;
-                break;
-            case RESET_SESSION:
-                message = "Reset Session Code = " + code;
-                break;
-            default:
-                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
-        }
-
-        return message;
+    public Map<String, Object> prepareNotifiableFields(final NotificationType type) {
+        return new HashMap<>(0);
     }
 
     /**

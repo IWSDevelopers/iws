@@ -16,8 +16,7 @@ package net.iaeste.iws.ejb.emails;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.core.notifications.IwsFfmqConstants;
-import net.iaeste.iws.core.notifications.EmailMessage;
+import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.timewalker.ffmq3.FFMQConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +66,7 @@ public class EmailSender implements MessageListener {
     private QueueConnection queueConnection = null;
     private QueueSession queueSession = null;
     private QueueReceiver queueReceiver = null;
-    private Queue queue;
+    private Queue queue = null;
 
     /**
      * Constructor to initialize connection to the message queue.
@@ -78,16 +77,17 @@ public class EmailSender implements MessageListener {
             final Hashtable<String, String> env = new Hashtable<>();
             env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
 //            env.put(Context.PROVIDER_URL, MessageServer.listenAddr+MessageServer.listenPort);
-            env.put(Context.PROVIDER_URL, "vm://"+ IwsFfmqConstants.engineName);
+            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
             final Context context = new InitialContext(env);
 
             queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
             queueConnection = queueConnectionFactory.createQueueConnection();
             queueConnection.start();
-            queue = (Queue)context.lookup(IwsFfmqConstants.queueNameForIws);
+            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
             queueSession = queueConnection.createQueueSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
             queueReceiver = queueSession.createReceiver(queue);
             queueReceiver.setMessageListener(this);
+            context.close();
         } catch (NamingException|JMSException e) {
             throw new IWSException(IWSErrors.ERROR, "Queue recipient initialization failed.", e);
         }
@@ -115,7 +115,7 @@ public class EmailSender implements MessageListener {
             final ObjectMessage msg = (ObjectMessage) message;
             try {
                 final Object object = msg.getObjectProperty("emailMessage");
-                if ((object instanceof EmailMessage)) {
+                if (object instanceof EmailMessage) {
                     send((EmailMessage) object);
                 } else {
                     throw new IWSException(IWSErrors.ERROR, "Not a proper e-mail message.");

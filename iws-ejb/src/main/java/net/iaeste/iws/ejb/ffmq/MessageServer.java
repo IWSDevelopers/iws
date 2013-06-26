@@ -16,7 +16,6 @@ package net.iaeste.iws.ejb.ffmq;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.core.notifications.IwsFfmqConstants;
 import net.timewalker.ffmq3.FFMQCoreSettings;
 import net.timewalker.ffmq3.listeners.ClientListener;
 import net.timewalker.ffmq3.listeners.tcp.io.TcpListener;
@@ -42,6 +41,12 @@ import javax.jms.JMSException;
  * @since   1.7
  */
 public class MessageServer {
+    public static final String queueNameForFfmq = "iws-EmailQueue";
+    public static final String queueNameForIws = "query/iws-EmailQueue";
+
+    public static final String engineName = "IwsFfmqMessageServer";
+    public static final String listenAddr = "0.0.0.0";
+    public static final int listenPort = 10002;
 
     private static final Logger LOG = LoggerFactory.getLogger(MessageServer.class);
 
@@ -56,19 +61,19 @@ public class MessageServer {
             System.setProperty("FFMQ_BASE", "..");
 
             final Settings settings = createEngineSettings();
-            engine = new FFMQEngine(IwsFfmqConstants.engineName, settings);
+            engine = new FFMQEngine(MessageServer.engineName, settings);
 
             LOG.trace("Starting listener");
-            tcpListener = new TcpListener(engine, IwsFfmqConstants.listenAddr, IwsFfmqConstants.listenPort, settings, null);
+            tcpListener = new TcpListener(engine, MessageServer.listenAddr, MessageServer.listenPort, settings, null);
             tcpListener.start();
 
             final QueueDefinition queueDef = new QueueDefinition();
-            queueDef.setName(IwsFfmqConstants.queueNameForFfmq);
+            queueDef.setName(MessageServer.queueNameForFfmq);
             queueDef.setUseJournal(false);
             queueDef.setMaxNonPersistentMessages(1000);
             queueDef.check();
 
-            if(engine.getDestinationDefinitionProvider().hasQueueDefinition(IwsFfmqConstants.queueNameForFfmq)) {
+            if(engine.getDestinationDefinitionProvider().hasQueueDefinition(MessageServer.queueNameForFfmq)) {
                 engine.getDestinationDefinitionProvider().removeQueueDefinition(queueDef);
             }
 

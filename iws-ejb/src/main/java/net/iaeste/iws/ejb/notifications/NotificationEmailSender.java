@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.notifications.NotificationEmailSender
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.NotificationEmailSender
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,12 +12,15 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.core.notifications;
+package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
+import net.iaeste.iws.ejb.emails.EmailMessage;
+import net.iaeste.iws.core.notifications.NotificationDirectEmailSender;
+import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.timewalker.ffmq3.FFMQConstants;
 import org.slf4j.Logger;
@@ -49,7 +52,7 @@ import java.util.Hashtable;
  * @since   1.7
  * @noinspection ObjectAllocationInLoop
  */
-public class NotificationEmailSender implements Observer {
+public class NotificationEmailSender implements Observer, NotificationDirectEmailSender {
 
     private static final Logger LOG = LoggerFactory.getLogger(NotificationEmailSender.class);
 
@@ -66,15 +69,16 @@ public class NotificationEmailSender implements Observer {
     public NotificationEmailSender() {
         try {
             //FFMQ specific
-            final Hashtable<String, String> env = new Hashtable();
+            final Hashtable<String, String> env = new Hashtable<>();
             env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
-            env.put(Context.PROVIDER_URL, "vm://"+ IwsFfmqConstants.engineName);
+            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
             //connection using 'vm://' protocol should have better performance, if not working, use tcp connection instead
 //            env.put(Context.PROVIDER_URL, "tcp://" + MessageServer.listenAddr + ":" + MessageServer.listenPort);
             final Context context = new InitialContext(env);
 
             queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
-            queue = (Queue)context.lookup(IwsFfmqConstants.queueNameForIws);
+            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
+            context.close();
             // end FFMQ specific
 
             queueConnection = queueConnectionFactory.createQueueConnection();
@@ -108,6 +112,10 @@ public class NotificationEmailSender implements Observer {
         processMessages();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void send(final NotificationMessageEntity message) {
         try {
             final ObjectMessage msg = queueSession.createObjectMessage();
@@ -118,12 +126,16 @@ public class NotificationEmailSender implements Observer {
             msg.setObjectProperty("emailMessage", emsg);
 
             queueSender.send(msg);
-        } catch (JMSException e) {
+        } catch (JMSException ignored) {
             LOG.error("Error when sending message to the queue");
         }
     }
 
     private void processMessages() {
+        //TODO pavel: I tried two approaches: one is the current implematation with the NotificationDirectEmailSender
+        //            the second is to implement public method in NotificationManager which returns a list with messages
+        //            to be sent. The NotificationManager's instance is the parameter of the update(Observable) method.
+        //            None of these approaches is ideal, I kept the one with interface for now.
         //get list of messages to be sent immediately, this needs a connection to the notification manager
         //which instance I have as the parameter of the update(Observable) method
     }

@@ -18,7 +18,7 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationSubject;
-import net.iaeste.iws.api.enums.NotificationType;
+import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
@@ -68,9 +68,9 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
      * {@inheritDoc}
      */
     @Override
-    public List<NotificationMessageEntity> findNotificationMessages(final NotificationType type, final NotificationMessageStatus status, final Date date) {
+    public List<NotificationMessageEntity> findNotificationMessages(final NotificationDeliveryMode deliveryMode, final NotificationMessageStatus status, final Date date) {
         final Query query = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");
-        query.setParameter("type", type);
+        query.setParameter("deliveryMode", deliveryMode);
         query.setParameter("status", status);
         query.setParameter("date", date);
 

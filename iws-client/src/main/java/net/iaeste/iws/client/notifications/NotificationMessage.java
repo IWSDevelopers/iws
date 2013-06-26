@@ -14,8 +14,12 @@
  */
 package net.iaeste.iws.client.notifications;
 
+import net.iaeste.iws.core.notifications.NotificationMessageGenerator;
+import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
 import net.iaeste.iws.persistence.notification.Notifiable;
 import net.iaeste.iws.persistence.notification.NotificationType;
+
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -26,10 +30,14 @@ public class NotificationMessage {
 
     private final Notifiable notifiable;
     private final NotificationType type;
+    private final NotificationMessageGenerator messageGenerator;
 
     public NotificationMessage(final Notifiable notifiable, final NotificationType type) {
         this.notifiable = notifiable;
         this.type = type;
+
+        messageGenerator = new NotificationMessageGeneratorFreemarker();
+//        messageGenerator = new NotificationMessageGeneratorVelocity();
     }
 
     public Notifiable getNotifiable() {
@@ -41,6 +49,7 @@ public class NotificationMessage {
     }
 
     public String getMessage() {
-        return notifiable.generateNotificationMessage(type);
+        final Map<String, String> messageTexts = messageGenerator.generateFromTemplate(notifiable, type);
+        return messageTexts.get("body");
     }
 }

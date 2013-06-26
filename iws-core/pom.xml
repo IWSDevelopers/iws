@@ -146,5 +146,15 @@
             <version>3.0.2</version>
         </dependency>
         <!-- end FFMQ dependencies -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.19</version>
+        </dependency>
     </dependencies>
 </project>

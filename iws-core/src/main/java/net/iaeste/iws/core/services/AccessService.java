@@ -115,7 +115,7 @@ public final class AccessService extends CommonService {
             user.setCode(generateHash(UUID.randomUUID().toString()));
             dao.persist(user);
             final Authentication authentication = new Authentication(user);
-            notifications.notify(authentication, user, NotificationType.RESET_SESSION);
+            notifications.notify(authentication, user, NotificationType.RESET_SESSION, false);
         } else {
             throw new SessionException("No Session exists for this user.");
         }

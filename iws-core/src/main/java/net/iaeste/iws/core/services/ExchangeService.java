@@ -26,10 +26,25 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.exchange.*;
+
+import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
-import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.Authentication;
@@ -127,7 +142,7 @@ public final class ExchangeService extends CommonService {
 
         // Send a notification to the users who so desire. Via the Notifiable
         // Interface, can the Object handle it itself
-        notifications.notify(authentication, newEntity, NotificationType.GENERAL);
+        notifications.notify(authentication, newEntity, NotificationType.GENERAL, true);
 
         // As we already have the new Entity in our hand, this is simply
         // redundant code, that only serves the purpose of verifying that our

@@ -37,9 +37,9 @@ import java.util.Date;
  */
 @NamedQueries({
         @NamedQuery(name = "address.findAll",
-                query = "SELECT a FROM AddressEntity a"),
-        @NamedQuery(name = "address.findById",
-                query = "select a from AddressEntity a where a.id = :id")
+                query = "select a from AddressEntity a"),
+        @NamedQuery(name = "address.findByExternalId",
+                query = "select a from AddressEntity a where a.externalId = :eid")
 })
 @Entity
 @Table(name = "addresses")
@@ -50,6 +50,9 @@ public class AddressEntity implements Mergeable<AddressEntity> {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false)
     private Long id = null;
+
+    @Column(nullable = false, name = "external_id")
+    private String externalId = null;
 
     @Column(name = "street1")
     private String street1 = null;
@@ -66,6 +69,9 @@ public class AddressEntity implements Mergeable<AddressEntity> {
     @Column(name = "region")
     private String region = null;
 
+    @Column(name = "pobox")
+    private String pobox = null;
+
     @ManyToOne(targetEntity = CountryEntity.class)
     @JoinColumn(nullable = false, name = "country_id")
     private CountryEntity country = null;
@@ -78,9 +84,25 @@ public class AddressEntity implements Mergeable<AddressEntity> {
     @Column(name = "created")
     private Date created = null;
 
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
+
+    /**
+     * Empty Constructor, JPA requirement.
+     */
     public AddressEntity() {
     }
 
+    /**
+     * Default Constructor, for creating new entity.
+     *
+     * @param street1 First Street information
+     * @param street2 Second Street information
+     * @param zip     ZIP code
+     * @param city    City
+     * @param country Country
+     */
     public AddressEntity(final String street1, final String street2, final String zip, final String city, final CountryEntity country) {
         this.street1 = street1;
         this.street2 = street2;
@@ -89,6 +111,10 @@ public class AddressEntity implements Mergeable<AddressEntity> {
         this.country = country;
     }
 
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
+
     public void setId(final Long id) {
         this.id = id;
     }
@@ -96,6 +122,14 @@ public class AddressEntity implements Mergeable<AddressEntity> {
     @Override
     public Long getId() {
         return id;
+    }
+
+    public void setExternalId(final String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getExternalId() {
+        return externalId;
     }
 
     public void setStreet1(final String street1) {
@@ -138,6 +172,14 @@ public class AddressEntity implements Mergeable<AddressEntity> {
         return zip;
     }
 
+    public void setPobox(final String pobox) {
+        this.pobox = pobox;
+    }
+
+    public String getPobox() {
+        return pobox;
+    }
+
     public void setCountry(final CountryEntity country) {
         this.country = country;
     }
@@ -172,6 +214,7 @@ public class AddressEntity implements Mergeable<AddressEntity> {
             street2 = obj.street2;
             zip = obj.zip;
             city = obj.city;
+            pobox = obj.pobox;
             country = obj.country;
         }
     }

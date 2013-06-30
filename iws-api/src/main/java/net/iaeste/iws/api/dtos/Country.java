@@ -320,8 +320,9 @@ public final class Country extends AbstractVerification {
      */
     @Override
     public int hashCode() {
-        int result = countryId != null ? countryId.hashCode() : 0;
+        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryId != null ? countryId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryName != null ? countryName.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryNameFull != null ? countryNameFull.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryNameNative != null ? countryNameNative.hashCode() : 0);

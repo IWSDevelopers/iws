@@ -237,6 +237,10 @@ public class CountryEntity implements Mergeable<CountryEntity> {
         return memberSince;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
@@ -273,9 +277,6 @@ public class CountryEntity implements Mergeable<CountryEntity> {
             languages = obj.languages;
             membership = obj.membership;
             memberSince = obj.memberSince;
-
-            // Merging over, let's just set the Modified date to 'now'
-            modified = new Date();
         }
     }
 }

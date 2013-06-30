@@ -30,12 +30,18 @@ public enum NotificationType {
      */
     GENERAL,
 
-    /** For Activating newly created User Accounts. */
+    /**
+     * For Activating newly created User Accounts.
+     */
     ACTIVATE_USER,
 
-    /** For sending of reset password requests. */
+    /**
+     * For sending of reset password requests.
+     */
     RESET_PASSWORD,
 
-    /** For handling resetting Session requests. */
+    /**
+     * For handling resetting Session requests.
+     */
     RESET_SESSION
 }

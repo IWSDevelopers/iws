@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import java.util.Date;
+
 /**
  * Classes implementing this interface, are capable of updating the current
  * content, with the content of a second IWSEntity of the same type (and Id).
@@ -32,4 +34,13 @@ public interface Mergeable<T> extends IWSEntity {
      * for updating Objects, where we wish to control which fields are updated.
      */
     void merge(T obj);
+
+    /**
+     * To ensure that the field modified is always updated, it must be
+     * controlled by the DAO, as part of the update process. Hence, it must be
+     * possible to set the Modified field to a given Date.
+     *
+     * @param modified Date of Modification
+     */
+    void setModified(Date modified);
 }

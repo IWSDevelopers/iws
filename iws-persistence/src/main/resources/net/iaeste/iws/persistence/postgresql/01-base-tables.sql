@@ -501,6 +501,7 @@ create table history (
 create sequence address_sequence start with 1 increment by 1;
 create table addresses (
     id                  integer default nextval('address_sequence'),
+    external_id         varchar(36),
     street1             varchar(100) default '',
     street2             varchar(100) default '',
     zip                 varchar(100) default '',
@@ -515,11 +516,15 @@ create table addresses (
     constraint address_pk              primary key (id),
     constraint address_fk_countries_id foreign key (country_id) references countries (id),
 
+    /* Unique Constraints */
+    constraint address_unique_external_id unique (external_id),
+
     /* Not Null Constraints */
-    constraint address_notnull_id         check (id is not null),
-    constraint address_notnull_country_id check (country_id is not null),
-    constraint address_notnull_modified   check (modified is not null),
-    constraint address_notnull_created    check (created is not null)
+    constraint address_notnull_id          check (id is not null),
+    constraint address_notnull_external_id check (external_id is not null),
+    constraint address_notnull_country_id  check (country_id is not null),
+    constraint address_notnull_modified    check (modified is not null),
+    constraint address_notnull_created     check (created is not null)
 );
 
 

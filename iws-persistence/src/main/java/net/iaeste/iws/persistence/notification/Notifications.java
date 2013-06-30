@@ -19,6 +19,8 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.UserEntity;
 
 /**
+ * Classes to be observed, should extend the Notifiable interface.
+ *
  * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since 1.7
@@ -26,7 +28,9 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 public interface Notifications extends Observable {
 
     /**
-     * Classes to be observed, should extend the Notifiable interface.
+     * For (almost) all notifications. this method should be invoked, since it
+     * will ensure that the correct notification is persisted and send to the
+     * notification queue.
      *
      * @param authentication Authentication information (user + group)
      * @param obj            Instance to notify about changes for
@@ -36,7 +40,7 @@ public interface Notifications extends Observable {
     void notify(Authentication authentication, Notifiable obj, NotificationType type, boolean delayed);
 
     /**
-     * For the Forgot password functionality, we only hav a {@code UserEntity}
+     * For the Forgot password functionality, we only have the {@code UserEntity}
      * Object at hand.
      *
      * @param user {@code UserEntity} Object

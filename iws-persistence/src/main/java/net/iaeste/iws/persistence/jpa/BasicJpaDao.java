@@ -29,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -86,6 +87,7 @@ public class BasicJpaDao implements BasicDao {
         }
 
         entityToPersist.merge(changesToBeMerged);
+        entityToPersist.setModified(new Date());
         entityManager.persist(entityToPersist);
     }
 

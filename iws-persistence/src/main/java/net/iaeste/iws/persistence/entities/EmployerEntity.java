@@ -171,6 +171,10 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
         return website;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
@@ -202,10 +206,6 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
             business = obj.business;
             numberOfEmployees = obj.numberOfEmployees;
             website = obj.website;
-
-            // Set the Modified value to 'now', so the time of
-            // the last update is in the Record in the database.
-            modified = new Date();
         }
     }
 }

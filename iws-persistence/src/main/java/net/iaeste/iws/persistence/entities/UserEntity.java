@@ -17,7 +17,9 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.persistence.exceptions.NotificationException;
 import net.iaeste.iws.persistence.notification.Notifiable;
+import net.iaeste.iws.persistence.notification.NotificationField;
 import net.iaeste.iws.persistence.notification.NotificationType;
 
 import javax.persistence.Column;
@@ -36,7 +38,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -349,22 +351,73 @@ public class UserEntity implements IWSEntity, Notifiable {
         this.temporary = temporary;
     }
 
-    public String getTemporary() {
-        return temporary;
+    // =========================================================================
+    // Other Methods required for this Entity
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
+
+        // The switch serves two purposes, first purpose is to fill the map with
+        // the required values for all the different types of notifications. The
+        // second purpose, is also to verify the type of notification, which
+        // this entity may be used for.
+        switch (type) {
+            case ACTIVATE_USER:
+                // Activating a user requires that the password is returned
+                fields.put(NotificationField.CLEARTEXT_PASSWORD, temporary);
+            case RESET_PASSWORD:
+            case RESET_SESSION:
+                // By default, we always need the username (e-mail address),
+                // first and last name of the person to receive a notification
+                fields.put(NotificationField.USERNAME, userName);
+                fields.put(NotificationField.FIRSTNAME, firstname);
+                fields.put(NotificationField.LASTNAME, lastname);
+
+                // The code is also a common part for all types of notifications
+                fields.put(NotificationField.CODE, code);
+                break;
+            default:
+                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
+        }
+
+        return fields;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> prepareNotifiableFields(final NotificationType type) {
-        return new HashMap<>(0);
+    @Deprecated
+    public String generateNotificationMessage(final NotificationType type) {
+        final String message;
+
+        switch (type) {
+            case ACTIVATE_USER:
+                message = "New User Account generated, with password = '" + temporary + "' and Activation Code = " + code;
+                break;
+            case RESET_PASSWORD:
+                message = "Reset Password Code = " + code;
+                break;
+            case RESET_SESSION:
+                message = "Reset Session Code = " + code;
+                break;
+            default:
+                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
+        }
+
+        return message;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public NotificationSubject getNotificationSubject() {
         return NotificationSubject.USER;
     }
@@ -373,6 +426,7 @@ public class UserEntity implements IWSEntity, Notifiable {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public List<UserEntity> getRecipients() {
         final List<UserEntity> entities = new ArrayList<>(1);
         entities.add(this);

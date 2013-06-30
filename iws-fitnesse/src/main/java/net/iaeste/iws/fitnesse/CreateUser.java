@@ -20,8 +20,7 @@ import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationMessage;
 import net.iaeste.iws.fitnesse.callers.AdministrationCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
-
-import java.util.regex.Pattern;
+import net.iaeste.iws.persistence.notification.NotificationField;
 
 /**
  * @author  Martin Eisfeld / last $Author:$
@@ -30,7 +29,6 @@ import java.util.regex.Pattern;
  */
 public final class CreateUser extends AbstractFixture<Fallible> {
 
-    private static final Pattern STRING_PATTERN = Pattern.compile("=");
     private final Administration administration = new AdministrationCaller();
     private CreateUserRequest request = new CreateUserRequest();
     private NotificationMessage notificationMessage = null;
@@ -62,12 +60,8 @@ public final class CreateUser extends AbstractFixture<Fallible> {
         notificationMessage = getNextNotification();
     }
 
-    public String readNotificationMessage() {
-        return notificationMessage != null ? notificationMessage.getMessage() : null;
-    }
-
     public String getActivationCode() {
-        return readActivationCode(readNotificationMessage());
+        return notificationMessage.getFields().get(NotificationField.CODE);
     }
 
     @Override
@@ -82,11 +76,5 @@ public final class CreateUser extends AbstractFixture<Fallible> {
         super.reset();
 
         request = null;
-    }
-
-    private static String readActivationCode(final String notificationMessage) {
-        final String[] array = STRING_PATTERN.split(notificationMessage);
-
-        return array[2].trim();
     }
 }

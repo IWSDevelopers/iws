@@ -6,9 +6,9 @@ import net.iaeste.iws.persistence.notification.NotificationType;
 import java.util.Map;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public interface NotificationMessageGenerator {
 

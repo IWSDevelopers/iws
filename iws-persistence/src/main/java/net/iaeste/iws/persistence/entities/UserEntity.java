@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.persistence.exceptions.NotificationException;
@@ -36,10 +35,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -386,52 +383,6 @@ public class UserEntity implements IWSEntity, Notifiable {
         }
 
         return fields;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public String generateNotificationMessage(final NotificationType type) {
-        final String message;
-
-        switch (type) {
-            case ACTIVATE_USER:
-                message = "New User Account generated, with password = '" + temporary + "' and Activation Code = " + code;
-                break;
-            case RESET_PASSWORD:
-                message = "Reset Password Code = " + code;
-                break;
-            case RESET_SESSION:
-                message = "Reset Session Code = " + code;
-                break;
-            default:
-                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
-        }
-
-        return message;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public NotificationSubject getNotificationSubject() {
-        return NotificationSubject.USER;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public List<UserEntity> getRecipients() {
-        final List<UserEntity> entities = new ArrayList<>(1);
-        entities.add(this);
-
-        return entities;
     }
 
     /**

@@ -18,7 +18,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.core.notifications.NotificationMessageGenerator;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.exceptions.NotificationException;
@@ -49,16 +48,16 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
      */
     @Override
     public Map<String, String> generateFromTemplate(final Notifiable obj, final NotificationType type) {
-        switch (obj.getNotificationSubject()) {
-            case USER:
-                return processUser((UserEntity)obj, type);
-            case GROUP:
-                throw new NotImplementedException("Notifications for group are not implemented");
-            case OFFER:
-                throw new NotImplementedException("Notifications for offer are not implemented");
-            default:
+//        switch (obj.getNotificationSubject()) {
+//            case USER:
+//                return processUser((UserEntity)obj, type);
+//            case GROUP:
+//                throw new NotImplementedException("Notifications for group are not implemented");
+//            case OFFER:
+//                throw new NotImplementedException("Notifications for offer are not implemented");
+//            default:
                 throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
-        }
+//        }
     }
 
     private Map<String, String> generate(final String dir, final String templateName, final String titleTemplateName, final Map<String, Object> input) {

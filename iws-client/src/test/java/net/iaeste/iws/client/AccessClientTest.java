@@ -14,11 +14,9 @@
  */
 package net.iaeste.iws.client;
 
-import static net.iaeste.iws.client.CommonTestMethods.readActivationCode;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Access;
@@ -35,6 +33,8 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
+import net.iaeste.iws.persistence.notification.NotificationField;
+import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -104,10 +104,9 @@ public final class AccessClientTest {
 
         // Now we've forgotten our session, so request a reset
         access.requestResettingSession(request);
-        final String notification = spy.getNext().getMessage();
-        assertThat(notification, containsString("Reset Session"));
-        final String code = notification.substring(21);
-        final AuthenticationResponse newResponse = access.resetSession(code);
+        final String resetCode = spy.getNext().getFields().get(NotificationField.CODE);
+        assertThat(resetCode, is(not(Matchers.nullValue())));
+        final AuthenticationResponse newResponse = access.resetSession(resetCode);
 
         // Now verify that control was handed over to the new Session
         final FetchPermissionResponse fetchPermissionResponse2 = access.fetchPermissions(newResponse.getToken());
@@ -173,8 +172,7 @@ public final class AccessClientTest {
         access.deprecateSession(adminToken);
 
         // Activate the Account
-        final String notification = spy.getNext().getMessage();
-        final String activationCode = readActivationCode(notification);
+        final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
         final Fallible acticationResult = administration.activateUser(activationCode);
         assertThat(acticationResult.isOk(), is(true));
 

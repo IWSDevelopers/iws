@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.client;
 
-import static net.iaeste.iws.client.CommonTestMethods.readActivationCode;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -36,6 +34,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.persistence.notification.NotificationField;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -76,8 +75,8 @@ public class AdministrationClientTest extends AbstractClientTest {
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         assertThat(spy.size(), is(1));
-        final String notification = spy.getNext().getMessage();
-        assertThat(notification, containsString("Activation Code"));
+        final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
+        assertThat(activationCode, is(not(nullValue())));
     }
 
     @Test
@@ -93,8 +92,8 @@ public class AdministrationClientTest extends AbstractClientTest {
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         assertThat(spy.size(), is(1));
-        final String notification = spy.getNext().getMessage();
-        assertThat(notification, containsString("Activation Code"));
+        final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
+        assertThat(activationCode, is(not(nullValue())));
 
         // Check that the user is in the list of members
         token.setGroupId(AUSTRIA_MEMBER_GROUP);
@@ -132,8 +131,8 @@ public class AdministrationClientTest extends AbstractClientTest {
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
         assertThat(spy.size(), is(1));
-        final String notification = spy.getNext().getMessage();
-        assertThat(notification, containsString("Activation Code"));
+        final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
+        assertThat(activationCode, is(not(nullValue())));
 
         // Attempt to login using the new User Account. It should not yet work,
         // since the account is not activated
@@ -143,7 +142,6 @@ public class AdministrationClientTest extends AbstractClientTest {
         assertThat(response1.getError(), is(IWSErrors.NO_USER_ACCOUNT_FOUND));
 
         // Activate the Account
-        final String activationCode = readActivationCode(notification);
         final Fallible acticationResult = administration.activateUser(activationCode);
         assertThat(acticationResult.isOk(), is(true));
 

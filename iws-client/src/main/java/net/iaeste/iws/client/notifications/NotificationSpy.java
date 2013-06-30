@@ -44,9 +44,20 @@ public final class NotificationSpy implements Notifications {
     private final List<Observer> observers = new ArrayList<>(10);
     private final List<NotificationMessage> notifiables = new ArrayList<>(10);
 
+    /**
+     * This Spy is implemented as a Singleton. Hence, there is only this private
+     * constructor, that is invoked via the {@link #getInstance()} method.
+     */
     private NotificationSpy() {
     }
 
+    /**
+     * Singleton instantiator. Returns the internally stored active instance for
+     * this class. If no such instance exists, then a new instance is created
+     * and returned.
+     *
+     * @return Singleton instance for this class
+     */
     public static NotificationSpy getInstance() {
         synchronized (LOCK) {
             if (instance == null) {
@@ -61,7 +72,7 @@ public final class NotificationSpy implements Notifications {
      * {@inheritDoc}
      */
     @Override
-    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type, final boolean delayed) {
+    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
         LOG.info(authentication.getUser() + " has altered Object " + obj + " belonging to " + authentication.getGroup());
         final NotificationMessage message = new NotificationMessage(obj, type);
         notifiables.add(message);

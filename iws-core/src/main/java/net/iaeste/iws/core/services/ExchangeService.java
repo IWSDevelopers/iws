@@ -142,7 +142,7 @@ public final class ExchangeService extends CommonService {
 
         // Send a notification to the users who so desire. Via the Notifiable
         // Interface, can the Object handle it itself
-        notifications.notify(authentication, newEntity, NotificationType.GENERAL, true);
+        notifications.notify(authentication, newEntity, NotificationType.GENERAL);
 
         // As we already have the new Entity in our hand, this is simply
         // redundant code, that only serves the purpose of verifying that our

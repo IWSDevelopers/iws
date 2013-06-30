@@ -14,30 +14,30 @@
  */
 package net.iaeste.iws.client.notifications;
 
-import net.iaeste.iws.core.notifications.NotificationMessageGenerator;
-import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
 import net.iaeste.iws.persistence.notification.Notifiable;
+import net.iaeste.iws.persistence.notification.NotificationField;
 import net.iaeste.iws.persistence.notification.NotificationType;
 
 import java.util.Map;
 
 /**
+ * The Notitication Message Object, contains the information required to fill in
+ * an actual notification. No templating is used, the pure raw data is used
+ * here, to ensure that we can verify the information without unnecessary
+ * clutter.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class NotificationMessage {
+public final class NotificationMessage {
 
     private final Notifiable notifiable;
     private final NotificationType type;
-    private final NotificationMessageGenerator messageGenerator;
 
     public NotificationMessage(final Notifiable notifiable, final NotificationType type) {
         this.notifiable = notifiable;
         this.type = type;
-
-        messageGenerator = new NotificationMessageGeneratorFreemarker();
-//        messageGenerator = new NotificationMessageGeneratorVelocity();
     }
 
     public Notifiable getNotifiable() {
@@ -48,8 +48,7 @@ public class NotificationMessage {
         return type;
     }
 
-    public String getMessage() {
-        final Map<String, String> messageTexts = messageGenerator.generateFromTemplate(notifiable, type);
-        return messageTexts.get("body");
+    public Map<NotificationField, String> getFields() {
+        return notifiable.prepareNotifiableFields(type);
     }
 }

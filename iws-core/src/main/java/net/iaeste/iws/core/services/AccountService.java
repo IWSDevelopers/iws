@@ -106,7 +106,7 @@ public final class AccountService extends CommonService {
                 //notifications.notify(authentication, authentication.getGroup(), NotificationType.PROCESS_MAILING_LIST);
             }
 
-            notifications.notify(authentication, user, NotificationType.ACTIVATE_USER, false);
+            notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
             result = new FallibleResponse();
         } else {
             result = new FallibleResponse(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");

@@ -16,12 +16,10 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.persistence.notification.Notifiable;
 import net.iaeste.iws.persistence.notification.NotificationField;
 import net.iaeste.iws.persistence.notification.NotificationType;
@@ -45,7 +43,6 @@ import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -740,6 +737,10 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         this.group = group;
     }
 
+    // =========================================================================
+    // Other Methods required for this Entity
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */
@@ -804,34 +805,5 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Override
     public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         return new EnumMap<>(NotificationField.class);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public String generateNotificationMessage(final NotificationType type) {
-        //TODO: generate message according to the state of the offer in exchange
-        return "Offer " + refNo;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public NotificationSubject getNotificationSubject() {
-        return NotificationSubject.OFFER;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public List<UserEntity> getRecipients() {
-        //TODO: according to the state of the offer in exchange flow, select interested users in groups related to this offer
-        throw new NotImplementedException("Get recipients for the offer is not implemented");
     }
 }

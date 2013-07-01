@@ -319,6 +319,7 @@ create table users (
     private_data        varchar(10) default 'PRIVATE',
     notifications       varchar(25) default 'immediately',
     temporary_code      varchar(128),
+    temporary_data      varchar(128),
     modified            timestamp   default now(),
     created             timestamp   default now(),
 

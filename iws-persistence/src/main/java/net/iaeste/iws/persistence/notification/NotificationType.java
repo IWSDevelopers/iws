@@ -31,6 +31,11 @@ public enum NotificationType {
     GENERAL,
 
     /**
+     * For updating a users username.
+     */
+    UPDATE_USERNAME,
+
+    /**
      * For Activating newly created User Accounts.
      */
     ACTIVATE_USER,

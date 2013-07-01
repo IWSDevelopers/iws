@@ -44,6 +44,12 @@ public enum NotificationField {
     USERNAME,
 
     /**
+     * For updating a users username (e-mail address), required for sending the
+     * update e-mail with code for changing.
+     */
+    NEW_USERNAME,
+
+    /**
      * As accounts can be generated without a password, it must be communicated
      * to the user, this field then contains the unencrypted password for a
      * user.

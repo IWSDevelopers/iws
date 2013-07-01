@@ -174,6 +174,15 @@ public class UserEntity implements IWSEntity, Notifiable {
     private String code = null;
 
     /**
+     * This is for temporary data, that a user may provide. It is used when a
+     * user wishes to change the username (e-mail address) - where the system
+     * will send a verification e-mail to the new username, with a code to
+     * update the username.
+     */
+    @Column(nullable = true, name = "temporary_data")
+    private String data = null;
+
+    /**
      * Last time the User Account was modified.
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -321,6 +330,14 @@ public class UserEntity implements IWSEntity, Notifiable {
         return code;
     }
 
+    public void setData(final String data) {
+        this.data = data;
+    }
+
+    public String getData() {
+        return data;
+    }
+
     public void setModified(final Date modified) {
         this.modified = modified;
     }
@@ -340,7 +357,9 @@ public class UserEntity implements IWSEntity, Notifiable {
     /**
      * This setter is for the temporary, none-persisted information, that can be
      * added to the User Object. The information is used for the Notifcation
-     * Generation.
+     * Generation.<br />
+     *   Note, there is no getter for this value, instead the information is
+     * retrieved via the Map generated for Notifications.
      *
      * @param temporary Temporary Information, not persisted
      */
@@ -359,6 +378,12 @@ public class UserEntity implements IWSEntity, Notifiable {
     public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
+        // By default, we always need the username (e-mail address),
+        // first and last name of the person to receive a notification
+        fields.put(NotificationField.USERNAME, userName);
+        fields.put(NotificationField.FIRSTNAME, firstname);
+        fields.put(NotificationField.LASTNAME, lastname);
+
         // The switch serves two purposes, first purpose is to fill the map with
         // the required values for all the different types of notifications. The
         // second purpose, is also to verify the type of notification, which
@@ -369,13 +394,13 @@ public class UserEntity implements IWSEntity, Notifiable {
                 fields.put(NotificationField.CLEARTEXT_PASSWORD, temporary);
             case RESET_PASSWORD:
             case RESET_SESSION:
-                // By default, we always need the username (e-mail address),
-                // first and last name of the person to receive a notification
-                fields.put(NotificationField.USERNAME, userName);
-                fields.put(NotificationField.FIRSTNAME, firstname);
-                fields.put(NotificationField.LASTNAME, lastname);
-
                 // The code is also a common part for all types of notifications
+                fields.put(NotificationField.CODE, code);
+                break;
+            case UPDATE_USERNAME:
+                // Although the code is common, for this request we need a
+                // different dataset to be sent to a different e-mail address
+                fields.put(NotificationField.NEW_USERNAME, data);
                 fields.put(NotificationField.CODE, code);
                 break;
             default:

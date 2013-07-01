@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -37,6 +38,8 @@ public final class UserRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private User user = null;
+    private String newUsername = null;
+    private UserStatus newStatus = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -59,11 +62,51 @@ public final class UserRequest extends AbstractVerification {
     // =========================================================================
 
     public void setUser(final User user) {
+        ensureNotNullAndVerifiable("user", user);
+
         this.user = new User(user);
     }
 
     public User getUser() {
         return new User(user);
+    }
+
+    /**
+     * If a user must change their username, i.e. the registered e-mail address,
+     * then this value must be set here. This change can be invoked both by
+     * users and administrators. The change will not be directly updated, but
+     * only marked, until the user has approved the change with a code that is
+     * being sent.
+     *
+     * @param newUsername New username (e-mail address) for the user
+     */
+    public void setNewUsername(final String newUsername) {
+        ensureNotNullAndValidEmail("newUsername", newUsername);
+        this.newUsername = newUsername;
+    }
+
+    public String getNewUsername() {
+        return newUsername;
+    }
+
+    /**
+     * If the user is should change status, then the new status must be defined
+     * here. It is possible for someone with the rights to control a user
+     * account, to activate, deactivate & delete accounts. However, a users may
+     * not perform the status change operations on themselves.<br />
+     *   The only exception for users, regarding the status change rule, is that
+     * a user must activate an account.
+     *
+     * @param newStatus New Status value for a user
+     */
+    public void setNewStatus(final UserStatus newStatus) {
+        ensureNotNull("newStatus", newStatus);
+
+        this.newStatus = newStatus;
+    }
+
+    public UserStatus getNewStatus() {
+        return newStatus;
     }
 
     // =========================================================================

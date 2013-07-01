@@ -69,6 +69,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_NOT_WITHIN_LIMITS = "The field %s is not within the required limits from %s to %d.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
     private static final String ERROR_NOT_VERIFABLE = "The field %s is not verifiable.";
+    private static final String ERROR_INVALID_EMAIL = "The e-mail address %s is invalid.";
 
     // Our internal constants to verify the Id
     private static final String UUID_FORMAT = "[\\da-z]{8}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{12}";
@@ -318,6 +319,23 @@ public abstract class AbstractVerification implements Verifiable {
     protected static void ensureNotNullAndValidId(final String field, final String value) throws IllegalArgumentException {
         ensureNotNull(field, value);
         ensureValidId(field, value);
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is not a
+     * valid e-mail address, i.e. if it is either null or doesn't match the
+     * required format.
+     *
+     * @param field Name of the field
+     * @param value The value to verify
+     * @throws IllegalArgumentException if the e-mail address is invalid
+     */
+    protected static void ensureNotNullAndValidEmail(final String field, final String value) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+
+        if (!IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
+            throw new IllegalArgumentException(format(ERROR_INVALID_EMAIL, value));
+        }
     }
 
     // =========================================================================

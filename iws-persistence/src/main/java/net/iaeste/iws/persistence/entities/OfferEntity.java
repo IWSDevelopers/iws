@@ -107,10 +107,18 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
-    @Column(name = "external_id", nullable = false, unique = true, length = 36)
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
     @Column(name = "ref_no", nullable = false, unique = true)

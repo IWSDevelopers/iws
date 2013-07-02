@@ -48,41 +48,55 @@ public class AddressEntity implements Mergeable<AddressEntity> {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "address_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
-    @Column(nullable = false, name = "external_id")
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
-    @Column(name = "street1")
+    @Column(name = "street1", length = 100)
     private String street1 = null;
 
-    @Column(name = "street2")
+    @Column(name = "street2", length = 100)
     private String street2 = null;
 
-    @Column(name = "zip")
+    @Column(name = "zip", length = 100)
     private String zip = null;
 
-    @Column(name = "city")
+    @Column(name = "city", length = 100)
     private String city = null;
 
-    @Column(name = "region")
+    @Column(name = "region", length = 100)
     private String region = null;
 
-    @Column(name = "pobox")
+    @Column(name = "pobox", length = 100)
     private String pobox = null;
 
     @ManyToOne(targetEntity = CountryEntity.class)
-    @JoinColumn(nullable = false, name = "country_id")
+    @JoinColumn(name = "country_id", nullable = false)
     private CountryEntity country = null;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "modified")
-    private Date modified = null;
+    /**
+     * Last time the Entity was modified.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modified", nullable = false)
+    private Date modified = new Date();
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "created")
-    private Date created = null;
+    /**
+     * Timestamp when the Entity was created.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     // =========================================================================
     // Entity Constructors
@@ -188,6 +202,10 @@ public class AddressEntity implements Mergeable<AddressEntity> {
         return country;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
@@ -203,6 +221,10 @@ public class AddressEntity implements Mergeable<AddressEntity> {
     public Date getCreated() {
         return created;
     }
+
+    // =========================================================================
+    // Other Methods required for this Entity
+    // =========================================================================
 
     /**
      * {@inheritDoc}

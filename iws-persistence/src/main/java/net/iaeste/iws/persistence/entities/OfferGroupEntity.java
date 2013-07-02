@@ -71,37 +71,41 @@ public class OfferGroupEntity implements IWSEntity {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_to_group_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
     @ManyToOne(targetEntity = OfferEntity.class)
-    @JoinColumn(nullable = false, name = "offer_id")
+    @JoinColumn(name = "offer_id", nullable = false)
     private OfferEntity offer = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(nullable = false, name = "group_id")
+    @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group = null;
 
     @Column(name = "comment", length = 100)
     private String comment = null;
 
-    /** Last time the User Account was modified. */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified")
-    private Date modified = new Date();
-
-    /** Timestamp when the user was created. */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created")
-    private Date created = new Date();
-
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "modified_by")
+    @JoinColumn(name = "modified_by", nullable = false)
     private UserEntity modifiedBy = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "created_by")
+    @JoinColumn(name = "created_by", nullable = false)
     private UserEntity createdBy = null;
+
+    /**
+     * Last time the Entity was modified.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modified", nullable = false)
+    private Date modified = new Date();
+
+    /**
+     * Timestamp when the Entity was created.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     // =========================================================================
     // Entity Constructors
@@ -161,22 +165,6 @@ public class OfferGroupEntity implements IWSEntity {
         return comment;
     }
 
-    public void setModified(final Date modified) {
-        this.modified = modified;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setCreated(final Date created) {
-        this.created = created;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
     public void setModifiedBy(final UserEntity modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
@@ -191,5 +179,21 @@ public class OfferGroupEntity implements IWSEntity {
 
     public UserEntity getCreatedBy() {
         return createdBy;
+    }
+
+    public void setModified(final Date modified) {
+        this.modified = modified;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    public Date getCreated() {
+        return created;
     }
 }

@@ -31,6 +31,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
@@ -41,18 +43,12 @@ import java.util.Date;
  * @since 1.7
  * @noinspection AssignmentToDateFieldFromParameter
  */
-@NamedQueries({
-        @NamedQuery(
-                name = "notifications.findMessagesByTypeStatusAndDate",
-                query = "select nm from NotificationMessageEntity nm " +
-                        "where nm.notificationDeliveryMode = :deliveryMode" +
-                        "  and nm.status = :status" +
-                        "  and nm.processAfter < :date"),
-        @NamedQuery(name = "notifications.updateStatus",
-                query = "update NotificationMessageEntity nm set " +
-                        "nm.status = :status " +
-                        "where nm.id = :id")
-})
+@NamedQueries(@NamedQuery(
+        name = "notifications.findMessagesByTypeStatusAndDate",
+        query = "select nm from NotificationMessageEntity nm " +
+                "where nm.notificationDeliveryMode = :deliveryMode" +
+                "  and nm.status = :status" +
+                "  and nm.processAfter < :date"))
 @Entity
 @Table(name = "notification_messages")
 public class NotificationMessageEntity implements IWSEntity {
@@ -60,44 +56,55 @@ public class NotificationMessageEntity implements IWSEntity {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "notification_message_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user = null;
 
     /**
      * Notification channel (e-mail, instant message, ...)
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "notification_type")
+    @Column(name = "notification_type", length = 100, nullable = false)
     private NotificationDeliveryMode notificationDeliveryMode = null;
 
     /**
      * Message title
      */
-    @Column(name = "title")
+    @Column(name = "title", length = 100)
     private String messageTitle = null;
 
     /**
      * Text of the message
      */
-    @Column(name = "message")
+    @Column(name = "message", length = 100)
     private String message = null;
 
     /**
      * Status of the message (new, processing, ...)
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", length = 100)
     private NotificationMessageStatus status = null;
 
     /**
      * Date after which the message should be processed (after this date, the message should be sent)md
      */
-    @Column(name = "process_after")
+    @Column(name = "process_after", nullable = false)
     private Date processAfter = null;
+
+    /**
+     * Timestamp when the Entity was created.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
+
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
 
     /**
      * Empty Constructor, JPA requirement.
@@ -120,10 +127,17 @@ public class NotificationMessageEntity implements IWSEntity {
         this.status = status;
     }
 
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
+
     public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
@@ -177,4 +191,11 @@ public class NotificationMessageEntity implements IWSEntity {
         return processAfter;
     }
 
+    public void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
 }

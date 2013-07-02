@@ -42,10 +42,18 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "employer_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
+    private Long id = null;
 
-    @Column(name = "external_id", nullable = false)
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
     @ManyToOne
@@ -70,16 +78,22 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
     @Column(name = "website")
     private String website = null;
 
+    /**
+     * Last time the Entity was modified.
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 
+    /**
+     * Timestamp when the Entity was created.
+     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false)
+    @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
 
     // =========================================================================
-    // Constructors
+    // Entity Constructors
     // =========================================================================
 
     /**
@@ -100,7 +114,7 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
     }
 
     // =========================================================================
-    // Setters & Getters
+    // Entity Setters & Getters
     // =========================================================================
 
     public void setId(final Long id) {

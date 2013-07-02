@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.GroupTypeEntity
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.PermissionEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,12 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import net.iaeste.iws.api.enums.GroupType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,29 +28,41 @@ import javax.persistence.Table;
  */
 @NamedQueries({
         @NamedQuery(
-                name = "grouptype.findAll",
-                query = "select gt from GroupTypeEntity gt"),
+                name = "permission.findAll",
+                query = "select p from PermissionEntity p"),
         @NamedQuery(
-                name= "grouptype.findByType",
-                query = "select gt from GroupTypeEntity gt " +
-                        "where gt.grouptype = :type"),
+                name= "permission.findAllNotRestricted",
+                query = "select p from PermissionEntity p " +
+                        "where p.restricted = false"),
         @NamedQuery(
-                name = "grouptype.findByName",
-                query = "select gt from GroupTypeEntity gt " +
-                        "where lower(gt.grouptype) = lower(:name)")
+                name = "permission.findByName",
+                query = "select p from PermissionEntity p " +
+                        "where p.permission = :permission")
 })
 @Entity
-@Table(name = "grouptypes")
-public class GroupTypeEntity {
+@Table(name = "permissions")
+public class PermissionEntity implements IWSEntity {
 
     @Id
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
-    @Column(name = "grouptype", unique = true, nullable = false, updatable = false)
-    @Enumerated(EnumType.STRING)
-    private GroupType grouptype = null;
+    /**
+     * The name of the Permission.
+     */
+    @Column(name = "permission", length = 50, unique = true, nullable = false, updatable = false)
+    private String permission= null;
 
+    /**
+     * Determines if usage of this Permission is restricted or not, if the value
+     * is true, then it is restricted and cannot be used for customized Roles.
+     */
+    @Column(name = "restricted", nullable = false, updatable = false)
+    private Boolean restricted = null;
+
+    /**
+     * Description of the Permission.
+     */
     @Column(name = "description", length = 2048, nullable = false, updatable = false)
     private String description = null;
 
@@ -66,16 +74,28 @@ public class GroupTypeEntity {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Long getId() {
         return id;
     }
 
-    public void setGrouptype(final GroupType grouptype) {
-        this.grouptype = grouptype;
+    public void setPermission(final String permission) {
+        this.permission = permission;
     }
 
-    public GroupType getGrouptype() {
-        return grouptype;
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setRestricted(final Boolean restricted) {
+        this.restricted = restricted;
+    }
+
+    public Boolean getRestricted() {
+        return restricted;
     }
 
     public void setDescription(final String description) {

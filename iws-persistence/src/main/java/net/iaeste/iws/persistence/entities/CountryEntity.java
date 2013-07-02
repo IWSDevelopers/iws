@@ -60,26 +60,26 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "country_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
-    @Column(name = "country_code", nullable = false, unique = true)
+    @Column(name = "country_code", length = 2, unique = true, nullable = false, updatable = false)
     private String countryCode = null;
 
     @Monitored(name="country name", level = MonitoringLevel.MARKED)
-    @Column(nullable = false, name = "country_name")
+    @Column(name = "country_name", length = 100, unique = true, nullable = false)
     private String countryName = null;
 
     @Monitored(name="country name full", level = MonitoringLevel.MARKED)
-    @Column(name = "country_name_full")
+    @Column(name = "country_name_full", length = 100)
     private String countryNameFull = null;
 
     @Monitored(name="country name native", level = MonitoringLevel.MARKED)
-    @Column(name = "country_name_native")
+    @Column(name = "country_name_native", length = 100)
     private String countryNameNative = null;
 
     @Monitored(name="nationality", level = MonitoringLevel.MARKED)
-    @Column(name = "nationality")
+    @Column(name = "nationality", length = 100)
     private String nationality = null;
 
     @Monitored(name="citizens", level = MonitoringLevel.MARKED)
@@ -107,12 +107,18 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @Column(name = "member_since")
     private Integer memberSince = null;
 
+    /**
+     * Last time the Entity was modified.
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 
+    /**
+     * Timestamp when the Entity was created.
+     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false)
+    @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
 
     // =========================================================================

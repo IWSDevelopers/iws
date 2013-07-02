@@ -25,6 +25,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
 /**
  * @author Teis Lindemark / last $Author:$
@@ -45,22 +48,47 @@ public class StudentEntity implements IWSEntity {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "student_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
-    @Column(nullable = false, name = "student_name")
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
+    private String externalId = null;
+
+    @Column(name = "student_name", nullable = false)
     private String studentName = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(nullable = false, name = "group_id")
+    @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group = null;
+
+    /**
+     * Last time the Entity was modified.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modified", nullable = false)
+    private Date modified = new Date();
+
+    /**
+     * Timestamp when the Entity was created.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     // =========================================================================
     // Entity Constructors
     // =========================================================================
 
     /**
-     * Empty Constructor
+     * Empty Constructor, JPA requirement.
      */
     public StudentEntity() {
     }
@@ -87,6 +115,14 @@ public class StudentEntity implements IWSEntity {
         return id;
     }
 
+    public void setExternalId(final String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
     public void setStudentName(final String studentName) {
         this.studentName = studentName;
     }
@@ -101,5 +137,21 @@ public class StudentEntity implements IWSEntity {
 
     public GroupEntity getGroup() {
         return group;
+    }
+
+    public void setModified(final Date modified) {
+        this.modified = modified;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    public Date getCreated() {
+        return created;
     }
 }

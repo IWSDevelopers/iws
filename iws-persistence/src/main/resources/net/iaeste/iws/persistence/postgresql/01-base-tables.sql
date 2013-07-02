@@ -168,7 +168,7 @@ create table grouptypes (
 -- doesn't hold both names, only the first part (field: list_name), that is
 -- then expanded when creating or updating the mailinglists, so the
 -- "@iaeste.org" (public) or "@iaeste.net" (private) is appended. The only
--- groups without a mailinglist, is the Private groups, since users have a
+-- groups without a mailinglist, are the Private groups, since users have a
 -- public e-mail alias assigned.
 --   The Group also has a Status, that determines if this Group may be accessed
 -- or not. In the case of the Members GroupType, users who belong to a
@@ -234,6 +234,7 @@ create table groups (
 create sequence role_sequence start with 10 increment by 1;
 create table roles (
     id                  integer default nextval('role_sequence'),
+    external_id         varchar(36),
     role                varchar(50),
     country_id          integer default null,
     group_id            integer default null,
@@ -247,13 +248,15 @@ create table roles (
     constraint role_fk_country_id foreign key (country_id) references countries (id),
 
     /* Unique Constraints */
-    constraint group_unique_ids unique (role, country_id, group_id),
+    constraint role_unique_external_id unique (external_id),
+    constraint role_unique_ids         unique (role, country_id, group_id),
 
     /* Not Null Constraints */
-    constraint role_notnull_id       check (id is not null),
-    constraint role_notnull_role     check (role is not null),
-    constraint role_notnull_modified check (modified is not null),
-    constraint role_notnull_created  check (created is not null)
+    constraint role_notnull_id          check (id is not null),
+    constraint role_notnull_external_id check (external_id is not null),
+    constraint role_notnull_role        check (role is not null),
+    constraint role_notnull_modified    check (modified is not null),
+    constraint role_notnull_created     check (created is not null)
 );
 
 
@@ -302,6 +305,7 @@ create table permission_to_role (
     id                  integer default nextval('permission_to_role_sequence'),
     permission_id       integer,
     role_id             integer,
+    created             timestamp default now(),
 
     /* Primary & Foreign Keys */
     constraint p2r_pk               primary key (id),
@@ -309,12 +313,13 @@ create table permission_to_role (
     constraint p2r_fk_role_id       foreign key (role_id)       references roles (id),
 
     /* Unique Constraints */
-    constraint p2r_unique_ids unique (permission_id, role_id),
+    constraint p2r_unique_ids         unique (permission_id, role_id),
 
     /* Not Null Constraints */
     constraint p2r_notnull_id            check (id is not null),
     constraint p2r_notnull_permission_id check (permission_id is not null),
-    constraint p2r_notnull_role_id       check (role_id is not null)
+    constraint p2r_notnull_role_id       check (role_id is not null),
+    constraint p2r_notnull_created       check (created is not null)
 );
 
 
@@ -428,7 +433,6 @@ create table user_to_group (
     custom_title        varchar(50),
     on_public_list      boolean default false,
     on_private_list     boolean default true,
-    status              boolean default true,
     modified            timestamp default now(),
     created             timestamp default now(),
 
@@ -448,7 +452,6 @@ create table user_to_group (
     constraint u2g_notnull_role_id         check (role_id is not null),
     constraint u2g_notnull_on_public_list  check (on_public_list is not null),
     constraint u2g_notnull_on_private_list check (on_private_list is not null),
-    constraint u2g_notnull_status          check (status is not null),
     constraint u2g_notnull_modified        check (modified is not null),
     constraint u2g_notnull_created         check (created is not null)
 );
@@ -542,7 +545,8 @@ create table addresses (
 create sequence person_sequence start with 1 increment by 1;
 create table persons (
     id               integer default nextval('person_sequence'),
-    address          integer,
+    external_id      varchar(36),
+    address_id       integer,
     email            varchar(100),
     phone            varchar(25),
     mobile           varchar(25),
@@ -551,13 +555,17 @@ create table persons (
     created          timestamp default now(),
 
     /* Primary & Foreign Keys */
-    constraint persons_pk         primary key (id),
-    constraint persons_fk_address foreign key (address) references addresses (id),
+    constraint person_pk           primary key (id),
+    constraint person_fk_address_id foreign key (address_id) references addresses (id),
+
+    /* Unique Constraints */
+    constraint person_unique_external_id unique (external_id),
 
     /* Not Null Constraints */
-    constraint persons_notnull_id       check (id is not null),
-    constraint persons_notnull_modified check (modified is not null),
-    constraint persons_notnull_created  check (created is not null)
+    constraint person_notnull_id          check (id is not null),
+    constraint person_notnull_external_id check (external_id is not null),
+    constraint person_notnull_modified    check (modified is not null),
+    constraint person_notnull_created     check (created is not null)
 );
 
 
@@ -574,7 +582,7 @@ create table user_notifications (
     user_id          integer not null,
     subject          varchar(100),
     frequency        varchar(100),
-    changed          timestamp default now(),
+    created          timestamp default now(),
 
     /* Primary & Foreign Keys */
     constraint user_notifications_pk         primary key (id),
@@ -583,7 +591,7 @@ create table user_notifications (
     /* Not Null Constraints */
     constraint user_notifications_notnull_id      check (id is not null),
     constraint user_notifications_notnull_user_id check (user_id is not null),
-    constraint user_notifications_notnull_changed check (changed is not null)
+    constraint user_notifications_notnull_created check (created is not null)
 );
 
 
@@ -601,7 +609,7 @@ create table notification_messages (
     notification_type  varchar(100),
     status             varchar(100),
     process_after      timestamp default now(),
-    changed            timestamp default now(),
+    created            timestamp default now(),
 
     /* Primary & Foreign Keys */
     constraint notitication_messages_pk         primary key (id),
@@ -612,5 +620,5 @@ create table notification_messages (
     constraint notitication_messages_notnull_user_id           check (user_id is not null),
     constraint notitication_messages_notnull_notification_type check (notification_type is not null),
     constraint notitication_messages_notnull_process_after     check (process_after is not null),
-    constraint notitication_messages_notnull_changed           check (changed is not null)
+    constraint notitication_messages_notnull_created           check (created is not null)
 );

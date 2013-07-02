@@ -50,11 +50,11 @@ public class UserNotificationEntity implements IWSEntity {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_notification_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user = null;
 
     @Column(name = "subject")
@@ -64,6 +64,10 @@ public class UserNotificationEntity implements IWSEntity {
     @Column(name = "frequency")
     @Enumerated(EnumType.STRING)
     private NotificationFrequency frequency = null;
+
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
 
     /**
      * Empty Constructor, JPA requirement.
@@ -83,6 +87,10 @@ public class UserNotificationEntity implements IWSEntity {
         this.user = user;
         this.frequency = frequency;
     }
+
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
 
     public void setId(final Long id) {
         this.id = id;

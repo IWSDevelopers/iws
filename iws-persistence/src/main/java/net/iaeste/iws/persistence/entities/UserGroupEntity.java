@@ -58,43 +58,47 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "user_to_group")
-public class UserGroupEntity implements IWSEntity {
+public class UserGroupEntity implements Mergeable<UserGroupEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_to_group_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(nullable = false, name = "group_id")
+    @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group = null;
 
     @ManyToOne(targetEntity = RoleEntity.class)
-    @JoinColumn(nullable = false, name = "role_id")
+    @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity role = null;
 
-    @Column(nullable = true, name = "custom_title")
+    @Column(name = "custom_title")
     private String title = null;
 
-    @Column(nullable = false, name = "on_public_list")
+    @Column(name = "on_public_list", nullable = false)
     private Boolean onPublicList = true;
 
-    @Column(nullable = false, name = "on_private_list")
+    @Column(name = "on_private_list", nullable = false)
     private Boolean onPrivateList = true;
 
-    /** Last time the User Account was modified. */
+    /**
+     * Last time the Entity was modified.
+     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified")
+    @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 
-    /** Timestamp when the user was created. */
+    /**
+     * Timestamp when the Entity was created.
+     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created")
+    @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
 
     // =========================================================================
@@ -131,6 +135,9 @@ public class UserGroupEntity implements IWSEntity {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
@@ -184,6 +191,10 @@ public class UserGroupEntity implements IWSEntity {
         return onPrivateList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
@@ -198,5 +209,22 @@ public class UserGroupEntity implements IWSEntity {
 
     public Date getCreated() {
         return created;
+    }
+
+    // =========================================================================
+    // Other Methods required for this Entity
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void merge(final UserGroupEntity obj) {
+        if ((obj != null) && (id != null) && id.equals(obj.id)) {
+            role = obj.role;
+            title = obj.title;
+            onPublicList = obj.onPublicList;
+            onPrivateList = obj.onPrivateList;
+        }
     }
 }

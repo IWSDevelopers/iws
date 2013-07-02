@@ -65,37 +65,60 @@ public class SessionEntity implements IWSEntity {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "session_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
-    @Column(nullable = false, name = "session_key")
+    @Column(name = "session_key", length = 128, unique = true, nullable = false, updatable = false)
     private String sessionKey = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private UserEntity user = null;
 
-    @Column(nullable = false, name = "active")
+    @Column(name = "active", nullable = false)
     private Boolean active = true;
 
     @Column(name = "session_data")
     private byte[] sessionData = null;
 
+    /**
+     * Last time the Entity was modified.
+     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified")
+    @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 
+    /**
+     * Timestamp when the Entity was created.
+     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created")
+    @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
 
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
+
+    /**
+     * Empty Constructor, JPA requirement.
+     */
     public SessionEntity() {
     }
 
+    /**
+     * Default Constructor, for creating a new Session.
+     *
+     * @param user       The User, which this Session is for
+     * @param sessionKey The SessionKey to assign to this Session
+     */
     public SessionEntity(final UserEntity user, final String sessionKey) {
         this.sessionKey = sessionKey;
         this.user = user;
     }
+
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
 
     public void setId(final Long id) {
         this.id = id;

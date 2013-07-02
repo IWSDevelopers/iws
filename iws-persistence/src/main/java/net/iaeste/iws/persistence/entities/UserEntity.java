@@ -86,37 +86,43 @@ public class UserEntity implements IWSEntity, Notifiable {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
     /**
-     * The User Accounts are used for many perposes, and to protect the
-     * internally used Id, an external is generated as a UUID value. All public
-     * exposure of the Object will be with the External Id.
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
      */
-    @Column(nullable = false, name = "external_id")
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
     /**
      * The username is the users private e-mail address.
      */
-    @Column(nullable = false, name = "username")
+    @Column(name = "username", length = 100, nullable = false)
     private String userName = null;
 
     /**
      * The generated e-mail alias, that all users receive by the system.
      */
-    @Column(nullable = false, name = "alias")
+    @Column(name = "alias", length = 125, nullable = false)
     private String alias = null;
 
     /**
      * The Password stored, is an SHA 256 bit Hashvalue of the users lowercased
      * password.
      */
-    @Column(nullable = false, name = "password")
+    @Column(name = "password", length = 128, nullable = false)
     private String password = null;
 
-    @Column(nullable = false, name = "salt")
+    /**
+     * The salt used for the cryptographic hashing of the password.
+     */
+    @Column(name = "salt", length = 36, nullable = false)
     private String salt = null;
 
     /**
@@ -125,7 +131,7 @@ public class UserEntity implements IWSEntity, Notifiable {
      * than the Person Entity, since the value should exists, also when a user
      * has been removed from the system.
      */
-    @Column(nullable = false, name = "firstname")
+    @Column(name = "firstname", length = 50, nullable = false)
     private String firstname = null;
 
     /**
@@ -134,7 +140,7 @@ public class UserEntity implements IWSEntity, Notifiable {
      * the Person Entity, since the value should exists, also when a user has
      * been removed from the system.
      */
-    @Column(nullable = false, name = "lastname")
+    @Column(name = "lastname", length = 50, nullable = false)
     private String lastname = null;
 
     /**
@@ -143,8 +149,8 @@ public class UserEntity implements IWSEntity, Notifiable {
      * to the possibility to log in, this can only be done for accounts where
      * the status is "Active".
      */
-    @Column(nullable = false, name = "status")
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 25, nullable = false)
     private UserStatus status = UserStatus.NEW;
 
     /**
@@ -153,15 +159,15 @@ public class UserEntity implements IWSEntity, Notifiable {
      * the NC's mailinglist, and the corresponding Contact list, which will
      * contain the users phonenumbers.
      */
-    @Column(nullable = true, name = "private_data")
     @Enumerated(EnumType.STRING)
+    @Column(name = "private_data", length = 10, nullable = false)
     private Privacy privateData = Privacy.PRIVATE;
 
     /**
      * Personal Notifications period. By default, all notifications are
      * delivered immediately.
      */
-    @Column(nullable = false, name = "notifications")
+    @Column(name = "notifications", length = 25, nullable = false)
     private String notifications = "immediately";
 
     /**
@@ -170,7 +176,7 @@ public class UserEntity implements IWSEntity, Notifiable {
      * created and the current Status is "new", and again if the user forgot
      * his or her password, and have requested a new one.
      */
-    @Column(nullable = true, name = "temporary_code")
+    @Column(name = "temporary_code", length = 128)
     private String code = null;
 
     /**
@@ -179,21 +185,21 @@ public class UserEntity implements IWSEntity, Notifiable {
      * will send a verification e-mail to the new username, with a code to
      * update the username.
      */
-    @Column(nullable = true, name = "temporary_data")
+    @Column(name = "temporary_data", length = 128)
     private String data = null;
 
     /**
-     * Last time the User Account was modified.
+     * Last time the Entity was modified.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified")
+    @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 
     /**
-     * Timestamp when the user was created.
+     * Timestamp when the Entity was created.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created")
+    @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
 
     /**

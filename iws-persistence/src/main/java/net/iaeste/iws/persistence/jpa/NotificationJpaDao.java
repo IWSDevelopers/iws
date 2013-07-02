@@ -82,10 +82,12 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
      */
     @Override
     public void updateNotificationMessageStatus(final NotificationMessageEntity message, final NotificationMessageStatus status) {
-        final Query query = entityManager.createNamedQuery("notifications.updateStatus");
-        query.setParameter("status", status);
-        query.setParameter("id", message.getId());
-        query.executeUpdate();
+        message.setStatus(status);
+        entityManager.persist(message);
+        //final Query query = entityManager.createNamedQuery("notifications.updateStatus");
+        //query.setParameter("status", status);
+        //query.setParameter("id", message.getId());
+        //query.executeUpdate();
     }
 
 }

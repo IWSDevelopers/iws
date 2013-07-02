@@ -20,11 +20,11 @@ insert into grouptypes (id, grouptype, description) values (9, 'STUDENTS', 'Stud
 -- =============================================================================
 -- Standard Roles
 -- =============================================================================
-insert into roles (id, role, description) values (1, 'Owner', 'Each group may have 1 owner, that has access to all the data and permissions.');
-insert into roles (id, role, description) values (2, 'Moderator', 'Moderators have access to all data and permissions, with the exception of being allowed to change the owner.');
-insert into roles (id, role, description) values (3, 'Member', 'Standard role for users, granted access to all data, and most common permissions that are related to administration of the Group.');
-insert into roles (id, role, description) values (4, 'Guest', 'Guests are only allowed to view or observe, they may not perform any operations, nor will be on the mailinglists.');
-insert into roles (id, role, description) values (5, 'Student', 'Students are granted permission to apply for open offers.');
+insert into roles (id, external_id, role, description) values (1, '4a63d04d-f63f-4608-93b6-b85065a9cfb1', 'Owner', 'Each group may have 1 owner, that has access to all the data and permissions.');
+insert into roles (id, external_id, role, description) values (2, 'a3e8a831-2ae7-4751-9668-dfd0f25274dc', 'Moderator', 'Moderators have access to all data and permissions, with the exception of being allowed to change the owner.');
+insert into roles (id, external_id, role, description) values (3, '21bff3b2-ca3b-48ac-b7ea-28c1f0c06f2c', 'Member', 'Standard role for users, granted access to all data, and most common permissions that are related to administration of the Group.');
+insert into roles (id, external_id, role, description) values (4, '15ac2e49-7142-43f1-b66a-adc87e628b02', 'Guest', 'Guests are only allowed to view or observe, they may not perform any operations, nor will be on the mailinglists.');
+insert into roles (id, external_id, role, description) values (5, '29ee5196-0db1-401a-b4d3-f81518a62b9c', 'Student', 'Students are granted permission to apply for open offers.');
 
 -- =============================================================================
 -- Permissions from net.iaeste.iws.api.enums.Permission

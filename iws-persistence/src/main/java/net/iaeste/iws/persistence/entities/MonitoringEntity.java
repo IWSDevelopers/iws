@@ -60,28 +60,36 @@ public class MonitoringEntity implements IWSEntity {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "history_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private UserEntity user = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(nullable = false, name = "group_id")
+    @JoinColumn(name = "group_id", nullable = false, updatable = false)
     private GroupEntity group = null;
 
-    @Column(name = "tablename")
+    @Column(name = "tablename", length = 50, nullable = false, updatable = false)
     private String tableName = null;
 
-    @Column(name = "record_id")
+    @Column(name = "record_id", nullable = false, updatable = false)
     private Long recordId = null;
 
-    @Column(name = "fields")
+    @Column(name = "fields", nullable = false, updatable = false)
     private byte[] fields = null;
 
+    /**
+     * Timestamp when the Entity was created (changed).
+     */
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "changed", nullable = false, updatable = false)
     private Date changed = new Date();
+
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
 
     /**
      * Empty Constructor, JPA requirement.
@@ -123,10 +131,17 @@ public class MonitoringEntity implements IWSEntity {
         this.fields = fields;
     }
 
+    // =========================================================================
+    // Entity Setters & Getters
+    // =========================================================================
+
     public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;

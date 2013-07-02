@@ -105,51 +105,67 @@ public class GroupEntity implements IWSEntity {
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "group_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
+    private Long id = null;
 
-    @Column(nullable = false, name = "external_id")
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
-    @Column(nullable = true, name = "parent_id")
+    /**
+     * The Parent Id is a reference to the Parent Group. However, JPA does
+     * (understandably) not allow cyclic references, hence we cannot set the
+     * Object type of the ParentId to a GroupEntity, rather we're just referring
+     * to it as a Long value. Most Groups will have a ParentId, but some will
+     * not. Hence, this field may be null, but once a Group has been created in
+     * the hierarchy, then the Parent cannot be altered.
+     */
+    @Column(name = "parent_id", updatable = false)
     private Long parentId = null;
 
     @ManyToOne(targetEntity = GroupTypeEntity.class)
-    @JoinColumn(nullable = false, name = "grouptype_id")
+    @JoinColumn(name = "grouptype_id", nullable = false, updatable = false)
     private GroupTypeEntity groupType = null;
 
-    @Column(name = "groupname")
-    private String groupName = null;
+    @Column(name = "groupname", length = 50)
+    private String groupName;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", length = 100)
     private String fullName = null;
 
-    @Column(name = "group_description")
+    @Column(name = "group_description", length = 250)
     private String description = null;
 
     @ManyToOne(targetEntity = CountryEntity.class)
-    @JoinColumn(nullable = true, name = "country_id")
+    @JoinColumn(name = "country_id", updatable = false)
     private CountryEntity country = null;
 
-    @Column(nullable = true, name = "list_name")
+    @Column(name = "list_name")
     private String listName = null;
 
-    @Column(nullable = false, name = "status")
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private GroupStatus status = GroupStatus.ACTIVE;
 
     /**
-     * Last time the User Account was modified.
+     * Last time the Entity was modified.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified")
+    @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 
     /**
-     * Timestamp when the user was created.
+     * Timestamp when the Entity was created.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created")
+    @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
 
     // =========================================================================
@@ -160,8 +176,8 @@ public class GroupEntity implements IWSEntity {
      * Empty Constructor, JPA requirement.
      */
     public GroupEntity() {
-        id = null;
-        groupName = null;
+        this.id = null;
+        this.groupName = null;
     }
 
     /**
@@ -170,7 +186,7 @@ public class GroupEntity implements IWSEntity {
      * @param groupName Group Name
      */
     public GroupEntity(final String groupName) {
-        id = null;
+        this.id = null;
         this.groupName = groupName;
     }
 
@@ -182,6 +198,9 @@ public class GroupEntity implements IWSEntity {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
@@ -274,6 +293,10 @@ public class GroupEntity implements IWSEntity {
     public Date getCreated() {
         return created;
     }
+
+    // =========================================================================
+    // Other Methods required for this Entity
+    // =========================================================================
 
     /**
      * {@inheritDoc}

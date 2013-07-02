@@ -30,8 +30,11 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * Roles are "Hats", that a user can wear in a specific context. For example, a
- * user can have the Role "Owner"
+ * Roles are "Hats", that a user can wear in a specific context. By default, a
+ * few roles exists, which can be used for general access. However, it is also
+ * possible to create customized roles, which can be used to create a more
+ * fine-grained access control.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -54,20 +57,34 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "roles")
-public class RoleEntity implements IWSEntity {
+public class RoleEntity implements Mergeable<RoleEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "role_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
+
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
+    private String externalId = null;
 
     /**
      * The name of the Role. The default Roles have the names "Owner",
      * "Moderator", "Member" and "Guest". It is possible to also create custom
-     * roles, to fit more specific needs.
+     * roles, to fit more specific needs. the name of a Role should optimally
+     * be unique, but as some roles are relevant only for certain countries, the
+     * potential name overlap should not be an issue, hence there is no database
+     * uniqueness check on the name, instead this is made in the Business Logic.
      */
-    @Column(nullable = false, name = "role")
+    @Column(name = "role", length = 50, nullable = false)
     private String role = null;
 
     /**
@@ -79,7 +96,7 @@ public class RoleEntity implements IWSEntity {
      * users otherwise.
      */
     @ManyToOne(targetEntity = CountryEntity.class)
-    @JoinColumn(nullable = true, name = "country_id")
+    @JoinColumn(name = "country_id", updatable = false)
     private CountryEntity country = null;
 
     /**
@@ -91,21 +108,27 @@ public class RoleEntity implements IWSEntity {
      * users otherwise.
      */
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(nullable = true, name = "group_id")
+    @JoinColumn(name = "group_id", updatable = false)
     private GroupEntity group = null;
 
-    /** Longer description of the Role. */
-    @Column(nullable = false, name = "description")
+    /**
+     * Longer description of the Role.
+     */
+    @Column(name = "description", length = 2048, nullable = false)
     private String description = null;
 
-    /** Last time the Role was modified. */
+    /**
+     * Last time the Entity was modified.
+     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified")
+    @Column(name = "modified", nullable = false)
     private Date modified = new Date();
 
-    /** Timestamp when the Role was created. */
+    /**
+     * Timestamp when the Entity was created.
+     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created")
+    @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
 
     // =========================================================================
@@ -152,9 +175,20 @@ public class RoleEntity implements IWSEntity {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
+    }
+
+    public void setExternalId(final String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getExternalId() {
+        return externalId;
     }
 
     public void setRole(final String role) {
@@ -189,6 +223,10 @@ public class RoleEntity implements IWSEntity {
         return description;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
@@ -203,5 +241,20 @@ public class RoleEntity implements IWSEntity {
 
     public Date getCreated() {
         return created;
+    }
+
+    // =========================================================================
+    // Entity Standard Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void merge(final RoleEntity obj) {
+        if ((obj != null) && (id != null) && id.equals(obj.id)) {
+            role = obj.role;
+            description = obj.description;
+        }
     }
 }

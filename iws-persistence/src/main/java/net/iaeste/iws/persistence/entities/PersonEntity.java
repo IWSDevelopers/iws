@@ -14,7 +14,11 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.Gender;
+
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,6 +42,17 @@ public class PersonEntity implements Mergeable<PersonEntity> {
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
+    private String externalId = null;
+
     @ManyToOne(targetEntity = AddressEntity.class)
     @JoinColumn(name = "address_id")
     private AddressEntity address = null;
@@ -53,6 +68,13 @@ public class PersonEntity implements Mergeable<PersonEntity> {
 
     @Column(name = "fax", length = 25)
     private String fax = null;
+
+    @Column(name = "birthday")
+    private Date birthday = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", length = 10)
+    private Gender gender = null;
 
     /**
      * Last time the Entity was modified.
@@ -82,6 +104,14 @@ public class PersonEntity implements Mergeable<PersonEntity> {
     @Override
     public Long getId() {
         return id;
+    }
+
+    public void setExternalId(final String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getExternalId() {
+        return externalId;
     }
 
     public void setAddress(final AddressEntity address) {
@@ -124,6 +154,22 @@ public class PersonEntity implements Mergeable<PersonEntity> {
         return fax;
     }
 
+    public void setBirthday(final Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setGender(final Gender gender) {
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -159,6 +205,8 @@ public class PersonEntity implements Mergeable<PersonEntity> {
             phone = obj.phone;
             mobile = obj.mobile;
             fax = obj.fax;
+            birthday = obj.birthday;
+            gender = obj.gender;
         }
     }
 }

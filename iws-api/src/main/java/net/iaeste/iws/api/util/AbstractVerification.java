@@ -331,7 +331,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @throws IllegalArgumentException if the e-mail address is invalid
      */
     protected static void ensureNotNullAndValidEmail(final String field, final String value) throws IllegalArgumentException {
-        ensureNotNull(field, value);
+        ensureNotNullOrTooLong(field, value, 100);
 
         if (!IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
             throw new IllegalArgumentException(format(ERROR_INVALID_EMAIL, value));

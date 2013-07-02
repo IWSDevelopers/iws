@@ -551,6 +551,8 @@ create table persons (
     phone            varchar(25),
     mobile           varchar(25),
     fax              varchar(25),
+    birthday         date,
+    gender           varchar(10),
     modified         timestamp default now(),
     created          timestamp default now(),
 

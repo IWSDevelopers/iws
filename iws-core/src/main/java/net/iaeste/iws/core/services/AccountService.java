@@ -171,15 +171,44 @@ public final class AccountService extends CommonService {
         final String providedId = request.getUser().getUserId();
         final UserEntity user = authentication.getUser();
 
-        // Check if this is a personal request or not
+        // Check if this is a personal request or not. If it is a personal request, then we'll hand over the handling to the personal handler, otherwise it will be granted to the administration handler
         if (externalId.equals(providedId)) {
-            if (user.getStatus() == UserStatus.DELETED) {
-                deletePrivateData(user);
-            } else {
-                updatePrivacyAndData(user, request);
-            }
+            handleUsersOwnChanges(authentication.getUser(), request);
         } else {
             handleMemberAccountChanges(user, request);
+        }
+    }
+
+    /**
+     * This methodd handles a users own changes. Meaning, that if a user comes
+     * in and wishes to modify something, then this method will handle all
+     * aspects thereof. The type of changes include:
+     * <ul>
+     *   <li>Update Username</li>
+     *   <li>Delete self</li>
+     *   <li>Update Personal information</li>
+     * </ul>
+     *
+     * @param user    The User who wishes to update the private Account
+     * @param request USer Request Object, with Account changes
+     */
+    private void handleUsersOwnChanges(final UserEntity user, final UserRequest request) {
+        final UserStatus newStatus = request.getNewStatus();
+        final UserStatus currentStatus = user.getStatus();
+        final String username = request.getNewUsername();
+
+        if (user.getStatus() == UserStatus.DELETED) {
+            deletePrivateData(user);
+        } else {
+            updatePrivacyAndData(user, request);
+        }
+
+        if (username != null) {
+            // Handles the username change
+        } else if (newStatus != null) {
+            // Handles status change
+        } else {
+            // Handles updates to the User Object
         }
     }
 

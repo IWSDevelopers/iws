@@ -67,21 +67,22 @@ import java.util.Map;
         @NamedQuery(
                 name = "user.findByExternalId",
                 query = "select u from UserEntity u " +
-                        "where u.externalId = :euid"),
+                        "where u.status <> 'DELETED'" +
+                        "  and u.externalId = :euid"),
         @NamedQuery(
                 name = "user.findByCodeAndStatus",
                 query = "select u from UserEntity u " +
-                        "where u.code = :code" +
-                        "  and u.status = :status"),
+                        "where u.status = :status" +
+                        "  and u.code = :code"),
         @NamedQuery(
                 name = "user.findByAlias",
                 query = "select u from UserEntity u " +
-                        "where u.alias = :alias" +
-                        "  and u.status <> 'DELETED'")
+                        "where u.status <> 'DELETED'" +
+                        "  and u.alias = :alias")
 })
 @Entity
 @Table(name = "users")
-public class UserEntity implements IWSEntity, Notifiable {
+public class UserEntity implements Mergeable<UserEntity>, Notifiable {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_sequence")
@@ -243,6 +244,9 @@ public class UserEntity implements IWSEntity, Notifiable {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
@@ -344,6 +348,10 @@ public class UserEntity implements IWSEntity, Notifiable {
         return data;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
@@ -381,6 +389,17 @@ public class UserEntity implements IWSEntity, Notifiable {
      * {@inheritDoc}
      */
     @Override
+    public void merge(final UserEntity obj) {
+        if ((obj != null) && id.equals(obj.id)) {
+            privateData = obj.privateData;
+            notifications = obj.notifications;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
@@ -389,6 +408,9 @@ public class UserEntity implements IWSEntity, Notifiable {
         fields.put(NotificationField.USERNAME, userName);
         fields.put(NotificationField.FIRSTNAME, firstname);
         fields.put(NotificationField.LASTNAME, lastname);
+
+        // For all requests, we need a code that the user responds with
+        fields.put(NotificationField.CODE, code);
 
         // The switch serves two purposes, first purpose is to fill the map with
         // the required values for all the different types of notifications. The
@@ -399,15 +421,12 @@ public class UserEntity implements IWSEntity, Notifiable {
                 // Activating a user requires that the password is returned
                 fields.put(NotificationField.CLEARTEXT_PASSWORD, temporary);
             case RESET_PASSWORD:
+                // Reset Password only requires the general information
             case RESET_SESSION:
-                // The code is also a common part for all types of notifications
-                fields.put(NotificationField.CODE, code);
+                // Reset Session only requires the general information
                 break;
             case UPDATE_USERNAME:
-                // Although the code is common, for this request we need a
-                // different dataset to be sent to a different e-mail address
                 fields.put(NotificationField.NEW_USERNAME, data);
-                fields.put(NotificationField.CODE, code);
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");

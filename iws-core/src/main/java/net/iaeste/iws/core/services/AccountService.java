@@ -169,46 +169,14 @@ public final class AccountService extends CommonService {
     public void controlUserAccount(final Authentication authentication, final UserRequest request) {
         final String externalId = authentication.getUser().getExternalId();
         final String providedId = request.getUser().getUserId();
-        final UserEntity user = authentication.getUser();
 
-        // Check if this is a personal request or not. If it is a personal request, then we'll hand over the handling to the personal handler, otherwise it will be granted to the administration handler
+        // Check if this is a personal request or not. If it is a personal
+        // request, then we'll hand over the handling to the personal handler,
+        // otherwise it will be granted to the administration handler
         if (externalId.equals(providedId)) {
             handleUsersOwnChanges(authentication.getUser(), request);
         } else {
-            handleMemberAccountChanges(user, request);
-        }
-    }
-
-    /**
-     * This methodd handles a users own changes. Meaning, that if a user comes
-     * in and wishes to modify something, then this method will handle all
-     * aspects thereof. The type of changes include:
-     * <ul>
-     *   <li>Update Username</li>
-     *   <li>Delete self</li>
-     *   <li>Update Personal information</li>
-     * </ul>
-     *
-     * @param user    The User who wishes to update the private Account
-     * @param request USer Request Object, with Account changes
-     */
-    private void handleUsersOwnChanges(final UserEntity user, final UserRequest request) {
-        final UserStatus newStatus = request.getNewStatus();
-        final UserStatus currentStatus = user.getStatus();
-        final String username = request.getNewUsername();
-
-        if (user.getStatus() == UserStatus.DELETED) {
-            deletePrivateData(user);
-        } else {
-            updatePrivacyAndData(user, request);
-        }
-
-        if (username != null) {
-            // Handles the username change
-        } else if (newStatus != null) {
-            // Handles status change
-        } else {
-            // Handles updates to the User Object
+            handleMemberAccountChanges(authentication, request);
         }
     }
 
@@ -365,34 +333,89 @@ public final class AccountService extends CommonService {
     }
 
     /**
+     * This methodd handles a users own changes. Meaning, that if a user comes
+     * in and wishes to modify something, then this method will handle all
+     * aspects thereof. The type of changes include:
+     * <ul>
+     *   <li>Update Username</li>
+     *   <li>Delete self</li>
+     *   <li>Update Personal information</li>
+     * </ul>
+     *
+     * @param user    The User who wishes to update the private Account
+     * @param request USer Request Object, with Account changes
+     */
+    private void handleUsersOwnChanges(final UserEntity user, final UserRequest request) {
+        final UserStatus newStatus = request.getNewStatus();
+        final String username = request.getNewUsername();
+
+        if (username != null) {
+            prepareUsernameUpdate(user, username);
+        } else if (newStatus == UserStatus.DELETED) {
+            deletePrivateData(user);
+        } else {
+            updatePrivacyAndData(user, request);
+        }
+    }
+
+    /**
      * Handles changes to member account - meaning status changes only. If the
      * account belongs to the Owner of the Group, then no changes may be made.
      * Otherwise, it is possible to activate/deactivate an account and delete
-     * it.<br />
-     *   ToDo: Add state machine for the status changes
+     * it.
      *
-     * @param administrator User that is invoking the request
-     * @param request       The data Object to read the changes from
+     * @param authentication User that is invoking the request
+     * @param request        The data Object to read the changes from
      */
-    private void handleMemberAccountChanges(final UserEntity administrator, final UserRequest request) {
-        final GroupEntity group = dao.findMemberGroup(administrator);
+    private void handleMemberAccountChanges(final Authentication authentication, final UserRequest request) {
+        final GroupEntity group = dao.findMemberGroup(authentication.getUser());
         final RoleEntity role = dao.findRoleByUserAndGrouo(request.getUser().getUserId(), group);
 
         // First, we need to verify if the user may access. The DAO method
         // throws an Exception, if the user is not allowed
-        dao.findGroupByPermission(administrator, null, Permission.CONTROL_USER_ACCOUNT);
+        dao.findGroupByPermission(authentication.getUser(), null, Permission.CONTROL_USER_ACCOUNT);
 
         if (!role.getId().equals(IWSConstants.ROLE_OWNER)) {
             final UserEntity user = dao.findUserByExternalId(request.getUser().getUserId());
+            final String username = request.getNewUsername();
+
             // Okay, we have a ball game - let's update the record with the
             // demanded changes
-            if (request.getUser().getStatus() == UserStatus.DELETED) {
-                deletePrivateData(user);
+            if (username != null) {
+                prepareUsernameUpdate(user, username);
+            } else if (request.getNewStatus() != null) {
+                updateUserStatus(authentication, user, request.getNewStatus());
             } else {
                 // Update User account with the new Status and save it
                 user.setStatus(request.getUser().getStatus());
                 dao.persist(user);
             }
+        }
+    }
+
+    private void updateUserStatus(final Authentication authentication, final UserEntity user, final UserStatus newStatus) {
+        final UserStatus current = user.getStatus();
+
+        // Users who have status deleted cannot be fetched, so we need to check
+        // a few other parameters. First accounts with status Active or Blocked
+        if (current != UserStatus.NEW) {
+            switch (newStatus) {
+                case ACTIVE:
+                case BLOCKED:
+                    user.setStatus(newStatus);
+                    user.setModified(new Date());
+                    dao.persist(authentication, user);
+                    break;
+                case DELETED:
+                    deletePrivateData(user);
+                    break;
+                default:
+                    throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Illegal User state change.");
+            }
+        } else if (newStatus == UserStatus.DELETED) {
+            // We have a User Account, that was never activated. This we can
+            // delete completely
+            dao.delete(user);
         }
     }
 
@@ -430,5 +453,17 @@ public final class AccountService extends CommonService {
         user.setNotifications(request.getUser().getNotifications());
 
         dao.persist(user);
+    }
+
+    private void prepareUsernameUpdate(final UserEntity user, final String username) {
+        final Authentication authentication = new Authentication(user);
+
+        // Set a new code for the user to reply with, and set the new username
+        user.setCode(generateHash(UUID.randomUUID().toString()));
+        user.setData(username);
+        dao.persist(user);
+
+        // Send notification
+        notifications.notify(authentication, user, NotificationType.UPDATE_USERNAME);
     }
 }

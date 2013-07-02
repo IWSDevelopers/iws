@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.ejb.notifications.NotificationMessageGenerator
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorVelocity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -38,11 +38,12 @@ import java.util.Properties;
  * There is a tool for validating Velocity's templates. Could we add it to our toolchain to validate them?
  * http://code.google.com/p/velocity-validator/
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class NotificationMessageGeneratorVelocity implements NotificationMessageGenerator {
+
     private final String TEMPLATE_DIR = "velocity_templates";
     private final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
 
@@ -59,7 +60,7 @@ public class NotificationMessageGeneratorVelocity implements NotificationMessage
 //            case OFFER:
 //                throw new NotImplementedException("Notifications for offer are not implemented");
 //            default:
-                throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
+        throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
 //        }
     }
 

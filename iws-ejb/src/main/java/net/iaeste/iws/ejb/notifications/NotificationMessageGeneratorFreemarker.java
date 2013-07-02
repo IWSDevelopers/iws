@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.ejb.notifications.NotificationMessageGenerator
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -31,11 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public class NotificationMessageGeneratorFreemarker implements NotificationMessageGenerator {
+
     /*
      * TEMPLATE_DIR refers to the place where our templates are located, i.e. in the freemarker_templates package,
      * relative to the root of the current class
@@ -56,7 +57,7 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
 //            case OFFER:
 //                throw new NotImplementedException("Notifications for offer are not implemented");
 //            default:
-                throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
+        throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
 //        }
     }
 

@@ -15,8 +15,10 @@
 package net.iaeste.iws.persistence.monitoring;
 
 import net.iaeste.iws.api.dtos.Field;
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.entities.IWSEntity;
-import net.iaeste.iws.persistence.exceptions.MonitoringException;
+import net.iaeste.iws.common.exceptions.MonitoringException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

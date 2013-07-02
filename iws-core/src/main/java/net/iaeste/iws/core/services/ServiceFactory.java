@@ -22,7 +22,7 @@ import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.CountryJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
-import net.iaeste.iws.persistence.notification.Notifications;
+import net.iaeste.iws.core.notifications.Notifications;
 
 import javax.persistence.EntityManager;
 

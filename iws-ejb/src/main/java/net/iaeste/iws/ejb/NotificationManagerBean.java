@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.ejb;
 
-import net.iaeste.iws.persistence.notification.Notifications;
+import net.iaeste.iws.core.notifications.Notifications;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;

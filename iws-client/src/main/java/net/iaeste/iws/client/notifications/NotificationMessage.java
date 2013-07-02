@@ -14,9 +14,9 @@
  */
 package net.iaeste.iws.client.notifications;
 
-import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationField;
-import net.iaeste.iws.persistence.notification.NotificationType;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationType;
 
 import java.util.Map;
 

@@ -16,10 +16,10 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.persistence.exceptions.NotificationException;
-import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationField;
-import net.iaeste.iws.persistence.notification.NotificationType;
+import net.iaeste.iws.common.exceptions.NotificationException;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,9 +46,6 @@ import java.util.Map;
  * @since 1.7
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "user.findAll",
-                query = "select u from UserEntity u"),
         @NamedQuery(
                 name = "user.findById",
                 query = "select u from UserEntity u " +
@@ -403,30 +400,32 @@ public class UserEntity implements Mergeable<UserEntity>, Notifiable {
     public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
 
-        // By default, we always need the username (e-mail address),
-        // first and last name of the person to receive a notification
-        fields.put(NotificationField.USERNAME, userName);
+        // By default, all notifications need the name of the person to receive
+        // it. Further, all User based notifications (Activate User, Reset
+        // Password, Reset Session and Update Username) all require a unique
+        // Cryptographic Hash value, or code.
         fields.put(NotificationField.FIRSTNAME, firstname);
         fields.put(NotificationField.LASTNAME, lastname);
-
-        // For all requests, we need a code that the user responds with
         fields.put(NotificationField.CODE, code);
 
-        // The switch serves two purposes, first purpose is to fill the map with
-        // the required values for all the different types of notifications. The
-        // second purpose, is also to verify the type of notification, which
-        // this entity may be used for.
+        // For the remainder, we're going to use a Switch. The Switch serves two
+        // purposes. The first purpose, is to fill in the remaining fields, and
+        // the second purpose is to ensure that only those Notification Types,
+        // which is allowed for this Entity is being delivered.
         switch (type) {
             case ACTIVATE_USER:
                 // Activating a user requires that the password is returned
                 fields.put(NotificationField.CLEARTEXT_PASSWORD, temporary);
             case RESET_PASSWORD:
-                // Reset Password only requires the general information
             case RESET_SESSION:
-                // Reset Session only requires the general information
+                // These three types all require that we send the information
+                // too the current e-mail address
+                fields.put(NotificationField.EMAIL, userName);
                 break;
             case UPDATE_USERNAME:
-                fields.put(NotificationField.NEW_USERNAME, data);
+                // When updating the username, we're having a new address that
+                // we need to send it to
+                fields.put(NotificationField.EMAIL, data);
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");

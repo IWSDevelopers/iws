@@ -17,7 +17,7 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.persistence.notification.Notifications;
+import net.iaeste.iws.core.notifications.Notifications;
 import org.junit.Before;
 import org.junit.Test;
 

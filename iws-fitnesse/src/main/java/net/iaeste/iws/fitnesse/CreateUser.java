@@ -20,7 +20,7 @@ import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationMessage;
 import net.iaeste.iws.fitnesse.callers.AdministrationCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
-import net.iaeste.iws.persistence.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationField;
 
 /**
  * @author  Martin Eisfeld / last $Author:$

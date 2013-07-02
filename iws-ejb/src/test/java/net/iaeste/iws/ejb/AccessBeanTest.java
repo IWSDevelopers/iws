@@ -14,16 +14,16 @@
  */
 package net.iaeste.iws.ejb;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
-import net.iaeste.iws.persistence.notification.Notifications;
+import net.iaeste.iws.core.notifications.Notifications;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * @author  Kim Jensen / last $Author:$

@@ -19,7 +19,6 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.ejb.emails.EmailMessage;
-import net.iaeste.iws.core.notifications.NotificationDirectEmailSender;
 import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.timewalker.ffmq3.FFMQConstants;

@@ -18,11 +18,10 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.core.notifications.NotificationMessageGenerator;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.exceptions.NotificationException;
-import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationType;
+import net.iaeste.iws.common.exceptions.NotificationException;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationType;
 
 import java.io.FileNotFoundException;
 import java.io.StringWriter;

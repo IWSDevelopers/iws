@@ -16,11 +16,10 @@ package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.core.notifications.NotificationMessageGenerator;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.exceptions.NotificationException;
-import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationType;
+import net.iaeste.iws.common.exceptions.NotificationException;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationType;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;

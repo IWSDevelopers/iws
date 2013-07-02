@@ -21,7 +21,7 @@ import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.Mergeable;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
-import net.iaeste.iws.persistence.monitoring.MonitoringLevel;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
 import net.iaeste.iws.persistence.views.IWSView;
 

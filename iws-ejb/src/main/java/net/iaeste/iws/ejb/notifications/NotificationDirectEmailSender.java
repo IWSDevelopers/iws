@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.notifications.NotificationMessageGenerator
+ * Project: IntraWeb Services (iws-core) - net.iaeste.iws.ejb.notifications.NotificationDirectEmailSender
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,26 +12,20 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.core.notifications;
+package net.iaeste.iws.ejb.notifications;
 
-import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationType;
-
-import java.util.Map;
+import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 
 /**
+ * The purpose of this interface is to provide a way how to access messages that have to be sent
+ * but can't be persisted because they contain confidential data.
+ *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface NotificationMessageGenerator {
+public interface NotificationDirectEmailSender {
 
-    /**
-     * Generates a message for given object and notification type
-     *
-     * @param obj   Object to generate message for
-     * @param type  Notification type
-     * @return  Generated message as String
-     */
-    Map<String, String> generateFromTemplate(Notifiable obj, NotificationType type);
+    void send(NotificationMessageEntity message);
+
 }

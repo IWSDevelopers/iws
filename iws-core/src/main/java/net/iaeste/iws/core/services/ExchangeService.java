@@ -53,8 +53,8 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
-import net.iaeste.iws.persistence.notification.NotificationType;
-import net.iaeste.iws.persistence.notification.Notifications;
+import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.core.notifications.Notifications;
 
 import java.util.ArrayList;
 import java.util.HashMap;

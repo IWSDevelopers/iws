@@ -23,7 +23,7 @@ import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.ejb.CommitteeBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
-import net.iaeste.iws.persistence.notification.Notifications;
+import net.iaeste.iws.core.notifications.Notifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

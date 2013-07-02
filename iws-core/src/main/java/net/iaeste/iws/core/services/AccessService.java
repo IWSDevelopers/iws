@@ -36,8 +36,8 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.notification.NotificationType;
-import net.iaeste.iws.persistence.notification.Notifications;
+import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import java.io.Serializable;

@@ -33,7 +33,7 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
-import net.iaeste.iws.persistence.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationField;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;

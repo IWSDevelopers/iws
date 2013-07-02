@@ -17,9 +17,9 @@ package net.iaeste.iws.client.notifications;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.notification.Notifiable;
-import net.iaeste.iws.persistence.notification.NotificationType;
-import net.iaeste.iws.persistence.notification.Notifications;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.core.notifications.Notifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.notification.Notifications
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.core.notifications.Notifications
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,18 +12,20 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence.notification;
+package net.iaeste.iws.core.notifications;
 
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationType;
 
 /**
  * Classes to be observed, should extend the Notifiable interface.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public interface Notifications extends Observable {
 

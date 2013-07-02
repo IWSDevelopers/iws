@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import net.iaeste.iws.persistence.monitoring.Monitored;
-import net.iaeste.iws.persistence.monitoring.MonitoringLevel;
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

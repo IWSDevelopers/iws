@@ -22,8 +22,7 @@ import net.iaeste.iws.ejb.emails.EmailMessage;
 import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.timewalker.ffmq3.FFMQConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -53,7 +52,7 @@ import java.util.Hashtable;
  */
 public class NotificationEmailSender implements Observer, NotificationDirectEmailSender {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NotificationEmailSender.class);
+    private static final Logger LOG = Logger.getLogger(NotificationEmailSender.class);
 
 //    @Resource(mappedName = "iws-EmailQueue")
     private Queue queue;

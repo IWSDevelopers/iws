@@ -14,8 +14,7 @@
  */
 package net.iaeste.iws.ejb.interceptors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -31,7 +30,7 @@ import java.text.DecimalFormat;
  */
 public class Profiler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Profiler.class);
+    private static final Logger LOG = Logger.getLogger(Profiler.class);
     private static final DecimalFormat format = new DecimalFormat("###,###.##");
 
     @AroundInvoke

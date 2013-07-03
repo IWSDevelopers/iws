@@ -10,7 +10,7 @@
     </appender>
 
     <logger name="net.iaeste.iws">
-        <level value="info" />
+        <level value="warn" />
         <appender-ref ref="console" />
     </logger>
 

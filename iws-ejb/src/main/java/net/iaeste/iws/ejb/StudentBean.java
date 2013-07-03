@@ -29,8 +29,7 @@ import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.StudentController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.interceptors.Profiler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -63,7 +62,7 @@ import javax.persistence.PersistenceContext;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StudentBean extends AbstractBean implements Student {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AccessBean.class);
+    private static final Logger LOG = Logger.getLogger(StudentBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
     private Student controller = null;

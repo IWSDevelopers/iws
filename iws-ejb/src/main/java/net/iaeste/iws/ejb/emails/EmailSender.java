@@ -18,8 +18,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.timewalker.ffmq3.FFMQConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -55,7 +54,7 @@ import java.util.Properties;
 //@MessageDriven(mappedName = "iws-EmailQueue", activationConfig = @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"))
 public class EmailSender implements MessageListener {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EmailSender.class);
+    private static final Logger LOG = Logger.getLogger(EmailSender.class);
 
     private static final String FROM_ADDRESS = "iaeste@iaeste.net";
     private static final String SMTP_SERVER = "localhost";

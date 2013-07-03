@@ -29,6 +29,7 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.core.exceptions.PermissionException;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.CountryEntity;
@@ -37,9 +38,7 @@ import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
-import net.iaeste.iws.core.notifications.Notifications;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,7 @@ import java.util.UUID;
  */
 public final class GroupService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GroupService.class);
+    private static final Logger LOG = Logger.getLogger(GroupService.class);
     private final AccessDao dao;
     private final Notifications notifications;
 

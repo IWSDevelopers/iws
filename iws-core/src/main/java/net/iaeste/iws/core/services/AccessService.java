@@ -129,9 +129,8 @@ public final class AccessService extends CommonService {
      *
      * @param resetSessionString The Token for resetting the users Session
      * @return New AuthenticationToken
-     * @throws SessionException if no Active Session exists
      */
-    public AuthenticationToken resetSession(final String resetSessionString) throws SessionException {
+    public AuthenticationToken resetSession(final String resetSessionString) {
         final UserEntity user = dao.findUserByCodeAndStatus(resetSessionString, UserStatus.ACTIVE);
         final SessionEntity deadSession = dao.findActiveSession(user);
 

@@ -22,8 +22,7 @@ import net.timewalker.ffmq3.listeners.tcp.io.TcpListener;
 import net.timewalker.ffmq3.local.FFMQEngine;
 import net.timewalker.ffmq3.management.destination.definition.QueueDefinition;
 import net.timewalker.ffmq3.utils.Settings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.jms.JMSException;
 
@@ -48,7 +47,7 @@ public class MessageServer {
     public static final String listenAddr = "0.0.0.0";
     public static final int listenPort = 10002;
 
-    private static final Logger LOG = LoggerFactory.getLogger(MessageServer.class);
+    private static final Logger LOG = Logger.getLogger(MessageServer.class);
 
     private FFMQEngine engine;
     private ClientListener tcpListener;

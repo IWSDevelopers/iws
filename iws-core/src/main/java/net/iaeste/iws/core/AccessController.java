@@ -28,8 +28,7 @@ import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccessService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 
@@ -45,12 +44,11 @@ import java.io.Serializable;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyBroadCatchBlock
  */
 public final class AccessController extends CommonController implements Access {
 
     private static final String AUTHENTICATION_REQUEST_ERROR = "The Authentication Request Object is undefined.";
-    private static final Logger LOG = LoggerFactory.getLogger(AccessController.class);
+    private static final Logger LOG = Logger.getLogger(AccessController.class);
     private final ServiceFactory factory;
 
     /**

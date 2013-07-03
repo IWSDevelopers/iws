@@ -18,16 +18,30 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.exchange.*;
+import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
-import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -36,7 +50,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class ExchangeController extends CommonController implements Exchange {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ExchangeController.class);
+    private static final Logger LOG = Logger.getLogger(ExchangeController.class);
     private final ServiceFactory factory;
 
     /**

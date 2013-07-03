@@ -14,14 +14,13 @@
  */
 package net.iaeste.iws.client.notifications;
 
-import net.iaeste.iws.common.utils.Observer;
-import net.iaeste.iws.persistence.Authentication;
-import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.core.notifications.Notifications;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.entities.UserEntity;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ import java.util.List;
  */
 public final class NotificationSpy implements Notifications {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NotificationSpy.class);
+    private static final Logger LOG = Logger.getLogger(NotificationSpy.class);
     private static NotificationSpy instance = null;
     private static final Object LOCK = new Object();
     private final List<Observer> observers = new ArrayList<>(10);

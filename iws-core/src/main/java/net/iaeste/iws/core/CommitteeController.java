@@ -26,8 +26,7 @@ import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.CommitteeService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -36,7 +35,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class CommitteeController extends CommonController implements Committees {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AdministrationController.class);
+    private static final Logger LOG = Logger.getLogger(CommitteeController.class);
     private final ServiceFactory factory;
 
     /**

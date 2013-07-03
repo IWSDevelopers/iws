@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core;
 
+import net.iaeste.iws.api.Student;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -25,12 +26,10 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.api.Student;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.core.services.StudentService;
 import net.iaeste.iws.persistence.Authentication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -39,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class StudentController extends CommonController implements Student {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StudentController.class);
+    private static final Logger LOG = Logger.getLogger(StudentController.class);
     private final ServiceFactory factory;
 
     /**

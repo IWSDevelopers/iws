@@ -147,7 +147,7 @@ class CommonController {
         verifiable.verify();
     }
 
-    void verifyCode(final String code, final String... message) throws VerificationException {
+    void verifyCode(final String code, final String... message) {
         if (code == null || code.length() != HashcodeGenerator.HASHCODE_LENGTH) {
             throw new VerificationException(prepareErrorText("Invalid Code Object", message));
         }

@@ -31,17 +31,16 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.PasswordGenerator;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
-import net.iaeste.iws.common.notification.NotificationType;
-import net.iaeste.iws.core.notifications.Notifications;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.UUID;
@@ -53,7 +52,7 @@ import java.util.UUID;
  */
 public final class AccountService extends CommonService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
+    private static final Logger LOG = Logger.getLogger(AccountService.class);
     private final AccessDao dao;
     private final Notifications notifications;
 
@@ -464,7 +463,7 @@ public final class AccountService extends CommonService {
         user.setStatus(UserStatus.DELETED);
         dao.persist(user);
 
-        LOG.info("Deleted all private data for user {}, including {} sessions,", user, deletedSessions);
+        LOG.info("Deleted all private data for user " + user + ", including " + deletedSessions + " sessions,");
     }
 
     private void updatePrivacyAndData(final UserEntity user, final UserRequest request) {

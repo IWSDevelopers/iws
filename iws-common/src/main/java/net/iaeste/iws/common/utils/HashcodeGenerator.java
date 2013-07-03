@@ -54,6 +54,7 @@ public final class HashcodeGenerator {
     private static final String HASHCODE_ALGORITHM_SHA384 = "SHA-384";
     private static final String HASHCODE_ALGORITHM_SHA512 = "SHA-512";
     private static final Charset CHARSET = Charset.forName(IWSConstants.DEFAULT_ENCODING);
+    public static final int HASHCODE_LENGTH = 64;
 
     /**
      * Private Constructor, this is a utility class.

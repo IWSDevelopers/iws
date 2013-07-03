@@ -150,6 +150,24 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
+    public Fallible updateUsername(final String updateCode) {
+        Fallible response;
+
+        try {
+            response = controller.updateUsername(updateCode);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Interceptors(Profiler.class)
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         Fallible response;

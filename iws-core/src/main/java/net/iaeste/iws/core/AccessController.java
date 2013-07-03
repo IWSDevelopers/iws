@@ -45,6 +45,7 @@ import java.io.Serializable;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection OverlyBroadCatchBlock
  */
 public final class AccessController extends CommonController implements Access {
 
@@ -117,6 +118,7 @@ public final class AccessController extends CommonController implements Access {
         AuthenticationResponse response;
 
         try {
+            verifyCode(resetSessionToken, "The ResetSessionToken is invalid.");
             final AccessService service = factory.prepareAuthenticationService();
             final AuthenticationToken token = service.resetSession(resetSessionToken);
             response = new AuthenticationResponse(token);
@@ -222,6 +224,7 @@ public final class AccessController extends CommonController implements Access {
         Fallible response;
 
         try {
+            verifyCode(resetPasswordToken, "The ResetPassword Token is invalid.");
             verify(password);
 
             final AccessService service = factory.prepareAuthenticationService();

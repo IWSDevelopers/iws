@@ -102,6 +102,14 @@ public final class AdministrationSpringClient implements Administration {
      * {@inheritDoc}
      */
     @Override
+    public Fallible updateUsername(final String updateCode) {
+        return client.updateUsername(updateCode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         return client.controlUserAccount(token, request);
     }

@@ -26,8 +26,8 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
-import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
@@ -92,6 +92,7 @@ public final class AdministrationController extends CommonController implements 
         Fallible response;
 
         try {
+            verifyCode(activationString, "Provided Activation String is invalid.");
             final AccountService service = factory.prepareAccountService();
             service.activateUser(activationString);
             response = new FallibleResponse();
@@ -100,6 +101,27 @@ public final class AdministrationController extends CommonController implements 
         }
 
         LOG.trace("Finished activateUser()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible updateUsername(final String updateCode) {
+        LOG.trace("Starting updateUsername()");
+        Fallible response;
+
+        try {
+            verifyCode(updateCode, "The UpdateCode is invalid.");
+            final AccountService service = factory.prepareAccountService();
+            service.updateUsername(updateCode);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished updateUsername()");
         return response;
     }
 

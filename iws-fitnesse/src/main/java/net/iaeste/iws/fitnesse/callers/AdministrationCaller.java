@@ -74,6 +74,18 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
+    public Fallible updateUsername(final String updateCode) {
+        try {
+            return caller.updateUsername(updateCode);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         try {
             return caller.controlUserAccount(token, request);

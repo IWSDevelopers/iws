@@ -63,7 +63,7 @@ public interface Administration {
      *                request
      * @param request Request data, must contain username, password as well as
      *                first and last name
-     * @return Standard Error object
+     * @return Standard Error Object
      */
     Fallible createUser(AuthenticationToken token, CreateUserRequest request);
 
@@ -78,9 +78,23 @@ public interface Administration {
      * saved.
      *
      * @param activationString Code used to activate the Account with
-     * @return Standard Error object
+     * @return Standard Error Object
      */
     Fallible activateUser(String activationString);
+
+    /**
+     * Users who have changed their username, can invoke the controlUserAccount
+     * method with a request for a username update. The system will then
+     * generate a notification with a code that is then used to update the
+     * username.<br />
+     *   Only users who have an active account can update their usernames.<br />
+     *   Once updated, the user can then use the new username to log into the
+     * system with.
+     *
+     * @param updateCode Code used for updating the username for the account
+     * @return Standard Error Object
+     */
+    Fallible updateUsername(String updateCode);
 
     /**
      * With this request, it is possible to alter the User Account specified in
@@ -107,7 +121,7 @@ public interface Administration {
      *                request
      * @param request Request data, must contain the User Account and the new
      *                state for it
-     * @return Standard Error object
+     * @return Standard Error Object
      */
     Fallible controlUserAccount(AuthenticationToken token, UserRequest request);
 
@@ -130,7 +144,7 @@ public interface Administration {
      * @param token   Authentication information about the user invoking the
      *                request
      * @param request Fetch Group Request Object
-     * @return Standard Error object
+     * @return Standard Error Object
      */
     Fallible deleteGroup(AuthenticationToken token, GroupRequest request);
 
@@ -158,7 +172,7 @@ public interface Administration {
      * @param token   Authentication information about the user invoking the
      *                request
      * @param request Request data, must contain the Country Record
-     * @return Standard Error object
+     * @return Standard Error Object
      */
     Fallible processCountries(AuthenticationToken token, CountryRequest request);
 

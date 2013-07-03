@@ -149,6 +149,26 @@ public final class AccountService extends CommonService {
     }
 
     /**
+     * Updates the users username in the
+     *
+     * @param updateCode Code used for updating the username for the account
+     */
+    public void updateUsername(final String updateCode) {
+        final UserEntity user = dao.findUserByCodeAndStatus(updateCode, UserStatus.ACTIVE);
+
+        if (user != null) {
+            // Update the UserEntity with the new Username
+            user.setUserName(user.getData());
+            user.setCode(null);
+            user.setData(null);
+            user.setModified(new Date());
+            dao.persist(user);
+        } else {
+            throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for this user was found.");
+        }
+    }
+
+    /**
      * Now, this is a tricky one - there are two usages of this method. The
      * first is for private usage, meaning that if the UserId of both the
      * Authentication Object and the Request is the same, then it means that

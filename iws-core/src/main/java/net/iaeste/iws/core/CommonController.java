@@ -19,6 +19,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.Verifiable;
+import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -138,16 +139,29 @@ class CommonController {
      */
     void verify(final Verifiable verifiable, final String... message) {
         if (verifiable == null) {
-            final String text;
-            if (message != null && message.length == 1) {
-                text = message[0];
-            } else {
-                text = "Cannot process a Null Request Object.";
-            }
+            final String text = prepareErrorText("Cannot process a Null Request Object.", message);
 
             throw new VerificationException(text + NULL_REQUEST);
         }
 
         verifiable.verify();
+    }
+
+    void verifyCode(final String code, final String... message) throws VerificationException {
+        if (code == null || code.length() != HashcodeGenerator.HASHCODE_LENGTH) {
+            throw new VerificationException(prepareErrorText("Invalid Code Object", message));
+        }
+    }
+
+    private static String prepareErrorText(final String defaultMessage, final String... message) {
+        final String text;
+
+        if ((message != null) && (message.length == 1)) {
+            text = message[0];
+        } else {
+            text = defaultMessage;
+        }
+
+        return text;
     }
 }

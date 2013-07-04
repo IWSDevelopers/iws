@@ -60,24 +60,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    @Deprecated
-    public UserEntity findUserByCredentials(final String username, final String passwordHashcode) throws IWSException {
-        final Query query = entityManager.createNamedQuery("user.loginCredentials");
-        query.setParameter("username", username);
-        query.setParameter("password", passwordHashcode);
-        final List<UserEntity> result = query.getResultList();
-
-        if (result.size() != 1) {
-            throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "No account for the user '" + username + "' was found.");
-        }
-
-        return result.get(0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public UserEntity findUserByUsername(final String username) {
         final Query query = entityManager.createNamedQuery("user.findByUserName");
         query.setParameter("username", username);
@@ -145,7 +127,9 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public Integer deprecateSession(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("session.deprecate");
         // Funny, setting the status to false directly in the query, causes an
-        // SQL Grammar Exception
+        // SQL Grammar Exception, though it actually makes sense since booleans
+        // are implemented differently in dofferent databases, so JPA needs the
+        // query pbject to convert it properly
         query.setParameter("status", false);
         query.setParameter("id", user.getId());
 

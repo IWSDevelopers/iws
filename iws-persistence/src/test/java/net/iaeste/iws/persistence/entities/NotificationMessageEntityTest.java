@@ -22,7 +22,6 @@ import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
-import org.hibernate.tuple.entity.EntityMetamodel;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +43,7 @@ import java.util.List;
  * @since   1.7
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 @TransactionConfiguration(defaultRollback = true)
 public class NotificationMessageEntityTest {
 
@@ -56,7 +55,7 @@ public class NotificationMessageEntityTest {
     @Ignore("Ignored 20130422 by Kim - Reason: The test is unstable!")
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        final UserEntity user = dao.findUserByCredentials("austria", "4c24cd84d06d87c1c8579fe39ee837a753509e9283fbd19b5d469c1bef824939");
+        final UserEntity user = dao.findUserByUsername("austria");
         assertThat(user.getUserName(), is("austria"));
 
         final NotificationMessageEntity entity = new NotificationMessageEntity();
@@ -69,7 +68,7 @@ public class NotificationMessageEntityTest {
         entityManager.persist(entity);
 
         final Query query = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");
-        query.setParameter("type", NotificationDeliveryMode.EMAIL);
+        query.setParameter("deliveryMode", NotificationDeliveryMode.EMAIL);
         query.setParameter("status", NotificationMessageStatus.NEW);
         query.setParameter("date", new Date());
         final List<NotificationMessageEntity> found = query.getResultList();
@@ -82,7 +81,7 @@ public class NotificationMessageEntityTest {
     @Transactional
     public void testUpdateQuery() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        final UserEntity user = dao.findUserByCredentials("austria", "4c24cd84d06d87c1c8579fe39ee837a753509e9283fbd19b5d469c1bef824939");
+        final UserEntity user = dao.findUserByUsername("austria");
         assertThat(user.getUserName(), is("austria"));
 
         final NotificationMessageEntity entity = new NotificationMessageEntity();

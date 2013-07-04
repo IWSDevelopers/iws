@@ -51,7 +51,7 @@ public class AccessDaoTest {
     public void testSession() {
         final AccessDao dao = new AccessJpaDao(entityManager);
         final String key = "12345678901234567890123456789012";
-        final UserEntity user = dao.findUserByCredentials("austria", "4c24cd84d06d87c1c8579fe39ee837a753509e9283fbd19b5d469c1bef824939");
+        final UserEntity user = dao.findUserByUsername("austria");
 
         // Create a new Session for a user, and save it in the database
         final SessionEntity entity = new SessionEntity();

@@ -12,20 +12,20 @@
     <name>IWS - EJB</name>
     <description>IntraWeb Services - EJB Module</description>
 
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>iws-accessories</id>-->
-            <!--<name>iws-accessories</name>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-                <!--<checksumPolicy>ignore</checksumPolicy>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-            <!--<url>file://${project.basedir}/../iws-accessories</url>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+        <repository>
+            <id>iws-accessories</id>
+            <name>iws-accessories</name>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <url>file://${project.basedir}/../iws-accessories</url>
+        </repository>
+    </repositories>
 
     <build>
         <resources>

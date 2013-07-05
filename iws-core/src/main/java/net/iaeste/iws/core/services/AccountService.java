@@ -369,7 +369,12 @@ public final class AccountService extends CommonService {
         final String username = request.getNewUsername();
 
         if (username != null) {
-            prepareUsernameUpdate(user, username);
+            final String hash = generateHash(request.getPassword(), user.getSalt());
+            if (hash.equals(user.getPassword())) {
+                prepareUsernameUpdate(user, username);
+            } else {
+                throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "The initiate update password request cannot be completed.");
+            }
         } else if (newStatus == UserStatus.DELETED) {
             deletePrivateData(user);
         } else {

@@ -38,8 +38,9 @@ public final class UserRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private User user = null;
-    private String newUsername = null;
     private UserStatus newStatus = null;
+    private String newUsername = null;
+    private String password = null;
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -72,24 +73,6 @@ public final class UserRequest extends AbstractVerification {
     }
 
     /**
-     * If a user must change their username, i.e. the registered e-mail address,
-     * then this value must be set here. This change can be invoked both by
-     * users and administrators. The change will not be directly updated, but
-     * only marked, until the user has approved the change with a code that is
-     * being sent.
-     *
-     * @param newUsername New username (e-mail address) for the user
-     */
-    public void setNewUsername(final String newUsername) {
-        ensureNotNullAndValidEmail("newUsername", newUsername);
-        this.newUsername = newUsername;
-    }
-
-    public String getNewUsername() {
-        return newUsername;
-    }
-
-    /**
      * If the user is should change status, then the new status must be defined
      * here. It is possible for someone with the rights to control a user
      * account, to activate, deactivate & delete accounts. However, a users may
@@ -107,6 +90,46 @@ public final class UserRequest extends AbstractVerification {
 
     public UserStatus getNewStatus() {
         return newStatus;
+    }
+
+    /**
+     * If a user must change their username, i.e. the registered e-mail address,
+     * then this value must be set here. This change can be invoked both by
+     * users and administrators. The change will not be directly updated, but
+     * only marked, until the user has approved the change with a code that is
+     * being sent.<br />
+     *   Note, that if a user wishes to update his or her username, then they
+     * must also provide their password. Otherwise, they will get an error from
+     * the system.
+     *
+     * @param newUsername New username (e-mail address) for the user
+     */
+    public void setNewUsername(final String newUsername) {
+        ensureNotNullAndValidEmail("newUsername", newUsername);
+
+        this.newUsername = newUsername;
+    }
+
+    public String getNewUsername() {
+        return newUsername;
+    }
+
+    /**
+     * If a user wishes to update the current username, then the password must
+     * also be provided, to have an authentication mechanism - this will prevent
+     * that someone abuses a currently active session.<br />
+     *   The password is not needed, if an administrator initiates the update.
+     *
+     * @param password Current Password, to authenticate user
+     */
+    public void setPassword(final String password) {
+        ensureNotNullOrEmpty("password", password);
+
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     // =========================================================================

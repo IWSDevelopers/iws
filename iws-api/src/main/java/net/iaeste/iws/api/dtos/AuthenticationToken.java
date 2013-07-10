@@ -46,6 +46,10 @@ public final class AuthenticationToken extends AbstractVerification {
     /** For Group Authorization, the GroupId must also be provided. */
     private String groupId = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

@@ -98,7 +98,7 @@ public interface IWSConstants {
     /**
      * Default IWS DateTime Format.
      */
-    String DATE_TIME_FORMST = DATE_FORMAT + " HH:mm:ss";
+    String DATE_TIME_FORMAT = DATE_FORMAT + " HH:mm:ss";
 
     /**
      * Default IWS Success message.

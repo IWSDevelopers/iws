@@ -36,6 +36,10 @@ public final class Field implements Serializable {
     private String oldValue = null;
     private String newValue = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

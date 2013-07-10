@@ -59,6 +59,10 @@ public final class User extends AbstractDto {
     private String memberCountryId = null;
     private Person person = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
@@ -134,6 +138,7 @@ public final class User extends AbstractDto {
 
     public void setUserId(final String userId) {
         ensureValidId("userId", userId);
+
         this.userId = userId;
     }
 
@@ -142,6 +147,8 @@ public final class User extends AbstractDto {
     }
 
     public void setUsername(final String username) {
+        ensureNotNullAndValidEmail("username", username);
+
         this.username = username;
     }
 
@@ -151,6 +158,7 @@ public final class User extends AbstractDto {
 
     public void setAlias(final String alias) {
         ensureNotTooLong("alias", alias, 125);
+
         this.alias = alias;
     }
 
@@ -160,6 +168,7 @@ public final class User extends AbstractDto {
 
     public void setFirstname(final String firstname) {
         ensureNotNullOrEmptyOrTooLong("firstname", firstname, 50);
+
         this.firstname = firstname;
     }
 
@@ -169,6 +178,7 @@ public final class User extends AbstractDto {
 
     public void setLastname(final String lastname) {
         ensureNotNullOrEmptyOrTooLong("lastname", lastname, 50);
+
         this.lastname = lastname;
     }
 
@@ -178,6 +188,7 @@ public final class User extends AbstractDto {
 
     public void setStatus(final UserStatus status) {
         ensureNotNull("status", status);
+
         this.status = status;
     }
 
@@ -187,6 +198,7 @@ public final class User extends AbstractDto {
 
     public void setPrivacy(final Privacy privacy) {
         ensureNotNull("privacy", privacy);
+
         this.privacy = privacy;
     }
 
@@ -196,6 +208,7 @@ public final class User extends AbstractDto {
 
     public void setNotifications(final String notifications) {
         ensureNotNullOrEmptyOrTooLong("notifications", notifications, 25);
+
         this.notifications = notifications;
     }
 
@@ -213,6 +226,7 @@ public final class User extends AbstractDto {
 
     public void setPerson(final Person person) {
         ensureNotNull("person", person);
+
         this.person = person;
     }
 

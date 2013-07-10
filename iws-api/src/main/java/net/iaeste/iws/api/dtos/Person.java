@@ -46,6 +46,10 @@ public final class Person extends AbstractVerification {
     private Date birthday = null;
     private Gender gender = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
@@ -164,7 +168,8 @@ public final class Person extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        // As all fields are optional, we'll just return an empty error set
+        // Since an Address is an optional Object, we're not going to make any
+        // validity checks here
         return new HashMap<>(0);
     }
 

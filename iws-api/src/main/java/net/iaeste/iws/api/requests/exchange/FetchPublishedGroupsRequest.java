@@ -39,6 +39,10 @@ public final class FetchPublishedGroupsRequest extends AbstractVerification {
 
     private List<String> offerIds = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

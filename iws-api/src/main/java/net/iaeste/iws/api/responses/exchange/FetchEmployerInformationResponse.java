@@ -36,6 +36,10 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
 
     private List<EmployerInformation> employers = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

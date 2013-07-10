@@ -36,6 +36,10 @@ public final class FetchUserResponse extends AbstractFallible {
     /** The List of Users, matching the request. */
     private User user = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

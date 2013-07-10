@@ -36,6 +36,10 @@ public final class FetchOffersResponse extends AbstractFallible {
 
     private List<Offer> offers = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

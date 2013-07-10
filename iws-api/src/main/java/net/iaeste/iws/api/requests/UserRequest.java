@@ -42,6 +42,10 @@ public final class UserRequest extends AbstractVerification {
     private String newUsername = null;
     private String password = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

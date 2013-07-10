@@ -38,6 +38,10 @@ public final class Authorization implements Serializable {
     private Group group = null;
     private Set<Permission> permissions = EnumSet.noneOf(Permission.class);
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

@@ -31,6 +31,12 @@ public final class Address extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /**
+     * All fields of type String in this Object, are allowed to be as big as
+     * this number.
+     */
+    private static final int FIELD_LENGTH = 100;
+
     private String id = null;
     private String street1 = null;
     private String street2 = null;
@@ -39,6 +45,10 @@ public final class Address extends AbstractVerification {
     private String region = null;
     private String pobox = null;
     private Country country = null;
+
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
@@ -80,7 +90,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setStreet1(final String street1) {
-        ensureNotEmptyOrTooLong("street1", street1, 100);
+        ensureNotEmptyOrTooLong("street1", street1, FIELD_LENGTH);
 
         this.street1 = street1;
     }
@@ -90,7 +100,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setStreet2(final String street2) {
-        ensureNotEmptyOrTooLong("street2", street2, 100);
+        ensureNotEmptyOrTooLong("street2", street2, FIELD_LENGTH);
 
         this.street2 = street2;
     }
@@ -100,7 +110,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setZip(final String zip) {
-        ensureNotEmptyOrTooLong("zip", zip, 100);
+        ensureNotEmptyOrTooLong("zip", zip, FIELD_LENGTH);
 
         this.zip = zip;
     }
@@ -110,7 +120,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setCity(final String city) {
-        ensureNotEmptyOrTooLong("city", city, 100);
+        ensureNotEmptyOrTooLong("city", city, FIELD_LENGTH);
 
         this.city = city;
     }
@@ -120,7 +130,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setRegion(final String region) {
-        ensureNotEmptyOrTooLong("region", region, 100);
+        ensureNotEmptyOrTooLong("region", region, FIELD_LENGTH);
 
         this.region = region;
     }
@@ -130,7 +140,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setPobox(final String pobox) {
-        ensureNotEmptyOrTooLong("pobox", pobox, 100);
+        ensureNotEmptyOrTooLong("pobox", pobox, FIELD_LENGTH);
 
         this.pobox = pobox;
     }
@@ -156,12 +166,9 @@ public final class Address extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
-
-        // Since we're going to allow empty address Objects, it means that all
-        // fields in this Object may be null
-
-        return validation;
+        // Since an Address is an optional Object, we're not going to make any
+        // validity checks here
+        return new HashMap<>(0);
     }
 
     /**

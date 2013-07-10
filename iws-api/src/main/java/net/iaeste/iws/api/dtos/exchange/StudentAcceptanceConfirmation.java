@@ -24,7 +24,7 @@ import net.iaeste.iws.api.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class StudentAcceptanceConfirmation {
+public final class StudentAcceptanceConfirmation {
 
     // TODO implement
 

@@ -42,6 +42,10 @@ public final class UserGroup extends AbstractFallible {
     private UserStatus status = null;
     private Person person = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
@@ -49,6 +53,15 @@ public final class UserGroup extends AbstractFallible {
     public UserGroup() {
     }
 
+    /**
+     * Default Constructor.
+     *
+     * @param userId    User Id
+     * @param title     Custom Title for a user in this context
+     * @param firstname The Users firstname
+     * @param lastname  The Users lastname
+     * @param status    The Users status in this context
+     */
     public UserGroup(final String userId, final String title, final String firstname, final String lastname, final UserStatus status) {
         this.userId = userId;
         this.title = title;

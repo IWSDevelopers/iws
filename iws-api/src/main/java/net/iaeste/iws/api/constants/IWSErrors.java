@@ -83,6 +83,11 @@ public interface IWSErrors {
     IWSError SESSION_EXISTS = new IWSError(405, "User can only hold one active Session at the time");
 
     /**
+     *
+     */
+    IWSError TOO_MANY_ACTIVE_SESSIONS = new IWSError(406, "The system has reached the maximum allowed number of concurrently active users.");
+
+    /**
      * The database is inaccessible.
      */
     IWSError DATABASE_UNREACHABLE = new IWSError(501, "Database unreachable");

@@ -58,8 +58,13 @@ public final class PublishingGroup extends AbstractVerification {
     /** The List of Committees, to make up this Publishing Group. */
     private List<Group> groups = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
-     * Empty Constructor, required for some communication frameworks.
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
      */
     public PublishingGroup() {
     }

@@ -32,6 +32,10 @@ public final class FetchStudentApplicationsRequest extends AbstractVerification 
 
     private String offerId = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

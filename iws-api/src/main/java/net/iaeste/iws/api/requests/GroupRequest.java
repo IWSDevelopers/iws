@@ -35,6 +35,10 @@ public final class GroupRequest extends AbstractVerification {
     private Group group = null;
     private User user = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

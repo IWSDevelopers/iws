@@ -18,6 +18,7 @@
 package net.iaeste.iws.core.exceptions;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 
@@ -40,5 +41,16 @@ public class SessionException extends IWSException {
      */
     public SessionException(final String message) {
         super(IWSErrors.SESSION_EXISTS, message);
+    }
+
+    /**
+     * Default Constructor, for the case where we have other issues regardding
+     * Session handling, and need an error.
+     *
+     * @param error    IWS Error
+     * @param message  Specific message, regarding the problem
+     */
+    public SessionException(final IWSError error, final String message) {
+        super(error, message);
     }
 }

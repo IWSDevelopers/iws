@@ -16,8 +16,11 @@ package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.dtos.Person;
+import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.PersonEntity;
 
 /**
  * Transformation of Common Objects.
@@ -32,6 +35,56 @@ public final class CommonTransformer {
      * Private Constructor, this is a utility class.
      */
     private CommonTransformer() {
+    }
+
+    public static Date transform(final java.util.Date date) {
+        return new Date(date);
+    }
+
+    public static java.util.Date transform(final Date date) {
+        return date.toDate();
+    }
+
+    public static Person transform(final PersonEntity entity) {
+        final Person person;
+
+        if (entity != null) {
+            person = new Person();
+
+            person.setId(entity.getExternalId());
+            person.setAddress(transform(entity.getAddress()));
+            person.setAlternateEmail(entity.getEmail());
+            person.setPhone(entity.getPhone());
+            person.setMobile(entity.getMobile());
+            person.setFax(entity.getFax());
+            person.setBirthday(transform(entity.getBirthday()));
+            person.setGender(entity.getGender());
+        } else {
+            person = null;
+        }
+
+        return person;
+    }
+
+    public static PersonEntity transform(final Person person) {
+        final PersonEntity entity;
+
+        if (person != null) {
+            entity = new PersonEntity();
+
+            entity.setExternalId(person.getId());
+            entity.setAddress(transform(person.getAddress()));
+            entity.setEmail(person.getAlternateEmail());
+            entity.setPhone(person.getPhone());
+            entity.setMobile(person.getMobile());
+            entity.setFax(person.getFax());
+            entity.setBirthday(transform(person.getBirthday()));
+            entity.setGender(person.getGender());
+        } else {
+            entity = null;
+        }
+
+        return entity;
     }
 
     public static Address transform(final AddressEntity entity) {
@@ -56,6 +109,7 @@ public final class CommonTransformer {
 
     public static AddressEntity transform(final Address address) {
         final AddressEntity entity;
+
         if (address != null) {
             entity = new AddressEntity();
 

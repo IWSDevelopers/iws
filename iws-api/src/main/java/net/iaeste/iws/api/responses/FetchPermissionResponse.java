@@ -38,6 +38,10 @@ public final class FetchPermissionResponse extends AbstractFallible {
     private String userId;
     private List<Authorization> authorizations;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

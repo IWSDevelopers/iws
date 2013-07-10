@@ -38,6 +38,10 @@ public final class FetchGroupResponse extends AbstractFallible {
     private List<User> users = null;
     private List<Group> subGroups = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

@@ -29,7 +29,7 @@ import java.util.Map;
  * @since   1.7
  * @noinspection OverlyComplexMethod
  */
-public class StudentAcceptance extends AbstractVerification {
+public final class StudentAcceptance extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -42,6 +42,10 @@ public class StudentAcceptance extends AbstractVerification {
     private String contactPersonEmail = null;
     // allow up to 5000 characters
     private String additionalInformation = null;
+
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
 
     /**
      * Empty Constructor, to use if the setters are invoked. This is required

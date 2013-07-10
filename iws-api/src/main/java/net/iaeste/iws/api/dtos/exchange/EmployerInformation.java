@@ -27,7 +27,9 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection OverlyComplexMethod
+ * @deprecated control of the Employer is moved into the Employer Object
  */
+@Deprecated
 public final class EmployerInformation extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
@@ -45,7 +47,14 @@ public final class EmployerInformation extends AbstractVerification {
     private Float weeklyHours = null;
     private Float dailyHours = null;
 
-    /** Empty Constructor, required for some communication frameworks. */
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
     public EmployerInformation() {
     }
 

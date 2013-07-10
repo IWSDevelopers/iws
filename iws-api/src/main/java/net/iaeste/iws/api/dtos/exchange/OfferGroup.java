@@ -36,8 +36,13 @@ public final class OfferGroup extends AbstractFallible {
     private DateTime modified = null;
     private DateTime created = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
-     * Empty Constructor, required for some communication frameworks.
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
      */
     public OfferGroup() {
     }

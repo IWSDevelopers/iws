@@ -42,6 +42,10 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
     /** The role which te user will be given in the Group. */
     private Role role = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

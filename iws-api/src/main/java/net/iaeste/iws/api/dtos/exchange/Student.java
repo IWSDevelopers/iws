@@ -37,6 +37,10 @@ public final class Student extends AbstractVerification {
     private String studentName = null;
     private Group group = null;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.

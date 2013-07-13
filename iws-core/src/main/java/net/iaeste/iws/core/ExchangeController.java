@@ -26,9 +26,11 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
@@ -69,12 +71,34 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
+    public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
+        LOG.trace("Starting processEmployer()");
+        EmployerResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_EMPLOYER);
+            verify(request);
+
+            final ExchangeService service = factory.prepareExchangeService();
+            response = service.processEmployer(authentication, request);
+        } catch (IWSException e) {
+            response = new EmployerResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished processEmployer()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         LOG.trace("Starting fetchEmployers()");
         FetchEmployerInformationResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_EMPLOYERS);
             verify(request);
 
             final ExchangeService service = factory.prepareExchangeService();

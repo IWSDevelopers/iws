@@ -17,9 +17,7 @@ package net.iaeste.iws.client.spring;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.*;
-import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.responses.exchange.*;
-import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.ejb.ExchangeBean;
@@ -67,9 +65,17 @@ public final class ExchangeSpringClient implements Exchange {
         exchangeBean.setNotificationManager(notificationBean);
         exchangeBean.postConstruct();
 
-        // Set our Exchange implementation to the Exchange EJB, running withing
+        // Set our Exchange implementation to the Exchange EJB, running within
         // a "Spring Container".
         client = exchangeBean;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
+        return client.processEmployer(token, request);
     }
 
     /**

@@ -17,9 +17,7 @@ package net.iaeste.iws.fitnesse.callers;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.*;
-import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.responses.exchange.*;
-import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -38,6 +36,18 @@ public final class ExchangeCaller implements Exchange {
 
     // The Client handles the IWS for us, we use use it
     private final Exchange caller = new ExchangeClient();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
+        try {
+            return caller.processEmployer(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
 
     /**
      * {@inheritDoc}

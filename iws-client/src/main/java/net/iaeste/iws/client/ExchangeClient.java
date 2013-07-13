@@ -17,9 +17,7 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.*;
-import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.responses.exchange.*;
-import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 /**
@@ -37,6 +35,14 @@ public final class ExchangeClient implements Exchange {
      */
     public ExchangeClient() {
         client = ClientFactory.getInstance().getExchangeImplementation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
+        return client.processEmployer(token, request);
     }
 
     /**

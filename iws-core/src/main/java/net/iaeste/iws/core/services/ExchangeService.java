@@ -26,7 +26,6 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
-
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
@@ -35,9 +34,11 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
@@ -46,6 +47,8 @@ import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -53,8 +56,6 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
-import net.iaeste.iws.common.notification.NotificationType;
-import net.iaeste.iws.core.notifications.Notifications;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,6 +78,10 @@ public final class ExchangeService extends CommonService {
     public ExchangeService(final ExchangeDao dao, final Notifications notifications) {
         this.dao = dao;
         this.notifications = notifications;
+    }
+
+    public EmployerResponse processEmployer(final Authentication authentication, final ProcessEmployerRequest request) {
+        throw new NotImplementedException("TDB");
     }
 
     /**
@@ -329,7 +334,7 @@ public final class ExchangeService extends CommonService {
         verifyNotSharingToItself(authentication, groupEntities);
     }
 
-    private void verifyNotSharingToItself(final Authentication authentication, final List<GroupEntity> groupEntities) {
+    private static void verifyNotSharingToItself(final Authentication authentication, final List<GroupEntity> groupEntities) {
         // All operations in the Exchange module requires that a user is a
         // member of either a National or SAR group. As it is only possible to
         // be member of one, then the Authentication/Authorization module can
@@ -359,7 +364,7 @@ public final class ExchangeService extends CommonService {
         return groups;
     }
 
-    private void verifyGroupTypeToBeShareTo(final List<GroupEntity> groups) {
+    private static void verifyGroupTypeToBeShareTo(final List<GroupEntity> groups) {
         for (final GroupEntity group : groups) {
             if (group.getGroupType().getGrouptype() != GroupType.NATIONAL && group.getGroupType().getGrouptype() != GroupType.SAR) {
                 throw new VerificationException("The group type '" + group.getGroupType().getGrouptype() + "' is not allowed to be used for publishing of offers.");

@@ -23,9 +23,11 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
@@ -39,19 +41,29 @@ import net.iaeste.iws.api.util.Fallible;
 import javax.ejb.Remote;
 
 /**
- * Exchange related functionality is covered with this interface. Only exception here, the
- * handling of students is done vai the {@link Student} interface.
+ * Exchange related functionality is covered with this interface. Only exception
+ * here, the handling of students is done vai the {@link Student} interface.
  */
 @Remote
 public interface Exchange {
 
     /**
-     * Get a list of employer information based on a substring of the employer name. This is basically used to provide
-     * an auto-completion function when entering offers. This list only contains the latest entered employer information.
-     * So the returned result is selected by distinct names of the employer. This also means, if the employer name
-     * is changed, an additional entry is generated.
      *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param token
+     * @param request
+     * @return
+     */
+    EmployerResponse processEmployer(AuthenticationToken token, ProcessEmployerRequest request);
+
+    /**
+     * Get a list of employer information based on a substring of the employer
+     * name. This is basically used to provide an auto-completion function when
+     * entering offers. This list only contains the latest entered employer
+     * information. So the returned result is selected by distinct names of the
+     * employer. This also means, if the employer name is changed, an additional
+     * entry is generated.
+     *
+     * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request Request object contains only a string representing a substring of the employers name for which
      *                all possible results a re aggregated.
      * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.EmployerInformation}

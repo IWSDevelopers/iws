@@ -167,7 +167,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         //return query.getResultList();
     }
 
-    private List<OfferEntity> removeDuplicateNames(final List<OfferEntity> found) {
+    private static List<OfferEntity> removeDuplicateNames(final List<OfferEntity> found) {
         final List<OfferEntity> result = new ArrayList<>(found.size());
         final List<String> names = new ArrayList<>(found.size());
 

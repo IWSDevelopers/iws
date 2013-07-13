@@ -60,19 +60,19 @@ public class MessageServer {
             System.setProperty("FFMQ_BASE", "..");
 
             final Settings settings = createEngineSettings();
-            engine = new FFMQEngine(MessageServer.engineName, settings);
+            engine = new FFMQEngine(engineName, settings);
 
             LOG.trace("Starting listener");
-            tcpListener = new TcpListener(engine, MessageServer.listenAddr, MessageServer.listenPort, settings, null);
+            tcpListener = new TcpListener(engine, listenAddr, listenPort, settings, null);
             tcpListener.start();
 
             final QueueDefinition queueDef = new QueueDefinition();
-            queueDef.setName(MessageServer.queueNameForFfmq);
+            queueDef.setName(queueNameForFfmq);
             queueDef.setUseJournal(false);
             queueDef.setMaxNonPersistentMessages(1000);
             queueDef.check();
 
-            if(engine.getDestinationDefinitionProvider().hasQueueDefinition(MessageServer.queueNameForFfmq)) {
+            if(engine.getDestinationDefinitionProvider().hasQueueDefinition(queueNameForFfmq)) {
                 engine.getDestinationDefinitionProvider().removeQueueDefinition(queueDef);
             }
 
@@ -103,7 +103,7 @@ public class MessageServer {
         return deployed;
     }
 
-    private Settings createEngineSettings() {
+    private static Settings createEngineSettings() {
         final Settings settings = new Settings();
         settings.setStringProperty(FFMQCoreSettings.DESTINATION_DEFINITIONS_DIR, ".");
         settings.setStringProperty(FFMQCoreSettings.BRIDGE_DEFINITIONS_DIR, ".");

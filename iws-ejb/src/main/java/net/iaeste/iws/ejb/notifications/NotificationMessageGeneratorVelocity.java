@@ -63,7 +63,7 @@ public class NotificationMessageGeneratorVelocity implements NotificationMessage
 //        }
     }
 
-    private Map<String, String> generate(final String dir, final String templateName, final String titleTemplateName, final VelocityContext input) {
+    private static Map<String, String> generate(final String dir, final String templateName, final String titleTemplateName, final VelocityContext input) {
         try {
             final Map<String, String> result = new HashMap<>(2);
             final VelocityEngine ve = new VelocityEngine();

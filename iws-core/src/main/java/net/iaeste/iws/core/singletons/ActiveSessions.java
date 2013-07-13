@@ -56,6 +56,7 @@ public final class ActiveSessions {
      * Private Constructor, this is a Singleton class.
      *
      * @param maxActiveTokens Maximum number of concurrently active tokens allowed
+     * @param maxMillisToLive Maximum time an idle session may live
      */
     private ActiveSessions(final int maxActiveTokens, final long maxMillisToLive) {
         this.lock = new Object();

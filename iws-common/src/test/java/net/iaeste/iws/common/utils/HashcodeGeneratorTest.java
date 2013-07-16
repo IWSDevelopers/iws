@@ -42,9 +42,9 @@ public class HashcodeGeneratorTest {
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "5db5bb9b3580b9f48f92edeef5e2d2db";
-        final String expectedWithDot = "bfea007164e4532e89402307c26f7304";
-        final String expectedEmpty = "e72842c87d534d45937e7b0ae0f9df11";
+        final String expectedWithoutDot = "0fe8aaf6e2e9078bc52c94d770c18a20";
+        final String expectedWithDot = "180268329af4c9519e462b90de2eb8a3";
+        final String expectedEmpty = "25fc6113c0f927d7ca6dcfb77abb9ff1";
         final String expectedNull = null;
 
         // Perform the testing
@@ -76,9 +76,9 @@ public class HashcodeGeneratorTest {
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "4d1c414c460ed037f175ca887b1bc49c60e6b9b9b26196b2e481b28e532be5a2";
-        final String expectedWithDot = "16e05355a6e334fc4598ec349f8eeb1e975e0786eca7cf9780e713f5c8ff709b";
-        final String expectedEmpty = "d43dafe0ff3f8a1f81d2b39b6a13e63414b28882872a9b818d37c7d93a4497b3";
+        final String expectedWithoutDot = "108e5dbbef167805880a97e448257268315ed44e73e75051d0210993b331ae85";
+        final String expectedWithDot = "a5def6e4a29b92f1e8d630f0a192bcbf445091faecb3bd784301597e5ff6c0f5";
+        final String expectedEmpty = "68b441793bce5e76b08585f809043f2697040fa8f52a4cdc2039a10b6ce3d93a";
         final String expectedNull = null;
 
         // Perform the testing
@@ -108,9 +108,9 @@ public class HashcodeGeneratorTest {
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "31d428bca45e9c0c10e7f60b25fa2f73f007c3ae5ada9404e20394861c80a984c316d45667f4a585397508213b2898ec";
-        final String expectedWithDot = "210accc9d0dfcd84d8bb9146e6bb3ce6a76444adcfc2c4147fdf2dbc7b5050eeed72e3d6c84bc417bf0564e9c85cc452";
-        final String expectedEmpty = "267bec1477cabf4c700165e7d801472e13dbccabe136c6628252d92259e8f2eed7061d275a3c414ff73d1a64800cdc89";
+        final String expectedWithoutDot = "10f3e96d6414e2d9a2d02a812d27b56595f38942a35456ac02e5d305360587ee69a26e4bf5d38d6d46046fb4a4dcf962";
+        final String expectedWithDot = "06b3b3a7a0abef11260e2291795ba612d9122e286ec7ea4c6a9b18b140bf765014eed0dbcb24362e68a6ad5b87ad9f95";
+        final String expectedEmpty = "44ff5a6416d2cabffdb5e04b2f695298cd7013680e026476d0168d6bcc4e9167fccb38c20185873386205cf8acec761d";
         final String expectedNull = null;
 
         // Perform the testing
@@ -140,9 +140,9 @@ public class HashcodeGeneratorTest {
         final String textWithDot = "The quick brown fox jumps over the lazy dog.";
         final String textEmpty = "";
         final String textNull = null;
-        final String expectedWithoutDot = "51dac5d4ac42d315e16421c34f6e95213e0ad43a732e04d6cc7bd2b29a4049c68e7e4b2574385db735c985bbdea47ebfcfb51e82a20b395d11ef10411f036b62";
-        final String expectedWithDot = "cb2e94f53ec8a45683cef5d18248a83de019ae3cfd7d6f9ff2638ca46eb175a02323f2d16050b3b68fbe76374ed6e8fee24feb62b9ef81878ff1d5d8336a3e52";
-        final String expectedEmpty = "3723e235ab2e8113200a3d9b0ad800f2a3cf49b25004b03fa2f1820d6640c04af10bd9e1d73fb3bfce53e883e22431a188258518e98a0f4dcc421382f8f02e4e";
+        final String expectedWithoutDot = "5a15481fe88d39be1c83c2f72796cc8a70e84272640d5c7209ad9aefa642db11ae8fa1945bc308c15c36d591ea1d047692530c95b68fcc309bbe63889dba363e";
+        final String expectedWithDot = "c462bcb38867623c2f4ee18b5b1147fbd9263a0ebdf9cf9098b7d30941463c1699434b722268be2d221b80359bb2b2f7e19862f1f99e205ce835e6f38d33d4a3";
+        final String expectedEmpty = "74a520c9fc7d1045edac9fd587897f6ff9f9f4896591eac8589f03a50295f7da8bb342e7dc32649bb44f2e556e179b2efb2d2fa46f5f50de63a7d6c241afe606";
         final String expectedNull = null;
 
         // Perform the testing

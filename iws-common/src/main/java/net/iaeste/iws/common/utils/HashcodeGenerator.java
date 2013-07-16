@@ -29,11 +29,9 @@ import java.security.NoSuchAlgorithmException;
  * their origin, we're simply adding a salt to it. a Salt is a value that is
  * controlled by the system, and automatically added to both the hashing and
  * also used for the verification.<br />
- *   The IWS uses a three-part salt, one with a hardcoded value that requires
- * that a hacker needs to get hold of the source code for the sytem. A server
- * configured value located in a properties file and finally a user-specific
- * salt. This means that a hacker needs access to all three elements, including
- * the clear-text version of the password to find it.
+ *   The IWS uses a two-part salt, one with a hardcoded value to make it harder
+ * for hackers to crack passwords. The two parts consists of a user specific
+ * salt, and a hardcoded salt.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -46,7 +44,7 @@ public final class HashcodeGenerator {
      * salt value, will cause all passwords, sessions and other information
      * where a hash value is needed, to fail!
      */
-    private static final String HARDCODED_SALT = "Common og algemein øæåüöäßłđ!#¤%&/()=?±}][{¥½$£@¡ værdi für salt, mit sjove names och mixed Sprache";
+    private static final String HARDCODED_SALT = "The quick brown fox jumps over the lazy dog <.,:;-_ 1234567890 $%&/()=?>";
 
     // The Algorithm's, which we'll support
     private static final String HASHCODE_ALGORITHM_MD5 = "MD5";

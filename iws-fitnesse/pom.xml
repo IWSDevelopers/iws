@@ -101,10 +101,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.javaconfig</groupId>-->
-            <!--<artifactId>spring-javaconfig</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>

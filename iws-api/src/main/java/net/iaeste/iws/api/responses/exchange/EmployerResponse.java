@@ -16,7 +16,7 @@ package net.iaeste.iws.api.responses.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
@@ -30,7 +30,7 @@ public final class EmployerResponse extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private EmployerInformation employer = null;
+    private Employer employer = null;
 
     // =========================================================================
     // Object Constructors
@@ -48,7 +48,7 @@ public final class EmployerResponse extends AbstractFallible {
      *
      * @param employer EmployerInformation
      */
-    public EmployerResponse(final EmployerInformation employer) {
+    public EmployerResponse(final Employer employer) {
         setEmployer(employer);
     }
 
@@ -66,12 +66,12 @@ public final class EmployerResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setEmployer(final EmployerInformation employer) {
-        this.employer = new EmployerInformation(employer);
+    public void setEmployer(final Employer employer) {
+        this.employer = new Employer(employer);
     }
 
-    public EmployerInformation getEmployer() {
-        return new EmployerInformation(employer);
+    public Employer getEmployer() {
+        return new Employer(employer);
     }
 
     // =========================================================================

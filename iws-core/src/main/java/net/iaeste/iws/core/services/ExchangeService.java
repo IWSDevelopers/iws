@@ -52,6 +52,7 @@ import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.entities.EmployerEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
@@ -81,7 +82,25 @@ public final class ExchangeService extends CommonService {
     }
 
     public EmployerResponse processEmployer(final Authentication authentication, final ProcessEmployerRequest request) {
-        throw new NotImplementedException("TDB");
+        final EmployerEntity newEntity = transform(request.getEmployer());
+        final String externalId = request.getEmployer().getId();
+        final EmployerResponse response;
+
+        // If no ExternalId is given, we're assuming it is a new Employer
+        if (externalId != null) {
+            final EmployerEntity existingEntity = dao.findEmployer(externalId);
+            dao.persist(authentication, existingEntity, newEntity);
+            response = new EmployerResponse(transform(existingEntity));
+        } else {
+            // New Employer
+            newEntity.setGroup(authentication.getGroup());
+            // Set the ExternalId of the Employer
+            newEntity.setExternalId(UUID.randomUUID().toString());
+            dao.persist(newEntity);
+            response = new EmployerResponse(transform(newEntity));
+        }
+
+        return response;
     }
 
     /**

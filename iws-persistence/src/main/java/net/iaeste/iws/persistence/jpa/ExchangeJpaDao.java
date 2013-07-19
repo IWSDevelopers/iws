@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.entities.EmployerEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
@@ -41,6 +42,17 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      */
     public ExchangeJpaDao(final EntityManager entityManager) {
         super(entityManager);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployerEntity findEmployer(String externalId) {
+        final Query query = entityManager.createNamedQuery("employer.findByExternalId");
+        query.setParameter("eid", externalId);
+
+        return findUniqueResult(query, "Employer");
     }
 
     /**
@@ -164,7 +176,6 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("employerName", '%' + employerName.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
 
         return removeDuplicateNames(query.getResultList());
-        //return query.getResultList();
     }
 
     private static List<OfferEntity> removeDuplicateNames(final List<OfferEntity> found) {

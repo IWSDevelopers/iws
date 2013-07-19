@@ -14,14 +14,17 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Field;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.Mergeable;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
-import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
 import net.iaeste.iws.persistence.views.IWSView;
 
@@ -156,5 +159,45 @@ public class BasicJpaDao implements BasicDao {
         monitoringEntity.setFields(data);
 
         entityManager.persist(monitoringEntity);
+    }
+
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
+
+    /**
+     * Resolves the given Query, and will throw an Identification Exception, if
+     * a unique result was not found.
+     *
+     * @param query      Query to resolve
+     * @param entityName Name of the entity expected, used if exception is thrown
+     * @return Unique Entity
+     */
+    protected <T extends IWSEntity> T findUniqueResult(final Query query, final String entityName) {
+        final List<T> found = query.getResultList();
+
+        if (found.isEmpty()) {
+            throw new IdentificationException("No " + entityName + " was found.");
+        }
+
+        if (found.size() > 1) {
+            throw new IdentificationException("Multiple " + entityName + "s were found.");
+        }
+
+        return found.get(0);
+    }
+
+    protected static <T extends IWSEntity> T resolveResultList(final List<T> list) {
+        final T user;
+
+        if (list.size() == 1) {
+            user = list.get(0);
+        } else if (list.isEmpty()) {
+            user = null;
+        } else {
+            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "Although Record should be unique, multiple records exists.");
+        }
+
+        return user;
     }
 }

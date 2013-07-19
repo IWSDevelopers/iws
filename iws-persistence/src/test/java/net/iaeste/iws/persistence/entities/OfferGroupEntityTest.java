@@ -14,9 +14,12 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.persistence.AccessDao;
@@ -40,9 +43,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * Contains tests for OfferEntity and ExchangeJpaDao
@@ -92,8 +92,7 @@ public class OfferGroupEntityTest {
 
     private static OfferEntity getMinimalOffer() {
         final OfferEntity offer = new OfferEntity();
-        //FIXME: auto UUID generation should be done in persist method
-        offer.setExternalId(UUID.randomUUID().toString());
+
         offer.setRefNo(REF_NO);
         offer.setEmployerName(EMPLOYER_NAME);
         offer.setStudyLevels(STUDY_LEVELS);
@@ -106,6 +105,7 @@ public class OfferGroupEntityTest {
         offer.setWeeklyHours(WEEKLY_HOURS);
         offer.setFromDate(FROM_DATE);
         offer.setToDate(TO_DATE);
+
         return offer;
     }
 
@@ -127,6 +127,10 @@ public class OfferGroupEntityTest {
     @Transactional
     public void testFindGroupsForSharedOffer() {
         assertThat(offerDao.findAllOffers(authentication).size(), is(0));
+        // As we're using the Persist method directly, and not going via the
+        // Business Logic, then the value for the ExternalId is not set. Hence,
+        // we're setting it here explicitly.
+        offer.setExternalId(UUID.randomUUID().toString());
         offerDao.persist(authentication, offer);
 
         assertThat(offerDao.findAllOffers(authentication).size(), is(1));

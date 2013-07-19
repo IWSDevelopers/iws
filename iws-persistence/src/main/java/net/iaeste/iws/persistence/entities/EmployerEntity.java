@@ -21,6 +21,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,6 +37,15 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@NamedQueries({
+        @NamedQuery(
+                name = "employer.findAll",
+                query = "select e from EmployerEntity e"),
+        @NamedQuery(
+                name = "employer.findByExternalId",
+                query = "select e from EmployerEntity e " +
+                        "where e.externalId = :eid")
+})
 @Entity
 @Table(name = "employers")
 public class EmployerEntity implements Mergeable<EmployerEntity> {

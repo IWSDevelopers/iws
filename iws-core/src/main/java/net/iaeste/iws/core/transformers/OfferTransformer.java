@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
@@ -22,6 +23,7 @@ import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.persistence.entities.EmployerEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
 
@@ -196,6 +198,56 @@ public final class OfferTransformer {
 
             result.setModified(new DateTime(offer.getModified()));
             result.setCreated(new DateTime(offer.getCreated()));
+        }
+
+        return result;
+    }
+
+    public static Employer transform(final EmployerEntity entity) {
+        final Employer result;
+
+        if (entity != null) {
+            result = new Employer();
+
+            result.setId(entity.getExternalId());
+            result.setName(entity.getName());
+            result.setDepartment(entity.getDepartment());
+            result.setBusiness(entity.getBusiness());
+            //result.setAddress(transform(entity.getAddress()));
+            result.setEmployeesCount(entity.getNumberOfEmployees());
+            result.setWebsite(entity.getWebsite());
+            //result.setWorkingPlace(entity.getWorkingPlace());
+            //result.setNearestAirport(entity.getNearestAirport());
+            //result.setNearestPubTransport(entity.getNearestPubTransport());
+            //result.setWeeklyHours(entity.getWeeklyHours());
+            //result.setDailyHours(entity.getDailyHours());
+        } else {
+            result = null;
+        }
+
+        return result;
+    }
+
+    public static EmployerEntity transform(final Employer employer) {
+        final EmployerEntity result;
+
+        if (employer != null) {
+            result = new EmployerEntity();
+
+            result.setExternalId(employer.getId());
+            result.setName(employer.getName());
+            result.setDepartment(employer.getDepartment());
+            result.setBusiness(employer.getBusiness());
+            //result.setAddress(transform(entity.getAddress()));
+            result.setNumberOfEmployees(employer.getEmployeesCount());
+            result.setWebsite(employer.getWebsite());
+            //result.setWorkingPlace(entity.getWorkingPlace());
+            //result.setNearestAirport(entity.getNearestAirport());
+            //result.setNearestPubTransport(entity.getNearestPubTransport());
+            //result.setWeeklyHours(entity.getWeeklyHours());
+            //result.setDailyHours(entity.getDailyHours());
+        } else {
+            result = null;
         }
 
         return result;

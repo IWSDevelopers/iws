@@ -15,12 +15,10 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.persistence.AccessDao;
@@ -398,31 +396,26 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     // Internal Methods
     // =========================================================================
 
-    private static <T extends IWSEntity> T findUniqueResult(final Query query, final String name) {
+    /**
+     * Overrides the parent method, since for Access, we're expecting a
+     * different exception, if a unique result was not found.
+     *
+     * @param query      Query to resolve
+     * @param entityName Name of the entity expected, used if exception is thrown
+     * @return Unique result
+     */
+    @Override
+    protected <T extends IWSEntity> T findUniqueResult(final Query query, final String entityName) {
         final List<T> found = query.getResultList();
 
         if (found.isEmpty()) {
-            throw new AuthenticationException("No " + name + " was found.");
+            throw new AuthenticationException("No " + entityName + " was found.");
         }
 
         if (found.size() > 1) {
-            throw new AuthenticationException("Multiple " + name + "s were found.");
+            throw new AuthenticationException("Multiple " + entityName + "s were found.");
         }
 
-        return found.get(0);
-    }
-
-    private static <T extends IWSEntity> T resolveResultList(final List<T> list) {
-        final T user;
-
-        if (list.size() == 1) {
-            user = list.get(0);
-        } else if (list.isEmpty()) {
-            user = null;
-        } else {
-            throw new IWSException(IWSErrors.DATABASE_CONSTRAINT_INCONSISTENCY, "Although Record should be unique, multiple records exists.");
-        }
-
-        return user;
+        return super.findUniqueResult(query, entityName);
     }
 }

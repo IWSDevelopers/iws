@@ -1,0 +1,193 @@
+/*
+ * =============================================================================
+ * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
+ * -----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.services.ExchangeFetchService
+ * -----------------------------------------------------------------------------
+ * This software is provided by the members of the IAESTE Internet Development
+ * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
+ * redistributed. IAESTE A.s.b.l. is not permitted to sell this software.
+ *
+ * This software is provided "as is"; the IDT or individuals within the IDT
+ * cannot be held legally responsible for any problems the software may cause.
+ * =============================================================================
+ */
+package net.iaeste.iws.core.services;
+
+import static net.iaeste.iws.core.transformers.OfferTransformer.transform;
+
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
+import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.core.transformers.AdministrationTransformer;
+import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.entities.OfferEntity;
+import net.iaeste.iws.persistence.entities.OfferGroupEntity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * This Service Class contains the read-only parts of the Exchange methods.
+ *
+ * @author Kim Jensen / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since 1.7
+ */
+public final class ExchangeFetchService extends CommonService {
+
+    private final ExchangeDao dao;
+
+    public ExchangeFetchService(final ExchangeDao dao) {
+        this.dao = dao;
+    }
+
+    public FetchOffersResponse fetchOffers(final Authentication authentication, final FetchOffersRequest request) {
+        final FetchOffersResponse response;
+
+        switch (request.getFetchType()) {
+            case ALL:
+                response = new FetchOffersResponse(findAllOffers(authentication));
+                break;
+            case SHARED:
+                response = new FetchOffersResponse(findSharedOffers(authentication));
+                break;
+            default:
+                response = new FetchOffersResponse(IWSErrors.NOT_PERMITTED, "The search type is not permitted");
+        }
+
+        return response;
+    }
+
+    public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
+        final FetchEmployerInformationResponse response;
+
+        response = new FetchEmployerInformationResponse(convertToEmployerInformationList(dao.findOffersByLikeEmployerName(authentication, request.getName())));
+
+        return response;
+    }
+
+    private List<Offer> findAllOffers(final Authentication authentication) {
+        // Must be extended with Pagination
+        final List<OfferEntity> found = dao.findAllOffers(authentication);
+
+        return convertEntityList(found);
+    }
+
+    private List<Offer> findOffers(final Authentication authentication, final List<Long> ids) {
+        final List<OfferEntity> found = dao.findOffers(authentication, ids);
+
+        return convertEntityList(found);
+    }
+
+    private List<Offer> findSharedOffers(final Authentication authentication) {
+        // Must be extended with Pagination
+        final List<OfferEntity> found = new ArrayList<>();
+        final java.util.Date now = new Date().toDate();
+
+        for (final OfferEntity offer : dao.findSharedOffers(authentication)) {
+            if (!offer.getNominationDeadline().before(now)) {
+                found.add(offer);
+            }
+        }
+
+        return convertEntityList(found);
+    }
+
+    private static List<Offer> convertEntityList(final List<OfferEntity> found) {
+        final List<Offer> result = new ArrayList<>(found.size());
+
+        for (final OfferEntity entity : found) {
+            result.add(transform(entity));
+        }
+
+        return result;
+    }
+
+    private static List<EmployerInformation> convertToEmployerInformationList(final List<OfferEntity> found) {
+        final List<EmployerInformation> result = new ArrayList<>(found.size());
+
+        for (final OfferEntity entity : found) {
+            result.add(transform(EmployerInformation.class, entity));
+        }
+
+        return result;
+    }
+
+    private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
+        final List<OfferGroup> result = new ArrayList<>(found.size());
+
+        for (final OfferGroupEntity entity : found) {
+            result.add(transform(OfferGroupEntity.class, entity));
+        }
+
+        return result;
+    }
+
+    public FetchOfferTemplateResponse fetchOfferTemplates(final Authentication authentication, final FetchOfferTemplatesRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public FetchPublishGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final Authentication authentication, final FetchGroupsForSharingRequest request) {
+        final List<Group> groupList = AdministrationTransformer.transform(dao.findGroupsForSharing(authentication.getGroup()));
+
+        return new FetchGroupsForSharingResponse(groupList);
+    }
+
+    private void verifyOffersOwnership(final Authentication authentication, final Set<String> offerExternalIds) {
+        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, offerExternalIds);
+        final Set<String> fetchedOffersExtId = new HashSet<>(offers.size());
+        for (final OfferEntity offer : offers) {
+            fetchedOffersExtId.add(offer.getExternalId());
+        }
+
+        for (final String externalId : offerExternalIds) {
+            if (!fetchedOffersExtId.contains(externalId)) {
+                throw new VerificationException("The offer with externalId '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
+            }
+        }
+    }
+
+    public FetchPublishedGroupsResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishedGroupsRequest request) {
+        //TODO distinguish somehow a request for info about offers shared 'to me' and 'by me', now it's 'by me'
+        final FetchPublishedGroupsResponse response;
+
+        verifyOffersOwnership(authentication, new HashSet<>(request.getOfferIds()));
+
+        final List<String> externalIds = request.getOfferIds();
+        final Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?
+        for (final String externalId : externalIds) {
+            result.put(externalId, convertOfferGroupEntityList(dao.findInfoForSharedOffer(externalId)));
+        }
+
+        response = new FetchPublishedGroupsResponse(result);
+
+        return response;
+    }
+}

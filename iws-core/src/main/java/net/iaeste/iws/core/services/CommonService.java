@@ -17,7 +17,10 @@ package net.iaeste.iws.core.services;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.BasicDao;
+import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.PersonEntity;
 
 /**
  * All Common Service funtionality is collected here. Although the Class ought
@@ -28,7 +31,21 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class CommonService {
+public class CommonService<T extends BasicDao> {
+
+    protected final T dao;
+
+    protected CommonService(final T dao) {
+        this.dao = dao;
+    }
+
+    protected PersonEntity processPerson(final PersonEntity givenPerson) {
+        return null;
+    }
+
+    protected AddressEntity processAddress(final AddressEntity givenAddress) {
+        return null;
+    }
 
     /**
      * Formats a given String using our default {@code Locale} and returns the

@@ -48,7 +48,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "employers")
-public class EmployerEntity implements Mergeable<EmployerEntity> {
+public class EmployerEntity implements Updateable<EmployerEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "employer_sequence")
@@ -77,8 +77,12 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
     @Column(name = "department")
     private String department = null;
 
+    //@Column(name = "department")
     //contact_person_id         integer,
-    //address_id                integer,
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private AddressEntity address = null;
 
     @Column(name = "business")
     private String business = null;
@@ -128,6 +132,10 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -140,10 +148,18 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getExternalId() {
         return externalId;
     }
@@ -170,6 +186,14 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
 
     public String getDepartment() {
         return department;
+    }
+
+    public void setAddress(final AddressEntity address) {
+        this.address = address;
+    }
+
+    public AddressEntity getAddress() {
+        return address;
     }
 
     public void setBusiness(final String business) {
@@ -204,14 +228,26 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }
@@ -228,6 +264,7 @@ public class EmployerEntity implements Mergeable<EmployerEntity> {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             name = obj.name;
+            address = obj.address;
             business = obj.business;
             numberOfEmployees = obj.numberOfEmployees;
             website = obj.website;

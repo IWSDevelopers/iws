@@ -14,7 +14,15 @@
  */
 package net.iaeste.iws.persistence;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
+import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.jpa.BasicJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.Test;
@@ -30,9 +38,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -46,21 +51,40 @@ public class BasicDaoTest {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Test
     @Transactional
+    @Test(expected = IdentificationException.class)
     public void testSimpleFunctionality() {
-        final CountryEntity entity = new CountryEntity("id", "Name");
-        final Query query = entityManager.createNamedQuery("country.findByName");
-        query.setParameter("name", "Name");
-
+        // The BasicDao contains the core functionality to persist & delete
         final BasicDao dao = new BasicJpaDao(entityManager);
+
+        // Prepare an Entity to work with. The Address is a good example, since
+        // it is a fundamental Entity, and thus used many places.
+        final AddressEntity entity = new AddressEntity();
+        final CountryEntity country = findCountryEntity("AT");
+        entity.setCountry(country);
+
+        // First, let's try to persist it
         dao.persist(entity);
-        final List<CountryEntity> found1 = query.getResultList ();
 
+        // Now, we should have both an Internal & External Id
+        assertThat(entity.getId(), is(not(nullValue())));
+        assertThat(entity.getExternalId(), is(not(nullValue())));
+
+        // Find the Entity based on both Id's
+        final AddressEntity foundByInternalId = dao.findAddress(entity.getId());
+        final AddressEntity foundByExternalId = dao.findAddress(entity.getExternalId());
+        assertThat(foundByInternalId, is(foundByExternalId));
+
+        // Now, delete and see if we can find it again
         dao.delete(entity);
-        final List<CountryEntity> found2 = query.getResultList ();
+        dao.findAddress(entity.getId());
+    }
 
-        assertThat(found1.size(), is(1));
-        assertThat(found2.size(), is(0));
+    private CountryEntity findCountryEntity(final String code) {
+        final Query query = entityManager.createNamedQuery("country.findByCountryCode");
+        query.setParameter("code", code);
+        final List<CountryEntity> found = query.getResultList();
+
+        return found.get(0);
     }
 }

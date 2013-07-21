@@ -56,10 +56,9 @@ import java.util.UUID;
  * @since   1.7
  * @noinspection ObjectAllocationInLoop
  */
-public final class AccessService extends CommonService {
+public final class AccessService extends CommonService<AccessDao> {
 
     private final Notifications notifications;
-    private final AccessDao dao;
 
     /**
      * Default Constructor. This Service only requires an AccessDao instance,
@@ -69,7 +68,8 @@ public final class AccessService extends CommonService {
      * @param notifications Notification Object
      */
     public AccessService(final AccessDao dao, final Notifications notifications) {
-        this.dao = dao;
+        super(dao);
+
         this.notifications = notifications;
     }
 

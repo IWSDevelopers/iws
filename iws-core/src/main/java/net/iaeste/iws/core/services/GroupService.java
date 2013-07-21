@@ -42,7 +42,6 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -123,7 +122,6 @@ public final class GroupService {
 
         // Create the new Entity
         final GroupEntity groupEntity = new GroupEntity();
-        groupEntity.setExternalId(UUID.randomUUID().toString());
         groupEntity.setGroupName(group.getGroupName());
         groupEntity.setGroupType(groupType);
         groupEntity.setCountry(country);

@@ -34,7 +34,7 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class PersonEntity implements Mergeable<PersonEntity> {
+public class PersonEntity implements Updateable<PersonEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "person_sequence")
@@ -94,6 +94,10 @@ public class PersonEntity implements Mergeable<PersonEntity> {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -106,10 +110,18 @@ public class PersonEntity implements Mergeable<PersonEntity> {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getExternalId() {
         return externalId;
     }
@@ -178,14 +190,26 @@ public class PersonEntity implements Mergeable<PersonEntity> {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }

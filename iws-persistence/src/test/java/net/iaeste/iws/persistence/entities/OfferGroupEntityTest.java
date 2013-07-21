@@ -42,7 +42,6 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Contains tests for OfferEntity and ExchangeJpaDao
@@ -127,10 +126,6 @@ public class OfferGroupEntityTest {
     @Transactional
     public void testFindGroupsForSharedOffer() {
         assertThat(offerDao.findAllOffers(authentication).size(), is(0));
-        // As we're using the Persist method directly, and not going via the
-        // Business Logic, then the value for the ExternalId is not set. Hence,
-        // we're setting it here explicitly.
-        offer.setExternalId(UUID.randomUUID().toString());
         offerDao.persist(authentication, offer);
 
         assertThat(offerDao.findAllOffers(authentication).size(), is(1));

@@ -36,14 +36,22 @@ import java.util.Date;
  * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
-        @NamedQuery(name = "address.findAll",
-                query = "select a from AddressEntity a"),
+        @NamedQuery(name = "address.findById",
+                query = "select a from AddressEntity a " +
+                        "where a.id = :id"),
         @NamedQuery(name = "address.findByExternalId",
-                query = "select a from AddressEntity a where a.externalId = :eid")
+                query = "select a from AddressEntity a where a.externalId = :eid"),
+        @NamedQuery(name = "address.findByValues",
+                query = "select a from AddressEntity a " +
+                        "where lower(a.street1) = :street1" +
+                        "  and lower(a.street2) = :street2" +
+                        "  and lower(a.zip) = :zip" +
+                        "  and lower(a.city) = :city" +
+                        "  and lower(a.region) = :region")
 })
 @Entity
 @Table(name = "addresses")
-public class AddressEntity implements Mergeable<AddressEntity> {
+public class AddressEntity implements Updateable<AddressEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "address_sequence")
@@ -129,19 +137,34 @@ public class AddressEntity implements Mergeable<AddressEntity> {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getExternalId() {
         return externalId;
     }
@@ -210,14 +233,26 @@ public class AddressEntity implements Mergeable<AddressEntity> {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }
@@ -236,6 +271,7 @@ public class AddressEntity implements Mergeable<AddressEntity> {
             street2 = obj.street2;
             zip = obj.zip;
             city = obj.city;
+            region = obj.region;
             pobox = obj.pobox;
             country = obj.country;
         }

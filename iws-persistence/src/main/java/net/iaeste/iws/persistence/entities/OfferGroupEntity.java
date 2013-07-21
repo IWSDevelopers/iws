@@ -132,6 +132,10 @@ public class OfferGroupEntity implements IWSEntity {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -189,10 +193,18 @@ public class OfferGroupEntity implements IWSEntity {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }

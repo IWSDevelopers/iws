@@ -55,7 +55,7 @@ import java.util.Date;
 @Entity
 @Monitored(name = "countries", level = MonitoringLevel.MARKED)
 @Table(name = "countries")
-public class CountryEntity implements Mergeable<CountryEntity> {
+public class CountryEntity implements Updateable<CountryEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "country_sequence")
@@ -146,6 +146,10 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -153,6 +157,22 @@ public class CountryEntity implements Mergeable<CountryEntity> {
     @Override
     public Long getId() {
         return id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setExternalId(final String externalId) {
+        this.countryCode = externalId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getExternalId() {
+        return countryCode;
     }
 
     public void setCountryCode(final String countryCode) {
@@ -251,14 +271,26 @@ public class CountryEntity implements Mergeable<CountryEntity> {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }

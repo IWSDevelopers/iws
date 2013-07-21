@@ -60,7 +60,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "sessions")
-public class SessionEntity implements IWSEntity {
+public class SessionEntity implements Updateable<SessionEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "session_sequence")
@@ -120,13 +120,36 @@ public class SessionEntity implements IWSEntity {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setExternalId(final String externalId) {
+        this.sessionKey = externalId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getExternalId() {
+        return sessionKey;
     }
 
     public void setSessionKey(final String sessionKey) {
@@ -161,19 +184,50 @@ public class SessionEntity implements IWSEntity {
         return sessionData;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
+    }
+
+    // =========================================================================
+    // Entity Standard Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void merge(final SessionEntity obj) {
+        if ((obj != null) && (id != null) && id.equals(obj.id)) {
+            active = obj.active;
+            sessionData = obj.sessionData;
+        }
     }
 }

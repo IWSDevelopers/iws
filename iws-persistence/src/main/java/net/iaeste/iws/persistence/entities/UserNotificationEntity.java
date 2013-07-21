@@ -31,6 +31,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
 /**
  * Entity for user's notification settings
@@ -65,6 +68,13 @@ public class UserNotificationEntity implements IWSEntity {
     @Enumerated(EnumType.STRING)
     private NotificationFrequency frequency = null;
 
+    /**
+     * Timestamp when the Entity was created.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
+
     // =========================================================================
     // Entity Constructors
     // =========================================================================
@@ -92,10 +102,17 @@ public class UserNotificationEntity implements IWSEntity {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
@@ -125,4 +142,19 @@ public class UserNotificationEntity implements IWSEntity {
         return frequency;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getCreated() {
+        return created;
+    }
 }

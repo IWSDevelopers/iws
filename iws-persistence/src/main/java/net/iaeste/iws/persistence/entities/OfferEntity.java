@@ -102,7 +102,7 @@ import java.util.Map;
 })
 @Entity
 @Table(name = "offers")
-public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
+public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_sequence")
@@ -441,6 +441,10 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         this.unavailableTo = unavailableTo;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -453,10 +457,18 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getExternalId() {
         return externalId;
     }
@@ -717,6 +729,10 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         this.status = status;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
@@ -729,10 +745,18 @@ public class OfferEntity implements Mergeable<OfferEntity>, Notifiable {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }

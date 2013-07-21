@@ -15,8 +15,9 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
-import net.iaeste.iws.persistence.entities.Mergeable;
+import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.views.IWSView;
 
@@ -61,7 +62,7 @@ public interface BasicDao {
      * @param entityToPersist   Entity to persist
      * @param changesToBeMerged Changes to merge into the existing Entity
      */
-    <T extends Mergeable<T>> void persist(Authentication authentication, T entityToPersist, T changesToBeMerged);
+    <T extends Updateable<T>> void persist(Authentication authentication, T entityToPersist, T changesToBeMerged);
 
     /**
      * Deletes the given Entity from the database.
@@ -94,4 +95,36 @@ public interface BasicDao {
      * @return List of results from the Query
      */
     <T extends IWSView<T>> List<T> fetchList(Query query, Paginatable page);
+
+    // =========================================================================
+    // Following lookup methods are added here, since they're used often
+    // =========================================================================
+
+    /**
+     * Find Address from the Id. If no such entity exists, then an exception is
+     * thrown, otherwise the found Address Entity is returned.
+     *
+     * @param id Address Id
+     * @return Unique Address Entity
+     */
+    AddressEntity findAddress(Long id);
+
+    /**
+     * Find Address from the Id. If no such entity exists, then an exception is
+     * thrown, otherwise the found Address Entity is returned.
+     *
+     * @param id Address Id
+     * @return Unique Address Entity
+     */
+    AddressEntity findAddress(String externalId);
+
+    /**
+     * Attempts to find a Unique Address Entity, based on the provided
+     * parameters. If no such address exists, then a null is returned, otherwise
+     * the unique address entity is returned.
+     *
+     * @param newAddress New unpersisted Address Entity
+     * @return Unique Address Entity or null
+     */
+    AddressEntity findUniqueAddress(AddressEntity newAddress);
 }

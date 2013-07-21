@@ -64,20 +64,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class ExchangeService extends CommonService {
+public final class ExchangeService extends CommonService<ExchangeDao> {
 
-    private final ExchangeDao dao;
     private final Notifications notifications;
 
     public ExchangeService(final ExchangeDao dao, final Notifications notifications) {
-        this.dao = dao;
+        super(dao);
+
         this.notifications = notifications;
     }
 
@@ -89,14 +88,17 @@ public final class ExchangeService extends CommonService {
         // If no ExternalId is given, we're assuming it is a new Employer
         if (externalId != null) {
             final EmployerEntity existingEntity = dao.findEmployer(externalId);
+
+            // First we'll update the internal Address Entity, and then the Employer
+            dao.persist(authentication, existingEntity.getAddress(), newEntity.getAddress());
             dao.persist(authentication, existingEntity, newEntity);
+
             response = new EmployerResponse(transform(existingEntity));
         } else {
             // New Employer
             newEntity.setGroup(authentication.getGroup());
-            // Set the ExternalId of the Employer
-            newEntity.setExternalId(UUID.randomUUID().toString());
-            dao.persist(newEntity);
+            dao.persist(authentication, newEntity.getAddress());
+            dao.persist(authentication, newEntity);
             response = new EmployerResponse(transform(newEntity));
         }
 
@@ -131,8 +133,6 @@ public final class ExchangeService extends CommonService {
                 // is valid. Since the Country is part of the Group, we can simply
                 // compare the refno with that
                 verifyRefnoValidity(newEntity);
-                // Set the ExternalId of the Offer
-                newEntity.setExternalId(UUID.randomUUID().toString());
                 // Set the Offer status to New
                 newEntity.setStatus(OfferState.NEW);
                 // Persist the Offer with history

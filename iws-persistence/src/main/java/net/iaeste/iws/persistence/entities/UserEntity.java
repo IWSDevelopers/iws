@@ -79,7 +79,7 @@ import java.util.Map;
 })
 @Entity
 @Table(name = "users")
-public class UserEntity implements Mergeable<UserEntity>, Notifiable {
+public class UserEntity implements Updateable<UserEntity>, Notifiable {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_sequence")
@@ -237,6 +237,10 @@ public class UserEntity implements Mergeable<UserEntity>, Notifiable {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -249,10 +253,18 @@ public class UserEntity implements Mergeable<UserEntity>, Notifiable {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getExternalId() {
         return externalId;
     }
@@ -353,14 +365,26 @@ public class UserEntity implements Mergeable<UserEntity>, Notifiable {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }

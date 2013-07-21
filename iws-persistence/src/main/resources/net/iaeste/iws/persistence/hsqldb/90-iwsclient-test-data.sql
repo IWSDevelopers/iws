@@ -10,21 +10,21 @@ insert into users (external_id, status, username, alias, password, salt, firstna
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('6170e527-92b3-4891-9cbb-242dd7e2a925', 'ACTIVE', 'austria5', 'User5.Austria@iaeste.org', '64152ca479467e92de9643c412219e159c41f55cd5655fe4ec55f5679196a691', '59f91419-3784-4764-97ee-6dd14f324ac3', 'User5', 'Austria');
 
 -- Adding the Austrian Users to the Austrian Member & National Groups
-insert into user_to_group (user_id, group_id, role_id) values ( 7, 10, 2);
-insert into user_to_group (user_id, group_id, role_id) values ( 7, 11, 2);
-insert into user_to_group (user_id, group_id, role_id) values ( 7, 12, 2);
-insert into user_to_group (user_id, group_id, role_id) values ( 8, 10, 2);
-insert into user_to_group (user_id, group_id, role_id) values ( 8, 11, 2);
-insert into user_to_group (user_id, group_id, role_id) values ( 8, 12, 2);
-insert into user_to_group (user_id, group_id, role_id) values ( 9, 10, 2);
-insert into user_to_group (user_id, group_id, role_id) values ( 9, 11, 2);
-insert into user_to_group (user_id, group_id, role_id) values ( 9, 12, 2);
-insert into user_to_group (user_id, group_id, role_id) values (10, 10, 2);
-insert into user_to_group (user_id, group_id, role_id) values (10, 11, 2);
-insert into user_to_group (user_id, group_id, role_id) values (10, 12, 2);
-insert into user_to_group (user_id, group_id, role_id) values (11, 10, 2);
-insert into user_to_group (user_id, group_id, role_id) values (11, 11, 2);
-insert into user_to_group (user_id, group_id, role_id) values (11, 12, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('50aba2a2-f216-4634-8b57-1b920a9013e3',  7, 10, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('86c1a6eb-3b1e-447c-bb10-7a09c8eea7d0',  7, 11, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8fd98667-f3d4-4efe-8f8e-eb33e2352d1a',  7, 12, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('df78f49e-84d7-4ac8-8c01-a66d5fc08c43',  8, 10, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('adfb358e-5c32-4e47-a773-7b932b4a90ea',  8, 11, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c7e49a89-b1e4-45c4-8766-411dcb20ce76',  8, 12, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('08e3643c-4f65-4d54-be82-6ffb89a6e6f0',  9, 10, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('a8979899-2dfe-4f8e-a0ae-6febaae5de0b',  9, 11, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('228170fa-31c8-43ed-a98e-71d71adc31d1',  9, 12, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('908eb255-730f-46a9-b4ae-1efd1a604876', 10, 10, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('98c6fa8a-8a63-424f-8390-9d67ec6abe14', 10, 11, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('bcc4f32f-890b-40b6-917d-3c4da277cf4c', 10, 12, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('011e53f8-a9b5-442a-a551-3b3afa99816e', 11, 10, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('70a572ff-9cf0-4b58-a45b-3e66cbb7182b', 11, 11, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('486b272f-0e40-4c35-85cc-232298c4ae4b', 11, 12, 2);
 
 -- Croatian Test users, the NS is defined in the init_data script, UserId >= 12
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('643e3e9c-4a63-4ddf-8817-7d993344e8f9', 'ACTIVE', 'croatia1', 'User1.Croatia@iaeste.org', '9f301c2a5ae29cc5f4f7b0aa05a9f2bb115c04dca7f7dd83a420010a75989d42', '72731dd3-464a-41a4-b984-600504457903', 'User1', 'Croatia');
@@ -34,21 +34,21 @@ insert into users (external_id, status, username, alias, password, salt, firstna
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('0559e87a-d929-439b-b64d-715b24bc1161', 'ACTIVE', 'croatia5', 'User5.Croatia@iaeste.org', 'f2766162d35713c3ecb3d6249ce848405001b2d8782ec426b458e4202f84f300', 'a1c79d31-3f50-49bd-a453-43280c798e0a', 'User5', 'Croatia');
 
 -- Adding the Croatian Users to the Croatian Member & National Groups
-insert into user_to_group (user_id, group_id, role_id) values (12, 13, 2);
-insert into user_to_group (user_id, group_id, role_id) values (12, 14, 2);
-insert into user_to_group (user_id, group_id, role_id) values (12, 15, 2);
-insert into user_to_group (user_id, group_id, role_id) values (13, 13, 2);
-insert into user_to_group (user_id, group_id, role_id) values (13, 14, 2);
-insert into user_to_group (user_id, group_id, role_id) values (13, 15, 2);
-insert into user_to_group (user_id, group_id, role_id) values (14, 13, 2);
-insert into user_to_group (user_id, group_id, role_id) values (14, 14, 2);
-insert into user_to_group (user_id, group_id, role_id) values (14, 15, 2);
-insert into user_to_group (user_id, group_id, role_id) values (15, 13, 2);
-insert into user_to_group (user_id, group_id, role_id) values (15, 14, 2);
-insert into user_to_group (user_id, group_id, role_id) values (15, 15, 2);
-insert into user_to_group (user_id, group_id, role_id) values (16, 13, 2);
-insert into user_to_group (user_id, group_id, role_id) values (16, 14, 2);
-insert into user_to_group (user_id, group_id, role_id) values (16, 15, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e146d7d9-ee2e-4488-93f8-730ac94af127', 12, 13, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('12b8abdf-dc69-487c-b7a7-1172e9726c2a', 12, 14, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('59a9a4d6-440a-4beb-952f-84fc06bad879', 12, 15, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c7ed5ec6-3a13-46c8-8e6e-5904a3db6296', 13, 13, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('60c263db-739a-4742-80f2-106bc64dc76a', 13, 14, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('96d98945-29d9-4ee8-a0aa-8a3edc0a1f3d', 13, 15, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('efcc7374-e942-44d0-9d32-9ab878a25fb0', 14, 13, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('244fc91e-33d4-46f1-8bac-ae5650fec058', 14, 14, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('919202bb-d8fe-49a5-9f42-3ae70d98d0e0', 14, 15, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fb955b7e-076a-4f87-ab73-ae1bfa384fe0', 15, 13, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b106711f-0eee-4e30-b808-93b374fd60ed', 15, 14, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1273e443-6b76-49c0-b19b-36f92dd1bfc3', 15, 15, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5573c2c0-ef0f-4aa7-8329-14ac8245e80d', 16, 13, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e4be0ca4-4f72-4259-91c8-35baa0f92b0e', 16, 14, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fa16f1d6-96ad-46c6-bf93-3662f28bdbe8', 16, 15, 2);
 
 -- German Test users, the NS is defined in the init_data script, UserId >= 17
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('7492b415-af79-4659-a956-5ad72dc358e1', 'ACTIVE', 'germany1', 'User1.Germany@iaeste.org', '07dc796ec8c62aba7e984d5c9e95040cf1c5409fb87eefe65468b77b9750b9b8', 'ac6b97cb-cc10-48a3-b3b1-e8244d838b04', 'User1', 'Germany');
@@ -58,21 +58,21 @@ insert into users (external_id, status, username, alias, password, salt, firstna
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('ddf734c0-7743-4073-bf67-f411de373ec7', 'ACTIVE', 'germany5', 'User5.Germany@iaeste.org', '99e679922896448133d2ca249244e41cffc1c93d21b2e62c294b569efca0db60', '06595734-3764-4f1e-8d2e-e39e6081dbb0', 'User5', 'Germany');
 
 -- Adding the German Users to the German Member & National Groups
-insert into user_to_group (user_id, group_id, role_id) values (17, 19, 2);
-insert into user_to_group (user_id, group_id, role_id) values (17, 20, 2);
-insert into user_to_group (user_id, group_id, role_id) values (17, 21, 2);
-insert into user_to_group (user_id, group_id, role_id) values (18, 19, 2);
-insert into user_to_group (user_id, group_id, role_id) values (18, 20, 2);
-insert into user_to_group (user_id, group_id, role_id) values (18, 21, 2);
-insert into user_to_group (user_id, group_id, role_id) values (19, 19, 2);
-insert into user_to_group (user_id, group_id, role_id) values (19, 20, 2);
-insert into user_to_group (user_id, group_id, role_id) values (19, 21, 2);
-insert into user_to_group (user_id, group_id, role_id) values (20, 19, 2);
-insert into user_to_group (user_id, group_id, role_id) values (20, 20, 2);
-insert into user_to_group (user_id, group_id, role_id) values (20, 21, 2);
-insert into user_to_group (user_id, group_id, role_id) values (21, 19, 2);
-insert into user_to_group (user_id, group_id, role_id) values (21, 20, 2);
-insert into user_to_group (user_id, group_id, role_id) values (21, 21, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('948d4607-a389-4755-b36d-7cb95faee9db', 17, 19, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('43cfb333-104e-4e0b-8ea7-15b28eca592b', 17, 20, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('26d49c6e-590e-42e7-9a18-6cffe56f2154', 17, 21, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('80e9207d-f99f-4786-b706-4d9d1fe71225', 18, 19, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e075b9e1-7fa7-48a9-8fc4-2244d151f865', 18, 20, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('45dcb6f1-7fe9-4917-ba8d-58428d3abc09', 18, 21, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b4270011-4bd5-459b-90cb-ae4d61929f46', 19, 19, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2afe2834-c1d3-4ccc-a35f-2f42ff758eea', 19, 20, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('71a66773-35f8-43e0-bf2c-f28df5422f36', 19, 21, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('99252701-7aea-4be2-8c23-04a1a9b68519', 20, 19, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e7d2cf17-8bb2-4046-a187-2be8b02aa6a8', 20, 20, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e0624961-4aa3-4960-9a46-5e6402ed54b3', 20, 21, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('85ae5345-9deb-467b-9dd2-9a3b5bb6d2cb', 21, 19, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8df936d4-adce-4a51-a266-a51bd50859b3', 21, 20, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('f8825551-451d-4407-b52a-51dce53031c5', 21, 21, 2);
 
 -- Hungarian Test users, the NS is defined in the init_data script, UserId >= 22
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('a25fb28b-14e6-4b70-9727-a260ec8ca1ca', 'ACTIVE', 'hungary1', 'User1.Hungary@iaeste.org', 'fbdf6fabdbd97f872f3f005ecedd3f8b7da8e855a4a4f68063ff3119a7de906e', '76e2a272-651a-4a80-9e75-b1f856e56f73', 'User1', 'Hungary');
@@ -82,21 +82,21 @@ insert into users (external_id, status, username, alias, password, salt, firstna
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('b35c7df8-d769-40fd-b829-30f2b2482b44', 'ACTIVE', 'hungary5', 'User5.Hungary@iaeste.org', 'af40157a2cb424956d5e34bbe33a0e07bad763dbdbd6217df0c88ae7998321ae', '9dee4ee9-e5a3-4b7f-b9ce-3842a16a8df3', 'User5', 'Hungary');
 
 -- Adding the Hungarian Users to the Hungarian Member & National Groups
-insert into user_to_group (user_id, group_id, role_id) values (22, 25, 2);
-insert into user_to_group (user_id, group_id, role_id) values (22, 26, 2);
-insert into user_to_group (user_id, group_id, role_id) values (22, 27, 2);
-insert into user_to_group (user_id, group_id, role_id) values (23, 25, 2);
-insert into user_to_group (user_id, group_id, role_id) values (23, 26, 2);
-insert into user_to_group (user_id, group_id, role_id) values (23, 27, 2);
-insert into user_to_group (user_id, group_id, role_id) values (24, 25, 2);
-insert into user_to_group (user_id, group_id, role_id) values (24, 26, 2);
-insert into user_to_group (user_id, group_id, role_id) values (24, 27, 2);
-insert into user_to_group (user_id, group_id, role_id) values (25, 25, 2);
-insert into user_to_group (user_id, group_id, role_id) values (25, 26, 2);
-insert into user_to_group (user_id, group_id, role_id) values (25, 27, 2);
-insert into user_to_group (user_id, group_id, role_id) values (26, 25, 2);
-insert into user_to_group (user_id, group_id, role_id) values (26, 26, 2);
-insert into user_to_group (user_id, group_id, role_id) values (26, 27, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('eadad2d9-26d2-4e4c-8ec3-4338c95ee179', 22, 25, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fabde0e8-90b2-4540-90ee-80080d64b33a', 22, 26, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('3d5ef78b-1704-44cc-8afb-99fd513cc68d', 22, 27, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('167bc7c2-ef87-4a2d-bcc3-052f7dbc7336', 23, 25, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('dc0c18e0-be29-48ff-a7f3-61526a6c1fed', 23, 26, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('de9eb238-f144-4aab-9cb1-a24b9c4e5f1e', 23, 27, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('75d35818-e14c-4c30-b4a6-62f86d9dce5a', 24, 25, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('11153e27-06c2-4d28-adc8-afaa18d6155b', 24, 26, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5d03b75f-c4f2-4085-925c-e0a34da599f5', 24, 27, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ac2c1c7f-6700-43c3-8670-72403d8c14e2', 25, 25, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e38f4e02-19eb-4c75-a26b-35ecbf173cb7', 25, 26, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('efbf4703-23bf-44f0-97ac-8db821855b3b', 25, 27, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b670604d-21b9-4acd-bcd7-39db3c7dd9ce', 26, 25, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c748cb9f-4e48-4e1d-8624-5227b4c8ad9e', 26, 26, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1e465428-fe3a-4a1b-bbeb-3aab1a16ecee', 26, 27, 2);
 
 -- Polish Test users, the NS is defined in the init_data script, UserId >= 27
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('46e69124-4796-4d4b-ab5c-9609aac37660', 'ACTIVE', 'poland1', 'User1.Poland@iaeste.org', 'e750a40dcc9f19fe48ac45edbbe88fcd9fa5295a75dc4f80785d783c01b6fd4a', 'c98df82a-ccfb-421a-a14d-d8b0cb2cfa51', 'User1', 'Poland');
@@ -106,21 +106,21 @@ insert into users (external_id, status, username, alias, password, salt, firstna
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('bd615302-12ef-4c7e-84da-953878f4edaf', 'ACTIVE', 'poland5', 'User5.Poland@iaeste.org', '66776c844e2a73eb0aa34af9569a4c4868821069ab9d1fe8a01042d54a2e1a9c', '34938048-09ea-4a66-a633-4f65d61a3933', 'User5', 'Poland');
 
 -- Adding the Polish Users to the Polish Member & National Groups
-insert into user_to_group (user_id, group_id, role_id) values (27, 22, 2);
-insert into user_to_group (user_id, group_id, role_id) values (27, 23, 2);
-insert into user_to_group (user_id, group_id, role_id) values (27, 24, 2);
-insert into user_to_group (user_id, group_id, role_id) values (28, 22, 2);
-insert into user_to_group (user_id, group_id, role_id) values (28, 23, 2);
-insert into user_to_group (user_id, group_id, role_id) values (28, 24, 2);
-insert into user_to_group (user_id, group_id, role_id) values (29, 22, 2);
-insert into user_to_group (user_id, group_id, role_id) values (29, 23, 2);
-insert into user_to_group (user_id, group_id, role_id) values (29, 24, 2);
-insert into user_to_group (user_id, group_id, role_id) values (30, 22, 2);
-insert into user_to_group (user_id, group_id, role_id) values (30, 23, 2);
-insert into user_to_group (user_id, group_id, role_id) values (30, 24, 2);
-insert into user_to_group (user_id, group_id, role_id) values (31, 22, 2);
-insert into user_to_group (user_id, group_id, role_id) values (31, 23, 2);
-insert into user_to_group (user_id, group_id, role_id) values (31, 24, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('690bcb29-b81d-4bf6-850a-9dcf81ad2640', 27, 22, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fd7aaa03-9ee8-4aee-901e-a6e442203b5d', 27, 23, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1f09f3f5-d0b4-4b0c-8e19-ed915869ef2e', 27, 24, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('20570849-737f-4bc8-b3dd-4910af3b97e8', 28, 22, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8124e95b-c442-4c6c-9e15-0b5b9327bc33', 28, 23, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('6b0b7ea0-22fe-4dae-8b9e-549f32ad3b3a', 28, 24, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('9c953962-cfe3-40d7-8d85-c92798830b49', 29, 22, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2d0eb85c-6636-4706-a0f1-aad6ec04c1df', 29, 23, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2fb84efb-ed6d-4f80-84fd-ae65c82ae7fc', 29, 24, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('0d99083d-e5ab-4fa8-a107-428af4dd75cf', 30, 22, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fb7fbc58-147e-4fb5-84cd-8453ac70919f', 30, 23, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('91b0e017-dcb7-430f-9905-261b9544796d', 30, 24, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('06fc4bc6-7df2-4716-afa2-b9aa5c949540', 31, 22, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8e73c6c0-8382-4987-b9cf-2d7f7f75193e', 31, 23, 2);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('f33c3386-39cf-4753-bcb9-4ce561d83fde', 31, 24, 2);
 
 -- Add some offers for testing..
 --- not postgres doesn't support the way how the nomination date is calculates. use this for PG: CURRENT_DATE + '3 month'::INTERVAL

@@ -56,12 +56,10 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
-public final class ExchangeFetchService extends CommonService {
-
-    private final ExchangeDao dao;
+public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
     public ExchangeFetchService(final ExchangeDao dao) {
-        this.dao = dao;
+        super(dao);
     }
 
     public FetchOffersResponse fetchOffers(final Authentication authentication, final FetchOffersRequest request) {

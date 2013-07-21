@@ -30,13 +30,16 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * @author Teis Lindemark / last $Author:$
+ * @author  Teis Lindemark / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 @NamedQueries({
         @NamedQuery(name = "student.findAll",
                 query = "select s from StudentEntity s"),
+        @NamedQuery(name = "student.findById",
+                query = "select s from StudentEntity s " +
+                        "where s.id = :id"),
         @NamedQuery(name = "student.findByName",
                 query = "select s from StudentEntity s " +
                         "where s.studentName = :name")
@@ -103,6 +106,10 @@ public class StudentEntity implements IWSEntity {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -147,10 +154,18 @@ public class StudentEntity implements IWSEntity {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }

@@ -100,7 +100,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "groups")
-public class GroupEntity implements IWSEntity {
+public class GroupEntity implements Updateable<GroupEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "group_sequence")
@@ -194,6 +194,10 @@ public class GroupEntity implements IWSEntity {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -206,10 +210,18 @@ public class GroupEntity implements IWSEntity {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getExternalId() {
         return externalId;
     }
@@ -278,18 +290,34 @@ public class GroupEntity implements IWSEntity {
         return status;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }
@@ -297,6 +325,20 @@ public class GroupEntity implements IWSEntity {
     // =========================================================================
     // Other Methods required for this Entity
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void merge(final GroupEntity obj) {
+        if ((obj != null) && id.equals(obj.id)) {
+            groupName = obj.groupName;
+            fullName = obj.fullName;
+            description = obj.description;
+            country = obj.country;
+            listName = obj.listName;
+        }
+    }
 
     /**
      * {@inheritDoc}

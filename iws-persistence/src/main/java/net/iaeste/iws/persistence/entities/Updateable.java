@@ -24,7 +24,7 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface Mergeable<T> extends IWSEntity {
+public interface Updateable<T> extends IWSEntity {
 
     /**
      * Allows a merge between two objects of the same type. The method updates
@@ -35,6 +35,10 @@ public interface Mergeable<T> extends IWSEntity {
      */
     void merge(T obj);
 
+    void setExternalId(String externalId);
+
+    String getExternalId();
+
     /**
      * To ensure that the field modified is always updated, it must be
      * controlled by the DAO, as part of the update process. Hence, it must be
@@ -43,4 +47,6 @@ public interface Mergeable<T> extends IWSEntity {
      * @param modified Date of Modification
      */
     void setModified(Date modified);
+
+    Date getModified();
 }

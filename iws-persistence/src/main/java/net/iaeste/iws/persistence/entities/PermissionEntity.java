@@ -41,7 +41,7 @@ import javax.persistence.Table;
 })
 @Entity
 @Table(name = "permissions")
-public class PermissionEntity implements IWSEntity {
+public class PermissionEntity {
 
     @Id
     @Column(name = "id", unique = true, nullable = false, updatable = false)
@@ -74,10 +74,6 @@ public class PermissionEntity implements IWSEntity {
         this.id = id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Long getId() {
         return id;
     }

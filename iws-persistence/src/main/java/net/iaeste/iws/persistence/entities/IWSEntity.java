@@ -14,12 +14,17 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+
+import java.util.Date;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 public interface IWSEntity {
+
+    void setId(Long id);
 
     /**
      * The primary key in all our mergeable tables must always be retrievable
@@ -28,4 +33,7 @@ public interface IWSEntity {
      * @return  Entity Id
      */
     Long getId();
+
+    void setCreated(Date created);
+    Date getCreated();
 }

@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Field;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -21,9 +22,10 @@ import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
+import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
-import net.iaeste.iws.persistence.entities.Mergeable;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
+import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
 import net.iaeste.iws.persistence.views.IWSView;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -50,9 +53,13 @@ public class BasicJpaDao implements BasicDao {
      *
      * @param entityManager  Entity Manager instance to use
      */
-    public BasicJpaDao(final EntityManager entityManager) {
+    public BasicJpaDao(final EntityManager entityManager) throws IWSException {
+        if (entityManager == null) {
+            throw new IWSException(IWSErrors.FATAL, "Cannot instantiate the DAO without a valid Entity Manager instance.");
+        }
+
         this.entityManager = entityManager;
-        monitoringProcessor = new MonitoringProcessor();
+        this.monitoringProcessor = new MonitoringProcessor();
     }
 
     /**
@@ -60,6 +67,7 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public void persist(final IWSEntity entityToPersist) {
+        ensureUpdateableHasExternalId(entityToPersist);
         entityManager.persist(entityToPersist);
     }
 
@@ -68,6 +76,8 @@ public class BasicJpaDao implements BasicDao {
      */
     @Override
     public void persist(final Authentication authentication, final IWSEntity entityToPersist) {
+        ensureUpdateableHasExternalId(entityToPersist);
+
         // We have to start by persisting the entityToPersist, to have an Id
         entityManager.persist(entityToPersist);
 
@@ -82,7 +92,7 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Mergeable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
+    public <T extends Updateable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
         final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
         if (level != MonitoringLevel.NONE) {
             final List<Field> changes = monitoringProcessor.findChanges (level, entityToPersist, changesToBeMerged);
@@ -162,8 +172,77 @@ public class BasicJpaDao implements BasicDao {
     }
 
     // =========================================================================
+    // Following lookup methods are added here, since they're used often
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AddressEntity findAddress(final Long id) {
+        final Query query = entityManager.createNamedQuery("address.findById");
+        query.setParameter("id", id);
+
+        return findUniqueResult(query, "address");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AddressEntity findAddress(final String externalId) {
+        final Query query = entityManager.createNamedQuery("address.findByExternalId");
+        query.setParameter("eid", externalId);
+
+        return findUniqueResult(query, "address");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AddressEntity findUniqueAddress(final AddressEntity newAddress) {
+        final Query query = entityManager.createNamedQuery("address.findByValues");
+        query.setParameter("street1", toLower(newAddress.getStreet1()));
+        query.setParameter("street2", toLower(newAddress.getStreet2()));
+        query.setParameter("zip", toLower(newAddress.getZip()));
+        query.setParameter("city", toLower(newAddress.getCity()));
+        query.setParameter("region", toLower(newAddress.getRegion()));
+
+        return findSingleResult(query, "address");
+    }
+
+    // =========================================================================
     // Internal Methods
     // =========================================================================
+
+    /**
+     * First, we check if the Entity is updateable, i.e. one that is exposed
+     * externally, if so. Then we must ensure that the externalId is set.
+     * For some Entities, they are marked Updateable, but do not have a
+     * "real" external Id, rather they're using something else. Those must
+     * be defined by the invoking code, otherwise we'll get into trouble.
+     *
+     * @param entity Entity to check
+     */
+    private static void ensureUpdateableHasExternalId(final IWSEntity entity) {
+        if (entity instanceof Updateable) {
+            if (((Updateable<?>) entity).getExternalId() == null) {
+                ((Updateable<?>) entity).setExternalId(UUID.randomUUID().toString());
+            }
+        }
+    }
+
+    /**
+     * Returns the lower case version of the String, using the default Locale
+     * for the conversion.
+     *
+     * @param str String to lower case
+     * @return Lower cased String
+     */
+    protected static String toLower(final String str) {
+        return str.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+    }
 
     /**
      * Resolves the given Query, and will throw an Identification Exception, if
@@ -185,6 +264,31 @@ public class BasicJpaDao implements BasicDao {
         }
 
         return found.get(0);
+    }
+
+    /**
+     * Attempts to find a single result from the list. If the list is empty,
+     * then a null is returned, if there is more than one record, then an
+     * Exception is thrown - otherwise if only a single result was found, this
+     * will be returned.
+     *
+     * @param query      Query to resolve
+     * @param entityName Name of the entity expected, used if exception is thrown
+     * @return Single Entity
+     */
+    protected <T extends IWSEntity> T findSingleResult(final Query query, final String entityName) {
+        final List<T> found = query.getResultList();
+        final T result;
+
+        if (found.isEmpty()) {
+            result = null;
+        } else  if (found.size() == 1) {
+            result = found.get(0);
+        } else {
+            throw new IdentificationException("Multiple " + entityName + "s were found.");
+        }
+
+        return result;
     }
 
     protected static <T extends IWSEntity> T resolveResultList(final List<T> list) {

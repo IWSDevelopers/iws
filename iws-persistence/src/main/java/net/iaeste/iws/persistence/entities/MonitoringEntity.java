@@ -84,8 +84,8 @@ public class MonitoringEntity implements IWSEntity {
      * Timestamp when the Entity was created (changed).
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "changed", nullable = false, updatable = false)
-    private Date changed = new Date();
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     // =========================================================================
     // Entity Constructors
@@ -135,6 +135,10 @@ public class MonitoringEntity implements IWSEntity {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -187,11 +191,19 @@ public class MonitoringEntity implements IWSEntity {
         return fields;
     }
 
-    public void setChanged(final Date changed) {
-        this.changed = changed;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCreated(final Date created) {
+        this.created = created;
     }
 
-    public Date getChanged() {
-        return changed;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getCreated() {
+        return created;
     }
 }

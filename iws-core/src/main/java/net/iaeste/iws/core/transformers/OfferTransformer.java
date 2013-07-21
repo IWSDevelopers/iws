@@ -213,7 +213,7 @@ public final class OfferTransformer {
             result.setName(entity.getName());
             result.setDepartment(entity.getDepartment());
             result.setBusiness(entity.getBusiness());
-            //result.setAddress(transform(entity.getAddress()));
+            result.setAddress(CommonTransformer.transform(entity.getAddress()));
             result.setEmployeesCount(entity.getNumberOfEmployees());
             result.setWebsite(entity.getWebsite());
             //result.setWorkingPlace(entity.getWorkingPlace());
@@ -238,7 +238,7 @@ public final class OfferTransformer {
             result.setName(employer.getName());
             result.setDepartment(employer.getDepartment());
             result.setBusiness(employer.getBusiness());
-            //result.setAddress(transform(entity.getAddress()));
+            result.setAddress(CommonTransformer.transform(employer.getAddress()));
             result.setNumberOfEmployees(employer.getEmployeesCount());
             result.setWebsite(employer.getWebsite());
             //result.setWorkingPlace(entity.getWorkingPlace());

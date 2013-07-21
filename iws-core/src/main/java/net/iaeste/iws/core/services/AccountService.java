@@ -50,14 +50,14 @@ import java.util.UUID;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class AccountService extends CommonService {
+public final class AccountService extends CommonService<AccessDao> {
 
     private static final Logger LOG = Logger.getLogger(AccountService.class);
-    private final AccessDao dao;
     private final Notifications notifications;
 
     public AccountService(final AccessDao dao, final Notifications notifications) {
-        this.dao = dao;
+        super(dao);
+
         this.notifications = notifications;
     }
 
@@ -288,9 +288,6 @@ public final class AccountService extends CommonService {
             password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
         }
 
-        // To avoid misusage all Users have a unique external Id
-        user.setExternalId(UUID.randomUUID().toString());
-
         // As we doubt that a user will provide enough entropy to enable us to
         // generate a hash value that cannot be looked up in rainbow tables,
         // we're "salting" it, and additionally storing the the random part of
@@ -345,7 +342,6 @@ public final class AccountService extends CommonService {
 
         group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
         group.setGroupType(dao.findGroupType(GroupType.PRIVATE));
-        group.setExternalId(UUID.randomUUID().toString());
         dao.persist(group);
 
         return group;

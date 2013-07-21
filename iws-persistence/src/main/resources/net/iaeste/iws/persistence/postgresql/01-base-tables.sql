@@ -427,6 +427,7 @@ create table sessions (
 create sequence user_to_group_sequence start with 1 increment by 1;
 create table user_to_group (
     id                  integer default nextval('user_to_group_sequence'),
+    external_id         varchar(36),
     user_id             integer,
     group_id            integer,
     role_id             integer,
@@ -443,10 +444,12 @@ create table user_to_group (
     constraint u2g_fk_role_id  foreign key (role_id)  references roles (id),
 
     /* Unique Constraints */
+    constraint u2g_unique_external_id unique (external_id),
     constraint u2g_unique_session_key unique (user_id, group_id),
 
     /* Not Null Constraints */
     constraint u2g_notnull_id              check (id is not null),
+    constraint u2g_notnull_external_id     check (external_id is not null),
     constraint u2g_notnull_user_idd        check (user_id is not null),
     constraint u2g_notnull_group_id        check (group_id is not null),
     constraint u2g_notnull_role_id         check (role_id is not null),
@@ -477,7 +480,7 @@ create table history (
     tablename           varchar(50),
     record_id           integer,
     fields              bytea,
-    changed             timestamp default now(),
+    created             timestamp default now(),
 
     /* Primary & Foreign Keys */
     constraint history_pk          primary key (id),
@@ -490,7 +493,7 @@ create table history (
     constraint history_notnull_group_id  check (group_id is not null),
     constraint history_notnull_tablename check (tablename is not null),
     constraint history_notnull_record_id check (record_id is not null),
-    constraint history_notnull_changed   check (changed is not null)
+    constraint history_notnull_created   check (created is not null)
 );
 
 
@@ -522,6 +525,7 @@ create table addresses (
 
     /* Unique Constraints */
     constraint address_unique_external_id unique (external_id),
+    constraint address_unique_fields unique (street1, street2, zip, city, region),
 
     /* Not Null Constraints */
     constraint address_notnull_id          check (id is not null),

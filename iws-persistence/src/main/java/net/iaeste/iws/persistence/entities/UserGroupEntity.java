@@ -41,6 +41,10 @@ import java.util.Date;
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.id = :id"),
         @NamedQuery(
+                name = "usergroup.findByExternalId",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.externalId = :eid"),
+        @NamedQuery(
                 name = "usergroup.findMemberByGroupAndUser",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.groupType.grouptype = 'MEMBERS'" +
@@ -58,13 +62,24 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "user_to_group")
-public class UserGroupEntity implements Mergeable<UserGroupEntity> {
+public class UserGroupEntity implements Updateable<UserGroupEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_to_group_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
+
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
+    private String externalId = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "user_id", nullable = false)
@@ -131,6 +146,10 @@ public class UserGroupEntity implements Mergeable<UserGroupEntity> {
     // Entity Setters & Getters
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(final Long id) {
         this.id = id;
     }
@@ -141,6 +160,22 @@ public class UserGroupEntity implements Mergeable<UserGroupEntity> {
     @Override
     public Long getId() {
         return id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setExternalId(final String externalId) {
+        this.externalId = externalId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getExternalId() {
+        return externalId;
     }
 
     public void setUser(final UserEntity user) {
@@ -199,14 +234,26 @@ public class UserGroupEntity implements Mergeable<UserGroupEntity> {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getCreated() {
         return created;
     }

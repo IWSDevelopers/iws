@@ -2,25 +2,40 @@
 -- Please add all Exchange related views here
 -- =============================================================================
 
--- The following view is error prone, and must be replaced. As the employers is
--- a vital part of the setup, the best approach would be to create the
--- appropriate table(s), and replace the view with something better.
---   If the view is attempted to be used in PostgreSQL, it will result in an
--- error!
---CREATE VIEW employer_information AS
---SELECT id, employer_name, group_id, modified
---FROM offers o
---INNER JOIN (
---  SELECT distinct (employer_name) employer_name, max(modified) modified
---  FROM offers
---  GROUP BY employer_name
---) AS t2 ON o.employer_name = t2.employer_name AND o.modified = t2.modified;
-
-create view employer_information as
+-- =============================================================================
+-- The Employer View, which embeds Address & Group
+-- =============================================================================
+create view employer_view as
   select
-    e.id       as id,
-    e.employer_name     as employer_name,
-    e.group_id as group_id,
-    e.modified as modified
+    e.id                    as id,
+    e.external_id           as external_id,
+    e.name                  as name,
+    e.department            as department,
+    e.business              as business,
+    e.number_of_employees   as number_of_employees,
+    e.website               as website,
+    e.working_place         as working_place,
+    e.canteen               as cantee,
+    e.nearest_airport       as nearest_airport,
+    e.nearest_pub_transport as nearest_pub_transport,
+    e.weekly_hours          as weekly_hours,
+    e.daily_hours           as daily_hours,
+    g.id                    as group_id,
+    g.external_id           as group_external_id,
+    g.grouptype_id          as grouptype,
+    g.groupName             as groupname,
+    a.id                    as address_id,
+    a.external_id           as address_external_id,
+    a.street1               as street1,
+    a.street2               as street2,
+    a.zip                   as zip,
+    a.city                  as city,
+    a.region                as region,
+    e.modified              as modified,
+    e.created               as created
   from
-    offers e;
+    employers e,
+    addresses a,
+    groups g
+  where e.group_id = g.id
+    and e.address_id = a.id;

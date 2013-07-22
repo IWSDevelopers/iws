@@ -16,6 +16,7 @@ package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public final class Employer extends AbstractVerification {
     private static final int FIELD_LENGTH = 255;
 
     private String id = null;
+    private Group group = null;
     private String name = null;
     private String department = null;
     private String business = null;
@@ -48,6 +50,7 @@ public final class Employer extends AbstractVerification {
     private Integer employeesCount = null;
     private String website = null;
     private String workingPlace = null;
+    private Boolean canteen = null;
     private String nearestAirport = null;
     private String nearestPubTransport = null;
     private Float weeklyHours = null;
@@ -72,12 +75,14 @@ public final class Employer extends AbstractVerification {
     public Employer(final Employer employer) {
         if (employer != null) {
             id = employer.id;
+            group = new Group(employer.group);
             name = employer.name;
             business = employer.business;
             address = new Address(employer.address);
             employeesCount = employer.employeesCount;
             website = employer.website;
             workingPlace = employer.workingPlace;
+            canteen = employer.canteen;
             nearestAirport = employer.nearestAirport;
             nearestPubTransport = employer.nearestPubTransport;
             weeklyHours = employer.weeklyHours;
@@ -97,6 +102,14 @@ public final class Employer extends AbstractVerification {
 
     public String getId() {
         return id;
+    }
+
+    public void setGroup(final Group group) {
+        this.group = new Group(group);
+    }
+
+    public Group getGroup() {
+        return new Group(group);
     }
 
     public void setName(final String name) throws IllegalArgumentException {
@@ -165,6 +178,16 @@ public final class Employer extends AbstractVerification {
         return workingPlace;
     }
 
+    public void setCanteen(final Boolean canteen) {
+        ensureNotNull("canteen", canteen);
+
+        this.canteen = canteen;
+    }
+
+    public Boolean getCanteen() {
+        return canteen;
+    }
+
     public void setNearestAirport(final String nearestAirport) throws IllegalArgumentException {
         ensureNotTooLong("nearestAirport", nearestAirport, FIELD_LENGTH);
 
@@ -212,6 +235,8 @@ public final class Employer extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
+        isNotNull(validation, "name", name);
+
         return validation;
     }
 
@@ -232,13 +257,16 @@ public final class Employer extends AbstractVerification {
         if (id != null ? !id.equals(employer.id) : employer.id != null) {
             return false;
         }
+        if (group != null ? !group.equals(employer.group) : employer.group != null) {
+            return false;
+        }
         if (name != null ? !name.equals(employer.name) : employer.name != null) {
             return false;
         }
-        if (business != null ? !business.equals(employer.business) : employer.business != null) {
+        if (department != null ? !department.equals(employer.department) : employer.department != null) {
             return false;
         }
-        if (department != null ? !department.equals(employer.department) : employer.department != null) {
+        if (business != null ? !business.equals(employer.business) : employer.business != null) {
             return false;
         }
         if (address != null ? !address.equals(employer.address) : employer.address != null) {
@@ -250,7 +278,10 @@ public final class Employer extends AbstractVerification {
         if (website != null ? !website.equals(employer.website) : employer.website != null) {
             return false;
         }
-        if (dailyHours != null ? !dailyHours.equals(employer.dailyHours) : employer.dailyHours != null) {
+        if (workingPlace != null ? !workingPlace.equals(employer.workingPlace) : employer.workingPlace != null) {
+            return false;
+        }
+        if (canteen != null ? !canteen.equals(employer.canteen) : employer.canteen != null) {
             return false;
         }
         if (nearestAirport != null ? !nearestAirport.equals(employer.nearestAirport) : employer.nearestAirport != null) {
@@ -263,7 +294,7 @@ public final class Employer extends AbstractVerification {
             return false;
         }
 
-        return !(workingPlace != null ? !workingPlace.equals(employer.workingPlace) : employer.workingPlace != null);
+        return !(dailyHours != null ? !dailyHours.equals(employer.dailyHours) : employer.dailyHours != null);
     }
 
     /**
@@ -274,13 +305,15 @@ public final class Employer extends AbstractVerification {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (name != null ? name.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (business != null ? business.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (department != null ? department.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (business != null ? business.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (address != null ? address.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (employeesCount != null ? employeesCount.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (website != null ? website.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (workingPlace != null ? workingPlace.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (canteen != null ? canteen.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (nearestAirport != null ? nearestAirport.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (nearestPubTransport != null ? nearestPubTransport.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (weeklyHours != null ? weeklyHours.hashCode() : 0);
@@ -296,13 +329,15 @@ public final class Employer extends AbstractVerification {
     public String toString() {
         return "Employer{" +
                 "id='" + id + '\'' +
+                ", group='" + group + '\'' +
                 ", name='" + name + '\'' +
-                ", business='" + business + '\'' +
                 ", department='" + department + '\'' +
+                ", business='" + business + '\'' +
                 ", address=" + address +
                 ", employeesCount=" + employeesCount +
                 ", website='" + website + '\'' +
                 ", workingPlace='" + workingPlace + '\'' +
+                ", canteen=" + canteen +
                 ", nearestAirport='" + nearestAirport + '\'' +
                 ", nearestPubTransport='" + nearestPubTransport + '\'' +
                 ", weeklyHours=" + weeklyHours +

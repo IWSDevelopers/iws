@@ -20,41 +20,41 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>pre-integration-test</phase>
-                        <configuration>
-                            <tasks>
-                                <copy file="target/${project.build.finalName}.jar"
-                                      tofile="${project.basedir}/${project.build.finalName}.jar"/>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<artifactId>maven-antrun-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>pre-integration-test</phase>-->
+                        <!--<configuration>-->
+                            <!--<tasks>-->
+                                <!--<copy file="target/${project.build.finalName}.jar"-->
+                                      <!--tofile="${project.basedir}/${project.build.finalName}.jar"/>-->
+                            <!--</tasks>-->
+                        <!--</configuration>-->
+                        <!--<goals>-->
+                            <!--<goal>run</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
 
-            <!-- Shade ist ein nutzliches Maven Plugin, mit dem man sogenannte BIGJARs bauen kann,
-               also JARs die alle notwendigen Libs enthalten. -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+            <!--&lt;!&ndash; Shade ist ein nutzliches Maven Plugin, mit dem man sogenannte BIGJARs bauen kann,-->
+               <!--also JARs die alle notwendigen Libs enthalten. &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-shade-plugin</artifactId>-->
+                <!--<version>1.6</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>shade</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
     </build>
 
     <profiles>
@@ -67,6 +67,7 @@
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <configuration>
                             <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+                            <check/>
                         </configuration>
                         <executions>
                             <execution>

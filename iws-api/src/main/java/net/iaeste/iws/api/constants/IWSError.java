@@ -23,7 +23,6 @@ import java.io.Serializable;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation
  */
 public final class IWSError implements Serializable {
 
@@ -35,8 +34,8 @@ public final class IWSError implements Serializable {
     /**
      * Default Constructor.
      *
-     * @param error        IWBase Error code
-     * @param description  IWBase Error description
+     * @param error       IWS Error code
+     * @param description IWS Error description
      */
     public IWSError(final int error, final String description) {
         this.error = error;
@@ -71,7 +70,6 @@ public final class IWSError implements Serializable {
         if (this == obj) {
             result = true;
         } else if (obj != null && getClass() == obj.getClass()) {
-            //noinspection CastToConcreteClass
             result = error == ((IWSError) obj).error;
         }
 

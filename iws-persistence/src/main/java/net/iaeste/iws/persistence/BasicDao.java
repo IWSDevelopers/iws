@@ -16,9 +16,10 @@ package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
-import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
+import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.views.IWSView;
 
 import javax.persistence.Query;
@@ -99,6 +100,8 @@ public interface BasicDao {
     // =========================================================================
     // Following lookup methods are added here, since they're used often
     // =========================================================================
+
+    CountryEntity findCountry(String countryCode);
 
     /**
      * Find Address from the Id. If no such entity exists, then an exception is

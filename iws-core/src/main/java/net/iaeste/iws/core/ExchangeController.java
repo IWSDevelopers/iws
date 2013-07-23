@@ -20,6 +20,7 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -32,6 +33,7 @@ import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -99,7 +101,7 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchEmployerInformationResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_EMPLOYERS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_EMPLOYERS);
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
@@ -116,12 +118,34 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
+    public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
+        LOG.trace("Starting fetchEmployers()");
+        FetchEmployerResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_EMPLOYERS);
+            verify(request);
+
+            final ExchangeFetchService service = factory.prepareExchangeFetchService();
+            response = service.fetchEmployers(authentication, request);
+        } catch (IWSException e) {
+            response = new FetchEmployerResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished fetchEmployers()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         LOG.trace("Starting processOffer()");
         OfferResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.MANAGE_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
             verify(request);
 
             final ExchangeService service = factory.prepareExchangeService();
@@ -143,7 +167,7 @@ public final class ExchangeController extends CommonController implements Exchan
         OfferResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.MANAGE_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
             verify(request);
 
             final ExchangeService service = factory.prepareExchangeService();
@@ -166,7 +190,7 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchOffersResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFERS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFERS);
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
@@ -211,7 +235,7 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchOfferTemplateResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFER_TEMPLATES);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_TEMPLATES);
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
@@ -256,7 +280,7 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchPublishGroupResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_OFFER_PUBLISH_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_PUBLISH_GROUPS);
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
@@ -323,7 +347,7 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchPublishedGroupsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_PUBLISH_OFFER);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_OFFER);
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();

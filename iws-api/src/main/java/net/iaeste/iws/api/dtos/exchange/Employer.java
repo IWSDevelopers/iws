@@ -179,8 +179,6 @@ public final class Employer extends AbstractVerification {
     }
 
     public void setCanteen(final Boolean canteen) {
-        ensureNotNull("canteen", canteen);
-
         this.canteen = canteen;
     }
 

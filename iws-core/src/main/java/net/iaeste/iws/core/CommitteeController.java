@@ -81,7 +81,7 @@ public final class CommitteeController extends CommonController implements Commi
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.MANAGE_COMMITTEE);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COMMITTEE);
             verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
@@ -125,7 +125,7 @@ public final class CommitteeController extends CommonController implements Commi
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.MANAGE_INTERNATIONAL_GROUP);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_INTERNATIONAL_GROUP);
             verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();
@@ -169,7 +169,7 @@ public final class CommitteeController extends CommonController implements Commi
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.MANAGE_REGIONAL_GROUP);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_REGIONAL_GROUP);
             verify(request);
 
             final CommitteeService service = factory.prepareCommitteeService();

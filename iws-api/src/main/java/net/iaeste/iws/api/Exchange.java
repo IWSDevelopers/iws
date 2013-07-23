@@ -17,6 +17,7 @@ package net.iaeste.iws.api;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -29,6 +30,7 @@ import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
@@ -48,10 +50,12 @@ import javax.ejb.Remote;
 public interface Exchange {
 
     /**
+     * Processes a given Employer, meaning that if it exists, then it us
+     * updated, otherwise it is being created.
      *
-     * @param token
-     * @param request
-     * @return
+     * @param token   User Authentication Token
+     * @param request Request Object, with the Employer
+     * @return Persisted Employer Object
      */
     EmployerResponse processEmployer(AuthenticationToken token, ProcessEmployerRequest request);
 
@@ -67,8 +71,22 @@ public interface Exchange {
      * @param request Request object contains only a string representing a substring of the employers name for which
      *                all possible results a re aggregated.
      * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.EmployerInformation}
+     * @deprecated please use the other fetchEmployers method
      */
+    @Deprecated
     FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
+
+    /**
+     * Fetches a list of Employers, belonging to the requesting User, i.e. which
+     * is associated with the Users National Group. The request can be made
+     * either for a single Object (by providing the Id), for a partial list (by
+     * providing a partial name) or for all Employers.
+     *
+     * @param token   User Authentication Token
+     * @param request Employer Request Object
+     * @return List of requested Employers
+     */
+    FetchEmployerResponse fetchEmployers(AuthenticationToken token, FetchEmployerRequest request);
 
     /**
      * Creates or updates an Offer, dependent on the {@code id}. If the id is set, an update is assumed, otherwise
@@ -78,7 +96,7 @@ public interface Exchange {
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a {@link net.iaeste.iws.api.dtos.exchange.Offer}
-     * @return the persisted {@link net.iaeste.iws.api.dtos.exchange.Offer} including the generated ID
+     * @return the persisted {@link net.iaeste.iws.api.dtos.exchange.Offer} including the generated Id
      */
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 

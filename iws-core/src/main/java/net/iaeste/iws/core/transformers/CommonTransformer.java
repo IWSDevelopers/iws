@@ -144,6 +144,18 @@ public final class CommonTransformer {
 
         if (country != null) {
             entity = new CountryEntity();
+
+            entity.setCountryCode(country.getCountryId());
+            entity.setCountryName(country.getCountryName());
+            entity.setCountryNameFull(country.getCountryNameFull());
+            entity.setCountryNameNative(country.getCountryNameNative());
+            entity.setNationality(country.getNationality());
+            entity.setCitizens(country.getCitizens());
+            entity.setPhonecode(country.getPhonecode());
+            entity.setCurrency(country.getCurrency());
+            entity.setLanguages(country.getLanguages());
+            entity.setMembership(country.getMembership());
+            entity.setMemberSince(country.getMemberSince());
         } else {
             entity = null;
         }

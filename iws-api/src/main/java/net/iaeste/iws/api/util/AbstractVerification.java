@@ -258,6 +258,21 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * Throws an {@code IllegalArgumentException} if the given value is defined
+     * and not the exact length.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The exact length of the field
+     * @throws IllegalArgumentException if the value is not of exact length
+     */
+    protected static void ensureExactLength(final String field, final String value, final int length) throws IllegalArgumentException {
+        if ((value != null) && (value.length() != length)) {
+            throw new IllegalArgumentException(format(ERROR_NOT_EXACT_LENGTH, field, length));
+        }
+    }
+
+    /**
      * Throws an {@code IllegalArgumentException} if the given value is either
      * null or not within the given limits.
      *

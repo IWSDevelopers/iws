@@ -115,7 +115,7 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCountryNameFull(final String countryNameFull) {
-        ensureNotNullOrTooLong("countryNameFull", countryNameFull, 100);
+        ensureNotTooLong("countryNameFull", countryNameFull, 100);
 
         this.countryNameFull = countryNameFull;
     }
@@ -125,7 +125,7 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCountryNameNative(final String countryNameNative) {
-        ensureNotNullOrTooLong("countryNameNative", countryNameNative, 100);
+        ensureNotTooLong("countryNameNative", countryNameNative, 100);
 
         this.countryNameNative = countryNameNative;
     }
@@ -135,7 +135,7 @@ public final class Country extends AbstractVerification {
     }
 
     public void setNationality(final String nationality) {
-        ensureNotNullOrTooLong("nationality", nationality, 100);
+        ensureNotTooLong("nationality", nationality, 100);
 
         this.nationality = nationality;
     }
@@ -145,7 +145,7 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCitizens(final String citizens) {
-        ensureNotNullOrTooLong("citizens", citizens, 100);
+        ensureNotTooLong("citizens", citizens, 100);
 
         this.citizens = citizens;
     }
@@ -155,7 +155,7 @@ public final class Country extends AbstractVerification {
     }
 
     public void setPhonecode(final String phonecode) {
-        ensureNotNullOrTooLong("phonecode", phonecode, 5);
+        ensureNotTooLong("phonecode", phonecode, 5);
 
         this.phonecode = phonecode;
     }
@@ -165,7 +165,7 @@ public final class Country extends AbstractVerification {
     }
 
     public void setCurrency(final String currency) {
-        ensureNotNullAndExactLength("currency", currency, 3);
+        ensureExactLength("currency", currency, 3);
 
         this.currency = currency;
     }
@@ -175,7 +175,7 @@ public final class Country extends AbstractVerification {
     }
 
     public void setLanguages(final String languages) {
-        ensureNotNullOrTooLong("languages", languages, 100);
+        ensureNotTooLong("languages", languages, 100);
 
         this.languages = languages;
     }

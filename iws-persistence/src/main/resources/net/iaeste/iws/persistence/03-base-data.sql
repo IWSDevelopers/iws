@@ -29,6 +29,10 @@ insert into roles (id, external_id, role, description) values (5, '29ee5196-0db1
 -- =============================================================================
 -- Permissions from net.iaeste.iws.api.enums.Permission
 -- =============================================================================
+-- System Control: 0xx
+insert into permissions (id, permission) values ( 7, 'FETCH_COUNTRIES');
+insert into permissions (id, permission) values ( 8, 'PROCESS_COUNTRY');
+-- Administration: 1xx
 insert into permissions (id, permission) values (101, 'CONTROL_USER_ACCOUNT');
 insert into permissions (id, permission) values (102, 'FETCH_USERS');
 insert into permissions (id, permission) values (111, 'PROCESS_SUB_GROUPS');
@@ -39,10 +43,11 @@ insert into permissions (id, permission) values (115, 'PROCESS_USER_GROUP_ASSIGN
 --insert into permissions (id, permission) values (121, 'CREATE_ROLE');
 --insert into permissions (id, permission) values (122, 'PROCESS_ROLE');
 --insert into permissions (id, permission) values (123, 'FETCH_ROLES');
---insert into permissions (id, permission) values ( 7, 'FETCH_COUNTRIES');
-insert into permissions (id, permission) values ( 8, 'PROCESS_COUNTRIES');
-insert into permissions (id, permission) values (201, 'MANAGE_OFFERS');
-insert into permissions (id, permission) values (202, 'LOOKUP_OFFERS');
+-- Exchange: 2xx
+insert into permissions (id, permission) values (201, 'PROCESS_EMPLOYER');
+insert into permissions (id, permission) values (202, 'FETCH_EMPLOYERS');
+insert into permissions (id, permission) values (203, 'PROCESS_OFFER');
+insert into permissions (id, permission) values (204, 'FETCH_OFFERS');
 --insert into permissions (id, permission) values (12, 'PROCESS_OFFER_TEMPLATES');
 --insert into permissions (id, permission) values (13, 'LOOKUP_OFFER_TEMPLATES');
 --insert into permissions (id, permission) values (14, 'PROCESS_OFFER_PUBLISH_GROUPS');
@@ -51,9 +56,9 @@ insert into permissions (id, permission) values (202, 'LOOKUP_OFFERS');
 --insert into permissions (id, permission) values (17, 'PROCESS_FACULTIES');
 --insert into permissions (id, permission) values (18, 'PROCESS_STUDENTS');
 --insert into permissions (id, permission) values (19, 'LOOKUP_STUDENTS');
-insert into permissions (id, permission) values (20, 'PROCESS_PUBLISH_OFFER');
-insert into permissions (id, permission) values (21, 'LOOKUP_PUBLISH_OFFER');
-insert into permissions (id, permission) values (22, 'APPLY_FOR_OPEN_OFFER');
+insert into permissions (id, permission) values (220, 'PROCESS_PUBLISH_OFFER');
+insert into permissions (id, permission) values (221, 'FETCH_PUBLISH_OFFER');
+insert into permissions (id, permission) values (222, 'APPLY_FOR_OPEN_OFFER');
 
 -- =============================================================================
 -- Linking the Permissions to both Roles & GroupTypes, so when we do perform a
@@ -61,6 +66,46 @@ insert into permissions (id, permission) values (22, 'APPLY_FOR_OPEN_OFFER');
 -- we have to do, is compare the overlap of these two sets of data (Permissions
 -- for GroupTypes, and Permissions for Roles), then we'll have the answer
 -- =============================================================================
+
+-- Permission 7 - Lookup Countries
+--   -> GroupTypes: 0 Administration
+--                  2 Member
+--                  3 International
+--                  4 Regional
+--                  5 National
+--                  6 SAR
+--                  7 LOCAL
+--                  8 WorkGroup
+--                  9 Students
+--   -> Roles:      1 Owner
+--                  2 Moderator
+--                  3 Member
+--                  4 Guest
+--                  5 Student
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 7);
+insert into permission_to_role (role_id, permission_id) values (1, 7);
+insert into permission_to_role (role_id, permission_id) values (2, 7);
+insert into permission_to_role (role_id, permission_id) values (3, 7);
+insert into permission_to_role (role_id, permission_id) values (4, 7);
+insert into permission_to_role (role_id, permission_id) values (5, 7);
+
+-- Permission 8 - Process Country
+--   -> GroupTypes: 0 Administration
+--                  5 National
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 8);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 8);
+insert into permission_to_role (role_id, permission_id) values (1, 8);
+insert into permission_to_role (role_id, permission_id) values (2, 8);
 
 -- Permission 102 - Control User Account
 --   -> GroupTypes: 0 Administration
@@ -167,7 +212,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 115
 insert into permission_to_role (role_id, permission_id) values (1, 115);
 insert into permission_to_role (role_id, permission_id) values (2, 115);
 
--- Permission: 201 - Process Offer
+-- Permission: 201 - Process Employer
 --   -> GroupTypes: 5 National
 --                  6 SAR
 --                  7 Local
@@ -179,7 +224,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 201
 insert into permission_to_role (role_id, permission_id) values (1, 201);
 insert into permission_to_role (role_id, permission_id) values (2, 201);
 
--- Permission: 202 - Lookup Offers
+-- Permission: 202 - Lookup Employers
 --   -> GroupTypes: 5 National
 --                  6 SAR
 --                  7 Local
@@ -191,17 +236,41 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 202
 insert into permission_to_role (role_id, permission_id) values (1, 202);
 insert into permission_to_role (role_id, permission_id) values (2, 202);
 
+-- Permission: 203 - Process Offer
+--   -> GroupTypes: 5 National
+--                  6 SAR
+--                  7 Local
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 203);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 203);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 203);
+insert into permission_to_role (role_id, permission_id) values (1, 203);
+insert into permission_to_role (role_id, permission_id) values (2, 203);
+
+-- Permission: 204 - Lookup Offers
+--   -> GroupTypes: 5 National
+--                  6 SAR
+--                  7 Local
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 204);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 204);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 204);
+insert into permission_to_role (role_id, permission_id) values (1, 204);
+insert into permission_to_role (role_id, permission_id) values (2, 204);
+
 -- Permission: 20 - Publish Offer
 --   -> GroupTypes: 5 National
 --                  6 SAR
 --                  7 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
-insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 20);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 20);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 20);
-insert into permission_to_role (role_id, permission_id) values (1, 20);
-insert into permission_to_role (role_id, permission_id) values (2, 20);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 220);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 220);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 220);
+insert into permission_to_role (role_id, permission_id) values (1, 220);
+insert into permission_to_role (role_id, permission_id) values (2, 220);
 
 -- Permission: 14 - Lookup Publish Offer
 --   -> GroupTypes: 5 National
@@ -209,17 +278,17 @@ insert into permission_to_role (role_id, permission_id) values (2, 20);
 --                  7 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
-insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 21);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 21);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 21);
-insert into permission_to_role (role_id, permission_id) values (1, 21);
-insert into permission_to_role (role_id, permission_id) values (2, 21);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 221);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 221);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 221);
+insert into permission_to_role (role_id, permission_id) values (1, 221);
+insert into permission_to_role (role_id, permission_id) values (2, 221);
 
 -- Permission: 22 - Apply For Open Offer
 --   -> GroupTypes: 9 Student
 --   -> Roles:      5 Student
-insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 22);
-insert into permission_to_role (role_id, permission_id) values (5, 22);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 222);
+insert into permission_to_role (role_id, permission_id) values (5, 222);
 
 -- =============================================================================
 -- Default Groups
@@ -235,12 +304,12 @@ insert into groups (id, external_id, grouptype_id, groupName, full_name) values 
 -- Test Data
 -- =============================================================================
 -- Country Data
-insert into countries (country_code, country_name) values ('AT', 'Austria');
-insert into countries (country_code, country_name) values ('HR', 'Croatia');
-insert into countries (country_code, country_name) values ('DK', 'Denmark');
-insert into countries (country_code, country_name) values ('DE', 'Germany');
-insert into countries (country_code, country_name) values ('PL', 'Poland');
-insert into countries (country_code, country_name) values ('HU', 'Hungary');
+insert into countries (country_code, country_name, country_name_full, member_since) values ('AT', 'Austria', 'Austria', 1960);
+insert into countries (country_code, country_name, country_name_full, member_since) values ('HR', 'Croatia', 'Croatia', 1990);
+insert into countries (country_code, country_name, country_name_full, member_since) values ('DK', 'Denmark', 'Denmark', 1948);
+insert into countries (country_code, country_name, country_name_full, member_since) values ('DE', 'Germany', 'Germany', 1970);
+insert into countries (country_code, country_name, country_name_full, member_since) values ('PL', 'Poland', 'Poland', 1990);
+insert into countries (country_code, country_name, country_name_full, member_since) values ('HU', 'Hungary', 'Hungary', 1990);
 
 -- Couple of Member Groups, our Sequence starts with 25, so we only allow a limitted amount of test data
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (10, '2cc7e1bb-01e8-43a2-9643-2e964cbd41c5', 2, null, 1, 'Austria');

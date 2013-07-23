@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.exchange.FetchEmployerResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -18,25 +18,23 @@ import static net.iaeste.iws.api.util.Copier.copy;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
+import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.util.AbstractFallible;
 
 import java.util.List;
 
 /**
- * @author  Pavel Fiala / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
- * @deprecated this response class is deprecated, please use the other request
  */
-@Deprecated
-public final class FetchEmployerInformationResponse extends AbstractFallible {
+public final class FetchEmployerResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private List<EmployerInformation> employers = null;
+    private List<Employer> employers = null;
 
     // =========================================================================
     // Object Constructors
@@ -46,15 +44,16 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchEmployerInformationResponse() {
+    public FetchEmployerResponse() {
     }
 
     /**
-     * Default Constructor.
+     * Default Constructor, for creating new instances with the list of
+     * Employers.
      *
-     * @param employers List of Employers
+     * @param employers List of Employers found
      */
-    public FetchEmployerInformationResponse(final List<EmployerInformation> employers) {
+    public FetchEmployerResponse(final List<Employer> employers) {
         setEmployers(employers);
     }
 
@@ -64,7 +63,7 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public FetchEmployerInformationResponse(final IWSError error, final String message) {
+    public FetchEmployerResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -72,11 +71,11 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setEmployers(final List<EmployerInformation> employers) {
+    public void setEmployers(final List<Employer> employers) {
         this.employers = copy(employers);
     }
 
-    public List<EmployerInformation> getEmployers() {
+    public List<Employer> getEmployers() {
         return copy(employers);
     }
 
@@ -84,17 +83,23 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
     // Standard Response Methods
     // =========================================================================
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof FetchEmployerInformationResponse)) {
+        if (!(obj instanceof FetchEmployerRequest)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
             return false;
         }
 
-        final FetchEmployerInformationResponse that = (FetchEmployerInformationResponse) obj;
-        return employers.equals(that.employers);
+        final FetchEmployerResponse that = (FetchEmployerResponse) obj;
+        return !(employers != null ? !employers.equals(that.employers) : that.employers != null);
     }
 
     /**
@@ -114,7 +119,7 @@ public final class FetchEmployerInformationResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "FetchEmployerInformationResponse{" +
+        return "FetchEmployerRequest{" +
                 "employers=" + employers +
                 '}';
     }

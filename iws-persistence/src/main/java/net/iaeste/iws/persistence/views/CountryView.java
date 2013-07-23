@@ -41,7 +41,7 @@ import javax.persistence.Table;
         @NamedQuery(name = "view.findCountriesByMembership",
                 query = "select v from CountryView v " +
                         "where v.membership = :type "),
-        @NamedQuery(name = "view.findCountriesByCountryIds",
+        @NamedQuery(name = "view.findCountriesByCountryCode",
                 query = "select v from CountryView v " +
                         "where v.countryCode in :codes")
 })
@@ -52,7 +52,7 @@ public class CountryView extends AbstractView<CountryView> {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
-    @Column
+    @Column(name = "country_code")
     private String countryCode = null;
 
     @Column(name = "country_name")

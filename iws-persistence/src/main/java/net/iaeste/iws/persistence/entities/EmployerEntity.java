@@ -39,8 +39,9 @@ import java.util.Date;
  */
 @NamedQueries({
         @NamedQuery(
-                name = "employer.findAll",
-                query = "select e from EmployerEntity e"),
+                name = "employer.findAllForGroup",
+                query = "select e from EmployerEntity e " +
+                        "where e.group.id = :gid"),
         @NamedQuery(
                 name = "employer.findByExternalId",
                 query = "select e from EmployerEntity e " +
@@ -264,7 +265,6 @@ public class EmployerEntity implements Updateable<EmployerEntity> {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             name = obj.name;
-            address = obj.address;
             business = obj.business;
             numberOfEmployees = obj.numberOfEmployees;
             website = obj.website;

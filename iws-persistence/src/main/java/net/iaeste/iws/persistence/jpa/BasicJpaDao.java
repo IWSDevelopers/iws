@@ -23,6 +23,7 @@ import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
@@ -174,6 +175,17 @@ public class BasicJpaDao implements BasicDao {
     // =========================================================================
     // Following lookup methods are added here, since they're used often
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CountryEntity findCountry(final String countryCode) {
+        final Query query = entityManager.createNamedQuery("country.findByCountryCode");
+        query.setParameter("code", toLower(countryCode));
+
+        return findUniqueResult(query, "country");
+    }
 
     /**
      * {@inheritDoc}

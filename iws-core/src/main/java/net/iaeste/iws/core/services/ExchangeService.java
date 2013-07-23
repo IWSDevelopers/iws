@@ -52,6 +52,8 @@ import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.EmployerEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.OfferEntity;
@@ -97,12 +99,20 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         } else {
             // New Employer
             newEntity.setGroup(authentication.getGroup());
-            dao.persist(authentication, newEntity.getAddress());
+            persistNewAddress(authentication, newEntity.getAddress());
             dao.persist(authentication, newEntity);
             response = new EmployerResponse(transform(newEntity));
         }
 
         return response;
+    }
+
+    private void persistNewAddress(final Authentication authentication, final AddressEntity address) {
+        if (address.getId() == null) {
+            final CountryEntity country = dao.findCountry(address.getCountry().getCountryCode());
+            address.setCountry(country);
+            dao.persist(authentication, address);
+        }
     }
 
     /**

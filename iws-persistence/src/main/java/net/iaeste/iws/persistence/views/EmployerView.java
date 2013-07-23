@@ -37,10 +37,15 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "view.findEmployerByGroup",
                 query = "select e from EmployerView e " +
-                        "where e.groupId = :id "),
-        @NamedQuery(name = "view.findEmployerById",
+                        "where e.groupId = :gid "),
+        @NamedQuery(name = "view.findEmployerByGroupAndId",
                 query = "select e from EmployerView e " +
-                        "where e.id in :id")
+                        "where e.groupId = :gid" +
+                        "  and e.externalId = :id"),
+        @NamedQuery(name = "view.findEmployerByGroupAndPartialName",
+                query = "select e from EmployerView e " +
+                        "where e.groupId = :gid" +
+                        "  and lower(e.name) like :name")
 })
 @Table(name = "employer_view")
 public class EmployerView extends AbstractView<EmployerView> {

@@ -31,14 +31,12 @@ import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
+import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.common.notification.NotificationField;
-import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.Date;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -105,7 +103,7 @@ public final class AccessClientTest {
         // Now we've forgotten our session, so request a reset
         access.requestResettingSession(request);
         final String resetCode = spy.getNext().getFields().get(NotificationField.CODE);
-        assertThat(resetCode, is(not(Matchers.nullValue())));
+        assertThat(resetCode, is(not(nullValue())));
         final AuthenticationResponse newResponse = access.resetSession(resetCode);
 
         // Now verify that control was handed over to the new Session
@@ -219,7 +217,7 @@ public final class AccessClientTest {
 
         // When we make a request for a specific Group, we only expect to find a single element
         assertThat(responseNational.getAuthorizations().size(), is(1));
-        assertThat(responseNational.getAuthorizations().get(0).getPermission().contains(Permission.MANAGE_OFFERS), is(true));
+        assertThat(responseNational.getAuthorizations().get(0).getPermission().contains(Permission.PROCESS_OFFER), is(true));
         //token.setGroupId("invalid");
 
         // Finally, let's see what happens when we try to find the information

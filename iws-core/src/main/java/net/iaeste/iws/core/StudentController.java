@@ -85,7 +85,7 @@ public final class StudentController extends CommonController implements Student
         FetchStudentResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_STUDENTS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_STUDENTS);
             verify(request);
 
             final StudentService service = factory.prepareStudentService();
@@ -129,7 +129,7 @@ public final class StudentController extends CommonController implements Student
         FetchStudentApplicationsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.LOOKUP_STUDENT_APPLICATION);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_STUDENT_APPLICATION);
             verify(request);
 
             final StudentService service = factory.prepareStudentService();

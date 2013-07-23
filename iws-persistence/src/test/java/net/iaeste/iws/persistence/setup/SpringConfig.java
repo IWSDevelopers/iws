@@ -64,7 +64,7 @@ public class SpringConfig {
                 .addScript("net/iaeste/iws/persistence/02-base-views.sql")
                 .addScript("net/iaeste/iws/persistence/03-base-data.sql")
                 .addScript("net/iaeste/iws/persistence/hsqldb/04-exchange-tables.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/05-exchange-views.sql")
+                .addScript("net/iaeste/iws/persistence/05-exchange-views.sql")
                 .addScript("net/iaeste/iws/persistence/06-exchange-data.sql")
                 .build();
     }

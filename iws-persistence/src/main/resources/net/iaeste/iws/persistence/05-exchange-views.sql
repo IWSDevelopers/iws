@@ -15,7 +15,7 @@ create view employer_view as
     e.number_of_employees   as number_of_employees,
     e.website               as website,
     e.working_place         as working_place,
-    e.canteen               as cantee,
+    e.canteen               as canteen,
     e.nearest_airport       as nearest_airport,
     e.nearest_pub_transport as nearest_pub_transport,
     e.weekly_hours          as weekly_hours,

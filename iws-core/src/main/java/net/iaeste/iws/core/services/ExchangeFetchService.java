@@ -18,29 +18,36 @@ import static net.iaeste.iws.core.transformers.OfferTransformer.transform;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
+import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.OfferEntity;
 import net.iaeste.iws.persistence.entities.OfferGroupEntity;
+import net.iaeste.iws.persistence.views.EmployerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,8 +65,75 @@ import java.util.Set;
  */
 public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
-    public ExchangeFetchService(final ExchangeDao dao) {
+    private final ViewsDao viewsDao;
+
+    public ExchangeFetchService(final ExchangeDao dao, final ViewsDao viewsDao) {
         super(dao);
+        this.viewsDao = viewsDao;
+    }
+
+    public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
+        final FetchEmployerInformationResponse response;
+
+        response = new FetchEmployerInformationResponse(convertToEmployerInformationList(dao.findOffersByLikeEmployerName(authentication, request.getName())));
+
+        return response;
+    }
+
+    public FetchEmployerResponse fetchEmployers(final Authentication authentication, final FetchEmployerRequest request) {
+        final Long groupId = authentication.getGroup().getId();
+        final List<Employer> list;
+
+        switch (request.getFetchType()) {
+            case ID:
+                list = findEmployerById(groupId, request.getFetchField());
+                break;
+            case NAME:
+                list = findEmployerByName(groupId, request.getPagingInformation(), request.getFetchField());
+                break;
+            default:
+                list = findAllEmployers(groupId, request.getPagingInformation());
+        }
+
+        return new FetchEmployerResponse(list);
+    }
+
+    private List<Employer> findEmployerById(final Long groupId, final String externalId) {
+        final EmployerView view = viewsDao.findEmployer(groupId, externalId);
+
+        final List<Employer> result;
+        if (view != null) {
+            final Employer employer = ViewTransformer.transform(view);
+            result = new ArrayList<>(1);
+            result.add(employer);
+        } else {
+            result = new ArrayList<>(0);
+        }
+
+        return result;
+    }
+
+    private List<Employer> findEmployerByName(final Long groupId, final Paginatable page, final String partialName) {
+        final List<EmployerView> found = viewsDao.findEmployers(groupId, page, partialName);
+
+        return convertEmployerViews(found);
+    }
+
+    private List<Employer> findAllEmployers(final Long groupId, final Paginatable page) {
+        final List<EmployerView> found = viewsDao.findEmployers(groupId, page);
+
+        return convertEmployerViews(found);
+    }
+
+    private static List<Employer> convertEmployerViews(final List<EmployerView> found) {
+        final List<Employer> result = new ArrayList<>(found.size());
+
+        for (final EmployerView view : found) {
+            final Employer employer = ViewTransformer.transform(view);
+            result.add(employer);
+        }
+
+        return result;
     }
 
     public FetchOffersResponse fetchOffers(final Authentication authentication, final FetchOffersRequest request) {
@@ -75,14 +149,6 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
             default:
                 response = new FetchOffersResponse(IWSErrors.NOT_PERMITTED, "The search type is not permitted");
         }
-
-        return response;
-    }
-
-    public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
-        final FetchEmployerInformationResponse response;
-
-        response = new FetchEmployerInformationResponse(convertToEmployerInformationList(dao.findOffersByLikeEmployerName(authentication, request.getName())));
 
         return response;
     }

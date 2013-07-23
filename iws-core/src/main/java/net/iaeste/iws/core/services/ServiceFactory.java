@@ -19,10 +19,12 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
+import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.CountryJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
+import net.iaeste.iws.persistence.jpa.ViewsJpaDao;
 
 import javax.persistence.EntityManager;
 
@@ -83,7 +85,9 @@ public final class ServiceFactory {
 
     public ExchangeFetchService prepareExchangeFetchService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager);
-        return new ExchangeFetchService(dao);
+        final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
+
+        return new ExchangeFetchService(dao, viewsDao);
     }
 
     public StudentService prepareStudentService() {

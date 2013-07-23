@@ -57,6 +57,14 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
+        return client.fetchEmployers(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         return client.processOffer(token, request);
     }

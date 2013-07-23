@@ -88,8 +88,8 @@ public class AddressEntity implements Updateable<AddressEntity> {
     @Column(name = "pobox", length = 100)
     private String pobox = null;
 
-    @ManyToOne(targetEntity = CountryEntity.class)
-    @JoinColumn(name = "country_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false, updatable = false)
     private CountryEntity country = null;
 
     /**
@@ -266,14 +266,13 @@ public class AddressEntity implements Updateable<AddressEntity> {
      */
     @Override
     public void merge(final AddressEntity obj) {
-        if ((obj != null) && id.equals(obj.id)) {
+        if ((obj != null) && externalId.equals(obj.externalId)) {
             street1 = obj.street1;
             street2 = obj.street2;
             zip = obj.zip;
             city = obj.city;
             region = obj.region;
             pobox = obj.pobox;
-            country = obj.country;
         }
     }
 }

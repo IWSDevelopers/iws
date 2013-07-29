@@ -29,6 +29,8 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 
 /**
  * Handles Administration of User Accounts, Groups, Roles and Countries.
@@ -38,6 +40,7 @@ import javax.ejb.Remote;
  * @since   1.7
  */
 @Remote
+@WebService
 public interface Administration {
 
     /**
@@ -65,6 +68,7 @@ public interface Administration {
      *                first and last name
      * @return Standard Error Object
      */
+    @WebMethod
     Fallible createUser(AuthenticationToken token, CreateUserRequest request);
 
     /**
@@ -80,6 +84,7 @@ public interface Administration {
      * @param activationString Code used to activate the Account with
      * @return Standard Error Object
      */
+    @WebMethod
     Fallible activateUser(String activationString);
 
     /**
@@ -94,6 +99,7 @@ public interface Administration {
      * @param updateCode Code used for updating the username for the account
      * @return Standard Error Object
      */
+    @WebMethod
     Fallible updateUsername(String updateCode);
 
     /**
@@ -123,6 +129,7 @@ public interface Administration {
      *                state for it
      * @return Standard Error Object
      */
+    @WebMethod
     Fallible controlUserAccount(AuthenticationToken token, UserRequest request);
 
     /**
@@ -133,8 +140,10 @@ public interface Administration {
      * @param request Fetch User Request Object
      * @return Response Object with the found users and error information
      */
+    @WebMethod
     FetchUserResponse fetchUser(AuthenticationToken token, FetchUserRequest request);
 
+    @WebMethod
     Fallible processGroup(AuthenticationToken token, GroupRequest request);
 
     /**
@@ -146,6 +155,7 @@ public interface Administration {
      * @param request Fetch Group Request Object
      * @return Standard Error Object
      */
+    @WebMethod
     Fallible deleteGroup(AuthenticationToken token, GroupRequest request);
 
     /**
@@ -157,8 +167,10 @@ public interface Administration {
      * @param request Fetch Group Request Object
      * @return Response Object with the found group & users and error information
      */
+    @WebMethod
     FetchGroupResponse fetchGroup(AuthenticationToken token, FetchGroupRequest request);
 
+    @WebMethod
     Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
 
     /**
@@ -174,6 +186,7 @@ public interface Administration {
      * @param request Request data, must contain the Country Record
      * @return Standard Error Object
      */
+    @WebMethod
     Fallible processCountries(AuthenticationToken token, CountryRequest request);
 
     /**
@@ -186,5 +199,6 @@ public interface Administration {
      * @param request Fetch Country Request Object
      * @return Response Object with the found countries and error information
      */
+    @WebMethod
     FetchCountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
 }

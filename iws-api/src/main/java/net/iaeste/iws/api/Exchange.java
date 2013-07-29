@@ -41,12 +41,15 @@ import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 
 /**
  * Exchange related functionality is covered with this interface. Only exception
  * here, the handling of students is done vai the {@link Student} interface.
  */
 @Remote
+@WebService
 public interface Exchange {
 
     /**
@@ -57,6 +60,7 @@ public interface Exchange {
      * @param request Request Object, with the Employer
      * @return Persisted Employer Object
      */
+    @WebMethod
     EmployerResponse processEmployer(AuthenticationToken token, ProcessEmployerRequest request);
 
     /**
@@ -86,6 +90,7 @@ public interface Exchange {
      * @param request Employer Request Object
      * @return List of requested Employers
      */
+    @WebMethod
     FetchEmployerResponse fetchEmployers(AuthenticationToken token, FetchEmployerRequest request);
 
     /**
@@ -98,6 +103,7 @@ public interface Exchange {
      * @param request contains a {@link net.iaeste.iws.api.dtos.exchange.Offer}
      * @return the persisted {@link net.iaeste.iws.api.dtos.exchange.Offer} including the generated Id
      */
+    @WebMethod
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 
     /**
@@ -110,6 +116,7 @@ public interface Exchange {
      * @param request contains a field with the RefNo (will be changed to id #359)
      * @return emtpy {@link OfferResponse} (offer=null) on success
      */
+    @WebMethod
     OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
     /**
@@ -130,6 +137,7 @@ public interface Exchange {
      *                should be returned
      * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
+    @WebMethod
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
     /**
@@ -139,6 +147,7 @@ public interface Exchange {
      * @param request Request Object
      * @return Response Object
      */
+    @WebMethod
     Fallible processOfferTemplate(AuthenticationToken token, OfferTemplateRequest request);
 
     /**
@@ -148,6 +157,7 @@ public interface Exchange {
      * @param request Request Object
      * @return Response Object
      */
+    @WebMethod
     FetchOfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
 
     /**
@@ -164,6 +174,7 @@ public interface Exchange {
      * @return Response Object with the current national groups ordered by name
      *                  and error information
      */
+    @WebMethod
     FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request);
 
     /**
@@ -173,6 +184,7 @@ public interface Exchange {
      * @param request Request Object
      * @return Response Object
      */
+    @WebMethod
     Fallible processPublishGroup(AuthenticationToken token, PublishGroupRequest request);
 
     /**
@@ -182,6 +194,7 @@ public interface Exchange {
      * @param request Request Object
      * @return Response Object
      */
+    @WebMethod
     FetchPublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
     /**
@@ -198,6 +211,7 @@ public interface Exchange {
      * @param request contains a list of offer, a list of members and a nomination deadline
      * @return contains no data
      */
+    @WebMethod
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
 
     /**
@@ -209,5 +223,6 @@ public interface Exchange {
      * @return contains a map for each requested offer and the list of {@link net.iaeste.iws.api.dtos.exchange.OfferGroup}
      *  to which the offer is shared to
      */
+    @WebMethod
     FetchPublishedGroupsResponse fetchPublishedGroups(AuthenticationToken token, FetchPublishedGroupsRequest request);
 }

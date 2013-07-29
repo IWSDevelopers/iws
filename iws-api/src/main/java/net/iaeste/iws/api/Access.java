@@ -24,6 +24,8 @@ import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 import java.io.Serializable;
 
 /**
@@ -50,6 +52,7 @@ import java.io.Serializable;
  * @since   1.7
  */
 @Remote
+@WebService
 public interface Access {
 
     /**
@@ -61,6 +64,7 @@ public interface Access {
      * @param request  User Authentication Request object
      * @return Authentication Result Object
      */
+    @WebMethod
     AuthenticationResponse generateSession(AuthenticationRequest request);
 
     /**
@@ -79,6 +83,7 @@ public interface Access {
      * @param request  User Authentication Request object
      * @return Standard Error object
      */
+    @WebMethod
     Fallible requestResettingSession(AuthenticationRequest request);
 
     /**
@@ -89,6 +94,7 @@ public interface Access {
      * @param resetSessionToken The Reset token sent to the user
      * @return Authentication Result Object
      */
+    @WebMethod
     AuthenticationResponse resetSession(String resetSessionToken);
 
     /**
@@ -98,6 +104,7 @@ public interface Access {
      * @param request  SessionData Request Object
      * @return Standard Error object
      */
+    @WebMethod
     <T extends Serializable> Fallible saveSessionData(AuthenticationToken token, SessionDataRequest<T> request);
 
     /**
@@ -107,6 +114,7 @@ public interface Access {
      * @param token  User Authentication Request object
      * @return Session Response, with Error And Session data
      */
+    @WebMethod
     <T extends Serializable> SessionDataResponse<T> readSessionData(AuthenticationToken token);
 
     /**
@@ -119,17 +127,19 @@ public interface Access {
      * @param token The {@code AuthenticationToken} to deprecate the session for
      * @return Standard Error object
      */
+    @WebMethod
     Fallible deprecateSession(AuthenticationToken token);
 
     /**
      * If a user forgot the password, then this request will send a notification
      * to the Users registered e-mail address (username). The e-mail will
      * contain a reset Token, that can be used when invoking the
-     * {@code #resetPassword(resetPasswordToken, newPassword} method.
+     * {@code #resetPassword(resetPasswordToken, newPassword)} method.
      *
      * @param username The users username, i.e. e-mail address
      * @return Standard Error object
      */
+    @WebMethod
     Fallible forgotPassword(String username);
 
     /**
@@ -139,6 +149,7 @@ public interface Access {
      * @param password           Password Object for the user
      * @return Standard Error object
      */
+    @WebMethod
     Fallible resetPassword(String resetPasswordToken, Password password);
 
     /**
@@ -148,6 +159,7 @@ public interface Access {
      * @param password Password Object for the user
      * @return Standard Error object
      */
+    @WebMethod
     Fallible updatePassword(AuthenticationToken token, Password password);
 
     /**
@@ -160,5 +172,6 @@ public interface Access {
      * @param token  User {@code AuthenticationToken}
      * @return Authorization Result Object
      */
+    @WebMethod
     FetchPermissionResponse fetchPermissions(AuthenticationToken token);
 }

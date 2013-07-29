@@ -124,6 +124,10 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Column(name = "ref_no", nullable = false, unique = true)
     private String refNo = null;
 
+    @ManyToOne
+    @JoinColumn(name = "employer_id")
+    private EmployerEntity employer = null;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "nomination_deadline")
     private Date nominationDeadline = null;
@@ -471,6 +475,14 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Override
     public String getExternalId() {
         return externalId;
+    }
+
+    public void setEmployer(final EmployerEntity employer) {
+        this.employer = employer;
+    }
+
+    public EmployerEntity getEmployer() {
+        return employer;
     }
 
     public Language getLanguage1() {

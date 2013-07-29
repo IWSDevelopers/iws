@@ -260,7 +260,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 204
 insert into permission_to_role (role_id, permission_id) values (1, 204);
 insert into permission_to_role (role_id, permission_id) values (2, 204);
 
--- Permission: 20 - Publish Offer
+-- Permission: 220 - Publish Offer
 --   -> GroupTypes: 5 National
 --                  6 SAR
 --                  7 Local
@@ -272,7 +272,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 220
 insert into permission_to_role (role_id, permission_id) values (1, 220);
 insert into permission_to_role (role_id, permission_id) values (2, 220);
 
--- Permission: 14 - Lookup Publish Offer
+-- Permission: 221 - Lookup Publish Offer
 --   -> GroupTypes: 5 National
 --                  6 SAR
 --                  7 Local
@@ -284,7 +284,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 221
 insert into permission_to_role (role_id, permission_id) values (1, 221);
 insert into permission_to_role (role_id, permission_id) values (2, 221);
 
--- Permission: 22 - Apply For Open Offer
+-- Permission: 222 - Apply For Open Offer
 --   -> GroupTypes: 9 Student
 --   -> Roles:      5 Student
 insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 222);

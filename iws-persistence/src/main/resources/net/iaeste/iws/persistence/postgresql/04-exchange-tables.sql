@@ -60,6 +60,7 @@ create table offers (
     external_id               varchar(36),
     group_id                  integer,
     ref_no                    varchar(255),
+    employer_id               integer,
     canteen                   boolean,
     number_of_hard_copies     integer,
     currency                  varchar(3),
@@ -111,8 +112,9 @@ create table offers (
     created                   timestamp default now(),
 
     /* Primary & Foreign Keys */
-    constraint offer_pk          primary key (id),
-    constraint offer_fk_group_id foreign key (group_id) references groups (id),
+    constraint offer_pk             primary key (id),
+    constraint offer_fk_group_id    foreign key (group_id) references groups (id),
+    constraint offer_fk_employer_id foreign key (employer_id) references employers (id),
 
     /* Unique Constraints */
     constraint offer_unique_ref_no      unique (ref_no),

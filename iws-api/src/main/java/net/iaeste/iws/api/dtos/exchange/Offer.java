@@ -74,6 +74,8 @@ public final class Offer extends AbstractVerification {
      */
     private String refNo = null;
 
+    private Employer employer = null;
+
     /**
      * validations:
      * <ul>
@@ -275,6 +277,7 @@ public final class Offer extends AbstractVerification {
             // No id exist as refNo is unique
             offerId = offer.offerId;
             refNo = offer.refNo;
+            employer = offer.employer;
             employerName = offer.employerName;
             employerAddress = offer.employerAddress;
             employerAddress2 = offer.employerAddress2;
@@ -344,6 +347,14 @@ public final class Offer extends AbstractVerification {
 
     public String getOfferId() {
         return offerId;
+    }
+
+    public void setEmployer(final Employer employer) {
+        this.employer = employer;
+    }
+
+    public Employer getEmployer() {
+        return employer;
     }
 
     public void setCanteen(final Boolean canteen) {

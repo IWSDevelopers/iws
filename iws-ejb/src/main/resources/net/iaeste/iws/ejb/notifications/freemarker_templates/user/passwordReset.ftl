@@ -1,1 +1,1 @@
-Reset Password Code = ${userObject.getCode()}
+Reset Password Code = ${CODE}

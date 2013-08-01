@@ -1,1 +1,1 @@
-Reset Session Code = ${userObject.getCode()}
+Reset Session Code = ${CODE}

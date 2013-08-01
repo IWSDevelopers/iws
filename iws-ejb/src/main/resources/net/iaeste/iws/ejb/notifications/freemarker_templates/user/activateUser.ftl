@@ -1,1 +1,1 @@
-New User Account generated, with password = ${userObject.getTemporary()} and Activation Code = ${userObject.getCode()}
+New User Account generated, with password = ${CLEARTEXT_PASSWORD} and Activation Code = ${CODE}

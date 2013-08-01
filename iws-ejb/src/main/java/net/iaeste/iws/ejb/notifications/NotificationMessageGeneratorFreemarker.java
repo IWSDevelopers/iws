@@ -18,6 +18,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.notification.Notifiable;
@@ -56,11 +57,37 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
 //            case OFFER:
 //                throw new NotImplementedException("Notifications for offer are not implemented");
 //            default:
-        throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
 //        }
+        final String templateName;
+        final String titleTemplateName;
+        final String dir;
+        switch (type) {
+            case ACTIVATE_USER:
+                templateName = "activateUser.ftl";
+                titleTemplateName = "activateUserTitle.ftl";
+                dir = USER_TEMPLATE_DIR;
+                break;
+            case RESET_PASSWORD:
+                templateName = "resetPassword.ftl";
+                titleTemplateName = "resetPasswordTitle.ftl";
+                dir = USER_TEMPLATE_DIR;
+                break;
+            case RESET_SESSION:
+                templateName = "resetSession.ftl";
+                titleTemplateName = "resetSessionTitle.ftl";
+                dir = USER_TEMPLATE_DIR;
+                break;
+            default:
+                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
+//                throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
+        }
+
+        final Map<NotificationField, String> input = obj.prepareNotifiableFields(type);
+        return generate(dir, templateName, titleTemplateName, input);
+
     }
 
-    private Map<String, String> generate(final String dir, final String templateName, final String titleTemplateName, final Map<String, Object> input) {
+    private Map<String, String> generate(final String dir, final String templateName, final String titleTemplateName, final Map<NotificationField, String> input) {
         try {
             final Map<String, String> result = new HashMap<>();
 
@@ -70,7 +97,7 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
             Template template = cfg.getTemplate(templateName);
 
             Writer output = new StringWriter();
-            template.process(input, output);
+            template.process(prepareInputMap(input), output);
             output.flush();
             result.put("body", output.toString());
 
@@ -89,29 +116,12 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
         }
     }
 
-    private Map<String, String> processUser(final UserEntity user, final NotificationType type) {
-        final String templateName;
-        final String titleTemplateName;
-        switch (type) {
-            case ACTIVATE_USER:
-                templateName = "activateUser.ftl";
-                titleTemplateName = "activateUserTitle.ftl";
-                break;
-            case RESET_PASSWORD:
-                templateName = "resetPassword.ftl";
-                titleTemplateName = "resetPasswordTitle.ftl";
-                break;
-            case RESET_SESSION:
-                templateName = "resetSession.ftl";
-                titleTemplateName = "resetSessionTitle.ftl";
-                break;
-            default:
-                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
+    private Map<String, String> prepareInputMap(final Map<NotificationField, String> inputMap) {
+        Map<String, String> outputMap = new HashMap<>(inputMap.size());
+        for (NotificationField field : inputMap.keySet()) {
+            outputMap.put(field.name(), inputMap.get(field));
         }
-
-        final Map<String, Object> input = new HashMap<>();
-        input.put("userObject", user);
-
-        return generate(USER_TEMPLATE_DIR, templateName, titleTemplateName, input);
+        return outputMap;
     }
+
 }

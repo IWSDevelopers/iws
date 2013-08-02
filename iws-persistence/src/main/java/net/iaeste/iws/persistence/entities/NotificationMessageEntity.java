@@ -67,7 +67,7 @@ public class NotificationMessageEntity implements IWSEntity {
      * Notification channel (e-mail, instant message, ...)
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "notification_type", length = 100, nullable = false)
+    @Column(name = "delivery_mode", length = 100, nullable = false)
     private NotificationDeliveryMode notificationDeliveryMode = null;
 
     /**

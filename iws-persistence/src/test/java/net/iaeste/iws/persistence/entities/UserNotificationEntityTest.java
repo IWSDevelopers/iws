@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.enums.NotificationFrequency;
-import net.iaeste.iws.api.enums.NotificationSubject;
+import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
@@ -58,13 +58,13 @@ public class UserNotificationEntityTest {
         final UserNotificationEntity entity = new UserNotificationEntity();
         entity.setUser(user);
         entity.setFrequency(NotificationFrequency.IMMEDIATELY);
-        entity.setSubject(NotificationSubject.OFFER);
+        entity.setType(NotificationType.ACTIVATE_USER);
 
         entityManager.persist(entity);
 
-        final Query query = entityManager.createNamedQuery("notifications.findSettingByUserAndSubject");
+        final Query query = entityManager.createNamedQuery("notifications.findSettingByUserAndType");
         query.setParameter("id", user.getId());
-        query.setParameter("subject", NotificationSubject.OFFER);
+        query.setParameter("type", NotificationType.ACTIVATE_USER);
         final List<UserNotificationEntity> found = query.getResultList();
 
         assertThat(found.size(), is(1));

@@ -15,8 +15,8 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
-import net.iaeste.iws.api.enums.NotificationSubject;
 import net.iaeste.iws.api.enums.NotificationDeliveryMode;
+import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
@@ -36,10 +36,10 @@ public interface NotificationDao extends BasicDao {
      * (i.e. event, offer, user, ...)
      *
      * @param user    The User to receive the notification
-     * @param subject Subject of the notification
+     * @param type    Type of notification
      * @return        UserNotificationEntity
      */
-    UserNotificationEntity findUserNotificationSetting(UserEntity user, NotificationSubject subject);
+    UserNotificationEntity findUserNotificationSetting(UserEntity user, NotificationType type);
 
     /**
      * Finds all NotificationMessageEntity for selected notification channel

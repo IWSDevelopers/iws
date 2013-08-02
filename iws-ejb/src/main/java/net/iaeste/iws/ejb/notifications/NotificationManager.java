@@ -15,19 +15,23 @@
 package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.enums.NotificationFrequency;
+import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Notes; It is good to see the notification system evolving. There is just a
@@ -61,31 +65,27 @@ public final class NotificationManager implements Notifications {
     @Override
     public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
         // Save the general information about the Object to be notified.
-        //final List<UserEntity> users = obj.getRecipients();
+        final List<UserEntity> users = getRecipients(obj, type);
 
+        final Map<String, String> messageTexts = messageGenerator.generateFromTemplate(obj, type);
+        for (final UserEntity user : users) {
+            //get user settings
+            //TODO user should have permanent entry in the notification setting to receive messages about NotificationSubject.USER immediately
+            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, type);
 
-//        for (final UserEntity user : users) {
-//            //get user settings
-//            //TODO user should have permanent entry in the notification setting to receive messages about NotificationSubject.USER immediately
-//            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, obj.getNotificationSubject());
-//
-//            if (userNotification != null) {
-//                final NotificationMessageEntity message = new NotificationMessageEntity();
-//                message.setStatus(NotificationMessageStatus.NEW);
+            if (userNotification != null) {
+                final NotificationMessageEntity message = new NotificationMessageEntity();
+                message.setStatus(NotificationMessageStatus.NEW);
 //                message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-//
-//                final Map<String, String> messageTexts = messageGenerator.generateFromTemplate(obj, type);
-//                message.setMessage(messageTexts.get("body"));
-//                message.setMessageTitle(messageTexts.get("title"));
-//
-//                if (delayed) {
-//                    dao.persist(message);
-//                }
-//                else {
-//                    immedeateEmailSender.send(message);
-//                }
-//            }
-//        }
+                //only immediate messages for now
+                message.setProcessAfter(new Date().toDate());
+
+                message.setMessage(messageTexts.get("body"));
+                message.setMessageTitle(messageTexts.get("title"));
+
+                dao.persist(message);
+            }
+        }
 
         notifyObservers();
     }
@@ -95,7 +95,23 @@ public final class NotificationManager implements Notifications {
      */
     @Override
     public void notify(final UserEntity user) {
+        final List<UserEntity> users = getRecipients(user, NotificationType.RESET_PASSWORD);
+        if(users.size()==1) {
+            final Map<String, String> messageTexts = messageGenerator.generateFromTemplate(user, NotificationType.RESET_PASSWORD);
+            final NotificationMessageEntity message = new NotificationMessageEntity();
+            message.setStatus(NotificationMessageStatus.NEW);
+//                message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
+            //only immediate messages for now
+            message.setProcessAfter(new Date().toDate());
 
+            message.setMessage(messageTexts.get("body"));
+            message.setMessageTitle(messageTexts.get("title"));
+
+            dao.persist(message);
+            notifyObservers();
+        } else {
+            //write to log?
+        }
     }
 
     private static java.util.Date getNotificationTime(final NotificationFrequency frequency) {
@@ -138,5 +154,18 @@ public final class NotificationManager implements Notifications {
         for (final Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    private List<UserEntity> getRecipients(Notifiable obj, NotificationType type) {
+        List<UserEntity> result = new ArrayList<>();
+        switch (type) {
+            case ACTIVATE_USER:
+            case RESET_PASSWORD:
+            case RESET_SESSION:
+            case UPDATE_USERNAME:
+                result.add((UserEntity)obj);
+                break;
+        }
+        return result;
     }
 }

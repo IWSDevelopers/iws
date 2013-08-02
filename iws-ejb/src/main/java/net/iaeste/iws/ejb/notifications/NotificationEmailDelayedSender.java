@@ -15,9 +15,12 @@
 package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.enums.NotificationDeliveryMode;
+import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
+import net.iaeste.iws.ejb.emails.EmailMessage;
 import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
@@ -25,6 +28,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.timewalker.ffmq3.FFMQConstants;
 
 import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
@@ -101,27 +105,27 @@ public class NotificationEmailDelayedSender implements Observer {
     }
 
     private void processMessages() {
-//        List<NotificationMessageEntity> messages = dao.findNotificationMessages(NotificationDeliveryMode.EMAIL, NotificationMessageStatus.NEW, new java.util.Date());
+        List<NotificationMessageEntity> messages = dao.findNotificationMessages(NotificationDeliveryMode.EMAIL, NotificationMessageStatus.NEW, new java.util.Date());
 //        Map<UserEntity, List<NotificationMessageEntity>> groupedMessages = groupByUser(messages);
 //        String subject = "IAESTE IW notification";
 //
-//        for(NotificationMessageEntity message : messages) {
-//            dao.updateNotificationMessageStatus(message, NotificationMessageStatus.PROCESSING);
-//
-//            try {
-//                ObjectMessage msg = session.createObjectMessage();
-//                EmailMessage emsg = new EmailMessage();
-//                emsg.setTo(message.getUser().getUserName());
-//                emsg.setSubject(subject);
-//                emsg.setMessage(message.getMessage());
-//                msg.setObjectProperty("emailMessage", emsg);
-//
-//                sender.send(msg);
-//                dao.updateNotificationMessageStatus(message, NotificationMessageStatus.SENT);
-//            } catch (JMSException e) {
-//                //do something, log...
-//            }
-//        }
+        for(NotificationMessageEntity message : messages) {
+            dao.updateNotificationMessageStatus(message, NotificationMessageStatus.PROCESSING);
+
+            try {
+                ObjectMessage msg = session.createObjectMessage();
+                EmailMessage emsg = new EmailMessage();
+                emsg.setTo(message.getUser().getUserName());
+                emsg.setSubject(message.getMessageTitle());
+                emsg.setMessage(message.getMessage());
+                msg.setObjectProperty("emailMessage", emsg);
+
+                sender.send(msg);
+                dao.updateNotificationMessageStatus(message, NotificationMessageStatus.SENT);
+            } catch (JMSException e) {
+                //do something, log...
+            }
+        }
     }
 
     private static Map<UserEntity, List<NotificationMessageEntity>> groupByUser(final List<NotificationMessageEntity> messages) {

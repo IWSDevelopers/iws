@@ -137,9 +137,9 @@ public class EmailSender implements MessageListener {
             message.setText(msg.getMessage());
 
             //Transport.send(message);
-            LOG.info("Email message sent.");
+            LOG.info("Email message sent to " + msg.getTo());
         } catch (MessagingException e) {
-            throw new IWSException(IWSErrors.ERROR, "Sending failed.", e);
+            throw new IWSException(IWSErrors.ERROR, "Sending to '" + msg.getTo() + "' failed.", e);
         }
     }
 

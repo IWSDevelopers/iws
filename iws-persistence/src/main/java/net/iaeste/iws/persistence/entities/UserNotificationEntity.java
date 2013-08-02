@@ -16,7 +16,7 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.NotificationFrequency;
-import net.iaeste.iws.api.enums.NotificationSubject;
+import net.iaeste.iws.common.notification.NotificationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,10 +42,10 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(@NamedQuery(name = "notifications.findSettingByUserAndSubject",
+@NamedQueries(@NamedQuery(name = "notifications.findSettingByUserAndType",
         query = "select un from UserNotificationEntity un " +
                 "where un.user.id = :id " +
-                "  and un.subject = :subject"))
+                "  and un.type = :type"))
 @Entity
 @Table(name = "user_notifications")
 public class UserNotificationEntity implements IWSEntity {
@@ -60,9 +60,9 @@ public class UserNotificationEntity implements IWSEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user = null;
 
-    @Column(name = "subject")
+    @Column(name = "notification_type")
     @Enumerated(EnumType.STRING)
-    private NotificationSubject subject = null;
+    private NotificationType type = null;
 
     @Column(name = "frequency")
     @Enumerated(EnumType.STRING)
@@ -89,11 +89,11 @@ public class UserNotificationEntity implements IWSEntity {
      * Default Constructor, for creating Message Entity without date of processing.
      *
      * @param user      The User to receive the notification
-     * @param subject   Subject of the notification
+     * @param type      Type of the notification
      * @param frequency Frequency of sending notification to the user for selected subject
      */
-    public UserNotificationEntity(final UserEntity user, final NotificationSubject subject, final NotificationFrequency frequency) {
-        this.subject = subject;
+    public UserNotificationEntity(final UserEntity user, final NotificationType type, final NotificationFrequency frequency) {
+        this.type = type;
         this.user = user;
         this.frequency = frequency;
     }
@@ -126,12 +126,12 @@ public class UserNotificationEntity implements IWSEntity {
         return user;
     }
 
-    public void setSubject(final NotificationSubject subject) {
-        this.subject = subject;
+    public void setType(final NotificationType type) {
+        this.type = type;
     }
 
-    public NotificationSubject getSubject() {
-        return subject;
+    public NotificationType getType() {
+        return type;
     }
 
     public void setFrequency(final NotificationFrequency frequency) {

@@ -63,5 +63,32 @@ public enum NotificationField {
     /**
      * A Users lastname.
      */
-    LASTNAME
+    LASTNAME,
+
+    /**
+     * The name of the Group that has been either Created or have had a change
+     * in the members.
+     */
+    GROUP_NAME,
+
+    /**
+     * The GroupType of the Group that has been either Created or have had a
+     * change in the members.
+     */
+    GROUP_TYPE,
+
+    /**
+     * The name of the Role, that a user has been assigned in a Group.
+     */
+    ROLE,
+
+    /**
+     * If a user is on a groups public mailinglist or not.
+     */
+    ON_PUBLIC_LIST,
+
+    /**
+     * If a user is on a groups private mailinglist or not.
+     */
+    ON_PRIVATE_LIST
 }

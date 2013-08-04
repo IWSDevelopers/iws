@@ -15,6 +15,10 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.GroupStatus;
+import net.iaeste.iws.common.exceptions.NotificationException;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +36,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -100,7 +106,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "groups")
-public class GroupEntity implements Updateable<GroupEntity> {
+public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "group_sequence")
@@ -338,6 +344,27 @@ public class GroupEntity implements Updateable<GroupEntity> {
             country = obj.country;
             listName = obj.listName;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
+
+        switch (type) {
+            case NEW_GROUP:
+            //case CHANGE_IN_GROUP_MEMBERS:
+            //case NEW_GROUP_OWNER:
+                fields.put(NotificationField.GROUP_NAME, groupName);
+                fields.put(NotificationField.GROUP_TYPE, groupType.getGrouptype().name());
+                break;
+            default:
+                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
+        }
+
+        return fields;
     }
 
     /**

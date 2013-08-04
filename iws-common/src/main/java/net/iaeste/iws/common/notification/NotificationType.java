@@ -48,5 +48,24 @@ public enum NotificationType {
     /**
      * For handling resetting Session requests.
      */
-    RESET_SESSION
+    RESET_SESSION,
+
+    /**
+     * When a new Group is created, the Owner should be informed about the new
+     * Group, and additionally the mailinglist for the new Group should be
+     * created.
+     */
+    NEW_GROUP,
+
+    /**
+     * Whenever there is a change in the membership of a Group, then the system
+     * must be informed about it, so the mailinglists can be updated.
+     */
+    CHANGE_IN_GROUP_MEMBERS,
+
+    /**
+     * When the ownership of a Group is changing, the new owner should be
+     * informed about this change.
+     */
+    NEW_GROUP_OWNER
 }

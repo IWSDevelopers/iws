@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.common.exceptions.NotificationException;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +33,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * @author Kim Jensen / last $Author:$
@@ -62,7 +69,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "user_to_group")
-public class UserGroupEntity implements Updateable<UserGroupEntity> {
+public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_to_group_sequence")
@@ -273,5 +280,30 @@ public class UserGroupEntity implements Updateable<UserGroupEntity> {
             onPublicList = obj.onPublicList;
             onPrivateList = obj.onPrivateList;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
+        final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
+
+        switch (type) {
+            case CHANGE_IN_GROUP_MEMBERS:
+                fields.put(NotificationField.ROLE, role.getRole());
+                fields.put(NotificationField.ON_PUBLIC_LIST, onPublicList.toString());
+                fields.put(NotificationField.ON_PRIVATE_LIST, onPrivateList.toString());
+            case NEW_GROUP_OWNER:
+                fields.put(NotificationField.GROUP_NAME, group.getGroupName());
+                fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());
+                fields.put(NotificationField.FIRSTNAME, user.getFirstname());
+                fields.put(NotificationField.LASTNAME, user.getLastname());
+                break;
+            default:
+                throw new NotificationException("NotificationType " + type + " is not supported in this context.");
+        }
+
+        return fields;
     }
 }

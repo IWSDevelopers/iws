@@ -101,6 +101,12 @@ public interface BasicDao {
     // Following lookup methods are added here, since they're used often
     // =========================================================================
 
+    /**
+     * Finds a Country based on the given Id (ISO_3166-1_alpha-2).
+     *
+     * @param countryCode  Two letter CountryId, i.e. DE for Germany
+     * @return Found Country or null
+     */
     CountryEntity findCountry(String countryCode);
 
     /**
@@ -116,7 +122,7 @@ public interface BasicDao {
      * Find Address from the Id. If no such entity exists, then an exception is
      * thrown, otherwise the found Address Entity is returned.
      *
-     * @param id Address Id
+     * @param externalId External Address Id
      * @return Unique Address Entity
      */
     AddressEntity findAddress(String externalId);

@@ -29,14 +29,6 @@ import java.util.List;
 public interface CountryDao extends BasicDao {
 
     /**
-     * Finds a Country based on the given Id (ISO_3166-1_alpha-2).
-     *
-     * @param countryCode  Two letter CountryId, i.e. DE for Germany
-     * @return Found Country or null
-     */
-    CountryEntity findCountry(String countryCode);
-
-    /**
      * Finds a Country based on the given name, the lookup is made
      * case-insensitive, as the name must be unique.
      *

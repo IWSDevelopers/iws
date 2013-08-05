@@ -94,7 +94,7 @@ public class IsAliveTest {
     public void testValidCredentials() {
         final IsAlive cut = new IsAlive();
         cut.reset();
-        cut.setUsername("austria");
+        cut.setUsername("austria@iaeste.at");
         cut.setPassword("austria");
 
         // Execute the test

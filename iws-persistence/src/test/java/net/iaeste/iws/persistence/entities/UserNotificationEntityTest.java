@@ -52,8 +52,8 @@ public class UserNotificationEntityTest {
     @Transactional
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        final UserEntity user = dao.findUserByUsername("austria");
-        assertThat(user.getUserName(), is("austria"));
+        final UserEntity user = dao.findUserByUsername("austria@iaeste.at");
+        assertThat(user.getUserName(), is("austria@iaeste.at"));
 
         final UserNotificationEntity entity = new UserNotificationEntity();
         entity.setUser(user);

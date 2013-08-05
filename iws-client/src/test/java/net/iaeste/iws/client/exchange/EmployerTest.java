@@ -51,7 +51,7 @@ import java.util.List;
  */
 public final class EmployerTest {
 
-    private static final String USERNAME = "germany";
+    private static final String USERNAME = "germany@iaeste.de";
     private static final String PASSWORD = "germany";
     private static final String GROUP_ID = "17eb00ac-1386-4852-9934-e3dce3f57c13";
     private final Access access = new AccessClient();

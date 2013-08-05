@@ -71,9 +71,9 @@ public final class ExchangeClientTest extends AbstractClientTest {
 
     @Override
     public void before() {
-        token = login("poland", "poland");
-        austriaToken = login("austria", "austria");
-        croatiaToken = login("croatia", "croatia");
+        token = login("poland@iaeste.pl", "poland");
+        austriaToken = login("austria@iaeste.at", "austria");
+        croatiaToken = login("croatia@iaeste.hr", "croatia");
     }
 
     @Override

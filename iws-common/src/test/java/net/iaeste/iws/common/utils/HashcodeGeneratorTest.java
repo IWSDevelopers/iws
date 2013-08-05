@@ -165,6 +165,7 @@ public class HashcodeGeneratorTest {
 //    @Test
 //    public void testPasswords() {
 //        final String country = "Austria";
+//        final String userMailAddress = "@iaeste.at";
 //
 //        for (int i = 1; i <= 5; i++) {
 //            final String euid = UUID.randomUUID().toString();
@@ -173,7 +174,7 @@ public class HashcodeGeneratorTest {
 //            final String password = HashcodeGenerator.generateSHA256(username, salt);
 //            final String firstname = "User" + i;
 //            final String alias = firstname + '.' + country + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
-//            final String query = String.format(USER_FORMAT, euid, username, alias, password, salt, firstname, country);
+//            final String query = String.format(USER_FORMAT, euid, username + userMailAddress, alias, password, salt, firstname, country);
 //
 //            System.out.println(query);
 //        }
@@ -181,17 +182,19 @@ public class HashcodeGeneratorTest {
 //
 //    @Test
 //    public void generateStandardTestAccounts() {
-//        generatePasswords("Austria", "Croatia", "Denmark", "Germany", "Poland", "Hungary");
+//        final String[] countryNames = { "Austria", "Croatia", "Denmark", "Germany", "Poland", "Hungary" };
+//        final String[] countryCodes = { "at", "hr", "dk", "de", "pl", "hu" };
+//        generatePasswords(countryNames, countryCodes);
 //    }
 //
-//    private static void generatePasswords(final String... countries) {
-//        for (final String country : countries) {
+//    private static void generatePasswords(final String[] countryNames, final String[] countryCodes) {
+//        for (int i = 0; i < countryNames.length; i++) {
 //            final String euid = UUID.randomUUID().toString();
 //            final String salt = UUID.randomUUID().toString();
-//            final String username = country.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+//            final String username = countryNames[i].toLowerCase(IWSConstants.DEFAULT_LOCALE);
 //            final String alias = username + ".ns@" + IWSConstants.PUBLIC_EMAIL_ADDRESS;
 //            final String password = HashcodeGenerator.generateSHA256(username, salt);
-//            final String query = String.format(USER_FORMAT, euid, username, alias, password, salt, "NS", country);
+//            final String query = String.format(USER_FORMAT, euid, username + "@iaeste." + countryCodes[i], alias, password, salt, "NS", countryNames[i]);
 //
 //            System.out.println(query);
 //        }

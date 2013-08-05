@@ -83,7 +83,7 @@ public class OfferGroupEntityTest {
 
         offer = getMinimalOffer();
         final AuthenticationToken token = new AuthenticationToken();
-        final UserEntity user = accessDao.findUserByUsername("austria");
+        final UserEntity user = accessDao.findUserByUsername("austria@iaeste.at");
         final GroupEntity group = accessDao.findNationalGroup(user);
         offer.setGroup(group);
         authentication = new Authentication(token, user, group);

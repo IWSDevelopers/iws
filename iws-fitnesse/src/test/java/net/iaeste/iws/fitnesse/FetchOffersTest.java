@@ -52,7 +52,7 @@ public class FetchOffersTest {
         cut.reset();
 
         // First we login
-        cut.setUsernameAndPassword("austria", "austria");
+        cut.setUsernameAndPassword("austria@iaeste.at", "austria");
         assertThat(cut.login(), is(true));
 
         // Set fetch request type

@@ -51,7 +51,7 @@ public class AdministrationClientTest extends AbstractClientTest {
 
     @Override
     public void before() {
-        token = login("austria", "austria");
+        token = login("austria@iaeste.at", "austria");
         // Clear all messages from the Notification Queue
         spy.clear();
     }

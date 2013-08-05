@@ -63,7 +63,7 @@ public final class AccessClientTest {
     @Test
     public void testGenerateAndDeprecateSession() {
         final Access client = new AccessClient();
-        final String username = "austria";
+        final String username = "austria@iaeste.at";
         final String password = "austria";
         final AuthenticationRequest request = new AuthenticationRequest(username, password);
 
@@ -91,7 +91,7 @@ public final class AccessClientTest {
         final Access client = new AccessClient();
         // We need to reset the spy to avoid other notifications disturbing us
         spy.clear();
-        final String username = "austria";
+        final String username = "austria@iaeste.at";
         final String password = "austria";
         final AuthenticationRequest request = new AuthenticationRequest(username, password);
 
@@ -135,7 +135,7 @@ public final class AccessClientTest {
     @Test
     public void testSavingReadingSessionData() {
         // Create a new Token, that we can use for the test
-        final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria", "austria")).getToken();
+        final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
 
         // Perform the actual test, first we create a simple Object, and saves it
         final Date data = new Date();
@@ -158,7 +158,7 @@ public final class AccessClientTest {
         final AdministrationClient administration = new AdministrationClient();
 
         // Create a new Token, that we can use for the test
-        final AuthenticationToken adminToken = access.generateSession(new AuthenticationRequest("austria", "austria")).getToken();
+        final AuthenticationToken adminToken = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
 
         // First, create a new Account, so we don't mess up any other tests
         final String username = "updating@iaeste.at";
@@ -203,7 +203,7 @@ public final class AccessClientTest {
     public void testFetchPermissions() {
         final String userId = "13452874-0c0f-4caf-8101-a8e9b41d6e69";
         // Create a new Token, that we can use for the test
-        final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria", "austria")).getToken();
+        final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
 
         final FetchPermissionResponse responseAll = access.fetchPermissions(token);
         assertThat(responseAll.isOk(), is(true));

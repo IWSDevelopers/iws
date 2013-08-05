@@ -14,14 +14,14 @@
  */
 package net.iaeste.iws.fitnesse;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.util.Date;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Michal Knapik / last $Author:$
@@ -35,7 +35,7 @@ public class SaveOfferTest {
             "due to this misbehaviour. See #287")
     public void testSaveOffers() {
         final FetchOffers fetch = new FetchOffers();
-        fetch.setUsername("austria");
+        fetch.setUsername("austria@iaeste.at");
         fetch.setPassword("austria");
         fetch.setRequestType("ALL");
         fetch.fetch();

@@ -22,7 +22,6 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
@@ -38,6 +37,7 @@ import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import java.util.List;
  */
 public final class GroupService {
 
-    private static final Logger LOG = Logger.getLogger(GroupService.class);
+    private static final Logger log = Logger.getLogger(GroupService.class);
     private final AccessDao dao;
     private final Notifications notifications;
 
@@ -107,46 +107,12 @@ public final class GroupService {
                     groupEntity.setGroupName(name);
                     dao.persist(groupEntity);
                 } else {
-                    throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "Another Group exist with a similar name " + name);
+                    throw new IdentificationException("Another Group exist with a similar name " + name);
                 }
             } else {
-                throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "No Group exist with the Id " + externalGroupId);
+                throw new IdentificationException("No Group exist with the Id " + externalGroupId);
             }
         }
-    }
-
-    private GroupEntity createGroup(final GroupType type, final Group group, final GroupEntity parent) {
-        // Find pre-requisites
-        final CountryEntity country = dao.findCountryByCode(group.getCountryId());
-        final GroupTypeEntity groupType = dao.findGroupTypeByType(type);
-
-        // Create the new Entity
-        final GroupEntity groupEntity = new GroupEntity();
-        groupEntity.setGroupName(group.getGroupName());
-        groupEntity.setGroupType(groupType);
-        groupEntity.setCountry(country);
-        groupEntity.setDescription(group.getDescription());
-        groupEntity.setFullName(parent.getFullName() + '.' + group.getGroupName());
-        groupEntity.setParentId(parent.getParentId());
-        groupEntity.setListName(groupEntity.getFullName());
-
-        // Save the new Group in the database
-        dao.persist(groupEntity);
-
-        // And return it, so the remainder of the processing can use it
-        return groupEntity;
-    }
-
-    private void setGroupOwner(final GroupEntity group, final UserEntity user) {
-        final RoleEntity role = dao.findRoleById(IWSConstants.ROLE_OWNER);
-
-        final UserGroupEntity userGroup = new UserGroupEntity();
-        userGroup.setGroup(group);
-        userGroup.setUser(user);
-        userGroup.setRole(role);
-        userGroup.setTitle(role.getRole());
-
-        dao.persist(userGroup);
     }
 
     public void deleteGroup(final Authentication authentication, final GroupRequest request) {
@@ -184,6 +150,56 @@ public final class GroupService {
         return response;
     }
 
+    /**
+     * Assigning or updating a given users access to a specific group. If we
+     * are talking about updating a users relation, then the owner role is a
+     * special case.
+     *
+     * @param authentication User & Group information
+     * @param request        Group Request information
+     */
+    public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
+        throw new NotImplementedException("Method pending implementation.");
+    }
+
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
+
+    private GroupEntity createGroup(final GroupType type, final Group group, final GroupEntity parent) {
+        // Find pre-requisites
+        final CountryEntity country = dao.findCountryByCode(group.getCountryId());
+        final GroupTypeEntity groupType = dao.findGroupTypeByType(type);
+
+        // Create the new Entity
+        final GroupEntity groupEntity = new GroupEntity();
+        groupEntity.setGroupName(group.getGroupName());
+        groupEntity.setGroupType(groupType);
+        groupEntity.setCountry(country);
+        groupEntity.setDescription(group.getDescription());
+        groupEntity.setFullName(parent.getFullName() + '.' + group.getGroupName());
+        groupEntity.setParentId(parent.getParentId());
+        groupEntity.setListName(groupEntity.getFullName());
+
+        // Save the new Group in the database
+        dao.persist(groupEntity);
+
+        // And return it, so the remainder of the processing can use it
+        return groupEntity;
+    }
+
+    private void setGroupOwner(final GroupEntity group, final UserEntity user) {
+        final RoleEntity role = dao.findRoleById(IWSConstants.ROLE_OWNER);
+
+        final UserGroupEntity userGroup = new UserGroupEntity();
+        userGroup.setGroup(group);
+        userGroup.setUser(user);
+        userGroup.setRole(role);
+        userGroup.setTitle(role.getRole());
+
+        dao.persist(userGroup);
+    }
+
     private List<User> findGroupMembers(final boolean fetchUsers, final GroupEntity entity) {
         final List<User> result;
 
@@ -209,21 +225,4 @@ public final class GroupService {
 
         return result;
     }
-
-    /**
-     * Assigning or updating a given users access to a specific group. If we
-     * are talking about updating a users relation, then the owner role is a
-     * special case.
-     *
-     * @param authentication User & Group information
-     * @param request        Group Request information
-     */
-    public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    // =========================================================================
-    // Internal Methods
-    // =========================================================================
-
 }

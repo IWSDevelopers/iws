@@ -75,7 +75,8 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     public FetchEmployerInformationResponse fetchEmployers(final Authentication authentication, final FetchEmployerInformationRequest request) {
         final FetchEmployerInformationResponse response;
 
-        response = new FetchEmployerInformationResponse(convertToEmployerInformationList(dao.findOffersByLikeEmployerName(authentication, request.getName())));
+//        response = new FetchEmployerInformationResponse(convertToEmployerInformationList(dao.findOffersByLikeEmployerName(authentication, request.getName())));
+        response = new FetchEmployerInformationResponse(new ArrayList<EmployerInformation>(0));
 
         return response;
     }

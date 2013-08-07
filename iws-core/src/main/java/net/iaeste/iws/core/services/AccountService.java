@@ -21,6 +21,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
@@ -40,6 +41,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -101,6 +103,7 @@ public final class AccountService extends CommonService<AccessDao> {
                 final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
                 dao.persist(privateUserGroup);
                 addUserToGroup(user, authentication.getGroup(), member);
+                createNotificationSettingNewUser(user, false);
                 //notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
                 //notifications.notify(authentication, authentication.getGroup(), NotificationType.PROCESS_MAILING_LIST);
             }
@@ -485,5 +488,10 @@ public final class AccountService extends CommonService<AccessDao> {
 
         // Send notification
         notifications.notify(authentication, user, NotificationType.UPDATE_USERNAME);
+    }
+
+    private void createNotificationSettingNewUser(final UserEntity user, final boolean isStudent) {
+        UserNotificationEntity userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_USER, NotificationFrequency.IMMEDIATELY);
+        dao.persist(userNotification);
     }
 }

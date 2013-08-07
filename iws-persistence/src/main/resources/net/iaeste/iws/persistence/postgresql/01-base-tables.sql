@@ -611,7 +611,7 @@ create table notification_messages (
     id                 integer default nextval('notification_message_sequence'),
     user_id            integer,
     title              varchar(100),
-    message            varchar(100),
+    message            varchar(1000),
     delivery_mode      varchar(100),
     status             varchar(100),
     process_after      timestamp default now(),

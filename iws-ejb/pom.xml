@@ -151,6 +151,11 @@
             <artifactId>mx4j-remote</artifactId>
             <version>3.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
         <!-- this has to come from local respository set to iws-accessories -->
         <dependency>
             <groupId>jms</groupId>

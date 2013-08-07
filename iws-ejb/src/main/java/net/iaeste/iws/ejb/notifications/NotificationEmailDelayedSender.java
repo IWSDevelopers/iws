@@ -27,6 +27,7 @@ import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.timewalker.ffmq3.FFMQConstants;
 
+import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
@@ -83,14 +84,20 @@ public class NotificationEmailDelayedSender implements Observer {
             final Context context = new InitialContext(env);
 
             queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
-            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
-            context.close();
             // end FFMQ specific
 
             queueConnection = queueConnectionFactory.createQueueConnection();
             queueConnection.start();
+
+            //FFMQ specific
+            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
+            context.close();
+            // end FFMQ specific
+
             session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
             sender = session.createSender(queue);
+            //TODO added for FFMQ, keep it for glassfish?
+            sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
         } catch (NamingException|JMSException e) {
             throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailDelayedSender) initialization failed.", e);
         }
@@ -118,7 +125,7 @@ public class NotificationEmailDelayedSender implements Observer {
                 emsg.setTo(message.getUser().getUserName());
                 emsg.setSubject(message.getMessageTitle());
                 emsg.setMessage(message.getMessage());
-                msg.setObjectProperty("emailMessage", emsg);
+                msg.setObject(emsg);
 
                 sender.send(msg);
                 dao.updateNotificationMessageStatus(message, NotificationMessageStatus.SENT);

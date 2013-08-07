@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 /**
  * Contains all predefined Specializations.
  *
@@ -176,5 +178,9 @@ public enum Specialization {
     PHOTONICS,
     QUANTUM_MECHANICS,
     STATISTICAL_PHYSICS,
-    THERMODYNAMICS
+    THERMODYNAMICS;
+
+    public String stringCSV() {
+        return name().charAt(0) + name().toLowerCase(IWSConstants.DEFAULT_LOCALE).replace('_', ' ').substring(1);
+    }
 }

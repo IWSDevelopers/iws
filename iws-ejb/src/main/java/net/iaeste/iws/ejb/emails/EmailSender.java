@@ -37,6 +37,7 @@ import javax.mail.internet.MimeMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Properties;
 
@@ -113,7 +114,7 @@ public class EmailSender implements MessageListener {
         if (message instanceof ObjectMessage) {
             final ObjectMessage msg = (ObjectMessage) message;
             try {
-                final Object object = msg.getObjectProperty("emailMessage");
+                final Serializable object = msg.getObject();
                 if (object instanceof EmailMessage) {
                     send((EmailMessage) object);
                 } else {

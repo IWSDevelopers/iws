@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.ejb.emails;
 
+import java.io.Serializable;
+
 /**
  * These classes sind temporarily placed here. We need the functionality, but it
  * should rightly be placed in the EJB module. Until the EJB module is ready,
@@ -25,7 +27,7 @@ package net.iaeste.iws.ejb.emails;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class EmailMessage {
+public class EmailMessage implements Serializable {
 
     private String to = null;
     private String subject = null;

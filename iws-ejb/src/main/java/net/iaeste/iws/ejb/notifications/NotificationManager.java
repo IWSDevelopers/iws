@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.ejb.notifications;
 
+import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.util.Date;
@@ -75,10 +76,12 @@ public final class NotificationManager implements Notifications {
 
             if (userNotification != null) {
                 final NotificationMessageEntity message = new NotificationMessageEntity();
+                message.setUser(user);
                 message.setStatus(NotificationMessageStatus.NEW);
 //                message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
                 //only immediate messages for now
                 message.setProcessAfter(new Date().toDate());
+                message.setNotificationDeliveryMode(NotificationDeliveryMode.EMAIL);
 
                 message.setMessage(messageTexts.get("body"));
                 message.setMessageTitle(messageTexts.get("title"));

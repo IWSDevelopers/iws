@@ -79,7 +79,7 @@ public class NotificationMessageEntity implements IWSEntity {
     /**
      * Text of the message
      */
-    @Column(name = "message", length = 100)
+    @Column(name = "message", length = 1000)
     private String message = null;
 
     /**

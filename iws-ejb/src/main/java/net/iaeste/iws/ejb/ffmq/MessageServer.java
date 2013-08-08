@@ -39,11 +39,11 @@ import javax.jms.JMSException;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class MessageServer {
-    public static final String queueNameForFfmq = "iws-EmailQueue";
-    public static final String queueNameForIws = "query/iws-EmailQueue";
+public class MessageServer extends Thread {
+    public static final String queueNameForFfmq = "IwsEmailQueue";
+    public static final String queueNameForIws = "queue/IwsEmailQueue";
 
-    public static final String engineName = "IwsFfmqMessageServer";
+    public static final String engineName = "IwsFFMQMessageServer";
     public static final String listenAddr = "0.0.0.0";
     public static final int listenPort = 10002;
 
@@ -72,11 +72,12 @@ public class MessageServer {
             queueDef.setMaxNonPersistentMessages(1000);
             queueDef.check();
 
-            if(engine.getDestinationDefinitionProvider().hasQueueDefinition(queueNameForFfmq)) {
+            if(!engine.getDestinationDefinitionProvider().hasQueueDefinition(queueNameForFfmq)) {
+                engine.createQueue(queueDef);
+            } else {
                 engine.getDestinationDefinitionProvider().removeQueueDefinition(queueDef);
+                engine.createQueue(queueDef);
             }
-
-            engine.createQueue(queueDef);
 
             LOG.trace("Deploying engine " + engine.getName());
             engine.deploy();

@@ -38,6 +38,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.interceptor.Interceptors;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
@@ -60,6 +63,8 @@ import java.io.Serializable;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@WebService(serviceName = "iwsService")
+@SOAPBinding(style = SOAPBinding.Style.RPC)
 public class AccessBean extends AbstractBean implements Access {
 
     private static final Logger LOG = Logger.getLogger(AccessBean.class);
@@ -74,6 +79,7 @@ public class AccessBean extends AbstractBean implements Access {
      * @param entityManager Transactional Entity Manager instance
      */
     @PersistenceContext(unitName = "iwsDatabase")
+    @WebMethod(exclude = true)
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -85,6 +91,7 @@ public class AccessBean extends AbstractBean implements Access {
      * @param notificationManager Notification Manager Bean
      */
     @EJB(beanInterface = NotificationManagerLocal.class)
+    @WebMethod(exclude = true)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
         this.notificationManager = notificationManager;
     }
@@ -94,6 +101,7 @@ public class AccessBean extends AbstractBean implements Access {
      */
     @Override
     @PostConstruct
+    @WebMethod(exclude = true)
     public void postConstruct() {
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager.getNotifications());
         controller = new AccessController(factory);
@@ -108,6 +116,7 @@ public class AccessBean extends AbstractBean implements Access {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         AuthenticationResponse response;
 
@@ -126,6 +135,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     public Fallible requestResettingSession(final AuthenticationRequest request) {
         Fallible response;
 
@@ -144,6 +154,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     public AuthenticationResponse resetSession(final String resetSessionToken) {
         AuthenticationResponse response;
 
@@ -162,6 +173,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
         Fallible response;
 
@@ -180,6 +192,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
         SessionDataResponse<T> response;
 
@@ -198,6 +211,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     public Fallible deprecateSession(final AuthenticationToken token) {
         Fallible response;
 
@@ -216,6 +230,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     public Fallible forgotPassword(final String username) {
         Fallible response;
 
@@ -234,6 +249,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     public Fallible resetPassword(final String resetPasswordToken, final Password password) {
         Fallible response;
 
@@ -252,6 +268,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     public Fallible updatePassword(final AuthenticationToken token, final Password password) {
         Fallible response;
 

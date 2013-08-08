@@ -55,6 +55,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.interceptor.Interceptors;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -76,6 +78,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@WebService(serviceName = "iwsService")
 public class ExchangeBean extends AbstractBean implements Exchange {
 
     private static final Logger LOG = Logger.getLogger(ExchangeBean.class);
@@ -89,7 +92,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      *
      * @param entityManager Transactional Entity Manager instance
      */
-    @PersistenceContext(unitName = "iwsDatabase")
+    @PersistenceContext(unitName = "iwsDatabase")    @WebMethod(exclude = true)
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -101,6 +104,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * @param notificationManager Notification Manager Bean
      */
     @EJB(beanInterface = NotificationManagerLocal.class)
+    @WebMethod(exclude = true)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
         this.notificationManager = notificationManager;
     }
@@ -124,6 +128,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod
     public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
         EmployerResponse response;
 
@@ -143,6 +148,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         FetchEmployerInformationResponse response;
 
@@ -162,6 +168,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod
     public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
         FetchEmployerResponse response;
 
@@ -181,6 +188,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         OfferResponse response;
 
@@ -200,6 +208,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         OfferResponse response;
 
@@ -219,6 +228,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)  // TODO find out the weird problem..
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         FetchOffersResponse response;
 
@@ -238,6 +248,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         Fallible response;
 
@@ -257,6 +268,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         FetchOfferTemplateResponse response;
 
@@ -276,6 +288,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public Fallible processPublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
         Fallible response;
 
@@ -295,6 +308,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public FetchPublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         FetchPublishGroupResponse response;
 
@@ -314,6 +328,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
         FetchGroupsForSharingResponse response;
 
@@ -333,6 +348,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
         PublishOfferResponse response;
 
@@ -352,6 +368,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         FetchPublishedGroupsResponse response;
 

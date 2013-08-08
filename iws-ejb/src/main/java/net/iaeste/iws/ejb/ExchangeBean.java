@@ -92,7 +92,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      *
      * @param entityManager Transactional Entity Manager instance
      */
-    @PersistenceContext(unitName = "iwsDatabase")    @WebMethod(exclude = true)
+    @PersistenceContext(unitName = "iwsDatabase")
+    @WebMethod(exclude = true)
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -148,7 +149,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
-    @WebMethod
+    @WebMethod(exclude = true)
     public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
         FetchEmployerInformationResponse response;
 
@@ -228,7 +229,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
-    @WebMethod(exclude = true)  // TODO find out the weird problem..
+    @WebMethod(exclude = true)
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         FetchOffersResponse response;
 

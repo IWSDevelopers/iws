@@ -67,5 +67,9 @@ public enum NotificationType {
      * When the ownership of a Group is changing, the new owner should be
      * informed about this change.
      */
-    NEW_GROUP_OWNER
+    NEW_GROUP_OWNER,
+
+    PROCESS_EMAIL_ALIAS,
+
+    PROCESS_MAILING_LIST
 }

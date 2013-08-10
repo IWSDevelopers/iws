@@ -35,6 +35,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -74,8 +75,10 @@ public class AdministrationClientTest extends AbstractClientTest {
         // the response is ok, and that a Notification was sent
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
-        assertThat(spy.size(), is(1));
-        final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
+        // Creating a new User should generate an Activate User notification
+        final NotificationType type = NotificationType.ACTIVATE_USER;
+        assertThat(spy.size(type), is(1));
+        final String activationCode = spy.getNext(type).getFields().get(NotificationField.CODE);
         assertThat(activationCode, is(not(nullValue())));
     }
 
@@ -91,8 +94,10 @@ public class AdministrationClientTest extends AbstractClientTest {
         // the response is ok, and that a Notification was sent
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
-        assertThat(spy.size(), is(1));
-        final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
+        // Creating a new User should generate an Activate User notification
+        final NotificationType type = NotificationType.ACTIVATE_USER;
+        assertThat(spy.size(type), is(1));
+        final String activationCode = spy.getNext(type).getFields().get(NotificationField.CODE);
         assertThat(activationCode, is(not(nullValue())));
 
         // Check that the user is in the list of members

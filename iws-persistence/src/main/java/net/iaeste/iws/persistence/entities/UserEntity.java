@@ -451,6 +451,9 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
                 // we need to send it to
                 fields.put(NotificationField.EMAIL, data);
                 break;
+            case PROCESS_EMAIL_ALIAS:
+                fields.put(NotificationField.EMAIL, data);
+                break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");
         }

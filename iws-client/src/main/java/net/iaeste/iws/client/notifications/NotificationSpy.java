@@ -125,10 +125,24 @@ public final class NotificationSpy implements Notifications {
     /**
      * Returns the number of Notiications currently being held in this Spy.
      *
+     * @param types If defined, then it'll return number of matching messages
      * @return Number of Notifications in the Spy
      */
-    public Integer size() {
-        return notifiables.size();
+    public Integer size(final NotificationType... types) {
+        Integer size = 0;
+
+        if ((types != null) && (types.length == 1)) {
+            final NotificationType type = types[0];
+            for (final NotificationMessage message : notifiables) {
+                if (type == message.getType()) {
+                    size++;
+                }
+            }
+        } else {
+            size = notifiables.size();
+        }
+
+        return size;
     }
 
     /**
@@ -136,9 +150,29 @@ public final class NotificationSpy implements Notifications {
      * from the stack. As long as a non-null value is returned, the Stack is not
      * empty.
      *
+     * @param types If defined, then it'll fetch the first matching type
      * @return First Notitication from the Stack or null if stack is empty
      */
-    public NotificationMessage getNext() {
-        return notifiables.isEmpty() ? null : notifiables.remove(0);
+    public NotificationMessage getNext(final NotificationType... types) {
+        NotificationMessage message = null;
+
+        if (!notifiables.isEmpty()) {
+            int index = -1;
+            if ((types != null) && (types.length == 1)) {
+                final NotificationType type = types[0];
+                for (int i = 0; i < notifiables.size(); i++) {
+                    if ((index == -1) && (type == notifiables.get(i).getType())) {
+                        index = i;
+                    }
+                }
+            } else {
+                index = 0;
+            }
+
+            message = notifiables.get(index);
+            notifiables.remove(index);
+        }
+
+        return message;
     }
 }

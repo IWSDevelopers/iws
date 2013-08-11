@@ -62,6 +62,7 @@ import java.util.UUID;
  * @noinspection unchecked, CastToConcreteClass
  * @since 1.7
  */
+@Ignore
 public class ExchangeServiceTest {
 
     private final ExchangeDao dao = mock(ExchangeDao.class);

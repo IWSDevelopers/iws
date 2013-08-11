@@ -49,6 +49,7 @@ import java.util.Set;
  * @since 1.7
  * @noinspection InstanceMethodNamingConvention, JUnitTestMethodWithNoAssertions
  */
+@Ignore
 public class OfferTest {
 
     private Offer offer = getMinimalOffer();

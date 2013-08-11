@@ -14,17 +14,18 @@
  */
 package net.iaeste.iws.api.requests;
 
-import net.iaeste.iws.api.dtos.exchange.Offer;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.nullValue;
+
 import net.iaeste.iws.api.dtos.OfferTestUtility;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 
 /**
  * @author  Michal Knapik / last $Author:$
@@ -32,6 +33,7 @@ import static org.hamcrest.core.IsNull.nullValue;
  * @since   1.7
  * @noinspection JUnitTestMethodWithNoAssertions
  */
+@Ignore
 public final class ProcessOfferRequestTest {
 
     private Offer validOffer = null;

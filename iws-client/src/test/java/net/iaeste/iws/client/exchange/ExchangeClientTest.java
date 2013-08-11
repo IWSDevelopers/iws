@@ -63,6 +63,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Ignore
 public final class ExchangeClientTest extends AbstractClientTest {
 
     private final Exchange exchange = new ExchangeClient();

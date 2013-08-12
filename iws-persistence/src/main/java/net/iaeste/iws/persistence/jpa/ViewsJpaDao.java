@@ -76,7 +76,7 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
     public List<EmployerView> findEmployers(final Long groupId, final Paginatable page, final String partialName) {
         final Query query = entityManager.createNamedQuery("view.findEmployerByGroupAndPartialName");
         query.setParameter("gid", groupId);
-        query.setParameter("name", partialName.toLowerCase(IWSConstants.DEFAULT_LOCALE));
+        query.setParameter("name", "%" + partialName.toLowerCase(IWSConstants.DEFAULT_LOCALE) + "%");
 
         return fetchList(query, page);
     }

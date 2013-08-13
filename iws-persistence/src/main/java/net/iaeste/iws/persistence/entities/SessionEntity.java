@@ -224,6 +224,16 @@ public class SessionEntity implements Updateable<SessionEntity> {
      * {@inheritDoc}
      */
     @Override
+    public boolean diff(final SessionEntity obj) {
+        // Until properly implemented, better return true to avoid that we're
+        // missing updates!
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void merge(final SessionEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
             active = obj.active;

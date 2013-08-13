@@ -27,11 +27,24 @@ import java.util.Date;
 public interface Updateable<T> extends IWSEntity {
 
     /**
+     * To check whether an Entity contains any changes that needs persisting or
+     * not. To avoid unnessary merges.<br />
+     *   Note, not all fields may be needed for the diff, hence it must not be
+     * implemented like a standard equals or hashCode comparison.
+     *
+     * @param obj Object to compare against
+     * @return true of they differ, otherwise false
+     */
+    boolean diff(T obj);
+
+    /**
      * Allows a merge between two objects of the same type. The method updates
      * the current object with the changes from the second.<br />
      *   Both Objects must be persisted beforehand, i.e. have Id values, and
      * these Id's differ, no merge will take place. Merging is purely intended
      * for updating Objects, where we wish to control which fields are updated.
+     *
+     * @param obj Object to merge chages from
      */
     void merge(T obj);
 

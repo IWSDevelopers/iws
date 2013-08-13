@@ -45,8 +45,8 @@ import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.ViewsDao;
-import net.iaeste.iws.persistence.entities.OfferEntity;
-import net.iaeste.iws.persistence.entities.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.views.EmployerView;
 
 import java.util.ArrayList;
@@ -191,15 +191,15 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    private static List<EmployerInformation> convertToEmployerInformationList(final List<OfferEntity> found) {
-        final List<EmployerInformation> result = new ArrayList<>(found.size());
-
-        for (final OfferEntity entity : found) {
-            result.add(transform(EmployerInformation.class, entity));
-        }
-
-        return result;
-    }
+//    private static List<EmployerInformation> convertToEmployerInformationList(final List<OfferEntity> found) {
+//        final List<EmployerInformation> result = new ArrayList<>(found.size());
+//
+//        for (final OfferEntity entity : found) {
+//            result.add(transform(EmployerInformation.class, entity));
+//        }
+//
+//        return result;
+//    }
 
     private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
         final List<OfferGroup> result = new ArrayList<>(found.size());

@@ -15,7 +15,6 @@
 package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.dtos.exchange.Employer;
-import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -23,9 +22,9 @@ import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
-import net.iaeste.iws.persistence.entities.EmployerEntity;
-import net.iaeste.iws.persistence.entities.OfferEntity;
-import net.iaeste.iws.persistence.entities.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 
 /**
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
@@ -81,13 +80,8 @@ public final class OfferTransformer {
 
             result.setExternalId(offer.getOfferId());
             result.setRefNo(offer.getRefNo());
+            result.setEmployer(transform(offer.getEmployer()));
             result.setNominationDeadline(convert(offer.getNominationDeadline()));
-            result.setEmployerName(offer.getEmployerName());
-            result.setEmployerAddress(offer.getEmployerAddress());
-            result.setEmployerAddress2(offer.getEmployerAddress2());
-            result.setEmployerBusiness(offer.getEmployerBusiness());
-            result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
-            result.setEmployerWebsite(offer.getEmployerWebsite());
             result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.join(offer.getSpecializations()));
             result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
@@ -110,11 +104,6 @@ public final class OfferTransformer {
             result.setToDate2(convert(offer.getToDate2()));
             result.setUnavailableFrom(convert(offer.getUnavailableFrom()));
             result.setUnavailableTo(convert(offer.getUnavailableTo()));
-            result.setWorkingPlace(offer.getWorkingPlace());
-            result.setNearestAirport(offer.getNearestAirport());
-            result.setNearestPubTransport(offer.getNearestPubTransport());
-            result.setWeeklyHours(offer.getWeeklyHours());
-            result.setDailyHours(offer.getDailyHours());
             result.setPayment(offer.getPayment());
             result.setCurrency(offer.getCurrency());
             result.setPaymentFrequency(offer.getPaymentFrequency());
@@ -124,11 +113,23 @@ public final class OfferTransformer {
             result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
             result.setLivingCost(offer.getLivingCost());
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
-            result.setCanteen(offer.getCanteen());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
             result.setStatus(offer.getStatus());
             // modified&created are not copied to Entity as they cannot be changed manually
+
+            //result.setEmployerName(offer.getEmployerName());
+            //result.setEmployerAddress(offer.getEmployerAddress());
+            //result.setEmployerAddress2(offer.getEmployerAddress2());
+            //result.setEmployerBusiness(offer.getEmployerBusiness());
+            //result.setWorkingPlace(offer.getWorkingPlace());
+            //result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
+            //result.setEmployerWebsite(offer.getEmployerWebsite());
+            //result.setNearestAirport(offer.getNearestAirport());
+            //result.setNearestPubTransport(offer.getNearestPubTransport());
+            //result.setWeeklyHours(offer.getWeeklyHours());
+            //result.setDailyHours(offer.getDailyHours());
+            //result.setCanteen(offer.getCanteen());
         }
 
         return result;
@@ -148,13 +149,8 @@ public final class OfferTransformer {
 
             result.setOfferId(offer.getExternalId());
             result.setRefNo(offer.getRefNo());
+            result.setEmployer(transform(offer.getEmployer()));
             result.setNominationDeadline(convert(offer.getNominationDeadline()));
-            result.setEmployerName(offer.getEmployerName());
-            result.setEmployerAddress(offer.getEmployerAddress());
-            result.setEmployerAddress2(offer.getEmployerAddress2());
-            result.setEmployerBusiness(offer.getEmployerBusiness());
-            result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
-            result.setEmployerWebsite(offer.getEmployerWebsite());
             result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, offer.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.explodeStringSet(offer.getSpecializations()));
             result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
@@ -177,11 +173,7 @@ public final class OfferTransformer {
             result.setToDate2(convert(offer.getToDate2()));
             result.setUnavailableFrom(convert(offer.getUnavailableFrom()));
             result.setUnavailableTo(convert(offer.getUnavailableTo()));
-            result.setWorkingPlace(offer.getWorkingPlace());
-            result.setNearestAirport(offer.getNearestAirport());
-            result.setNearestPubTransport(offer.getNearestPubTransport());
-            result.setWeeklyHours(offer.getWeeklyHours());
-            result.setDailyHours(offer.getDailyHours());
+            //result.setWorkingPlace(offer.getWorkingPlace());
             result.setPayment(offer.getPayment());
             result.setCurrency(offer.getCurrency());
             result.setPaymentFrequency(offer.getPaymentFrequency());
@@ -191,7 +183,6 @@ public final class OfferTransformer {
             result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
             result.setLivingCost(offer.getLivingCost());
             result.setLivingCostFrequency(offer.getLivingCostFrequency());
-            result.setCanteen(offer.getCanteen());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, offer.getStudyLevels()));
             result.setStatus(offer.getStatus());
@@ -221,6 +212,19 @@ public final class OfferTransformer {
             //result.setNearestPubTransport(entity.getNearestPubTransport());
             //result.setWeeklyHours(entity.getWeeklyHours());
             //result.setDailyHours(entity.getDailyHours());
+
+            // From the Offer transformer
+            //result.setEmployerName(offer.getEmployerName());
+            //result.setEmployerAddress(offer.getEmployerAddress());
+            //result.setEmployerAddress2(offer.getEmployerAddress2());
+            //result.setEmployerBusiness(offer.getEmployerBusiness());
+            //result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
+            //result.setEmployerWebsite(offer.getEmployerWebsite());
+            //result.setNearestAirport(offer.getNearestAirport());
+            //result.setNearestPubTransport(offer.getNearestPubTransport());
+            //result.setWeeklyHours(offer.getWeeklyHours());
+            //result.setDailyHours(offer.getDailyHours());
+            //result.setCanteen(offer.getCanteen());
         } else {
             result = null;
         }
@@ -253,34 +257,34 @@ public final class OfferTransformer {
         return result;
     }
 
-    /**
-     * Transform OfferEntity employer into the EmployerInformation DTO
-     *
-     * @param t     The Class object to overloading transform method
-     * @param offer Source OfferEntity which is to be transformed
-     * @return EmployerInformation Object
-     */
-    public static EmployerInformation transform(final Class<EmployerInformation> t, final OfferEntity offer) {
-        EmployerInformation result = null;
-
-        if (offer != null) {
-            result = new EmployerInformation();
-
-            result.setName(offer.getEmployerName());
-            result.setAddress(offer.getEmployerAddress());
-            result.setAddress2(offer.getEmployerAddress2());
-            result.setBusiness(offer.getEmployerBusiness());
-            result.setEmployeesCount(offer.getEmployerEmployeesCount());
-            result.setWebsite(offer.getEmployerWebsite());
-            result.setWorkingPlace(offer.getWorkingPlace());
-            result.setNearestAirport(offer.getNearestAirport());
-            result.setNearestPubTransport(offer.getNearestPubTransport());
-            result.setWeeklyHours(offer.getWeeklyHours());
-            result.setDailyHours(offer.getDailyHours());
-        }
-
-        return result;
-    }
+//    /**
+//     * Transform OfferEntity employer into the EmployerInformation DTO
+//     *
+//     * @param t     The Class object to overloading transform method
+//     * @param offer Source OfferEntity which is to be transformed
+//     * @return EmployerInformation Object
+//     */
+//    public static EmployerInformation transform(final Class<EmployerInformation> t, final OfferEntity offer) {
+//        EmployerInformation result = null;
+//
+//        if (offer != null) {
+//            result = new EmployerInformation();
+//
+//            result.setName(offer.getEmployerName());
+//            result.setAddress(offer.getEmployerAddress());
+//            result.setAddress2(offer.getEmployerAddress2());
+//            result.setBusiness(offer.getEmployerBusiness());
+//            result.setEmployeesCount(offer.getEmployerEmployeesCount());
+//            result.setWebsite(offer.getEmployerWebsite());
+//            result.setWorkingPlace(offer.getWorkingPlace());
+//            result.setNearestAirport(offer.getNearestAirport());
+//            result.setNearestPubTransport(offer.getNearestPubTransport());
+//            result.setWeeklyHours(offer.getWeeklyHours());
+//            result.setDailyHours(offer.getDailyHours());
+//        }
+//
+//        return result;
+//    }
 
     /**
      * Transform OfferGroupEntity into the OfferGroup DTO

@@ -275,6 +275,16 @@ public class RoleEntity implements Updateable<RoleEntity> {
      * {@inheritDoc}
      */
     @Override
+    public boolean diff(final RoleEntity obj) {
+        // Until properly implemented, better return true to avoid that we're
+        // missing updates!
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void merge(final RoleEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
             role = obj.role;

@@ -20,6 +20,7 @@ import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -47,6 +48,7 @@ public class FetchOffersTest {
     }
 
     @Test
+    @Ignore
     public void testFetchCall() {
         cut = new FetchOffers();
         cut.reset();

@@ -25,6 +25,8 @@ import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
@@ -93,7 +95,7 @@ public class OfferGroupEntityTest {
         final OfferEntity offer = new OfferEntity();
 
         offer.setRefNo(REF_NO);
-        offer.setEmployerName(EMPLOYER_NAME);
+        //offer.setEmployerName(EMPLOYER_NAME);
         offer.setStudyLevels(STUDY_LEVELS);
         offer.setFieldOfStudies(FIELDS_OF_STUDY);
         offer.setLanguage1(Language.ENGLISH);
@@ -101,7 +103,7 @@ public class OfferGroupEntityTest {
         offer.setWorkDescription(WORK_DESCRIPTION);
         offer.setMaximumWeeks(MAXIMUM_WEEKS);
         offer.setMinimumWeeks(MINIMUM_WEEKS);
-        offer.setWeeklyHours(WEEKLY_HOURS);
+        //offer.setWeeklyHours(WEEKLY_HOURS);
         offer.setFromDate(FROM_DATE);
         offer.setToDate(TO_DATE);
 

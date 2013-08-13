@@ -265,6 +265,16 @@ public class AddressEntity implements Updateable<AddressEntity> {
      * {@inheritDoc}
      */
     @Override
+    public boolean diff(final AddressEntity obj) {
+        // Until properly implemented, better return true to avoid that we're
+        // missing updates!
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void merge(final AddressEntity obj) {
         if ((obj != null) && externalId.equals(obj.externalId)) {
             street1 = obj.street1;

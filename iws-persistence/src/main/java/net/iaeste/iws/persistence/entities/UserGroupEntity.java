@@ -273,6 +273,16 @@ public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable 
      * {@inheritDoc}
      */
     @Override
+    public boolean diff(final UserGroupEntity obj) {
+        // Until properly implemented, better return true to avoid that we're
+        // missing updates!
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void merge(final UserGroupEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
             role = obj.role;

@@ -303,6 +303,16 @@ public class CountryEntity implements Updateable<CountryEntity> {
      * {@inheritDoc}
      */
     @Override
+    public boolean diff(final CountryEntity obj) {
+        // Until properly implemented, better return true to avoid that we're
+        // missing updates!
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void merge(final CountryEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
             countryName = obj.countryName;

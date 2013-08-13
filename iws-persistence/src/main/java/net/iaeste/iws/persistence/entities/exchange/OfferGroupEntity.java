@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.OfferGroupEntity
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,13 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence.entities;
+package net.iaeste.iws.persistence.entities.exchange;
+
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.entities.AbstractUpdateable;
+import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,14 +71,26 @@ import java.util.Date;
                         " and og.offer.id = (select o.id from OfferEntity o where o.externalId = :eoid)")
 })
 @Entity
+@Monitored(name = "offer_to_group", level = MonitoringLevel.DETAILED)
 @Table(name = "offer_to_group")
-public class OfferGroupEntity implements IWSEntity {
+public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_to_group_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
+
+    /**
+     * The content of this Entity is exposed externally, however to avoid that
+     * someone tries to spoof the system by second guessing our Sequence values,
+     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * all external references is referred to as the "Id". Although this can be
+     * classified as StO (Security through Obscrutity), there is no need to
+     * expose more information than necessary.
+     */
+    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
+    private String externalId = null;
 
     @ManyToOne(targetEntity = OfferEntity.class)
     @JoinColumn(name = "offer_id", nullable = false)
@@ -82,7 +100,7 @@ public class OfferGroupEntity implements IWSEntity {
     @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group = null;
 
-    @Column(name = "comment", length = 100)
+    @Column(name = "comment", length = 1000)
     private String comment = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
@@ -140,9 +158,28 @@ public class OfferGroupEntity implements IWSEntity {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setExternalId(final String externalId) {
+        this.externalId = externalId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getExternalId() {
+        return externalId;
     }
 
     public void setOffer(final OfferEntity offer) {
@@ -185,10 +222,18 @@ public class OfferGroupEntity implements IWSEntity {
         return createdBy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getModified() {
         return modified;
     }
@@ -207,5 +252,32 @@ public class OfferGroupEntity implements IWSEntity {
     @Override
     public Date getCreated() {
         return created;
+    }
+
+    // =========================================================================
+    // Standard Entity Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean diff(final OfferGroupEntity obj) {
+        int changes = 0;
+
+        changes += different(comment, obj.comment);
+
+        return changes == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void merge(final OfferGroupEntity obj) {
+        // don't merge if objects are not the same entity
+        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
+            comment = obj.comment;
+        }
     }
 }

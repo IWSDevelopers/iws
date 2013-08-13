@@ -15,7 +15,7 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.StudentDao;
-import net.iaeste.iws.persistence.entities.StudentEntity;
+import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

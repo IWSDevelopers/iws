@@ -36,6 +36,7 @@ import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Ignore
 public final class EmployerTest {
 
     private static final String USERNAME = "germany@iaeste.de";

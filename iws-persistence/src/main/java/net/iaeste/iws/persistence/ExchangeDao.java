@@ -14,11 +14,12 @@
  */
 package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.persistence.entities.EmployerEntity;
+import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.OfferEntity;
-import net.iaeste.iws.persistence.entities.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
+import net.iaeste.iws.persistence.views.EmployerView;
 
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ public interface ExchangeDao extends BasicDao {
     /**
      * Get all offers from the database.
      *
-     * @return list of {@code OfferEntity}
+     * @return list of {@code DeprecatedOfferEntity}
      */
     List<OfferEntity> findAllOffers(Authentication authentication);
 
@@ -44,7 +45,7 @@ public interface ExchangeDao extends BasicDao {
      * Finds the entity in the database.
      *
      * @param offerId primary key for offers
-     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
+     * @return DeprecatedOfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
     OfferEntity findOffer(Authentication authentication, Long offerId);
@@ -53,7 +54,7 @@ public interface ExchangeDao extends BasicDao {
      * Finds the entity in the database.
      *
      * @param refNo unique offer reference number
-     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
+     * @return DeprecatedOfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
     OfferEntity findOffer(Authentication authentication, String refNo);
@@ -71,13 +72,13 @@ public interface ExchangeDao extends BasicDao {
 
     /**
      * @param offerIds list of primary keys for offers
-     * @return list of {@code }OfferEntity}
+     * @return list of {@code }DeprecatedOfferEntity}
      */
     List<OfferEntity> findOffers(Authentication authentication, List<Long> offerIds);
 
     /**
      * @param externalIds list of external IDs for fetching
-     * @return list of {@code }OfferEntity}
+     * @return list of {@code }DeprecatedOfferEntity}
      */
     List<OfferEntity> findOffersByExternalId(Authentication authentication, Set<String> externalIds);
 
@@ -85,7 +86,7 @@ public interface ExchangeDao extends BasicDao {
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
-     * @return list of {@code }OfferEntity}
+     * @return list of {@code }DeprecatedOfferEntity}
      * @throws PersistenceException
      */
     List<OfferEntity> findOffersByEmployerName(Authentication authentication, String employerName);
@@ -94,15 +95,15 @@ public interface ExchangeDao extends BasicDao {
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
-     * @return list of {@code }OfferEntity}
+     * @return list of {@code }DeprecatedOfferEntity}
      * @throws PersistenceException
      */
-    List<OfferEntity> findOffersByLikeEmployerName(Authentication authentication, String employerName);
+    List<EmployerView> findOffersByLikeEmployerName(Authentication authentication, String employerName);
 
     /**
      * Finds all shared offers.
      *
-     * @return list of {@link OfferEntity} which are shared
+     * @return list of {@link net.iaeste.iws.persistence.entities.exchange.OfferEntity} which are shared
      */
     List<OfferEntity> findSharedOffers(Authentication authentication);
 

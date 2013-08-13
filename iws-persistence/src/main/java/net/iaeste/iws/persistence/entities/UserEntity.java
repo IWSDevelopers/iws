@@ -410,6 +410,16 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
      * {@inheritDoc}
      */
     @Override
+    public boolean diff(final UserEntity obj) {
+        // Until properly implemented, better return true to avoid that we're
+        // missing updates!
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void merge(final UserEntity obj) {
         if ((obj != null) && id.equals(obj.id)) {
             privateData = obj.privateData;

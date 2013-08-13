@@ -17,10 +17,11 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
-import net.iaeste.iws.persistence.entities.EmployerEntity;
+import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.OfferEntity;
-import net.iaeste.iws.persistence.entities.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import net.iaeste.iws.persistence.views.EmployerView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -160,36 +161,21 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public List<OfferEntity> findOffersByEmployerName(final Authentication authentication, final String employerName) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndEmployerName");
         query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("employerName", employerName);
+        query.setParameter("employer", employerName);
 
-        return removeDuplicateNames(query.getResultList());
-        //return query.getResultList();
+        return query.getResultList();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findOffersByLikeEmployerName(final Authentication authentication, final String employerName) {
+    public List<EmployerView> findOffersByLikeEmployerName(final Authentication authentication, final String employerName) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndLikeEmployerName");
         query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("employerName", '%' + employerName.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
+        query.setParameter("employer", '%' + employerName.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
 
-        return removeDuplicateNames(query.getResultList());
-    }
-
-    private static List<OfferEntity> removeDuplicateNames(final List<OfferEntity> found) {
-        final List<OfferEntity> result = new ArrayList<>(found.size());
-        final List<String> names = new ArrayList<>(found.size());
-
-        for (final OfferEntity entity : found) {
-            if (!names.contains(entity.getEmployerName())) {
-                result.add(entity);
-                names.add(entity.getEmployerName());
-            }
-        }
-
-        return result;
+        return query.getResultList();
     }
 
     /**

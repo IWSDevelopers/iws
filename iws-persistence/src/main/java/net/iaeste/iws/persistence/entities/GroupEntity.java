@@ -336,6 +336,16 @@ public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
      * {@inheritDoc}
      */
     @Override
+    public boolean diff(final GroupEntity obj) {
+        // Until properly implemented, better return true to avoid that we're
+        // missing updates!
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void merge(final GroupEntity obj) {
         if ((obj != null) && id.equals(obj.id)) {
             groupName = obj.groupName;

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.EmployerEntity
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.exchange.EmployerEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,7 +12,11 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence.entities;
+package net.iaeste.iws.persistence.entities.exchange;
+
+import net.iaeste.iws.persistence.entities.AbstractUpdateable;
+import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,7 +53,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "employers")
-public class EmployerEntity implements Updateable<EmployerEntity> {
+public class EmployerEntity extends AbstractUpdateable<EmployerEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "employer_sequence")
@@ -72,27 +76,42 @@ public class EmployerEntity implements Updateable<EmployerEntity> {
     @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group = null;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 255, nullable = false)
     private String name = null;
 
-    @Column(name = "department")
+    @Column(name = "department", length = 255)
     private String department = null;
 
-    //@Column(name = "department")
-    //contact_person_id         integer,
+    @Column(name = "business", length = 255)
+    private String business = null;
+
+    @Column(name = "working_place")
+    private String workingPlace = null;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
     private AddressEntity address = null;
 
-    @Column(name = "business")
-    private String business = null;
-
     @Column(name = "number_of_employees")
     private Integer numberOfEmployees = null;
 
-    @Column(name = "website")
+    @Column(name = "website", length = 255)
     private String website = null;
+
+    @Column(name = "canteen", length = 255)
+    private Boolean canteen = false;
+
+    @Column(name = "nearest_airport", length = 255)
+    private String nearestAirport = null;
+
+    @Column(name = "nearest_pub_transport", length = 255)
+    private String nearestPublicTransport = null;
+
+    @Column(name = "weekly_hours", scale = 5, precision = 3)
+    private Float weeklyHours = null;
+
+    @Column(name = "daily_hours", scale = 5, precision = 3)
+    private Float dailyHours = null;
 
     /**
      * Last time the Entity was modified.
@@ -189,20 +208,28 @@ public class EmployerEntity implements Updateable<EmployerEntity> {
         return department;
     }
 
-    public void setAddress(final AddressEntity address) {
-        this.address = address;
-    }
-
-    public AddressEntity getAddress() {
-        return address;
-    }
-
     public void setBusiness(final String business) {
         this.business = business;
     }
 
     public String getBusiness() {
         return business;
+    }
+
+    public void setWorkingPlace(final String workingPlace) {
+        this.workingPlace = workingPlace;
+    }
+
+    public String getWorkingPlace() {
+        return workingPlace;
+    }
+
+    public void setAddress(final AddressEntity address) {
+        this.address = address;
+    }
+
+    public AddressEntity getAddress() {
+        return address;
     }
 
     public void setNumberOfEmployees(final Integer numberOfEmployees) {
@@ -219,6 +246,46 @@ public class EmployerEntity implements Updateable<EmployerEntity> {
 
     public String getWebsite() {
         return website;
+    }
+
+    public void setCanteen(final Boolean canteen) {
+        this.canteen = canteen;
+    }
+
+    public Boolean getCanteen() {
+        return canteen;
+    }
+
+    public void setNearestAirport(final String nearestAirport) {
+        this.nearestAirport = nearestAirport;
+    }
+
+    public String getNearestAirport() {
+        return nearestAirport;
+    }
+
+    public void setNearestPublicTransport(final String nearestPublicTransport) {
+        this.nearestPublicTransport = nearestPublicTransport;
+    }
+
+    public String getNearestPublicTransport() {
+        return nearestPublicTransport;
+    }
+
+    public void setWeeklyHours(final Float weeklyHours) {
+        this.weeklyHours = weeklyHours;
+    }
+
+    public Float getWeeklyHours() {
+        return weeklyHours;
+    }
+
+    public Float getDailyHours() {
+        return dailyHours;
+    }
+
+    public void setDailyHours(final Float dailyHours) {
+        this.dailyHours = dailyHours;
     }
 
     /**
@@ -261,13 +328,42 @@ public class EmployerEntity implements Updateable<EmployerEntity> {
      * {@inheritDoc}
      */
     @Override
+    public boolean diff(final EmployerEntity obj) {
+        int changes = 0;
+
+        changes += different(name, obj.name);
+        changes += different(department, obj.department);
+        changes += different(business, obj.business);
+        changes += different(workingPlace, obj.workingPlace);
+        changes += different(numberOfEmployees, obj.numberOfEmployees);
+        changes += different(website, obj.website);
+        changes += different(canteen, obj.canteen);
+        changes += different(nearestAirport, obj.nearestAirport);
+        changes += different(nearestPublicTransport, obj.nearestPublicTransport);
+        changes += different(weeklyHours, obj.weeklyHours);
+        changes += different(dailyHours, obj.dailyHours);
+
+        return changes == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void merge(final EmployerEntity obj) {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             name = obj.name;
+            department = obj.department;
             business = obj.business;
+            workingPlace = obj.workingPlace;
             numberOfEmployees = obj.numberOfEmployees;
             website = obj.website;
+            canteen = obj.canteen;
+            nearestAirport = obj.nearestAirport;
+            nearestPublicTransport = obj.nearestPublicTransport;
+            weeklyHours = obj.weeklyHours;
+            dailyHours = obj.dailyHours;
         }
     }
 }

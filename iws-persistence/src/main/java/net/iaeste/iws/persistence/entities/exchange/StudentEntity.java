@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.PersonEntity
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.exchange.StudentEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,32 +12,47 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence.entities;
+package net.iaeste.iws.persistence.entities.exchange;
 
-import net.iaeste.iws.api.enums.Gender;
+import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.IWSEntity;
 
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author  Teis Lindemark / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class PersonEntity implements Updateable<PersonEntity> {
+@NamedQueries({
+        @NamedQuery(name = "student.findAll",
+                query = "select s from StudentEntity s"),
+        @NamedQuery(name = "student.findById",
+                query = "select s from StudentEntity s " +
+                        "where s.id = :id"),
+        @NamedQuery(name = "student.findByName",
+                query = "select s from StudentEntity s " +
+                        "where s.studentName = :name")
+})
+@Entity
+@Table(name = "students")
+public class StudentEntity implements IWSEntity {
 
     @Id
-    @SequenceGenerator(name = "pk_sequence", sequenceName = "person_sequence")
+    @SequenceGenerator(name = "pk_sequence", sequenceName = "student_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
@@ -53,28 +68,12 @@ public class PersonEntity implements Updateable<PersonEntity> {
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
-    @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "address_id")
-    private AddressEntity address = null;
+    @Column(name = "student_name", nullable = false)
+    private String studentName = null;
 
-    @Column(name = "email", length = 100)
-    private String email = null;
-
-    @Column(name = "phone", length = 25)
-    private String phone = null;
-
-    @Column(name = "mobile", length = 25)
-    private String mobile = null;
-
-    @Column(name = "fax", length = 25)
-    private String fax = null;
-
-    @Column(name = "birthday")
-    private Date birthday = null;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender", length = 10)
-    private Gender gender = null;
+    @ManyToOne(targetEntity = GroupEntity.class)
+    @JoinColumn(name = "group_id", nullable = false)
+    private GroupEntity group = null;
 
     /**
      * Last time the Entity was modified.
@@ -89,6 +88,22 @@ public class PersonEntity implements Updateable<PersonEntity> {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
+
+    // =========================================================================
+    // Entity Constructors
+    // =========================================================================
+
+    /**
+     * Empty Constructor, JPA requirement.
+     */
+    public StudentEntity() {
+    }
+
+    public StudentEntity(final Long id, final String studentName, final GroupEntity group) {
+        this.id = id;
+        this.studentName = studentName;
+        this.group = group;
+    }
 
     // =========================================================================
     // Entity Setters & Getters
@@ -110,90 +125,34 @@ public class PersonEntity implements Updateable<PersonEntity> {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getExternalId() {
         return externalId;
     }
 
-    public void setAddress(final AddressEntity address) {
-        this.address = address;
+    public void setStudentName(final String studentName) {
+        this.studentName = studentName;
     }
 
-    public AddressEntity getAddress() {
-        return address;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setEmail(final String email) {
-        this.email = email;
+    public void setGroup(final GroupEntity group) {
+        this.group = group;
     }
 
-    public String getEmail() {
-        return email;
+    public GroupEntity getGroup() {
+        return group;
     }
 
-    public void setPhone(final String phone) {
-        this.phone = phone;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setMobile(final String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setFax(final String fax) {
-        this.fax = fax;
-    }
-
-    public String getFax() {
-        return fax;
-    }
-
-    public void setBirthday(final Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setGender(final Gender gender) {
-        this.gender = gender;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Date getModified() {
         return modified;
     }
@@ -212,35 +171,5 @@ public class PersonEntity implements Updateable<PersonEntity> {
     @Override
     public Date getCreated() {
         return created;
-    }
-
-    // =========================================================================
-    // Other Methods required for this Entity
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean diff(final PersonEntity obj) {
-        // Until properly implemented, better return true to avoid that we're
-        // missing updates!
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void merge(final PersonEntity obj) {
-        if ((obj != null) && id.equals(obj.id)) {
-            address = obj.address;
-            email = obj.email;
-            phone = obj.phone;
-            mobile = obj.mobile;
-            fax = obj.fax;
-            birthday = obj.birthday;
-            gender = obj.gender;
-        }
     }
 }

@@ -10,16 +10,16 @@
 
         <class>net.iaeste.iws.persistence.entities.AddressEntity</class>
         <class>net.iaeste.iws.persistence.entities.CountryEntity</class>
-        <class>net.iaeste.iws.persistence.entities.EmployerEntity</class>
+        <class>net.iaeste.iws.persistence.entities.exchange.EmployerEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupTypeEntity</class>
         <class>net.iaeste.iws.persistence.entities.MonitoringEntity</class>
         <class>net.iaeste.iws.persistence.entities.NotificationMessageEntity</class>
         <class>net.iaeste.iws.persistence.entities.OfferEntity</class>
-        <class>net.iaeste.iws.persistence.entities.OfferGroupEntity</class>
+        <class>net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.RoleEntity</class>
         <class>net.iaeste.iws.persistence.entities.SessionEntity</class>
-        <class>net.iaeste.iws.persistence.entities.StudentEntity</class>
+        <class>net.iaeste.iws.persistence.entities.exchange.StudentEntity</class>
         <!--<class>net.iaeste.iws.persistence.entities.StudentFileEntity</class>-->
         <class>net.iaeste.iws.persistence.entities.UserEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserGroupEntity</class>

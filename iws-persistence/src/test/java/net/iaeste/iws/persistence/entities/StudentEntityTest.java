@@ -20,6 +20,7 @@ import static org.junit.Assert.assertThat;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;

@@ -28,6 +28,7 @@
         <class>net.iaeste.iws.persistence.views.UserPermissionView</class>
         <class>net.iaeste.iws.persistence.views.EmployerInformationView</class>
         <class>net.iaeste.iws.persistence.views.CountryView</class>
+        <class>net.iaeste.iws.persistence.views.EmployerView</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>

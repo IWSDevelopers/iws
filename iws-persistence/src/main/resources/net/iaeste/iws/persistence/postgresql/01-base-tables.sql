@@ -628,3 +628,32 @@ create table notification_messages (
     constraint notitication_messages_notnull_process_after     check (process_after is not null),
     constraint notitication_messages_notnull_created           check (created is not null)
 );
+
+-- =============================================================================
+-- Notification consumers
+-- -----------------------------------------------------------------------------
+--
+-- =============================================================================
+create sequence notification_consumer_sequence start with 10 increment by 1;
+create table notification_consumers (
+    id                 integer default nextval('notification_consumer_sequence'),
+    group_id           integer,
+    name               varchar(100),
+    className          varchar(100),
+    active             boolean,
+    created            timestamp default now(),
+    modified           timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint notitication_consumers_pk          primary key (id),
+    constraint notitication_consumers_fk_group_id foreign key (group_id) references groups (id),
+
+    /* Unique Constraints */
+    constraint notification_consumers_unique_consumer_name unique (group_id, name),
+
+    /* Not Null Constraints */
+    constraint notification_consumers_notnull_id                check (id is not null),
+    constraint notification_consumers_notnull_group_id          check (group_id is not null),
+    constraint notification_consumers_notnull_created           check (created is not null),
+    constraint notification_consumers_notnull_modified          check (modified is not null)
+);

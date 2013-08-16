@@ -112,6 +112,12 @@
             <groupId>net.iaeste.iws</groupId>
             <artifactId>iws-persistence</artifactId>
         </dependency>
+        <!-- this has to come from local respository set to iws-accessories and has to be placed before javaee-api -->
+        <dependency>
+            <groupId>jms</groupId>
+            <artifactId>jms</artifactId>
+            <version>1.1</version>
+        </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
@@ -157,11 +163,11 @@
             <version>1.4.7</version>
         </dependency>
         <!-- this has to come from local respository set to iws-accessories -->
-        <dependency>
-            <groupId>jms</groupId>
-            <artifactId>jms</artifactId>
-            <version>1.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>jms</groupId>-->
+            <!--<artifactId>jms</artifactId>-->
+            <!--<version>1.1</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>net.timewalker.ffmq3</groupId>
             <artifactId>ffmq3-core</artifactId>

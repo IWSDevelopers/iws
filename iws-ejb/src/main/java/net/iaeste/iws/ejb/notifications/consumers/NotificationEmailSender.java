@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.NotificationEmailDelayedSender
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.consumers.NotificationEmailSender
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,20 +12,17 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.ejb.notifications;
+package net.iaeste.iws.ejb.notifications.consumers;
 
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.enums.NotificationDeliveryMode;
-import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.ejb.emails.EmailMessage;
 import net.iaeste.iws.ejb.ffmq.MessageServer;
-import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
-import net.iaeste.iws.persistence.entities.UserEntity;
 import net.timewalker.ffmq3.FFMQConstants;
+import org.apache.log4j.Logger;
 
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -39,11 +36,7 @@ import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Map;
-import java.util.List;
 
 /**
  * The Class requires an EJB framework to properly work. For this reason, large
@@ -57,7 +50,9 @@ import java.util.List;
  * @since   1.7
  * @noinspection ObjectAllocationInLoop
  */
-public class NotificationEmailDelayedSender implements Observer {
+public class NotificationEmailSender implements Observer, NotificationDirectEmailSender {
+
+    private static final Logger LOG = Logger.getLogger(NotificationEmailSender.class);
 
 //    @Resource(mappedName = "iws-EmailQueue")
     private Queue queue;
@@ -66,14 +61,10 @@ public class NotificationEmailDelayedSender implements Observer {
     private QueueConnectionFactory queueConnectionFactory;
 
     private QueueConnection queueConnection = null;
-    private QueueSender sender = null;
-    private QueueSession session = null;
+    private QueueSender queueSender = null;
+    private QueueSession queueSession = null;
 
-    private final NotificationDao dao;
-
-    public NotificationEmailDelayedSender(final NotificationDao dao) {
-        this.dao = dao;
-
+    public NotificationEmailSender() {
         try {
             //FFMQ specific
             final Hashtable<String, String> env = new Hashtable<>();
@@ -84,22 +75,30 @@ public class NotificationEmailDelayedSender implements Observer {
             final Context context = new InitialContext(env);
 
             queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
-            // end FFMQ specific
-
-            queueConnection = queueConnectionFactory.createQueueConnection();
-            queueConnection.start();
-
-            //FFMQ specific
             queue = (Queue)context.lookup(MessageServer.queueNameForIws);
             context.close();
             // end FFMQ specific
 
-            session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-            sender = session.createSender(queue);
-            //TODO added for FFMQ, keep it for glassfish?
-            sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+            queueConnection = queueConnectionFactory.createQueueConnection();
+            queueConnection.start();
+            queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+            queueSender = queueSession.createSender(queue);
+            queueSender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
         } catch (NamingException|JMSException e) {
-            throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailDelayedSender) initialization failed.", e);
+            throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailSender) initialization failed.", e);
+        }
+    }
+
+    /**
+     * Method for unsubscibing from queue and closing connection
+     */
+    public void stop() {
+        try {
+            queueSender.close();
+            queueSession.close();
+            queueConnection.stop();
+        } catch (JMSException e) {
+            throw new IWSException(IWSErrors.ERROR, "Queue recipient stopping failed.", e);
         }
     }
 
@@ -111,47 +110,31 @@ public class NotificationEmailDelayedSender implements Observer {
         processMessages();
     }
 
-    private void processMessages() {
-        List<NotificationMessageEntity> messages = dao.findNotificationMessages(NotificationDeliveryMode.EMAIL, NotificationMessageStatus.NEW, new java.util.Date());
-//        Map<UserEntity, List<NotificationMessageEntity>> groupedMessages = groupByUser(messages);
-//        String subject = "IAESTE IW notification";
-//
-        for(NotificationMessageEntity message : messages) {
-            dao.updateNotificationMessageStatus(message, NotificationMessageStatus.PROCESSING);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void send(final NotificationMessageEntity message) {
+        try {
+            final ObjectMessage msg = queueSession.createObjectMessage();
+            final EmailMessage emsg = new EmailMessage();
+            emsg.setTo(message.getUser().getUserName());
+            emsg.setSubject(message.getMessageTitle());
+            emsg.setMessage(message.getMessage());
+            msg.setObjectProperty("emailMessage", emsg);
 
-            try {
-                ObjectMessage msg = session.createObjectMessage();
-                EmailMessage emsg = new EmailMessage();
-                emsg.setTo(message.getUser().getUserName());
-                emsg.setSubject(message.getMessageTitle());
-                emsg.setMessage(message.getMessage());
-                msg.setObject(emsg);
-
-                sender.send(msg);
-                dao.updateNotificationMessageStatus(message, NotificationMessageStatus.SENT);
-            } catch (JMSException e) {
-                //do something, log...
-            }
+            queueSender.send(msg);
+        } catch (JMSException ignored) {
+            LOG.error("Error when sending message to the queue");
         }
     }
 
-    private static Map<UserEntity, List<NotificationMessageEntity>> groupByUser(final List<NotificationMessageEntity> messages) {
-        final Map<UserEntity, List<NotificationMessageEntity>> result = new HashMap<>(0);
-
-        for (final NotificationMessageEntity message : messages) {
-            final List<NotificationMessageEntity> userMessages;
-            final UserEntity user = message.getUser();
-
-            if (result.containsKey(user)) {
-                userMessages = result.get(user);
-            } else {
-                userMessages = new ArrayList<>(1);
-            }
-
-            userMessages.add(message);
-            result.put(user, userMessages);
-        }
-
-        return result;
+    private void processMessages() {
+        //TODO pavel: I tried two approaches: one is the current implematation with the NotificationDirectEmailSender
+        //            the second is to implement public method in NotificationManager which returns a list with messages
+        //            to be sent. The NotificationManager's instance is the parameter of the update(Observable) method.
+        //            None of these approaches is ideal, I kept the one with interface for now.
+        //get list of messages to be sent immediately, this needs a connection to the notification manager
+        //which instance I have as the parameter of the update(Observable) method
     }
 }

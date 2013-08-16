@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.persistence.entities.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
@@ -59,4 +60,11 @@ public interface NotificationDao extends BasicDao {
      * @param status  New status of the message (i.e. new, processing, ...)
      */
     void updateNotificationMessageStatus(NotificationMessageEntity message, NotificationMessageStatus status);
+
+    /**
+     * Finds all NotificationConsumerEntity that are set as active
+     *
+     * @return List of NotificationConsumerEntity
+     */
+    List<NotificationConsumerEntity> findActiveNotificationConsumers();
 }

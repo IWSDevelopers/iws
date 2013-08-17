@@ -14,22 +14,17 @@
  */
 package net.iaeste.iws.core.services;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.exchange.Offer;
-import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.OfferRequestTestUtility;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -40,7 +35,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,20 +62,20 @@ public class ExchangeServiceTest {
         auth = new Authentication(token, user, group);
     }
 
-    @Test
-    public void testFetchOffersAll() {
-        final List<OfferEntity> entities = new ArrayList<>(2);
-        entities.add(null);
-        entities.add(null);
-        when(dao.findAllOffers(auth)).thenReturn(entities);
-
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
-
-        final FetchOffersResponse result = client.fetchOffers(auth, request);
-
-        assertThat(result.isOk(), is(true));
-        assertThat(result.getOffers().size(), is(entities.size()));
-    }
+//    @Test
+//    public void testFetchOffersAll() {
+//        final List<OfferEntity> entities = new ArrayList<>(2);
+//        entities.add(null);
+//        entities.add(null);
+//        when(dao.findAllOffers(auth)).thenReturn(entities);
+//
+//        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+//
+//        final FetchOffersResponse result = client.fetchOffers(auth, request);
+//
+//        assertThat(result.isOk(), is(true));
+//        assertThat(result.getOffers().size(), is(entities.size()));
+//    }
 
     @Test(expected = VerificationException.class)
     public void testProcessingOffersEmptyRequest() {

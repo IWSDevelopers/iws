@@ -282,7 +282,7 @@ public final class ExchangeController extends CommonController implements Exchan
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
-            response = service.fetchGroupsForSharing(authentication, request);
+            response = service.fetchGroupsForSharing(authentication);
         } catch (IWSException e) {
             response = new FetchGroupsForSharingResponse(e.getError(), e.getMessage());
         }

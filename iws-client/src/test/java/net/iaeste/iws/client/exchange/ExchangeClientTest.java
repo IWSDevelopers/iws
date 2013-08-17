@@ -33,7 +33,6 @@ import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
@@ -504,7 +503,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
     @Test
     public void testFetchGroupsForSharing() {
         austriaToken.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
-        final FetchGroupsForSharingResponse response = exchange.fetchGroupsForSharing(austriaToken, new FetchGroupsForSharingRequest());
+        final FetchGroupsForSharingResponse response = exchange.fetchGroupsForSharing(austriaToken);
 
         assertThat(response.isOk(), is(true));
         // 6 countries are entered in the test data, minus the own country (austria)

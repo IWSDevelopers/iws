@@ -28,7 +28,6 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
@@ -239,7 +238,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(final Authentication authentication, final FetchGroupsForSharingRequest request) {
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final Authentication authentication) {
         final List<Group> groupList = AdministrationTransformer.transform(dao.findGroupsForSharing(authentication.getGroup()));
 
         return new FetchGroupsForSharingResponse(groupList);

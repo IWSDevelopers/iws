@@ -17,7 +17,6 @@ package net.iaeste.iws.api;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -141,11 +140,10 @@ public interface Exchange {
      * This is mainly needed in the front-end to display a list of groups (members) to which a offer can be shared to.
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request   Fetch National Groups Request Object
      * @return Response Object with the current national groups ordered by name
      *                  and error information
      */
-    FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token, FetchGroupsForSharingRequest request);
+    FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token);
 
     /**
      * Not implemented

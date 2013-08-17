@@ -19,7 +19,6 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -167,7 +166,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
-    @WebMethod
+    // There is a field in the ProcessOfferRequest, which causes a WS problem!
+    //@WebMethod
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         OfferResponse response;
 
@@ -308,11 +308,11 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
         FetchGroupsForSharingResponse response;
 
         try {
-            response = controller.fetchGroupsForSharing(token, request);
+            response = controller.fetchGroupsForSharing(token);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));

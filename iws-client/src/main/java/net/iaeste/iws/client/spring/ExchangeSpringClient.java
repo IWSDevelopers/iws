@@ -18,7 +18,6 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
@@ -165,8 +164,8 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
-        return client.fetchGroupsForSharing(token, request);
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
+        return client.fetchGroupsForSharing(token);
     }
 
     /**

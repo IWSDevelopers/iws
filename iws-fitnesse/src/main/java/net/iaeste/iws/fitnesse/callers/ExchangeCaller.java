@@ -149,9 +149,9 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token, final FetchGroupsForSharingRequest request) {
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
         try {
-            return caller.fetchGroupsForSharing(token, request);
+            return caller.fetchGroupsForSharing(token);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

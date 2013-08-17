@@ -15,7 +15,6 @@
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -28,7 +27,6 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 public final class FetchGroupsForSharing extends AbstractFixture<FetchGroupsForSharingResponse> {
 
     private final Exchange exchange = new ExchangeCaller();
-    private FetchGroupsForSharingRequest request = new FetchGroupsForSharingRequest();
 
     public void fetchGroupsForSharing() {
         execute();
@@ -55,14 +53,12 @@ public final class FetchGroupsForSharing extends AbstractFixture<FetchGroupsForS
     @Override
     public void execute() throws StopTestException {
         createSession();
-        setResponse(exchange.fetchGroupsForSharing(getToken(), request));
+        setResponse(exchange.fetchGroupsForSharing(getToken()));
     }
 
     @Override
     public void reset() {
         // Resets the Response Object
         super.reset();
-
-        request = null;
     }
 }

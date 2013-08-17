@@ -42,7 +42,7 @@ public final class Address extends AbstractVerification {
     private String street2 = null;
     private String zip = null;
     private String city = null;
-    private String region = null;
+    private String state = null;
     private String pobox = null;
     private Country country = null;
 
@@ -69,7 +69,7 @@ public final class Address extends AbstractVerification {
             street2 = address.street2;
             zip = address.zip;
             city = address.city;
-            region = address.region;
+            state = address.state;
             pobox = address.pobox;
             country = new Country(address.country);
         }
@@ -129,14 +129,14 @@ public final class Address extends AbstractVerification {
         return city;
     }
 
-    public void setRegion(final String region) {
-        ensureNotEmptyOrTooLong("region", region, FIELD_LENGTH);
+    public void setState(final String state) {
+        ensureNotEmptyOrTooLong("state", state, FIELD_LENGTH);
 
-        this.region = region;
+        this.state = state;
     }
 
-    public String getRegion() {
-        return region;
+    public String getState() {
+        return state;
     }
 
     public void setPobox(final String pobox) {
@@ -200,7 +200,7 @@ public final class Address extends AbstractVerification {
         if (city != null ? !city.equals(address.city) : address.city != null) {
             return false;
         }
-        if (region != null ? !region.equals(address.region) : address.region != null) {
+        if (state != null ? !state.equals(address.state) : address.state != null) {
             return false;
         }
 
@@ -219,7 +219,7 @@ public final class Address extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (street2 != null ? street2.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (zip != null ? zip.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (city != null ? city.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (region != null ? region.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (state != null ? state.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (country != null ? country.hashCode() : 0);
 
         return result;
@@ -236,7 +236,7 @@ public final class Address extends AbstractVerification {
                 ", street2='" + street2 + '\'' +
                 ", zip='" + zip + '\'' +
                 ", city='" + city + '\'' +
-                ", region='" + region + '\'' +
+                ", state='" + state + '\'' +
                 ", country=" + country +
                 '}';
     }

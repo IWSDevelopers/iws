@@ -157,46 +157,4 @@ public class HashcodeGeneratorTest {
         assertThat(resultEmpty, is(expectedEmpty));
         assertThat(resultNull, is(expectedNull));
     }
-
-//Following is not really test code, but used to generage User accounts.
-//    private static final String USER_INSERT = "insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('";
-//    private static final String USER_FORMAT = USER_INSERT + "%s', 'ACTIVE', '%s', '%s', '%s', '%s', '%s', '%s');";
-//
-//    @Test
-//    public void testPasswords() {
-//        final String country = "Austria";
-//        final String userMailAddress = "@iaeste.at";
-//
-//        for (int i = 1; i <= 5; i++) {
-//            final String euid = UUID.randomUUID().toString();
-//            final String salt = UUID.randomUUID().toString();
-//            final String username = country.toLowerCase(IWSConstants.DEFAULT_LOCALE) + i;
-//            final String password = HashcodeGenerator.generateSHA256(username, salt);
-//            final String firstname = "User" + i;
-//            final String alias = firstname + '.' + country + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
-//            final String query = String.format(USER_FORMAT, euid, username + userMailAddress, alias, password, salt, firstname, country);
-//
-//            System.out.println(query);
-//        }
-//    }
-//
-//    @Test
-//    public void generateStandardTestAccounts() {
-//        final String[] countryNames = { "Austria", "Croatia", "Denmark", "Germany", "Poland", "Hungary" };
-//        final String[] countryCodes = { "at", "hr", "dk", "de", "pl", "hu" };
-//        generatePasswords(countryNames, countryCodes);
-//    }
-//
-//    private static void generatePasswords(final String[] countryNames, final String[] countryCodes) {
-//        for (int i = 0; i < countryNames.length; i++) {
-//            final String euid = UUID.randomUUID().toString();
-//            final String salt = UUID.randomUUID().toString();
-//            final String username = countryNames[i].toLowerCase(IWSConstants.DEFAULT_LOCALE);
-//            final String alias = username + ".ns@" + IWSConstants.PUBLIC_EMAIL_ADDRESS;
-//            final String password = HashcodeGenerator.generateSHA256(username, salt);
-//            final String query = String.format(USER_FORMAT, euid, username + "@iaeste." + countryCodes[i], alias, password, salt, "NS", countryNames[i]);
-//
-//            System.out.println(query);
-//        }
-//    }
 }

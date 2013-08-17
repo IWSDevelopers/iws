@@ -15,8 +15,8 @@
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -25,18 +25,17 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchEmployers extends AbstractFixture<FetchEmployerInformationResponse> {
+public final class FetchEmployers extends AbstractFixture<FetchEmployerResponse> {
 
     private final Exchange exchange = new ExchangeCaller();
-    private FetchEmployerInformationRequest request = new FetchEmployerInformationRequest();
+    private FetchEmployerRequest request = new FetchEmployerRequest();
 
     public void fetchEmployers() {
         execute();
     }
 
-    public void setName(final String name)
-    {
-        request.setName(name);
+    public void setName(final String name) {
+        request.setFetchByPartialName(name);
     }
 
     public int numberOfEmployers() {

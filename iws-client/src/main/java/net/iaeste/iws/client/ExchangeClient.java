@@ -16,8 +16,27 @@ package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.exchange.*;
-import net.iaeste.iws.api.responses.exchange.*;
+import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
+import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
+import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.responses.exchange.EmployerResponse;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
+import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
+import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 /**
@@ -43,14 +62,6 @@ public final class ExchangeClient implements Exchange {
     @Override
     public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
         return client.processEmployer(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
-        return client.fetchEmployers(token, request);
     }
 
     /**

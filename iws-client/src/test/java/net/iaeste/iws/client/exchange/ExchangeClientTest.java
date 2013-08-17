@@ -27,20 +27,17 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
-import net.iaeste.iws.api.dtos.exchange.EmployerInformation;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
@@ -339,42 +336,6 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(publishResponse.isOk(), is(false));
         assertThat("The request has to fail with verification error here", publishResponse.getError(), is(IWSErrors.VERIFICATION_ERROR));
         assertThat(publishResponse.getMessage(), is("Cannot publish offers to itself."));
-    }
-
-    @Test
-    @Ignore("Ignored 20130623 by Kim - Reason: The Employer parts are under redesign, causing this test to fail.")
-    public void testGetEmployerInformation() {
-        final String refNo = "PL-2012-0008";
-        final Offer offer = OfferTestUtility.getFullOffer();
-        offer.setRefNo(refNo);
-
-        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
-        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
-
-        assertThat(saveResponse.isOk(), is(true));
-
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
-        final FetchOffersResponse response = exchange.fetchOffers(token, request);
-        final Offer readOffer = findOfferFromResponse(refNo, response);
-
-        assertThat(readOffer, is(not(nullValue())));
-
-        final FetchEmployerInformationRequest employerRequest = new FetchEmployerInformationRequest(offer.getEmployerName());
-        final FetchEmployerInformationResponse employerResponse = exchange.fetchEmployers(token, employerRequest);
-
-        assertThat(employerResponse.getEmployers().isEmpty(), is(false));
-        final EmployerInformation employerInformation = employerResponse.getEmployers().get(0);
-        assertThat(employerInformation.getAddress(), is(offer.getEmployerAddress()));
-        assertThat(employerInformation.getAddress2(), is(offer.getEmployerAddress2()));
-        assertThat(employerInformation.getBusiness(), is(offer.getEmployerBusiness()));
-        assertThat(employerInformation.getDailyHours(), is(offer.getDailyHours()));
-        assertThat(employerInformation.getEmployeesCount(), is(offer.getEmployerEmployeesCount()));
-        assertThat(employerInformation.getName(), is(offer.getEmployerName()));
-        assertThat(employerInformation.getNearestAirport(), is(offer.getNearestAirport()));
-        assertThat(employerInformation.getNearestPubTransport(), is(offer.getNearestPubTransport()));
-        assertThat(employerInformation.getWebsite(), is(offer.getEmployerWebsite()));
-        assertThat(employerInformation.getWeeklyHours(), is(offer.getWeeklyHours()));
-        assertThat(employerInformation.getWorkingPlace(), is(offer.getWorkingPlace()));
     }
 
     @Test

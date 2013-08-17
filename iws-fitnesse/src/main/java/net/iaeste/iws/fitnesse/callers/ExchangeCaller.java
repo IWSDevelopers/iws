@@ -53,18 +53,6 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
-        try {
-            return caller.fetchEmployers(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
         try {
             return caller.fetchEmployers(token, request);

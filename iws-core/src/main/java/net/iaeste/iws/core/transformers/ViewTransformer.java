@@ -68,7 +68,7 @@ public final class ViewTransformer {
         address.setStreet2(view.getStreet2());
         address.setZip(view.getZip());
         address.setCity(view.getCity());
-        address.setRegion(view.getRegion());
+        address.setState(view.getState());
         employer.setAddress(address);
 
         // Finally, return our newly found Employer

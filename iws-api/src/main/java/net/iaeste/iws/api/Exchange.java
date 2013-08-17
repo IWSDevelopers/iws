@@ -16,7 +16,6 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
@@ -29,7 +28,6 @@ import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
@@ -58,23 +56,6 @@ public interface Exchange {
      * @return Persisted Employer Object
      */
     EmployerResponse processEmployer(AuthenticationToken token, ProcessEmployerRequest request);
-
-    /**
-     * Get a list of employer information based on a substring of the employer
-     * name. This is basically used to provide an auto-completion function when
-     * entering offers. This list only contains the latest entered employer
-     * information. So the returned result is selected by distinct names of the
-     * employer. This also means, if the employer name is changed, an additional
-     * entry is generated.
-     *
-     * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request Request object contains only a string representing a substring of the employers name for which
-     *                all possible results a re aggregated.
-     * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.EmployerInformation}
-     * @deprecated please use the other fetchEmployers method
-     */
-    @Deprecated
-    FetchEmployerInformationResponse fetchEmployers(AuthenticationToken token, FetchEmployerInformationRequest request);
 
     /**
      * Fetches a list of Employers, belonging to the requesting User, i.e. which

@@ -124,8 +124,8 @@ public class EmployerView extends AbstractView<EmployerView> {
     @Column(name = "city", insertable = false, updatable = false)
     private String city = null;
 
-    @Column(name = "region", insertable = false, updatable = false)
-    private String region = null;
+    @Column(name = "state", insertable = false, updatable = false)
+    private String state = null;
 
     @Column(name = "modified", insertable = false, updatable = false)
     private Date modified = null;
@@ -321,12 +321,12 @@ public class EmployerView extends AbstractView<EmployerView> {
         return city;
     }
 
-    public void setRegion(final String region) {
-        this.region = region;
+    public void setState(final String state) {
+        this.state = state;
     }
 
-    public String getRegion() {
-        return region;
+    public String getState() {
+        return state;
     }
 
     public void setModified(final Date modified) {

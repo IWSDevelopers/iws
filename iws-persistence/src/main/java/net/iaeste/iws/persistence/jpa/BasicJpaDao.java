@@ -219,7 +219,7 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("street2", toLower(newAddress.getStreet2()));
         query.setParameter("zip", toLower(newAddress.getZip()));
         query.setParameter("city", toLower(newAddress.getCity()));
-        query.setParameter("region", toLower(newAddress.getRegion()));
+        query.setParameter("region", toLower(newAddress.getState()));
 
         return findSingleResult(query, "address");
     }

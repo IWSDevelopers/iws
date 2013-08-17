@@ -98,6 +98,7 @@ public final class CommonTransformer {
             address.setStreet2(entity.getStreet2());
             address.setZip(entity.getZip());
             address.setCity(entity.getCity());
+            address.setState(entity.getState());
             address.setPobox(entity.getPobox());
             address.setCountry(transform(entity.getCountry()));
         } else {
@@ -118,6 +119,7 @@ public final class CommonTransformer {
             entity.setStreet2(address.getStreet2());
             entity.setZip(address.getZip());
             entity.setCity(address.getCity());
+            entity.setState(address.getState());
             entity.setPobox(address.getPobox());
             entity.setCountry(transform(address.getCountry()));
         } else {

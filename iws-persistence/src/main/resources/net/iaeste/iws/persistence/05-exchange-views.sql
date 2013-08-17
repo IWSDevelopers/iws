@@ -30,7 +30,7 @@ create view employer_view as
     a.street2               as street2,
     a.zip                   as zip,
     a.city                  as city,
-    a.region                as region,
+    a.state                 as state,
     e.modified              as modified,
     e.created               as created
   from

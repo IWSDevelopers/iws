@@ -43,11 +43,10 @@ import java.util.Date;
                 query = "select a from AddressEntity a where a.externalId = :eid"),
         @NamedQuery(name = "address.findByValues",
                 query = "select a from AddressEntity a " +
-                        "where lower(a.street1) = :street1" +
-                        "  and lower(a.street2) = :street2" +
-                        "  and lower(a.zip) = :zip" +
-                        "  and lower(a.city) = :city" +
-                        "  and lower(a.region) = :region")
+                        "where lower(a.street1) = lower(:street1)" +
+                        "  and lower(a.zip) = lower(:zip)" +
+                        "  and lower(a.city) = lower(:city)" +
+                        "  and lower(a.state) = lower(:region)")
 })
 @Entity
 @Table(name = "addresses")
@@ -82,8 +81,8 @@ public class AddressEntity implements Updateable<AddressEntity> {
     @Column(name = "city", length = 100)
     private String city = null;
 
-    @Column(name = "region", length = 100)
-    private String region = null;
+    @Column(name = "state", length = 100)
+    private String state = null;
 
     @Column(name = "pobox", length = 100)
     private String pobox = null;
@@ -193,12 +192,12 @@ public class AddressEntity implements Updateable<AddressEntity> {
         return city;
     }
 
-    public void setRegion(final String region) {
-        this.region = region;
+    public void setState(final String region) {
+        this.state = region;
     }
 
-    public String getRegion() {
-        return region;
+    public String getState() {
+        return state;
     }
 
     public void setZip(final String zip) {
@@ -281,7 +280,7 @@ public class AddressEntity implements Updateable<AddressEntity> {
             street2 = obj.street2;
             zip = obj.zip;
             city = obj.city;
-            region = obj.region;
+            state = obj.state;
             pobox = obj.pobox;
         }
     }

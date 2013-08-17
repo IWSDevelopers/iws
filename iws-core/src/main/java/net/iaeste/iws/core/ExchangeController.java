@@ -19,7 +19,6 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
-import net.iaeste.iws.api.requests.exchange.FetchEmployerInformationRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchGroupsForSharingRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
@@ -32,7 +31,6 @@ import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
-import net.iaeste.iws.api.responses.exchange.FetchEmployerInformationResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
@@ -89,28 +87,6 @@ public final class ExchangeController extends CommonController implements Exchan
         }
 
         LOG.trace("Finished processEmployer()");
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchEmployerInformationResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerInformationRequest request) {
-        LOG.trace("Starting fetchEmployers()");
-        FetchEmployerInformationResponse response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_EMPLOYERS);
-            verify(request);
-
-            final ExchangeFetchService service = factory.prepareExchangeFetchService();
-            response = service.fetchEmployers(authentication, request);
-        } catch (IWSException e) {
-            response = new FetchEmployerInformationResponse(e.getError(), e.getMessage());
-        }
-
-        LOG.trace("Finished fetchEmployers()");
         return response;
     }
 

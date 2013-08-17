@@ -513,7 +513,7 @@ create table addresses (
     street2             varchar(100) default '',
     zip                 varchar(100) default '',
     city                varchar(100) default '',
-    region              varchar(100) default '',
+    state              varchar(100) default '',
     pobox               varchar(100) default '',
     country_id          integer,
     modified            timestamp    default now(),
@@ -525,7 +525,7 @@ create table addresses (
 
     /* Unique Constraints */
     constraint address_unique_external_id unique (external_id),
-    constraint address_unique_fields unique (street1, street2, zip, city, region),
+    constraint address_unique_fields unique (street1, street2, zip, city, state),
 
     /* Not Null Constraints */
     constraint address_notnull_id          check (id is not null),

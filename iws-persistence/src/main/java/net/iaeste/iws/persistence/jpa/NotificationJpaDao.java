@@ -21,6 +21,7 @@ import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.entities.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
@@ -90,4 +91,14 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
         //query.executeUpdate();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<NotificationConsumerEntity> findActiveNotificationConsumers() {
+        final Query query = entityManager.createNamedQuery("notifications.findConsumers");
+        query.setParameter("active", true);
+
+        return query.getResultList();
+    }
 }

@@ -19,8 +19,10 @@ import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.utils.Observer;
+import net.iaeste.iws.ejb.notifications.consumers.NotificationDirectEmailSender;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.entities.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.notification.Notifiable;
@@ -58,6 +60,20 @@ public final class NotificationManager implements Notifications {
         this.dao = dao;
         this.immedeateEmailSender = immedeateEmailSender;
         this.messageGenerator = messageGenerator;
+    }
+
+    /**
+     * Startup notification manager - load from DB registered notification consumers and subcribe them to the manager
+     */
+    public void startupConsumers() {
+        final List<NotificationConsumerEntity> consumers = dao.findActiveNotificationConsumers();
+        final NotificationConsumerClassLoader classLoader = new NotificationConsumerClassLoader();
+        for(final NotificationConsumerEntity consumer : consumers) {
+//            try {
+            Observer observer = classLoader.findConsumerClass(consumer.getClassName(), dao);
+            addObserver(observer);
+//            } catch (IWSException e) {}
+        }
     }
 
     /**
@@ -157,6 +173,10 @@ public final class NotificationManager implements Notifications {
         for (final Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    public int getObserversCount() {
+        return observers.size();
     }
 
     private List<UserEntity> getRecipients(Notifiable obj, NotificationType type) {

@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.core.transformers.OfferTransformer.transform;
+import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
@@ -50,6 +50,7 @@ import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
@@ -84,40 +85,49 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     }
 
     private EmployerEntity process(final Authentication authentication, final Employer employer) {
-        final AddressEntity address = process(authentication, employer.getAddress());
         final String externalId = employer.getId();
-        final EmployerEntity entity;
+        EmployerEntity entity;
 
         if (externalId == null) {
-            // Creating a new Employer
-            entity = transform(employer);
-            entity.setGroup(authentication.getGroup());
-            entity.setAddress(address);
-            dao.persist(authentication, entity);
+            entity = dao.findUniqueEmployer(authentication, employer);
+
+            if (entity == null) {
+                entity = transform(employer);
+                entity.setGroup(authentication.getGroup());
+                processAddress(authentication, entity.getAddress());
+                dao.persist(authentication, entity);
+            } else {
+                processAddress(authentication, entity.getAddress(), employer.getAddress());
+                dao.persist(authentication, entity, transform(employer));
+            }
         } else {
-            // Updating an existing, we're skipping the Address, since the id
-            // cannot be altered
             final EmployerEntity updated = transform(employer);
             entity = dao.findEmployer(externalId);
+            processAddress(authentication, entity.getAddress(), employer.getAddress());
             dao.persist(authentication, entity, updated);
         }
 
         return entity;
     }
 
-    private AddressEntity process(final Authentication authentication, final Address address) {
-        final String externalId = address.getId();
-        final AddressEntity entity;
-
-        if (externalId == null) {
-            entity = CommonTransformer.transform(address);
+    /**
+     * Generally speaking, if the Id is undefined, a new Entity is created. If
+     * there are changes, then it is assumed that the third parameter is set,
+     * otherwise no actions are made.
+     *
+     * @param authentication User & Group information
+     * @param entity         Entity to persist
+     * @param address        Optional Address information, for updates
+     */
+    private void processAddress(final Authentication authentication, final AddressEntity entity, final Address... address) {
+        if (entity.getId() == null) {
+            final CountryEntity country = dao.findCountry(entity.getCountry().getCountryCode());
+            entity.setCountry(country);
             dao.persist(authentication, entity);
-        } else {
-            entity = dao.findAddress(externalId);
-            dao.persist(authentication, entity, CommonTransformer.transform(address));
+        } else if ((address != null) && (address.length == 1)) {
+            final AddressEntity newEntity = CommonTransformer.transform(address[0]);
+            dao.persist(authentication, entity, newEntity);
         }
-
-        return entity;
     }
 
     /**

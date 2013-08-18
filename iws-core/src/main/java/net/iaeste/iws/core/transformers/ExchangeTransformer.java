@@ -33,9 +33,9 @@ import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
  * @since   1.7
  * @noinspection OverlyLongMethod
  */
-public final class OfferTransformer {
+public final class ExchangeTransformer {
 
-    private OfferTransformer() {
+    private ExchangeTransformer() {
     }
 
     public static OfferEntity transform(final Offer offer) {
@@ -81,6 +81,7 @@ public final class OfferTransformer {
             result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setStatus(offer.getStatus());
+            result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setNominationDeadline(CommonTransformer.convert(offer.getNominationDeadline()));
         }
 

@@ -154,6 +154,7 @@ public final class Offer extends AbstractVerification {
             lodgingCost = offer.lodgingCost;
             lodgingCostFrequency = offer.lodgingCostFrequency;
             nominationDeadline = copy(offer.nominationDeadline);
+            numberOfHardCopies = offer.numberOfHardCopies;
             status = offer.status;
             modified = copy(offer.modified);
             created = copy(offer.created);

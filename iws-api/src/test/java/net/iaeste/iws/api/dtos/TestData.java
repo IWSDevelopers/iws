@@ -58,11 +58,11 @@ public final class TestData {
 
     // Default data for filling in our test Address Object, only thing missing
     // is the Country Code, which must be provided
-    public static final String ADDRESS_STREET1 = "";
-    public static final String ADDRESS_STREET2 = "";
-    public static final String ADDRESS_ZIP = "";
-    public static final String ADDRESS_CITY = "";
-    public static final String ADDRESS_STATE = "";
+    public static final String ADDRESS_STREET1 = "MyStreet 1";
+    public static final String ADDRESS_STREET2 = "MyStreet 2";
+    public static final String ADDRESS_ZIP = "123456789012";
+    public static final String ADDRESS_CITY = "MyCity";
+    public static final String ADDRESS_STATE = "MyState";
 
     // Default data for filling in our test Employer Object. Lacking, is the
     // Name of the Employer, which must be provided

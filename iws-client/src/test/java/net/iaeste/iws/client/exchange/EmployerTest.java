@@ -23,6 +23,7 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -36,7 +37,6 @@ import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -50,7 +50,6 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Ignore
 public final class EmployerTest {
 
     private static final String USERNAME = "germany@iaeste.de";
@@ -109,9 +108,7 @@ public final class EmployerTest {
     public void testSaveEmployer() {
         // The Class under test
         final Exchange client = new ExchangeClient();
-
-        // Create new Employer Object to persist
-        final Employer employer = createEmployer(token, "MyEmployer");
+        final Employer employer = TestData.prepareEmployer("MyEmployer", "DE");
 
         // Invoke IWS to persist the Employer
         final EmployerResponse response1 = client.processEmployer(token, new ProcessEmployerRequest(employer));
@@ -143,22 +140,17 @@ public final class EmployerTest {
     // =========================================================================
 
     private static Employer createEmployer(final AuthenticationToken token, final String name) {
-        // Sub-Object: Address
-        final Address address = new Address();
+        final Employer employer = TestData.prepareEmployer(name, "DE");
+        final Address address = employer.getAddress();
         address.setCountry(fetchCountry(token, "DE"));
-
-        // Create new Employer
-        final Employer employer = new Employer();
-        employer.setName(name);
-        employer.setAddress(address);
 
         return employer;
     }
 
-    private static Country fetchCountry(final AuthenticationToken token, final String countryId) {
+    private static Country fetchCountry(final AuthenticationToken token, final String countryCode) {
         final FetchCountryRequest request = new FetchCountryRequest();
         final List<String> countryIds = new ArrayList<>(1);
-        countryIds.add(countryId);
+        countryIds.add(countryCode);
         request.setCountryIds(countryIds);
 
         final Administration administration = new AdministrationClient();

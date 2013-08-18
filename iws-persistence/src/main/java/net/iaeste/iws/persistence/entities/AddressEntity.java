@@ -46,7 +46,7 @@ import java.util.Date;
                         "where lower(a.street1) = lower(:street1)" +
                         "  and lower(a.zip) = lower(:zip)" +
                         "  and lower(a.city) = lower(:city)" +
-                        "  and lower(a.state) = lower(:region)")
+                        "  and lower(a.state) = lower(:state)")
 })
 @Entity
 @Table(name = "addresses")

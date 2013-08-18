@@ -59,7 +59,6 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Ignore
 public final class ExchangeClientTest extends AbstractClientTest {
 
     private final Exchange exchange = new ExchangeClient();
@@ -338,6 +337,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
     }
 
     @Test
+    @Ignore
     public void testNumberOfHardCopies() {
         final String refNo = "PL-2012-0042";
         final Offer newOffer = OfferTestUtility.getFullOffer();

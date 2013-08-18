@@ -85,7 +85,8 @@ public class BasicJpaDao implements BasicDao {
         final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
         if (level != MonitoringLevel.NONE) {
             final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
-            persistMonitoredData(authentication, changes);
+            final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
+            persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
         }
     }
 
@@ -97,7 +98,8 @@ public class BasicJpaDao implements BasicDao {
         final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
         if (level != MonitoringLevel.NONE) {
             final List<Field> changes = monitoringProcessor.findChanges (level, entityToPersist, changesToBeMerged);
-            persistMonitoredData(authentication, changes);
+            final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
+            persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
         }
 
         entityToPersist.merge(changesToBeMerged);
@@ -161,12 +163,14 @@ public class BasicJpaDao implements BasicDao {
         return found;
     }
 
-    private void persistMonitoredData(final Authentication authentication, final List<Field> fields) {
+    private void persistMonitoredData(final Authentication authentication, final String className, final Long recordId, final List<Field> fields) {
         final MonitoringEntity monitoringEntity = new MonitoringEntity();
         final byte[] data = monitoringProcessor.serialize(fields);
 
         monitoringEntity.setUser(authentication.getUser());
         monitoringEntity.setGroup(authentication.getGroup());
+        monitoringEntity.setTableName(className);
+        monitoringEntity.setRecordId(recordId);
         monitoringEntity.setFields(data);
 
         entityManager.persist(monitoringEntity);
@@ -216,10 +220,9 @@ public class BasicJpaDao implements BasicDao {
     public AddressEntity findUniqueAddress(final AddressEntity newAddress) {
         final Query query = entityManager.createNamedQuery("address.findByValues");
         query.setParameter("street1", toLower(newAddress.getStreet1()));
-        query.setParameter("street2", toLower(newAddress.getStreet2()));
         query.setParameter("zip", toLower(newAddress.getZip()));
         query.setParameter("city", toLower(newAddress.getCity()));
-        query.setParameter("region", toLower(newAddress.getState()));
+        query.setParameter("state", toLower(newAddress.getState()));
 
         return findSingleResult(query, "address");
     }

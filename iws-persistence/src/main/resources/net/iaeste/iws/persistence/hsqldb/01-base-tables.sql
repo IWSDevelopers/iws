@@ -507,7 +507,6 @@ create table addresses (
 
     /* Unique Constraints */
     constraint address_unique_external_id unique (external_id),
-    constraint address_unique_fields unique (street1, street2, zip, city, state),
 
     /* Not Null Constraints */
     constraint address_notnull_id          check (id is not null),

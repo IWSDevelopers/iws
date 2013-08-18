@@ -246,19 +246,21 @@ public final class Country extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
-        final int currentYear = new Date().getCurrentYear();
+        //final int currentYear = new Date().getCurrentYear();
 
-        hasExactSize(validation, "country", countryCode, 2);
-        isWithinLimits(validation, "countryName", countryName, 0, 100);
-        isWithinLimits(validation, "countryNameFull", countryNameFull, 0, 100);
-        isWithinLimits(validation, "countryNameNative", countryNameNative, 0, 100);
-        isWithinLimits(validation, "nationality", nationality, 0, 100);
-        isWithinLimits(validation, "citizens", citizens, 0, 100);
-        isWithinLimits(validation, "phonecode", phonecode, 0, 5);
-        isNotNull(validation, "currency", currency);
-        isWithinLimits(validation, "languages", languages, 0, 100);
-        isNotNull(validation, "membership", membership);
-        isWithinLimits(validation, "memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
+        isNotNull(validation, "countryCode", countryCode);
+        isNotNull(validation, "countryName", countryName);
+        //hasExactSize(validation, "country", countryCode, 2);
+        //isWithinLimits(validation, "countryName", countryName, 0, 100);
+        //isWithinLimits(validation, "countryNameFull", countryNameFull, 0, 100);
+        //isWithinLimits(validation, "countryNameNative", countryNameNative, 0, 100);
+        //isWithinLimits(validation, "nationality", nationality, 0, 100);
+        //isWithinLimits(validation, "citizens", citizens, 0, 100);
+        //isWithinLimits(validation, "phonecode", phonecode, 0, 5);
+        //isNotNull(validation, "currency", currency);
+        //isWithinLimits(validation, "languages", languages, 0, 100);
+        //isNotNull(validation, "membership", membership);
+        //isWithinLimits(validation, "memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
 
         return validation;
     }

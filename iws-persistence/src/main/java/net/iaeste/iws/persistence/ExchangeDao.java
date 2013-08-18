@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
@@ -33,6 +34,8 @@ import java.util.Set;
 public interface ExchangeDao extends BasicDao {
 
     EmployerEntity findEmployer(String externalId);
+
+    EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer);
 
     /**
      * Get all offers from the database.

@@ -23,7 +23,7 @@ import org.junit.Ignore;
  * @noinspection OverlyLongMethod
  */
 @Ignore
-public class OfferTransformerTest {
+public class ExchangeTransformerTest {
 //
 //    @Test
 //    public void testCopyingMinimalOfferToEntity() {
@@ -35,7 +35,7 @@ public class OfferTransformerTest {
 //        offer.setModified(new DateTime(modifiedDate));
 //        offer.setCreated(new DateTime(createdDate));
 //
-//        final OfferEntity entity = OfferTransformer.transform(offer);
+//        final OfferEntity entity = ExchangeTransformer.transform(offer);
 //
 //        assertThat(offer.getRefNo(), is(entity.getRefNo()));
 //        //assertThat(offer.getEmployerName(), is(entity.getEmployerName()));
@@ -95,7 +95,7 @@ public class OfferTransformerTest {
 //    public void testCopyingMinimalOfferToDto() {
 //        final OfferEntity entity = getMinimalOfferEntity();
 //        entity.setExternalId(UUID.randomUUID().toString());
-//        final Offer offer = OfferTransformer.transform(entity);
+//        final Offer offer = ExchangeTransformer.transform(entity);
 //
 //        assertThat(offer.getRefNo(), is(entity.getRefNo()));
 //        //assertThat(offer.getEmployerName(), is(entity.getEmployerName()));
@@ -155,8 +155,8 @@ public class OfferTransformerTest {
 //    public void testCopyingBackAndForthFromDto() {
 //        final Offer offer = OfferTestUtility.getMinimalOffer();
 //        offer.setOfferId(UUID.randomUUID().toString());
-//        final OfferEntity entity = OfferTransformer.transform(offer);
-//        final Offer newOffer = OfferTransformer.transform(entity);
+//        final OfferEntity entity = ExchangeTransformer.transform(offer);
+//        final Offer newOffer = ExchangeTransformer.transform(entity);
 //        // we rely on equals method
 //        assertThat(offer, is(newOffer));
 //    }
@@ -165,8 +165,8 @@ public class OfferTransformerTest {
 //    public void testCopyingBackAndForthFromEmptyDto() {
 //        final Offer offer = new Offer();
 //        offer.setOfferId(UUID.randomUUID().toString());
-//        final OfferEntity entity = OfferTransformer.transform(offer);
-//        final Offer newOffer = OfferTransformer.transform(entity);
+//        final OfferEntity entity = ExchangeTransformer.transform(offer);
+//        final Offer newOffer = ExchangeTransformer.transform(entity);
 //        // we rely on equals method
 //        assertThat(offer, is(newOffer));
 //    }
@@ -188,7 +188,7 @@ public class OfferTransformerTest {
 //    //    employer.setWeeklyHours(entity.getWeeklyHours());
 //    //    employer.setWorkingPlace(entity.getWorkingPlace());
 //    //
-//    //    final EmployerInformation newEmployer = OfferTransformer.transform(EmployerInformation.class, entity);
+//    //    final EmployerInformation newEmployer = ExchangeTransformer.transform(EmployerInformation.class, entity);
 //    //
 //    //    assertThat(newEmployer, is(employer));
 //    //}

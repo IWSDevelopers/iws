@@ -1,10 +1,10 @@
 -- Country Data
-insert into countries (country_code, country_name, country_name_full, member_since) values ('AT', 'Austria', 'Austria', 1960);
-insert into countries (country_code, country_name, country_name_full, member_since) values ('HR', 'Croatia', 'Croatia', 1990);
-insert into countries (country_code, country_name, country_name_full, member_since) values ('DK', 'Denmark', 'Denmark', 1948);
-insert into countries (country_code, country_name, country_name_full, member_since) values ('DE', 'Germany', 'Germany', 1970);
-insert into countries (country_code, country_name, country_name_full, member_since) values ('PL', 'Poland', 'Poland', 1990);
-insert into countries (country_code, country_name, country_name_full, member_since) values ('HU', 'Hungary', 'Hungary', 1990);
+insert into countries (country_code, country_name, country_name_full, currency, member_since) values ('AT', 'Austria', 'Austria', 'EUR', 1960);
+insert into countries (country_code, country_name, country_name_full, currency, member_since) values ('HR', 'Croatia', 'Croatia', 'HRK', 1990);
+insert into countries (country_code, country_name, country_name_full, currency, member_since) values ('DK', 'Denmark', 'Denmark', 'DKK', 1948);
+insert into countries (country_code, country_name, country_name_full, currency, member_since) values ('DE', 'Germany', 'Germany', 'EUR', 1970);
+insert into countries (country_code, country_name, country_name_full, currency, member_since) values ('PL', 'Poland',  'Poland',  'PLN', 1990);
+insert into countries (country_code, country_name, country_name_full, currency, member_since) values ('HU', 'Hungary', 'Hungary', 'HUF', 1990);
 
 -- Couple of Member Groups, our Sequence starts with 25, so we only allow a limitted amount of test data
 insert into Groups (id, external_id, grouptype_id, parent_id, country_id, groupName) values (10, '2cc7e1bb-01e8-43a2-9643-2e964cbd41c5', 2, null, 1, 'Austria');

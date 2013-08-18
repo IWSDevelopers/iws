@@ -37,7 +37,7 @@ public interface CountryDao extends BasicDao {
      */
     CountryEntity findCountryByName(String countryName);
 
-    List<CountryView> getCountries(List<String> countryIds, Paginatable page);
+    List<CountryView> getCountries(List<String> countryCodes, Paginatable page);
 
     List<CountryView> getCountries(Membership membership, Paginatable page);
 }

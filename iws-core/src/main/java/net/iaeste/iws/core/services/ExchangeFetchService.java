@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.core.transformers.OfferTransformer.transform;
+import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;

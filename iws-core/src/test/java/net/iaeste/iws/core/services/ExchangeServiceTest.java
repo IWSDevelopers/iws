@@ -93,9 +93,9 @@ public class ExchangeServiceTest {
 //        final AuthenticationToken token = new AuthenticationToken();
 //        final Authentication authentication = new Authentication(token, null, group);
 //        final Offer offer = offers.get(0);
-//        final OfferEntity entityToPersist = OfferTransformer.transform(offer);
+//        final OfferEntity entityToPersist = ExchangeTransformer.transform(offer);
 //
-//        final OfferEntity entityWithId = OfferTransformer.transform(OfferTransformer.transform(entityToPersist));
+//        final OfferEntity entityWithId = ExchangeTransformer.transform(ExchangeTransformer.transform(entityToPersist));
 //        final String id = UUID.randomUUID().toString();
 //        entityWithId.setExternalId(id);
 //        when(dao.findOffer(authentication, offer.getRefNo())).thenReturn(null, entityWithId);
@@ -112,7 +112,7 @@ public class ExchangeServiceTest {
 //        assertThat(result.getOffer().getOfferId(), is(notNullValue()));
 //        assertThat(result.getOffer().getOfferId(), is(id));
 //        assertThat(result.getOffer().getRefNo(), is(offer.getRefNo()));
-//        assertThat(result.getOffer(), is(OfferTransformer.transform(entityWithId)));
+//        assertThat(result.getOffer(), is(ExchangeTransformer.transform(entityWithId)));
 //
 //        // verify that persist method was invoked
 //        verify(dao, times(1)).persist(any(Authentication.class), argThat(new OfferEntityMatcher(entityToPersist)));
@@ -126,10 +126,10 @@ public class ExchangeServiceTest {
 //        offer.setOfferId(id);
 //        // offer which currently exist in db
 //        offer.setCanteen(true);
-//        final OfferEntity existingEntity = OfferTransformer.transform(offer);
+//        final OfferEntity existingEntity = ExchangeTransformer.transform(offer);
 //        // offer which is to be written
 //        offer.setCanteen(false);
-//        final OfferEntity entityToPersist = OfferTransformer.transform(offer);
+//        final OfferEntity entityToPersist = ExchangeTransformer.transform(offer);
 //
 //        when(dao.findOffer(auth, offer.getOfferId())).thenReturn(existingEntity);
 //        when(dao.findOffer(auth, offer.getRefNo())).thenReturn(existingEntity);

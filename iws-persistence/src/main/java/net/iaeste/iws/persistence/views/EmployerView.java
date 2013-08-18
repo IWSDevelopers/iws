@@ -84,7 +84,7 @@ public class EmployerView extends AbstractView<EmployerView> {
     @Column(name = "nearest_airport", insertable = false, updatable = false)
     private String nearestAirport = null;
 
-    @Column(name = "nearest_pub_transport", insertable = false, updatable = false)
+    @Column(name = "nearest_public_transport", insertable = false, updatable = false)
     private String nearestPublicTransport = null;
 
     @Column(name = "weekly_hours", insertable = false, updatable = false)

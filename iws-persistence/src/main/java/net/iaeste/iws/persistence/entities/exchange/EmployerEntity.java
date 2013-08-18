@@ -49,7 +49,14 @@ import java.util.Date;
         @NamedQuery(
                 name = "employer.findByExternalId",
                 query = "select e from EmployerEntity e " +
-                        "where e.externalId = :eid")
+                        "where e.externalId = :eid"),
+        @NamedQuery(
+                name = "employer.findEmployerByValues",
+                query = "select e from EmployerEntity e " +
+                        "where e.group.id = :gid" +
+                        "  and lower(e.name) = lower(:name)" +
+                        "  and lower(department) = lower(:department)" +
+                        "  and lower(workingPlace) = lower(:workingPlace)")
 })
 @Entity
 @Table(name = "employers")
@@ -104,7 +111,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> {
     @Column(name = "nearest_airport", length = 255)
     private String nearestAirport = null;
 
-    @Column(name = "nearest_pub_transport", length = 255)
+    @Column(name = "nearest_public_transport", length = 255)
     private String nearestPublicTransport = null;
 
     @Column(name = "weekly_hours", scale = 5, precision = 3)

@@ -29,7 +29,7 @@ create table employers (
     website                   varchar(255),
     canteen                   boolean,
     nearest_airport           varchar(255),
-    nearest_pub_transport     varchar(255),
+    nearest_public_transport  varchar(255),
     weekly_hours              decimal(5,3),
     daily_hours               decimal(5,3),
     modified                  timestamp default now(),
@@ -44,7 +44,7 @@ create table employers (
     constraint employer_unique_external_id unique (external_id),
     -- Note, it would be good to have a unique constraint for the employer. The
     -- sooner it is added, the sooner we'll avoid problems
-    constraint employer_unique_fields      unique (name, department, business, working_place),
+    constraint employer_unique_fields      unique (group_id, name, department, working_place),
 
     /* Not Null Constraints */
     constraint employer_notnull_id          check (id is not null),

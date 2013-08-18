@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
@@ -49,11 +50,25 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public EmployerEntity findEmployer(String externalId) {
+    public EmployerEntity findEmployer(final String externalId) {
         final Query query = entityManager.createNamedQuery("employer.findByExternalId");
         query.setParameter("eid", externalId);
 
         return findUniqueResult(query, "Employer");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployerEntity findUniqueEmployer(final Authentication authentication, final Employer employer) {
+        final Query query = entityManager.createNamedQuery("employer.findEmployerByValues");
+        query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("name", employer.getName());
+        query.setParameter("department", employer.getDepartment());
+        query.setParameter("workingPlace", employer.getWorkingPlace());
+
+        return findSingleResult(query, "Employer");
     }
 
     /**

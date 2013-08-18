@@ -189,7 +189,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        offersToShare.add(sharedOffer.getOfferId());
+        offersToShare.add(sharedOffer.getId());
 
         final List<String> groupIds = new ArrayList<>(2);
         groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
@@ -202,7 +202,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(publishResponse1.isOk(), is(true));
 
         final List<String> offersExternalId = new ArrayList<>(1);
-        offersExternalId.add(sharedOffer.getOfferId());
+        offersExternalId.add(sharedOffer.getId());
         final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
         final FetchPublishedGroupsResponse fetchPublishResponse1 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
 
@@ -253,7 +253,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(response.getOffers().isEmpty(), is(false));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        final String offerIdToBeShared = response.getOffers().get(0).getOfferId();
+        final String offerIdToBeShared = response.getOffers().get(0).getId();
         offersToShare.add(offerIdToBeShared);
 
         final String austriaNationalGroupId = "c7b15f81-4f83-48e8-9ffb-9e73255f5e5e";
@@ -286,7 +286,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(response.getOffers().isEmpty(), is(false));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        final String offerIdToBeShared = response.getOffers().get(0).getOfferId();
+        final String offerIdToBeShared = response.getOffers().get(0).getId();
         offersToShare.add(offerIdToBeShared);
 
         final String austriaMemberGroupId = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
@@ -320,7 +320,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(response.getOffers().isEmpty(), is(false));
 
         final Set<String> offersToShare = new HashSet<>(1);
-        final String offerIdToBeShared = response.getOffers().get(0).getOfferId();
+        final String offerIdToBeShared = response.getOffers().get(0).getId();
         offersToShare.add(offerIdToBeShared);
 
         final String polandNationalGroupId = "e60f9897-864b-4d1b-9c1a-1681fd35e97a";
@@ -355,7 +355,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         final Offer readOffer = findOfferFromResponse(refNo, findSavedResponse);
         assertThat(readOffer, is(not(nullValue())));
         assertThat(readOffer.getNumberOfHardCopies(), is(2));
-        assertThat(readOffer.getOfferId(), is(not(nullValue())));
+        assertThat(readOffer.getId(), is(not(nullValue())));
 
         // Update the Offer, with a new value for NumberOfHardCopies
         readOffer.setNumberOfHardCopies(3);
@@ -409,7 +409,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(offerToShare, is(notNullValue()));
 
         final Set<String> offersToShare1 = new HashSet<>(1);
-        offersToShare1.add(offerToShare.getOfferId());
+        offersToShare1.add(offerToShare.getId());
 
         final List<String> groupIds = new ArrayList<>(1);
         groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
@@ -448,7 +448,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(offerToShare, is(notNullValue()));
 
         final Set<String> offersToShare2 = new HashSet<>(1);
-        offersToShare2.add(offerToShare.getOfferId());
+        offersToShare2.add(offerToShare.getId());
 
         final List<String> groupIds = new ArrayList<>(1);
         groupIds.add("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
@@ -512,7 +512,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         final GroupType[] groupTypes = {GroupType.NATIONAL, GroupType.SAR};
         for (final Group group : response.getGroups()) {
             assertThat(group.getGroupType(), Matchers.isIn(groupTypes));
-            assertThat(group.getCountryId(), is(not("AT")));
+            assertThat(group.getCountry().getCountryCode(), is(not("AT")));
         }
     }
 }

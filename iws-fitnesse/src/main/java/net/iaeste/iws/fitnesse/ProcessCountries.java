@@ -16,6 +16,7 @@ package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.util.Fallible;
@@ -34,7 +35,7 @@ public final class ProcessCountries extends AbstractFixture<Fallible> {
     private final Country country = new Country();
 
     public void setCountryId(final String countryId) {
-        country.setCountryId(countryId);
+        country.setCountryCode(countryId);
     }
 
     public void setCountryName(final String countryName) {
@@ -62,7 +63,7 @@ public final class ProcessCountries extends AbstractFixture<Fallible> {
     }
 
     public void setCurrency(final String currency) {
-        country.setCurrency(currency);
+        country.setCurrency(Currency.valueOf(currency));
     }
 
     public void setLanguages(final String languages) {

@@ -20,6 +20,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
+import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.enums.Permission;
@@ -31,13 +32,13 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
+import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.exceptions.SessionException;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.common.notification.NotificationType;
-import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import java.io.Serializable;
@@ -384,13 +385,21 @@ public final class AccessService extends CommonService<AccessDao> {
     private static Group readGroup(final UserPermissionView view) {
         final Group group = new Group();
 
-        group.setGroupId(view.getExternalGroupId());
+        group.setId(view.getExternalGroupId());
         group.setGroupType(view.getGroupType());
         group.setGroupName(view.getGroupName());
-        group.setCountryId(view.getCountryCode());
+        group.setCountry(readCountry(view));
         group.setDescription(view.getGroupDescription());
 
         return group;
+    }
+
+    private static Country readCountry(final UserPermissionView view) {
+        final Country country = new Country();
+
+        country.setCountryCode(view.getCountryCode());
+
+        return country;
     }
 
     private static List<Authorization> convertPermissionMap(final Map<Group, Set<Permission>> map) {

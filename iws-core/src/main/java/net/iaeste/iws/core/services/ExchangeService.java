@@ -136,7 +136,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final EmployerEntity employer = process(authentication, request.getOffer().getEmployer());
         final OfferEntity newEntity = transform(request.getOffer());
         final Offer givenOffer = request.getOffer();
-        final String externalId = givenOffer.getOfferId();
+        final String externalId = givenOffer.getId();
         final String refNo = givenOffer.getRefNo();
 
         if (externalId == null) {
@@ -216,7 +216,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final List<OfferGroup> result = new ArrayList<>(found.size());
 
         for (final OfferGroupEntity entity : found) {
-            result.add(transform(OfferGroupEntity.class, entity));
+            result.add(transform(entity));
         }
 
         return result;

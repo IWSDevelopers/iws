@@ -177,7 +177,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<OfferGroup> result = new ArrayList<>(found.size());
 
         for (final OfferGroupEntity entity : found) {
-            result.add(transform(OfferGroupEntity.class, entity));
+            result.add(transform(entity));
         }
 
         return result;

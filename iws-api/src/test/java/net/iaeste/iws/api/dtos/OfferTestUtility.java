@@ -17,138 +17,72 @@ package net.iaeste.iws.api.dtos;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
-import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.exchange.LanguageLevel;
-import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
-import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.util.Date;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection PublicStaticCollectionField, OverlyLongMethod
+ * @deprecated please use TestData instead
+ * @noinspection PublicStaticCollectionField
  */
+@Deprecated
 public final class OfferTestUtility {
 
     public static final String REF_NO = "AT-2012-1234-AB";
-    public static final Date NOMINATION_DEADLINE = new Date();
+    public static final Date NOMINATION_DEADLINE = TestData.OFFER_NOMINATION_DEADLINE;
     public static final String EMPLOYER_NAME = "Test_Employer_1";
-    public static final String WORK_DESCRIPTION = "nothing";
-    public static final Integer MAXIMUM_WEEKS = 12;
-    public static final Integer MINIMUM_WEEKS = 12;
-    public static final Float WEEKLY_HOURS = 40.0f;
-    public static final Date FROM_DATE = new Date();
-    public static final Date TO_DATE = FROM_DATE.plusDays(90);
-    public static final TypeOfWork TYPE_OF_WORK = TypeOfWork.R;
-    public static final Date FROM_DATE2 = TO_DATE.plusDays(90);
-    public static final Date TO_DATE2 = FROM_DATE2.plusDays(90);
-    public static final Date UNAVAIABLE_FROM = TO_DATE;
-    public static final Date UNAVAIABLE_TO = FROM_DATE2;
-    public static final BigDecimal PAYMENT = new BigDecimal(3000);
-    public static final BigDecimal LODGING_COST = new BigDecimal(1000);
-    public static final BigDecimal LIVING_COST = new BigDecimal(2000);
-    public static final String EMPLOYER_ADDRESS = "test address 30";
-    public static final String EMPLOYER_ADDRESS2 = "test address 31";
-    public static final String EMPLOYER_BUSINESS = "test business";
-    public static final Integer EMPLOYER_EMPLOYEES_COUNT = 10;
-    public static final String EMPLOYER_WEBSITE = "www.website.at";
-    public static final String OTHER_REQUIREMENTS = "cooking";
-    public static final String WORKING_PLACE = "Vienna";
-    public static final String NEAREST_AIRPORT = "VIE";
-    public static final String NEAREST_PUBLIC_TRANSPORT = "U4";
-    public static final Float DAILY_HOURS = WEEKLY_HOURS / 5;
+    public static final String WORK_DESCRIPTION = TestData.OFFER_WORK_DESCRIPTION;
+    public static final Integer MAXIMUM_WEEKS = TestData.OFFER_MAXIMUM_WEEKS;
+    public static final Integer MINIMUM_WEEKS = TestData.OFFER_MINIMUM_WEEKS;
+    public static final Float WEEKLY_HOURS = TestData.EMPLOYER_WEEKLY_HOURS;
+    public static final Date FROM_DATE = TestData.OFFER_PERIOD1.getFromDate();
+    public static final Date TO_DATE = TestData.OFFER_PERIOD1.getToDate();
+    public static final TypeOfWork TYPE_OF_WORK = TestData.OFFER_TYPE_OF_WORK;
+    public static final Date FROM_DATE2 = TestData.OFFER_PERIOD2.getFromDate();
+    public static final Date TO_DATE2 = TestData.OFFER_PERIOD2.getToDate();
+    public static final Date UNAVAIABLE_FROM = TestData.OFFER_UNAVAILABLE.getFromDate();
+    public static final Date UNAVAIABLE_TO = TestData.OFFER_UNAVAILABLE.getToDate();
+    public static final BigDecimal PAYMENT = TestData.OFFER_PAYMENT;
+    public static final BigDecimal LODGING_COST = TestData.OFFER_LODGING_COST;
+    public static final BigDecimal LIVING_COST = TestData.OFFER_LIVING_COST;
+    public static final String EMPLOYER_ADDRESS = TestData.ADDRESS_STREET1;
+    public static final String EMPLOYER_ADDRESS2 = TestData.ADDRESS_STREET2;
+    public static final String EMPLOYER_BUSINESS = TestData.EMPLOYER_BUSINESS;
+    public static final Integer EMPLOYER_EMPLOYEES_COUNT = TestData.EMPLOYER_EMPLOYEES_COUNT;
+    public static final String EMPLOYER_WEBSITE = TestData.EMPLOYER_WEBSITE;
+    public static final String OTHER_REQUIREMENTS = TestData.OFFER_OTHER_REQUIREMENTS;
+    public static final String WORKING_PLACE = TestData.EMPLOYER_WORKING_PLACE;
+    public static final String NEAREST_AIRPORT = TestData.EMPLOYER_NEAREAST_AIRPORT;
+    public static final String NEAREST_PUBLIC_TRANSPORT = TestData.EMPLOYER_NEAREST_PUBLIC_TRANSPORT;
+    public static final Float DAILY_HOURS = TestData.EMPLOYER_DAILY_HOURS;
     public static final Currency CURRENCY = Currency.EUR;
-    public static final PaymentFrequency PAYMENT_FREQUENCY = PaymentFrequency.WEEKLY;
-    public static final String DEDUCTION = "20%";
-    public static final String LODGING_BY = "IAESTE";
-    public static final PaymentFrequency LODGING_COST_FREQUENCY = PaymentFrequency.MONTHLY;
-    public static final PaymentFrequency LIVING_COST_FREQUENCY = PaymentFrequency.MONTHLY;
-    public static final Boolean CANTEEN = true;
-    public static final Set<String> SPECIALIZATIONS;
-
-    static {
-        final Set<String> specializations = new HashSet<>(2);
-        specializations.add(Specialization.INFORMATION_TECHNOLOGY.toString());
-        specializations.add("some custom specialization");
-        SPECIALIZATIONS = Collections.unmodifiableSet(specializations);
-    }
-
-    public static final Set<FieldOfStudy> FIELD_OF_STUDIES = Collections.unmodifiableSet(EnumSet.of(FieldOfStudy.IT, FieldOfStudy.AGRICULTURE));
-    public static final Set<StudyLevel> STUDY_LEVELS = Collections.unmodifiableSet(
-            EnumSet.of(StudyLevel.E, StudyLevel.M));
+    public static final PaymentFrequency PAYMENT_FREQUENCY = TestData.OFFER_PAYMENT_FREQUENCY;
+    public static final String DEDUCTION = TestData.OFFER_DEDUCTION;
+    public static final String LODGING_BY = TestData.OFFER_LODGING_BY;
+    public static final PaymentFrequency LODGING_COST_FREQUENCY = TestData.OFFER_LODGING_COST_FREQUENCY;
+    public static final PaymentFrequency LIVING_COST_FREQUENCY = TestData.OFFER_LIVING_COST_FREQUENCY;
+    public static final Boolean CANTEEN = TestData.EMPLOYER_CANTEEN;
+    public static final Set<String> SPECIALIZATIONS = TestData.OFFER_SPECIALIZATIONS;
+    public static final Set<FieldOfStudy> FIELD_OF_STUDIES = TestData.OFFER_FIELD_OF_STUDY;
+    public static final Set<StudyLevel> STUDY_LEVELS = TestData.OFFER_STUDY_LEVELS;
 
     private OfferTestUtility() {
     }
 
+    @Deprecated
     public static Offer getMinimalOffer() {
-        final Offer minimalOffer = new Offer();
-
-        minimalOffer.setRefNo(REF_NO);
-        minimalOffer.setEmployerName(EMPLOYER_NAME);
-        minimalOffer.setStudyLevels(STUDY_LEVELS);
-        minimalOffer.setFieldOfStudies(FIELD_OF_STUDIES);
-        minimalOffer.setLanguage1(Language.ENGLISH);
-        minimalOffer.setLanguage1Level(LanguageLevel.E);
-        minimalOffer.setWorkDescription(WORK_DESCRIPTION);
-        minimalOffer.setMaximumWeeks(MAXIMUM_WEEKS);
-        minimalOffer.setMinimumWeeks(MINIMUM_WEEKS);
-        minimalOffer.setWeeklyHours(WEEKLY_HOURS);
-        minimalOffer.setFromDate(FROM_DATE);
-        minimalOffer.setToDate(TO_DATE);
-        minimalOffer.setPayment(null);
-
-        return minimalOffer;
+        return TestData.prepareMinimalOffer(REF_NO, EMPLOYER_NAME, "AT");
     }
 
+    @Deprecated
     public static Offer getFullOffer() {
-        final Offer offer = getMinimalOffer();
-
-        offer.setRefNo("GB-2012-1234-AB");
-        offer.setNominationDeadline(NOMINATION_DEADLINE);
-        offer.setEmployerAddress(EMPLOYER_ADDRESS);
-        offer.setEmployerAddress2(EMPLOYER_ADDRESS2);
-        offer.setEmployerBusiness(EMPLOYER_BUSINESS);
-        offer.setEmployerEmployeesCount(EMPLOYER_EMPLOYEES_COUNT);
-        offer.setEmployerWebsite(EMPLOYER_WEBSITE);
-        offer.setPrevTrainingRequired(true);
-        offer.setOtherRequirements(OTHER_REQUIREMENTS);
-        offer.setLanguage1Operator(LanguageOperator.A);
-        offer.setLanguage2(Language.FRENCH);
-        offer.setLanguage2Level(LanguageLevel.E);
-        offer.setLanguage2Operator(LanguageOperator.O);
-        offer.setLanguage3(Language.GERMAN);
-        offer.setLanguage3Level(LanguageLevel.E);
-        offer.setTypeOfWork(TYPE_OF_WORK);
-        offer.setFromDate2(FROM_DATE2);
-        offer.setToDate2(TO_DATE2);
-        offer.setUnavailableFrom(UNAVAIABLE_FROM);
-        offer.setUnavailableTo(UNAVAIABLE_TO);
-        offer.setWorkingPlace(WORKING_PLACE);
-        offer.setNearestAirport(NEAREST_AIRPORT);
-        offer.setNearestPubTransport(NEAREST_PUBLIC_TRANSPORT);
-        offer.setDailyHours(DAILY_HOURS);
-        offer.setCurrency(CURRENCY);
-        offer.setPayment(PAYMENT);
-        offer.setPaymentFrequency(PAYMENT_FREQUENCY);
-        offer.setDeduction(DEDUCTION);
-        offer.setLodgingBy(LODGING_BY);
-        offer.setLodgingCost(LODGING_COST);
-        offer.setLodgingCostFrequency(LODGING_COST_FREQUENCY);
-        offer.setLivingCost(LIVING_COST);
-        offer.setLivingCostFrequency(LIVING_COST_FREQUENCY);
-        offer.setCanteen(CANTEEN);
-        offer.setSpecializations(SPECIALIZATIONS);
-
-        return offer;
+        return TestData.prepareFullOffer(REF_NO, EMPLOYER_NAME, "AT");
     }
 }

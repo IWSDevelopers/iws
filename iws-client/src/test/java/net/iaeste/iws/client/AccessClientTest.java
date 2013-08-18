@@ -218,7 +218,7 @@ public final class AccessClientTest {
         // When we make a request for a specific Group, we only expect to find a single element
         assertThat(responseNational.getAuthorizations().size(), is(1));
         assertThat(responseNational.getAuthorizations().get(0).getPermission().contains(Permission.PROCESS_OFFER), is(true));
-        //token.setGroupId("invalid");
+        //token.setId("invalid");
 
         // Finally, let's see what happens when we try to find the information
         // from a Group, that we are not a member of

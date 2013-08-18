@@ -83,7 +83,7 @@ class CommonController {
         verify(token, "Invalid Authentication Token provided.");
         verify(group);
 
-        return verifyAccess(token, permission, group.getGroupId());
+        return verifyAccess(token, permission, group.getId());
     }
 
     private Authentication verifyAccess(final AuthenticationToken token, final Permission permission, final String externalGroupId) {

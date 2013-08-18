@@ -31,11 +31,11 @@ public final class Group extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String groupId = null;
+    private String id = null;
     private String groupName = null;
     private GroupType groupType = null;
     private String description = null;
-    private String countryId = null;
+    private Country country = null;
 
     // =========================================================================
     // Object Constructors
@@ -55,11 +55,11 @@ public final class Group extends AbstractVerification {
      */
     public Group(final Group group) {
         if (group != null) {
-            groupId = group.groupId;
+            id = group.id;
             groupName = group.groupName;
             groupType = group.groupType;
             description = group.description;
-            countryId = group.countryId;
+            country = group.country;
         }
     }
 
@@ -67,17 +67,17 @@ public final class Group extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setGroupId(final String groupId) {
-        ensureValidId("groupId", groupId);
-        this.groupId = groupId;
+    public void setId(final String id) {
+        ensureValidId("id", id);
+        this.id = id;
     }
 
-    public String getGroupId() {
-        return groupId;
+    public String getId() {
+        return id;
     }
 
     public void setGroupName(final String groupName) {
-        ensureNotNullOrEmptyOrTooLong("groupName", groupName, 50);
+        ensureNotNullOrEmptyOrTooLong("name", groupName, 50);
         this.groupName = groupName;
     }
 
@@ -103,12 +103,12 @@ public final class Group extends AbstractVerification {
         return description;
     }
 
-    public void setCountryId(final String countryId) {
-        this.countryId = countryId;
+    public void setCountry(final Country country) {
+        this.country = country;
     }
 
-    public String getCountryId() {
-        return countryId;
+    public Country getCountry() {
+        return country;
     }
 
     // =========================================================================
@@ -136,30 +136,26 @@ public final class Group extends AbstractVerification {
         if (this == obj) {
             return true;
         }
-
         if (!(obj instanceof Group)) {
             return false;
         }
 
         final Group group = (Group) obj;
 
-        if (groupId != null ? !groupId.equals(group.groupId) : group.groupId != null) {
+        if (id != null ? !id.equals(group.id) : group.id != null) {
             return false;
         }
-
-        if (countryId != null ? !countryId.equals(group.countryId) : group.countryId != null) {
+        if (groupName != null ? !groupName.equals(group.groupName) : group.groupName != null) {
             return false;
         }
-
-        if (groupType != null ? groupType != group.groupType : group.groupType != null) {
+        if (groupType != group.groupType) {
             return false;
         }
-
         if (description != null ? !description.equals(group.description) : group.description != null) {
             return false;
         }
 
-        return !(countryId != null ? !countryId.equals(group.countryId) : group.countryId != null);
+        return !(country != null ? !country.equals(group.country) : group.country != null);
     }
 
     /**
@@ -167,15 +163,15 @@ public final class Group extends AbstractVerification {
      */
     @Override
     public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
+        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupId != null ? groupId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupName != null ? groupName.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupType != null ? groupType.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (description != null ? description.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (countryId != null ? countryId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupName != null ? groupName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupType != null ? groupType.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (description != null ? description.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (country != null ? country.hashCode() : 0);
 
-        return hash;
+        return result;
     }
 
     /**
@@ -184,11 +180,11 @@ public final class Group extends AbstractVerification {
     @Override
     public String toString() {
         return "Group{" +
-                "groupId='" + groupId + '\'' +
+                "id='" + id + '\'' +
                 ", groupName='" + groupName + '\'' +
-                ", groupType='" + groupType + '\'' +
+                ", groupType=" + groupType +
                 ", description='" + description + '\'' +
-                ", countryId='" + countryId + '\'' +
+                ", country=" + country +
                 '}';
     }
 }

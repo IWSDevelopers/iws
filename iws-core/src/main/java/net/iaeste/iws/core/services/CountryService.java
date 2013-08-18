@@ -130,7 +130,7 @@ public final class CountryService {
     private static Country transform(final CountryView view) {
         final Country country = new Country();
 
-        country.setCountryId(view.getCountryCode());
+        country.setCountryCode(view.getCountryCode());
         country.setCountryName(view.getCountryName());
         country.setCountryNameFull(view.getCountryNameFull());
         country.setCountryNameNative(view.getCountryNameNative());
@@ -160,7 +160,7 @@ public final class CountryService {
     private static CountryEntity transform(final Country country) {
         final CountryEntity entity = new CountryEntity();
 
-        entity.setCountryCode(country.getCountryId().toUpperCase(IWSConstants.DEFAULT_LOCALE));
+        entity.setCountryCode(country.getCountryCode().toUpperCase(IWSConstants.DEFAULT_LOCALE));
         entity.setCountryName(country.getCountryName());
         entity.setCountryNameFull(country.getCountryNameFull());
         entity.setCountryNameNative(country.getCountryNameNative());

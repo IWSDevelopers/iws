@@ -116,45 +116,13 @@ public final class AdministrationTransformer {
         return entity;
     }
 
-    public static Group transform(final GroupEntity entity) {
-        final Group group;
-
-        if (entity != null) {
-            group = new Group();
-
-            group.setGroupId(entity.getExternalId());
-            group.setGroupName(entity.getGroupName());
-            group.setGroupType(entity.getGroupType().getGrouptype());
-            group.setCountryId(entity.getCountry().getCountryCode());
-            group.setDescription(entity.getDescription());
-        } else {
-            group = null;
-        }
-
-        return group;
-    }
-
     public static List<Group> transform(final List<GroupEntity> entities) {
         final List<Group> list = new ArrayList<>(entities.size());
 
         for (final GroupEntity entity : entities) {
-            list.add(transform(entity));
+            list.add(CommonTransformer.transform(entity));
         }
 
         return list;
-    }
-
-    public static GroupEntity transform(final Group group) {
-        final GroupEntity entity;
-
-        if (group != null) {
-            entity = new GroupEntity();
-
-            entity.setDescription(group.getDescription());
-        } else {
-            entity = null;
-        }
-
-        return entity;
     }
 }

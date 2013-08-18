@@ -16,30 +16,18 @@ package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.exchange.Offer;
-import net.iaeste.iws.api.enums.Currency;
-import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
-import net.iaeste.iws.api.enums.Language;
-import net.iaeste.iws.api.enums.exchange.LanguageLevel;
-import net.iaeste.iws.api.enums.exchange.LanguageOperator;
-import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
-import net.iaeste.iws.api.enums.exchange.StudyLevel;
-import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
-import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.client.ExchangeClient;
-import net.iaeste.iws.core.transformers.CollectionTransformer;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
-
-import java.math.BigDecimal;
-import java.util.HashSet;
 
 /**
  * Please note, that Dates cannot be set directly from the FitNesse framework,
  * since FitNesse uses the American date format as the default, which means that
  * we will get exceptions thrown if we attempt to use them. Hence, we use our
  * own Date class, which can take the format that we support.
+ * Note: Class needs a complete re-write, since we're now using an Object structure.
  *
  * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -111,216 +99,216 @@ public final class SaveOffer extends AbstractFixture<OfferResponse> {
         offer.setRefNo(refNo);
     }
 
-    public void setNominationDeadline(final String nominationDeadline) {
-        offer.setNominationDeadline(new Date(nominationDeadline));
-    }
-
-    /**
-     * not null
-     */
-    public void setEmployerName(final String employerName) {
-        offer.setEmployerName(employerName);
-    }
-
-    public void setEmployerAddress(final String employerAddress) {
-        offer.setEmployerAddress(employerAddress);
-    }
-
-    public void setEmployerAddress2(final String employerAddress2) {
-        offer.setEmployerAddress2(employerAddress2);
-    }
-
-    public void setEmployerBusiness(final String employerBusiness) {
-        offer.setEmployerBusiness(employerBusiness);
-    }
-
-    public void setEmployerEmployeesCount(final Integer employerEmployeesCount) {
-        offer.setEmployerEmployeesCount(employerEmployeesCount);
-    }
-
-    public void setEmployerWebsite(final String employerWebsite) {
-        offer.setEmployerWebsite(employerWebsite);
-    }
-
-    /**
-     * not null
-     */
-    public void setFieldOfStudies(final String fieldOfStudies) {
-        offer.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, fieldOfStudies));
-    }
-
-    public void setSpecializations(final String specializations) {
-        offer.setSpecializations(new HashSet<>(CollectionTransformer.explodeStringList(specializations)));
-    }
-
-    /**
-     * not null
-     */
-    public void setStudyLevels(final String studyLevels) {
-        offer.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, studyLevels));
-    }
-
-    public void setPrevTrainingRequired(final Boolean prevTrainingRequired) {
-        offer.setPrevTrainingRequired(prevTrainingRequired);
-    }
-
-    public void setOtherRequirements(final String otherRequirements) {
-        offer.setOtherRequirements(otherRequirements);
-    }
-
-    /**
-     * not null
-     */
-    public void setLanguage1(final Language language1) {
-        offer.setLanguage1(language1);
-    }
-
-    /**
-     * not null
-     */
-    public void setLanguage1Level(final LanguageLevel language1Level) {
-        offer.setLanguage1Level(language1Level);
-    }
-
-    public void setLanguage1Operator(final LanguageOperator language1Operator) {
-        offer.setLanguage1Operator(language1Operator);
-    }
-
-    public void setLanguage2(final Language language2) {
-        offer.setLanguage2(language2);
-    }
-
-    public void setLanguage2Level(final LanguageLevel language2Level) {
-        offer.setLanguage2Level(language2Level);
-    }
-
-    public void setLanguage2Operator(final LanguageOperator language2Operator) {
-        offer.setLanguage2Operator(language2Operator);
-    }
-
-    public void setLanguage3(final Language language3) {
-        offer.setLanguage3(language3);
-    }
-
-    public void setLanguage3Level(final LanguageLevel language3Level) {
-        offer.setLanguage3Level(language3Level);
-    }
-
-    /**
-     * not null
-     */
-    public void setWorkDescription(final String workDescription) {
-        offer.setWorkDescription(workDescription);
-    }
-
-    public void setTypeOfWork(final TypeOfWork typeOfWork) {
-        offer.setTypeOfWork(typeOfWork);
-    }
-
-    /**
-     * not null
-     */
-    public void setMinimumWeeks(final Integer minimumWeeks) {
-        offer.setMinimumWeeks(minimumWeeks);
-    }
-
-    /**
-     * not null
-     */
-    public void setMaximumWeeks(final Integer maximumWeeks) {
-        offer.setMaximumWeeks(maximumWeeks);
-    }
-
-    /**
-     * not null
-     */
-    public void setFromDate(final String fromDate) {
-        offer.setFromDate(new Date(fromDate));
-    }
-
-    /**
-     * not null
-     */
-    public void setToDate(final String toDate) {
-        offer.setToDate(new Date(toDate));
-    }
-
-    public void setFromDate2(final String fromDate2) {
-        offer.setFromDate2(new Date(fromDate2));
-    }
-
-    public void setToDate2(final String toDate2) {
-        offer.setToDate2(new Date(toDate2));
-    }
-
-    public void setUnavailableFrom(final String unavailableFrom) {
-        offer.setUnavailableFrom(new Date(unavailableFrom));
-    }
-
-    public void setUnavailableTo(final String unavailableTo) {
-        offer.setUnavailableTo(new Date(unavailableTo));
-    }
-
-    public void setWorkingPlace(final String workingPlace) {
-        offer.setWorkingPlace(workingPlace);
-    }
-
-    public void setNearestAirport(final String nearestAirport) {
-        offer.setNearestAirport(nearestAirport);
-    }
-
-    public void setNearestPubTransport(final String nearestPubTransport) {
-        offer.setNearestPubTransport(nearestPubTransport);
-    }
-
-    /**
-     * not null
-     */
-    public void setWeeklyHours(final Float weeklyHours) {
-        offer.setWeeklyHours(weeklyHours);
-    }
-
-    public void setDailyHours(final Float dailyHours) {
-        offer.setDailyHours(dailyHours);
-    }
-
-    public void setPayment(final BigDecimal payment) {
-        offer.setPayment(payment);
-    }
-
-    public void setCurrency(final Currency currency) {
-        offer.setCurrency(currency);
-    }
-
-    public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
-        offer.setPaymentFrequency(paymentFrequency);
-    }
-
-    public void setDeduction(final String deduction) {
-        offer.setDeduction(deduction);
-    }
-
-    public void setLodgingBy(final String lodgingBy) {
-        offer.setLodgingBy(lodgingBy);
-    }
-
-    public void setLodgingCost(final BigDecimal lodgingCost) {
-        offer.setLodgingCost(lodgingCost);
-    }
-
-    public void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
-        offer.setLodgingCostFrequency(lodgingCostFrequency);
-    }
-
-    public void setLivingCost(final BigDecimal livingCost) {
-        offer.setLivingCost(livingCost);
-    }
-
-    public void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
-        offer.setLivingCostFrequency(livingCostFrequency);
-    }
-
-    public void setCanteen(final Boolean canteen) {
-        offer.setCanteen(canteen);
-    }
+//    public void setNominationDeadline(final String nominationDeadline) {
+//        offer.setNominationDeadline(new Date(nominationDeadline));
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setEmployerName(final String employerName) {
+//        offer.setEmployerName(employerName);
+//    }
+//
+//    public void setEmployerAddress(final String employerAddress) {
+//        offer.setEmployerAddress(employerAddress);
+//    }
+//
+//    public void setEmployerAddress2(final String employerAddress2) {
+//        offer.setEmployerAddress2(employerAddress2);
+//    }
+//
+//    public void setEmployerBusiness(final String employerBusiness) {
+//        offer.setEmployerBusiness(employerBusiness);
+//    }
+//
+//    public void setEmployerEmployeesCount(final Integer employerEmployeesCount) {
+//        offer.setEmployerEmployeesCount(employerEmployeesCount);
+//    }
+//
+//    public void setEmployerWebsite(final String employerWebsite) {
+//        offer.setEmployerWebsite(employerWebsite);
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setFieldOfStudies(final String fieldOfStudies) {
+//        offer.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, fieldOfStudies));
+//    }
+//
+//    public void setSpecializations(final String specializations) {
+//        offer.setSpecializations(new HashSet<>(CollectionTransformer.explodeStringList(specializations)));
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setStudyLevels(final String studyLevels) {
+//        offer.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, studyLevels));
+//    }
+//
+//    public void setPrevTrainingRequired(final Boolean prevTrainingRequired) {
+//        offer.setPreviousTrainingRequired(prevTrainingRequired);
+//    }
+//
+//    public void setOtherRequirements(final String otherRequirements) {
+//        offer.setOtherRequirements(otherRequirements);
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setLanguage1(final Language language1) {
+//        offer.setLanguage1(language1);
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setLanguage1Level(final LanguageLevel language1Level) {
+//        offer.setLanguage1Level(language1Level);
+//    }
+//
+//    public void setLanguage1Operator(final LanguageOperator language1Operator) {
+//        offer.setLanguage1Operator(language1Operator);
+//    }
+//
+//    public void setLanguage2(final Language language2) {
+//        offer.setLanguage2(language2);
+//    }
+//
+//    public void setLanguage2Level(final LanguageLevel language2Level) {
+//        offer.setLanguage2Level(language2Level);
+//    }
+//
+//    public void setLanguage2Operator(final LanguageOperator language2Operator) {
+//        offer.setLanguage2Operator(language2Operator);
+//    }
+//
+//    public void setLanguage3(final Language language3) {
+//        offer.setLanguage3(language3);
+//    }
+//
+//    public void setLanguage3Level(final LanguageLevel language3Level) {
+//        offer.setLanguage3Level(language3Level);
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setWorkDescription(final String workDescription) {
+//        offer.setWorkDescription(workDescription);
+//    }
+//
+//    public void setTypeOfWork(final TypeOfWork typeOfWork) {
+//        offer.setTypeOfWork(typeOfWork);
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setMinimumWeeks(final Integer minimumWeeks) {
+//        offer.setMinimumWeeks(minimumWeeks);
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setMaximumWeeks(final Integer maximumWeeks) {
+//        offer.setMaximumWeeks(maximumWeeks);
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setFromDate(final String fromDate) {
+//        offer.setFromDate(new Date(fromDate));
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setToDate(final String toDate) {
+//        offer.setToDate(new Date(toDate));
+//    }
+//
+//    public void setFromDate2(final String fromDate2) {
+//        offer.setFromDate2(new Date(fromDate2));
+//    }
+//
+//    public void setToDate2(final String toDate2) {
+//        offer.setToDate2(new Date(toDate2));
+//    }
+//
+//    public void setUnavailableFrom(final String unavailableFrom) {
+//        offer.setUnavailableFrom(new Date(unavailableFrom));
+//    }
+//
+//    public void setUnavailableTo(final String unavailableTo) {
+//        offer.setUnavailableTo(new Date(unavailableTo));
+//    }
+//
+//    public void setWorkingPlace(final String workingPlace) {
+//        offer.setWorkingPlace(workingPlace);
+//    }
+//
+//    public void setNearestAirport(final String nearestAirport) {
+//        offer.setNearestAirport(nearestAirport);
+//    }
+//
+//    public void setNearestPubTransport(final String nearestPubTransport) {
+//        offer.setNearestPubTransport(nearestPubTransport);
+//    }
+//
+//    /**
+//     * not null
+//     */
+//    public void setWeeklyHours(final Float weeklyHours) {
+//        offer.setWeeklyHours(weeklyHours);
+//    }
+//
+//    public void setDailyHours(final Float dailyHours) {
+//        offer.setDailyHours(dailyHours);
+//    }
+//
+//    public void setPayment(final BigDecimal payment) {
+//        offer.setPayment(payment);
+//    }
+//
+//    public void setCurrency(final Currency currency) {
+//        offer.setCurrency(currency);
+//    }
+//
+//    public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
+//        offer.setPaymentFrequency(paymentFrequency);
+//    }
+//
+//    public void setDeduction(final String deduction) {
+//        offer.setDeduction(deduction);
+//    }
+//
+//    public void setLodgingBy(final String lodgingBy) {
+//        offer.setLodgingBy(lodgingBy);
+//    }
+//
+//    public void setLodgingCost(final BigDecimal lodgingCost) {
+//        offer.setLodgingCost(lodgingCost);
+//    }
+//
+//    public void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
+//        offer.setLodgingCostFrequency(lodgingCostFrequency);
+//    }
+//
+//    public void setLivingCost(final BigDecimal livingCost) {
+//        offer.setLivingCost(livingCost);
+//    }
+//
+//    public void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
+//        offer.setLivingCostFrequency(livingCostFrequency);
+//    }
+//
+//    public void setCanteen(final Boolean canteen) {
+//        offer.setCanteen(canteen);
+//    }
 }

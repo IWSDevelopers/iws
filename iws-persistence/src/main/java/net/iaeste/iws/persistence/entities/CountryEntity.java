@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
@@ -91,8 +92,9 @@ public class CountryEntity implements Updateable<CountryEntity> {
     private String phonecode = null;
 
     @Monitored(name="currency", level = MonitoringLevel.MARKED)
+    @Enumerated(EnumType.STRING)
     @Column(name = "currency")
-    private String currency = null;
+    private Currency currency = null;
 
     @Monitored(name="languages", level = MonitoringLevel.MARKED)
     @Column(name = "languages")
@@ -231,11 +233,11 @@ public class CountryEntity implements Updateable<CountryEntity> {
         return phonecode;
     }
 
-    public void setCurrency(final String currency) {
+    public void setCurrency(final Currency currency) {
         this.currency = currency;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 

@@ -185,7 +185,7 @@ public class AdministrationClientTest extends AbstractClientTest {
     @Ignore("Test is currently being ignored, since the logic is being re-constructed.")
     public void testAddingUserToGroup() {
         final Group nsGroup = findNationalGroup(token);
-        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(nsGroup.getGroupId());
+        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(nsGroup.getId());
         final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
         final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest(fetchGroupResponse.getUsers().get(3), nsGroup);
         final Fallible userGroupResponse = administration.processUserGroupAssignment(token, userGroupAssignmentRequest);

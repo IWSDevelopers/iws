@@ -80,7 +80,7 @@ public final class DeleteGroup extends AbstractFixture<Fallible> {
     }
 
     public void setGroupId(final String groupId) {
-        group.setGroupId(groupId);
+        group.setId(groupId);
     }
 
     public void setGroupName(final String groupName) {
@@ -95,9 +95,9 @@ public final class DeleteGroup extends AbstractFixture<Fallible> {
         group.setDescription(description);
     }
 
-    public void setCountryId(final String countryId) {
-        group.setCountryId(countryId);
-    }
+//    public void setCountryId(final String countryId) {
+//        group.setCountryId(countryId);
+//    }
 
     public void deleteGroup() {
         execute();

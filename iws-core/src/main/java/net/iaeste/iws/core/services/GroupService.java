@@ -29,6 +29,7 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.CountryEntity;
@@ -74,7 +75,7 @@ public final class GroupService {
      * @param request        Group Request information
      */
     public void processGroup(final Authentication authentication, final GroupRequest request) {
-        final String externalGroupId = request.getGroup().getGroupId();
+        final String externalGroupId = request.getGroup().getId();
 
         if (externalGroupId == null) {
             final GroupType type = request.getGroup().getGroupType();
@@ -138,7 +139,7 @@ public final class GroupService {
         final FetchGroupResponse response;
 
         if (entity != null) {
-            final Group group = transform(entity);
+            final Group group = CommonTransformer.transform(entity);
             final List<User> users = findGroupMembers(request.isFetchUsers(), entity);
             final List<Group> groups = findSubGroups(request.isFetchSubGroups(), entity);
 
@@ -168,7 +169,7 @@ public final class GroupService {
 
     private GroupEntity createGroup(final GroupType type, final Group group, final GroupEntity parent) {
         // Find pre-requisites
-        final CountryEntity country = dao.findCountryByCode(group.getCountryId());
+        final CountryEntity country = dao.findCountryByCode(group.getCountry().getCountryCode());
         final GroupTypeEntity groupType = dao.findGroupTypeByType(type);
 
         // Create the new Entity

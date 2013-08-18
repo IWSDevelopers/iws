@@ -50,13 +50,13 @@ public final class ViewTransformer {
         employer.setWorkingPlace(view.getWorkingPlace());
         employer.setCanteen(view.getCanteen());
         employer.setNearestAirport(view.getNearestAirport());
-        employer.setNearestPubTransport(view.getNearestPublicTransport());
+        employer.setNearestPublicTransport(view.getNearestPublicTransport());
         employer.setWeeklyHours(view.getWeeklyHours());
         employer.setDailyHours(view.getDailyHours());
 
         // Second, read out the Group of the Employer
         final Group group = new Group();
-        group.setGroupId(view.getGroupExternalId());
+        group.setId(view.getGroupExternalId());
         group.setGroupName(view.getGroupName());
         group.setGroupType(view.getGroupType());
         employer.setGroup(group);

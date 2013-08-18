@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
 
 import javax.persistence.Column;
@@ -74,7 +75,8 @@ public class CountryView extends AbstractView<CountryView> {
     private String phonecode = null;
 
     @Column(name = "currency")
-    private String currency = null;
+    @Enumerated(EnumType.STRING)
+    private Currency currency = null;
 
     @Column(name = "languages")
     private String languages = null;
@@ -155,11 +157,11 @@ public class CountryView extends AbstractView<CountryView> {
         return phonecode;
     }
 
-    public void setCurrency(final String currency) {
+    public void setCurrency(final Currency currency) {
         this.currency = currency;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 

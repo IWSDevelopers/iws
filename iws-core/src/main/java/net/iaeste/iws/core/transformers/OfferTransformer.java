@@ -19,12 +19,10 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
-import net.iaeste.iws.api.enums.exchange.TypeOfWork;
-import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
-import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 
 /**
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
@@ -40,52 +38,30 @@ public final class OfferTransformer {
     private OfferTransformer() {
     }
 
-    private static java.util.Date convert(final Date date) {
-        final java.util.Date result;
-
-        if (date != null) {
-            result = date.toDate();
-        } else {
-            result = null;
-        }
-
-        return result;
-    }
-
-    private static Date convert(final java.util.Date date) {
-        final Date result;
-
-        if (date != null) {
-            result = new Date(date);
-        } else {
-            result = null;
-        }
-
-        return result;
-    }
-
-    /**
-     * Transform Offer DTO into the OfferEntity.
-     *
-     * {@link Offer#modified} and {@link Offer#created} fields are excluded from coping.
-     *
-     * @param offer Offer DTO to transform
-     * @return OfferEntity transformed from DTO
-     */
     public static OfferEntity transform(final Offer offer) {
         OfferEntity result = null;
 
         if (offer != null) {
             result = new OfferEntity();
 
-            result.setExternalId(offer.getOfferId());
+            result.setExternalId(offer.getId());
             result.setRefNo(offer.getRefNo());
             result.setEmployer(transform(offer.getEmployer()));
-            result.setNominationDeadline(convert(offer.getNominationDeadline()));
+            result.setWorkDescription(offer.getWorkDescription());
+            result.setTypeOfWork(offer.getTypeOfWork());
+            result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
             result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.join(offer.getSpecializations()));
-            result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
+            result.setPrevTrainingRequired(offer.getPreviousTrainingRequired());
             result.setOtherRequirements(offer.getOtherRequirements());
+            result.setMinimumWeeks(offer.getMinimumWeeks());
+            result.setMaximumWeeks(offer.getMaximumWeeks());
+            result.setFromDate(CommonTransformer.readFromDateFromPeriod(offer.getPeriod1()));
+            result.setToDate(CommonTransformer.readToDateFromPeriod(offer.getPeriod1()));
+            result.setFromDate2(CommonTransformer.readFromDateFromPeriod(offer.getPeriod2()));
+            result.setToDate2(CommonTransformer.readToDateFromPeriod(offer.getPeriod2()));
+            result.setUnavailableFrom(CommonTransformer.readFromDateFromPeriod(offer.getUnavailable()));
+            result.setUnavailableTo(CommonTransformer.readToDateFromPeriod(offer.getUnavailable()));
             result.setLanguage1(offer.getLanguage1());
             result.setLanguage1Level(offer.getLanguage1Level());
             result.setLanguage1Operator(offer.getLanguage1Operator());
@@ -94,146 +70,99 @@ public final class OfferTransformer {
             result.setLanguage2Operator(offer.getLanguage2Operator());
             result.setLanguage3(offer.getLanguage3());
             result.setLanguage3Level(offer.getLanguage3Level());
-            result.setWorkDescription(offer.getWorkDescription());
-            result.setTypeOfWork(offer.getTypeOfWork() != null ? offer.getTypeOfWork().toString() : null);
-            result.setMinimumWeeks(offer.getMinimumWeeks());
-            result.setMaximumWeeks(offer.getMaximumWeeks());
-            result.setFromDate(convert(offer.getFromDate()));
-            result.setToDate(convert(offer.getToDate()));
-            result.setFromDate2(convert(offer.getFromDate2()));
-            result.setToDate2(convert(offer.getToDate2()));
-            result.setUnavailableFrom(convert(offer.getUnavailableFrom()));
-            result.setUnavailableTo(convert(offer.getUnavailableTo()));
             result.setPayment(offer.getPayment());
-            result.setCurrency(offer.getCurrency());
             result.setPaymentFrequency(offer.getPaymentFrequency());
+            result.setCurrency(offer.getCurrency());
             result.setDeduction(offer.getDeduction());
+            result.setLivingCost(offer.getLivingCost());
+            result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setLodgingBy(offer.getLodgingBy());
             result.setLodgingCost(offer.getLodgingCost());
             result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
-            result.setLivingCost(offer.getLivingCost());
-            result.setLivingCostFrequency(offer.getLivingCostFrequency());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
-            result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
             result.setStatus(offer.getStatus());
-            // modified&created are not copied to Entity as they cannot be changed manually
-
-            //result.setEmployerName(offer.getEmployerName());
-            //result.setEmployerAddress(offer.getEmployerAddress());
-            //result.setEmployerAddress2(offer.getEmployerAddress2());
-            //result.setEmployerBusiness(offer.getEmployerBusiness());
-            //result.setWorkingPlace(offer.getWorkingPlace());
-            //result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
-            //result.setEmployerWebsite(offer.getEmployerWebsite());
-            //result.setNearestAirport(offer.getNearestAirport());
-            //result.setNearestPubTransport(offer.getNearestPubTransport());
-            //result.setWeeklyHours(offer.getWeeklyHours());
-            //result.setDailyHours(offer.getDailyHours());
-            //result.setCanteen(offer.getCanteen());
+            result.setNominationDeadline(CommonTransformer.convert(offer.getNominationDeadline()));
         }
 
         return result;
     }
 
-    /**
-     * Transform OfferEntity into the Offer DTO.
-     *
-     * @param offer Offer Entity to transform
-     * @return Offer DTO transformed from Entity
-     */
-    public static Offer transform(final OfferEntity offer) {
+    public static Offer transform(final OfferEntity entity) {
         Offer result = null;
 
-        if (offer != null) {
+        if (entity != null) {
             result = new Offer();
 
-            result.setOfferId(offer.getExternalId());
-            result.setRefNo(offer.getRefNo());
-            result.setEmployer(transform(offer.getEmployer()));
-            result.setNominationDeadline(convert(offer.getNominationDeadline()));
-            result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, offer.getFieldOfStudies()));
-            result.setSpecializations(CollectionTransformer.explodeStringSet(offer.getSpecializations()));
-            result.setPrevTrainingRequired(offer.getPrevTrainingRequired());
-            result.setOtherRequirements(offer.getOtherRequirements());
-            result.setLanguage1(offer.getLanguage1());
-            result.setLanguage1Level(offer.getLanguage1Level());
-            result.setLanguage1Operator(offer.getLanguage1Operator());
-            result.setLanguage2(offer.getLanguage2());
-            result.setLanguage2Level(offer.getLanguage2Level());
-            result.setLanguage2Operator(offer.getLanguage2Operator());
-            result.setLanguage3(offer.getLanguage3());
-            result.setLanguage3Level(offer.getLanguage3Level());
-            result.setWorkDescription(offer.getWorkDescription());
-            result.setTypeOfWork(TypeOfWork.toValue(offer.getTypeOfWork()));
-            result.setMinimumWeeks(offer.getMinimumWeeks());
-            result.setMaximumWeeks(offer.getMaximumWeeks());
-            result.setFromDate(convert(offer.getFromDate()));
-            result.setToDate(convert(offer.getToDate()));
-            result.setFromDate2(convert(offer.getFromDate2()));
-            result.setToDate2(convert(offer.getToDate2()));
-            result.setUnavailableFrom(convert(offer.getUnavailableFrom()));
-            result.setUnavailableTo(convert(offer.getUnavailableTo()));
-            //result.setWorkingPlace(offer.getWorkingPlace());
-            result.setPayment(offer.getPayment());
-            result.setCurrency(offer.getCurrency());
-            result.setPaymentFrequency(offer.getPaymentFrequency());
-            result.setDeduction(offer.getDeduction());
-            result.setLodgingBy(offer.getLodgingBy());
-            result.setLodgingCost(offer.getLodgingCost());
-            result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
-            result.setLivingCost(offer.getLivingCost());
-            result.setLivingCostFrequency(offer.getLivingCostFrequency());
-            result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
-            result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, offer.getStudyLevels()));
-            result.setStatus(offer.getStatus());
-
-            result.setModified(new DateTime(offer.getModified()));
-            result.setCreated(new DateTime(offer.getCreated()));
+            result.setId(entity.getExternalId());
+            result.setGroup(CommonTransformer.transform(entity.getGroup()));
+            result.setRefNo(entity.getRefNo());
+            result.setEmployer(transform(entity.getEmployer()));
+            result.setWorkDescription(entity.getWorkDescription());
+            result.setTypeOfWork(entity.getTypeOfWork());
+            result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels()));
+            result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies()));
+            result.setSpecializations(CollectionTransformer.explodeStringSet(entity.getSpecializations()));
+            result.setPreviousTrainingRequired(entity.getPrevTrainingRequired());
+            result.setOtherRequirements(entity.getOtherRequirements());
+            result.setLanguage1(entity.getLanguage1());
+            result.setLanguage1Level(entity.getLanguage1Level());
+            result.setLanguage1Operator(entity.getLanguage1Operator());
+            result.setLanguage2(entity.getLanguage2());
+            result.setLanguage2Level(entity.getLanguage2Level());
+            result.setLanguage2Operator(entity.getLanguage2Operator());
+            result.setLanguage3(entity.getLanguage3());
+            result.setLanguage3Level(entity.getLanguage3Level());
+            result.setMinimumWeeks(entity.getMinimumWeeks());
+            result.setMaximumWeeks(entity.getMaximumWeeks());
+            result.setPeriod1(CommonTransformer.transform(entity.getFromDate(), entity.getToDate()));
+            result.setPeriod2(CommonTransformer.transform(entity.getFromDate2(), entity.getToDate2()));
+            result.setUnavailable(CommonTransformer.transform(entity.getUnavailableFrom(), entity.getUnavailableTo()));
+            result.setPayment(entity.getPayment());
+            result.setPaymentFrequency(entity.getPaymentFrequency());
+            result.setCurrency(entity.getCurrency());
+            result.setDeduction(entity.getDeduction());
+            result.setLivingCost(entity.getLivingCost());
+            result.setLivingCostFrequency(entity.getLivingCostFrequency());
+            result.setLodgingBy(entity.getLodgingBy());
+            result.setLodgingCost(entity.getLodgingCost());
+            result.setLodgingCostFrequency(entity.getLodgingCostFrequency());
+            result.setNominationDeadline(CommonTransformer.convert(entity.getNominationDeadline()));
+            result.setNumberOfHardCopies(entity.getNumberOfHardCopies());
+            result.setStatus(entity.getStatus());
+            result.setModified(new DateTime(entity.getModified()));
+            result.setCreated(new DateTime(entity.getCreated()));
         }
 
         return result;
     }
 
     public static Employer transform(final EmployerEntity entity) {
-        final Employer result;
+        Employer result = null;
 
         if (entity != null) {
             result = new Employer();
 
             result.setId(entity.getExternalId());
+            result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setName(entity.getName());
             result.setDepartment(entity.getDepartment());
             result.setBusiness(entity.getBusiness());
             result.setAddress(CommonTransformer.transform(entity.getAddress()));
             result.setEmployeesCount(entity.getNumberOfEmployees());
             result.setWebsite(entity.getWebsite());
-            //result.setWorkingPlace(entity.getWorkingPlace());
-            //result.setNearestAirport(entity.getNearestAirport());
-            //result.setNearestPubTransport(entity.getNearestPubTransport());
-            //result.setWeeklyHours(entity.getWeeklyHours());
-            //result.setDailyHours(entity.getDailyHours());
-
-            // From the Offer transformer
-            //result.setEmployerName(offer.getEmployerName());
-            //result.setEmployerAddress(offer.getEmployerAddress());
-            //result.setEmployerAddress2(offer.getEmployerAddress2());
-            //result.setEmployerBusiness(offer.getEmployerBusiness());
-            //result.setEmployerEmployeesCount(offer.getEmployerEmployeesCount());
-            //result.setEmployerWebsite(offer.getEmployerWebsite());
-            //result.setNearestAirport(offer.getNearestAirport());
-            //result.setNearestPubTransport(offer.getNearestPubTransport());
-            //result.setWeeklyHours(offer.getWeeklyHours());
-            //result.setDailyHours(offer.getDailyHours());
-            //result.setCanteen(offer.getCanteen());
-        } else {
-            result = null;
+            result.setWorkingPlace(entity.getWorkingPlace());
+            result.setNearestAirport(entity.getNearestAirport());
+            result.setNearestPublicTransport(entity.getNearestPublicTransport());
+            result.setWeeklyHours(entity.getWeeklyHours());
+            result.setDailyHours(entity.getDailyHours());
+            result.setCanteen(entity.getCanteen());
         }
 
         return result;
     }
 
     public static EmployerEntity transform(final Employer employer) {
-        final EmployerEntity result;
+        EmployerEntity result = null;
 
         if (employer != null) {
             result = new EmployerEntity();
@@ -245,64 +174,26 @@ public final class OfferTransformer {
             result.setAddress(CommonTransformer.transform(employer.getAddress()));
             result.setNumberOfEmployees(employer.getEmployeesCount());
             result.setWebsite(employer.getWebsite());
-            //result.setWorkingPlace(entity.getWorkingPlace());
-            //result.setNearestAirport(entity.getNearestAirport());
-            //result.setNearestPubTransport(entity.getNearestPubTransport());
-            //result.setWeeklyHours(entity.getWeeklyHours());
-            //result.setDailyHours(entity.getDailyHours());
-        } else {
-            result = null;
+            result.setWorkingPlace(employer.getWorkingPlace());
+            result.setNearestAirport(employer.getNearestAirport());
+            result.setNearestPublicTransport(employer.getNearestPublicTransport());
+            result.setWeeklyHours(employer.getWeeklyHours());
+            result.setDailyHours(employer.getDailyHours());
         }
 
         return result;
     }
 
-//    /**
-//     * Transform OfferEntity employer into the EmployerInformation DTO
-//     *
-//     * @param t     The Class object to overloading transform method
-//     * @param offer Source OfferEntity which is to be transformed
-//     * @return EmployerInformation Object
-//     */
-//    public static EmployerInformation transform(final Class<EmployerInformation> t, final OfferEntity offer) {
-//        EmployerInformation result = null;
-//
-//        if (offer != null) {
-//            result = new EmployerInformation();
-//
-//            result.setName(offer.getEmployerName());
-//            result.setAddress(offer.getEmployerAddress());
-//            result.setAddress2(offer.getEmployerAddress2());
-//            result.setBusiness(offer.getEmployerBusiness());
-//            result.setEmployeesCount(offer.getEmployerEmployeesCount());
-//            result.setWebsite(offer.getEmployerWebsite());
-//            result.setWorkingPlace(offer.getWorkingPlace());
-//            result.setNearestAirport(offer.getNearestAirport());
-//            result.setNearestPubTransport(offer.getNearestPubTransport());
-//            result.setWeeklyHours(offer.getWeeklyHours());
-//            result.setDailyHours(offer.getDailyHours());
-//        }
-//
-//        return result;
-//    }
-
-    /**
-     * Transform OfferGroupEntity into the OfferGroup DTO
-     *
-     * @param t     The Class object to overloading transform method
-     * @param offerGroupEntity Source OfferGroupEntity which is to be transformed
-     * @return OfferGroup Object
-     */
-    public static OfferGroup transform(final Class<OfferGroupEntity> t, final OfferGroupEntity offerGroupEntity) {
+    public static OfferGroup transform(final OfferGroupEntity entity) {
         OfferGroup result = null;
 
-        if (offerGroupEntity != null) {
+        if (entity != null) {
             result = new OfferGroup();
 
-            result.setOfferRefNo(offerGroupEntity.getOffer().getRefNo());
-            result.setGroupId(offerGroupEntity.getGroup().getExternalId());
-            result.setModified(new DateTime(offerGroupEntity.getModified()));
-            result.setCreated(new DateTime(offerGroupEntity.getCreated()));
+            result.setOfferRefNo(entity.getOffer().getRefNo());
+            result.setGroupId(entity.getGroup().getExternalId());
+            result.setModified(new DateTime(entity.getModified()));
+            result.setCreated(new DateTime(entity.getCreated()));
         }
 
         return result;

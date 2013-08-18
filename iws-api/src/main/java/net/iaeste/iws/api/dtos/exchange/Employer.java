@@ -52,7 +52,7 @@ public final class Employer extends AbstractVerification {
     private String workingPlace = null;
     private Boolean canteen = null;
     private String nearestAirport = null;
-    private String nearestPubTransport = null;
+    private String nearestPublicTransport = null;
     private Float weeklyHours = null;
     private Float dailyHours = null;
 
@@ -84,7 +84,7 @@ public final class Employer extends AbstractVerification {
             workingPlace = employer.workingPlace;
             canteen = employer.canteen;
             nearestAirport = employer.nearestAirport;
-            nearestPubTransport = employer.nearestPubTransport;
+            nearestPublicTransport = employer.nearestPublicTransport;
             weeklyHours = employer.weeklyHours;
             dailyHours = employer.dailyHours;
         }
@@ -196,14 +196,14 @@ public final class Employer extends AbstractVerification {
         return nearestAirport;
     }
 
-    public void setNearestPubTransport(final String nearestPubTransport) throws IllegalArgumentException {
-        ensureNotTooLong("nearestPubTransport", nearestPubTransport, FIELD_LENGTH);
+    public void setNearestPublicTransport(final String nearestPublicTransport) throws IllegalArgumentException {
+        ensureNotTooLong("nearestPublicTransport", nearestPublicTransport, FIELD_LENGTH);
 
-        this.nearestPubTransport = nearestPubTransport;
+        this.nearestPublicTransport = nearestPublicTransport;
     }
 
-    public String getNearestPubTransport() {
-        return nearestPubTransport;
+    public String getNearestPublicTransport() {
+        return nearestPublicTransport;
     }
 
     public void setWeeklyHours(final Float weeklyHours) {
@@ -285,7 +285,7 @@ public final class Employer extends AbstractVerification {
         if (nearestAirport != null ? !nearestAirport.equals(employer.nearestAirport) : employer.nearestAirport != null) {
             return false;
         }
-        if (nearestPubTransport != null ? !nearestPubTransport.equals(employer.nearestPubTransport) : employer.nearestPubTransport != null) {
+        if (nearestPublicTransport != null ? !nearestPublicTransport.equals(employer.nearestPublicTransport) : employer.nearestPublicTransport != null) {
             return false;
         }
         if (weeklyHours != null ? !weeklyHours.equals(employer.weeklyHours) : employer.weeklyHours != null) {
@@ -313,7 +313,7 @@ public final class Employer extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (workingPlace != null ? workingPlace.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (canteen != null ? canteen.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (nearestAirport != null ? nearestAirport.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nearestPubTransport != null ? nearestPubTransport.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nearestPublicTransport != null ? nearestPublicTransport.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (weeklyHours != null ? weeklyHours.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (dailyHours != null ? dailyHours.hashCode() : 0);
 
@@ -337,7 +337,7 @@ public final class Employer extends AbstractVerification {
                 ", workingPlace='" + workingPlace + '\'' +
                 ", canteen=" + canteen +
                 ", nearestAirport='" + nearestAirport + '\'' +
-                ", nearestPubTransport='" + nearestPubTransport + '\'' +
+                ", nearestPublicTransport='" + nearestPublicTransport + '\'' +
                 ", weeklyHours=" + weeklyHours +
                 ", dailyHours=" + dailyHours +
                 '}';

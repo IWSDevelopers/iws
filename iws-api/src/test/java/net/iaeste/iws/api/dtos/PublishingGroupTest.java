@@ -105,9 +105,9 @@ public final class PublishingGroupTest {
         cut.setPublishingGroupId("");
         cut.setName("");
         final List<Group> groups = buildGroups(1);
-        groups.get(0).setGroupId(null);
+        groups.get(0).setId(null);
         cut.setGroups(groups);
-        cut.getGroups().get(0).setGroupId(null);
+        cut.getGroups().get(0).setId(null);
         final Map<String, String> emptyTest = cut.validate();
 
         // Set too long values, should result in 2 errors (id and name)
@@ -165,7 +165,7 @@ public final class PublishingGroupTest {
 
         for (int i = 0; i < count; i++) {
             final Group group = new Group();
-            group.setGroupId(UUID.randomUUID().toString());
+            group.setId(UUID.randomUUID().toString());
             groups.add(group);
         }
 

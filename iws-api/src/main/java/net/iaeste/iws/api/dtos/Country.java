@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
@@ -40,14 +41,14 @@ public final class Country extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String countryId = null;
+    private String countryCode = null;
     private String countryName = null;
     private String countryNameFull = null;
     private String countryNameNative = null;
     private String nationality = null;
     private String citizens = null;
     private String phonecode = null;
-    private String currency = null;
+    private Currency currency = null;
     private String languages = null;
     private Membership membership = null;
     private Integer memberSince = null;
@@ -73,7 +74,7 @@ public final class Country extends AbstractVerification {
      */
     public Country(final Country country) {
         if (country != null) {
-            countryId = country.countryId;
+            countryCode = country.countryCode;
             countryName = country.countryName;
             countryNameFull = country.countryNameFull;
             countryNameNative = country.countryNameNative;
@@ -94,14 +95,14 @@ public final class Country extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setCountryId(final String countryId) {
-        ensureNotNullAndExactLength("countryId", countryId, 2);
+    public void setCountryCode(final String countryCode) {
+        ensureNotNullAndExactLength("countryCode", countryCode, 2);
 
-        this.countryId = countryId;
+        this.countryCode = countryCode;
     }
 
-    public String getCountryId() {
-        return countryId;
+    public String getCountryCode() {
+        return countryCode;
     }
 
     public void setCountryName(final String countryName) {
@@ -164,13 +165,13 @@ public final class Country extends AbstractVerification {
         return phonecode;
     }
 
-    public void setCurrency(final String currency) {
-        ensureExactLength("currency", currency, 3);
+    public void setCurrency(final Currency currency) {
+        ensureNotNull("currency", currency);
 
         this.currency = currency;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
@@ -247,14 +248,14 @@ public final class Country extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
         final int currentYear = new Date().getCurrentYear();
 
-        hasExactSize(validation, "country", countryId, 2);
+        hasExactSize(validation, "country", countryCode, 2);
         isWithinLimits(validation, "countryName", countryName, 0, 100);
         isWithinLimits(validation, "countryNameFull", countryNameFull, 0, 100);
         isWithinLimits(validation, "countryNameNative", countryNameNative, 0, 100);
         isWithinLimits(validation, "nationality", nationality, 0, 100);
         isWithinLimits(validation, "citizens", citizens, 0, 100);
         isWithinLimits(validation, "phonecode", phonecode, 0, 5);
-        hasExactSize(validation, "currency", currency, 3);
+        isNotNull(validation, "currency", currency);
         isWithinLimits(validation, "languages", languages, 0, 100);
         isNotNull(validation, "membership", membership);
         isWithinLimits(validation, "memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
@@ -276,7 +277,7 @@ public final class Country extends AbstractVerification {
 
         final Country country = (Country) obj;
 
-        if (countryId != null ? !countryId.equals(country.countryId) : country.countryId != null) {
+        if (countryCode != null ? !countryCode.equals(country.countryCode) : country.countryCode != null) {
             return false;
         }
         if (countryName != null ? !countryName.equals(country.countryName) : country.countryName != null) {
@@ -326,7 +327,7 @@ public final class Country extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryId != null ? countryId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryCode != null ? countryCode.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryName != null ? countryName.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryNameFull != null ? countryNameFull.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryNameNative != null ? countryNameNative.hashCode() : 0);
@@ -350,7 +351,7 @@ public final class Country extends AbstractVerification {
     @Override
     public String toString() {
         return "Country{" +
-                "countryId='" + countryId + '\'' +
+                "countryCode='" + countryCode + '\'' +
                 ", countryName='" + countryName + '\'' +
                 ", countryNameFull='" + countryNameFull + '\'' +
                 ", countryNameNative='" + countryNameNative + '\'' +

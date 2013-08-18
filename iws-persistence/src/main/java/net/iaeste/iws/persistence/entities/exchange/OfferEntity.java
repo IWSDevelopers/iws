@@ -20,6 +20,7 @@ import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
+import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -141,8 +142,9 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Column(name = "work_description", nullable = false, length = 1000)
     private String workDescription = null;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "work_type", length = 1)
-    private String typeOfWork = null;
+    private TypeOfWork typeOfWork = null;
 
     @Column(name = "study_levels", length = 25, nullable = false)
     private String studyLevels = null;
@@ -342,11 +344,11 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
         return workDescription;
     }
 
-    public void setTypeOfWork(final String typeOfWork) {
+    public void setTypeOfWork(final TypeOfWork typeOfWork) {
         this.typeOfWork = typeOfWork;
     }
 
-    public String getTypeOfWork() {
+    public TypeOfWork getTypeOfWork() {
         return typeOfWork;
     }
 
@@ -678,7 +680,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
             prevTrainingRequired = obj.prevTrainingRequired;
             otherRequirements = obj.otherRequirements;
 
-            // Period for the Offer
+            // DatePeriod for the Offer
             minimumWeeks = obj.minimumWeeks;
             maximumWeeks = obj.maximumWeeks;
             fromDate = obj.fromDate;

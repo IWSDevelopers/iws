@@ -26,7 +26,6 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
-import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
@@ -124,45 +123,45 @@ public class OfferGroupEntityTest {
         assertThat(offerDao.findGroupByExternalId(GROUP_EXTERNAL_ID), is(group));
     }
 
-    @Test
-    @Transactional
-    public void testFindGroupsForSharedOffer() {
-        assertThat(offerDao.findAllOffers(authentication).size(), is(0));
-        offerDao.persist(authentication, offer);
-
-        assertThat(offerDao.findAllOffers(authentication).size(), is(1));
-        final List<String> externalIds = new ArrayList(1);
-        externalIds.add(GROUP_EXTERNAL_ID);
-        externalIds.add(GROUP_EXTERNAL_ID_2);
-
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(0));
-        assertThat(offerDao.findInfoForSharedOffer(offer.getExternalId()).size(), is(0));
-
-        final List<GroupEntity> groups = offerDao.findGroupByExternalIds(externalIds);
-        assertThat(groups.size(), is(2));
-
-        OfferGroupEntity og = new OfferGroupEntity(offer, groups.get(0));
-        OfferGroupEntity og2 = new OfferGroupEntity(offer, groups.get(1));
-        offerDao.persist(og);
-        offerDao.persist(og2);
-
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(2));
-        assertThat(offerDao.findInfoForSharedOffer(offer.getExternalId()).size(), is(2));
-
-        offerDao.unshareFromAllGroups(offer.getId());
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(0));
-
-        og = new OfferGroupEntity(offer, groups.get(0));
-        og2 = new OfferGroupEntity(offer, groups.get(1));
-        offerDao.persist(og);
-        offerDao.persist(og2);
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(2));
-
-        final List<Long> groupIdsToUnshare = new ArrayList<>(1);
-        groupIdsToUnshare.add(groups.get(0).getId());
-        offerDao.unshareFromGroups(offer.getId(), groupIdsToUnshare);
-        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(1));
-    }
+//    @Test
+//    @Transactional
+//    public void testFindGroupsForSharedOffer() {
+//        assertThat(offerDao.findAllOffers(authentication).size(), is(0));
+//        offerDao.persist(authentication, offer);
+//
+//        assertThat(offerDao.findAllOffers(authentication).size(), is(1));
+//        final List<String> externalIds = new ArrayList(1);
+//        externalIds.add(GROUP_EXTERNAL_ID);
+//        externalIds.add(GROUP_EXTERNAL_ID_2);
+//
+//        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(0));
+//        assertThat(offerDao.findInfoForSharedOffer(offer.getExternalId()).size(), is(0));
+//
+//        final List<GroupEntity> groups = offerDao.findGroupByExternalIds(externalIds);
+//        assertThat(groups.size(), is(2));
+//
+//        OfferGroupEntity og = new OfferGroupEntity(offer, groups.get(0));
+//        OfferGroupEntity og2 = new OfferGroupEntity(offer, groups.get(1));
+//        offerDao.persist(og);
+//        offerDao.persist(og2);
+//
+//        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(2));
+//        assertThat(offerDao.findInfoForSharedOffer(offer.getExternalId()).size(), is(2));
+//
+//        offerDao.unshareFromAllGroups(offer.getId());
+//        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(0));
+//
+//        og = new OfferGroupEntity(offer, groups.get(0));
+//        og2 = new OfferGroupEntity(offer, groups.get(1));
+//        offerDao.persist(og);
+//        offerDao.persist(og2);
+//        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(2));
+//
+//        final List<Long> groupIdsToUnshare = new ArrayList<>(1);
+//        groupIdsToUnshare.add(groups.get(0).getId());
+//        offerDao.unshareFromGroups(offer.getId(), groupIdsToUnshare);
+//        assertThat(offerDao.findInfoForSharedOffer(offer.getId()).size(), is(1));
+//    }
 
     @After
     public void cleanUp() {

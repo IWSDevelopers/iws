@@ -87,7 +87,7 @@ public final class ProcessUserGroupAssignment extends AbstractFixture<Fallible> 
     }
 
     public void setGroupId(final String groupId) {
-        group.setGroupId(groupId);
+        group.setId(groupId);
     }
 
     public void setGroupName(final String groupName) {
@@ -102,9 +102,9 @@ public final class ProcessUserGroupAssignment extends AbstractFixture<Fallible> 
         group.setDescription(description);
     }
 
-    public void setCountryId(final String countryId) {
-        group.setCountryId(countryId);
-    }
+//    public void setCountryId(final String countryId) {
+//        group.setCountryId(countryId);
+//    }
 
     public void setRoleId(final String roleId) {
         role.setRoleId(roleId);

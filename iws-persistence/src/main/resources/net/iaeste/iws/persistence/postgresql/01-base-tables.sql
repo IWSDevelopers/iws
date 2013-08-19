@@ -194,6 +194,7 @@ create table groups (
 
     /* Primary & Foreign Keys */
     constraint group_pk              primary key (id),
+    constraint group_fk_group_id     foreign key (parent_id) references groups (id),
     constraint group_fk_grouptype_id foreign key (grouptype_id) references grouptypes (id),
     constraint group_fk_country_id   foreign key (country_id)   references countries (id),
 
@@ -434,6 +435,7 @@ create table user_to_group (
     custom_title        varchar(50),
     on_public_list      boolean default false,
     on_private_list     boolean default true,
+    status              boolean default true,
     modified            timestamp default now(),
     created             timestamp default now(),
 
@@ -455,6 +457,7 @@ create table user_to_group (
     constraint u2g_notnull_role_id         check (role_id is not null),
     constraint u2g_notnull_on_public_list  check (on_public_list is not null),
     constraint u2g_notnull_on_private_list check (on_private_list is not null),
+    constraint u2g_notnull_status          check (status is not null),
     constraint u2g_notnull_modified        check (modified is not null),
     constraint u2g_notnull_created         check (created is not null)
 );
@@ -525,7 +528,6 @@ create table addresses (
 
     /* Unique Constraints */
     constraint address_unique_external_id unique (external_id),
-    constraint address_unique_fields unique (street1, street2, zip, city, state),
 
     /* Not Null Constraints */
     constraint address_notnull_id          check (id is not null),
@@ -549,7 +551,6 @@ create table addresses (
 create sequence person_sequence start with 1 increment by 1;
 create table persons (
     id               integer default nextval('person_sequence'),
-    external_id      varchar(36),
     address_id       integer,
     email            varchar(100),
     phone            varchar(25),
@@ -564,12 +565,8 @@ create table persons (
     constraint person_pk           primary key (id),
     constraint person_fk_address_id foreign key (address_id) references addresses (id),
 
-    /* Unique Constraints */
-    constraint person_unique_external_id unique (external_id),
-
     /* Not Null Constraints */
     constraint person_notnull_id          check (id is not null),
-    constraint person_notnull_external_id check (external_id is not null),
     constraint person_notnull_modified    check (modified is not null),
     constraint person_notnull_created     check (created is not null)
 );
@@ -628,6 +625,7 @@ create table notification_messages (
     constraint notitication_messages_notnull_process_after     check (process_after is not null),
     constraint notitication_messages_notnull_created           check (created is not null)
 );
+
 
 -- =============================================================================
 -- Notification consumers

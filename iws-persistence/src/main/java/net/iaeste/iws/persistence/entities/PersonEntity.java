@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.enums.Gender;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -34,6 +36,8 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Entity
+@Table(name = "persons")
 public class PersonEntity implements Updateable<PersonEntity> {
 
     @Id

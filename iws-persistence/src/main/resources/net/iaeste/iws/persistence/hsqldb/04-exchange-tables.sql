@@ -197,6 +197,9 @@ create table offer_to_group (
     constraint offer_to_group_fk_modified_by foreign key (modified_by) references users (id),
     constraint offer_to_group_fk_created_by  foreign key (created_by) references users (id),
 
+    /* Unique Constraints */
+    constraint offer_to_group_unique_external_id unique (external_id),
+
     /* Not Null Constraints */
     constraint offer_to_group_notnull_id          check (id is not null),
     constraint offer_to_group_notnull_external_id check (external_id is not null),

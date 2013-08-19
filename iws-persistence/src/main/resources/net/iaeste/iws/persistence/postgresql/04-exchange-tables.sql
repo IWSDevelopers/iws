@@ -20,13 +20,13 @@ create table employers (
     name                      varchar(255),
     department                varchar(255),
     business                  varchar(255),
+    working_place             varchar(255),
     address_id                integer,
     number_of_employees       integer,
     website                   varchar(255),
-    working_place             varchar(255),
     canteen                   boolean,
     nearest_airport           varchar(255),
-    nearest_pub_transport     varchar(255),
+    nearest_public_transport  varchar(255),
     weekly_hours              decimal(5,3),
     daily_hours               decimal(5,3),
     modified                  timestamp default now(),
@@ -38,12 +38,16 @@ create table employers (
     constraint employer_fk_address_id foreign key (address_id) references addresses (id),
 
     /* Unique Constraints */
-    constraint employer_unique_external_id   unique (external_id),
+    constraint employer_unique_external_id unique (external_id),
+    -- Note, it would be good to have a unique constraint for the employer. The
+    -- sooner it is added, the sooner we'll avoid problems
+    constraint employer_unique_fields      unique (group_id, name, department, working_place),
 
     /* Not Null Constraints */
     constraint employer_notnull_id          check (id is not null),
     constraint employer_notnull_external_id check (external_id is not null),
     constraint employer_notnull_name        check (name is not null),
+    constraint employer_notnull_weeklyhours check (weekly_hours is not null),
     constraint employer_notnull_modified    check (modified is not null),
     constraint employer_notnull_created     check (created is not null)
 );
@@ -60,25 +64,25 @@ create table offers (
     external_id               varchar(36),
     group_id                  integer,
     ref_no                    varchar(255),
+    -- General Work Description
     employer_id               integer,
-    canteen                   boolean,
-    number_of_hard_copies     integer,
-    currency                  varchar(3),
-    weekly_hours              decimal(5,3),
-    daily_hours               decimal(5,3),
-    deduction                 varchar(20),
-    employer_name             varchar(255),
-    employer_address          varchar(255),
-    employer_address_2        varchar(255),
-    employer_business         varchar(255),
-    employer_employees_cnt    integer,
-    employer_website          varchar(255),
+    work_description          varchar(1000),
+    work_type                 char(1),
+    study_levels              varchar(25),
+    study_fields              varchar(1000),
+    specializations           varchar(1000),
+    prev_training_req         boolean,
+    other_requirements        varchar(500),
+    -- Period for the Offer
+    min_weeks                 integer,
+    max_weeks                 integer,
     from_date                 date,
     to_date                   date,
     from_date_2               date,
     to_date_2                 date,
     unavailable_from          date,
     unavailable_to            date,
+    -- Language restrictions
     language_1                varchar(255),
     language_1_level          varchar(1),
     language_1_op             varchar(1),
@@ -87,26 +91,21 @@ create table offers (
     language_2_op             varchar(1),
     language_3                varchar(255),
     language_3_level          varchar(1),
+    -- Payment & Cost information
+    payment                   decimal(12,2),
+    payment_frequency         varchar(10),
+    -- Currency is general information, which belongs in the Employer Object
+    currency                  varchar(3),
+    -- Deduction is general information, which belongs in the Employer Object
+    deduction                 varchar(20),
     living_cost               decimal(12,2),
     living_cost_frequency     varchar(10),
     lodging_by                varchar(255),
     lodging_cost              decimal(12,2),
     lodging_cost_frequency    varchar(10),
-    min_weeks                 integer,
-    max_weeks                 integer,
-    nearest_airport           varchar(255),
-    nearest_pub_transport     varchar(255),
+    -- Other things
     nomination_deadline       date,
-    other_requirements        varchar(500),
-    payment                   decimal(12,2),
-    payment_frequency         varchar(10),
-    prev_training_req         boolean,
-    work_description          varchar(1000),
-    working_place             varchar(255),
-    work_type                 char(1),
-    study_levels              varchar(25),
-    study_fields              varchar(1000),
-    specializations           varchar(1000),
+    number_of_hard_copies     integer,
     status                    varchar(10),
     modified                  timestamp default now(),
     created                   timestamp default now(),
@@ -125,8 +124,6 @@ create table offers (
     constraint offer_notnull_ref_no           check (ref_no is not null),
     constraint offer_notnull_external_id      check (external_id is not null),
     constraint offer_notnull_group_id         check (group_id is not null),
-    constraint offer_notnull_weekly_hours     check (weekly_hours is not null),
-    constraint offer_notnull_employer_name    check (employer_name is not null),
     constraint offer_notnull_from_date        check (from_date is not null),
     constraint offer_notnull_to_date          check (to_date is not null),
     constraint offer_notnull_language_1       check (language_1 is not null),
@@ -181,6 +178,7 @@ create table students (
 create sequence offer_to_group_sequence start with 50 increment by 1;
 create table offer_to_group (
     id                 integer default nextval('offer_to_group_sequence'),
+    external_id        varchar(36),
     offer_id           integer,
     group_id           integer,
     comment            varchar(100)  default '',
@@ -196,9 +194,14 @@ create table offer_to_group (
     constraint offer_to_group_fk_modified_by  foreign key (modified_by) references users (id) ON DELETE SET NULL,
     constraint offer_to_group_fk_created_by   foreign key (created_by) references users (id) ON DELETE SET NULL,
 
+    /* Unique Constraints */
+    constraint offer_to_group_unique_external_id unique (external_id),
+
     /* Not Null Constraints */
-    constraint offer_to_group_notnull_offer_id  check (offer_id is not null),
-    constraint offer_to_group_notnull_group_id  check (group_id is not null),
-    constraint offer_to_group_notnull_modified  check (modified is not null),
-    constraint offer_to_group_notnull_created   check (created is not null)
+    constraint offer_to_group_notnull_id          check (id is not null),
+    constraint offer_to_group_notnull_external_id check (external_id is not null),
+    constraint offer_to_group_notnull_offer_id    check (offer_id is not null),
+    constraint offer_to_group_notnull_group_id    check (group_id is not null),
+    constraint offer_to_group_notnull_modified    check (modified is not null),
+    constraint offer_to_group_notnull_created     check (created is not null)
 );

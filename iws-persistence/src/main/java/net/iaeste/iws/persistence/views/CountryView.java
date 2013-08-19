@@ -44,7 +44,7 @@ import javax.persistence.Table;
                         "where v.membership = :type "),
         @NamedQuery(name = "view.findCountriesByCountryCode",
                 query = "select v from CountryView v " +
-                        "where lower(v.countryCode) in :codes")
+                        "where upper(v.countryCode) in :codes")
 })
 @Table(name = "country_details")
 public class CountryView extends AbstractView<CountryView> {

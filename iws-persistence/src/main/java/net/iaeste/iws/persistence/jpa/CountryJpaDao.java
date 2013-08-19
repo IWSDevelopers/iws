@@ -62,7 +62,7 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
         final Query query = entityManager.createNamedQuery("view.findCountriesByCountryCode");
         final List<String> codes = new ArrayList<>(countryCodes.size());
         for (final String code : countryCodes) {
-            codes.add(code.toLowerCase(IWSConstants.DEFAULT_LOCALE));
+            codes.add(code.toUpperCase(IWSConstants.DEFAULT_LOCALE));
         }
         query.setParameter("codes", codes);
 

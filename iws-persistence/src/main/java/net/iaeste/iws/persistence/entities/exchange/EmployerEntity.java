@@ -55,8 +55,9 @@ import java.util.Date;
                 query = "select e from EmployerEntity e " +
                         "where e.group.id = :gid" +
                         "  and lower(e.name) = lower(:name)" +
-                        "  and lower(department) = lower(:department)" +
-                        "  and lower(workingPlace) = lower(:workingPlace)")
+                        // Why we cannot use a lowe on the Department is a mystery
+                        //"  and e.department = :department" +
+                        "  and lower(e.workingPlace) = lower(:workingPlace)")
 })
 @Entity
 @Table(name = "employers")

@@ -20,27 +20,31 @@ import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.NotificationDao;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
+ * @noinspection CustomClassloader
  */
-public class NotificationConsumerClassLoader extends ClassLoader {
+public final class NotificationConsumerClassLoader extends ClassLoader {
+
     public Observer findConsumerClass(final String name, final NotificationDao dao) {
         try {
-            Class<?> consumerClass = loadClass(name);
-            Constructor<?> ctor = consumerClass.getDeclaredConstructor(NotificationDao.class);
-            Object consumer = ctor.newInstance(dao);
-            if(consumer instanceof Observer) {
-                return (Observer)consumer;
+            final Class<?> consumerClass = loadClass(name);
+            final Constructor<?> constructor = consumerClass.getDeclaredConstructor(NotificationDao.class);
+            final Object consumer = constructor.newInstance(dao);
+
+            if (consumer instanceof Observer) {
+                return (Observer) consumer;
             }
+
             throw new IWSException(IWSErrors.ERROR, "Class " + name + " is not valid notification consumer");
         } catch (ClassNotFoundException ignored) {
             throw new IWSException(IWSErrors.ERROR, "Consumer " + name + " cannot be loaded");
-        } catch (Exception ignored) {
-            throw new IWSException(IWSErrors.ERROR, "Error during loading " + name + " consumer");
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            throw new IWSException(IWSErrors.ERROR, "Error during loading " + name + " consumer", e);
         }
     }
-
 }

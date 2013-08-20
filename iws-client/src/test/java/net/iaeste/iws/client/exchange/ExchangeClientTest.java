@@ -151,7 +151,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
 
         final Offer offerToDelete = response.getOffers().get(0);
 
-        final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getRefNo());
+        final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getId());
         final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);
 
         assertThat(deleteResponse.isOk(), is(true));

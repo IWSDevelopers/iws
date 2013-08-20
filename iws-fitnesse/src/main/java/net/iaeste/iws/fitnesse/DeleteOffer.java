@@ -34,8 +34,8 @@ public final class DeleteOffer extends AbstractFixture<OfferResponse> {
         execute();
     }
 
-    public void setOfferRefNo(final String offerRefNo) {
-        request.setOfferRefNo(offerRefNo);
+    public void setOfferId(final String offerId) {
+        request.setOfferId(offerId);
     }
 
     public void printOffer() {

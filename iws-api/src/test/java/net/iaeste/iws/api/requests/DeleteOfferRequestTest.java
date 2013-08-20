@@ -14,6 +14,18 @@
  */
 package net.iaeste.iws.api.requests;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertThat;
+
+import com.gargoylesoftware.base.testing.EqualsTester;
+import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import org.junit.Test;
+
+import java.util.UUID;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -22,48 +34,35 @@ package net.iaeste.iws.api.requests;
  */
 public final class DeleteOfferRequestTest {
 
-    private static final String INVALID_OFFER_REF_NO = "AT-2012-@#$1";
-    private static final String OFFER_REF_NO_1 = "AT-2012-0001";
-    private static final String OFFER_REF_NO_2 = "AT-2012-0002";
+    @Test
+    public void testClassflow() {
+        final String offerId = UUID.randomUUID().toString();
 
-//    @Test
-//    public void testClassFlow() {
-//        final DeleteOfferRequest request = new DeleteOfferRequest();
-//        request.setOfferRefNo(OFFER_REF_NO_1);
-//        request.verify();
-//
-//        assertThat(request.getOfferRefNo(), is(OFFER_REF_NO_1));
-//    }
-//
-//    @Test(expected = VerificationException.class)
-//    public void testVerificationNullId() {
-//        final DeleteOfferRequest request = new DeleteOfferRequest(null);
-//        request.verify();
-//    }
-//
-//    @Test(expected = VerificationException.class)
-//    public void testVerificationInvalidId() {
-//
-//        final DeleteOfferRequest request = new DeleteOfferRequest(INVALID_OFFER_REF_NO);
-//        request.verify();
-//    }
-//
-//    @Test
-//    public void testStandardMethods() {
-//        final DeleteOfferRequest request = new DeleteOfferRequest(OFFER_REF_NO_1);
-//        final DeleteOfferRequest same = new DeleteOfferRequest(OFFER_REF_NO_1);
-//        final DeleteOfferRequest diff = new DeleteOfferRequest(OFFER_REF_NO_2);
-//
-//        // Test the HashCode
-//        assertThat(request.hashCode(), is(OFFER_REF_NO_1.hashCode()));
-//        assertThat(request.hashCode(), is(same.hashCode()));
-//        assertThat(request.hashCode(), is(not(diff.hashCode())));
-//
-//        assertThat(request.toString(), is(String.format("DeleteOfferRequest{offer=%s}", OFFER_REF_NO_1)));
-//        assertThat(request.toString(), is(same.toString()));
-//        assertThat(request.toString(), is(not(diff.toString())));
-//
-//        // Perform the testing of the equals method
-//        new EqualsTester(request, same, diff, null);
-//    }
+        // Create a few Objects to test
+        final DeleteOfferRequest request1 = new DeleteOfferRequest(offerId);
+        final DeleteOfferRequest request2 = new DeleteOfferRequest();
+        final DeleteOfferRequest request3 = new DeleteOfferRequest();
+
+        // Test that Objects have different instances, but same content
+        request2.setOfferId(offerId);
+        assertThat(request1, is(not(sameInstance(request2))));
+        assertThat(request1, is(request2));
+        assertThat(request1, is(not(request3)));
+        assertThat(request1.getOfferId(), is(offerId));
+        assertThat(request3.getOfferId(), is(nullValue()));
+
+        // Compare the results of the validation
+        assertThat(request1.validate().isEmpty(), is(true));
+        assertThat(request3.validate().isEmpty(), is(false));
+        assertThat(request3.validate().containsKey("offerId"), is(true));
+        assertThat(request3.validate().get("offerId"), is("The field may not be null."));
+
+        // Compare results of the hashCode & toString methods
+        assertThat(request1.hashCode(), is(request2.hashCode()));
+        assertThat(request1.hashCode(), is(not(request3.hashCode())));
+        assertThat(request1.toString(), is(request2.toString()));
+        assertThat(request1.toString(), is(not(request3.toString())));
+
+        new EqualsTester(request1, request2, request3, null);
+    }
 }

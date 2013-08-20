@@ -15,7 +15,6 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public final class DeleteOfferRequest extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String offerRefNo;
+    private String offerId;
 
     // =========================================================================
     // Object Constructors
@@ -42,52 +41,49 @@ public final class DeleteOfferRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public DeleteOfferRequest() {
-        offerRefNo = null;
+        offerId = null;
     }
 
     /**
      * The Id of the Offer to delete.
      *
-     * @param offerRefNo Id of the Offer to delete
+     * @param offerId Id of the Offer to delete
      */
-    public DeleteOfferRequest(final String offerRefNo) {
-        this.offerRefNo = offerRefNo;
+    public DeleteOfferRequest(final String offerId) {
+        this.offerId = offerId;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOfferRefNo(final String offerRefNo) {
-        this.offerRefNo = offerRefNo;
+    public void setOfferId(final String offerId) {
+        this.offerId = offerId;
     }
 
-    public String getOfferRefNo() {
-        return offerRefNo;
+    public String getOfferId() {
+        return offerId;
     }
 
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        final Offer o = new Offer();
-        o.setRefNo(offerRefNo);
-        final String refNoKey = "refNo";
-
-        final Map<String, String> errors = o.validate();
-        if (errors.containsKey(refNoKey)) {
-            validation.put(refNoKey, errors.get(refNoKey));
-        }
+        isNotNull(validation, "offerId", offerId);
 
         return validation;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -99,20 +95,24 @@ public final class DeleteOfferRequest extends AbstractVerification {
         }
 
         final DeleteOfferRequest that = (DeleteOfferRequest) obj;
-        return !(offerRefNo != null ? !offerRefNo.equals(that.offerRefNo) : that.offerRefNo != null);
+        return !(offerId != null ? !offerId.equals(that.offerId) : that.offerId != null);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
-        return offerRefNo != null ? offerRefNo.hashCode() : 0;
+        return offerId != null ? offerId.hashCode() : 0;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "DeleteOfferRequest{" +
-                "offer=" + offerRefNo +
+                "offerId=" + offerId +
                 '}';
     }
 }

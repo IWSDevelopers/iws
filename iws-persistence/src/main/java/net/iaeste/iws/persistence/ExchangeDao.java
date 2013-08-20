@@ -40,7 +40,7 @@ public interface ExchangeDao extends BasicDao {
     /**
      * Get all offers from the database.
      *
-     * @return list of {@code DeprecatedOfferEntity}
+     * @return list of {@code OfferEntity}
      */
     List<OfferEntity> findAllOffers(Authentication authentication);
 
@@ -48,7 +48,7 @@ public interface ExchangeDao extends BasicDao {
      * Finds the entity in the database.
      *
      * @param offerId primary key for offers
-     * @return DeprecatedOfferEntity for given id, if no entity exists, then a null value is returned.
+     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
     OfferEntity findOffer(Authentication authentication, Long offerId);
@@ -56,11 +56,20 @@ public interface ExchangeDao extends BasicDao {
     /**
      * Finds the entity in the database.
      *
-     * @param refNo unique offer reference number
-     * @return DeprecatedOfferEntity for given id, if no entity exists, then a null value is returned.
+     * @param externalId The External Id of the Offer
+     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
      * @throws PersistenceException
      */
-    OfferEntity findOffer(Authentication authentication, String refNo);
+    OfferEntity findOfferByExternalId(Authentication authentication, String externalId);
+
+    /**
+     * Finds the entity in the database.
+     *
+     * @param refNo unique offer reference number
+     * @return OfferEntity for given id, if no entity exists, then a null value is returned.
+     * @throws PersistenceException
+     */
+    OfferEntity findOfferByRefNo(Authentication authentication, String refNo);
 
     /**
      * Finds an Offer in the database which has both the given ExternalId and
@@ -71,17 +80,17 @@ public interface ExchangeDao extends BasicDao {
      * @param refNo      The unique Offer Refence Number
      * @return Found Offer Entity or null
      */
-    OfferEntity findOffer(Authentication authentication, String externalId, String refNo);
+    OfferEntity findOfferByExternalIdAndRefNo(Authentication authentication, String externalId, String refNo);
 
     /**
      * @param offerIds list of primary keys for offers
-     * @return list of {@code }DeprecatedOfferEntity}
+     * @return list of {@code OfferEntity}
      */
     List<OfferEntity> findOffers(Authentication authentication, List<Long> offerIds);
 
     /**
      * @param externalIds list of external IDs for fetching
-     * @return list of {@code }DeprecatedOfferEntity}
+     * @return list of {@code OfferEntity}
      */
     List<OfferEntity> findOffersByExternalId(Authentication authentication, Set<String> externalIds);
 
@@ -89,7 +98,7 @@ public interface ExchangeDao extends BasicDao {
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
-     * @return list of {@code }DeprecatedOfferEntity}
+     * @return list of {@code OfferEntity}
      * @throws PersistenceException
      */
     List<OfferEntity> findOffersByEmployerName(Authentication authentication, String employerName);
@@ -98,7 +107,7 @@ public interface ExchangeDao extends BasicDao {
      * Finds the entity in the database.
      *
      * @param employerName employer name to search for
-     * @return list of {@code }DeprecatedOfferEntity}
+     * @return list of {@code OfferEntity}
      * @throws PersistenceException
      */
     List<EmployerView> findOffersByLikeEmployerName(Authentication authentication, String employerName);
@@ -106,7 +115,7 @@ public interface ExchangeDao extends BasicDao {
     /**
      * Finds all shared offers.
      *
-     * @return list of {@link net.iaeste.iws.persistence.entities.exchange.OfferEntity} which are shared
+     * @return list of {@link OfferEntity} which are shared
      */
     List<OfferEntity> findSharedOffers(Authentication authentication);
 
@@ -159,21 +168,6 @@ public interface ExchangeDao extends BasicDao {
      * @return number of groups from which the offer was unshared
      */
     Integer unshareFromGroups(String externalId, List<Long> groups);
-
-    /**
-     * Deletes an offer from database.
-     *
-     * @param offerId id of the offer to delete
-     */
-    Integer delete(Authentication authentication, Long offerId);
-
-    /**
-     * Deletes an offer from database.
-     *
-     * @param offerIds ids of offers to delete
-     * @return number of deleted objects
-     */
-    Integer delete(Authentication authentication, List<Long> offerIds);
 
     /**
      * Finds all groups for given external ids

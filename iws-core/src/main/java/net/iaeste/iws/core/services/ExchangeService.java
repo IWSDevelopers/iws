@@ -150,7 +150,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final String refNo = givenOffer.getRefNo();
 
         if (externalId == null) {
-            final OfferEntity existingEntity = dao.findOffer(authentication, refNo);
+            final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, refNo);
             if (existingEntity == null) {
                 // Create a new Offer
                 // Add the Group to the Offer
@@ -176,7 +176,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             permissionCheck(authentication, authentication.getGroup());
 
             // Okay, user is permitted. Let's check if we can find this Offer
-            final OfferEntity existingEntity = dao.findOffer(authentication, externalId, refNo);
+            final OfferEntity existingEntity = dao.findOfferByExternalIdAndRefNo(authentication, externalId, refNo);
 
             if (existingEntity == null) {
                 // We could not find an Offer matching the given criterias,
@@ -207,18 +207,13 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         }
     }
 
-    // TODO Should perform the delete operation based on the refno
     public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {
-//        // Check if the user is allowed to work with the Object, if not -
-//        // then a Permission Exception is thrown
-//        permissionCheck(authentication, authentication.getGroup());
-
-        final OfferEntity foundOffer = dao.findOffer(authentication, request.getOfferRefNo());
+        final OfferEntity foundOffer = dao.findOfferByExternalId(authentication, request.getOfferId());
 
         if (foundOffer != null) {
-            dao.delete(authentication, foundOffer.getId());
+            dao.delete(foundOffer);
         } else {
-            throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "Cannot delete Offer with refNo " + request.getOfferRefNo());
+            throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "Cannot delete Offer with OfferId " + request.getOfferId());
         }
     }
 

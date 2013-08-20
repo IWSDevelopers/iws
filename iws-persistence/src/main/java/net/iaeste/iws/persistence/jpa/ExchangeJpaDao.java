@@ -110,7 +110,19 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public OfferEntity findOffer(final Authentication authentication, final String refNo) {
+    public OfferEntity findOfferByExternalId(final Authentication authentication, final String externalId) {
+        final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalId");
+        query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("eoid", externalId);
+
+        return findSingleResult(query, "Offer");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OfferEntity findOfferByRefNo(final Authentication authentication, final String refNo) {
         OfferEntity entity = null;
 
         if (refNo != null) {
@@ -131,7 +143,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public OfferEntity findOffer(final Authentication authentication, final String externalId, final String refNo) {
+    public OfferEntity findOfferByExternalIdAndRefNo(final Authentication authentication, final String externalId, final String refNo) {
         final Query query = entityManager.createNamedQuery("offer.findByGroupAndExternalIdAndRefNo");
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("eoid", externalId);
@@ -273,30 +285,6 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         final Query query = entityManager.createNamedQuery("offerGroup.deleteByOfferExternalIdAndGroups");
         query.setParameter("eoid", externalId);
         query.setParameter("gids", groups);
-
-        return query.executeUpdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer delete(final Authentication authentication, final Long offerId) {
-        final Query query = entityManager.createNamedQuery("offer.deleteByGroupAndId");
-        query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("id", offerId);
-
-        return query.executeUpdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer delete(final Authentication authentication, final List<Long> offerIds) {
-        final Query query = entityManager.createNamedQuery("offer.deleteByGroupAndIds");
-        query.setParameter("gid", authentication.getGroup().getId());
-        query.setParameter("ids", offerIds);
 
         return query.executeUpdate();
     }

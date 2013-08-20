@@ -81,6 +81,11 @@ import java.util.Map;
                         "where o.group.id = :gid" +
                         "  and o.externalId in :eoids"),
         @NamedQuery(
+                name = "offer.findByGroupAndExternalId",
+                query = "select o from OfferEntity o " +
+                        "where o.group.id = :gid" +
+                        "  and o.externalId = :eoid"),
+        @NamedQuery(
                 name = "offer.findByGroupAndRefNo",
                 query = "select o from OfferEntity o " +
                         "where o.group.id = :gid" +
@@ -94,18 +99,7 @@ import java.util.Map;
                 name = "offer.findByGroupAndEmployerName",
                 query = "select o from OfferEntity o " +
                         "where o.group.id = :gid" +
-                        "  and o.employer.name = :employer"),
-        @NamedQuery(
-                name = "offer.deleteByGroupAndId",
-                query = "delete from OfferEntity o " +
-                        "where o.group.id = :gid" +
-                        "  and o.id = :id"),
-        @NamedQuery(
-                name = "offer.deleteByGroupAndIds",
-                query = "delete from OfferEntity o " +
-                        "where o.group.id = :gid" +
-                        "  and o.id in :ids")
-})
+                        "  and o.employer.name = :employer")})
 @Entity
 @Table(name = "offers")
 public class OfferEntity implements Updateable<OfferEntity>, Notifiable {

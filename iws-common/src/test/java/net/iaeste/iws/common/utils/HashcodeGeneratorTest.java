@@ -24,7 +24,7 @@ import org.junit.Test;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class HashcodeGeneratorTest {
+public class    HashcodeGeneratorTest {
 
     private static final String USER_SALT = "";
 

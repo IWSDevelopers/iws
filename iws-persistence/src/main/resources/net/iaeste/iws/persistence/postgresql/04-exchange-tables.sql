@@ -72,7 +72,7 @@ create table offers (
     study_fields              varchar(1000),
     specializations           varchar(1000),
     prev_training_req         boolean,
-    other_requirements        varchar(500),
+    other_requirements        varchar(4096),
     -- Period for the Offer
     min_weeks                 integer,
     max_weeks                 integer,

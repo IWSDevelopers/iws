@@ -252,6 +252,7 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setOtherRequirements(final String otherRequirements) {
+        ensureNotTooLong("otherRequirements", otherRequirements, 4000);
         this.otherRequirements = otherRequirements;
     }
 

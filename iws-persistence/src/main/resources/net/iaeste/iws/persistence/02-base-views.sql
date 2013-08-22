@@ -88,3 +88,19 @@ create view country_details as
     left join users u           on u.id = u2g.user_id
   where g.grouptype_id = 5
     and u2g.role_id = 1;
+
+-- =============================================================================
+-- List the Notification job tasks with their Notfication type
+-- and Notifiable object
+-- Note; only unprocessed job tasks are included in the view
+-- =============================================================================
+create view notification_job_task_details as
+  select
+    njt.id                 as id,
+    njt.attempts           as attempts,
+    nj.notification_type   as notification_type,
+    nj.object              as object
+  from
+    notification_job_tasks njt
+    left join notification_jobs nj  on njt.job_id = nj.id
+  where njt.processed = false;

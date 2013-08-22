@@ -638,7 +638,7 @@ create table notification_consumers (
     group_id           integer,
     name               varchar(100),
     className          varchar(100),
-    active             boolean,
+    active             boolean default false,
     created            timestamp default now(),
     modified           timestamp default now(),
 
@@ -654,4 +654,55 @@ create table notification_consumers (
     constraint notification_consumers_notnull_group_id          check (group_id is not null),
     constraint notification_consumers_notnull_created           check (created is not null),
     constraint notification_consumers_notnull_modified          check (modified is not null)
+);
+
+-- =============================================================================
+-- Jobs - notification jobs to be processed by Notification Manager
+-- -----------------------------------------------------------------------------
+--
+-- =============================================================================
+create sequence notification_job_sequence start with 1 increment by 1;
+create table notification_jobs (
+    id                  integer default nextval('sequence notification_job_sequence'),
+    notification_type   varchar(100),
+    object              bytea,
+    notified            boolean default false,
+    modified            timestamp default now(),
+    created             timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint notification_job_pk          primary key (id),
+
+    /* Not Null Constraints */
+    constraint notification_job_notnull_id                  check (id is not null),
+    constraint notification_job_notnull_notification_type   check (notification_type is not null),
+    constraint notification_job_notnull_object              check (object is not null),
+    constraint notification_job_notnull_modified            check (modified is not null),
+    constraint notification_job_notnull_created             check (created is not null)
+);
+
+-- =============================================================================
+-- Notification Job Tasks - task for notification consumers
+-- -----------------------------------------------------------------------------
+--
+-- =============================================================================
+create sequence notification_job_task_sequence start with 1 increment by 1;
+create table notification_job_tasks (
+    id                  integer default nextval('notification_job_task_sequence'),
+    job_id              integer,
+    consumer_id         integer,
+    processed           boolean default false,
+    attempts            integer,
+    modified            timestamp default now(),
+    created             timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint notification_job_task_pk              primary key (id),
+    constraint notification_job_task_fk_job_id       foreign key (job_id) references notification_jobs (id),
+    constraint notification_job_task_fk_consumer_id  foreign key (consumer_id) references notification_consumers (id),
+
+    /* Not Null Constraints */
+    constraint notification_job_task_notnull_id                  check (id is not null),
+    constraint notification_job_task_notnull_modified            check (modified is not null),
+    constraint notification_job_task_notnull_created             check (created is not null)
 );

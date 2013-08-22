@@ -41,6 +41,11 @@ public enum NotificationType {
     ACTIVATE_USER,
 
     /**
+     * New user is being created
+     */
+    NEW_USER,
+
+    /**
      * For sending of reset password requests.
      */
     RESET_PASSWORD,

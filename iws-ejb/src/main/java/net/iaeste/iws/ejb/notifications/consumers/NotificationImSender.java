@@ -29,7 +29,7 @@ import net.iaeste.iws.persistence.NotificationDao;
  * @since   1.7
  */
 public class NotificationImSender implements Observer {
-
+    private Long id = null;
 //    //JMS message queue
 //    @Resource(mappedName = "iws-emailQueue")
 //    private Queue queue;
@@ -64,6 +64,16 @@ public class NotificationImSender implements Observer {
     @Override
     public void update(final Observable subject) {
         processMessages();
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     private void processMessages() {

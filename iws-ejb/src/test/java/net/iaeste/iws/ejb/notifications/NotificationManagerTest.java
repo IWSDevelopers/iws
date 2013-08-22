@@ -17,7 +17,7 @@ package net.iaeste.iws.ejb.notifications;
 import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.NotificationConsumerEntity;
+import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import org.junit.Test;
 
@@ -41,13 +41,13 @@ public class NotificationManagerTest {
     @Test
     public void loadConsumsers() {
         final NotificationDao dao = mock(NotificationJpaDao.class);
-        NotificationConsumerEntity consumer = new NotificationConsumerEntity(new GroupEntity("dummyGroup"), "Consumer1", "net.iaeste.iws.ejb.notifications.consumers.NotificationEmailDelayedSender");
-        List<NotificationConsumerEntity> consumers = new ArrayList<>(1);
+        final NotificationConsumerEntity consumer = new NotificationConsumerEntity(new GroupEntity("dummyGroup"), "Consumer1", "net.iaeste.iws.ejb.notifications.consumers.NotificationEmailSender");
+        final List<NotificationConsumerEntity> consumers = new ArrayList<>(1);
         consumers.add(consumer);
         when(dao.findActiveNotificationConsumers()).thenReturn(consumers);
 
-        NotificationManager notificationManager = new NotificationManager(dao, null, null);
-        MessageServer messageServer = new MessageServer();
+        final NotificationManager notificationManager = new NotificationManager(dao, null);
+        final MessageServer messageServer = new MessageServer();
         messageServer.run();
         while(!messageServer.isDeployed()) {
             try {

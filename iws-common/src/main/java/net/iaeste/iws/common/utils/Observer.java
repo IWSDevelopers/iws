@@ -35,4 +35,8 @@ public interface Observer {
      * @param  subject  the observable object
      */
     void update(Observable subject);
+
+    //TODO better identifier, UUID?
+    Long getId();
+    void setId(final Long id);
 }

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.NotificationConsumerEntity
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -13,15 +13,18 @@
  * =============================================================================
  */
 
-package net.iaeste.iws.persistence.entities;
+package net.iaeste.iws.persistence.entities.notifications;
+
+import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.persistence.entities.IWSEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
@@ -31,50 +34,44 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * This entity is to be used for storing registerd notification consumers
+ * This entity is to be used for registering new notification job for the NotificationManager
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 @NamedQueries(@NamedQuery(
-        name = "notifications.findConsumers",
-        query = "select nc from NotificationConsumerEntity nc " +
-                "where nc.active = :active"))
+        name = "notifications.findJobsByNotified",
+        query = "select nj from NotificationJobEntity nj " +
+                "where nj.notified = :notified"))
 @Entity
-@Table(name = "notification_consumers")
-public class NotificationConsumerEntity implements IWSEntity {
+@Table(name = "notification_jobs")
+public class NotificationJobEntity implements IWSEntity {
 
     @Id
-    @SequenceGenerator(name = "pk_sequence", sequenceName = "notification_consumer_sequence")
+    @SequenceGenerator(name = "pk_sequence", sequenceName = "notification_job_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
     /**
-     * Group that owns this consumer
+     * Notification type
      */
-    @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(name = "group_id", nullable = false)
-    private GroupEntity group = null;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "notification_type", length = 100, nullable = false)
+    private NotificationType notificationType = null;
 
     /**
-     * Consumer name
+     * Notifiable serialized object
      */
-    @Column(name = "name", length = 100)
-    private String name = null;
+    @Column(name = "object")
+    private byte[] object = null;
 
     /**
-     * Consumer class name
+     * Notified marks whether NotificationManager notified consumers
      */
-    @Column(name = "class_name", length = 100)
-    private String className = null;
-
-    /**
-     * Is activate - do we want to load this consumer?
-     */
-    @Column(name = "active")
-    private boolean active = false;
+    @Column(name = "notified")
+    private boolean notified = false;
 
     /**
      * Timestamp when the Entity was created.
@@ -97,20 +94,18 @@ public class NotificationConsumerEntity implements IWSEntity {
     /**
      * Empty Constructor, JPA requirement.
      */
-    public NotificationConsumerEntity() {
+    public NotificationJobEntity() {
     }
 
     /**
-     * Default Constructor, for creating Message Entity without date of processing.
+     * Default Constructor
      *
-     * @param group    The Group this entity belongs to
-     * @param name    Name of the consumer
-     * @param className Class name of the consumer
+     * @param notificationType    Notification type
+     * @param object              Serialized Notifiable object
      */
-    public NotificationConsumerEntity(final GroupEntity group, final String name, final String className) {
-        this.group = group;
-        this.name = name;
-        this.className = className;
+    public NotificationJobEntity(final NotificationType notificationType, final byte[] object) {
+        this.notificationType = notificationType;
+        this.object = object;
     }
 
     // =========================================================================
@@ -133,28 +128,28 @@ public class NotificationConsumerEntity implements IWSEntity {
         return id;
     }
 
-    public void setGroup(final GroupEntity group) {
-        this.group = group;
+    public void setNotificationType(final NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 
-    public GroupEntity getGroup() {
-        return group;
+    public NotificationType getNotificationType() {
+        return notificationType;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setObject(final byte[] object) {
+        this.object = object;
     }
 
-    public String getName() {
-        return name;
+    public byte[] getObject() {
+        return object;
     }
 
-    public void setClassName(final String className) {
-        this.className = className;
+    public void setNotified(final boolean notified) {
+        this.notified = notified;
     }
 
-    public String getClassName() {
-        return className;
+    public boolean isNotified() {
+        return notified;
     }
 
     /**

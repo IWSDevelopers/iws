@@ -20,6 +20,7 @@ import static org.junit.Assert.assertThat;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.entities.notifications.NotificationMessageEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
 import org.junit.Ignore;

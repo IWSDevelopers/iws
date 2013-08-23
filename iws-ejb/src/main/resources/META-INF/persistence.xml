@@ -14,8 +14,8 @@
         <class>net.iaeste.iws.persistence.entities.GroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupTypeEntity</class>
         <class>net.iaeste.iws.persistence.entities.MonitoringEntity</class>
-        <class>net.iaeste.iws.persistence.entities.NotificationMessageEntity</class>
-        <class>net.iaeste.iws.persistence.entities.OfferEntity</class>
+        <class>net.iaeste.iws.persistence.entities.notifications.NotificationMessageEntity</class>
+        <class>net.iaeste.iws.persistence.entities.exchange.OfferEntity</class>
         <class>net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.RoleEntity</class>
         <class>net.iaeste.iws.persistence.entities.SessionEntity</class>
@@ -26,7 +26,7 @@
         <class>net.iaeste.iws.persistence.entities.UserNotificationEntity</class>
 
         <class>net.iaeste.iws.persistence.views.UserPermissionView</class>
-        <class>net.iaeste.iws.persistence.views.EmployerInformationView</class>
+        <class>net.iaeste.iws.persistence.views.EmployerView</class>
         <class>net.iaeste.iws.persistence.views.CountryView</class>
         <class>net.iaeste.iws.persistence.views.EmployerView</class>
 

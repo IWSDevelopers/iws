@@ -15,12 +15,20 @@
 package net.iaeste.iws.ejb.notifications.consumers;
 
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.ejb.emails.EmailMessage;
 import net.iaeste.iws.ejb.ffmq.MessageServer;
-import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
+import net.iaeste.iws.ejb.notifications.NotificationMessageGenerator;
+import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
+import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserNotificationEntity;
+import net.iaeste.iws.persistence.views.NotificationJobTasksView;
 import net.timewalker.ffmq3.FFMQConstants;
 import org.apache.log4j.Logger;
 
@@ -36,21 +44,27 @@ import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The Class requires an EJB framework to properly work. For this reason, large
  * parts of the code is commented out.
- *
- * This should probably go to the EJB module. It needs to subscribe to the NotificationManager.
- * If the instance of the NotificationManager can be access from EJB, there is no reason against moving it.
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection ObjectAllocationInLoop
  */
-public class NotificationEmailSender implements Observer, NotificationDirectEmailSender {
+public class NotificationEmailSender implements Observer {
+    private Long id = null;
+    private final NotificationMessageGenerator messageGenerator;
+    private final NotificationDao dao;
 
     private static final Logger LOG = Logger.getLogger(NotificationEmailSender.class);
 
@@ -61,10 +75,14 @@ public class NotificationEmailSender implements Observer, NotificationDirectEmai
     private QueueConnectionFactory queueConnectionFactory;
 
     private QueueConnection queueConnection = null;
-    private QueueSender queueSender = null;
-    private QueueSession queueSession = null;
+    private QueueSender sender = null;
+    private QueueSession session = null;
 
-    public NotificationEmailSender() {
+    public NotificationEmailSender(final NotificationDao dao) {
+        this.dao = dao;
+        //TODO inject message generator?
+        this.messageGenerator = new NotificationMessageGeneratorFreemarker();
+
         try {
             //FFMQ specific
             final Hashtable<String, String> env = new Hashtable<>();
@@ -75,15 +93,20 @@ public class NotificationEmailSender implements Observer, NotificationDirectEmai
             final Context context = new InitialContext(env);
 
             queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
-            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
-            context.close();
             // end FFMQ specific
 
             queueConnection = queueConnectionFactory.createQueueConnection();
             queueConnection.start();
-            queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-            queueSender = queueSession.createSender(queue);
-            queueSender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+
+            //FFMQ specific
+            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
+            context.close();
+            // end FFMQ specific
+
+            session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+            sender = session.createSender(queue);
+            //TODO added for FFMQ, keep it for glassfish?
+            sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
         } catch (NamingException|JMSException e) {
             throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailSender) initialization failed.", e);
         }
@@ -94,12 +117,22 @@ public class NotificationEmailSender implements Observer, NotificationDirectEmai
      */
     public void stop() {
         try {
-            queueSender.close();
-            queueSession.close();
+            sender.close();
+            session.close();
             queueConnection.stop();
         } catch (JMSException e) {
             throw new IWSException(IWSErrors.ERROR, "Queue recipient stopping failed.", e);
         }
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     /**
@@ -110,31 +143,69 @@ public class NotificationEmailSender implements Observer, NotificationDirectEmai
         processMessages();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void send(final NotificationMessageEntity message) {
-        try {
-            final ObjectMessage msg = queueSession.createObjectMessage();
-            final EmailMessage emsg = new EmailMessage();
-            emsg.setTo(message.getUser().getUserName());
-            emsg.setSubject(message.getMessageTitle());
-            emsg.setMessage(message.getMessage());
-            msg.setObjectProperty("emailMessage", emsg);
-
-            queueSender.send(msg);
-        } catch (JMSException ignored) {
-            LOG.error("Error when sending message to the queue");
+    private void processMessages() {
+        final List<NotificationJobTasksView> jobTasks = dao.findUnprocessedNotificationJobTaskByConsumerId(id);
+        for (final NotificationJobTasksView jobTask : jobTasks) {
+            try {
+                final ByteArrayInputStream inputStream = new ByteArrayInputStream(jobTask.getObject());
+                final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
+                final Notifiable notifiable = (Notifiable) objectStream.readObject();
+                boolean processed = false;
+                if (notifiable != null) {
+                    processTask(notifiable, jobTask.getNotificationType());
+                    processed = true;
+                }
+                dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts()+1);
+            } catch (IOException |ClassNotFoundException ignored) {
+                //TODO write to log and skip the task or throw an exception?
+            }
         }
     }
 
-    private void processMessages() {
-        //TODO pavel: I tried two approaches: one is the current implematation with the NotificationDirectEmailSender
-        //            the second is to implement public method in NotificationManager which returns a list with messages
-        //            to be sent. The NotificationManager's instance is the parameter of the update(Observable) method.
-        //            None of these approaches is ideal, I kept the one with interface for now.
-        //get list of messages to be sent immediately, this needs a connection to the notification manager
-        //which instance I have as the parameter of the update(Observable) method
+    private boolean processTask(final Notifiable notifiable, final NotificationType type) {
+        //TODO marking task as processed depending on the successful sending to all recepients might be a problem. if it
+        //     fails for one user, even those already sent users will be included during next processing. Just failed user
+        //     NotificationType and message could be saved for furthere processing/investigation
+
+        boolean ret = false;
+        final List<UserEntity> recipients = getRecipients(notifiable, type);
+        for (final UserEntity recipient : recipients) {
+            final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
+            //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
+            //should be get from DB directly according to the NotificationType
+            if (userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
+                try {
+                    final ObjectMessage msg = session.createObjectMessage();
+                    final EmailMessage emsg = new EmailMessage();
+                    emsg.setTo(recipient.getUserName());
+                    final Map<String, String> messageData = messageGenerator.generateFromTemplate(notifiable, type);
+                    emsg.setSubject(messageData.get("title"));
+                    emsg.setMessage(messageData.get("body"));
+                    msg.setObject(emsg);
+
+                    sender.send(msg);
+                    ret = true;
+                } catch (JMSException e) {
+                    //do something, log or exception?
+                }
+            }
+        }
+        return ret;
     }
+
+    //TODO probably not necessary to have the whole UserEntity, maybe just List<string> (emails) would be enough
+    //     for the current notification processing
+    private List<UserEntity> getRecipients(final Notifiable obj, final NotificationType type) {
+        final List<UserEntity> result = new ArrayList<>();
+        switch (type) {
+            case ACTIVATE_USER:
+            case RESET_PASSWORD:
+            case RESET_SESSION:
+            case UPDATE_USERNAME:
+                result.add((UserEntity)obj);
+                break;
+        }
+        return result;
+    }
+
 }

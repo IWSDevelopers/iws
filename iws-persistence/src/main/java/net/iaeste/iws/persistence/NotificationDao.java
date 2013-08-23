@@ -17,10 +17,12 @@ package net.iaeste.iws.persistence;
 import net.iaeste.iws.api.enums.NotificationMessageStatus;
 import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.common.notification.NotificationType;
-import net.iaeste.iws.persistence.entities.NotificationConsumerEntity;
-import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
+import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
+import net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity;
+import net.iaeste.iws.persistence.entities.notifications.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
+import net.iaeste.iws.persistence.views.NotificationJobTasksView;
 
 import java.util.Date;
 import java.util.List;
@@ -62,9 +64,41 @@ public interface NotificationDao extends BasicDao {
     void updateNotificationMessageStatus(NotificationMessageEntity message, NotificationMessageStatus status);
 
     /**
-     * Finds all NotificationConsumerEntity that are set as active
+     * Finds all NotificationConsumerEntities that are set as active
      *
      * @return List of NotificationConsumerEntity
      */
     List<NotificationConsumerEntity> findActiveNotificationConsumers();
+
+    /**
+     * Finds all NotificationJobEntities that are set as processed=false
+     *
+     * @return List of NotificationJobEntity
+     */
+    List<NotificationJobEntity> findUnprocessedNotificationJobs();
+
+    /**
+     * Finds NotificationConsumerEntity by Id
+     *
+     * @param id      The consumer id
+     * @return        NotificationConsumerEntity
+     */
+    NotificationConsumerEntity findNotificationConsumerById(final Long id);
+
+    /**
+     * Finds NotificationJobTaskEntity by ConsumerId
+     *
+     * @param consumerId  The consumer id
+     * @return            NotificationJobTaskEntity
+     */
+    List<NotificationJobTasksView> findUnprocessedNotificationJobTaskByConsumerId(final Long consumerId);
+
+    /**
+     * Updates NotificationJobTask entity
+     *
+     * @param id         NotificaitonJobTask id
+     * @param processed  flag processed/unprocessed
+     * @param attempts   number of processing attempts
+     */
+    void updateNotificationJobTask(final Long id, boolean processed, final Integer attempts);
 }

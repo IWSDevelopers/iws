@@ -456,6 +456,8 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
                 // too the current e-mail address
                 fields.put(NotificationField.EMAIL, userName);
                 break;
+            case NEW_USER:
+                fields.put(NotificationField.EMAIL, userName);
             case UPDATE_USERNAME:
                 // When updating the username, we're having a new address that
                 // we need to send it to

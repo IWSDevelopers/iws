@@ -21,10 +21,12 @@ import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.NotificationDao;
-import net.iaeste.iws.persistence.entities.NotificationConsumerEntity;
-import net.iaeste.iws.persistence.entities.NotificationMessageEntity;
+import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
+import net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity;
+import net.iaeste.iws.persistence.entities.notifications.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
+import net.iaeste.iws.persistence.views.NotificationJobTasksView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -96,9 +98,56 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
      */
     @Override
     public List<NotificationConsumerEntity> findActiveNotificationConsumers() {
-        final Query query = entityManager.createNamedQuery("notifications.findConsumers");
+        final Query query = entityManager.createNamedQuery("notifications.findConsumersByActive");
         query.setParameter("active", true);
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<NotificationJobEntity> findUnprocessedNotificationJobs() {
+        final Query query = entityManager.createNamedQuery("notifications.findJobsByNotified");
+        query.setParameter("notified", false);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NotificationConsumerEntity findNotificationConsumerById(final Long id) {
+        final Query query = entityManager.createNamedQuery("notifications.findConsumersById");
+        query.setParameter("id", id);
+
+        return (NotificationConsumerEntity) query.getSingleResult();
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public List<NotificationJobTasksView> findUnprocessedNotificationJobTaskByConsumerId(final Long consumerId) {
+        final Query query = entityManager.createNamedQuery("view.NotificationJobTasksByConsumerIdAndProcessed");
+        query.setParameter("consumerId", consumerId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateNotificationJobTask(final Long id, final boolean processed, final Integer attempts) {
+        final Query query = entityManager.createNamedQuery("notifications.updateJobTaskProcessedAndAttempts");
+        query.setParameter("processed", processed);
+        query.setParameter("attempts", attempts);
+        query.setParameter("id", id);
+
+        query.executeUpdate();
     }
 }

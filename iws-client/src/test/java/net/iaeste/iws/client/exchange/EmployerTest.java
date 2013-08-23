@@ -131,7 +131,7 @@ public final class EmployerTest {
         // And verify that everything is working
         final Employer updated = response2.getEmployer();
         assertThat(updated.getBusiness(), is("MyBusiness"));
-        assertThat(updated.getAddress().getStreet1(), is("MyStreet"));
+        assertThat(updated.getAddress().getStreet1(), is("MyStreet 1"));
         assertThat(updated.getAddress().getCity(), is("MyCity"));
     }
 

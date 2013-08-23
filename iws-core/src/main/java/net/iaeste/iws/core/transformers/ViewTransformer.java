@@ -63,7 +63,6 @@ public final class ViewTransformer {
 
         // Third, read out the Address of the Employer
         final Address address = new Address();
-        address.setId(view.getAddressExternalId());
         address.setStreet1(view.getStreet1());
         address.setStreet2(view.getStreet2());
         address.setZip(view.getZip());

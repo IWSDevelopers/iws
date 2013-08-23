@@ -493,7 +493,7 @@ create table addresses (
     external_id         varchar(36),
     street1             varchar(100) default '',
     street2             varchar(100) default '',
-    zip                 varchar(100) default '',
+    zip                 varchar(12) default '',
     city                varchar(100) default '',
     state               varchar(100) default '',
     pobox               varchar(100) default '',

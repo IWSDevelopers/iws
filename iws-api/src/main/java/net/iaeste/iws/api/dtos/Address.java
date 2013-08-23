@@ -32,12 +32,21 @@ public final class Address extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
-     * All fields of type String in this Object, are allowed to be as big as
+     * Most fields of type String in this Object, are allowed to be as big as
      * this number.
      */
     private static final int FIELD_LENGTH = 100;
 
-    private String id = null;
+    /**
+     * Zip Codes (Postal Codes) are used by a rather large number of countries,
+     * in fact according to <a href="http://en.wikipedia.org/wiki/Postal_code">wikipedia</a>,
+     * most countries are using these as an integral part of an Address. The
+     * length of them is between 3 and 10 characters, with an optional Country
+     * Code (two letters) additionally, meaning that the Zip Code can be up to
+     * 12 Characters long.
+     */
+    private static final int ZIP_LENGTH = 12;
+
     private String street1 = null;
     private String street2 = null;
     private String zip = null;
@@ -64,7 +73,6 @@ public final class Address extends AbstractVerification {
      */
     public Address(final Address address) {
         if (address != null) {
-            id = address.id;
             street1 = address.street1;
             street2 = address.street2;
             zip = address.zip;
@@ -79,19 +87,8 @@ public final class Address extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setId(final String id) {
-        ensureValidId("id", id);
-
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
     public void setStreet1(final String street1) {
         ensureNotEmptyOrTooLong("street1", street1, FIELD_LENGTH);
-
         this.street1 = street1;
     }
 
@@ -100,8 +97,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setStreet2(final String street2) {
-        ensureNotEmptyOrTooLong("street2", street2, FIELD_LENGTH);
-
+        ensureNotTooLong("street2", street2, FIELD_LENGTH);
         this.street2 = street2;
     }
 
@@ -110,8 +106,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setZip(final String zip) {
-        ensureNotEmptyOrTooLong("zip", zip, FIELD_LENGTH);
-
+        ensureNotEmptyOrTooLong("zip", zip, ZIP_LENGTH);
         this.zip = zip;
     }
 
@@ -121,7 +116,6 @@ public final class Address extends AbstractVerification {
 
     public void setCity(final String city) {
         ensureNotEmptyOrTooLong("city", city, FIELD_LENGTH);
-
         this.city = city;
     }
 
@@ -130,8 +124,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setState(final String state) {
-        ensureNotEmptyOrTooLong("state", state, FIELD_LENGTH);
-
+        ensureNotTooLong("state", state, FIELD_LENGTH);
         this.state = state;
     }
 
@@ -140,8 +133,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setPobox(final String pobox) {
-        ensureNotEmptyOrTooLong("pobox", pobox, FIELD_LENGTH);
-
+        ensureNotTooLong("pobox", pobox, FIELD_LENGTH);
         this.pobox = pobox;
     }
 
@@ -150,6 +142,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setCountry(final Country country) {
+        ensureNotNull("country", country);
         this.country = new Country(country);
     }
 
@@ -185,9 +178,6 @@ public final class Address extends AbstractVerification {
 
         final Address address = (Address) obj;
 
-        if (id != null ? !id.equals(address.id) : address.id != null) {
-            return false;
-        }
         if (street1 != null ? !street1.equals(address.street1) : address.street1 != null) {
             return false;
         }
@@ -214,7 +204,6 @@ public final class Address extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (street1 != null ? street1.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (street2 != null ? street2.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (zip != null ? zip.hashCode() : 0);
@@ -231,7 +220,6 @@ public final class Address extends AbstractVerification {
     @Override
     public String toString() {
         return "Address{" +
-                "id='" + id + '\'' +
                 ", street1='" + street1 + '\'' +
                 ", street2='" + street2 + '\'' +
                 ", zip='" + zip + '\'' +

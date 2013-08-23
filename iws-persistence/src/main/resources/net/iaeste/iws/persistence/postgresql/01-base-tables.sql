@@ -513,7 +513,7 @@ create table addresses (
     id                  integer default nextval('address_sequence'),
     external_id         varchar(36),
     street1             varchar(100) default '',
-    street2             varchar(100) default '',
+    street2             varchar(12) default '',
     zip                 varchar(100) default '',
     city                varchar(100) default '',
     state              varchar(100) default '',

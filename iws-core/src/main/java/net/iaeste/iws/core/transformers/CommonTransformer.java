@@ -139,7 +139,6 @@ public final class CommonTransformer {
         if (entity != null) {
             address = new Address();
 
-            address.setId(entity.getExternalId());
             address.setStreet1(entity.getStreet1());
             address.setStreet2(entity.getStreet2());
             address.setZip(entity.getZip());
@@ -158,7 +157,6 @@ public final class CommonTransformer {
         if (address != null) {
             entity = new AddressEntity();
 
-            entity.setExternalId(address.getId());
             entity.setStreet1(address.getStreet1());
             entity.setStreet2(address.getStreet2());
             entity.setZip(address.getZip());

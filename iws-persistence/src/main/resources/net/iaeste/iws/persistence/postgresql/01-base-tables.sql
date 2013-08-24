@@ -663,7 +663,7 @@ create table notification_consumers (
 -- =============================================================================
 create sequence notification_job_sequence start with 1 increment by 1;
 create table notification_jobs (
-    id                  integer default nextval('sequence notification_job_sequence'),
+    id                  integer default nextval('notification_job_sequence'),
     notification_type   varchar(100),
     object              bytea,
     notified            boolean default false,

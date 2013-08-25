@@ -637,7 +637,7 @@ create table notification_consumers (
     id                 integer default nextval('notification_consumer_sequence'),
     group_id           integer,
     name               varchar(100),
-    className          varchar(100),
+    class_name         varchar(100),
     active             boolean default false,
     created            timestamp default now(),
     modified           timestamp default now(),

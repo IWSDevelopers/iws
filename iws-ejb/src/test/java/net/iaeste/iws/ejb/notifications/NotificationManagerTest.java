@@ -15,9 +15,11 @@
 package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.ejb.ffmq.MessageServer;
+import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
+import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import org.junit.Test;
 
@@ -41,12 +43,13 @@ public class NotificationManagerTest {
     @Test
     public void loadConsumsers() {
         final NotificationDao dao = mock(NotificationJpaDao.class);
+        final AccessDao accessDao = mock(AccessJpaDao.class);
         final NotificationConsumerEntity consumer = new NotificationConsumerEntity(new GroupEntity("dummyGroup"), "Consumer1", "net.iaeste.iws.ejb.notifications.consumers.NotificationEmailSender");
         final List<NotificationConsumerEntity> consumers = new ArrayList<>(1);
         consumers.add(consumer);
         when(dao.findActiveNotificationConsumers()).thenReturn(consumers);
 
-        final NotificationManager notificationManager = new NotificationManager(dao, null);
+        final NotificationManager notificationManager = new NotificationManager(dao, accessDao, null, false);
         final MessageServer messageServer = new MessageServer();
         messageServer.run();
         while(!messageServer.isDeployed()) {

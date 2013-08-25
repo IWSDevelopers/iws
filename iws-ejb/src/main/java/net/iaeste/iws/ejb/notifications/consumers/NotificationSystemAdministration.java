@@ -15,7 +15,6 @@
 package net.iaeste.iws.ejb.notifications.consumers;
 
 import net.iaeste.iws.api.enums.NotificationFrequency;
-import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
@@ -64,10 +63,10 @@ public class NotificationSystemAdministration implements Observer {
             try {
                 final ByteArrayInputStream inputStream = new ByteArrayInputStream(jobTask.getObject());
                 final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
-                final Notifiable notifiable = (Notifiable) objectStream.readObject();
+                final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
                 boolean processed = false;
-                if (notifiable != null) {
-                    processed = processTask(notifiable, jobTask.getNotificationType());
+                if (fields != null) {
+                    processed = processTask(fields, jobTask.getNotificationType());
                 }
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts()+1);
             } catch (IOException|ClassNotFoundException ignored) {
@@ -76,22 +75,23 @@ public class NotificationSystemAdministration implements Observer {
         }
     }
 
-    private boolean processTask(final Notifiable notifiable, final NotificationType type) {
+    private boolean processTask(final Map<NotificationField, String> fields, final NotificationType type) {
         boolean ret = false;
         switch (type) {
             case NEW_USER:
-                prepareUserNotificationSetting(notifiable, type);
+                prepareUserNotificationSetting(fields.get(NotificationField.EMAIL), type);
                 ret = true;
                 break;
         }
         return ret;
     }
 
-    private void prepareUserNotificationSetting(final Notifiable notifiable, final NotificationType type) {
-        final Map<NotificationField,String> fieldMap = notifiable.prepareNotifiableFields(type);
-        final UserEntity user = accessDao.findUserByUsername(fieldMap.get(NotificationField.EMAIL));
-        final UserNotificationEntity userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_USER, NotificationFrequency.IMMEDIATELY);
-        dao.persist(userNotification);
+    private void prepareUserNotificationSetting(final String username, final NotificationType type) {
+        final UserEntity user = accessDao.findUserByUsername(username);
+        if (user != null) {
+            final UserNotificationEntity userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_USER, NotificationFrequency.IMMEDIATELY);
+            dao.persist(userNotification);
+        }
     }
 
     @Override

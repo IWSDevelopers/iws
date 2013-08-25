@@ -25,6 +25,7 @@ import net.iaeste.iws.ejb.emails.EmailMessage;
 import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.iaeste.iws.ejb.notifications.NotificationMessageGenerator;
 import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
+import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
@@ -78,7 +79,7 @@ public class NotificationEmailSender implements Observer {
     private QueueSender sender = null;
     private QueueSession session = null;
 
-    public NotificationEmailSender(final NotificationDao dao) {
+    public NotificationEmailSender(final NotificationDao dao, final AccessDao accessDao) {
         this.dao = dao;
         //TODO inject message generator?
         this.messageGenerator = new NotificationMessageGeneratorFreemarker();

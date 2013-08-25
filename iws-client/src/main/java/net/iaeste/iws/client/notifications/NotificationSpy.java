@@ -116,6 +116,14 @@ public final class NotificationSpy implements Notifications {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processJobs() {
+        //this method is not important for NotificationSpy
+    }
+
+    /**
      * Remove all messages from the Notification Queue.
      */
     public void clear() {

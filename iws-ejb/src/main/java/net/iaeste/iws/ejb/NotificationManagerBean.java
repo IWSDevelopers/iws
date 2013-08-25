@@ -15,12 +15,22 @@
 package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.ejb.notifications.NotificationManager;
+import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
+import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.jpa.AccessJpaDao;
+import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
+import org.apache.log4j.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -31,8 +41,38 @@ import javax.ejb.TransactionManagementType;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {
-
+    private static final Logger LOG = Logger.getLogger(NotificationManagerBean.class);
+    private EntityManager entityManager = null;
+    private NotificationDao dao = null;
+    private AccessDao accessDao = null;
     private Notifications notifications = null;
+
+//    @Resource
+//    private TimerService timerService;
+
+    /**
+     * Setter for the JNDI injected persistence context. This allows us to also
+     * test the code, by invoking these setters on the instantiated Object.
+     *
+     * @param entityManager Transactional Entity Manager instance
+     */
+    @PersistenceContext(unitName = "iwsDatabase")
+    public void setEntityManager(final EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @PostConstruct
+    public void postConstruct() {
+        dao = new NotificationJpaDao(entityManager);
+        accessDao = new AccessJpaDao(entityManager);
+
+        final NotificationManager notificationManager = new NotificationManager(dao, accessDao, new NotificationMessageGeneratorFreemarker(), true);
+//        notificationManager.startupConsumers();
+        notifications = notificationManager;
+    }
 
     @Override
     public void setNotifications(final Notifications notifications) {

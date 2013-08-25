@@ -16,6 +16,7 @@ package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.utils.Observer;
+import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
@@ -25,7 +26,11 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
+import org.apache.log4j.Logger;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,14 +48,20 @@ import java.util.List;
  * @noinspection CastToConcreteClass, ChainOfInstanceofChecks, ObjectAllocationInLoop
  */
 public final class NotificationManager implements Notifications {
+    private static final Logger LOG = Logger.getLogger(NotificationManager.class);
 
     private final NotificationDao dao;
+    private final AccessDao accessDao;
     private final NotificationMessageGenerator messageGenerator;
     private final List<Observer> observers = new ArrayList<>(10);
 
-    public NotificationManager(final NotificationDao dao, final NotificationMessageGenerator messageGenerator) {
+    private final boolean hostedInBean;
+
+    public NotificationManager(final NotificationDao dao, final AccessDao accessDao, final NotificationMessageGenerator messageGenerator, final boolean hostedInBean) {
         this.dao = dao;
+        this.accessDao = accessDao;
         this.messageGenerator = messageGenerator;
+        this.hostedInBean = hostedInBean;
     }
 
     /**
@@ -61,7 +72,7 @@ public final class NotificationManager implements Notifications {
         final NotificationConsumerClassLoader classLoader = new NotificationConsumerClassLoader();
         for(final NotificationConsumerEntity consumer : consumers) {
 //            try {
-            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), dao);
+            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), dao, accessDao);
             observer.setId(consumer.getId());
             addObserver(observer);
 //            } catch (IWSException e) {}
@@ -124,7 +135,22 @@ public final class NotificationManager implements Notifications {
 //            }
 //        }
 
-        notifyObservers();
+//        notifyObservers();
+        try {
+            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
+            objectStream.writeObject(obj.prepareNotifiableFields(type));
+            final byte[] bytes = outputStream.toByteArray();
+            final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
+            dao.persist(job);
+            if (!hostedInBean) {
+                processJobs();
+            }
+        } catch (IOException ignored) {
+            //TODO write to log and skip the task or throw an exception?
+//            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
+            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed");
+        }
     }
 
     /**
@@ -145,37 +171,27 @@ public final class NotificationManager implements Notifications {
 //            message.setMessageTitle(messageTexts.get("title"));
 //
 //            dao.persist(message);
-            notifyObservers();
+//            notifyObservers();
 //        } else {
             //write to log?
 //        }
+
+        try {
+            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
+            objectStream.writeObject(user.prepareNotifiableFields(NotificationType.RESET_PASSWORD));
+            final byte[] bytes = outputStream.toByteArray();
+            final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
+            dao.persist(job);
+            if (!hostedInBean) {
+                processJobs();
+            }
+        } catch (IOException ignored) {
+            //TODO write to log and skip the task or throw an exception?
+//            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
+            LOG.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed");
+        }
     }
-
-
-//    private static java.util.Date getNotificationTime(final NotificationFrequency frequency) {
-//        Date result;
-//
-//        switch (frequency) {
-//            case DAILY:
-//                result = new Date();
-//                result = result.plusDays(1);
-//                break;
-//            case WEEKLY:
-//                DateMidnight dateMidnight = new DateMidnight();
-//                if (dateMidnight.getDayOfWeek() < DateTimeConstants.FRIDAY) {
-//                    dateMidnight = dateMidnight.withDayOfWeek(DateTimeConstants.FRIDAY);
-//                } else {
-//                    dateMidnight = dateMidnight.plusWeeks(1).withDayOfWeek(DateTimeConstants.FRIDAY);
-//                }
-//                result = new Date(dateMidnight);
-//                break;
-//            case IMMEDIATELY:
-//            default:
-//                result = new Date();
-//        }
-//
-//        return result.toDate();
-//    }
 
     @Override
     public void addObserver(final Observer observer) {

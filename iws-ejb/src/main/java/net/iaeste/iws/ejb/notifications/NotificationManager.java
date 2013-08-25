@@ -68,6 +68,10 @@ public final class NotificationManager implements Notifications {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void processJobs() {
         final List<NotificationJobEntity> unprocessedJobs = dao.findUnprocessedNotificationJobs();
         if (!unprocessedJobs.isEmpty()) {

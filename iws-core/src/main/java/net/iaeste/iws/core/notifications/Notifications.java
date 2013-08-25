@@ -47,4 +47,10 @@ public interface Notifications extends Observable {
      * @param user {@code UserEntity} Object
      */
     void notify(UserEntity user);
+
+    /**
+     * Notify methods prepare jobs to be processed. The processing is invoked by this method
+     * and creates tasks for consumers. It also trigger consumers
+     */
+    void processJobs();
 }

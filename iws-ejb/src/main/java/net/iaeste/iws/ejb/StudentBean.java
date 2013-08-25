@@ -95,7 +95,7 @@ public class StudentBean extends AbstractBean implements Student {
     @Override
     @PostConstruct
     public void postConstruct() {
-        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager.getNotifications());
+        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager);
         controller = new StudentController(factory);
     }
 

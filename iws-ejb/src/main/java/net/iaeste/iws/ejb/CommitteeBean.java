@@ -91,7 +91,7 @@ public class CommitteeBean extends AbstractBean implements Committees {
     @Override
     @PostConstruct
     public void postConstruct() {
-        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager.getNotifications());
+        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager);
         controller = new CommitteeController(factory);
     }
 

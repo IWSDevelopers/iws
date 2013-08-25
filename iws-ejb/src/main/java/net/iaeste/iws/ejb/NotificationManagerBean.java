@@ -14,17 +14,27 @@
  */
 package net.iaeste.iws.ejb;
 
+import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.notifications.NotificationManager;
 import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
+import javax.ejb.TimerService;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
@@ -47,8 +57,8 @@ public class NotificationManagerBean implements NotificationManagerLocal {
     private AccessDao accessDao = null;
     private Notifications notifications = null;
 
-//    @Resource
-//    private TimerService timerService;
+    @Resource
+    private TimerService timerService;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
@@ -82,5 +92,81 @@ public class NotificationManagerBean implements NotificationManagerLocal {
     @Override
     public Notifications getNotifications() {
         return notifications;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
+        notifications.notify(authentication, obj, type);
+
+        //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
+        if (timerService != null) {
+            final String clazz = NotificationManagerBean.class.getSimpleName();
+            final Date now = new Date();
+            timerService.createTimer(now.toDate(), clazz);
+        } else {
+            LOG.warn("There is no TimerService, probably running outside app server");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notify(final UserEntity user) {
+        notifications.notify(user);
+
+        //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
+        if (timerService != null) {
+            final String clazz = NotificationManagerBean.class.getSimpleName();
+            final Date now = new Date();
+            timerService.createTimer(now.toDate(), clazz);
+        } else {
+            LOG.warn("There is no TimerService, probably running outside app server");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addObserver(final Observer observer) {
+        notifications.addObserver(observer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteObserver(final Observer observer) {
+        notifications.deleteObserver(observer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notifyObservers() {
+        notifications.notifyObservers();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processJobs() {
+        notifications.processJobs();
+    }
+
+    @Timeout
+    private void processJobs(final Timer timer) {
+        notifications.processJobs();
+    }
+
+    public void setTimerService(final TimerService timerService) {
+        //TODO for manual setting of TimerService, most probably for testing
+        this.timerService = timerService;
     }
 }

@@ -19,12 +19,12 @@ import net.iaeste.iws.core.notifications.Notifications;
 import javax.ejb.Local;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 @Local
-public interface NotificationManagerLocal {
+public interface NotificationManagerLocal extends Notifications {
 
     void setNotifications(Notifications notifications);
     Notifications getNotifications();

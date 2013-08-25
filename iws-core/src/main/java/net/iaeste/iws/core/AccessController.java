@@ -222,7 +222,8 @@ public final class AccessController extends CommonController implements Access {
         Fallible response;
 
         try {
-            verifyCode(resetPasswordToken, "The ResetPassword Token is invalid.");
+            // TODO this cannot work because the length of the generated token does not match the required length
+            //verifyCode(resetPasswordToken, "The ResetPassword Token is invalid.");
             verify(password);
 
             final AccessService service = factory.prepareAuthenticationService();

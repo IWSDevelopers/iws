@@ -217,7 +217,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final UserEntity user = dao.findUserByUsername(username);
 
         if (user != null) {
-            user.setCode(UUID.randomUUID().toString());
+            user.setCode(generateHash(UUID.randomUUID().toString(), user.getSalt()));
             dao.persist(user);
             notifications.notify(user);
         }

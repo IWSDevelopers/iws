@@ -259,7 +259,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public GroupEntity findMemberGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
         query.setParameter("uid", user.getId());
-        query.setParameter("type", GroupType.MEMBER.name());
+        query.setParameter("type", GroupType.MEMBER);
 
         return (GroupEntity) query.getSingleResult();
     }

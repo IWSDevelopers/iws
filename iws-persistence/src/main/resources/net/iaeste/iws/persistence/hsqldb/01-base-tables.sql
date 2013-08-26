@@ -420,8 +420,8 @@ create table user_to_group (
 
     /* Primary & Foreign Keys */
     constraint u2g_pk          primary key (id),
-    constraint u2g_fk_user_id  foreign key (user_id)  references users (id),
-    constraint u2g_fk_group_id foreign key (group_id) references groups (id),
+    constraint u2g_fk_user_id  foreign key (user_id)  references users (id) on delete cascade,
+    constraint u2g_fk_group_id foreign key (group_id) references groups (id) on delete cascade,
     constraint u2g_fk_role_id  foreign key (role_id)  references roles (id),
 
     /* Unique Constraints */

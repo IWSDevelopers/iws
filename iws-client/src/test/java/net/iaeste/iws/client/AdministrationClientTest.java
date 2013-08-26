@@ -26,11 +26,13 @@ import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
+import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
@@ -173,7 +175,35 @@ public class AdministrationClientTest extends AbstractClientTest {
     }
 
     @Test
+    public void deleteNewAccount() {
+        // Create the new User Request Object
+        final CreateUserRequest createUserRequest = new CreateUserRequest();
+        createUserRequest.setUsername("gamma@beta.net");
+        createUserRequest.setFirstname("Gamme");
+        createUserRequest.setLastname("Beta");
+
+        // First, we create the User account that we wish to delete
+        final CreateUserResponse response = administration.createUser(token, createUserRequest);
+        assertThat(response.isOk(), is(true));
+
+        // Now, try to delete the account
+        final UserRequest request = new UserRequest();
+        request.setUser(response.getUser());
+        request.setNewStatus(UserStatus.DELETED);
+        final Fallible deletedUserResponse = administration.controlUserAccount(token, request);
+
+        assertThat(deletedUserResponse, is(not(nullValue())));
+        assertThat(deletedUserResponse.isOk(), is(true));
+    }
+
+    @Test
     public void testFetchRoles() {
+        // Uses the National Group for Austria to get the list of Groups. As
+        // Member Groups are not allowed to fetch the information, controlling
+        // of accounts in Members is done together with handling of National
+        // Members. The main reason for this, is to avoid that someone may
+        // perform actions on the National Group, but invoking their Membership
+        // privileges without having a National Group membersip.
         final FetchRoleRequest request = new FetchRoleRequest("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
         final FetchRoleResponse response = administration.fetchRoles(token, request);
         assertThat(response, is(not(nullValue())));

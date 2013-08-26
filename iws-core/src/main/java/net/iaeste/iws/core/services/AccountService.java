@@ -460,15 +460,24 @@ public final class AccountService extends CommonService<AccessDao> {
         final GroupEntity group = dao.findPrivateGroup(user);
         dao.delete(group);
 
-        // Now, remove and System specific data from the Account, and set the
-        // Status to deleted, thus preventing the account from being used
-        // anymore
-        user.setCode(null);
-        user.setPrivateData(Privacy.PRIVATE);
-        user.setStatus(UserStatus.DELETED);
-        dao.persist(user);
+        if (user.getStatus() == UserStatus.NEW) {
+            // If the User has status "new", then there is no data associated
+            // with the account, and we can thus completely remove it from the
+            // system
+            dao.delete(user);
 
-        LOG.info("Deleted all private data for user " + user + ", including " + deletedSessions + " sessions,");
+            LOG.info("Deleted the new user " + user + " completely.");
+        } else {
+            // Now, remove and System specific data from the Account, and set the
+            // Status to deleted, thus preventing the account from being used
+            // anymore
+            user.setCode(null);
+            user.setPrivateData(Privacy.PRIVATE);
+            user.setStatus(UserStatus.DELETED);
+            dao.persist(user);
+
+            LOG.info("Deleted all private data for user " + user + ", including " + deletedSessions + " sessions,");
+        }
     }
 
     private void updatePrivacyAndData(final UserEntity user, final UserRequest request) {

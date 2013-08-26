@@ -54,6 +54,10 @@ public class UserNotificationEntityTest {
         final AccessDao dao = new AccessJpaDao(entityManager);
         final UserEntity user = dao.findUserByUsername("austria@iaeste.at");
         assertThat(user.getUserName(), is("austria@iaeste.at"));
+        final Query query = entityManager.createNamedQuery("notifications.findSettingByUserAndType");
+        query.setParameter("id", user.getId());
+        query.setParameter("type", NotificationType.ACTIVATE_USER);
+        final List<UserNotificationEntity> foundBefore = query.getResultList();
 
         final UserNotificationEntity entity = new UserNotificationEntity();
         entity.setUser(user);
@@ -62,12 +66,8 @@ public class UserNotificationEntityTest {
 
         entityManager.persist(entity);
 
-        final Query query = entityManager.createNamedQuery("notifications.findSettingByUserAndType");
-        query.setParameter("id", user.getId());
-        query.setParameter("type", NotificationType.ACTIVATE_USER);
-        final List<UserNotificationEntity> found = query.getResultList();
-
-        assertThat(found.size(), is(1));
-        assertThat(found.get(0), is(entity));
+        final List<UserNotificationEntity> foundAfter = query.getResultList();
+        assertThat(foundAfter.size(), is(foundBefore.size()+1));
+        assertThat(foundAfter.get(foundAfter.size()-1), is(entity));
     }
 }

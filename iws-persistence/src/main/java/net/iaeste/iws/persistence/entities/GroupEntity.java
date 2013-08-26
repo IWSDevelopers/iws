@@ -362,7 +362,7 @@ public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
     @Override
     public Map<NotificationField, String> prepareNotifiableFields(final NotificationType type) {
         final Map<NotificationField, String> fields = new EnumMap<>(NotificationField.class);
-
+        //TODO process_mailing_list
         switch (type) {
             case NEW_GROUP:
             //case CHANGE_IN_GROUP_MEMBERS:

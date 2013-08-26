@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.ejb.notifications;
 
-import net.iaeste.iws.common.notification.Notifiable;
+import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 
 import java.util.Map;
@@ -29,9 +29,9 @@ public interface NotificationMessageGenerator {
     /**
      * Generates a message for given object and notification type
      *
-     * @param obj   Object to generate message for
-     * @param type  Notification type
+     * @param fields  Object to generate message for
+     * @param type    Notification type
      * @return  Generated message as String
      */
-    Map<String, String> generateFromTemplate(Notifiable obj, NotificationType type);
+    Map<String, String> generateFromTemplate(Map<NotificationField, String> fields, NotificationType type);
 }

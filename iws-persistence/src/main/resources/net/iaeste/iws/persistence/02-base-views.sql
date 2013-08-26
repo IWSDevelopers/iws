@@ -99,7 +99,8 @@ create view notification_job_task_details as
     njt.id                 as id,
     njt.attempts           as attempts,
     nj.notification_type   as notification_type,
-    nj.object              as object
+    nj.object              as object,
+    njt.consumer_id         as consumer_id
   from
     notification_job_tasks njt
     left join notification_jobs nj  on njt.job_id = nj.id

@@ -41,6 +41,8 @@ import java.util.Map;
  */
 public class NotificationSystemAdministration implements Observer {
     private Long id = null;
+    private static Integer ATTEMPTS_LIMIT = 3;
+
     private final NotificationDao dao;
     private final AccessDao accessDao;
 
@@ -58,7 +60,7 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private void processMessages() {
-        final List<NotificationJobTasksView> jobTasks = dao.findUnprocessedNotificationJobTaskByConsumerId(id);
+        final List<NotificationJobTasksView> jobTasks = dao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
             try {
                 final ByteArrayInputStream inputStream = new ByteArrayInputStream(jobTask.getObject());

@@ -32,6 +32,7 @@
         <class>net.iaeste.iws.persistence.views.EmployerView</class>
         <class>net.iaeste.iws.persistence.views.CountryView</class>
         <class>net.iaeste.iws.persistence.views.EmployerView</class>
+        <class>net.iaeste.iws.persistence.views.NotificationJobTasksView</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>

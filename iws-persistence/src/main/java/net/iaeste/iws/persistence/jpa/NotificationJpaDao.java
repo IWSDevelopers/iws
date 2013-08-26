@@ -131,9 +131,10 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
      * {@inheritDoc}
      */
     @Override
-    public List<NotificationJobTasksView> findUnprocessedNotificationJobTaskByConsumerId(final Long consumerId) {
-        final Query query = entityManager.createNamedQuery("view.NotificationJobTasksByConsumerIdAndProcessed");
+    public List<NotificationJobTasksView> findUnprocessedNotificationJobTaskByConsumerId(final Long consumerId, final Integer attemptsLimit) {
+        final Query query = entityManager.createNamedQuery("view.NotificationJobTasksByConsumerId");
         query.setParameter("consumerId", consumerId);
+        query.setParameter("attempts", attemptsLimit);
 
         return query.getResultList();
     }

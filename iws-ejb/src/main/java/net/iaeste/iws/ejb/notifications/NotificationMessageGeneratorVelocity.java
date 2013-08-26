@@ -16,6 +16,7 @@ package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.notification.Notifiable;
@@ -50,7 +51,7 @@ public class NotificationMessageGeneratorVelocity implements NotificationMessage
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> generateFromTemplate(final Notifiable obj, final NotificationType type) {
+    public Map<String, String> generateFromTemplate(final Map<NotificationField, String> fields, final NotificationType type) {
 //        switch (obj.getNotificationSubject()) {
 //            case USER:
 //                return processUser((UserEntity)obj, type);

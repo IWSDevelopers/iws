@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.ejb;
 
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -80,7 +81,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         accessDao = new AccessJpaDao(entityManager);
 
         final NotificationManager notificationManager = new NotificationManager(dao, accessDao, new NotificationMessageGeneratorFreemarker(), true);
-//        notificationManager.startupConsumers();
+        notificationManager.startupConsumers();
         notifications = notificationManager;
     }
 
@@ -99,7 +100,11 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @Override
     public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
-        notifications.notify(authentication, obj, type);
+        try {
+            notifications.notify(authentication, obj, type);
+        } catch (IWSException e) {
+            LOG.error("Preparing notification failed", e);
+        }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
         if (timerService != null) {
@@ -116,7 +121,11 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @Override
     public void notify(final UserEntity user) {
-        notifications.notify(user);
+        try {
+            notifications.notify(user);
+        } catch (IWSException e) {
+            LOG.error("Preparing notification failed", e);
+        }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
         if (timerService != null) {

@@ -16,10 +16,10 @@ package net.iaeste.iws.ejb.emails;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.ejb.ffmq.MessageServer;
-import net.timewalker.ffmq3.FFMQConstants;
 import org.apache.log4j.Logger;
 
+import javax.ejb.ActivationConfigProperty;
+import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -34,17 +34,10 @@ import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import java.io.Serializable;
-import java.util.Hashtable;
 import java.util.Properties;
 
 /**
- * These classes send temporarily placed here. We need the functionality, but it
- * should rightly be placed in the EJB module. Until the EJB module is ready,
- * and we have a GlassFish instance to deploy to, we will keep it here.<br />
  *   The sending information (port, addresses) will be injected using JNDI.
  *
  * @author  Pavel Fiala / last $Author:$
@@ -52,7 +45,12 @@ import java.util.Properties;
  * @since   1.7
  * @noinspection CastToConcreteClass, AccessOfSystemProperties, MethodMayBeStatic
  */
-//@MessageDriven(mappedName = "iws-EmailQueue", activationConfig = @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"))
+@MessageDriven(
+        mappedName = "queue/iwsEmailQueue",
+        activationConfig = @ActivationConfigProperty(
+                propertyName = "destinationType",
+                propertyValue = "javax.jms.Queue")
+)
 public class EmailSender implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(EmailSender.class);
@@ -61,49 +59,12 @@ public class EmailSender implements MessageListener {
     private static final String SMTP_SERVER = "localhost";
     private static final String SMTP_PORT = "25";
 
-    //Temporary solution instead of the MessageDriven bean
-    private QueueConnectionFactory queueConnectionFactory = null;
-    private QueueConnection queueConnection = null;
-    private QueueSession queueSession = null;
-    private QueueReceiver queueReceiver = null;
-    private Queue queue = null;
-
     /**
      * Constructor to initialize connection to the message queue.
      * Temporary solution instead of the MessageDriven bean.
      */
     public EmailSender() {
-        try {
-            final Hashtable<String, String> env = new Hashtable<>();
-            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
-//            env.put(Context.PROVIDER_URL, MessageServer.listenAddr+MessageServer.listenPort);
-            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
-            final Context context = new InitialContext(env);
-
-            queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
-            queueConnection = queueConnectionFactory.createQueueConnection();
-            queueConnection.start();
-            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
-            queueSession = queueConnection.createQueueSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
-            queueReceiver = queueSession.createReceiver(queue);
-            queueReceiver.setMessageListener(this);
-            context.close();
-        } catch (NamingException|JMSException e) {
-            throw new IWSException(IWSErrors.ERROR, "Queue recipient initialization failed.", e);
-        }
-    }
-
-    /**
-     * Method for unsubscibing from queue and closing connection
-     */
-    public void stop() {
-        try {
-            queueReceiver.close();
-            queueSession.close();
-            queueConnection.stop();
-        } catch (JMSException e) {
-            throw new IWSException(IWSErrors.ERROR, "Queue recipient stopping failed.", e);
-        }
+        LOG.info("starting EmailSender");
     }
 
     /**
@@ -138,7 +99,7 @@ public class EmailSender implements MessageListener {
             message.setText(msg.getMessage());
 
             //Transport.send(message);
-            LOG.info("Email message sent to " + msg.getTo());
+            LOG.info("Email message sent to " + msg.getTo() + " with body " + msg.getMessage());
         } catch (MessagingException e) {
             throw new IWSException(IWSErrors.ERROR, "Sending to '" + msg.getTo() + "' failed.", e);
         }

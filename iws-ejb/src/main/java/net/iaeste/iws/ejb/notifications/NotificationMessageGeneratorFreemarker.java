@@ -48,7 +48,7 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> generateFromTemplate(final Notifiable obj, final NotificationType type) {
+    public Map<String, String> generateFromTemplate(final Map<NotificationField, String> fields, final NotificationType type) {
 //        switch (obj.getNotificationSubject()) {
 //            case USER:
 //                return processUser((UserEntity)obj, type);
@@ -68,8 +68,8 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
                 dir = USER_TEMPLATE_DIR;
                 break;
             case RESET_PASSWORD:
-                templateName = "resetPassword.ftl";
-                titleTemplateName = "resetPasswordTitle.ftl";
+                templateName = "passwordReset.ftl";
+                titleTemplateName = "passwordResetTitle.ftl";
                 dir = USER_TEMPLATE_DIR;
                 break;
             case RESET_SESSION:
@@ -82,8 +82,7 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
 //                throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");
         }
 
-        final Map<NotificationField, String> input = obj.prepareNotifiableFields(type);
-        return generate(dir, templateName, titleTemplateName, input);
+        return generate(dir, templateName, titleTemplateName, fields);
 
     }
 

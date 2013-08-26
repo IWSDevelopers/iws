@@ -94,7 +94,7 @@ public final class AdministrationController extends CommonController implements 
         Fallible response;
 
         try {
-            verifyCode(activationString, "Provided Activation String is invalid.");
+            //TODO verifyCode(activationString, "Provided Activation String is invalid.");
             final AccountService service = factory.prepareAccountService();
             service.activateUser(activationString);
             response = new FallibleResponse();

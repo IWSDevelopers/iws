@@ -32,6 +32,7 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
@@ -75,8 +76,10 @@ public class AdministrationClientTest extends AbstractClientTest {
 
         // Now, perform the actual test - create the Account, and verify that
         // the response is ok, and that a Notification was sent
-        final Fallible result = administration.createUser(token, createUserRequest);
+        final CreateUserResponse result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
+        assertThat(result.getUser(), is(not(nullValue())));
+        assertThat(result.getUser().getUserId(), is(not(nullValue())));
         // Creating a new User should generate an Activate User notification
         final NotificationType type = NotificationType.ACTIVATE_USER;
         assertThat(spy.size(type), is(1));

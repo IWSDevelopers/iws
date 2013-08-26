@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.FetchRoleResponse
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.CreateUserResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,27 +14,23 @@
  */
 package net.iaeste.iws.api.responses;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.dtos.Role;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.util.AbstractFallible;
-
-import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchRoleResponse extends AbstractFallible {
+public final class CreateUserResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The List of Roles, matching the request. */
-    private List<Role> roles = null;
+    /** The newly created User Object. */
+    private User user = null;
 
     // =========================================================================
     // Object Constructors
@@ -44,16 +40,16 @@ public final class FetchRoleResponse extends AbstractFallible {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchRoleResponse() {
+    public CreateUserResponse() {
     }
 
     /**
      * Default Constructor.
      *
-     * @param roles List of Roles
+     * @param user Newly created, though inactive, User
      */
-    public FetchRoleResponse(final List<Role> roles) {
-        setRoles(roles);
+    public CreateUserResponse(final User user) {
+        setUser(user);
     }
 
     /**
@@ -62,7 +58,7 @@ public final class FetchRoleResponse extends AbstractFallible {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public FetchRoleResponse(final IWSError error, final String message) {
+    public CreateUserResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -70,12 +66,12 @@ public final class FetchRoleResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setRoles(final List<Role> roles) {
-        this.roles = copy(roles);
+    public void setUser(final User user) {
+        this.user = new User(user);
     }
 
-    public List<Role> getRoles() {
-        return copy(roles);
+    public User getUser() {
+        return new User(user);
     }
 
     // =========================================================================
@@ -90,12 +86,12 @@ public final class FetchRoleResponse extends AbstractFallible {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof FetchRoleResponse)) {
+        if (!(obj instanceof CreateUserResponse)) {
             return false;
         }
 
-        final FetchRoleResponse that = (FetchRoleResponse) obj;
-        return !(roles != null ? !roles.equals(that.roles) : that.roles != null);
+        final CreateUserResponse that = (CreateUserResponse) obj;
+        return !(user != null ? !user.equals(that.user) : that.user != null);
     }
 
     /**
@@ -105,7 +101,7 @@ public final class FetchRoleResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (roles != null ? roles.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
 
         return result;
     }
@@ -115,8 +111,8 @@ public final class FetchRoleResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "FetchRoleResponse{" +
-                "roles=" + roles +
+        return "CreateUserResponse{" +
+                "user=" + user +
                 '}';
     }
 }

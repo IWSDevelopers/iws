@@ -24,6 +24,7 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
@@ -67,7 +68,7 @@ public interface Administration {
      *                first and last name
      * @return Standard Error Object
      */
-    Fallible createUser(AuthenticationToken token, CreateUserRequest request);
+    CreateUserResponse createUser(AuthenticationToken token, CreateUserRequest request);
 
     /**
      * Users cannot access the IWS, until their account has been activated, this

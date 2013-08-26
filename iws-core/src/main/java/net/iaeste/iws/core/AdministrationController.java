@@ -27,6 +27,7 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
@@ -66,9 +67,9 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
+    public CreateUserResponse createUser(final AuthenticationToken token, final CreateUserRequest request) {
         LOG.trace("Starting createUser()");
-        Fallible response;
+        CreateUserResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.CONTROL_USER_ACCOUNT);
@@ -77,7 +78,7 @@ public final class AdministrationController extends CommonController implements 
             final AccountService service = factory.prepareAccountService();
             response = service.createUser(authentication, request);
         } catch (IWSException e) {
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new CreateUserResponse(e.getError(), e.getMessage());
         }
 
         LOG.trace("Finished createUser()");

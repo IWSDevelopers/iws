@@ -26,6 +26,7 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
@@ -114,15 +115,15 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
-        Fallible response;
+    public CreateUserResponse createUser(final AuthenticationToken token, final CreateUserRequest request) {
+        CreateUserResponse response;
 
         try {
             response = controller.createUser(token, request);
             LOG.info(generateResponseLog(response));
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

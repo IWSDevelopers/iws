@@ -25,6 +25,7 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
@@ -51,7 +52,7 @@ public final class AdministrationClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible createUser(final AuthenticationToken token, final CreateUserRequest request) {
+    public CreateUserResponse createUser(final AuthenticationToken token, final CreateUserRequest request) {
         return client.createUser(token, request);
     }
 

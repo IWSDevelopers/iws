@@ -29,10 +29,9 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.UserRequest;
-import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.PasswordGenerator;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -75,8 +74,8 @@ public final class AccountService extends CommonService<AccessDao> {
      * @param request        User Creation Request
      * @return Error information
      */
-    public Fallible createUser(final Authentication authentication, final CreateUserRequest request) {
-        final Fallible result;
+    public CreateUserResponse createUser(final Authentication authentication, final CreateUserRequest request) {
+        final CreateUserResponse result;
 
         // To avoid problems, all internal handling of the username is in lowercase
         final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
@@ -111,9 +110,9 @@ public final class AccountService extends CommonService<AccessDao> {
             }
 
             notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
-            result = new FallibleResponse();
+            result = new CreateUserResponse(transform(user));
         } else {
-            result = new FallibleResponse(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");
+            result = new CreateUserResponse(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");
         }
 
         return result;

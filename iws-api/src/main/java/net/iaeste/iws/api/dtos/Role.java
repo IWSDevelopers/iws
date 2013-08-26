@@ -125,6 +125,7 @@ public final class Role extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
+        isNotNull(validation, "roleName", roleName);
 
         return validation;
     }

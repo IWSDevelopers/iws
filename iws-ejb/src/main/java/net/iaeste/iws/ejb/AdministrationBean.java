@@ -21,6 +21,7 @@ import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
@@ -28,6 +29,7 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.AdministrationController;
@@ -196,6 +198,24 @@ public class AdministrationBean extends AbstractBean implements Administration {
         } catch (RuntimeException e) {
             LOG.error(generateErrorLog(e));
             response = new FetchUserResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
+        FetchRoleResponse response;
+
+        try {
+            response = controller.fetchRoles(token, request);
+            LOG.info(generateResponseLog(response));
+        } catch (RuntimeException e) {
+            LOG.error(generateErrorLog(e));
+            response = new FetchRoleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

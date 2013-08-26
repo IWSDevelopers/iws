@@ -19,12 +19,14 @@ import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 
@@ -134,6 +136,8 @@ public interface Administration {
      * @return Response Object with the found users and error information
      */
     FetchUserResponse fetchUser(AuthenticationToken token, FetchUserRequest request);
+
+    FetchRoleResponse fetchRoles(AuthenticationToken token, FetchRoleRequest request);
 
     Fallible processGroup(AuthenticationToken token, GroupRequest request);
 

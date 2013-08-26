@@ -29,10 +29,12 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
+import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -165,6 +167,16 @@ public class AdministrationClientTest extends AbstractClientTest {
         // Deprecate the Students Session, the test is over :-)
         final Fallible deprecateSessionResult = accessClient.deprecateSession(response2.getToken());
         assertThat(deprecateSessionResult.isOk(), is(true));
+    }
+
+    @Test
+    public void testFetchRoles() {
+        final FetchRoleRequest request = new FetchRoleRequest("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
+        final FetchRoleResponse response = administration.fetchRoles(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(true));
+        // There should be a total of 5 roles for this Group
+        assertThat(response.getRoles().size(), is(5));
     }
 
     @Test

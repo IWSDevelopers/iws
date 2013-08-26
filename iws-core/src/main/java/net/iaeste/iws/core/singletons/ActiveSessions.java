@@ -31,7 +31,7 @@ import java.util.Map;
  *   First, an inactive User should be kicked out when no longer using the
  * system, these sessions are considered expired. The main reason for doing so,
  * is simply to avoid that someone can misuse an open Session.<br />
- *   Second, the idea behind this logic, is also to add some safe-guars against
+ *   Second, the idea behind this logic, is also to add some safe-guards against
  * DDOS attacks, by not invoking the database needlessly. Hence the map is
  * purely living in-memory. Combined with the multi-login attempt prevention, it
  * may hopefully keep the system from going down.
@@ -177,8 +177,8 @@ public final class ActiveSessions {
      */
     public List<String> findAndRemoveExpiredTokens() {
         final List<String> expiredTokens = new ArrayList<>(10);
-        // Although we always should narrow the scope of variables, the also
-        // have to remember that the Synchronized block is a special case, that
+        // Although we always should narrow the scope of variables, we also have
+        // to remember that the Synchronized block is a special case, that
         // should be kept to a minimum at all times. Hence, we're finding the
         // current timestamp outside of the Synchronized block.
         //   Here, we create a new Date Object to compare with. Since the max

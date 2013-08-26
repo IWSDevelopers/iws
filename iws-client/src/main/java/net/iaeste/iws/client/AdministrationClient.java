@@ -20,12 +20,14 @@ import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 
@@ -83,6 +85,14 @@ public final class AdministrationClient implements Administration {
     @Override
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
         return client.fetchUser(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
+        return client.fetchRoles(token, request);
     }
 
     /**

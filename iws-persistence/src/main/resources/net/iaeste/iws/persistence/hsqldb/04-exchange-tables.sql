@@ -75,7 +75,7 @@ create table offers (
     study_fields              varchar(1000),
     specializations           varchar(1000),
     prev_training_req         boolean,
-    other_requirements        varchar(4096),
+    other_requirements        varchar(4000),
     -- Period for the Offer
     min_weeks                 integer,
     max_weeks                 integer,
@@ -119,8 +119,8 @@ create table offers (
     constraint offer_fk_employer_id foreign key (employer_id) references employers (id),
 
     /* Unique Constraints */
-    constraint offer_unique_ref_no      unique (ref_no),
     constraint offer_unique_external_id unique (external_id),
+    constraint offer_unique_ref_no      unique (ref_no),
 
     /* Not Null Constraints */
     constraint offer_notnull_id               check (id is not null),

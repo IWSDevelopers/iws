@@ -22,6 +22,7 @@ import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
+import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
@@ -29,6 +30,7 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccountService;
@@ -173,6 +175,29 @@ public final class AdministrationController extends CommonController implements 
         }
 
         LOG.trace("Finished fetchUser()");
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
+        LOG.trace("Starting fetchRoles()");
+        FetchRoleResponse response;
+
+        try {
+            verify(request);
+            token.setGroupId(request.getGroupId());
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
+
+            final AccountService service = factory.prepareAccountService();
+            response = service.fetchRoles(authentication);
+        } catch (IWSException e) {
+            response = new FetchRoleResponse(e.getError(), e.getMessage());
+        }
+
+        LOG.trace("Finished fetchRoles()");
         return response;
     }
 

@@ -16,6 +16,7 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
+import static net.iaeste.iws.core.transformers.AdministrationTransformer.transformRoleEntities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -29,6 +30,7 @@ import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
+import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -43,6 +45,7 @@ import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -489,4 +492,10 @@ public final class AccountService extends CommonService<AccessDao> {
         notifications.notify(authentication, user, NotificationType.UPDATE_USERNAME);
     }
 
+    public FetchRoleResponse fetchRoles(final Authentication authentication) {
+        final List<RoleEntity> roles = dao.findRoles(authentication.getGroup());
+        final FetchRoleResponse response = new FetchRoleResponse(transformRoleEntities(roles));
+
+        return response;
+    }
 }

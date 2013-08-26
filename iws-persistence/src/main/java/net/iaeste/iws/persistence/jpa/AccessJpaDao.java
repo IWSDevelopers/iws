@@ -173,6 +173,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     @Override
     public GroupTypeEntity findGroupType(final GroupType groupType) {
         final Query query = entityManager.createNamedQuery("grouptype.findByName");
+        // Query runs a String lower check on the value
         query.setParameter("name", groupType.name());
         final List<GroupTypeEntity> groupTypes = query.getResultList();
 
@@ -282,7 +283,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public GroupEntity findPrivateGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
         query.setParameter("uid", user.getId());
-        query.setParameter("type", GroupType.PRIVATE.name());
+        query.setParameter("type", GroupType.PRIVATE);
 
         return (GroupEntity) query.getSingleResult();
     }

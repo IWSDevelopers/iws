@@ -24,8 +24,10 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
+import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
@@ -179,6 +181,18 @@ public class BasicJpaDao implements BasicDao {
     // =========================================================================
     // Following lookup methods are added here, since they're used often
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<RoleEntity> findRoles(final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("role.findByGroup");
+        query.setParameter("cid", group.getCountry().getId());
+        query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
 
     /**
      * {@inheritDoc}

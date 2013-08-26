@@ -17,8 +17,10 @@ package net.iaeste.iws.persistence;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
+import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.views.IWSView;
 
@@ -100,6 +102,14 @@ public interface BasicDao {
     // =========================================================================
     // Following lookup methods are added here, since they're used often
     // =========================================================================
+
+    /**
+     * Retrieves a list of available Roles, that belongs to a given Group.
+     *
+     * @param group Group to find Roles for
+     * @return List of available Roles for this Group
+     */
+    List<RoleEntity> findRoles(GroupEntity group);
 
     /**
      * Finds a Country based on the given Id (ISO_3166-1_alpha-2).

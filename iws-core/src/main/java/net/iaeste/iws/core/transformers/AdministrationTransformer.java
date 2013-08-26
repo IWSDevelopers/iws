@@ -15,8 +15,10 @@
 package net.iaeste.iws.core.transformers;
 
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
@@ -43,6 +45,56 @@ public final class AdministrationTransformer {
         }
 
         return users;
+    }
+
+    public static Role transform(final RoleEntity entity) {
+        final Role role;
+
+        if (entity != null) {
+            role = new Role();
+
+            role.setRoleId(entity.getExternalId());
+            role.setRoleName(entity.getRole());
+        } else {
+            role = null;
+        }
+
+        return role;
+    }
+
+    public static RoleEntity transform(final Role role) {
+        final RoleEntity entity;
+
+        if (role != null) {
+            entity = new RoleEntity();
+
+            entity.setExternalId(role.getRoleId());
+            entity.setRole(role.getRoleName());
+        } else {
+            entity = null;
+        }
+
+        return entity;
+    }
+
+    public static List<RoleEntity> transformRoles(final List<Role> roles) {
+        final List<RoleEntity> entities = new ArrayList<>(roles.size());
+
+        for (final Role role : roles) {
+            entities.add(transform(role));
+        }
+
+        return entities;
+    }
+
+    public static List<Role> transformRoleEntities(final List<RoleEntity> entities) {
+        final List<Role> roles = new ArrayList<>(entities.size());
+
+        for (final RoleEntity entity : entities) {
+            roles.add(transform(entity));
+        }
+
+        return roles;
     }
 
     public static User transform(final UserGroupEntity entity) {

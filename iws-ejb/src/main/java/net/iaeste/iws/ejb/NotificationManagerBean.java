@@ -112,7 +112,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
             final Date now = new Date();
             timerService.createTimer(now.toDate(), clazz);
         } else {
-            LOG.warn("There is no TimerService, probably running outside app server");
+            LOG.debug("There is no TimerService, probably running outside app server");
         }
     }
 

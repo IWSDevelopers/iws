@@ -133,7 +133,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @JoinColumn(name = "employer_id")
     private EmployerEntity employer = null;
 
-    @Column(name = "work_description", nullable = false, length = 1000)
+    @Column(name = "work_description", length = 1000, nullable = false)
     private String workDescription = null;
 
     @Enumerated(EnumType.STRING)
@@ -143,7 +143,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Column(name = "study_levels", length = 25, nullable = false)
     private String studyLevels = null;
 
-    @Column(name = "study_fields", nullable = false)
+    @Column(name = "study_fields", length = 1000, nullable = false)
     private String fieldOfStudies = null;
 
     @Column(name = "specializations")
@@ -152,7 +152,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Column(name = "prev_training_req")
     private Boolean prevTrainingRequired = null;
 
-    @Column(name = "other_requirements", length = 500)
+    @Column(name = "other_requirements", length = 4000)
     private String otherRequirements = null;
 
     @Column(name = "min_weeks", nullable = false)
@@ -186,11 +186,11 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     private Date unavailableTo = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_1", nullable = false)
+    @Column(name = "language_1", length = 255, nullable = false)
     private Language language1 = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_1_level", nullable = false, length = 1)
+    @Column(name = "language_1_level", length = 1, nullable = false)
     private LanguageLevel language1Level = null;
 
     @Enumerated(EnumType.STRING)
@@ -198,7 +198,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     private LanguageOperator language1Operator = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_2")
+    @Column(name = "language_2", length = 255)
     private Language language2 = null;
 
     @Enumerated(EnumType.STRING)
@@ -210,7 +210,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     private LanguageOperator language2Operator = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_3")
+    @Column(name = "language_3", length = 255)
     private Language language3 = null;
 
     @Enumerated(EnumType.STRING)
@@ -241,7 +241,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Column(name = "living_cost_frequency")
     private PaymentFrequency livingCostFrequency = null;
 
-    @Column(name = "lodging_by")
+    @Column(name = "lodging_by", length = 255)
     private String lodgingBy = null;
 
     @Column(name = "lodging_cost", scale = 12, precision = 2)
@@ -259,7 +259,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     private Integer numberOfHardCopies = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", length = 10)
     private OfferState status = OfferState.NEW;
 
     @Temporal(TemporalType.TIMESTAMP)

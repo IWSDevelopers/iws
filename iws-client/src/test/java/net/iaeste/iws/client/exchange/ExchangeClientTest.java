@@ -96,12 +96,12 @@ public final class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testProcessOfferCreateMinimalOffer() {
-        final String refNo = "PL-2012-0001";
         final Offer minimalOffer = OfferTestUtility.getMinimalOffer();
-        minimalOffer.setRefNo(refNo);
+        minimalOffer.setRefNo("PL-2012-0001");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(minimalOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
+        final String refNo = processResponse.getOffer().getRefNo();
 
         // verify processResponse
         assertThat(processResponse.isOk(), is(true));
@@ -116,12 +116,12 @@ public final class ExchangeClientTest extends AbstractClientTest {
 
     @Test
     public void testProcessOfferCreateFullOffer() {
-        final String refNo = "PL-2012-0002";
         final Offer fullOffer = OfferTestUtility.getFullOffer();
-        fullOffer.setRefNo(refNo);
+        fullOffer.setRefNo("PL-2012-0002");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(fullOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
+        final String refNo = processResponse.getOffer().getRefNo();
 
         // verify processResponse
         assertThat(processResponse.isOk(), is(true));
@@ -181,9 +181,10 @@ public final class ExchangeClientTest extends AbstractClientTest {
         final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
-        Offer sharedOffer = findOfferFromResponse(offer.getRefNo(), allOffersResponse);
+        Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
         assertThat(sharedOffer, is(notNullValue()));
-        assertThat(sharedOffer.getRefNo(), is(offer.getRefNo()));
+        // Following assertion is now deprecated, see trac task #372
+        //assertThat(sharedOffer.getRefNo(), is(offer.getRefNo()));
         assertThat(sharedOffer.getStatus(), is(OfferState.NEW));
         assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
 
@@ -212,9 +213,9 @@ public final class ExchangeClientTest extends AbstractClientTest {
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
-        sharedOffer = findOfferFromResponse(offer.getRefNo(), allOffersResponse);
+        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
         assertThat(sharedOffer, is(notNullValue()));
-        assertThat(sharedOffer.getRefNo(), is(offer.getRefNo()));
+        assertThat(sharedOffer.getRefNo(), is(saveResponse.getOffer().getRefNo()));
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
         assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
 
@@ -231,7 +232,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat(offerGroupsSharedTo.size(), is(0));
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
-        sharedOffer = findOfferFromResponse(offer.getRefNo(), allOffersResponse);
+        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
         assertThat(sharedOffer, is(notNullValue()));
         assertThat("The offer is shared to nobody, the status has to be NEW", sharedOffer.getStatus(), is(OfferState.NEW));
     }
@@ -431,12 +432,12 @@ public final class ExchangeClientTest extends AbstractClientTest {
     public void testFetchSharedOfferDeadlineToday() {
         final Date nominationDeadlineToday = new Date();
 
-        final String refNo = "PL-2012-0011";
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo(refNo);
+        offer.setRefNo("PL-2012-0011");
 
         final ProcessOfferRequest saveRequest2 = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse2 = exchange.processOffer(token, saveRequest2);
+        final String refNo = saveResponse2.getOffer().getRefNo();
 
         final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
         final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);

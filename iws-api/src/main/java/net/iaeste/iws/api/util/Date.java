@@ -154,6 +154,10 @@ public final class Date implements Serializable {
         return date.toGregorianCalendar().get(Calendar.YEAR);
     }
 
+    public int getCurrentMonth() {
+        return date.toGregorianCalendar().get(Calendar.MONTH);
+    }
+
     /**
      * {@inheritDoc}
      */

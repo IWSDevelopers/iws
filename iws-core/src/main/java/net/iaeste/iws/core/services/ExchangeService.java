@@ -56,8 +56,10 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -70,6 +72,8 @@ import java.util.Set;
  * @since   1.7
  */
 public final class ExchangeService extends CommonService<ExchangeDao> {
+
+    private static final Logger log = Logger.getLogger(ExchangeService.class);
 
     private final Notifications notifications;
 
@@ -159,7 +163,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 // Before we can persist the Offer, we need to check that the refno
                 // is valid. Since the Country is part of the Group, we can simply
                 // compare the refno with that
-                verifyRefnoValidity(newEntity);
+                verifyRefnoValidity(authentication, newEntity);
                 // Set the Offer status to New
                 newEntity.setStatus(OfferState.NEW);
                 // Persist the Offer with history
@@ -198,12 +202,29 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         return new OfferResponse(transform(newEntity));
     }
 
-    private static void verifyRefnoValidity(final OfferEntity offer) {
+    private static void verifyRefnoValidity(final Authentication authentication, final OfferEntity offer) {
         final String countryCode = offer.getGroup().getCountry().getCountryCode();
         final String refno = offer.getRefNo();
 
         if (!refno.startsWith(countryCode)) {
             throw new VerificationException("The reference number is not valid for this country. Received '" + refno.substring(0, 2) + "' but expected '" + countryCode + "'.");
+        }
+
+        final Date today = new Date();
+        final int year = today.getCurrentYear();
+        final int month = today.getCurrentMonth();
+        if (month >= Calendar.SEPTEMBER) {
+            if (!refno.startsWith(countryCode + '-' + (year + 1))) {
+                final String newRefno = refno.replaceFirst("[A-Z]{2}-\\d{4}", countryCode + '-' + (year + 1));
+                log.info(String.format("[transferticket = %s] The refno '%s' is invalid, have replaced it with '%s'.", authentication.getTransferticket(), refno, newRefno));
+                offer.setRefNo(newRefno);
+            }
+        } else {
+            if (!refno.startsWith(countryCode + '-' + year)) {
+                final String newRefno = refno.replaceFirst("[A-Z]{2}-\\d{4}", countryCode + '-' + year);
+                log.info(String.format("[transferticket = %s] The refno '%s' is invalid, have replaced it with '%s'.", authentication.getTransferticket(), refno, newRefno));
+                offer.setRefNo(newRefno);
+            }
         }
     }
 

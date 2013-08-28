@@ -132,7 +132,7 @@
     <profiles>
 
         <profile>
-            <id>cov</id>
+            <id>sonar</id>
             <build>
                 <pluginManagement>
                     <plugins>

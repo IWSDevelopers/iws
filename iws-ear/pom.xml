@@ -56,7 +56,7 @@
             </build>
         </profile>
         <profile>
-            <id>cov</id>
+            <id>sonar</id>
             <build>
                 <plugins>
                     <plugin>

@@ -69,7 +69,7 @@ import javax.persistence.PersistenceContext;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class AdministrationBean extends AbstractBean implements Administration {
 
-    private static final Logger LOG = Logger.getLogger(AdministrationBean.class);
+    private static final Logger log = Logger.getLogger(AdministrationBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
     private Administration controller = null;
@@ -120,9 +120,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.createUser(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -139,9 +139,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.activateUser(activationString);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -157,9 +157,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.updateUsername(updateCode);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -176,9 +176,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.controlUserAccount(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -195,9 +195,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.fetchUser(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FetchUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -213,9 +213,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.fetchRoles(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FetchRoleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -232,9 +232,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.processGroup(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -251,9 +251,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.deleteGroup(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -270,9 +270,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.fetchGroup(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FetchGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -289,9 +289,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.processCountries(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -308,9 +308,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.fetchCountries(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FetchCountryResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -327,9 +327,9 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.processUserGroupAssignment(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 

@@ -52,7 +52,8 @@ import javax.persistence.PersistenceContext;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {
-    private static final Logger LOG = Logger.getLogger(NotificationManagerBean.class);
+
+    private static final Logger log = Logger.getLogger(NotificationManagerBean.class);
     private EntityManager entityManager = null;
     private NotificationDao dao = null;
     private AccessDao accessDao = null;
@@ -103,7 +104,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         try {
             notifications.notify(authentication, obj, type);
         } catch (IWSException e) {
-            LOG.error("Preparing notification failed", e);
+            log.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
@@ -112,7 +113,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
             final Date now = new Date();
             timerService.createTimer(now.toDate(), clazz);
         } else {
-            LOG.debug("There is no TimerService, probably running outside app server");
+            log.debug("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -124,7 +125,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         try {
             notifications.notify(user);
         } catch (IWSException e) {
-            LOG.error("Preparing notification failed", e);
+            log.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
@@ -133,7 +134,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
             final Date now = new Date();
             timerService.createTimer(now.toDate(), clazz);
         } else {
-            LOG.warn("There is no TimerService, probably running outside app server");
+            log.warn("There is no TimerService, probably running outside app server");
         }
     }
 

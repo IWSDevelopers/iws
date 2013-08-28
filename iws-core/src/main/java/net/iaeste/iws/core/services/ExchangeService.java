@@ -15,6 +15,7 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
@@ -172,7 +173,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 // An Offer exists with this RefNo, but the Id was not provided,
                 // hence we have the case where someone tries to create a new
                 // Offer using an existing RefNo, this is not allowed
-                throw new IdentificationException(String.format("An Offer with the Reference Number %s already exists.", refNo));
+                throw new IdentificationException(formatLogMessage(authentication, "An Offer with the Reference Number %s already exists.", refNo));
             }
         } else {
             // Check if the user is allowed to work with the Object, if not -
@@ -186,7 +187,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 // We could not find an Offer matching the given criterias,
                 // hence we have a case, where the user have not provided the
                 // correct information, we cannot process this Offer
-                throw new IdentificationException(String.format("No Offer could be found with the Id %s and Refefence Number %s.", externalId, refNo));
+                throw new IdentificationException(formatLogMessage(authentication, "No Offer could be found with the Id %s and Refefence Number %s.", externalId, refNo));
             }
 
             // Persist the changes, the method takes the existing and merges the
@@ -216,13 +217,13 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         if (month >= Calendar.SEPTEMBER) {
             if (!refno.startsWith(countryCode + '-' + (year + 1))) {
                 final String newRefno = refno.replaceFirst("[A-Z]{2}-\\d{4}", countryCode + '-' + (year + 1));
-                log.info(String.format("[transferticket = %s] The refno '%s' is invalid, have replaced it with '%s'.", authentication.getTransferticket(), refno, newRefno));
+                log.info(formatLogMessage(authentication, "The refno '%s' is invalid, have replaced it with '%s'.", refno, newRefno));
                 offer.setRefNo(newRefno);
             }
         } else {
             if (!refno.startsWith(countryCode + '-' + year)) {
                 final String newRefno = refno.replaceFirst("[A-Z]{2}-\\d{4}", countryCode + '-' + year);
-                log.info(String.format("[transferticket = %s] The refno '%s' is invalid, have replaced it with '%s'.", authentication.getTransferticket(), refno, newRefno));
+                log.info(formatLogMessage(authentication, "The refno '%s' is invalid, have replaced it with '%s'.", refno, newRefno));
                 offer.setRefNo(newRefno);
             }
         }

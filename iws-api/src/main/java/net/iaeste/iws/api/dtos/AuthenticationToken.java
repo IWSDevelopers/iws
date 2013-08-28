@@ -172,6 +172,7 @@ public final class AuthenticationToken extends AbstractVerification {
     }
 
     public void setTransferticket(final String transferticket) {
+        ensureValidId("transferticket", transferticket);
         this.transferticket = transferticket;
     }
 
@@ -179,7 +180,7 @@ public final class AuthenticationToken extends AbstractVerification {
         return transferticket;
     }
 
-// =========================================================================
+    // =========================================================================
     // Standard DTO Methods
     // =========================================================================
 

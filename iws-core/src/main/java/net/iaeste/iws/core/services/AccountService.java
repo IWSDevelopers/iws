@@ -17,6 +17,7 @@ package net.iaeste.iws.core.services;
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transformRoleEntities;
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -54,7 +55,7 @@ import java.util.UUID;
  */
 public final class AccountService extends CommonService<AccessDao> {
 
-    private static final Logger LOG = Logger.getLogger(AccountService.class);
+    private static final Logger log = Logger.getLogger(AccountService.class);
     private final Notifications notifications;
 
     public AccountService(final AccessDao dao, final Notifications notifications) {
@@ -197,7 +198,7 @@ public final class AccountService extends CommonService<AccessDao> {
         // request, then we'll hand over the handling to the personal handler,
         // otherwise it will be granted to the administration handler
         if (externalId.equals(providedId)) {
-            handleUsersOwnChanges(authentication.getUser(), request);
+            handleUsersOwnChanges(authentication, request);
         } else {
             handleMemberAccountChanges(authentication, request);
         }
@@ -352,33 +353,33 @@ public final class AccountService extends CommonService<AccessDao> {
     }
 
     /**
-     * This methodd handles a users own changes. Meaning, that if a user comes
-     * in and wishes to modify something, then this method will handle all
-     * aspects thereof. The type of changes include:
+     * This method handles a users own changes. Meaning, that if a user comes in
+     * and wishes to modify something, then this method will handle all aspects
+     * thereof. The type of changes include:
      * <ul>
      *   <li>Update Username</li>
      *   <li>Delete self</li>
      *   <li>Update Personal information</li>
      * </ul>
      *
-     * @param user    The User who wishes to update the private Account
-     * @param request USer Request Object, with Account changes
+     * @param authentication User that is invoking the request
+     * @param request        User Request Object, with Account changes
      */
-    private void handleUsersOwnChanges(final UserEntity user, final UserRequest request) {
+    private void handleUsersOwnChanges(final Authentication authentication, final UserRequest request) {
         final UserStatus newStatus = request.getNewStatus();
         final String username = request.getNewUsername();
 
         if (username != null) {
-            final String hash = generateHash(request.getPassword(), user.getSalt());
-            if (hash.equals(user.getPassword())) {
-                prepareUsernameUpdate(user, username);
+            final String hash = generateHash(request.getPassword(), authentication.getUser().getSalt());
+            if (hash.equals(authentication.getUser().getPassword())) {
+                prepareUsernameUpdate(authentication.getUser(), username);
             } else {
                 throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "The initiate update password request cannot be completed.");
             }
         } else if (newStatus == UserStatus.DELETED) {
-            deletePrivateData(user);
+            deletePrivateData(authentication, authentication.getUser());
         } else {
-            updatePrivacyAndData(user, request);
+            updatePrivacyAndData(authentication, request);
         }
     }
 
@@ -431,7 +432,7 @@ public final class AccountService extends CommonService<AccessDao> {
                     dao.persist(authentication, user);
                     break;
                 case DELETED:
-                    deletePrivateData(user);
+                    deletePrivateData(authentication, user);
                     break;
                 default:
                     throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Illegal User state change.");
@@ -448,9 +449,9 @@ public final class AccountService extends CommonService<AccessDao> {
      * breaking any privacy laws. Only thing remaining of the User Account, will
      * be the
      *
-     * @param user User Entity to delete the private data of
+     * @param authentication User that is invoking the request
      */
-    private void deletePrivateData(final UserEntity user) {
+    private void deletePrivateData(final Authentication authentication, final UserEntity user) {
         // First, delete the Sessions, they are linked to the User account, and
         // not the users private Group
         final int deletedSessions = dao.deleteSessions(user);
@@ -466,7 +467,7 @@ public final class AccountService extends CommonService<AccessDao> {
             // system
             dao.delete(user);
 
-            LOG.info("Deleted the new user " + user + " completely.");
+            log.info(formatLogMessage(authentication, "Deleted the new user %s completely.", user));
         } else {
             // Now, remove and System specific data from the Account, and set the
             // Status to deleted, thus preventing the account from being used
@@ -476,16 +477,16 @@ public final class AccountService extends CommonService<AccessDao> {
             user.setStatus(UserStatus.DELETED);
             dao.persist(user);
 
-            LOG.info("Deleted all private data for user " + user + ", including " + deletedSessions + " sessions,");
+            log.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
         }
     }
 
-    private void updatePrivacyAndData(final UserEntity user, final UserRequest request) {
+    private void updatePrivacyAndData(final Authentication authentication, final UserRequest request) {
         // TODO Make the UserEntity mergeable!
-        user.setPrivateData(request.getUser().getPrivacy());
-        user.setNotifications(request.getUser().getNotifications());
+        authentication.getUser().setPrivateData(request.getUser().getPrivacy());
+        authentication.getUser().setNotifications(request.getUser().getNotifications());
 
-        dao.persist(user);
+        dao.persist(authentication.getUser());
     }
 
     private void prepareUsernameUpdate(final UserEntity user, final String username) {

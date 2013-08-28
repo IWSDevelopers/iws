@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core;
 
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
+
 import net.iaeste.iws.api.Student;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
@@ -38,7 +40,7 @@ import org.apache.log4j.Logger;
  */
 public final class StudentController extends CommonController implements Student {
 
-    private static final Logger LOG = Logger.getLogger(StudentController.class);
+    private static final Logger log = Logger.getLogger(StudentController.class);
     private final ServiceFactory factory;
 
     /**
@@ -58,7 +60,9 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
-        LOG.trace("Starting processStudent()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processStudent()"));
+        }
         Fallible response;
 
         try {
@@ -72,7 +76,9 @@ public final class StudentController extends CommonController implements Student
             response = new FetchStudentResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processStudent()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processStudent()"));
+        }
         return response;
     }
 
@@ -81,7 +87,9 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        LOG.trace("Starting fetchStudents()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchStudents()"));
+        }
         FetchStudentResponse response;
 
         try {
@@ -94,7 +102,9 @@ public final class StudentController extends CommonController implements Student
             response = new FetchStudentResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchStudents()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchStudents()"));
+        }
         return response;
     }
 
@@ -103,7 +113,9 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
-        LOG.trace("Starting processStudentApplication()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processStudentApplication()"));
+        }
         StudentApplicationResponse response;
 
         try {
@@ -116,7 +128,9 @@ public final class StudentController extends CommonController implements Student
             response = new StudentApplicationResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished processStudentApplication()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processStudentApplication()"));
+        }
         return response;
     }
 
@@ -125,7 +139,9 @@ public final class StudentController extends CommonController implements Student
      */
     @Override
     public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
-        LOG.trace("Starting fetchStudentApplications()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchStudentApplications()"));
+        }
         FetchStudentApplicationsResponse response;
 
         try {
@@ -138,7 +154,9 @@ public final class StudentController extends CommonController implements Student
             response = new FetchStudentApplicationsResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchStudentApplications()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchStudentApplications()"));
+        }
         return response;
     }
 }

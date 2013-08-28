@@ -41,7 +41,6 @@ import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
-import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,6 @@ import java.util.List;
  */
 public final class GroupService {
 
-    private static final Logger log = Logger.getLogger(GroupService.class);
     private final AccessDao dao;
     private final Notifications notifications;
 

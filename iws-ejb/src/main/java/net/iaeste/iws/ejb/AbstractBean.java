@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.ejb;
 
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
+
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.annotation.PostConstruct;
@@ -50,15 +53,15 @@ public abstract class AbstractBean {
      * @param fallible Result object to base the log entry on
      * @return Log entry string
      */
-    protected final String generateResponseLog(final Fallible fallible) {
+    protected final String generateResponseLog(final Fallible fallible, final AuthenticationToken... tokens) {
         final String method = getCallingMethod();
         final String logMessage;
 
         if (fallible.isOk()) {
-            logMessage = method + " completed.";
+            logMessage = formatLogMessage(getToken(tokens), "%s completed.", method);
         } else {
             final String message = fallible.getMessage();
-            logMessage = "Error in  " + method + "  " + message;
+            logMessage = formatLogMessage(getToken(tokens), "Error in %s:%s", method, message);
         }
 
         return logMessage;
@@ -70,15 +73,15 @@ public abstract class AbstractBean {
      * @param cause The error cause
      * @return Log entry string
      */
-    protected final String generateErrorLog(final Throwable cause) {
+    protected final String generateErrorLog(final Throwable cause, final AuthenticationToken... tokens) {
         final String method = getCallingMethod();
 
         // For debugging purposes, the following line can be uncommented, but
-        // under if someone checks it in uncommented, the person will be
-        // tortured, roasted over a slow fire and finally be subjected to
-        // ridicule. So in short - don't do it!
+        // if someone checks it in uncommented, the person will be tortured,
+        // roasted over a slow fire and finally be subjected to ridicule. So in
+        // short - don't do it!
         // cause.printStackTrace();
-        return "Error in  " + method + ": " + cause.getMessage();
+        return formatLogMessage(getToken(tokens), "Error in %s:%s", method, cause.getMessage());
     }
 
     /**
@@ -90,5 +93,16 @@ public abstract class AbstractBean {
     private String getCallingMethod() {
         final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
         return trace[STACKTRACE_INDEX].getMethodName();
+    }
+
+    /**
+     * Retrieves the first AuthenticationToken from the given array, if no such
+     * token exists, then a null value is returned instead.
+     *
+     * @param tokens Token Array
+     * @return First token or null
+     */
+    private AuthenticationToken getToken(final AuthenticationToken... tokens) {
+        return ((tokens != null) && (tokens.length >= 1)) ? tokens[0] : null;
     }
 }

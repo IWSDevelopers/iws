@@ -58,7 +58,7 @@ import javax.persistence.PersistenceContext;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class CommitteeBean extends AbstractBean implements Committees {
 
-    private static final Logger LOG = Logger.getLogger(CommitteeBean.class);
+    private static final Logger log = Logger.getLogger(CommitteeBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
     private Committees controller = null;
@@ -109,9 +109,9 @@ public class CommitteeBean extends AbstractBean implements Committees {
 
         try {
             response = controller.createCommittee(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -128,9 +128,9 @@ public class CommitteeBean extends AbstractBean implements Committees {
 
         try {
             response = controller.manageCommittee(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -147,9 +147,9 @@ public class CommitteeBean extends AbstractBean implements Committees {
 
         try {
             response = controller.upgradeCommittee(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -166,9 +166,9 @@ public class CommitteeBean extends AbstractBean implements Committees {
 
         try {
             response = controller.manageInternationalGroup(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -185,9 +185,9 @@ public class CommitteeBean extends AbstractBean implements Committees {
 
         try {
             response = controller.createRegionalGroup(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -204,9 +204,9 @@ public class CommitteeBean extends AbstractBean implements Committees {
 
         try {
             response = controller.manageRegionalGroup(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 

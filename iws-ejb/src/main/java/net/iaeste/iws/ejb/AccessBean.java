@@ -67,7 +67,7 @@ import java.io.Serializable;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public class AccessBean extends AbstractBean implements Access {
 
-    private static final Logger LOG = Logger.getLogger(AccessBean.class);
+    private static final Logger log = Logger.getLogger(AccessBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
     private Access controller = null;
@@ -122,9 +122,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.generateSession(request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e));
             response = new AuthenticationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -141,9 +141,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.requestResettingSession(request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -160,9 +160,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.resetSession(resetSessionToken);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e));
             response = new AuthenticationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -179,9 +179,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.saveSessionData(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -198,9 +198,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.readSessionData(token);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new SessionDataResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -217,9 +217,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.deprecateSession(token);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -236,9 +236,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.forgotPassword(username);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -255,9 +255,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.resetPassword(resetPasswordToken, password);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -274,9 +274,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.updatePassword(token, password);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -292,9 +292,9 @@ public class AccessBean extends AbstractBean implements Access {
 
         try {
             response = controller.fetchPermissions(token);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FetchPermissionResponse(IWSErrors.ERROR, e.getMessage());
         }
 

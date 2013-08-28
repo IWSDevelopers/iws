@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core;
 
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
+
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
@@ -35,7 +37,7 @@ import org.apache.log4j.Logger;
  */
 public final class CommitteeController extends CommonController implements Committees {
 
-    private static final Logger LOG = Logger.getLogger(CommitteeController.class);
+    private static final Logger log = Logger.getLogger(CommitteeController.class);
     private final ServiceFactory factory;
 
     /**
@@ -55,7 +57,9 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public Fallible createCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        LOG.trace("Starting createCommittee()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting createCommittee()"));
+        }
         Fallible response;
 
         try {
@@ -68,7 +72,9 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished createCommittee()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished createCommittee()"));
+        }
         return response;
     }
 
@@ -77,7 +83,9 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public Fallible manageCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        LOG.trace("Starting manageCommittee()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting manageCommittee()"));
+        }
         Fallible response;
 
         try {
@@ -90,7 +98,9 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished manageCommittee()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished manageCommittee()"));
+        }
         return response;
     }
 
@@ -99,7 +109,9 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public Fallible upgradeCommittee(final AuthenticationToken token, final CommitteeRequest request) {
-        LOG.trace("Starting upgradeCommittee()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting upgradeCommittee()"));
+        }
         Fallible response;
 
         try {
@@ -112,7 +124,9 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished upgradeCommittee()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished upgradeCommittee()"));
+        }
         return response;
     }
 
@@ -121,7 +135,9 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public Fallible manageInternationalGroup(final AuthenticationToken token, final InternationalGroupRequest request) {
-        LOG.trace("Starting manageInternationalGroup()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting manageInternationalGroup()"));
+        }
         Fallible response;
 
         try {
@@ -134,7 +150,9 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished manageInternationalGroup()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished manageInternationalGroup()"));
+        }
         return response;
     }
 
@@ -143,7 +161,9 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public Fallible createRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        LOG.trace("Starting createRegionalGroup()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting createRegionalGroup()"));
+        }
         Fallible response;
 
         try {
@@ -156,7 +176,9 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished createRegionalGroup()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished createRegionalGroup()"));
+        }
         return response;
     }
 
@@ -165,7 +187,9 @@ public final class CommitteeController extends CommonController implements Commi
      */
     @Override
     public Fallible manageRegionalGroup(final AuthenticationToken token, final RegionalGroupRequest request) {
-        LOG.trace("Starting manageRegionalGroup()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting manageRegionalGroup()"));
+        }
         Fallible response;
 
         try {
@@ -178,7 +202,9 @@ public final class CommitteeController extends CommonController implements Commi
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished manageRegionalGroup()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished manageRegionalGroup()"));
+        }
         return response;
     }
 }

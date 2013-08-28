@@ -62,7 +62,7 @@ import javax.persistence.PersistenceContext;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StudentBean extends AbstractBean implements Student {
 
-    private static final Logger LOG = Logger.getLogger(StudentBean.class);
+    private static final Logger log = Logger.getLogger(StudentBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
     private Student controller = null;
@@ -113,9 +113,9 @@ public class StudentBean extends AbstractBean implements Student {
 
         try {
             response = controller.processStudent(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -132,9 +132,9 @@ public class StudentBean extends AbstractBean implements Student {
 
         try {
             response = controller.fetchStudents(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FetchStudentResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -151,9 +151,9 @@ public class StudentBean extends AbstractBean implements Student {
 
         try {
             response = controller.processStudentApplication(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
@@ -170,9 +170,9 @@ public class StudentBean extends AbstractBean implements Student {
 
         try {
             response = controller.fetchStudentApplications(token, request);
-            LOG.info(generateResponseLog(response));
+            log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
-            LOG.error(generateErrorLog(e));
+            log.error(generateErrorLog(e, token));
             response = new FetchStudentApplicationsResponse(IWSErrors.ERROR, e.getMessage());
         }
 

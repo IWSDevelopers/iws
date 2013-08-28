@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core;
 
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
+
 import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Password;
@@ -47,8 +49,8 @@ import java.io.Serializable;
  */
 public final class AccessController extends CommonController implements Access {
 
+    private static final Logger log = Logger.getLogger(AccessController.class);
     private static final String AUTHENTICATION_REQUEST_ERROR = "The Authentication Request Object is undefined.";
-    private static final Logger LOG = Logger.getLogger(AccessController.class);
     private final ServiceFactory factory;
 
     /**
@@ -68,7 +70,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        LOG.trace("Starting generateSession()");
+        if (log.isTraceEnabled()) {
+            log.trace("Starting generateSession()");
+        }
         AuthenticationResponse response;
 
         try {
@@ -81,7 +85,9 @@ public final class AccessController extends CommonController implements Access {
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished generateSession()");
+        if (log.isTraceEnabled()) {
+            log.trace("Finished generateSession()");
+        }
         return response;
     }
 
@@ -90,7 +96,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public Fallible requestResettingSession(final AuthenticationRequest request) {
-        LOG.trace("Starting requestResettingSession()");
+        if (log.isTraceEnabled()) {
+            log.trace("Starting requestResettingSession()");
+        }
         Fallible response;
 
         try {
@@ -103,7 +111,9 @@ public final class AccessController extends CommonController implements Access {
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished requestResettingSession()");
+        if (log.isTraceEnabled()) {
+            log.trace("Finished requestResettingSession()");
+        }
         return response;
     }
 
@@ -112,7 +122,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public AuthenticationResponse resetSession(final String resetSessionToken) {
-        LOG.trace("Starting resetSession()");
+        if (log.isTraceEnabled()) {
+            log.trace("Starting resetSession()");
+        }
         AuthenticationResponse response;
 
         try {
@@ -124,7 +136,9 @@ public final class AccessController extends CommonController implements Access {
             response = new AuthenticationResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished resetSession()");
+        if (log.isTraceEnabled()) {
+            log.trace("Finished resetSession()");
+        }
         return response;
     }
 
@@ -133,7 +147,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public <T extends Serializable> Fallible saveSessionData(final AuthenticationToken token, final SessionDataRequest<T> request) {
-        LOG.trace("Starting saveSessionData()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting saveSessionData()"));
+        }
         Fallible response;
 
         try {
@@ -146,7 +162,7 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished saveSessionData()");
+        log.trace(formatLogMessage(token, "Finished saveSessionData()"));
         return response;
     }
 
@@ -155,7 +171,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public <T extends Serializable> SessionDataResponse<T> readSessionData(final AuthenticationToken token) {
-        LOG.trace("Starting readSessionData()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting readSessionData()"));
+        }
         SessionDataResponse<T> response;
 
         try {
@@ -167,7 +185,9 @@ public final class AccessController extends CommonController implements Access {
             response = new SessionDataResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished readSessionData()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished readSessionData()"));
+        }
         return response;
     }
 
@@ -176,7 +196,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public Fallible deprecateSession(final AuthenticationToken token) {
-        LOG.trace("Starting deprecateSession()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting deprecateSession()"));
+        }
         Fallible response;
 
         try {
@@ -189,7 +211,9 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished deprecateSession()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished deprecateSession()"));
+        }
         return response;
     }
 
@@ -198,7 +222,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public Fallible forgotPassword(final String username) {
-        LOG.trace("Starting forgotPassword()");
+        if (log.isTraceEnabled()) {
+            log.trace("Starting forgotPassword()");
+        }
         Fallible response;
 
         try {
@@ -209,7 +235,9 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished forgotPassword()");
+        if (log.isTraceEnabled()) {
+            log.trace("Finished forgotPassword()");
+        }
         return response;
     }
 
@@ -218,7 +246,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public Fallible resetPassword(final String resetPasswordToken, final Password password) {
-        LOG.trace("Starting resetPassword()");
+        if (log.isTraceEnabled()) {
+            log.trace("Starting resetPassword()");
+        }
         Fallible response;
 
         try {
@@ -232,7 +262,9 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished resetPassword()");
+        if (log.isTraceEnabled()) {
+            log.trace("Finished resetPassword()");
+        }
         return response;
     }
 
@@ -241,7 +273,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public Fallible updatePassword(final AuthenticationToken token, final Password password) {
-        LOG.trace("Starting updatePassword()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting updatePassword()"));
+        }
         Fallible response;
 
         try {
@@ -255,7 +289,9 @@ public final class AccessController extends CommonController implements Access {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished updatePassword()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished updatePassword()"));
+        }
         return response;
     }
 
@@ -264,7 +300,9 @@ public final class AccessController extends CommonController implements Access {
      */
     @Override
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
-        LOG.trace("Starting fetchPermissions()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchPermissions()"));
+        }
         FetchPermissionResponse response;
 
         try {
@@ -276,7 +314,9 @@ public final class AccessController extends CommonController implements Access {
             response = new FetchPermissionResponse(e.getError(), e.getMessage());
         }
 
-        LOG.trace("Finished fetchPermissions()");
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchPermissions()"));
+        }
         return response;
     }
 }

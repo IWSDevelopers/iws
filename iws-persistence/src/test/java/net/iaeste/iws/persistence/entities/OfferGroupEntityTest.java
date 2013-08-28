@@ -43,6 +43,7 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Contains tests for OfferEntity and ExchangeJpaDao
@@ -87,7 +88,7 @@ public class OfferGroupEntityTest {
         final UserEntity user = accessDao.findUserByUsername("austria@iaeste.at");
         final GroupEntity group = accessDao.findNationalGroup(user);
         offer.setGroup(group);
-        authentication = new Authentication(token, user, group);
+        authentication = new Authentication(token, user, group, UUID.randomUUID().toString());
     }
 
     private static OfferEntity getMinimalOffer() {

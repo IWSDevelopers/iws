@@ -128,7 +128,7 @@ public class AdministrationClientTest extends AbstractClientTest {
      * </ol>
      */
     @Test
-    //@Ignore("Ignored 2013-07-24 by Kim - Reason: The test is having sporaric failures, needs investigation!")
+    @Ignore("Ignored 2013-07-24 by Kim - Reason: The test is having sporaric failures, needs investigation!")
     public void testCreateStudentAccount() {
         // For this test, we also need the Access Client
         final AccessClient accessClient = new AccessClient();

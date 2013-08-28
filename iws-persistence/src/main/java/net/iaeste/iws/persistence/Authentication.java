@@ -23,7 +23,9 @@ import net.iaeste.iws.persistence.entities.UserEntity;
  * user and the group at hand. This Object is created as part of the
  * Authorization mechanism.<br />
  *   The Monitoring mechanism requires that we have some sort of identification
- * at hand, and this Object will provide it.
+ * at hand, and this Object will provide it.<br />
+ *   The Object also contains the transferticket, used for all non-trace related
+ * logging.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -34,14 +36,16 @@ public final class Authentication {
     private final AuthenticationToken token;
     private final UserEntity user;
     private final GroupEntity group;
+    private final String transferticket;
 
     /**
      * Minimal Constructor.
      *
      * @param user   User Entity for the current user
      */
-    public Authentication(final UserEntity user) {
+    public Authentication(final UserEntity user, final String transferticket) {
         this.user = user;
+        this.transferticket = transferticket;
 
         token = null;
         group = null;
@@ -54,10 +58,11 @@ public final class Authentication {
      * @param user   User Entity for the current user
      * @param group  Group Entity for the group being worked with
      */
-    public Authentication(final AuthenticationToken token, final UserEntity user, final GroupEntity group) {
+    public Authentication(final AuthenticationToken token, final UserEntity user, final GroupEntity group, final String transferticket) {
         this.token = token;
         this.user = user;
         this.group = group;
+        this.transferticket = transferticket;
     }
 
     /**
@@ -70,6 +75,7 @@ public final class Authentication {
     public Authentication(final AuthenticationToken token, final UserEntity user) {
         this.token = token;
         this.user = user;
+        this.transferticket = token.getTransferticket();
 
         group = null;
     }
@@ -84,5 +90,9 @@ public final class Authentication {
 
     public GroupEntity getGroup() {
         return group;
+    }
+
+    public String getTransferticket() {
+        return transferticket;
     }
 }

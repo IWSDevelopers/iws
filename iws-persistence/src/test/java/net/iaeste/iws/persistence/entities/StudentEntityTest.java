@@ -65,7 +65,7 @@ public class StudentEntityTest {
         final UserEntity user = accessDao.findUserByUsername("austria@iaeste.at");
 
         group = accessDao.findNationalGroup(user);
-        authentication = new Authentication(token, user, group);
+        authentication = new Authentication(token, user, group, UUID.randomUUID().toString());
     }
 
     @Test

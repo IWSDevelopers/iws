@@ -31,6 +31,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Michal Knapik / last $Author:$
@@ -54,7 +55,7 @@ public class ExchangeServiceTest {
         final GroupEntity group = new GroupEntity();
         group.setId(1L);
 
-        auth = new Authentication(token, user, group);
+        auth = new Authentication(token, user, group, UUID.randomUUID().toString());
     }
 
 //    @Test

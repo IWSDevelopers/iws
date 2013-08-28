@@ -115,7 +115,7 @@ public final class AccessService extends CommonService<AccessDao> {
         if (activeSession != null) {
             user.setCode(generateHash(UUID.randomUUID().toString()));
             dao.persist(user);
-            final Authentication authentication = new Authentication(user);
+            final Authentication authentication = new Authentication(user, UUID.randomUUID().toString());
             notifications.notify(authentication, user, NotificationType.RESET_SESSION);
         } else {
             throw new SessionException("No Session exists for this user.");

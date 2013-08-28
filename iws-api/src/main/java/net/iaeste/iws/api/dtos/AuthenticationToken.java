@@ -19,6 +19,7 @@ import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * All requests (with the exception of the initial Authorization request) is
@@ -45,6 +46,13 @@ public final class AuthenticationToken extends AbstractVerification {
 
     /** For Group Authorization, the GroupId must also be provided. */
     private String groupId = null;
+
+    /**
+     * The Transfer Ticket is not used in the standard methods, it is
+     * independent of the internal logic, and is purely for the purpose of
+     * tracing log messages.
+     */
+    private String transferticket = UUID.randomUUID().toString();
 
     // =========================================================================
     // Object Constructors
@@ -163,7 +171,15 @@ public final class AuthenticationToken extends AbstractVerification {
         return groupId;
     }
 
-    // =========================================================================
+    public void setTransferticket(final String transferticket) {
+        this.transferticket = transferticket;
+    }
+
+    public String getTransferticket() {
+        return transferticket;
+    }
+
+// =========================================================================
     // Standard DTO Methods
     // =========================================================================
 

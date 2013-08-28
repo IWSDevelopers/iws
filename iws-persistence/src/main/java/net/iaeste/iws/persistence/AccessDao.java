@@ -117,10 +117,11 @@ public interface AccessDao extends BasicDao {
      * @return Found RoleEntity or null
      */
     RoleEntity findRoleById(Long id);
-    RoleEntity findRoleByUserAndGrouo(String externalUserId, GroupEntity group);
+    RoleEntity findRoleByUserAndGroup(String externalUserId, GroupEntity group);
 
     UserEntity findUserByExternalId(String externalUserId);
 
+    UserGroupEntity findMemberByGroupAndUser(GroupEntity group, UserEntity user);
     /**
      * Finds a user from the given Member Group. If no such user account is
      * associated with the the Group, then a null is returned, otherwise the
@@ -131,7 +132,10 @@ public interface AccessDao extends BasicDao {
      * @return Found UserGroupEntity or null
      */
     UserGroupEntity findMemberByExternalId(String externalUserId, GroupEntity group);
+
     UserGroupEntity findMemberByExternalId(String externalUserId);
+
+    UserGroupEntity findMemberGroupByUser(UserEntity user);
 
     GroupTypeEntity findGroupTypeByType(GroupType groupType);
 
@@ -150,4 +154,8 @@ public interface AccessDao extends BasicDao {
      * @return Student Group or null
      */
     GroupEntity findStudentGroup(GroupEntity group);
+
+    RoleEntity findRoleByExternalIdAndGroup(String reid, GroupEntity group);
+
+    RoleEntity findRoleByExternalId(String externalId);
 }

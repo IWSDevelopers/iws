@@ -303,12 +303,12 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public RoleEntity findRoleByUserAndGrouo(final String externalUserId, final GroupEntity group) {
+    public RoleEntity findRoleByUserAndGroup(final String externalUserId, final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("role.findByUserAndGroup");
         query.setParameter("euid", externalUserId);
         query.setParameter("gid", group.getId());
 
-        return (RoleEntity) query.getSingleResult();
+        return findSingleResult(query, "role");
     }
 
     /**
@@ -319,7 +319,19 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("user.findByExternalId");
         query.setParameter("euid", externalUserId);
 
-        return (UserEntity) query.getSingleResult();
+        return findUniqueResult(query, "user");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserGroupEntity findMemberByGroupAndUser(final GroupEntity group, final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("usergroup.findByGroupAndUser");
+        query.setParameter("gid", group.getId());
+        query.setParameter("uid", user.getId());
+
+        return findSingleResult(query, "usergroup");
     }
 
     /**
@@ -331,7 +343,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("gid", group.getId());
         query.setParameter("euid", externalUserId);
 
-        return (UserGroupEntity) query.getSingleResult();
+        return findSingleResult(query, "usergroup");
     }
 
     /**
@@ -339,10 +351,21 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public UserGroupEntity findMemberByExternalId(final String externalUserId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findMemberByUser");
+        final Query query = entityManager.createNamedQuery("usergroup.findMemberByUserExternalId");
         query.setParameter("euid", externalUserId);
 
-        return (UserGroupEntity) query.getSingleResult();
+        return findUniqueResult(query, "usergroup");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserGroupEntity findMemberGroupByUser(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("usergroup.findMemberByUserId");
+        query.setParameter("uid", user.getId());
+
+        return findUniqueResult(query, "userGroup");
     }
 
     /**
@@ -379,6 +402,30 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final List<CountryEntity> list = query.getResultList();
 
         return list.isEmpty() ? null : list.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RoleEntity findRoleByExternalIdAndGroup(final String reid, final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("role.findByExternalIdAndGroup");
+        query.setParameter("reid", reid);
+        query.setParameter("cid", group.getCountry().getId());
+        query.setParameter("gid", group.getId());
+
+        return findUniqueResult(query, "role");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RoleEntity findRoleByExternalId(final String externalId) {
+        final Query query = entityManager.createNamedQuery("role.findByExternalId");
+        query.setParameter("erid", externalId);
+
+        return findUniqueResult(query, "role");
     }
 
     /**

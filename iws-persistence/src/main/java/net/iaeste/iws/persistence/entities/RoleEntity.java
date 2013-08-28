@@ -57,6 +57,16 @@ import java.util.Date;
                         "where ug.role.id = r.id" +
                         "  and ug.user.externalId = :euid" +
                         "  and ug.group.id = :gid"),
+        @NamedQuery(name = "role.findByExternalIdAndGroup",
+                query = "select r from RoleEntity r " +
+                        "where r.externalId = :reid" +
+                        "  and r.country = null" +
+                        "  and r.group = null" +
+                        "  or (r.country.id = :cid" +
+                        "    or r.group.id = :gid)"),
+        @NamedQuery(name = "role.findByExternalId",
+                    query = "select r from RoleEntity r " +
+                        "where r.externalId = :erid"),
         @NamedQuery(name = "role.findRoleByName",
                 query = "select r from RoleEntity r " +
                         "where r.role = :role")

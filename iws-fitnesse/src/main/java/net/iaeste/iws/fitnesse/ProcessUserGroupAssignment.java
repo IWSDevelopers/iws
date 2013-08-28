@@ -122,9 +122,10 @@ public final class ProcessUserGroupAssignment extends AbstractFixture<Fallible> 
     public void execute() throws StopTestException {
         createSession();
         role.setPermissions(permissions);
-        request.setUser(user);
-        request.setGroup(group);
-        request.setRole(role);
+// UserGroup Assignment has changed. Further, This method will not allow creation of a Role, this is a different request.
+//        request.setUser(user);
+//        request.setGroup(group);
+//        request.setRole(role);
         setResponse(administration.processUserGroupAssignment(getToken(), request));
     }
 

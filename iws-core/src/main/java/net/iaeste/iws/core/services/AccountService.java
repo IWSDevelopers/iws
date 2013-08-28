@@ -220,7 +220,7 @@ public final class AccountService extends CommonService<AccessDao> {
         if (userId.equals(externalId)) {
             // The user itself
             final UserGroupEntity entity = dao.findMemberByExternalId(externalId);
-            user = transform(entity);
+            user = transform(entity).getUser();
         } else {
             // First, we make an Authorization Check. If it fails, an
             // AuthorizationException is thrown
@@ -231,7 +231,7 @@ public final class AccountService extends CommonService<AccessDao> {
             final GroupEntity member = dao.findMemberGroup(administrator);
             final UserGroupEntity entity = dao.findMemberByExternalId(externalId, member);
             if (entity != null) {
-                user = transform(entity);
+                user = transform(entity).getUser();
 
                 // We're in the Group Context, where the Privacy flag applies,
                 // meaning that if a user has set this, then the user's private
@@ -393,7 +393,7 @@ public final class AccountService extends CommonService<AccessDao> {
      */
     private void handleMemberAccountChanges(final Authentication authentication, final UserRequest request) {
         final GroupEntity group = dao.findMemberGroup(authentication.getUser());
-        final RoleEntity role = dao.findRoleByUserAndGrouo(request.getUser().getUserId(), group);
+        final RoleEntity role = dao.findRoleByUserAndGroup(request.getUser().getUserId(), group);
 
         // First, we need to verify if the user may access. The DAO method
         // throws an Exception, if the user is not allowed

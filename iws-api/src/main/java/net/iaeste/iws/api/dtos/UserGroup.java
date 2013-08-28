@@ -15,8 +15,11 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.UserStatus;
-import net.iaeste.iws.api.util.AbstractFallible;
+import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.util.Date;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This Object contains the information about a User in a Group relation. It is
@@ -30,17 +33,19 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @since   1.7
  * @noinspection OverlyComplexMethod
  */
-public final class UserGroup extends AbstractFallible {
+public final class UserGroup extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String userId = null;
+    private String id = null;
+    private User user = null;
+    private Group group = null;
+    private Role role = null;
     private String title = null;
-    private String firstname = null;
-    private String lastname = null;
-    private UserStatus status = null;
-    private Person person = null;
+    private boolean onPublicList = false;
+    private boolean onPrivateList = false;
+    private Date memberSince = null;
 
     // =========================================================================
     // Object Constructors
@@ -54,35 +59,20 @@ public final class UserGroup extends AbstractFallible {
     }
 
     /**
-     * Default Constructor.
-     *
-     * @param userId    User Id
-     * @param title     Custom Title for a user in this context
-     * @param firstname The Users firstname
-     * @param lastname  The Users lastname
-     * @param status    The Users status in this context
-     */
-    public UserGroup(final String userId, final String title, final String firstname, final String lastname, final UserStatus status) {
-        this.userId = userId;
-        this.title = title;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.status = status;
-    }
-
-    /**
      * Copy Constructor.
      *
      * @param userGroup User Group Object to copy
      */
     public UserGroup(final UserGroup userGroup) {
         if (userGroup != null) {
-            userId = userGroup.userId;
+            id = userGroup.id;
+            user = new User(userGroup.user);
+            group = new Group(userGroup.group);
+            role = new Role(userGroup.role);
             title = userGroup.title;
-            firstname = userGroup.firstname;
-            lastname = userGroup.lastname;
-            status = userGroup.status;
-            person = userGroup.person;
+            onPublicList = userGroup.onPublicList;
+            onPrivateList = userGroup.onPrivateList;
+            memberSince = userGroup.memberSince;
         }
     }
 
@@ -90,15 +80,44 @@ public final class UserGroup extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUserId(final String userId) {
-        this.userId = userId;
+    public void setId(final String id) {
+        ensureValidId("id", id);
+        this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
+    }
+
+    public void setUser(final User user) {
+        ensureNotNullAndVerifiable("user", user);
+        this.user = new User(user);
+    }
+
+    public User getUser() {
+        return new User(user);
+    }
+
+    public void setGroup(final Group group) {
+        ensureNotNullAndVerifiable("group", group);
+        this.group = new Group(group);
+    }
+
+    public Group getGroup() {
+        return new Group(group);
+    }
+
+    public void setRole(final Role role) {
+        ensureNotNullAndVerifiable("role", role);
+        this.role = new Role(role);
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public void setTitle(final String title) {
+        ensureNotTooLong("title", title, 50);
         this.title = title;
     }
 
@@ -106,36 +125,28 @@ public final class UserGroup extends AbstractFallible {
         return title;
     }
 
-    public void setFirstname(final String firstname) {
-        this.firstname = firstname;
+    public void setOnPublicList(final boolean onPublicList) {
+        this.onPublicList = onPublicList;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public boolean isOnPublicList() {
+        return onPublicList;
     }
 
-    public void setLastname(final String lastname) {
-        this.lastname = lastname;
+    public void setOnPrivateList(final boolean onPrivateList) {
+        this.onPrivateList = onPrivateList;
     }
 
-    public String getLastname() {
-        return lastname;
+    public boolean isOnPrivateList() {
+        return onPrivateList;
     }
 
-    public void setStatus(final UserStatus status) {
-        this.status = status;
+    public void setMemberSince(final Date memberSince) {
+        this.memberSince = memberSince;
     }
 
-    public UserStatus getStatus() {
-        return status;
-    }
-
-    public void setPerson(final Person person) {
-        this.person = person;
-    }
-
-    public Person getPerson() {
-        return person;
+    public Date getMemberSince() {
+        return memberSince;
     }
 
     // =========================================================================
@@ -146,38 +157,56 @@ public final class UserGroup extends AbstractFallible {
      * {@inheritDoc}
      */
     @Override
+    public Map<String, String> validate() {
+        final Map<String, String> validation = new HashMap<>(0);
+
+        isVerifiable(validation, "user", user);
+        isVerifiable(validation, "group", group);
+        isVerifiable(validation, "role", role);
+
+        return validation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
-
         if (!(obj instanceof UserGroup)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
             return false;
         }
 
         final UserGroup userGroup = (UserGroup) obj;
 
-        if (firstname != null ? !firstname.equals(userGroup.firstname) : userGroup.firstname != null) {
+        if (id != null ? !id.equals(userGroup.id) : userGroup.id != null) {
             return false;
         }
-
-        if (lastname != null ? !lastname.equals(userGroup.lastname) : userGroup.lastname != null) {
+        if (user != null ? !user.equals(userGroup.user) : userGroup.user != null) {
             return false;
         }
-
-        if (status != userGroup.status) {
+        if (group != null ? !group.equals(userGroup.group) : userGroup.group != null) {
             return false;
         }
-
+        if (role != null ? !role.equals(userGroup.role) : userGroup.role != null) {
+            return false;
+        }
         if (title != null ? !title.equals(userGroup.title) : userGroup.title != null) {
             return false;
         }
-
-        if (person != null ? !person.equals(userGroup.person) : userGroup.person != null) {
+        if (onPublicList != userGroup.onPublicList) {
+            return false;
+        }
+        if (onPrivateList != userGroup.onPrivateList) {
             return false;
         }
 
-        return !(userId != null ? !userId.equals(userGroup.userId) : userGroup.userId != null);
+        return !(memberSince != null ? !memberSince.equals(userGroup.memberSince) : userGroup.memberSince != null);
     }
 
     /**
@@ -187,12 +216,14 @@ public final class UserGroup extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (userId != null ? userId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (role != null ? role.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (title != null ? title.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (firstname != null ? firstname.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lastname != null ? lastname.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (person != null ? person.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (onPublicList ? 1 : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (onPrivateList ? 1 : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (memberSince != null ? memberSince.hashCode() : 0);
 
         return result;
     }
@@ -203,12 +234,14 @@ public final class UserGroup extends AbstractFallible {
     @Override
     public String toString() {
         return "UserGroup{" +
-                "userId='" + userId + '\'' +
+                "id='" + id + '\'' +
+                ", user=" + user +
+                ", group=" + group +
+                ", role=" + role +
                 ", title='" + title + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", status=" + status +
-                ", person=" + person +
+                ", onPublicList=" + onPublicList +
+                ", onPrivateList=" + onPrivateList +
+                ", memberSince=" + memberSince +
                 '}';
     }
 }

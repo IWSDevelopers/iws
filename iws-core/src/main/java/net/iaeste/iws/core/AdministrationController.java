@@ -287,7 +287,7 @@ public final class AdministrationController extends CommonController implements 
 
         try {
             verify(request);
-            token.setGroupId(request.getGroup().getId());
+            token.setGroupId(request.getUserGroup().getGroup().getId());
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
 
             final GroupService service = factory.prepareGroupService();

@@ -17,6 +17,7 @@ package net.iaeste.iws.core.transformers;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -41,7 +42,7 @@ public final class AdministrationTransformer {
         final List<User> users = new ArrayList<>(members.size());
 
         for (final UserGroupEntity member : members) {
-            users.add(transform(member));
+            users.add(transform(member).getUser());
         }
 
         return users;
@@ -97,32 +98,32 @@ public final class AdministrationTransformer {
         return roles;
     }
 
-    public static User transform(final UserGroupEntity entity) {
-        final User user;
-
-        if (entity != null) {
-            user = new User();
-
-            final UserEntity userEntity = entity.getUser();
-            final GroupEntity groupEntity = entity.getGroup();
-            user.setUserId(userEntity.getExternalId());
-            user.setUsername(userEntity.getUserName());
-            user.setAlias(userEntity.getAlias());
-            user.setFirstname(userEntity.getFirstname());
-            user.setLastname(userEntity.getLastname());
-            user.setStatus(userEntity.getStatus());
-            user.setPrivacy(userEntity.getPrivateData());
-            user.setNotifications(userEntity.getNotifications());
-            user.setMemberCountryId(groupEntity.getCountry().getCountryCode());
-
-            // TODO; Implement the Person Object
-            //user.setPerson(transform(entity.getPerson()));
-        } else {
-            user = null;
-        }
-
-        return user;
-    }
+//    public static UserGroup transformUserGroup(final UserGroupEntity entity) {
+//        final User user;
+//
+//        if (entity != null) {
+//            user = new User();
+//
+//            final UserEntity userEntity = transform(entity.getUser());
+//            final GroupEntity groupEntity = entity.getGroup();
+////            user.setUserId(userEntity.getExternalId());
+////            user.setUsername(userEntity.getUserName());
+////            user.setAlias(userEntity.getAlias());
+////            user.setFirstname(userEntity.getFirstname());
+////            user.setLastname(userEntity.getLastname());
+////            user.setStatus(userEntity.getStatus());
+////            user.setPrivacy(userEntity.getPrivateData());
+////            user.setNotifications(userEntity.getNotifications());
+////            user.setMemberCountryId(groupEntity.getCountry().getCountryCode());
+//
+//            // TODO; Implement the Person Object
+//            //user.setPerson(transform(entity.getPerson()));
+//        } else {
+//            user = null;
+//        }
+//
+//        return user;
+//    }
 
     public static User transform(final UserEntity entity) {
         final User user;
@@ -163,6 +164,47 @@ public final class AdministrationTransformer {
             //entity.setPerson(transform(user.getPerson()));
         } else {
             entity = null;
+        }
+
+        return entity;
+    }
+
+    public static UserGroup transform(final UserGroupEntity entity) {
+        final UserGroup userGroup;
+
+        if (entity != null) {
+            userGroup = new UserGroup();
+
+            userGroup.setId(entity.getExternalId());
+            userGroup.setUser(transform(entity.getUser()));
+            userGroup.setGroup(CommonTransformer.transform(entity.getGroup()));
+            userGroup.setRole(transform(entity.getRole()));
+            userGroup.setTitle(entity.getTitle());
+            userGroup.setOnPublicList(entity.getOnPublicList());
+            userGroup.setOnPrivateList(entity.getOnPrivateList());
+            userGroup.setMemberSince(CommonTransformer.convert(entity.getCreated()));
+        } else {
+            userGroup = null;
+        }
+
+        return userGroup;
+    }
+
+    public static UserGroupEntity transform(final UserGroup userGroup) {
+        final UserGroupEntity entity;
+
+        if (userGroup != null) {
+            entity = new UserGroupEntity();
+
+            entity.setExternalId(userGroup.getId());
+            entity.setUser(transform(userGroup.getUser()));
+            entity.setGroup(CommonTransformer.transform(userGroup.getGroup()));
+            entity.setRole(transform(userGroup.getRole()));
+            entity.setTitle(userGroup.getTitle());
+            entity.setOnPublicList(userGroup.isOnPublicList());
+            entity.setOnPrivateList(userGroup.isOnPrivateList());
+        } else {
+            entity = new UserGroupEntity();
         }
 
         return entity;

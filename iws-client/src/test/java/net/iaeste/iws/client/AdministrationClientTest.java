@@ -128,7 +128,7 @@ public class AdministrationClientTest extends AbstractClientTest {
      * </ol>
      */
     @Test
-    @Ignore("Ignored 2013-07-24 by Kim - Reason: The test is having sporaric failures, needs investigation!")
+    //@Ignore("Ignored 2013-07-24 by Kim - Reason: The test is having sporaric failures, needs investigation!")
     public void testCreateStudentAccount() {
         // For this test, we also need the Access Client
         final AccessClient accessClient = new AccessClient();
@@ -217,7 +217,7 @@ public class AdministrationClientTest extends AbstractClientTest {
     public void testAddingUserToMemberGroup() {
         final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(AUSTRIA_MEMBER_GROUP);
         final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
-        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest(fetchGroupResponse.getUsers().get(3), fetchGroupResponse.getGroup());
+        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest();
         final Fallible userGroupResponse = administration.processUserGroupAssignment(token, userGroupAssignmentRequest);
 
         assertThat(userGroupResponse, is(not(nullValue())));
@@ -232,7 +232,7 @@ public class AdministrationClientTest extends AbstractClientTest {
         final Group nsGroup = findNationalGroup(token);
         final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(nsGroup.getId());
         final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
-        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest(fetchGroupResponse.getUsers().get(3), nsGroup);
+        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest();
         final Fallible userGroupResponse = administration.processUserGroupAssignment(token, userGroupAssignmentRequest);
 
         assertThat(userGroupResponse, is(not(nullValue())));

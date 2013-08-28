@@ -58,10 +58,20 @@ import java.util.Map;
                         "  and ug.group.id = :gid" +
                         "  and ug.user.externalId = :euid"),
         @NamedQuery(
-                name = "usergroup.findMemberByUser",
+                name = "usergroup.findByGroupAndUser",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.id = :gid" +
+                        "  and ug.user.id= :uid"),
+        @NamedQuery(
+                name = "usergroup.findMemberByUserExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.groupType.grouptype = 'MEMBERS'" +
                         "  and ug.user.externalId = :euid"),
+        @NamedQuery(
+                name = "usergroup.findMemberByUserId",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
+                        "  and ug.user.id = :uid"),
         @NamedQuery(
                 name = "usergroup.findGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
@@ -285,7 +295,6 @@ public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable 
     @Override
     public void merge(final UserGroupEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
-            role = obj.role;
             title = obj.title;
             onPublicList = obj.onPublicList;
             onPrivateList = obj.onPrivateList;

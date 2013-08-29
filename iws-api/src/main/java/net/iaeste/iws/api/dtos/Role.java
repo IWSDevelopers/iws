@@ -17,9 +17,9 @@ package net.iaeste.iws.api.dtos;
 import static net.iaeste.iws.api.util.Copier.copy;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.util.AbstractVerification;
 
-import java.security.Permissions;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +43,7 @@ public final class Role extends AbstractVerification {
 
     private String roleId = null;
     private String roleName = null;
-    private Set<Permissions> permissions = null;
+    private Set<Permission> permissions = null;
 
     // =========================================================================
     // Object Constructors
@@ -65,7 +65,7 @@ public final class Role extends AbstractVerification {
      * @param roleName    Name of the Role
      * @param permissions Associated Permissions for this Role
      */
-    public Role(final String roleId, final String roleName, final Set<Permissions> permissions) {
+    public Role(final String roleId, final String roleName, final Set<Permission> permissions) {
         this.roleId = roleId;
         this.roleName = roleName;
         this.permissions = copy(permissions);
@@ -106,11 +106,11 @@ public final class Role extends AbstractVerification {
         return roleName;
     }
 
-    public void setPermissions(final Set<Permissions> permissions) {
+    public void setPermissions(final Set<Permission> permissions) {
         this.permissions = copy(permissions);
     }
 
-    public Set<Permissions> getPermissions() {
+    public Set<Permission> getPermissions() {
         return copy(permissions);
     }
 

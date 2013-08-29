@@ -35,7 +35,6 @@ import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.common.notification.NotificationField;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -199,9 +198,8 @@ public final class AccessClientTest {
     }
 
     @Test
-    @Ignore("Test is failing")
     public void testFetchPermissions() {
-        final String userId = "13452874-0c0f-4caf-8101-a8e9b41d6e69";
+        final String userId = "c50aaeec-c0de-425a-b487-4530cbfbe115";
         // Create a new Token, that we can use for the test
         final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
 
@@ -217,8 +215,8 @@ public final class AccessClientTest {
 
         // When we make a request for a specific Group, we only expect to find a single element
         assertThat(responseNational.getAuthorizations().size(), is(1));
-        assertThat(responseNational.getAuthorizations().get(0).getPermission().contains(Permission.PROCESS_OFFER), is(true));
-        //token.setId("invalid");
+        assertThat(responseNational.getAuthorizations().get(0).getRole().getPermissions().contains(Permission.PROCESS_OFFER), is(true));
+        token.setGroupId(userId);
 
         // Finally, let's see what happens when we try to find the information
         // from a Group, that we are not a member of

@@ -14,14 +14,9 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.Permission;
 
 import java.io.Serializable;
-import java.util.EnumSet;
-import java.util.Set;
 
 /**
  * Contains the information about a permission.
@@ -36,7 +31,7 @@ public final class Authorization implements Serializable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private Group group = null;
-    private Set<Permission> permissions = EnumSet.noneOf(Permission.class);
+    private Role role = null;
 
     // =========================================================================
     // Object Constructors
@@ -52,12 +47,12 @@ public final class Authorization implements Serializable {
     /**
      * Default Constructor.
      *
-     * @param group       Group
-     * @param permissions Authorization
+     * @param group Group
+     * @param role  Role with Permissions
      */
-    public Authorization(final Group group, final Set<Permission> permissions) {
+    public Authorization(final Group group, final Role role) {
         setGroup(group);
-        setPermissions(permissions);
+        setRole(role);
     }
 
     /**
@@ -71,7 +66,7 @@ public final class Authorization implements Serializable {
         }
 
         setGroup(authorization.group);
-        setPermissions(authorization.permissions);
+        setRole(role);
     }
 
     // =========================================================================
@@ -79,34 +74,30 @@ public final class Authorization implements Serializable {
     // =========================================================================
 
     public void setGroup(final Group group) {
-        this.group = copy(group);
+        this.group = new Group(group);
     }
 
     public Group getGroup() {
-        return copy(group);
+        return new Group(group);
     }
 
-    public void setPermissions(final Set<Permission> permissions) {
-        this.permissions = copy(permissions);
+    public void setRole(final Role role) {
+        this.role = new Role(role);
     }
 
-    public Set<Permission> getPermission() {
-        return copy(permissions);
+    public Role getRole() {
+        return new Role(role);
     }
 
     // =========================================================================
     // Standard DTO Methods
     // =========================================================================
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
-
         if (!(obj instanceof Authorization)) {
             return false;
         }
@@ -117,7 +108,7 @@ public final class Authorization implements Serializable {
             return false;
         }
 
-        return !(permissions != null ? !permissions.equals(that.permissions) : that.permissions != null);
+        return !(role != null ? !role.equals(that.role) : that.role != null);
     }
 
     /**
@@ -128,7 +119,7 @@ public final class Authorization implements Serializable {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (group != null ? group.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (permissions != null ? permissions.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (role != null ? role.hashCode() : 0);
 
         return hash;
     }
@@ -140,7 +131,7 @@ public final class Authorization implements Serializable {
     public String toString() {
         return "Authorization{" +
                 "group='" + group + '\'' +
-                ", permissions='" + permissions + '\'' +
+                "role='" + role + '\'' +
                 '}';
     }
 }

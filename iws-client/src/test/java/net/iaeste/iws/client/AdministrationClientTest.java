@@ -167,7 +167,7 @@ public class AdministrationClientTest extends AbstractClientTest {
         // only 1 permission - which is applying for Open Offers
         final FetchPermissionResponse permissionResponse = accessClient.fetchPermissions(response2.getToken());
         assertThat(permissionResponse.isOk(), is(true));
-        assertThat(permissionResponse.getAuthorizations().get(0).getPermission().contains(Permission.APPLY_FOR_OPEN_OFFER), is(true));
+        assertThat(permissionResponse.getAuthorizations().get(0).getRole().getPermissions().contains(Permission.APPLY_FOR_OPEN_OFFER), is(true));
 
         // Deprecate the Students Session, the test is over :-)
         final Fallible deprecateSessionResult = accessClient.deprecateSession(response2.getToken());

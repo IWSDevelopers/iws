@@ -60,6 +60,12 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
     @Column(name = "egid")
     private String externalGroupId = null;
 
+    @Column(name = "erid")
+    private String externalRoleId = null;
+
+    @Column(name = "eugid")
+    private String externalUserGroupId = null;
+
     @Column(name = "username")
     private String userName = null;
 
@@ -76,11 +82,11 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
     @Column(name = "group_description")
     private String groupDescription = null;
 
-    @Column(name = "rid")
-    private Integer roleId = null;
+    @Column(name = "role")
+    private String role = null;
 
-    @Column(name = "rolename")
-    private String roleName = null;
+    @Column(name = "title")
+    private String title = null;
 
     @Column(name = "permission")
     @Enumerated(EnumType.STRING)
@@ -102,7 +108,7 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
         id.setUserId(userId);
     }
 
-    public Long getUserID() {
+    public Long getUserId() {
         return id.getUserId();
     }
 
@@ -136,6 +142,22 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
 
     public String getExternalGroupId() {
         return externalGroupId;
+    }
+
+    public void setExternalRoleId(final String externalRoleId) {
+        this.externalRoleId = externalRoleId;
+    }
+
+    public String getExternalRoleId() {
+        return externalRoleId;
+    }
+
+    public void setExternalUserGroupId(final String externalUserGroupId) {
+        this.externalUserGroupId = externalUserGroupId;
+    }
+
+    public String getExternalUserGroupId() {
+        return externalUserGroupId;
     }
 
     public void setUserName(final String userName) {
@@ -178,20 +200,20 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
         return groupDescription;
     }
 
-    public void setRoleId(final Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(final String role) {
+        this.role = role;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoleName(final String roleName) {
-        this.roleName = roleName;
+    public void setTitle(final String title) {
+        this.title = title;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getTitle() {
+        return title;
     }
 
     public void setPermission(final Permission permission) {

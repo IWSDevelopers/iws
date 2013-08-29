@@ -23,11 +23,14 @@ import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Password;
+import net.iaeste.iws.api.dtos.Role;
+import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
+import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
@@ -55,7 +58,6 @@ import java.util.UUID;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection ObjectAllocationInLoop
  */
 public final class AccessService extends CommonService<AccessDao> {
 
@@ -83,12 +85,15 @@ public final class AccessService extends CommonService<AccessDao> {
      * @return New AuthenticationToken
      * @throws SessionException if an Active Session already exists
      */
-    public AuthenticationToken generateSession(final AuthenticationRequest request) {
+    public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         final UserEntity user = findUserFromCredentials(request);
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if (activeSession == null) {
-            return new AuthenticationToken(generateAndPersistSessionKey(user));
+            final String key = generateAndPersistSessionKey(user);
+            final AuthenticationToken token = new AuthenticationToken(key);
+
+            return new AuthenticationResponse(token);
         } else {
             final String msg = "An Active Session for user %s %s already exists.";
             throw new SessionException(format(msg, user.getFirstname(), user.getLastname()));
@@ -289,17 +294,19 @@ public final class AccessService extends CommonService<AccessDao> {
     public FetchPermissionResponse findPermissions(final Authentication authentication, final String externalGroupId) {
         // List will always contain at least 1 entry, otherwise an exception is thrown
         final List<UserPermissionView> found = dao.findPermissions(authentication, externalGroupId);
-        final Map<Group, Set<Permission>> map = new HashMap<>(10);
+        final Map<String, Set<Permission>> permissions = new HashMap<>(16);
+        final Map<String, UserGroup> userGroups = new HashMap<>(16);
 
         for (final UserPermissionView view : found) {
-            final Group group = readGroup(view);
-            if (!map.containsKey(group)) {
-                map.put(group, EnumSet.noneOf(Permission.class));
+            final UserGroup userGroup = readUserGroup(view);
+            if (!userGroups.containsKey(userGroup.getId())) {
+                userGroups.put(userGroup.getId(), userGroup);
+                permissions.put(userGroup.getId(), EnumSet.noneOf(Permission.class));
             }
-            map.get(group).add(view.getPermission());
+            permissions.get(userGroup.getId()).add(view.getPermission());
         }
 
-        final List<Authorization> list = convertPermissionMap(map);
+        final List<Authorization> list = convertPermissionMap(userGroups, permissions);
         final String userId = found.get(0).getExternalUserId();
         return new FetchPermissionResponse(userId, list);
     }
@@ -382,6 +389,16 @@ public final class AccessService extends CommonService<AccessDao> {
         return result;
     }
 
+    private static UserGroup readUserGroup(final UserPermissionView view) {
+        final UserGroup userGroup = new UserGroup();
+
+        userGroup.setId(view.getExternalUserGroupId());
+        userGroup.setGroup(readGroup(view));
+        userGroup.setRole(readRole(view));
+
+        return userGroup;
+    }
+
     private static Group readGroup(final UserPermissionView view) {
         final Group group = new Group();
 
@@ -394,6 +411,15 @@ public final class AccessService extends CommonService<AccessDao> {
         return group;
     }
 
+    private static Role readRole(final UserPermissionView view) {
+        final Role role = new Role();
+
+        role.setRoleId(view.getExternalRoleId());
+        role.setRoleName(view.getTitle() != null ? view.getTitle() : view.getRole());
+
+        return role;
+    }
+
     private static Country readCountry(final UserPermissionView view) {
         final Country country = new Country();
 
@@ -402,13 +428,22 @@ public final class AccessService extends CommonService<AccessDao> {
         return country;
     }
 
-    private static List<Authorization> convertPermissionMap(final Map<Group, Set<Permission>> map) {
-        final List<Authorization> result = new ArrayList<>(map.size());
+    private static List<Authorization> convertPermissionMap(final Map<String, UserGroup> userGroupMap, final Map<String, Set<Permission>> permissionMap) {
+        final List<Authorization> result = new ArrayList<>(userGroupMap.size());
 
-        for (final Map.Entry<Group, Set<Permission>> set : map.entrySet()) {
-            result.add(new Authorization(set.getKey(), set.getValue()));
+        for (final Map.Entry<String, Set<Permission>> permissionSet : permissionMap.entrySet()) {
+            final String key = permissionSet.getKey();
+            result.add(readFromSet(userGroupMap.get(key), permissionSet));
         }
 
         return result;
+    }
+
+    private static Authorization readFromSet(final UserGroup userGroup, final Map.Entry<String, Set<Permission>> set) {
+        final Group group = userGroup.getGroup();
+        final Role role = userGroup.getRole();
+        role.setPermissions(set.getValue());
+
+        return new Authorization(group, role);
     }
 }

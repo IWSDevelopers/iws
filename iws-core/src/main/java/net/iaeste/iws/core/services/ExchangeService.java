@@ -215,13 +215,18 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final int year = today.getCurrentYear();
         final int month = today.getCurrentMonth();
         if (month >= Calendar.SEPTEMBER) {
+            // According to Trac task #372, refno's must be set to the following
+            // year, after September
             if (!refno.startsWith(countryCode + '-' + (year + 1))) {
                 final String newRefno = refno.replaceFirst("[A-Z]{2}-\\d{4}", countryCode + '-' + (year + 1));
                 log.info(formatLogMessage(authentication, "The refno '%s' is invalid, have replaced it with '%s'.", refno, newRefno));
                 offer.setRefNo(newRefno);
             }
         } else {
-            if (!refno.startsWith(countryCode + '-' + year)) {
+            // Let's add a check, which will allow both this and next year. As
+            // we do not know when countries may start to prepare Offers for
+            // next year
+            if (!refno.startsWith(countryCode + '-' + year) && !refno.startsWith(countryCode + '-' + (year + 1))) {
                 final String newRefno = refno.replaceFirst("[A-Z]{2}-\\d{4}", countryCode + '-' + year);
                 log.info(formatLogMessage(authentication, "The refno '%s' is invalid, have replaced it with '%s'.", refno, newRefno));
                 offer.setRefNo(newRefno);

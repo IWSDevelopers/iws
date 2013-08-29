@@ -41,7 +41,7 @@ import java.util.UUID;
 public final class GenerateDataForTest {
 
     private static final String RESTART_SEQUENCE = "alter sequence %s restart with %d;";
-    private static final String COUNTRY_INSERT = "insert into countries (country_code, country_name, country_name_full, member_since, membership) values ('%s', '%s', '%s', %d, '%s');";
+    private static final String COUNTRY_INSERT = "insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('%s', '%s', '%s', '%s', %d, '%s');";
     private static final String GROUP_INSERT = "insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('%s', %d, %s, %d, '%s');";
     private static final String USER_INSERT = "insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');";
     private static final String USER_GROUP_INSERT = "insert into user_to_group (external_id, user_id, group_id, role_id) values ('%s', %d, %d, %d);";
@@ -53,15 +53,15 @@ public final class GenerateDataForTest {
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         final Object[][] parameters = {
-                { "CO", "Columbia",    "columbia@iaeste.co",    "NS", "Columbia",    "columbia",    1960, Membership.FULL_MEMBER },
-                { "CH", "Switzerland", "switzerland@iaeste.ch", "NS", "Switzerland", "switzerland", 1960, Membership.FULL_MEMBER },
-                { "FI", "Finland",     "finland@iaeste.dk",     "NS", "Finland",     "finland",     1960, Membership.FULL_MEMBER },
-                { "DE", "Germany",     "germany@iaeste.de",     "NS", "Germany",     "germany",     1960, Membership.FULL_MEMBER },
-                { "AT", "Austria",     "austria@iaeste.at",     "NS", "Austria",     "austria",     1960, Membership.FULL_MEMBER },
-                { "HR", "Croatia",     "croatia@iaeste.hr",     "NS", "Croatia",     "croatia",     1960, Membership.FULL_MEMBER },
-                { "JO", "Jordan",      "jordan@iaeste.jo",      "NS", "Jordan",      "jordan",      1960, Membership.FULL_MEMBER },
-                { "PL", "Poland",      "poland@iaeste.pl",      "NS", "Poland",      "poland",      1960, Membership.FULL_MEMBER },
-                { "NO", "Norway",      "norway@iaeste.de",      "NS", "Norway",      "norway",      1960, Membership.FULL_MEMBER },
+                { "CO", "Columbia",    "columbia@iaeste.co",    "NS", "Columbia",    "columbia",    "COP", 1960, Membership.FULL_MEMBER },
+                { "CH", "Switzerland", "switzerland@iaeste.ch", "NS", "Switzerland", "switzerland", "CHF", 1960, Membership.FULL_MEMBER },
+                { "FI", "Finland",     "finland@iaeste.dk",     "NS", "Finland",     "finland",     "EUR", 1960, Membership.FULL_MEMBER },
+                { "DE", "Germany",     "germany@iaeste.de",     "NS", "Germany",     "germany",     "EUR", 1960, Membership.FULL_MEMBER },
+                { "AT", "Austria",     "austria@iaeste.at",     "NS", "Austria",     "austria",     "EUR", 1960, Membership.FULL_MEMBER },
+                { "HR", "Croatia",     "croatia@iaeste.hr",     "NS", "Croatia",     "croatia",     "HRK", 1960, Membership.FULL_MEMBER },
+                { "JO", "Jordan",      "jordan@iaeste.jo",      "NS", "Jordan",      "jordan",      "JOD", 1960, Membership.FULL_MEMBER },
+                { "PL", "Poland",      "poland@iaeste.pl",      "NS", "Poland",      "poland",      "PLN", 1960, Membership.FULL_MEMBER },
+                { "NO", "Norway",      "norway@iaeste.de",      "NS", "Norway",      "norway",      "NOK", 1960, Membership.FULL_MEMBER },
         };
 
         return Arrays.asList(parameters);
@@ -107,13 +107,14 @@ public final class GenerateDataForTest {
             final String firstname,
             final String lastname,
             final String password,
+            final String currency,
             final int memberSince,
             final Membership memberShip) {
         // First a little heads-up regarding which country data is being created
         print("\n-- Generating Test data for %s", countryName);
 
         // Generate the SQL for the Country Table
-        print(COUNTRY_INSERT, countryCode, countryName, countryName, memberSince, memberShip.name());
+        print(COUNTRY_INSERT, countryCode, countryName, countryName, currency, memberSince, memberShip.name());
 
         // Generate the Group SQL, we need both a Member & National Group
         print(GROUP_INSERT, generateExternalId(), GroupType.MEMBER.ordinal(), "null", currentCountryId, countryName);

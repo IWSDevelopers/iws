@@ -132,6 +132,7 @@ public final class AdministrationTransformer {
             user = new User();
 
             user.setUserId(entity.getExternalId());
+            user.setUsername(entity.getUsername());
             user.setFirstname(entity.getFirstname());
             user.setLastname(entity.getLastname());
             user.setStatus(entity.getStatus());
@@ -154,6 +155,7 @@ public final class AdministrationTransformer {
             entity = new UserEntity();
 
             entity.setExternalId(user.getUserId());
+            entity.setUsername(user.getUsername());
             entity.setFirstname(user.getFirstname());
             entity.setLastname(user.getLastname());
             entity.setStatus(user.getStatus());

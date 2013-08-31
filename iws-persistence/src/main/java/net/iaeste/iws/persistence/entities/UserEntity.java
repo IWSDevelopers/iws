@@ -54,13 +54,13 @@ import java.util.Map;
                 name = "user.loginCredentials",
                 query = "select u from UserEntity u " +
                         "where u.status = 'ACTIVE'" +
-                        "  and u.userName = :username" +
+                        "  and u.username = :username" +
                         "  and u.password = :password"),
         @NamedQuery(
                 name = "user.findByUserName",
                 query = "select u from UserEntity u " +
                         "where u.status <> 'DELETED'" +
-                        "  and u.userName = :username"),
+                        "  and u.username = :username"),
         @NamedQuery(
                 name = "user.findByExternalId",
                 query = "select u from UserEntity u " +
@@ -102,7 +102,7 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
      * The username is the users private e-mail address.
      */
     @Column(name = "username", length = 100, nullable = false)
-    private String userName = null;
+    private String username = null;
 
     /**
      * The generated e-mail alias, that all users receive by the system.
@@ -221,13 +221,13 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
     /**
      * Default Constructor, for creating new User Accounts.
      *
-     * @param userName  User name (e-mail address)
+     * @param username  User name (e-mail address)
      * @param password  Password (hash value, not clear text)
      * @param firstname The users firstname, can only be altered by DBA's
      * @param lastname  The users lastname, can only be altered by DBA's
      */
-    public UserEntity(final String userName, final String password, final String firstname, final String lastname) {
-        this.userName = userName;
+    public UserEntity(final String username, final String password, final String firstname, final String lastname) {
+        this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -269,12 +269,12 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
         return externalId;
     }
 
-    public void setUserName(final String userName) {
-        this.userName = userName;
+    public void setUsername(final String username) {
+        this.username = username;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public void setAlias(final String alias) {
@@ -454,10 +454,10 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
             case RESET_SESSION:
                 // These three types all require that we send the information
                 // too the current e-mail address
-                fields.put(NotificationField.EMAIL, userName);
+                fields.put(NotificationField.EMAIL, username);
                 break;
             case NEW_USER:
-                fields.put(NotificationField.EMAIL, userName);
+                fields.put(NotificationField.EMAIL, username);
                 break;
             case UPDATE_USERNAME:
                 // When updating the username, we're having a new address that

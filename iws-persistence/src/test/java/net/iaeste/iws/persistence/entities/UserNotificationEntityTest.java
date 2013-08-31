@@ -53,7 +53,7 @@ public class UserNotificationEntityTest {
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
         final UserEntity user = dao.findUserByUsername("austria@iaeste.at");
-        assertThat(user.getUserName(), is("austria@iaeste.at"));
+        assertThat(user.getUsername(), is("austria@iaeste.at"));
         final Query query = entityManager.createNamedQuery("notifications.findSettingByUserAndType");
         query.setParameter("id", user.getId());
         query.setParameter("type", NotificationType.ACTIVATE_USER);

@@ -162,7 +162,7 @@ public final class AccountService extends CommonService<AccessDao> {
 
         if (user != null) {
             // Update the UserEntity with the new Username
-            user.setUserName(user.getData());
+            user.setUsername(user.getData());
             user.setCode(null);
             user.setData(null);
             user.setModified(new Date());
@@ -301,7 +301,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final String salt = UUID.randomUUID().toString();
 
         // Now, set all the information about the user and persist the Account
-        user.setUserName(username);
+        user.setUsername(username);
         user.setTemporary(password);
         user.setPassword(generateHash(password, salt));
         user.setSalt(salt);

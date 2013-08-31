@@ -63,7 +63,7 @@ public class SessionEntityTest {
         final UserEntity user = new UserEntity();
         final SessionEntity session = new SessionEntity();
         final String key = HashcodeGenerator.generateHash("User Password, Date, IPNumber, and more");
-        user.setUserName("alfa");
+        user.setUsername("alfa");
         user.setAlias("alias");
         user.setPassword(HashcodeGenerator.generateHash("beta"));
         user.setSalt(UUID.randomUUID().toString());

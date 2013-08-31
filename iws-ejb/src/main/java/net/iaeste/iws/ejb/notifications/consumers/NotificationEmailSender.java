@@ -217,7 +217,7 @@ public class NotificationEmailSender implements Observer {
                     try {
                         final ObjectMessage msg = session.createObjectMessage();
                         final EmailMessage emsg = new EmailMessage();
-                        emsg.setTo(recipient.getUserName());
+                        emsg.setTo(recipient.getUsername());
                         final Map<String, String> messageData = messageGenerator.generateFromTemplate(fields, type);
                         emsg.setSubject(messageData.get("title"));
                         emsg.setMessage(messageData.get("body"));

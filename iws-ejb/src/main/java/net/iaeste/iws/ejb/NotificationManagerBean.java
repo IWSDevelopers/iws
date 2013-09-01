@@ -29,9 +29,11 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
@@ -48,12 +50,12 @@ import javax.persistence.PersistenceContext;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Singleton
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {
-
-    private static final Logger log = Logger.getLogger(NotificationManagerBean.class);
+    private static final Logger LOG = Logger.getLogger(NotificationManagerBean.class);
     private EntityManager entityManager = null;
     private NotificationDao dao = null;
     private AccessDao accessDao = null;
@@ -61,6 +63,9 @@ public class NotificationManagerBean implements NotificationManagerLocal {
 
     @Resource
     private TimerService timerService;
+    private Timer timer = null;
+
+    private final Object lock = new Object();
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
@@ -84,6 +89,9 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         final NotificationManager notificationManager = new NotificationManager(dao, accessDao, new NotificationMessageGeneratorFreemarker(), true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
+
+//        final String clazz = NotificationManagerBean.class.getSimpleName();
+//        timer = timerService.createTimer(new Date().toDate(), clazz);
     }
 
     @Override
@@ -104,16 +112,19 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         try {
             notifications.notify(authentication, obj, type);
         } catch (IWSException e) {
-            log.error("Preparing notification failed", e);
+            LOG.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
         if (timerService != null) {
-            final String clazz = NotificationManagerBean.class.getSimpleName();
-            final Date now = new Date();
-            timerService.createTimer(now.toDate(), clazz);
+//            if (timer == null) {
+//                final String clazz = NotificationManagerBean.class.getSimpleName();
+//                org.joda.time.DateTime now = new DateTime().plusSeconds(60);
+//                this.timer = timerService.createTimer(now.toDate(), clazz);
+//            }
+            processJobs();
         } else {
-            log.debug("There is no TimerService, probably running outside app server");
+            LOG.debug("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -125,16 +136,20 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         try {
             notifications.notify(user);
         } catch (IWSException e) {
-            log.error("Preparing notification failed", e);
+            LOG.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
         if (timerService != null) {
-            final String clazz = NotificationManagerBean.class.getSimpleName();
-            final Date now = new Date();
-            timerService.createTimer(now.toDate(), clazz);
+//            if (timer == null) {
+//                final String clazz = NotificationManagerBean.class.getSimpleName();
+//                org.joda.time.DateTime now = new DateTime().plusSeconds(60);
+//                this.timer = timerService.createTimer(now.toDate(), clazz);
+//            }
+            //start processing jobs immediately to avoid possible problems with timer running another thread
+            processJobs();
         } else {
-            log.warn("There is no TimerService, probably running outside app server");
+            LOG.warn("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -172,7 +187,11 @@ public class NotificationManagerBean implements NotificationManagerLocal {
 
     @Timeout
     private void processJobs(final Timer timer) {
+        this.timer = null;
         notifications.processJobs();
+        final String clazz = NotificationManagerBean.class.getSimpleName();
+        org.joda.time.DateTime now = new DateTime().plusSeconds(60);
+        this.timer = timerService.createTimer(now.toDate(), clazz);
     }
 
     public void setTimerService(final TimerService timerService) {

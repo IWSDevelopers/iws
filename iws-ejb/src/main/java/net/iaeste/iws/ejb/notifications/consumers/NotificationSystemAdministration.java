@@ -66,10 +66,11 @@ public class NotificationSystemAdministration implements Observer {
                 final ByteArrayInputStream inputStream = new ByteArrayInputStream(jobTask.getObject());
                 final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
-                boolean processed = false;
+                NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
                 if (fields != null) {
-                    processed = processTask(fields, jobTask.getNotificationType());
+                    processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
+                boolean processed = (processedStatus != NotificationProcessTaskStatus.ERROR);
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts()+1);
             } catch (IOException|ClassNotFoundException ignored) {
                 //TODO write to log and skip the task or throw an exception?
@@ -77,12 +78,12 @@ public class NotificationSystemAdministration implements Observer {
         }
     }
 
-    private boolean processTask(final Map<NotificationField, String> fields, final NotificationType type) {
-        boolean ret = false;
+    private NotificationProcessTaskStatus processTask(final Map<NotificationField, String> fields, final NotificationType type) {
+        NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.NOT_FOR_ME;
         switch (type) {
             case NEW_USER:
                 prepareUserNotificationSetting(fields.get(NotificationField.EMAIL), type);
-                ret = true;
+                ret = NotificationProcessTaskStatus.OK;
                 break;
         }
         return ret;

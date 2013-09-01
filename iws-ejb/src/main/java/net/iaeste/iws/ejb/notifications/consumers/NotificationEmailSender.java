@@ -182,17 +182,22 @@ public class NotificationEmailSender implements Observer {
     }
 
     private void processMessages() {
+        //wait half minute in case system administration consumer has to do the job first
+//        try {
+//            Thread.sleep(30000);
+//        } catch (InterruptedException ignore) { }
+
         final List<NotificationJobTasksView> jobTasks = dao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
             try {
                 final ByteArrayInputStream inputStream = new ByteArrayInputStream(jobTask.getObject());
                 final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
-                boolean processed = false;
+                NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
                 if (fields != null) {
-                    processTask(fields, jobTask.getNotificationType());//toto processed = processTask
-                    processed = true;
+                    processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
+                boolean processed = (processedStatus != NotificationProcessTaskStatus.ERROR);
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts()+1);
             } catch (IOException |ClassNotFoundException ignored) {
                 //TODO write to log and skip the task or throw an exception?
@@ -200,13 +205,16 @@ public class NotificationEmailSender implements Observer {
         }
     }
 
-    private boolean processTask(final Map<NotificationField, String> fields, final NotificationType type) {
+    private NotificationProcessTaskStatus processTask(final Map<NotificationField, String> fields, final NotificationType type) {
         //TODO marking task as processed depending on the successful sending to all recepients might be a problem. if it
         //     fails for one user, even those already sent users will be included during next processing. Just failed user
         //     NotificationType and message could be saved for furthere processing/investigation
 
-        boolean ret = false;
+        NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.ERROR;
         final List<UserEntity> recipients = getRecipients(fields, type);
+        if (recipients == null)
+            return NotificationProcessTaskStatus.NOT_FOR_ME;
+
         for (final UserEntity recipient : recipients) {
             final UserNotificationEntity userSetting;
             try {
@@ -224,7 +232,7 @@ public class NotificationEmailSender implements Observer {
                         msg.setObject(emsg);
 
                         sender.send(msg);
-                        ret = true;
+                        ret = NotificationProcessTaskStatus.OK;
                     } catch (IWSException e) {
                         LOG.error("Notification message generating failed", e);
                     } catch (JMSException e) {
@@ -252,6 +260,8 @@ public class NotificationEmailSender implements Observer {
                 if (user != null)
                     result.add(user);
                 break;
+            default:
+                return null;
         }
         return result;
     }

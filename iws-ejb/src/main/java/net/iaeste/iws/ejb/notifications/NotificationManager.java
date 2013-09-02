@@ -93,8 +93,10 @@ public final class NotificationManager implements Notifications {
                 job.setModified(new Date());
                 dao.persist(job);
             }
-            notifyObservers();
+//            notifyObservers();
         }
+        //TODO call observers even there is no new job. however, there is probably some tasks in the db... can be removed once the db (transaction?) issue is solved
+        notifyObservers();
     }
 
     private void prepareJobTasks(final NotificationJobEntity job) {

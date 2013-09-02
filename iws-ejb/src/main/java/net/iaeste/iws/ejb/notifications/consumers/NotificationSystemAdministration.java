@@ -60,6 +60,7 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private void processMessages() {
+        //TODO this DB request doesn't work just after the task is persisted, I (Pavel) have no idea why. once it's solved, some TODOs in NotificationManager(Bean) could fixed
         final List<NotificationJobTasksView> jobTasks = dao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
             try {

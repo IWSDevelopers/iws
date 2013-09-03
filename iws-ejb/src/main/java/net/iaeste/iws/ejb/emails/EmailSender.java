@@ -18,19 +18,16 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import org.apache.log4j.Logger;
 
+import javax.annotation.Resource;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import javax.jms.Queue;
-import javax.jms.QueueConnection;
-import javax.jms.QueueConnectionFactory;
-import javax.jms.QueueReceiver;
-import javax.jms.QueueSession;
 import javax.mail.MessagingException;
 import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -55,13 +52,11 @@ public class EmailSender implements MessageListener {
 
     private static final Logger LOG = Logger.getLogger(EmailSender.class);
 
-    private static final String FROM_ADDRESS = "iaeste@iaeste.net";
-    private static final String SMTP_SERVER = "localhost";
-    private static final String SMTP_PORT = "25";
+    @Resource(lookup = "iws-setting")
+    private Properties iwsSetting;
 
     /**
-     * Constructor to initialize connection to the message queue.
-     * Temporary solution instead of the MessageDriven bean.
+     * To be deleted, not necessary anymore
      */
     public EmailSender() {
         LOG.info("starting EmailSender");
@@ -93,13 +88,13 @@ public class EmailSender implements MessageListener {
         try {
             // Create a default MimeMessage object.
             final MimeMessage message = new MimeMessage(session);
-            message.setFrom(prepareAddress(FROM_ADDRESS));
+            message.setFrom(prepareAddress(iwsSetting.getProperty("sendingEmailAddress")));
             message.addRecipient(javax.mail.Message.RecipientType.TO, prepareAddress(msg.getTo()));
             message.setSubject(msg.getSubject());
             message.setText(msg.getMessage());
 
-            //Transport.send(message);
-            LOG.info("Email message sent to " + msg.getTo() + " with body " + msg.getMessage());
+            LOG.info("Sending email message to " + msg.getTo() + " with body " + msg.getMessage());
+            Transport.send(message);
         } catch (MessagingException e) {
             throw new IWSException(IWSErrors.ERROR, "Sending to '" + msg.getTo() + "' failed.", e);
         }
@@ -109,8 +104,9 @@ public class EmailSender implements MessageListener {
         // Get system properties
         final Properties properties = System.getProperties();
         // Setup mail server
-        properties.setProperty("mail.smtp.host", SMTP_SERVER);
-        properties.setProperty("mail.smtp.port", SMTP_PORT);
+        properties.setProperty("mail.smtp.host", iwsSetting.getProperty("smtpAddress"));
+        properties.setProperty("mail.smtp.port", iwsSetting.getProperty("smtpPort"));
+        //TODO SSL, username, password
 
         // Get the default Session object.
         return Session.getDefaultInstance(properties);

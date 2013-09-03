@@ -194,14 +194,12 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         notifications.processJobs();
     }
 
-//    @Timeout
     @Schedule(minute = "*/1", hour = "*", info="Every 60 seconds")
-//    private void processJobs(final Timer timer) {
     private void processJobsScheduled() {
         //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
         //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
-        LOG.info("processJobsScheduled started at " + new DateTime());
-        boolean run = false;
+//        LOG.info("processJobsScheduled started at " + new DateTime());
+        boolean run;
         synchronized (LOCK) {
             run = (processingIsRunning==false);
         }

@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.ejb.notifications;
 
-import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -32,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -90,11 +90,13 @@ public final class NotificationManager implements Notifications {
                 prepareJobTasks(job);
 
                 job.setNotified(true);
-                job.setModified(new Date().toDate());
+                job.setModified(new Date());
                 dao.persist(job);
             }
-            notifyObservers();
+//            notifyObservers();
         }
+        //TODO call observers even there is no new job. however, there is probably some tasks in the db... can be removed once the db (transaction?) issue is solved
+        notifyObservers();
     }
 
     private void prepareJobTasks(final NotificationJobEntity job) {

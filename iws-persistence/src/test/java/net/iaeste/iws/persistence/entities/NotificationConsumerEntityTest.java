@@ -64,13 +64,15 @@ public class NotificationConsumerEntityTest {
         entity.setName("Test consumer");
         entity.setClassName("net.iaeste.iws.ejb.notifications.consumer");
 
-        entityManager.persist(entity);
-
         final Query query = entityManager.createNamedQuery("notifications.findConsumersByActive");
         query.setParameter("active", true);
-        final List<NotificationConsumerEntity> found = query.getResultList();
+        final List<NotificationConsumerEntity> foundBefore = query.getResultList();
 
-        assertThat(found.size(), is(1));
-        assertThat(found.get(0), is(entity));
+        entityManager.persist(entity);
+
+        final List<NotificationConsumerEntity> foundAfter = query.getResultList();
+
+        assertThat(foundAfter.size(), is(foundBefore.size()+1));
+        assertThat(foundAfter.get(foundAfter.size()-1), is(entity));
     }
 }

@@ -29,17 +29,11 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.Stateless;
-import javax.ejb.Timeout;
-import javax.ejb.Timer;
-import javax.ejb.TimerService;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -48,12 +42,12 @@ import javax.persistence.PersistenceContext;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Singleton
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {
-
-    private static final Logger log = Logger.getLogger(NotificationManagerBean.class);
+    private static final Logger LOG = Logger.getLogger(NotificationManagerBean.class);
     private EntityManager entityManager = null;
     private NotificationDao dao = null;
     private AccessDao accessDao = null;
@@ -61,6 +55,11 @@ public class NotificationManagerBean implements NotificationManagerLocal {
 
     @Resource
     private TimerService timerService;
+    private Timer timer = null;
+
+    private final Object LOCK = new Object();
+
+    private boolean processingIsRunning = false;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
@@ -84,6 +83,9 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         final NotificationManager notificationManager = new NotificationManager(dao, accessDao, new NotificationMessageGeneratorFreemarker(), true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
+
+//        final String clazz = NotificationManagerBean.class.getSimpleName();
+//        timer = timerService.createTimer(new Date().toDate(), clazz);
     }
 
     @Override
@@ -104,16 +106,22 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         try {
             notifications.notify(authentication, obj, type);
         } catch (IWSException e) {
-            log.error("Preparing notification failed", e);
+            LOG.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
         if (timerService != null) {
-            final String clazz = NotificationManagerBean.class.getSimpleName();
-            final Date now = new Date();
-            timerService.createTimer(now.toDate(), clazz);
+            //TODO to enable smooth notification processing, the processing method runs every 60 seconds
+//            if (timer == null) {
+//                final String clazz = NotificationManagerBean.class.getSimpleName();
+                //trying 10s delay ... failed, 20s ... failed, 60s ... ?
+//                org.joda.time.DateTime now = new DateTime().plusSeconds(60);
+//                LOG.info("scheduling timer at " + now);
+//                this.timer = timerService.createTimer(now.toDate(), clazz);
+//            }
+//            processJobs();
         } else {
-            log.debug("There is no TimerService, probably running outside app server");
+            LOG.debug("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -125,16 +133,23 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         try {
             notifications.notify(user);
         } catch (IWSException e) {
-            log.error("Preparing notification failed", e);
+            LOG.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
         if (timerService != null) {
-            final String clazz = NotificationManagerBean.class.getSimpleName();
-            final Date now = new Date();
-            timerService.createTimer(now.toDate(), clazz);
+            //TODO to enable smooth notification processing, the processing method runs every 60 seconds
+//            if (timer == null) {
+//                final String clazz = NotificationManagerBean.class.getSimpleName();
+            //trying 10s delay ... failed, 20s ... failed, 60s ... ?
+//                org.joda.time.DateTime now = new DateTime().plusSeconds(60);
+//                LOG.info("scheduling timer at " + now);
+//                this.timer = timerService.createTimer(now.toDate(), clazz);
+//            }
+            //start processing jobs immediately to avoid possible problems with timer running another thread
+//            processJobs();
         } else {
-            log.warn("There is no TimerService, probably running outside app server");
+            LOG.warn("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -172,7 +187,34 @@ public class NotificationManagerBean implements NotificationManagerLocal {
 
     @Timeout
     private void processJobs(final Timer timer) {
+        //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
+        //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
+        this.timer = null;
+        LOG.info("processJobsScheduled started at " + new DateTime());
         notifications.processJobs();
+    }
+
+//    @Timeout
+    @Schedule(minute = "*/1", hour = "*", info="Every 60 seconds")
+//    private void processJobs(final Timer timer) {
+    private void processJobsScheduled() {
+        //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
+        //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
+        LOG.info("processJobsScheduled started at " + new DateTime());
+        boolean run = false;
+        synchronized (LOCK) {
+            run = (processingIsRunning==false);
+        }
+
+        if (run) {
+            synchronized (LOCK) {
+                processingIsRunning = true;
+            }
+            notifications.processJobs();
+            synchronized (LOCK) {
+                processingIsRunning = false;
+            }
+        }
     }
 
     public void setTimerService(final TimerService timerService) {

@@ -298,3 +298,9 @@ insert into groups (id, external_id, grouptype_id, groupName, full_name) values 
 insert into groups (id, external_id, grouptype_id, groupName, full_name) values (2, '80962576-3e38-4858-be0d-57252e7316b1', 3, 'Board', 'Board of IAESTE A.s.b.l.');
 insert into groups (id, external_id, grouptype_id, groupName, full_name) values (3, 'd8325230-a4b5-4063-b949-3233693c980d', 3, 'SID', 'Seminar on IAESTE Development');
 insert into groups (id, external_id, grouptype_id, groupName, full_name) values (4, '2e351535-1609-4867-b713-2f8d6a2aab3f', 3, 'IDT', 'IAESTE Internet Development Team');
+
+-- =============================================================================
+-- Default Setup for notification consumers
+-- =============================================================================
+insert into notification_consumers (group_id, name, class_name, active) values (0, 'System administration consumer', 'net.iaeste.iws.ejb.notifications.consumers.NotificationSystemAdministration', true);
+insert into notification_consumers (group_id, name, class_name, active) values (0, 'Email message consumer', 'net.iaeste.iws.ejb.notifications.consumers.NotificationEmailSender', true);

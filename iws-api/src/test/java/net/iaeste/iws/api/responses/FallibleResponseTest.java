@@ -25,9 +25,9 @@ import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class FallibleResponseTest {
 
@@ -58,9 +58,9 @@ public final class FallibleResponseTest {
         final FallibleResponse diff = new FallibleResponse();
 
         // Test Hashcodes
-        assertThat(obj.hashCode(), is(1447594788));
-        assertThat(same.hashCode(), is(1447594788));
-        assertThat(diff.hashCode(), is(-1264536455));
+        assertThat(obj.hashCode(), is(-1592032781));
+        assertThat(same.hashCode(), is(-1592032781));
+        assertThat(diff.hashCode(), is(-1344310095));
 
         // Test ToString
         assertThat(obj.toString(), is(""));

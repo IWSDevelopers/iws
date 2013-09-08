@@ -28,6 +28,7 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
+import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -41,6 +42,7 @@ import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
+import net.iaeste.iws.persistence.exceptions.PersistenceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,8 +79,9 @@ public final class GroupService {
      * @param authentication User & Group information
      * @param request        Group Request information
      */
-    public void processGroup(final Authentication authentication, final GroupRequest request) {
+    public ProcessGroupResponse processGroup(final Authentication authentication, final GroupRequest request) {
         final String externalGroupId = request.getGroup().getId();
+        final GroupEntity entity;
 
         if (externalGroupId == null) {
             final GroupType type = request.getGroup().getGroupType();
@@ -91,25 +94,24 @@ public final class GroupService {
             // further sub-groups. If it is a Local Committee, then it belongs
             // under the Members Group, and is parallel to the National Group
             if ((parentType != GroupType.WORKGROUP) && (type == GroupType.WORKGROUP)) {
-                final GroupEntity groupEntity = createGroup(GroupType.WORKGROUP, request.getGroup(), authentication.getGroup());
-                setGroupOwner(groupEntity, authentication.getUser());
+                entity = createGroup(authentication, GroupType.WORKGROUP, request.getGroup(), authentication.getGroup());
+                setGroupOwner(entity, authentication.getUser());
             } else if ((parentType == GroupType.MEMBER) && (type == GroupType.LOCAL)) {
                 // Create new Local Committee
-                final GroupEntity groupEntity = createGroup(GroupType.LOCAL, request.getGroup(), authentication.getGroup());
-                setGroupOwner(groupEntity, authentication.getUser());
+                entity = createGroup(authentication, GroupType.LOCAL, request.getGroup(), authentication.getGroup());
+                setGroupOwner(entity, authentication.getUser());
             } else {
                 throw new PermissionException("Not allowed to create a sub-group of type " + type);
             }
         } else {
-            final GroupEntity groupEntity = dao.findGroup(authentication.getUser(), externalGroupId);
+            entity = dao.findGroup(authentication.getUser(), externalGroupId);
 
             // Update existing Group. We allow that the name can be altered,
             // provided no other Groups exists with the same name in this scope
-            if (groupEntity != null) {
+            if (entity != null) {
                 final String name = request.getGroup().getGroupName();
-                if (!dao.hasGroupsWithSimilarName(groupEntity.getParentId(), name)) {
-                    groupEntity.setGroupName(name);
-                    dao.persist(groupEntity);
+                if (!dao.hasGroupsWithSimilarName(entity, name)) {
+                    dao.persist(authentication, entity, CommonTransformer.transform(request.getGroup()));
                 } else {
                     throw new IdentificationException("Another Group exist with a similar name " + name);
                 }
@@ -117,6 +119,8 @@ public final class GroupService {
                 throw new IdentificationException("No Group exist with the Id " + externalGroupId);
             }
         }
+
+        return new ProcessGroupResponse(CommonTransformer.transform(entity));
     }
 
     public void deleteGroup(final Authentication authentication, final GroupRequest request) {
@@ -138,7 +142,7 @@ public final class GroupService {
      * @return Response Object with the requested Group (or null)
      */
     public FetchGroupResponse fetchGroup(final Authentication authentication, final FetchGroupRequest request) {
-        final GroupEntity entity = dao.findGroup(authentication.getUser(), request.getGroupId());
+        final GroupEntity entity = findGroupFromRequest(authentication, request);
         final FetchGroupResponse response;
 
         if (entity != null) {
@@ -152,6 +156,19 @@ public final class GroupService {
         }
 
         return response;
+    }
+
+    private GroupEntity findGroupFromRequest(final Authentication authentication, final FetchGroupRequest request) {
+        final UserEntity user = authentication.getUser();
+        final GroupEntity entity;
+
+        if (request.getGroupId() != null) {
+            entity = dao.findGroup(user, request.getGroupId());
+        } else {
+            entity = dao.findGroupByUserAndType(user, request.getGroupType());
+        }
+
+        return entity;
     }
 
     /**
@@ -366,9 +383,12 @@ public final class GroupService {
     // Internal Methods
     // =========================================================================
 
-    private GroupEntity createGroup(final GroupType type, final Group group, final GroupEntity parent) {
+    private GroupEntity createGroup(final Authentication authentication, final GroupType type, final Group group, final GroupEntity parent) {
+        // Before we begin, let's just make sure that there are no other groups
+        // with the same name
+        throwIfGroupnameIsUsed(parent, group.getGroupName());
         // Find pre-requisites
-        final CountryEntity country = dao.findCountryByCode(group.getCountry().getCountryCode());
+        final CountryEntity country = dao.findCountryByCode(parent.getCountry().getCountryCode());
         final GroupTypeEntity groupType = dao.findGroupTypeByType(type);
 
         // Create the new Entity
@@ -378,14 +398,21 @@ public final class GroupService {
         groupEntity.setCountry(country);
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(parent.getFullName() + '.' + group.getGroupName());
-        groupEntity.setParentId(parent.getParentId());
+        groupEntity.setParentId(parent.getId());
         groupEntity.setListName(groupEntity.getFullName());
 
         // Save the new Group in the database
-        dao.persist(groupEntity);
+        dao.persist(authentication, groupEntity);
 
         // And return it, so the remainder of the processing can use it
         return groupEntity;
+    }
+
+    private void throwIfGroupnameIsUsed(final GroupEntity parent, final String groupName) {
+        final List<GroupEntity> found = dao.findGroupByNameAndParent(groupName, parent);
+        if (!found.isEmpty()) {
+            throw new PersistenceException(IWSErrors.PERSISTENCE_ERROR, "Group cannot be created, another Group with the same name exists.");
+        }
     }
 
     private void setGroupOwner(final GroupEntity group, final UserEntity user) {

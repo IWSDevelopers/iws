@@ -87,17 +87,21 @@ public interface AccessDao extends BasicDao {
      * Checks if there exists other groups with similar names (checked
      * case-insensitive), and returns true if so, otherwise false.
      *
-     * @param parentId ParentId of the Group
-     * @param name     The name to check
+     * @param group Group to compare potential new name for
+     * @param name  The name to check
      * @return True if a group exists with similar name, otherwise false
      */
-    Boolean hasGroupsWithSimilarName(Long parentId, String name);
+    Boolean hasGroupsWithSimilarName(GroupEntity group, String name);
+
+    GroupEntity findGroupByUserAndType(UserEntity user, GroupType type);
 
     GroupEntity findMemberGroup(UserEntity user);
 
     GroupEntity findNationalGroup(UserEntity user);
 
     GroupEntity findPrivateGroup(UserEntity user);
+
+    List<GroupEntity> findGroupByNameAndParent(String groupName, GroupEntity parent);
 
     /**
      * Find a Role by the name. However, as it is possible to have multiple
@@ -117,11 +121,12 @@ public interface AccessDao extends BasicDao {
      * @return Found RoleEntity or null
      */
     RoleEntity findRoleById(Long id);
+
     RoleEntity findRoleByUserAndGroup(String externalUserId, GroupEntity group);
 
     UserEntity findUserByExternalId(String externalUserId);
-
     UserGroupEntity findMemberByGroupAndUser(GroupEntity group, UserEntity user);
+
     /**
      * Finds a user from the given Member Group. If no such user account is
      * associated with the the Group, then a null is returned, otherwise the

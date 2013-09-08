@@ -30,6 +30,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.ejb.AdministrationBean;
@@ -137,7 +138,7 @@ public final class AdministrationSpringClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
+    public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
         return client.processGroup(token, request);
     }
 

@@ -298,12 +298,23 @@ public abstract class AbstractVerification implements Verifiable {
      * @param value  The value of the field
      * @throws IllegalArgumentException if the value is either null or not verifiable
      */
-    protected static void ensureNotNullAndVerifiable(final String field, final Verifiable value) throws IllegalArgumentException {
-        ensureNotNull(field, value);
-
-        if (!value.validate().isEmpty()) {
+    protected static void ensureVerifiable(final String field, final Verifiable value) throws IllegalArgumentException {
+        if ((value != null) && !value.validate().isEmpty()) {
             throw new IllegalArgumentException(format(ERROR_NOT_VERIFABLE, field));
         }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * null or not verifiable.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @throws IllegalArgumentException if the value is either null or not verifiable
+     */
+    protected static void ensureNotNullAndVerifiable(final String field, final Verifiable value) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureVerifiable(field, value);
     }
 
     /**
@@ -341,16 +352,28 @@ public abstract class AbstractVerification implements Verifiable {
      * valid e-mail address, i.e. if it is either null or doesn't match the
      * required format.
      *
+     * @param field Name of the field, value is ignored in this method
+     * @param value The value to verify
+     * @throws IllegalArgumentException if the e-mail address is invalid
+     */
+    protected static void ensureValidEmail(final String field, final String value) throws IllegalArgumentException {
+        if (!IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
+            throw new IllegalArgumentException(format(ERROR_INVALID_EMAIL, value));
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is not a
+     * valid e-mail address, i.e. if it is either null or doesn't match the
+     * required format.
+     *
      * @param field Name of the field
      * @param value The value to verify
      * @throws IllegalArgumentException if the e-mail address is invalid
      */
     protected static void ensureNotNullAndValidEmail(final String field, final String value) throws IllegalArgumentException {
         ensureNotNullOrTooLong(field, value, 100);
-
-        if (!IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
-            throw new IllegalArgumentException(format(ERROR_INVALID_EMAIL, value));
-        }
+        ensureValidEmail(field, value);
     }
 
     // =========================================================================

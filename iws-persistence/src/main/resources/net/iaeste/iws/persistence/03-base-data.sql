@@ -35,7 +35,7 @@ insert into permissions (id, permission) values ( 8, 'PROCESS_COUNTRY');
 -- Administration: 1xx
 insert into permissions (id, permission) values (101, 'CONTROL_USER_ACCOUNT');
 insert into permissions (id, permission) values (102, 'FETCH_USERS');
-insert into permissions (id, permission) values (111, 'PROCESS_SUB_GROUPS');
+insert into permissions (id, permission) values (111, 'PROCESS_GROUPS');
 insert into permissions (id, permission) values (112, 'FETCH_GROUPS');
 insert into permissions (id, permission) values (113, 'FETCH_GROUP_MEMBERS');
 insert into permissions (id, permission) values (114, 'CHANGE_GROUP_OWNER');
@@ -134,7 +134,7 @@ insert into permission_to_role (role_id, permission_id) values (1, 102);
 insert into permission_to_role (role_id, permission_id) values (2, 102);
 insert into permission_to_role (role_id, permission_id) values (3, 102);
 
--- Permission: 111 - Process Sub Group
+-- Permission: 111 - Process Group
 --   -> GroupTypes: All except Private & Student
 --   -> Roles:      1 Owner
 --                  2 Moderator

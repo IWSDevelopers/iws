@@ -35,6 +35,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccountService;
 import net.iaeste.iws.core.services.CountryService;
@@ -232,21 +233,20 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
+    public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processGroup()"));
         }
-        Fallible response;
+        ProcessGroupResponse response;
 
         try {
             verify(request);
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_SUB_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_GROUPS);
 
             final GroupService service = factory.prepareGroupService();
-            service.processGroup(authentication, request);
-            response = new FallibleResponse();
+            response = service.processGroup(authentication, request);
         } catch (IWSException e) {
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new ProcessGroupResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
@@ -301,7 +301,9 @@ public final class AdministrationController extends CommonController implements 
             // made against this request!
             verify(request);
             token.setGroupId(request.getGroupId());
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
+            // Note, we're skipping the permission check, since the request will
+            // be made with checking the users connection to the group.
+            final Authentication authentication = verifyPrivateAccess(token);
 
             final GroupService service = factory.prepareGroupService();
             response = service.fetchGroup(authentication, request);

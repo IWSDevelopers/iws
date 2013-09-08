@@ -29,6 +29,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
@@ -140,7 +141,7 @@ public interface Administration {
 
     FetchRoleResponse fetchRoles(AuthenticationToken token, FetchRoleRequest request);
 
-    Fallible processGroup(AuthenticationToken token, GroupRequest request);
+    ProcessGroupResponse processGroup(AuthenticationToken token, GroupRequest request);
 
     /**
      * Deletes a Groups from the system. This is done with a multitude of

@@ -64,6 +64,13 @@ import java.util.Map;
                         "where g.id = ug.group.id" +
                         "  and g.groupType.grouptype = :type" +
                         "  and ug.user.id = :uid"),
+        @NamedQuery(name = "group.findGroupByParent",
+                query = "select g from GroupEntity g " +
+                        "where g.parentId = :pid"),
+        @NamedQuery(name = "group.findGroupByParentAndName",
+                query = "select g from GroupEntity g " +
+                        "where g.parentId = :pid" +
+                        "  and lower(g.groupName) like lower(:name)"),
         @NamedQuery(name = "group.findNationalOrSarByUser",
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
                         "where g.id = ug.group.id" +
@@ -91,7 +98,8 @@ import java.util.Map;
                         "  and g.groupType.grouptype = 'STUDENTS'"),
         @NamedQuery(name = "group.findGroupsWithSimilarNames",
                 query = "select g from GroupEntity g " +
-                        "where g.parentId = :pid" +
+                        "where g.id != :gid" +
+                        "  and g.parentId = :pid" +
                         "  and lower(g.groupName) = :name"),
         @NamedQuery(name = "group.findByExternalGroupIds",
                 query = "select g from GroupEntity g " +
@@ -347,11 +355,10 @@ public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
      */
     @Override
     public void merge(final GroupEntity obj) {
-        if ((obj != null) && id.equals(obj.id)) {
+        if (obj != null) {
             groupName = obj.groupName;
             fullName = obj.fullName;
             description = obj.description;
-            country = obj.country;
             listName = obj.listName;
         }
     }

@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
@@ -32,6 +33,7 @@ public final class FetchGroupRequest extends AbstractPaginatable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String groupId = null;
+    private GroupType groupType = null;
     private boolean fetchUsers = false;
     private boolean fetchSubGroups = false;
 
@@ -55,16 +57,36 @@ public final class FetchGroupRequest extends AbstractPaginatable {
         this.groupId = groupId;
     }
 
+    /**
+     * GroupType Constructor, for fetching Groups if which a person can only be
+     * member of once. For example, MEMBERS, NATIONAL, LOCAL.
+     *
+     * @param groupType The Type of the Group
+     */
+    public FetchGroupRequest(final GroupType groupType) {
+        this.groupType = groupType;
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
     public void setGroupId(final String groupId) {
+        ensureValidId("groupId", groupId);
+
         this.groupId = groupId;
     }
 
     public String getGroupId() {
         return groupId;
+    }
+
+    public void setGroupType(final GroupType groupType) {
+        this.groupType = groupType;
+    }
+
+    public GroupType getGroupType() {
+        return groupType;
     }
 
     public void setFetchUsers(final boolean fetchUsers) {
@@ -94,8 +116,9 @@ public final class FetchGroupRequest extends AbstractPaginatable {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(1);
 
-        if ((groupId == null) || (groupId.length() != 36)) {
+        if ((groupId == null) && (groupType == null)) {
             validation.put("groupId", "No valid groupId is present.");
+            validation.put("groupType", "No valid groupType is present.");
         }
 
         return validation;

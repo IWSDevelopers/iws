@@ -30,6 +30,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -125,7 +126,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
+    public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
         try {
             return caller.processGroup(token, request);
         } catch (Exception e) {

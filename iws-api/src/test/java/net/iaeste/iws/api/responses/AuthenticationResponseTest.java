@@ -60,7 +60,7 @@ public class AuthenticationResponseTest {
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(result.toString(), is("AuthenticationResponse[token=AuthenticationToken{token='" + TOKEN_KEY + "', groupId='null'}]"));
-        assertThat(result.hashCode(), is(-2058928058));
+        assertThat(result.hashCode(), is(-236943602));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));
         assertThat(diff.getError(), is(error));

@@ -40,4 +40,16 @@ public final class IdentificationException extends PersistenceException {
     public IdentificationException(final String message) {
         super(IWSErrors.OBJECT_IDENTIFICATION_ERROR, message);
     }
+
+    /**
+     * Default Constructor, for the case where an error condition has arisen,
+     * where JPA threw either an exception as there were either non or multiple
+     * results, where a single result was expected.
+     *
+     * @param message  Specific message, regarding the problem
+     * @param cause    The specific cause of the problem
+     */
+    public IdentificationException(final String message, final Throwable cause) {
+        super(IWSErrors.OBJECT_IDENTIFICATION_ERROR, message, cause);
+    }
 }

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.GroupRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.GroupResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,28 +12,25 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.requests;
+package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
-import net.iaeste.iws.api.dtos.User;
-import net.iaeste.iws.api.util.AbstractVerification;
-
-import java.util.HashMap;
-import java.util.Map;
+import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class GroupRequest extends AbstractVerification {
+public final class ProcessGroupResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /** The Group being processed or created. */
     private Group group = null;
-    private User user = null;
 
     // =========================================================================
     // Object Constructors
@@ -43,21 +40,26 @@ public final class GroupRequest extends AbstractVerification {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public GroupRequest() {
+    public ProcessGroupResponse() {
     }
 
     /**
-     * Default Constructor,
+     * Default Constructor.
      *
-     * @param group Group Object to process
+     * @param group Processed or newly created Group
      */
-    public GroupRequest(final Group group) {
-        setGroup(group);
+    public ProcessGroupResponse(final Group group) {
+        this.group = group;
     }
 
-    public GroupRequest(final Group group, final User user) {
-        setGroup(group);
-        this.user = user;
+    /**
+     * Error Constructor.
+     *
+     * @param error    IWS Error Object
+     * @param message  Error Message
+     */
+    public ProcessGroupResponse(final IWSError error, final String message) {
+        super(error, message);
     }
 
     // =========================================================================
@@ -65,7 +67,6 @@ public final class GroupRequest extends AbstractVerification {
     // =========================================================================
 
     public void setGroup(final Group group) {
-        ensureNotNullAndVerifiable("group", group);
         this.group = group;
     }
 
@@ -73,28 +74,39 @@ public final class GroupRequest extends AbstractVerification {
         return group;
     }
 
-    public void setUser(final User user) {
-        ensureVerifiable("user", user);
-        this.user = user;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
     // =========================================================================
-    // Standard Request Methods
+    // Standard Response Methods
     // =========================================================================
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(1);
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-        isNotNull(validation, "group", group);
+        if (!(obj instanceof FallibleResponse)) {
+            return false;
+        }
 
-        return validation;
+        return super.equals(obj);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "";
     }
 }

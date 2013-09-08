@@ -14,6 +14,29 @@
  */
 package net.iaeste.iws.client.errorhandling;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import net.iaeste.iws.api.Access;
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.AccessClient;
+import net.iaeste.iws.client.spring.Beans;
+import net.iaeste.iws.ejb.AccessBean;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
  * As we have different levels of error handling, it is good to try to properly
  * test some of these.<br />
@@ -40,5 +63,83 @@ package net.iaeste.iws.client.errorhandling;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class AccessExceptionHandlingTest {
+@Transactional
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {Beans.class})
+@Ignore
+public class AccessExceptionHandlingTest {
+
+    private static final AuthenticationToken TOKEN = new AuthenticationToken("9635b22b2ff750832146496b8327dc81ed8d79ddd4c8c7448971eceb4667adef");
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Test
+    public void testDeprecateSessionNoToken() {
+        final Access client = new AccessClient();
+        final Fallible response = client.deprecateSession(null);
+
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.VERIFICATION_ERROR));
+        assertThat(response.getMessage(), is("Invalid Authentication Token provided. Object may not be null."));
+    }
+
+    @Test
+    public void testDeprecateSessionWithException() {
+        final Access client = prepareNPEAccessInstance();
+        final Fallible response = client.deprecateSession(TOKEN);
+
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.ERROR));
+        assertThat(response.getMessage(), is("Mocked NPE."));
+    }
+
+    @Test(expected = OutOfMemoryError.class)
+    public void testDeprecateSessionWithError() {
+        final Access client = prepareErrorAccessInstance();
+        client.deprecateSession(TOKEN);
+    }
+
+    // =========================================================================
+    // Internal Methods for setting up test environment
+    // =========================================================================
+
+    /**
+     * Creates a new Access instance, which will throw a NullPointerException.
+     *
+     * @return Access instance with built-in NullPointerException
+     */
+    private static Access prepareNPEAccessInstance() {
+        final EntityManager entityManager = prepareErrorInstance(new NullPointerException("Mocked NPE."));
+
+        final AccessBean accessBean = new AccessBean();
+        accessBean.setEntityManager(entityManager);
+        accessBean.setNotificationManager(null);
+        accessBean.postConstruct();
+
+        return accessBean;
+    }
+
+    /**
+     * Creates a new Access instance, which will throw an OutOfMemory Error.
+     *
+     * @return Access instance, which will throw an OutOfMemory Error
+     */
+    private static Access prepareErrorAccessInstance() {
+        final EntityManager entityManager = prepareErrorInstance(new OutOfMemoryError());
+
+        final AccessBean accessBean = new AccessBean();
+        accessBean.setEntityManager(entityManager);
+        accessBean.setNotificationManager(null);
+        accessBean.postConstruct();
+
+        return accessBean;
+    }
+
+    private static EntityManager prepareErrorInstance(final Throwable throwable) {
+        final EntityManager entityManager = Mockito.mock(EntityManager.class);
+        Mockito.when(entityManager.createNamedQuery(Matchers.<String>any())).thenThrow(throwable);
+
+        return entityManager;
+    }
 }

@@ -32,6 +32,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -227,15 +228,15 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible processGroup(final AuthenticationToken token, final GroupRequest request) {
-        Fallible response;
+    public ProcessGroupResponse processGroup(final AuthenticationToken token, final GroupRequest request) {
+        ProcessGroupResponse response;
 
         try {
             response = controller.processGroup(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+            response = new ProcessGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

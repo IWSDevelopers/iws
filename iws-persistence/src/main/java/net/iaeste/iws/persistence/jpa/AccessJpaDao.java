@@ -244,13 +244,26 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public Boolean hasGroupsWithSimilarName(final Long parentId, final String name) {
+    public Boolean hasGroupsWithSimilarName(final GroupEntity group, final String name) {
         final Query query = entityManager.createNamedQuery("group.findGroupsWithSimilarNames");
-        query.setParameter("pid", parentId);
+        query.setParameter("gid", group.getId());
+        query.setParameter("pid", group.getParentId());
         query.setParameter("name", name.toLowerCase(IWSConstants.DEFAULT_LOCALE));
 
         final List<GroupEntity> result = query.getResultList();
         return !result.isEmpty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findGroupByUserAndType(final UserEntity user, final GroupType type) {
+        final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
+        query.setParameter("uid", user.getId());
+        query.setParameter("type", type);
+
+        return findUniqueResult(query, "Group");
     }
 
     /**
@@ -286,6 +299,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("type", GroupType.PRIVATE);
 
         return (GroupEntity) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GroupEntity> findGroupByNameAndParent(final String groupName, final GroupEntity parent) {
+        final Query query = entityManager.createNamedQuery("group.findGroupByParentAndName");
+        query.setParameter("pid", parent.getId());
+        query.setParameter("name", groupName);
+
+        return query.getResultList();
     }
 
     /**

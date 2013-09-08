@@ -27,7 +27,7 @@ public interface IWSErrors {
      * All requests, which is processed normally, i.e. without any issues should
      * have this as the default error.
      */
-    IWSError SUCCESS = new IWSError(0, "SUCCESS");
+    IWSError SUCCESS = new IWSError(0, "Success.");
 
     /**
      * All requests, where the input data, is unreliable, and will prevent the
@@ -35,52 +35,52 @@ public interface IWSErrors {
      * happened, which the system managed to recover from via other mechanisms,
      * should return this as the basic error.
      */
-    IWSError WARNING = new IWSError(100, "Warning");
+    IWSError WARNING = new IWSError(100, "A problem occurred while processing the request.");
 
     /**
      * All requests, where something happened internally, which prevented the
      * system from properly respond with a valid result, will have this as
      * default error.
      */
-    IWSError ERROR = new IWSError(200, "Error");
+    IWSError ERROR = new IWSError(200, "An unknown error occurred, which prevented the IWS from completing the request.");
 
     /**
      * Unrecoverable internal errors, from which it is not possible to proceed
      * without manual intervention, i.e. database is down or other critical
      * systems is inaccessible, should return an error of this type.
      */
-    IWSError FATAL = new IWSError(300, "Fatal Error");
+    IWSError FATAL = new IWSError(300, "A fatal error occurred, which will prevent the IWS from working properly.");
 
     /**
      * The data required for a given request is insufficient to be properly
      * processed.
      */
-    IWSError VERIFICATION_ERROR = new IWSError(401, "Given data is insufficient to properly handle request");
+    IWSError VERIFICATION_ERROR = new IWSError(401, "Given data is insufficient to properly handle request.");
 
     /**
      * If the user making the request is not properly authenticated, i.e. no
      * proper user credentials like username/password or session checksum.
      */
-    IWSError AUTHENTICATION_ERROR = new IWSError(402, "User Authentication problem");
+    IWSError AUTHENTICATION_ERROR = new IWSError(402, "User Authentication problem.");
 
     /**
      * If the user making the request is not allowed to perform the desired
      * action.
      */
-    IWSError AUTHORIZATION_ERROR = new IWSError(403, "User Authorization problem");
+    IWSError AUTHORIZATION_ERROR = new IWSError(403, "User Authorization problem.");
 
     /**
      * If the user is attempting to access/process an Object, without being
      * allowed to do so (missing Group ownership).
      */
-    IWSError NOT_PERMITTED = new IWSError(404, "User is not permitted to process the requested Object");
+    IWSError NOT_PERMITTED = new IWSError(404, "User is not permitted to process the requested Object.");
 
     /**
      * If the User tries to create a new Session, while already having an
      * Active Session, an error should be thrown. This will prevent that users
      * try to log in multiple places, but forget to log out again.
      */
-    IWSError SESSION_EXISTS = new IWSError(405, "User can only hold one active Session at the time");
+    IWSError SESSION_EXISTS = new IWSError(405, "User can only hold one active Session at the time.");
 
     /**
      *
@@ -90,39 +90,39 @@ public interface IWSErrors {
     /**
      * The database is inaccessible.
      */
-    IWSError DATABASE_UNREACHABLE = new IWSError(501, "Database unreachable");
+    IWSError DATABASE_UNREACHABLE = new IWSError(501, "Database unreachable.");
 
     /**
      * If a situation arise, where there exists multiple similar records, which
      * should not be allowed.
      */
-    IWSError DATABASE_CONSTRAINT_INCONSISTENCY = new IWSError(502, "Database Constraint Inconsistency");
+    IWSError DATABASE_CONSTRAINT_INCONSISTENCY = new IWSError(502, "Database Constraint Inconsistency.");
 
     /**
      * Unknown Persistency Error.
      */
-    IWSError PERSISTENCE_ERROR = new IWSError(503, "Persistency Error");
+    IWSError PERSISTENCE_ERROR = new IWSError(503, "Persistency Error.");
 
     /**
      * The Identification Error is passed when trying to access Objects, that
      * either doesn't exist, or where the requesting user do not have sufficient
      * permissions.
      */
-    IWSError OBJECT_IDENTIFICATION_ERROR = new IWSError(504, "Object Identification Error");
+    IWSError OBJECT_IDENTIFICATION_ERROR = new IWSError(504, "Object Identification Error.");
 
     /**
      * The processing of the request failed.
      */
-    IWSError PROCESSING_FAILURE = new IWSError(505, "Request cannot be processed");
+    IWSError PROCESSING_FAILURE = new IWSError(505, "Request cannot be processed.");
 
     /**
      * Error reading or writing the monitoring data in serialized form.
      */
-    IWSError MONITORING_FAILURE = new IWSError(506, "Monitoring Serialization Error");
+    IWSError MONITORING_FAILURE = new IWSError(506, "Monitoring Serialization Error.");
 
-    IWSError USER_ACCOUNT_EXISTS = new IWSError(601, "User Account Already exists");
+    IWSError USER_ACCOUNT_EXISTS = new IWSError(601, "User Account Already exists.");
 
-    IWSError NO_USER_ACCOUNT_FOUND = new IWSError(602, "No User Account exists");
+    IWSError NO_USER_ACCOUNT_FOUND = new IWSError(602, "No User Account exists.");
 
     IWSError INVALID_NOTIFICATION = new IWSError(603, "Notification Type is not allowed in this context.");
 

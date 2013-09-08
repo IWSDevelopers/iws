@@ -36,7 +36,20 @@ public class PersistenceException extends IWSException {
      * @param error   IWS Error
      * @param message Specific message, regarding the problem
      */
-    protected PersistenceException(final IWSError error, final String message) {
+    public PersistenceException(final IWSError error, final String message) {
         super(error, message);
+    }
+
+    /**
+     * Default Constructor, for the case where an error condition has arisen,
+     * where JPA threw either an exception as there were either non or multiple
+     * results, where a single result was expected.
+     *
+     * @param error   IWS Error
+     * @param message Specific message, regarding the problem
+     * @param cause    The specific cause of the problem
+     */
+    protected PersistenceException(final IWSError error, final String message, final Throwable cause) {
+        super(error, message, cause);
     }
 }

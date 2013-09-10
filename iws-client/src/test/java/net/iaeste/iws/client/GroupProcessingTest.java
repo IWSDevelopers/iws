@@ -307,6 +307,7 @@ public final class GroupProcessingTest extends AbstractClientTest {
     private ProcessGroupResponse createGroup(final AuthenticationToken token, final GroupType parent, final GroupType subgroup, final String groupName) {
         final FetchGroupRequest fetchRequest = new FetchGroupRequest(parent);
         fetchRequest.setFetchUsers(true);
+        fetchRequest.setFetchSubGroups(true);
         final FetchGroupResponse fetchResponse = client.fetchGroup(token, fetchRequest);
 
         final Group group = new Group();

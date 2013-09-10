@@ -14,9 +14,9 @@
  */
 package net.iaeste.iws.client.exchange;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -27,6 +27,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
+import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.FetchType;
@@ -59,7 +60,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class ExchangeClientTest extends AbstractClientTest {
+public final class OfferTest extends AbstractClientTest {
 
     private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
@@ -77,6 +78,27 @@ public final class ExchangeClientTest extends AbstractClientTest {
         logout(token);
         logout(austriaToken);
         logout(croatiaToken);
+    }
+
+    @Test
+    public void testDuplicateOffer() {
+        final Offer offer = TestData.prepareFullOffer("PL-2013-1234-XX", "Poland A/S", "PL");
+        final Offer duplicate = TestData.prepareFullOffer("PL-2013-1234-XX", "Poland A/S", "PL");
+        final ProcessOfferRequest request = new ProcessOfferRequest();
+
+        // Save our first offer.
+        request.setOffer(offer);
+        final OfferResponse initial = exchange.processOffer(token, request);
+        assertThat(initial.isOk(), is(true));
+        assertThat(initial.getOffer(), is(not(nullValue())));
+        assertThat(initial.getOffer().getId(), is(not(nullValue())));
+
+        // Now, attempt to save an identical offer.
+        request.setOffer(duplicate);
+        final OfferResponse failing = exchange.processOffer(token, request);
+        assertThat(failing.isOk(), is(false));
+        assertThat(failing.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
+        assertThat(failing.getMessage(), containsString("An Offer with the Reference Number PL-2014-1234-XX already exists."));
     }
 
     @Test
@@ -182,7 +204,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
         Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
-        assertThat(sharedOffer, is(notNullValue()));
+        assertThat(sharedOffer, is(not(nullValue())));
         // Following assertion is now deprecated, see trac task #372
         //assertThat(sharedOffer.getRefNo(), is(offer.getRefNo()));
         assertThat(sharedOffer.getStatus(), is(OfferState.NEW));
@@ -214,7 +236,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
         sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
-        assertThat(sharedOffer, is(notNullValue()));
+        assertThat(sharedOffer, is(not(nullValue())));
         assertThat(sharedOffer.getRefNo(), is(saveResponse.getOffer().getRefNo()));
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
         assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
@@ -233,7 +255,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
         sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
-        assertThat(sharedOffer, is(notNullValue()));
+        assertThat(sharedOffer, is(not(nullValue())));
         assertThat("The offer is shared to nobody, the status has to be NEW", sharedOffer.getStatus(), is(OfferState.NEW));
     }
 
@@ -407,7 +429,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat("verify that the offer was persisted", saveResponse1.isOk(), is(true));
 
         final Offer offerToShare = saveResponse1.getOffer();
-        assertThat(offerToShare, is(notNullValue()));
+        assertThat(offerToShare, is(not(nullValue())));
 
         final Set<String> offersToShare1 = new HashSet<>(1);
         offersToShare1.add(offerToShare.getId());
@@ -446,7 +468,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         assertThat("verify that the offer was persisted", saveResponse2.isOk(), is(true));
 
         final Offer offerToShare = saveResponse2.getOffer();
-        assertThat(offerToShare, is(notNullValue()));
+        assertThat(offerToShare, is(not(nullValue())));
 
         final Set<String> offersToShare2 = new HashSet<>(1);
         offersToShare2.add(offerToShare.getId());
@@ -464,7 +486,7 @@ public final class ExchangeClientTest extends AbstractClientTest {
         final Offer readOffer = findOfferFromResponse(refNo, fetchSharedResponse2);
 
         assertThat(fetchSharedResponse2.getOffers().size(), is(size + 1));
-        assertThat("Polish offer was shared with Croatia and today is the nomination deadline, so it should be loaded", readOffer, is(notNullValue()));
+        assertThat("Polish offer was shared with Croatia and today is the nomination deadline, so it should be loaded", readOffer, is(not(nullValue())));
     }
 
     /**

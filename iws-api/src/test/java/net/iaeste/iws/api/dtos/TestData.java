@@ -204,13 +204,25 @@ public final class TestData {
                 country.setMembership(Membership.FULL_MEMBER);
                 country.setCountryName("Austria");
                 country.setCurrency(Currency.EUR);
-                country.setMemberSince(1960);
+                country.setMemberSince(1949);
                 break;
             case "de":
                 country.setMembership(Membership.FULL_MEMBER);
                 country.setCountryName("Germany");
                 country.setCurrency(Currency.EUR);
-                country.setMemberSince(1960);
+                country.setMemberSince(1950);
+                break;
+            case "dk":
+                country.setMembership(Membership.FULL_MEMBER);
+                country.setCountryName("Denmark");
+                country.setCurrency(Currency.DKK);
+                country.setMemberSince(1948);
+                break;
+            case "pl":
+                country.setMembership(Membership.FULL_MEMBER);
+                country.setCountryName("Poland");
+                country.setCurrency(Currency.PLN);
+                country.setMemberSince(1959);
                 break;
             default:
                 throw new IWSException(IWSErrors.ERROR, "Unknown Country.");

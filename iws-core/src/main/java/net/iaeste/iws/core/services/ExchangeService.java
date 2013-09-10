@@ -152,28 +152,31 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final OfferEntity newEntity = transform(request.getOffer());
         final Offer givenOffer = request.getOffer();
         final String externalId = givenOffer.getId();
-        final String refNo = givenOffer.getRefNo();
 
         if (externalId == null) {
-            final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, refNo);
+            // Add the Group to the Offer, otherwise our refno checks will fail
+            newEntity.setGroup(authentication.getGroup());
+            // Before we can persist the Offer, we need to check that the refno
+            // is valid. Since the Country is part of the Group, we can simply
+            // compare the refno with that
+            verifyRefnoValidity(authentication, newEntity);
+
+            final OfferEntity existingEntity = dao.findOfferByRefNo(authentication, newEntity.getRefNo());
             if (existingEntity == null) {
                 // Create a new Offer
-                // Add the Group to the Offer
-                newEntity.setGroup(authentication.getGroup());
+
+                // Add the employer to the Offer
                 newEntity.setEmployer(employer);
-                // Before we can persist the Offer, we need to check that the refno
-                // is valid. Since the Country is part of the Group, we can simply
-                // compare the refno with that
-                verifyRefnoValidity(authentication, newEntity);
                 // Set the Offer status to New
                 newEntity.setStatus(OfferState.NEW);
+
                 // Persist the Offer with history
                 dao.persist(authentication, newEntity);
             } else {
                 // An Offer exists with this RefNo, but the Id was not provided,
                 // hence we have the case where someone tries to create a new
                 // Offer using an existing RefNo, this is not allowed
-                throw new IdentificationException(formatLogMessage(authentication, "An Offer with the Reference Number %s already exists.", refNo));
+                throw new IdentificationException(formatLogMessage(authentication, "An Offer with the Reference Number %s already exists.", newEntity.getRefNo()));
             }
         } else {
             // Check if the user is allowed to work with the Object, if not -
@@ -181,13 +184,13 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             permissionCheck(authentication, authentication.getGroup());
 
             // Okay, user is permitted. Let's check if we can find this Offer
-            final OfferEntity existingEntity = dao.findOfferByExternalIdAndRefNo(authentication, externalId, refNo);
+            final OfferEntity existingEntity = dao.findOfferByExternalIdAndRefNo(authentication, externalId, newEntity.getRefNo());
 
             if (existingEntity == null) {
                 // We could not find an Offer matching the given criterias,
                 // hence we have a case, where the user have not provided the
                 // correct information, we cannot process this Offer
-                throw new IdentificationException(formatLogMessage(authentication, "No Offer could be found with the Id %s and Refefence Number %s.", externalId, refNo));
+                throw new IdentificationException(formatLogMessage(authentication, "No Offer could be found with the Id %s and Refefence Number %s.", externalId, newEntity.getRefNo()));
             }
 
             // Persist the changes, the method takes the existing and merges the
@@ -200,7 +203,8 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         // Interface, can the Object handle it itself
         notifications.notify(authentication, newEntity, NotificationType.GENERAL);
 
-        return new OfferResponse(transform(newEntity));
+        final Offer offer = transform(newEntity);
+        return new OfferResponse(offer);
     }
 
     private static void verifyRefnoValidity(final Authentication authentication, final OfferEntity offer) {

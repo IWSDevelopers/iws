@@ -21,12 +21,25 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Defines all Fields of Study together with their Specializations
+ * Defines all Fields of Study together with their Specializations. Note, these
+ * values are mapped into the database entities, and thus stored there. If a
+ * value is changed. The reverse mapping (valueof) will fail. It is therefore
+ * *not* allowed to change the spelling of an existing entry, without
+ * verification that it is not used in the database.<br />
+ *   If it is used in the database, then it can also be that it is used
+ * elsewhere, i.e. by third-party systems - and if so, then the entry may no
+ * longer be touched.<br />
+ *   As third-party systems may also use the enum, changes to the list may only
+ * be added to the end, since the ordinal values of records may otherwise
+ * change, again causing various problems. It is *not* allowed to delete any
+ * records from this list.<br />
+ *   Dealing with deprecation of the records is still a pending topic, but as
+ * it very rarely happens, this is more an academic topic than a practical
+ * matter.
  *
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection FieldCanBeLocal, UnusedDeclaration
  */
 public enum FieldOfStudy {
 

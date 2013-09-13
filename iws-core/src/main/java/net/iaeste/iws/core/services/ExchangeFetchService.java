@@ -214,6 +214,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
     public FetchPublishedGroupsResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishedGroupsRequest request) {
         //TODO distinguish somehow a request for info about offers shared 'to me' and 'by me', now it's 'by me'
+        final java.util.Date now = new Date().toDate();
         final FetchPublishedGroupsResponse response;
 
         verifyOffersOwnership(authentication, new HashSet<>(request.getOfferIds()));
@@ -221,7 +222,10 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<String> externalIds = request.getOfferIds();
         final Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?
         for (final String externalId : externalIds) {
-            result.put(externalId, convertOfferGroupEntityList(dao.findInfoForSharedOffer(externalId)));
+            final OfferEntity offer = dao.findOfferByExternalId(authentication, externalId);
+            if (!offer.getNominationDeadline().before(now)) {
+                result.put(externalId, convertOfferGroupEntityList(dao.findInfoForSharedOffer(externalId)));
+            }
         }
 
         response = new FetchPublishedGroupsResponse(result);

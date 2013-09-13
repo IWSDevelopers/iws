@@ -16,8 +16,11 @@ package net.iaeste.iws.client.exchange;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -51,6 +54,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -487,6 +491,64 @@ public final class OfferTest extends AbstractClientTest {
 
         assertThat(fetchSharedResponse2.getOffers().size(), is(size + 1));
         assertThat("Polish offer was shared with Croatia and today is the nomination deadline, so it should be loaded", readOffer, is(not(nullValue())));
+    }
+
+    @Test
+    public void testFetchPublishedGroupsAfterDeadline() {
+        final Date deadlineInThePast = new Date().plusDays(-20);
+
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2012-0014");
+
+        final ProcessOfferRequest saveRequest1 = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse1 = exchange.processOffer(token, saveRequest1);
+
+        assertThat("verify that the offer was persisted", saveResponse1.isOk(), is(true));
+
+        final Offer savedOffer = saveResponse1.getOffer();
+        final Set<String> offersToShare = Collections.singleton(savedOffer.getId());
+        final List<String> groupIds = Collections.singletonList("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groupIds, deadlineInThePast);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
+
+        assertThat("verify that the offer has been shared to Austria", publishResponse.getError(), is(IWSErrors.SUCCESS));
+
+        final List<String> offersToShareList = Collections.singletonList(savedOffer.getId());
+        final FetchPublishedGroupsRequest request = new FetchPublishedGroupsRequest(offersToShareList);
+        final FetchPublishedGroupsResponse fetchPublishedGroupsResponse = exchange.fetchPublishedGroups(token, request);
+
+        assertThat("it's after the nomination deadline so OfferGroup should not be fetched ",
+                fetchPublishedGroupsResponse.getOffersGroups(), not(hasKey(savedOffer.getId())));
+    }
+
+    @Test
+    public void testFetchPublishedGroupsDeadlineToday() {
+        final Date nominationDeadlineToday = new Date();
+
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2012-0012");
+
+        final ProcessOfferRequest saveRequest2 = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse2 = exchange.processOffer(token, saveRequest2);
+
+        assertThat("verify that the offer was persisted", saveResponse2.isOk(), is(true));
+
+        final Offer savedOffer = saveResponse2.getOffer();
+        final Set<String> offersToShare2 = Collections.singleton(savedOffer.getId());
+
+        final List<String> groupIds = Collections.singletonList("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National
+
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare2, groupIds, nominationDeadlineToday);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(token, publishRequest);
+
+        assertThat("verify that the offer has been shared to Austria", publishResponse.getError(), is(IWSErrors.SUCCESS));
+
+        final List<String> offersToShareList = Collections.singletonList(savedOffer.getId());
+        final FetchPublishedGroupsRequest request = new FetchPublishedGroupsRequest(offersToShareList);
+        final FetchPublishedGroupsResponse fetchPublishedGroupsResponse = exchange.fetchPublishedGroups(token, request);
+
+        assertThat("it's still before the nomination deadline so OfferGroup should be fetched ",
+                fetchPublishedGroupsResponse.getOffersGroups(), hasKey(savedOffer.getId()));
     }
 
     /**

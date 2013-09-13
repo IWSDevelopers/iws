@@ -27,6 +27,7 @@ import net.iaeste.iws.persistence.views.EmployerView;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -237,6 +238,15 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public List<OfferGroupEntity> findInfoForSharedOffer(final String externalOfferId) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByExternalOfferId");
         query.setParameter("eoid", externalOfferId);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<OfferGroupEntity> findInfoForUnexpiredSharedOffer(final String externalOfferId, final Date currentDate) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findUnexpiredByExternalOfferId");
+        query.setParameter("eoid", externalOfferId);
+        query.setParameter("date", currentDate);
 
         return query.getResultList();
     }

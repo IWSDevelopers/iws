@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -517,8 +518,9 @@ public final class OfferTest extends AbstractClientTest {
         final FetchPublishedGroupsRequest request = new FetchPublishedGroupsRequest(offersToShareList);
         final FetchPublishedGroupsResponse fetchPublishedGroupsResponse = exchange.fetchPublishedGroups(token, request);
 
-        assertThat("it's after the nomination deadline so OfferGroup should not be fetched ",
-                fetchPublishedGroupsResponse.getOffersGroups(), not(hasKey(savedOffer.getId())));
+        assertThat(fetchPublishedGroupsResponse.getOffersGroups(), hasKey(savedOffer.getId()));
+        assertThat("it's still before the nomination deadline so OfferGroup should be fetched",
+                fetchPublishedGroupsResponse.getOffersGroups().get(savedOffer.getId()), empty());
     }
 
     @Test
@@ -547,8 +549,9 @@ public final class OfferTest extends AbstractClientTest {
         final FetchPublishedGroupsRequest request = new FetchPublishedGroupsRequest(offersToShareList);
         final FetchPublishedGroupsResponse fetchPublishedGroupsResponse = exchange.fetchPublishedGroups(token, request);
 
-        assertThat("it's still before the nomination deadline so OfferGroup should be fetched ",
-                fetchPublishedGroupsResponse.getOffersGroups(), hasKey(savedOffer.getId()));
+        assertThat(fetchPublishedGroupsResponse.getOffersGroups(), hasKey(savedOffer.getId()));
+        assertThat("it's still before the nomination deadline so OfferGroup should be fetched",
+                fetchPublishedGroupsResponse.getOffersGroups().get(savedOffer.getId()), hasSize(1));
     }
 
     /**

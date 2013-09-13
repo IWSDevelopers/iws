@@ -22,6 +22,7 @@ import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.views.EmployerView;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -134,6 +135,15 @@ public interface ExchangeDao extends BasicDao {
      * @return list of {@link OfferGroupEntity} which are shared
      */
     List<OfferGroupEntity> findInfoForSharedOffer(String externalOfferId);
+
+    /**
+     * Finds information about sharing of the offer only if offer did not expire because of deadline
+     *
+     * @param  externalOfferId reference number of the offer to get sharing info for
+     * @param currentDate current date for comparing with nomination deadlines
+     * @return list of {@link OfferGroupEntity} which are shared
+     */
+    List<OfferGroupEntity> findInfoForUnexpiredSharedOffer(String externalOfferId, Date currentDate);
 
     /**
      * Unshares the offer from all groups

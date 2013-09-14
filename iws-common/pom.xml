@@ -51,7 +51,7 @@
                          running the tests in parallel using Maven, is to use
                          IntelliJ's forkmode for JUnit tests.
                            Parallel supports 'classes', 'methods' or 'both' -->
-                    <parallel>both</parallel>
+                    <parallel>classes</parallel>
                     <threadCount>10</threadCount>
                 </configuration>
                 <goals>

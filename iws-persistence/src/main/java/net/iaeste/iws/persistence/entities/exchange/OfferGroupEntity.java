@@ -74,8 +74,8 @@ import java.util.Date;
                         " and og.offer.id = (select o.id from OfferEntity o where o.externalId = :eoid)")
 })
 @Entity
-@Monitored(name = "offer_to_group", level = MonitoringLevel.DETAILED)
 @Table(name = "offer_to_group")
+@Monitored(name = "Offer2Group", level = MonitoringLevel.DETAILED)
 public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> {
 
     @Id
@@ -103,6 +103,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> {
     @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group = null;
 
+    @Monitored(name="Offer2Group comment", level = MonitoringLevel.DETAILED)
     @Column(name = "comment", length = 1000)
     private String comment = null;
 

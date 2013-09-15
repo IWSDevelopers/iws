@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -61,6 +63,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "employers")
+@Monitored(name = "Employer", level = MonitoringLevel.DETAILED)
 public class EmployerEntity extends AbstractUpdateable<EmployerEntity> {
 
     @Id
@@ -84,15 +87,19 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> {
     @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group = null;
 
+    @Monitored(name="Employer name", level = MonitoringLevel.DETAILED)
     @Column(name = "name", length = 255, nullable = false)
     private String name = null;
 
+    @Monitored(name="Employer department", level = MonitoringLevel.DETAILED)
     @Column(name = "department", length = 255)
     private String department = null;
 
+    @Monitored(name="Employer business", level = MonitoringLevel.DETAILED)
     @Column(name = "business", length = 255)
     private String business = null;
 
+    @Monitored(name="Employer working place", level = MonitoringLevel.DETAILED)
     @Column(name = "working_place")
     private String workingPlace = null;
 
@@ -100,24 +107,31 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> {
     @JoinColumn(name = "address_id")
     private AddressEntity address = null;
 
+    @Monitored(name="Employer number of employees", level = MonitoringLevel.DETAILED)
     @Column(name = "number_of_employees")
     private Integer numberOfEmployees = null;
 
+    @Monitored(name="Employer website", level = MonitoringLevel.DETAILED)
     @Column(name = "website", length = 255)
     private String website = null;
 
+    @Monitored(name="Employer canteen", level = MonitoringLevel.DETAILED)
     @Column(name = "canteen", length = 255)
     private Boolean canteen = false;
 
+    @Monitored(name="Employer nearest airport", level = MonitoringLevel.DETAILED)
     @Column(name = "nearest_airport", length = 255)
     private String nearestAirport = null;
 
+    @Monitored(name="Employer nearest public transport", level = MonitoringLevel.DETAILED)
     @Column(name = "nearest_public_transport", length = 255)
     private String nearestPublicTransport = null;
 
+    @Monitored(name="Employer weekly hours", level = MonitoringLevel.DETAILED)
     @Column(name = "weekly_hours", scale = 5, precision = 3)
     private Float weeklyHours = null;
 
+    @Monitored(name="Employer daily hours", level = MonitoringLevel.DETAILED)
     @Column(name = "daily_hours", scale = 5, precision = 3)
     private Float dailyHours = null;
 

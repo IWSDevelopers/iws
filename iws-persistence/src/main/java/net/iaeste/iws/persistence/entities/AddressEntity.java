@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,6 +53,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "addresses")
+@Monitored(name = "Address", level = MonitoringLevel.DETAILED)
 public class AddressEntity implements Updateable<AddressEntity> {
 
     @Id
@@ -69,21 +73,27 @@ public class AddressEntity implements Updateable<AddressEntity> {
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
+    @Monitored(name="Address Street 2", level = MonitoringLevel.DETAILED)
     @Column(name = "street1", length = 100)
     private String street1 = null;
 
+    @Monitored(name="Address Street 2", level = MonitoringLevel.DETAILED)
     @Column(name = "street2", length = 100)
     private String street2 = null;
 
+    @Monitored(name="Address ZIP (Postal Code)", level = MonitoringLevel.DETAILED)
     @Column(name = "zip", length = 100)
     private String zip = null;
 
+    @Monitored(name="Address City", level = MonitoringLevel.DETAILED)
     @Column(name = "city", length = 100)
     private String city = null;
 
+    @Monitored(name="Address State", level = MonitoringLevel.DETAILED)
     @Column(name = "state", length = 100)
     private String state = null;
 
+    @Monitored(name="Address POBox", level = MonitoringLevel.DETAILED)
     @Column(name = "pobox", length = 100)
     private String pobox = null;
 

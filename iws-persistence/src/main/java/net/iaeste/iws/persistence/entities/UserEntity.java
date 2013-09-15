@@ -17,6 +17,8 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.common.exceptions.NotificationException;
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -40,10 +42,10 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
+ * @since   1.7
  * @noinspection AssignmentToDateFieldFromParameter
- * @since 1.7
  */
 @NamedQueries({
         @NamedQuery(
@@ -79,6 +81,7 @@ import java.util.Map;
 })
 @Entity
 @Table(name = "users")
+@Monitored(name = "User", level = MonitoringLevel.DETAILED)
 public class UserEntity implements Updateable<UserEntity>, Notifiable {
 
     @Id
@@ -101,12 +104,14 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
     /**
      * The username is the users private e-mail address.
      */
+    @Monitored(name="User Username", level = MonitoringLevel.DETAILED)
     @Column(name = "username", length = 100, nullable = false)
     private String username = null;
 
     /**
      * The generated e-mail alias, that all users receive by the system.
      */
+    @Monitored(name="User Alias", level = MonitoringLevel.DETAILED)
     @Column(name = "alias", length = 125, nullable = false)
     private String alias = null;
 
@@ -129,6 +134,7 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
      * than the Person Entity, since the value should exists, also when a user
      * has been removed from the system.
      */
+    @Monitored(name="User Firstname", level = MonitoringLevel.DETAILED)
     @Column(name = "firstname", length = 50, nullable = false)
     private String firstname = null;
 
@@ -138,6 +144,7 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
      * the Person Entity, since the value should exists, also when a user has
      * been removed from the system.
      */
+    @Monitored(name="User Lastname", level = MonitoringLevel.DETAILED)
     @Column(name = "lastname", length = 50, nullable = false)
     private String lastname = null;
 
@@ -147,6 +154,7 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
      * to the possibility to log in, this can only be done for accounts where
      * the status is "Active".
      */
+    @Monitored(name="User Status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 25, nullable = false)
     private UserStatus status = UserStatus.NEW;
@@ -165,6 +173,7 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
      * Personal Notifications period. By default, all notifications are
      * delivered immediately.
      */
+    @Monitored(name="User Notifications", level = MonitoringLevel.DETAILED)
     @Column(name = "notifications", length = 25, nullable = false)
     private String notifications = "immediately";
 

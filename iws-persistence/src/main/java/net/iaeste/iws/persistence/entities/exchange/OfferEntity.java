@@ -21,6 +21,8 @@ import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -102,6 +104,7 @@ import java.util.Map;
                         "  and o.employer.name = :employer")})
 @Entity
 @Table(name = "offers")
+@Monitored(name = "Offer", level = MonitoringLevel.DETAILED)
 public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
 
     @Id
@@ -133,58 +136,74 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @JoinColumn(name = "employer_id")
     private EmployerEntity employer = null;
 
+    @Monitored(name="Offer work description", level = MonitoringLevel.DETAILED)
     @Column(name = "work_description", length = 1000, nullable = false)
     private String workDescription = null;
 
+    @Monitored(name="Offer type of work", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "work_type", length = 1)
     private TypeOfWork typeOfWork = null;
 
+    @Monitored(name="Offer study levels", level = MonitoringLevel.DETAILED)
     @Column(name = "study_levels", length = 25, nullable = false)
     private String studyLevels = null;
 
+    @Monitored(name="Offer study fields", level = MonitoringLevel.DETAILED)
     @Column(name = "study_fields", length = 1000, nullable = false)
     private String fieldOfStudies = null;
 
+    @Monitored(name="Offer specializations", level = MonitoringLevel.DETAILED)
     @Column(name = "specializations")
     private String specializations = null;
 
+    @Monitored(name="Offer previous training required", level = MonitoringLevel.DETAILED)
     @Column(name = "prev_training_req")
     private Boolean prevTrainingRequired = null;
 
+    @Monitored(name="Offer other requirements", level = MonitoringLevel.DETAILED)
     @Column(name = "other_requirements", length = 4000)
     private String otherRequirements = null;
 
+    @Monitored(name="Offer minimum weeks", level = MonitoringLevel.DETAILED)
     @Column(name = "min_weeks", nullable = false)
     private Integer minimumWeeks = null;
 
+    @Monitored(name="Offer maximum weeks", level = MonitoringLevel.DETAILED)
     @Column(name = "max_weeks", nullable = false)
     private Integer maximumWeeks = null;
 
+    @Monitored(name="Offer first from date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "from_date", nullable = false)
     private Date fromDate = null;
 
+    @Monitored(name="Offer first to date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "to_date", nullable = false)
     private Date toDate = null;
 
+    @Monitored(name="Offer second from date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "from_date_2")
     private Date fromDate2 = null;
 
+    @Monitored(name="Offer second to date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "to_date_2")
     private Date toDate2 = null;
 
+    @Monitored(name="Offer unavailable from date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "unavailable_from")
     private Date unavailableFrom = null;
 
+    @Monitored(name="Offer unavailable to date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "unavailable_to")
     private Date unavailableTo = null;
 
+    @Monitored(name="Offer language skill 1", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "language_1", length = 255, nullable = false)
     private Language language1 = null;
@@ -197,6 +216,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Column(name = "language_1_op", length = 1)
     private LanguageOperator language1Operator = null;
 
+    @Monitored(name="Offer language skill 2", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "language_2", length = 255)
     private Language language2 = null;
@@ -209,6 +229,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Column(name = "language_2_op", length = 1)
     private LanguageOperator language2Operator = null;
 
+    @Monitored(name="Offer language skill 3", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "language_3", length = 255)
     private Language language3 = null;
@@ -220,44 +241,56 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     /**
      * need big numbers, e.g. 1 EUR = 26.435,00 VND
      */
+    @Monitored(name="Offer payment", level = MonitoringLevel.DETAILED)
     @Column(name = "payment", scale = 12, precision = 2)
     private BigDecimal payment = null;
 
+    @Monitored(name="Offer payment frequency", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_frequency", length = 10)
     private PaymentFrequency paymentFrequency = null;
 
+    @Monitored(name="Offer payment currency", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "currency", length = 3)
     private Currency currency = null;
 
+    @Monitored(name="Offer payment deduction", level = MonitoringLevel.DETAILED)
     @Column(name = "deduction", length = 20)
     private String deduction = null;
 
+    @Monitored(name="Offer living cost", level = MonitoringLevel.DETAILED)
     @Column(name = "living_cost", scale = 12, precision = 2)
     private BigDecimal livingCost = null;
 
+    @Monitored(name="Offer living cost frequency", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "living_cost_frequency")
     private PaymentFrequency livingCostFrequency = null;
 
+    @Monitored(name="Offer lodging by", level = MonitoringLevel.DETAILED)
     @Column(name = "lodging_by", length = 255)
     private String lodgingBy = null;
 
+    @Monitored(name="Offer lodging cost", level = MonitoringLevel.DETAILED)
     @Column(name = "lodging_cost", scale = 12, precision = 2)
     private BigDecimal lodgingCost = null;
 
+    @Monitored(name="Offer lodging cost frequency", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "lodging_cost_frequency", length = 10)
     private PaymentFrequency lodgingCostFrequency = null;
 
+    @Monitored(name="Offer nomination deadline", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "nomination_deadline")
     private Date nominationDeadline = null;
 
+    @Monitored(name="Offer number of hard copies", level = MonitoringLevel.DETAILED)
     @Column(name = "number_of_hard_copies")
     private Integer numberOfHardCopies = null;
 
+    @Monitored(name="Offer status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 10)
     private OfferState status = OfferState.NEW;

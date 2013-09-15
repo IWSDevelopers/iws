@@ -16,6 +16,8 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.common.exceptions.NotificationException;
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -114,6 +116,7 @@ import java.util.Map;
 })
 @Entity
 @Table(name = "groups")
+@Monitored(name = "Group", level = MonitoringLevel.DETAILED)
 public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
 
     @Id
@@ -148,12 +151,15 @@ public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
     @JoinColumn(name = "grouptype_id", nullable = false, updatable = false)
     private GroupTypeEntity groupType = null;
 
+    @Monitored(name="Group Name", level = MonitoringLevel.DETAILED)
     @Column(name = "groupname", length = 50)
     private String groupName;
 
+    @Monitored(name="Group Full Name", level = MonitoringLevel.DETAILED)
     @Column(name = "full_name", length = 100)
     private String fullName = null;
 
+    @Monitored(name="Group Description", level = MonitoringLevel.DETAILED)
     @Column(name = "group_description", length = 250)
     private String description = null;
 
@@ -161,9 +167,11 @@ public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
     @JoinColumn(name = "country_id", updatable = false)
     private CountryEntity country = null;
 
+    @Monitored(name="Group Mailinglist Name", level = MonitoringLevel.DETAILED)
     @Column(name = "list_name")
     private String listName = null;
 
+    @Monitored(name="Group Status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private GroupStatus status = GroupStatus.ACTIVE;

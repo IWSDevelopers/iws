@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 
@@ -49,6 +51,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "students")
+@Monitored(name = "Student", level = MonitoringLevel.DETAILED)
 public class StudentEntity implements IWSEntity {
 
     @Id
@@ -68,6 +71,7 @@ public class StudentEntity implements IWSEntity {
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
+    @Monitored(name="Student name", level = MonitoringLevel.DETAILED)
     @Column(name = "student_name", nullable = false)
     private String studentName = null;
 

@@ -15,6 +15,8 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.common.exceptions.NotificationException;
+import net.iaeste.iws.common.monitoring.Monitored;
+import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
@@ -37,9 +39,9 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
@@ -79,6 +81,7 @@ import java.util.Map;
 })
 @Entity
 @Table(name = "user_to_group")
+@Monitored(name = "User2Group", level = MonitoringLevel.DETAILED)
 public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable {
 
     @Id
@@ -99,23 +102,27 @@ public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable 
     private String externalId = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private UserEntity user = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(name = "group_id", nullable = false)
+    @JoinColumn(name = "group_id", nullable = false, updatable = false)
     private GroupEntity group = null;
 
+    @Monitored(name="User2Group Role", level = MonitoringLevel.DETAILED)
     @ManyToOne(targetEntity = RoleEntity.class)
     @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity role = null;
 
+    @Monitored(name="User2Group Custom Title", level = MonitoringLevel.DETAILED)
     @Column(name = "custom_title")
     private String title = null;
 
+    @Monitored(name="User2Group On Public Mailinglist", level = MonitoringLevel.DETAILED)
     @Column(name = "on_public_list", nullable = false)
     private Boolean onPublicList = true;
 
+    @Monitored(name="User2Group On Private Mailinglist", level = MonitoringLevel.DETAILED)
     @Column(name = "on_private_list", nullable = false)
     private Boolean onPrivateList = true;
 

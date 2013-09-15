@@ -54,8 +54,8 @@ import java.util.Date;
                         "where lower(c.countryCode) = lower(:code)")
 })
 @Entity
-@Monitored(name = "countries", level = MonitoringLevel.MARKED)
 @Table(name = "countries")
+@Monitored(name = "Country", level = MonitoringLevel.DETAILED)
 public class CountryEntity implements Updateable<CountryEntity> {
 
     @Id
@@ -67,45 +67,45 @@ public class CountryEntity implements Updateable<CountryEntity> {
     @Column(name = "country_code", length = 2, unique = true, nullable = false, updatable = false)
     private String countryCode = null;
 
-    @Monitored(name="country name", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country name", level = MonitoringLevel.DETAILED)
     @Column(name = "country_name", length = 100, unique = true, nullable = false)
     private String countryName = null;
 
-    @Monitored(name="country name full", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country name full", level = MonitoringLevel.DETAILED)
     @Column(name = "country_name_full", length = 100)
     private String countryNameFull = null;
 
-    @Monitored(name="country name native", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country name native", level = MonitoringLevel.DETAILED)
     @Column(name = "country_name_native", length = 100)
     private String countryNameNative = null;
 
-    @Monitored(name="nationality", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country nationality", level = MonitoringLevel.DETAILED)
     @Column(name = "nationality", length = 100)
     private String nationality = null;
 
-    @Monitored(name="citizens", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country citizens", level = MonitoringLevel.DETAILED)
     @Column(name = "citizens")
     private String citizens = null;
 
-    @Monitored(name="phonecode", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country phonecode", level = MonitoringLevel.DETAILED)
     @Column(name = "phonecode")
     private String phonecode = null;
 
-    @Monitored(name="currency", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country currency", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "currency")
     private Currency currency = null;
 
-    @Monitored(name="languages", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country languages", level = MonitoringLevel.DETAILED)
     @Column(name = "languages")
     private String languages = null;
 
-    @Monitored(name="membership", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country membership", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "membership")
     private Membership membership = Membership.LISTED;
 
-    @Monitored(name="member since", level = MonitoringLevel.MARKED)
+    @Monitored(name="Country member since", level = MonitoringLevel.DETAILED)
     @Column(name = "member_since")
     private Integer memberSince = null;
 

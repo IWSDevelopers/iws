@@ -138,9 +138,9 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deleteGroup(final AuthenticationToken token, final GroupRequest request) {
+    public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         try {
-            return caller.deleteGroup(token, request);
+            return caller.deleteSubGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

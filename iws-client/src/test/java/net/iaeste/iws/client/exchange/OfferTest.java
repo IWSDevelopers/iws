@@ -47,7 +47,7 @@ import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.client.AbstractClientTest;
+import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
@@ -64,21 +64,21 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class OfferTest extends AbstractClientTest {
+public final class OfferTest extends AbstractTest {
 
     private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
 
     @Override
-    public void before() {
+    public void setup() {
         token = login("poland@iaeste.pl", "poland");
         austriaToken = login("austria@iaeste.at", "austria");
         croatiaToken = login("croatia@iaeste.hr", "croatia");
     }
 
     @Override
-    public void after() {
+    public void tearDown() {
         logout(token);
         logout(austriaToken);
         logout(croatiaToken);

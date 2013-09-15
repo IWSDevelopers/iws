@@ -103,6 +103,8 @@ public interface AccessDao extends BasicDao {
 
     List<GroupEntity> findGroupByNameAndParent(String groupName, GroupEntity parent);
 
+    GroupEntity findGroupByExternalId(String externalId);
+
     /**
      * Find a Role by the name. However, as it is possible to have multiple
      * roles with the same name, but assigned to different Countries or Groups,

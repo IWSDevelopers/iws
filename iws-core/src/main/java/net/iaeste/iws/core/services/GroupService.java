@@ -16,6 +16,7 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transformMembers;
+import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -43,6 +44,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,7 @@ import java.util.List;
  */
 public final class GroupService {
 
+    private static final Logger log = Logger.getLogger(GroupService.class);
     private final AccessDao dao;
     private final Notifications notifications;
 
@@ -123,8 +126,37 @@ public final class GroupService {
         return new ProcessGroupResponse(CommonTransformer.transform(entity));
     }
 
+    /**
+     * This method will delete a Subgroup of the one from the Authentication
+     * Object. If the Group contains users and data, then the users and the
+     * data will also be removed. However, if the Group has a subgroup, the
+     * subgroup must be deleted first. We do not support deleting group trees.
+     * Another thing, only Groups of type Local Committee or WorkGroup can be
+     * deleted with this method.
+     *
+     * @param authentication User & Group information
+     * @param request        Group Request information
+     */
     public void deleteGroup(final Authentication authentication, final GroupRequest request) {
-        throw new NotImplementedException("Awaiting implementation, see ticket #278.");
+        final GroupEntity parentGroup = authentication.getGroup();
+        final Group toBeDeleted = request.getGroup();
+        final GroupEntity group = dao.findGroupByExternalId(toBeDeleted.getId());
+
+        if (group.getParentId().equals(parentGroup.getId())) {
+            final GroupType type = group.getGroupType().getGrouptype();
+            if ((type != GroupType.LOCAL) && (type != GroupType.WORKGROUP)) {
+                throw new IWSException(IWSErrors.NOT_PERMITTED, "It is not allowed to remove groups of type " + type + " with this request.");
+            }
+
+            if (!dao.findSubGroups(group.getId()).isEmpty()) {
+                throw new IWSException(IWSErrors.NOT_PERMITTED, "The Group being deleted contains SubGroups.");
+            }
+
+            log.info(formatLogMessage(authentication, "The Group '%s' with Id '%s', is being deleted by '%s'.", group.getGroupName(), group.getExternalId(), authentication.getUser().getExternalId()));
+            dao.delete(group);
+        } else {
+            throw new IWSException(IWSErrors.NOT_PERMITTED, "The Group is not associated with the requesting Group.");
+        }
     }
 
     /**

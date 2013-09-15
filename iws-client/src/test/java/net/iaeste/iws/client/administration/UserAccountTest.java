@@ -21,10 +21,7 @@ import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.dtos.Group;
-import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
@@ -39,7 +36,6 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.client.AbstractClientTest;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.common.notification.NotificationField;
@@ -53,20 +49,19 @@ import org.junit.Test;
  * @since   1.7
  * @noinspection BreakStatement
  */
-public class UserAccountTest extends AbstractClientTest {
+public class UserAccountTest extends AbstractAdministration {
 
-    private static final String AUSTRIA_MEMBER_GROUP = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
+    //private static final String AUSTRIA_MEMBER_GROUP = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
     private final Administration administration = new AdministrationClient();
 
     @Override
-    public void before() {
+    public void setup() {
         token = login("austria@iaeste.at", "austria");
-        // Clear all messages from the Notification Queue
         spy.clear();
     }
 
     @Override
-    public void after() {
+    public void tearDown() {
         logout(token);
     }
 
@@ -111,8 +106,9 @@ public class UserAccountTest extends AbstractClientTest {
         assertThat(activationCode, is(not(nullValue())));
 
         // Check that the user is in the list of members
-        token.setGroupId(AUSTRIA_MEMBER_GROUP);
-        final FetchGroupRequest groupRequest = new FetchGroupRequest(AUSTRIA_MEMBER_GROUP);
+        final String memberGroupId = findMemberGroup(token).getId();
+        token.setGroupId(memberGroupId);
+        final FetchGroupRequest groupRequest = new FetchGroupRequest(memberGroupId);
         final FetchGroupResponse groupResponse = administration.fetchGroup(token, groupRequest);
         assertThat(groupResponse, is(not(nullValue())));
     }
@@ -218,7 +214,8 @@ public class UserAccountTest extends AbstractClientTest {
     @Test
     @Ignore("Test is currently being ignored, since the logic is being re-constructed.")
     public void testAddingUserToMemberGroup() {
-        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(AUSTRIA_MEMBER_GROUP);
+        final String memberGroupId = findMemberGroup(token).getId();
+        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(memberGroupId);
         final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
         final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest();
         final Fallible userGroupResponse = administration.processUserGroupAssignment(token, userGroupAssignmentRequest);
@@ -242,22 +239,5 @@ public class UserAccountTest extends AbstractClientTest {
         assertThat(userGroupResponse.isOk(), is(false));
         assertThat(userGroupResponse.getError(), is(IWSErrors.NOT_IMPLEMENTED));
         assertThat(userGroupResponse.getMessage(), is("Method pending implementation."));
-    }
-
-    private static Group findNationalGroup(final AuthenticationToken authenticationToken) {
-        final AccessClient access = new AccessClient();
-        final FetchPermissionResponse permissionResponse = access.fetchPermissions(authenticationToken);
-        Group group = null;
-
-        for (final Authorization authorization : permissionResponse.getAuthorizations()) {
-            final GroupType type = authorization.getGroup().getGroupType();
-
-            if (type == GroupType.NATIONAL || type == GroupType.SAR) {
-                group = authorization.getGroup();
-                break;
-            }
-        }
-
-        return group;
     }
 }

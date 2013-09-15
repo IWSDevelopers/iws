@@ -108,7 +108,7 @@ public final class DeleteGroup extends AbstractFixture<Fallible> {
         createSession();
         request.setUser(user);
         request.setGroup(group);
-        setResponse(administration.deleteGroup(getToken(), request));
+        setResponse(administration.deleteSubGroup(getToken(), request));
     }
 
     @Override

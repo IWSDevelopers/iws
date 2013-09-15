@@ -144,15 +144,21 @@ public interface Administration {
     ProcessGroupResponse processGroup(AuthenticationToken token, GroupRequest request);
 
     /**
-     * Deletes a Groups from the system. This is done with a multitude of
-     * checks, to avoid that groups are removed needlessly.
+     * This request allows a user to delete a subgroup to the one that is
+     * currently defined in the Token Object.<br />
+     *   The subgroup must be empty, i.e. with no further Groups underneath,
+     * otherwise the system will reject the request. Users associated with the
+     * Group will loose their association, and Data attached to the Group will
+     * be deleted from the System.<br />
+     *   Only Groups of type Local Committee or Work Group can be deleted with
+     * this request.
      *
      * @param token   Authentication information about the user invoking the
      *                request
      * @param request Fetch Group Request Object
      * @return Standard Error Object
      */
-    Fallible deleteGroup(AuthenticationToken token, GroupRequest request);
+    Fallible deleteSubGroup(AuthenticationToken token, GroupRequest request);
 
     /**
      * Retrieves the requested Group and the depending on the flags, it will

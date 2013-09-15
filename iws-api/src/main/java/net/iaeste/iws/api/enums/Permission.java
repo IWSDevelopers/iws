@@ -115,7 +115,7 @@ public enum Permission {
     /**
      * Process SubGroups, includes the following: Create, Update, Delete & Assign Ownership
      */
-    PROCESS_GROUPS,
+    PROCESS_GROUP,
     DELETE_GROUP,
     PROCESS_COUNTRIES,
     PROCESS_USER_GROUP_ASSIGNMENT,

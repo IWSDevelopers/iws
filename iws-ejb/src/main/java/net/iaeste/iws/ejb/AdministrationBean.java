@@ -247,11 +247,11 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible deleteGroup(final AuthenticationToken token, final GroupRequest request) {
+    public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         Fallible response;
 
         try {
-            response = controller.deleteGroup(token, request);
+            response = controller.deleteSubGroup(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));

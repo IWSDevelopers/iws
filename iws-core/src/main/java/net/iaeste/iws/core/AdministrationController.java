@@ -241,7 +241,7 @@ public final class AdministrationController extends CommonController implements 
 
         try {
             verify(request);
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_GROUP);
 
             final GroupService service = factory.prepareGroupService();
             response = service.processGroup(authentication, request);
@@ -259,9 +259,9 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible deleteGroup(final AuthenticationToken token, final GroupRequest request) {
+    public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting deleteGroup()"));
+            log.trace(formatLogMessage(token, "Starting deleteSubGroup()"));
         }
         Fallible response;
 
@@ -277,7 +277,7 @@ public final class AdministrationController extends CommonController implements 
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished deleteGroup()"));
+            log.trace(formatLogMessage(token, "Finished deleteSubGroup()"));
         }
         return response;
     }

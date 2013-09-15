@@ -12,21 +12,17 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.client;
+package net.iaeste.iws.client.administration;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
-import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
@@ -41,15 +37,13 @@ import org.junit.Test;
  * @since   1.7
  * @noinspection InstanceMethodNamingConvention
  */
-public final class GroupProcessingTest extends AbstractClientTest {
-
-    private final Administration client = new AdministrationClient();
+public final class GroupProcessingTest extends AbstractAdministration {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void before() {
+    public void setup() {
         token = login("denmark@iaeste.dk", "denmark");
     }
 
@@ -57,7 +51,7 @@ public final class GroupProcessingTest extends AbstractClientTest {
      * {@inheritDoc}
      */
     @Override
-    public void after() {
+    public void tearDown() {
         logout(token);
     }
 
@@ -298,24 +292,5 @@ public final class GroupProcessingTest extends AbstractClientTest {
 
         final ProcessGroupResponse failed = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, duplicateName);
         assertThat(failed.isOk(), is(false));
-    }
-
-    // =========================================================================
-    // Internal Methods
-    // =========================================================================
-
-    private ProcessGroupResponse createGroup(final AuthenticationToken token, final GroupType parent, final GroupType subgroup, final String groupName) {
-        final FetchGroupRequest fetchRequest = new FetchGroupRequest(parent);
-        fetchRequest.setFetchUsers(true);
-        fetchRequest.setFetchSubGroups(true);
-        final FetchGroupResponse fetchResponse = client.fetchGroup(token, fetchRequest);
-
-        final Group group = new Group();
-        group.setGroupName(groupName);
-        group.setGroupType(subgroup);
-        token.setGroupId(fetchResponse.getGroup().getId());
-        final GroupRequest request = new GroupRequest(group);
-
-        return client.processGroup(token, request);
     }
 }

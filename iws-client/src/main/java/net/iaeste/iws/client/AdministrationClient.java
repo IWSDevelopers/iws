@@ -109,8 +109,8 @@ public final class AdministrationClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deleteGroup(final AuthenticationToken token, final GroupRequest request) {
-        return client.deleteGroup(token, request);
+    public Fallible deleteSubGroup(final AuthenticationToken token, final GroupRequest request) {
+        return client.deleteSubGroup(token, request);
     }
 
     /**

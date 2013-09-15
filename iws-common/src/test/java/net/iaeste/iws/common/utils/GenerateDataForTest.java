@@ -62,7 +62,8 @@ public final class GenerateDataForTest {
                 { "AT", "Austria",              Currency.EUR, 1960, Membership.FULL_MEMBER },
                 { "AZ", "Azerbaijan",           Currency.AZN, 2010, Membership.ASSOCIATE_MEMBER },
                 { "BD", "Bangladesh.Aviation",  Currency.BDT, 2013, Membership.COOPERATING_INSTITUTION },
-                { "BD", "Bangladesh.MoyTree",   Currency.BDT, 2009, Membership.COOPERATING_INSTITUTION },
+                // This script can only create a single committee for a Country
+                //{ "BD", "Bangladesh.MoyTree",   Currency.BDT, 2009, Membership.COOPERATING_INSTITUTION },
                 { "BY", "Belarus",              Currency.BYR, 2000, Membership.FULL_MEMBER },
                 { "BE", "Belgium",              Currency.EUR, 1948, Membership.FULL_MEMBER },
                 { "BO", "Bolivia",              Currency.BOB, 2013, Membership.COOPERATING_INSTITUTION },
@@ -70,7 +71,7 @@ public final class GenerateDataForTest {
                 { "BR", "Brazil",               Currency.BRL, 1982, Membership.FULL_MEMBER },
                 { "CA", "Canada",               Currency.CAD, 1953, Membership.FULL_MEMBER },
                 { "CL", "Chile",                Currency.CLP, 2013, Membership.COOPERATING_INSTITUTION },
-                { "CH", "China",                Currency.CNY, 2000, Membership.ASSOCIATE_MEMBER },
+                { "CN", "China",                Currency.CNY, 2000, Membership.ASSOCIATE_MEMBER },
                 { "CO", "Columbia",             Currency.COP, 1960, Membership.FULL_MEMBER },
                 { "HR", "Croatia",              Currency.HRK, 1960, Membership.FULL_MEMBER },
                 { "CY", "Cyprus",               Currency.EUR, 1980, Membership.FULL_MEMBER },
@@ -89,7 +90,8 @@ public final class GenerateDataForTest {
                 { "HU", "Hungary",              Currency.HUF, 1983, Membership.FULL_MEMBER },
                 { "IC", "Iceland",              Currency.ISK, 1951, Membership.FULL_MEMBER },
                 { "IN", "India.KU",             Currency.INR, 2001, Membership.COOPERATING_INSTITUTION },
-                { "IN", "India.MIT",            Currency.INR, 2006, Membership.COOPERATING_INSTITUTION },
+                // This script can only create a single committee for a Country
+                //{ "IN", "India.MIT",            Currency.INR, 2006, Membership.COOPERATING_INSTITUTION },
                 { "IR", "Iran",                 Currency.IRR, 2002, Membership.FULL_MEMBER },
                 { "IE", "Ireland",              Currency.EUR, 1962, Membership.FULL_MEMBER },
                 { "IL", "Israel",               Currency.ILS, 1951, Membership.FULL_MEMBER },

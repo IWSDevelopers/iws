@@ -14,14 +14,14 @@
  */
 package net.iaeste.iws.api.dtos;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Teis Lindemark / last $Author:$

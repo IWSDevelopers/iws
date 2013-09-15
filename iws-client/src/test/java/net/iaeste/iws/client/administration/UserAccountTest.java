@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.AdministrationClientTest
+ * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.administration.AdministrationClientTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,11 +12,11 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.client;
+package net.iaeste.iws.client.administration;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
@@ -39,6 +39,9 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.client.AbstractClientTest;
+import net.iaeste.iws.client.AccessClient;
+import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.Ignore;
@@ -50,7 +53,7 @@ import org.junit.Test;
  * @since   1.7
  * @noinspection BreakStatement
  */
-public class AdministrationClientTest extends AbstractClientTest {
+public class UserAccountTest extends AbstractClientTest {
 
     private static final String AUSTRIA_MEMBER_GROUP = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
     private final Administration administration = new AdministrationClient();

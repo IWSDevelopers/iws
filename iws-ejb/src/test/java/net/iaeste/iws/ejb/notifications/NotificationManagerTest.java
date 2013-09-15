@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.ejb.notifications;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.NotificationDao;
@@ -26,11 +31,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * This test uses FFMQ server, if it fails or is unstable, ignore it. Or to use mocking instead?

@@ -14,11 +14,11 @@
  */
 package net.iaeste.iws.api.enums;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Kim Jensen / last $Author:$

@@ -34,7 +34,7 @@ import org.junit.Test;
  * @since   1.7
  * @noinspection InstanceMethodNamingConvention
  */
-public class DeleteSubGroupTest extends AbstractAdministration {
+public final class DeleteSubGroupTest extends AbstractAdministration {
 
     /**
      * {@inheritDoc}

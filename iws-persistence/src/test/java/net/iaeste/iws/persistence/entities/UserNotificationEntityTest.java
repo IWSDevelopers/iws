@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.enums.NotificationFrequency;

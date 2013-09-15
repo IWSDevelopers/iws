@@ -49,7 +49,7 @@ import org.junit.Test;
  * @since   1.7
  * @noinspection BreakStatement
  */
-public class UserAccountTest extends AbstractAdministration {
+public final class UserAccountTest extends AbstractAdministration {
 
     //private static final String AUSTRIA_MEMBER_GROUP = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
     private final Administration administration = new AdministrationClient();

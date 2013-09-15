@@ -19,9 +19,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import org.joda.time.DateMidnight;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -42,9 +40,6 @@ public final class Date implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-
-    /** Internal Date format. */
-    private final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
 
     /** The internal Date, implementation uses the JodaTime Classes. */
     private final DateMidnight date;
@@ -85,7 +80,7 @@ public final class Date implements Serializable {
      */
     public Date(final String date) {
         try {
-            this.date = new DateMidnight(format.parse(date));
+            this.date = new DateMidnight(IWSConstants.FORMATTER.parse(date));
         } catch (ParseException e) {
             throw new VerificationException(e);
         }
@@ -188,6 +183,6 @@ public final class Date implements Serializable {
      */
     @Override
     public String toString() {
-        return format.format(date.toDate());
+        return IWSConstants.FORMATTER.format(date.toDate()).toUpperCase(IWSConstants.DEFAULT_LOCALE);
     }
 }

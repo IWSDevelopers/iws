@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.constants;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -93,12 +95,17 @@ public interface IWSConstants {
     /**
      * Default IWS Date Format.
      */
-    String DATE_FORMAT = "yyyy-MM-dd";
+    String DATE_FORMAT = "dd-MMM-yyyy";
 
     /**
      * Default IWS DateTime Format.
      */
     String DATE_TIME_FORMAT = DATE_FORMAT + " HH:mm:ss";
+
+    /**
+     * DateFormat Object for formatting and parsing Date Object.
+     */
+    DateFormat FORMATTER = new SimpleDateFormat(DATE_FORMAT, DEFAULT_LOCALE);
 
     /**
      * Default IWS Success message.

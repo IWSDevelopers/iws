@@ -101,7 +101,7 @@ public final class User extends AbstractDto {
      *       ACTIVE <-> BLOCKED
      *           \      /
      *            \    /
-     *           DELETED
+     *            DELETED
      * </pre>
      *
      * @param userId The internal Id of the user
@@ -138,7 +138,6 @@ public final class User extends AbstractDto {
 
     public void setUserId(final String userId) {
         ensureValidId("userId", userId);
-
         this.userId = userId;
     }
 
@@ -147,8 +146,7 @@ public final class User extends AbstractDto {
     }
 
     public void setUsername(final String username) {
-        ensureNotNullAndValidEmail("username", username);
-
+        ensureValidEmail("username", username);
         this.username = username;
     }
 
@@ -158,7 +156,6 @@ public final class User extends AbstractDto {
 
     public void setAlias(final String alias) {
         ensureNotTooLong("alias", alias, 125);
-
         this.alias = alias;
     }
 
@@ -168,7 +165,6 @@ public final class User extends AbstractDto {
 
     public void setFirstname(final String firstname) {
         ensureNotNullOrEmptyOrTooLong("firstname", firstname, 50);
-
         this.firstname = firstname;
     }
 
@@ -178,7 +174,6 @@ public final class User extends AbstractDto {
 
     public void setLastname(final String lastname) {
         ensureNotNullOrEmptyOrTooLong("lastname", lastname, 50);
-
         this.lastname = lastname;
     }
 
@@ -188,7 +183,6 @@ public final class User extends AbstractDto {
 
     public void setStatus(final UserStatus status) {
         ensureNotNull("status", status);
-
         this.status = status;
     }
 
@@ -198,7 +192,6 @@ public final class User extends AbstractDto {
 
     public void setPrivacy(final Privacy privacy) {
         ensureNotNull("privacy", privacy);
-
         this.privacy = privacy;
     }
 
@@ -208,7 +201,6 @@ public final class User extends AbstractDto {
 
     public void setNotifications(final String notifications) {
         ensureNotNullOrEmptyOrTooLong("notifications", notifications, 25);
-
         this.notifications = notifications;
     }
 
@@ -226,7 +218,6 @@ public final class User extends AbstractDto {
 
     public void setPerson(final Person person) {
         ensureNotNull("person", person);
-
         this.person = person;
     }
 

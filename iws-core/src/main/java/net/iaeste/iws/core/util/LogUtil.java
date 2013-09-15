@@ -43,11 +43,11 @@ public final class LogUtil {
      */
     public static String formatLogMessage(final Authentication authentication, final String message, final Object... args) {
         // The default format for our log messages starts with a Transferticket
-        final String rawMessage = "[transferticket = %s] " + message;
+        final String rawMessage = "[traceId = %s] " + message;
 
         // Now, we need to prepend the Transferticket to the formatting parameters
         final Object[] parameters = new Object[1 + (args != null ? args.length : 0)];
-        parameters[0] = authentication.getTransferticket();
+        parameters[0] = authentication.getTraceId();
 
         // Expand the Parameters with the provided arguments
         if (args != null) {
@@ -78,11 +78,11 @@ public final class LogUtil {
         final Object[] parameters;
 
         if (token != null) {
-            rawMessage = "[transferticket = %s] " + message;
+            rawMessage = "[traceId = %s] " + message;
 
             // Now, we need to prepend the Transferticket to the formatting parameters
             parameters = new Object[1 + (args != null ? args.length : 0)];
-            parameters[0] = token.getTransferticket();
+            parameters[0] = token.getTraceId();
 
             // Expand the Parameters with the provided arguments
             if (args != null) {

@@ -24,7 +24,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
  * Authorization mechanism.<br />
  *   The Monitoring mechanism requires that we have some sort of identification
  * at hand, and this Object will provide it.<br />
- *   The Object also contains the transferticket, used for all non-trace related
+ *   The Object also contains the traceId, used for all non-trace related
  * logging.
  *
  * @author  Kim Jensen / last $Author:$
@@ -36,16 +36,17 @@ public final class Authentication {
     private final AuthenticationToken token;
     private final UserEntity user;
     private final GroupEntity group;
-    private final String transferticket;
+    private final String traceId;
 
     /**
      * Minimal Constructor.
      *
-     * @param user   User Entity for the current user
+     * @param user    User Entity for the current user
+     * @param traceId Trace Id for logging and issue tracking
      */
-    public Authentication(final UserEntity user, final String transferticket) {
+    public Authentication(final UserEntity user, final String traceId) {
         this.user = user;
-        this.transferticket = transferticket;
+        this.traceId = traceId;
 
         token = null;
         group = null;
@@ -57,12 +58,13 @@ public final class Authentication {
      * @param token  User Authenticatin Token
      * @param user   User Entity for the current user
      * @param group  Group Entity for the group being worked with
+     * @param traceId Trace Id for logging and issue tracking
      */
-    public Authentication(final AuthenticationToken token, final UserEntity user, final GroupEntity group, final String transferticket) {
+    public Authentication(final AuthenticationToken token, final UserEntity user, final GroupEntity group, final String traceId) {
         this.token = token;
         this.user = user;
         this.group = group;
-        this.transferticket = transferticket;
+        this.traceId = traceId;
     }
 
     /**
@@ -75,7 +77,7 @@ public final class Authentication {
     public Authentication(final AuthenticationToken token, final UserEntity user) {
         this.token = token;
         this.user = user;
-        this.transferticket = token.getTransferticket();
+        this.traceId = token.getTraceId();
 
         group = null;
     }
@@ -92,7 +94,7 @@ public final class Authentication {
         return group;
     }
 
-    public String getTransferticket() {
-        return transferticket;
+    public String getTraceId() {
+        return traceId;
     }
 }

@@ -52,7 +52,7 @@ public final class AuthenticationToken extends AbstractVerification {
      * independent of the internal logic, and is purely for the purpose of
      * tracing log messages.
      */
-    private String transferticket = UUID.randomUUID().toString();
+    private String traceId = UUID.randomUUID().toString();
 
     // =========================================================================
     // Object Constructors
@@ -171,13 +171,13 @@ public final class AuthenticationToken extends AbstractVerification {
         return groupId;
     }
 
-    public void setTransferticket(final String transferticket) {
-        ensureValidId("transferticket", transferticket);
-        this.transferticket = transferticket;
+    public void setTraceId(final String traceId) {
+        ensureValidId("traceId", traceId);
+        this.traceId = traceId;
     }
 
-    public String getTransferticket() {
-        return transferticket;
+    public String getTraceId() {
+        return traceId;
     }
 
     // =========================================================================

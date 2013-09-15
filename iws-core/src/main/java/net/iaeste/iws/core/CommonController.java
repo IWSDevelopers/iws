@@ -94,7 +94,7 @@ class CommonController {
             final GroupEntity group = dao.findGroupByPermission(user, externalGroupId, permission);
 
             // So far so good, return the information
-            return new Authentication(token, user, group, token.getTransferticket());
+            return new Authentication(token, user, group, token.getTraceId());
         } catch (PersistenceException e) {
             throw new VerificationException(e);
         }

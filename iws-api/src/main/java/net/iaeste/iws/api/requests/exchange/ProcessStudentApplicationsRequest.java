@@ -68,6 +68,7 @@ public class ProcessStudentApplicationsRequest extends AbstractVerification {
      * @param studentApplication Student Application
      */
     public void setStudentApplication(final StudentApplication studentApplication) {
+        ensureNotNullAndVerifiable("studentApplication", studentApplication);
         if (studentApplication == null) {
             throw new IllegalArgumentException("The StudentApplication value may not be null.");
         }
@@ -90,7 +91,7 @@ public class ProcessStudentApplicationsRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isVerifiable(validation, "studentApplication", studentApplication);
+        isNotNull(validation, "studentApplication", studentApplication);
 
         return validation;
     }

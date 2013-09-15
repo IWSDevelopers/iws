@@ -68,7 +68,6 @@ public final class CountryRequest extends AbstractVerification {
      */
     public void setCountry(final Country country) {
         ensureNotNullAndVerifiable("country", country);
-
         this.country = new Country(country);
     }
 
@@ -92,7 +91,7 @@ public final class CountryRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isVerifiable(validation, "country", country);
+        isNotNull(validation, "country", country);
 
         return validation;
     }

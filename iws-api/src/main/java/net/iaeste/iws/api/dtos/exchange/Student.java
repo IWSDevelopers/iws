@@ -33,7 +33,7 @@ public final class Student extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Long studentId = null;
+    private String studentId = null;
     private String studentName = null;
     private Group group = null;
 
@@ -55,7 +55,7 @@ public final class Student extends AbstractVerification {
      * @param studentName Name of the Student
      * @param group       National Group, which the student belongs to
      */
-    public Student(final Long studentId, final String studentName, final Group group) {
+    public Student(final String studentId, final String studentName, final Group group) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.group = group;
@@ -78,15 +78,17 @@ public final class Student extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setStudentId(final Long studentId) {
+    public void setStudentId(final String studentId) {
+        ensureValidId("studentId", studentId);
         this.studentId = studentId;
     }
 
-    public Long getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
     public void setStudentName(final String studentName) {
+        ensureNotNullOrEmptyOrTooLong("studentName", studentName, 100);
         this.studentName = studentName;
     }
 
@@ -114,7 +116,7 @@ public final class Student extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "studentId", studentId);
-        isNotNullOrEmpty(validation, "studentName", studentName);
+        isNotNull(validation, "studentName", studentName);
         isNotNull(validation, "group", group);
 
         return validation;

@@ -61,7 +61,6 @@ public final class ProcessEmployerRequest extends AbstractVerification {
 
     public void setEmployer(final Employer employer) {
         ensureNotNullAndVerifiable("employer", employer);
-
         this.employer = new Employer(employer);
     }
 
@@ -81,7 +80,7 @@ public final class ProcessEmployerRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isVerifiable(validation, "employer", employer);
+        isNotNull(validation, "employer", employer);
 
         return validation;
     }

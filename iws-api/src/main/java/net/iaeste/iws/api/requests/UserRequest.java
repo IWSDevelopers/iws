@@ -68,7 +68,6 @@ public final class UserRequest extends AbstractVerification {
 
     public void setUser(final User user) {
         ensureNotNullAndVerifiable("user", user);
-
         this.user = new User(user);
     }
 
@@ -88,7 +87,6 @@ public final class UserRequest extends AbstractVerification {
      */
     public void setNewStatus(final UserStatus newStatus) {
         ensureNotNull("newStatus", newStatus);
-
         this.newStatus = newStatus;
     }
 
@@ -110,7 +108,6 @@ public final class UserRequest extends AbstractVerification {
      */
     public void setNewUsername(final String newUsername) {
         ensureNotNullAndValidEmail("newUsername", newUsername);
-
         this.newUsername = newUsername;
     }
 
@@ -128,7 +125,6 @@ public final class UserRequest extends AbstractVerification {
      */
     public void setPassword(final String password) {
         ensureNotNullOrEmpty("password", password);
-
         this.password = password;
     }
 
@@ -147,7 +143,7 @@ public final class UserRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(1);
 
-        isVerifiable(validation, "user", user);
+        isNotNull(validation, "user", user);
 
         return validation;
     }

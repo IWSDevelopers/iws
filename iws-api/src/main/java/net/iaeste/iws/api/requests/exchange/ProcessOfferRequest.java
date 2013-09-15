@@ -61,6 +61,7 @@ public final class ProcessOfferRequest extends AbstractVerification {
     // =========================================================================
 
     public void setOffer(final Offer offer) {
+        ensureNotNullAndVerifiable("offer", offer);
         this.offer = new Offer(offer);
     }
 
@@ -79,7 +80,7 @@ public final class ProcessOfferRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isVerifiable(validation, "offer", offer);
+        isNotNull(validation, "offer", offer);
 
         return validation;
     }

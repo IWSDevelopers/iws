@@ -15,13 +15,15 @@
 package net.iaeste.iws.api.dtos;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
+
+import java.util.UUID;
 
 /**
  * @author  Teis Lindemark / last $Author:$
@@ -30,7 +32,7 @@ import org.junit.Test;
  */
 public final class StudentTest {
 
-    private static final Long STUDENT_ID = 1L;
+    private static final String STUDENT_ID = UUID.randomUUID().toString();
     private static final String STUDENT_NAME = "Test Student";
     private static final Group GROUP = new Group();
 

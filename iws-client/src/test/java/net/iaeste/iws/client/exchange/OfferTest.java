@@ -105,6 +105,36 @@ public final class OfferTest extends AbstractTest {
         assertThat(failing.getMessage(), containsString("An Offer with the Reference Number PL-2014-1234-XX already exists."));
     }
 
+    /**
+     * Trac Bug report #418, indicates that the Exchange Transformer was faulty,
+     * and thereby causing problems with updating an existing Offer.
+     */
+    @Test
+    public void testUpdateExistingOffer() {
+        final Offer initialOffer = TestData.prepareFullOffer("PL-2013-4321-XX", "Poland GmbH", "PL");
+        final ProcessOfferRequest request = new ProcessOfferRequest();
+        request.setOffer(initialOffer);
+        final OfferResponse saveResponse = exchange.processOffer(token, request);
+        assertThat(saveResponse, is(not(nullValue())));
+        assertThat(saveResponse.isOk(), is(true));
+
+        // Now, retrieve the saved offer, and update it
+        final Offer savedOffer = saveResponse.getOffer();
+        savedOffer.setWorkDescription("Whatever");
+        request.setOffer(savedOffer);
+        final OfferResponse updateResponse = exchange.processOffer(token, request);
+        assertThat(updateResponse, is(not(nullValue())));
+        assertThat(updateResponse.isOk(), is(true));
+        final Offer updatedOffer = updateResponse.getOffer();
+
+        // Now, we have the inial Offer, and the updated Offer
+        assertThat(updatedOffer.getId(), is(savedOffer.getId()));
+        assertThat(updatedOffer.getModified().isAfter(savedOffer.getModified()), is(true));
+        assertThat(updatedOffer.getCreated().toString(), is(savedOffer.getCreated().toString()));
+        assertThat(updatedOffer.getWorkDescription(), is(not(initialOffer.getWorkDescription())));
+        assertThat(updatedOffer.getWorkDescription(), is("Whatever"));
+    }
+
     @Test
     public void testProcessOfferWithInvalidRefno() {
         final Offer minimalOffer = OfferTestUtility.getMinimalOffer();

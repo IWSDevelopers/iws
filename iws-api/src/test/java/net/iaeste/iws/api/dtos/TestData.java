@@ -80,7 +80,7 @@ public final class TestData {
     // Default data for filling our test Offer Object. Lacking is the refNo,
     // which must be provided
     private static final Date INITIAL_DATE = new Date().plusDays(90);
-    public static final String OFFER_WORK_DESCRIPTION = "";
+    public static final String OFFER_WORK_DESCRIPTION = "Work Description";
     public static final TypeOfWork OFFER_TYPE_OF_WORK = TypeOfWork.R;
     public static final Set<StudyLevel> OFFER_STUDY_LEVELS = Collections.unmodifiableSet(EnumSet.of(StudyLevel.E, StudyLevel.M));
     public static final Set<FieldOfStudy> OFFER_FIELD_OF_STUDY = Collections.unmodifiableSet(EnumSet.of(FieldOfStudy.IT, FieldOfStudy.AGRICULTURE));

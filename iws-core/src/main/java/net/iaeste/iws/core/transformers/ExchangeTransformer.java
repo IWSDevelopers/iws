@@ -45,6 +45,7 @@ public final class ExchangeTransformer {
             result = new OfferEntity();
 
             result.setExternalId(offer.getId());
+            result.setGroup(CommonTransformer.transform(offer.getGroup()));
             result.setRefNo(offer.getRefNo());
             result.setEmployer(transform(offer.getEmployer()));
             result.setWorkDescription(offer.getWorkDescription());

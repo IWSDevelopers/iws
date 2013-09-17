@@ -23,6 +23,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
@@ -107,11 +108,14 @@ public final class GroupService {
                 throw new PermissionException("Not allowed to create a sub-group of type " + type);
             }
         } else {
-            entity = dao.findGroup(authentication.getUser(), externalGroupId);
+            // We're fetching the Group with a permission check, to ensure that
+            // a user is not attempting to force update different groups. The
+            // lookup will throw an Exception, if no such Group exists that the
+            // user is permitted to process.
+            entity = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.PROCESS_GROUP);
+            final GroupType type = entity.getGroupType().getGrouptype();
 
-            // Update existing Group. We allow that the name can be altered,
-            // provided no other Groups exists with the same name in this scope
-            if (entity != null) {
+            if ((type == GroupType.LOCAL) || (type == GroupType.WORKGROUP)) {
                 final String name = request.getGroup().getGroupName();
                 if (!dao.hasGroupsWithSimilarName(entity, name)) {
                     dao.persist(authentication, entity, CommonTransformer.transform(request.getGroup()));
@@ -119,7 +123,7 @@ public final class GroupService {
                     throw new IdentificationException("Another Group exist with a similar name " + name);
                 }
             } else {
-                throw new IdentificationException("No Group exist with the Id " + externalGroupId);
+                throw new IWSException(IWSErrors.NOT_PERMITTED, "It is not permitted to update Groups of type " + type + " with this request.");
             }
         }
 

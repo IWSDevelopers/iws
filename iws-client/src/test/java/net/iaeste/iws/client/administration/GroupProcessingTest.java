@@ -133,6 +133,38 @@ public final class GroupProcessingTest extends AbstractAdministration {
     // =========================================================================
 
     @Test
+    public void testUpdatingIllegalGroup() {
+        final Group group = findNationalGroup(token);
+        group.setGroupName("New Name");
+        token.setGroupId(group.getId());
+        final GroupRequest request = new GroupRequest(group);
+
+        final ProcessGroupResponse response = client.processGroup(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
+        assertThat(response.getMessage(), is("It is not permitted to update Groups of type NATIONAL with this request."));
+    }
+
+    @Test
+    public void testUpdatingInvalidGroup() {
+        final Group group = new Group();
+
+        // Invalid Id
+        group.setId("c7b32f81-4f83-48e8-9ffb-9e73255f5e5e");
+        group.setGroupName("New Name");
+        group.setGroupType(GroupType.LOCAL);
+        final GroupRequest request = new GroupRequest(group);
+
+        token.setGroupId(findMemberGroup(token).getId());
+        final ProcessGroupResponse response = client.processGroup(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
+        assertThat(response.getMessage(), is("User is not permitted to perform actions of type: PROCESS_GROUP"));
+    }
+
+    @Test
     public void testCreatingAdministrationAsSubGroupToMembers() {
         final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.ADMINISTRATION, "My Group");
         assertThat(result.isOk(), is(false));

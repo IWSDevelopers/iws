@@ -238,7 +238,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // Members. The main reason for this, is to avoid that someone may
         // perform actions on the National Group, but invoking their Membership
         // privileges without having a National Group membersip.
-        final FetchRoleRequest request = new FetchRoleRequest("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e");
+        final FetchRoleRequest request = new FetchRoleRequest(findNationalGroup(token).getId());
         final FetchRoleResponse response = administration.fetchRoles(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));

@@ -32,6 +32,7 @@ import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
+import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
@@ -50,22 +51,23 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class EmployerTest {
+public final class EmployerTest extends AbstractTest {
 
     private static final String USERNAME = "germany@iaeste.de";
     private static final String PASSWORD = "germany";
-    private static final String GROUP_ID = "17eb00ac-1386-4852-9934-e3dce3f57c13";
     private final Access access = new AccessClient();
-    private AuthenticationToken token = null;
 
     @Before
+    @Override
     public void setup() {
         final AuthenticationRequest authenticationRequest = new AuthenticationRequest(USERNAME, PASSWORD);
         token = access.generateSession(authenticationRequest).getToken();
-        token.setGroupId(GROUP_ID);
+        final String groupId = findNationalGroup(token).getId();
+        token.setGroupId(groupId);
     }
 
     @After
+    @Override
     public void tearDown() {
         access.deprecateSession(token);
     }

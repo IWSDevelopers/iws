@@ -155,7 +155,7 @@ public final class GenerateDataForTest {
         return Arrays.asList(parameters);
     }
 
-    /**
+   /**
     * We start by printing some house-holding information, to help reset the
     * system. This way, existing data is dropped so new data can be properly
     * added.
@@ -204,7 +204,8 @@ public final class GenerateDataForTest {
 
         // Generate the User SQL
         final String salt = generateExternalId();
-        print(USER_INSERT, generateExternalId(), UserStatus.ACTIVE, committeeName, generateAlias(FIRST_NAME, committeeName), generateHashedPassword(password, salt), salt, FIRST_NAME, committeeName);
+        final String username = password + "@iaeste." + countryCode.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        print(USER_INSERT, generateExternalId(), UserStatus.ACTIVE, username, generateAlias(FIRST_NAME, committeeName), generateHashedPassword(password, salt), salt, FIRST_NAME, committeeName);
 
         // Generate the User Group relations
         print(USER_GROUP_INSERT, generateExternalId(), currentUserId, currentGroupId, ROLE_OWNER);

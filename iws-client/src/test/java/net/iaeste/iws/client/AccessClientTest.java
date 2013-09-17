@@ -33,7 +33,6 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.common.notification.NotificationField;
 import org.junit.Test;
 
@@ -42,15 +41,21 @@ import org.junit.Test;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class AccessClientTest {
+public final class AccessClientTest extends AbstractTest {
 
-    private final NotificationSpy spy = NotificationSpy.getInstance();
     private final Access access = new AccessClient();
+
+    @Override
+    public void setup() {
+    }
+
+    @Override
+    public void tearDown() {
+    }
 
     @Test
     public void testInvalidGenerateSession() {
         final AuthenticationRequest request = new AuthenticationRequest();
-
         final AuthenticationResponse response = access.generateSession(request);
 
         assertThat(response.isOk(), is(false));
@@ -201,30 +206,29 @@ public final class AccessClientTest {
     public void testFetchPermissions() {
         final String userId = "c50aaeec-c0de-425a-b487-4530cbfbe115";
         // Create a new Token, that we can use for the test
-        final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
+        final AuthenticationToken authToken = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
 
-        final FetchPermissionResponse responseAll = access.fetchPermissions(token);
+        final FetchPermissionResponse responseAll = access.fetchPermissions(authToken);
         assertThat(responseAll.isOk(), is(true));
         // Should add more assertions, however - there's still changes coming to
         // the Permission layer - so for now, we'll leave it Otherwise we will
         // constantly have to verify this.
-        token.setGroupId("c7b15f81-4f83-48e8-9ffb-9e73255f5e5e"); // Austria National groupId
-        final FetchPermissionResponse responseNational = access.fetchPermissions(token);
+        authToken.setGroupId(findNationalGroup(authToken).getId());
+        final FetchPermissionResponse responseNational = access.fetchPermissions(authToken);
         assertThat(responseNational.isOk(), is(true));
-        assertThat(responseNational.getUserId(), is(userId));
 
         // When we make a request for a specific Group, we only expect to find a single element
         assertThat(responseNational.getAuthorizations().size(), is(1));
         assertThat(responseNational.getAuthorizations().get(0).getRole().getPermissions().contains(Permission.PROCESS_OFFER), is(true));
-        token.setGroupId(userId);
+        authToken.setGroupId(userId);
 
         // Finally, let's see what happens when we try to find the information
         // from a Group, that we are not a member of
-        final FetchPermissionResponse responseInvalid = access.fetchPermissions(token);
+        final FetchPermissionResponse responseInvalid = access.fetchPermissions(authToken);
         assertThat(responseInvalid.isOk(), is(false));
         assertThat(responseInvalid.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
 
         // Finalize the test, by deprecating the token
-        assertThat(access.deprecateSession(token).isOk(), is(true));
+        assertThat(access.deprecateSession(authToken).isOk(), is(true));
     }
 }

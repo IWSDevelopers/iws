@@ -65,7 +65,8 @@ public class Beans {
                 .addScript("net/iaeste/iws/persistence/hsqldb/04-exchange-tables.sql")
                 .addScript("net/iaeste/iws/persistence/05-exchange-views.sql")
                 .addScript("net/iaeste/iws/persistence/06-exchange-data.sql")
-                .addScript("net/iaeste/iws/persistence/07-user-test-data.sql")
+                //.addScript("net/iaeste/iws/persistence/07-user-test-data.sql")
+                .addScript("net/iaeste/iws/persistence/postgresql/95-testserver-users.sql")
                 .build();
     }
 

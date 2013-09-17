@@ -35,7 +35,7 @@ import java.util.Set;
 @Deprecated
 public final class OfferTestUtility {
 
-    public static final String REF_NO = "AT-2012-1234-AB";
+    public static final String REF_NO = "AT-2012-123456-A";
     public static final Date NOMINATION_DEADLINE = TestData.OFFER_NOMINATION_DEADLINE;
     public static final String EMPLOYER_NAME = "Test_Employer_1";
     public static final String WORK_DESCRIPTION = TestData.OFFER_WORK_DESCRIPTION;

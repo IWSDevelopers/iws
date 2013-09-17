@@ -184,6 +184,8 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setRefNo(final String refNo) throws IllegalArgumentException {
+        ensureNotNull("refno", refNo);
+        ensureValidRefno(refNo);
         this.refNo = refNo;
     }
 

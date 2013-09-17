@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  */
 public interface IWSExchangeConstants {
 
-    String REFNO_FORMAT = "[A-Z]{2}-\\d{4}-\\d{4}(-[A-Z0-9]{2})?";
+    String REFNO_FORMAT = "[A-Z]{2}-\\d{4}-\\d{6}(-[A-Z0-9])?";
     Pattern REFNO_PATTERN = Pattern.compile(REFNO_FORMAT);
 
     /**

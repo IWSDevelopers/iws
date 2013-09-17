@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.util;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
 import java.util.Collection;
@@ -47,10 +48,13 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_INVALID = "The field %s is invalid.";
     private static final String ERROR_NOT_VERIFABLE = "The field %s is not verifiable.";
     private static final String ERROR_INVALID_EMAIL = "The e-mail address %s (%s) is invalid.";
+    private static final String ERROR_INVALID_REFNO = "The provided reference number (refno) %s is invalid.";
 
     // Our internal constants to verify the Id
     private static final String UUID_FORMAT = "[\\da-z]{8}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{4}-[\\da-z]{12}";
     private static final Pattern UUID_PATTERN = Pattern.compile(UUID_FORMAT);
+    //  Internal pattern for verifying Offer reference numbers
+    private static final Pattern REFNO_PATTERN = Pattern.compile(IWSExchangeConstants.REFNO_FORMAT);
 
     /**
      * {@inheritDoc}
@@ -340,6 +344,12 @@ public abstract class AbstractVerification implements Verifiable {
     protected static void ensureNotNullAndValidEmail(final String field, final String value) throws IllegalArgumentException {
         ensureNotNullOrTooLong(field, value, 100);
         ensureValidEmail(field, value);
+    }
+
+    protected static void ensureValidRefno(final String refno) {
+        if (!REFNO_PATTERN.matcher(refno).matches()) {
+            throw new IllegalArgumentException(format(ERROR_INVALID_REFNO, refno));
+        }
     }
 
     // =========================================================================

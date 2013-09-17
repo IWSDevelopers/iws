@@ -19,9 +19,8 @@ import freemarker.template.Template;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.notification.NotificationField;
-import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.ejb.IwsSystemSetting;
 import net.iaeste.iws.common.exceptions.NotificationException;
-import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 
 import java.io.FileNotFoundException;
@@ -43,6 +42,11 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
      */
     private final String TEMPLATE_DIR = "freemarker_templates";
     private final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
+    private IwsSystemSetting iwsSystemSetting;
+
+    public NotificationMessageGeneratorFreemarker() {
+        iwsSystemSetting = IwsSystemSetting.getInstance();
+    }
 
     /**
      * {@inheritDoc}
@@ -117,6 +121,8 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
 
     private Map<String, String> prepareInputMap(final Map<NotificationField, String> inputMap) {
         Map<String, String> outputMap = new HashMap<>(inputMap.size());
+        outputMap.put("baseUrl", iwsSystemSetting.getBaseUrl());
+
         for (NotificationField field : inputMap.keySet()) {
             outputMap.put(field.name(), inputMap.get(field));
         }

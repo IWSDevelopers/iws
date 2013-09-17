@@ -53,6 +53,8 @@ public interface AccessDao extends BasicDao {
 
     UserEntity findUserByAlias(String alias);
 
+    Long findNumberOfAliasesForName(String name);
+
     SessionEntity findActiveSession(UserEntity user);
 
     SessionEntity findActiveSession(AuthenticationToken token);

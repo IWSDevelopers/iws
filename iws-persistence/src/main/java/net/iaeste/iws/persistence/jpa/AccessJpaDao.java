@@ -95,6 +95,17 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public Long findNumberOfAliasesForName(final String name) {
+        final Query query = entityManager.createNamedQuery("user.findNumberOfSimilarAliases");
+        query.setParameter("startOfAlias", name.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
+
+        return (Long) query.getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SessionEntity findActiveSession(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("session.findByUser");
         query.setParameter("id", user.getId());

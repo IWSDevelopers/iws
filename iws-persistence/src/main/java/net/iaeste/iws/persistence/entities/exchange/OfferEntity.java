@@ -96,7 +96,7 @@ import java.util.Map;
                 name = "offer.findByGroupAndLikeEmployerName",
                 query = "select o from OfferEntity o " +
                         "where o.group.id = :gid" +
-                        "  and o.employer.name like :employer"),
+                        "  and lower(o.employer.name) like :employer"),
         @NamedQuery(
                 name = "offer.findByGroupAndEmployerName",
                 query = "select o from OfferEntity o " +

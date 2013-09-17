@@ -50,8 +50,8 @@ public interface BasicDao {
      * check the Entity, to see how it should be monitored, and then save both
      * the monitored information and the Entity in the database.
      *
-     * @param authentication Information about the user invoking the request
-     * @param entityToPersist         Entity to persist
+     * @param authentication  Information about the user invoking the request
+     * @param entityToPersist Entity to persist
      */
     void persist(Authentication authentication, IWSEntity entityToPersist);
 

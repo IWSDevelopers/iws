@@ -135,6 +135,7 @@ public final class AdministrationTransformer {
             user.setUsername(entity.getUsername());
             user.setFirstname(entity.getFirstname());
             user.setLastname(entity.getLastname());
+            user.setAlias(entity.getAlias());
             user.setStatus(entity.getStatus());
             user.setPrivacy(entity.getPrivateData());
             user.setNotifications(entity.getNotifications());

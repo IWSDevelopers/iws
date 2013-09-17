@@ -123,9 +123,7 @@ public abstract class AbstractTest {
      * @return Group of the given Type
      */
     private static Group findGroup(final AuthenticationToken token, final GroupType type) {
-        final FetchGroupRequest request = new FetchGroupRequest();
-        request.setGroupType(type);
-
+        final FetchGroupRequest request = new FetchGroupRequest(type);
         final FetchGroupResponse response = administration.fetchGroup(token, request);
         assertThat(response.isOk(), is(true));
 

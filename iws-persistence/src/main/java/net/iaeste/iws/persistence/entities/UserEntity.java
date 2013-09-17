@@ -48,36 +48,33 @@ import java.util.Map;
  * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "user.findById",
+        @NamedQuery(name = "user.findById",
                 query = "select u from UserEntity u " +
                         "where u.id = :id"),
-        @NamedQuery(
-                name = "user.loginCredentials",
+        @NamedQuery(name = "user.loginCredentials",
                 query = "select u from UserEntity u " +
                         "where u.status = 'ACTIVE'" +
                         "  and u.username = :username" +
                         "  and u.password = :password"),
-        @NamedQuery(
-                name = "user.findByUserName",
+        @NamedQuery(name = "user.findByUserName",
                 query = "select u from UserEntity u " +
                         "where u.status <> 'DELETED'" +
                         "  and u.username = :username"),
-        @NamedQuery(
-                name = "user.findByExternalId",
+        @NamedQuery(name = "user.findByExternalId",
                 query = "select u from UserEntity u " +
                         "where u.status <> 'DELETED'" +
                         "  and u.externalId = :euid"),
-        @NamedQuery(
-                name = "user.findByCodeAndStatus",
+        @NamedQuery(name = "user.findByCodeAndStatus",
                 query = "select u from UserEntity u " +
                         "where u.status = :status" +
                         "  and u.code = :code"),
-        @NamedQuery(
-                name = "user.findByAlias",
+        @NamedQuery(name = "user.findByAlias",
                 query = "select u from UserEntity u " +
                         "where u.status <> 'DELETED'" +
-                        "  and u.alias = :alias")
+                        "  and u.alias = :alias"),
+        @NamedQuery(name = "user.findNumberOfSimilarAliases",
+                query = "select count(u.id) from UserEntity u " +
+                        "where lower(alias) like :startOfAlias")
 })
 @Entity
 @Table(name = "users")

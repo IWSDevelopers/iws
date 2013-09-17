@@ -280,7 +280,7 @@ public final class AccountService extends CommonService<AccessDao> {
      * @throws IWSException if unable to create the user
      */
     private UserEntity createAndPersistUserEntity(final Authentication authentication, final String username, final CreateUserRequest request) throws IWSException {
-        final String alias = generateUserAlias(authentication.getGroup(), request);
+        final String alias = generateUserAlias(request);
         final UserEntity user = new UserEntity();
 
         // First, the Password. If no password is specified, then we'll generate
@@ -309,23 +309,19 @@ public final class AccountService extends CommonService<AccessDao> {
         user.setLastname(request.getLastname());
         user.setAlias(alias);
         user.setCode(generateActivationCode(request));
-        dao.persist(user);
+        dao.persist(authentication, user);
 
         return user;
     }
 
-    private String generateUserAlias(final GroupEntity group, final CreateUserRequest request) throws IWSException {
+    private String generateUserAlias(final CreateUserRequest request) throws IWSException {
         final String name = request.getFirstname() + '.' + request.getLastname();
         final String address = '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
         final String alias;
 
-        if (dao.findUserByAlias(name + address) != null) {
-            final String country = group.getCountry().getCountryCode();
-            if (dao.findUserByAlias(name + '.' + country + address) != null) {
-                throw new IWSException(IWSErrors.PROCESSING_FAILURE, "It was not possible to create an alias for this user, please provide more details.");
-            } else {
-                alias = name + '.' + country + address;
-            }
+        final Long serialNumber = dao.findNumberOfAliasesForName(name);
+        if ((serialNumber != null) && (serialNumber > 0)) {
+            alias = name + (serialNumber + 1) + address;
         } else {
             alias = name + address;
         }

@@ -173,6 +173,41 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(deprecateSessionResult.isOk(), is(true));
     }
 
+    /**
+     * Testing that the generated Alias is correctly set to the name plus an
+     * increasing number, of multiple people with the same name are created.
+     */
+    @Test
+    public void createDuplicateAccount() {
+        final String username1 = "user1@email.org";
+        final String username2 = "user2@email.org";
+        final String username3 = "user3@email.org";
+        final String firstname = "firstname";
+        final String lastname = "lastname";
+        final String address = "@iaeste.org";
+
+        final CreateUserRequest request1 = new CreateUserRequest(username1, firstname, lastname);
+        final CreateUserResponse response1 = administration.createUser(token, request1);
+        assertThat(response1, is(not(nullValue())));
+        assertThat(response1.isOk(), is(true));
+        assertThat(response1.getUser(), is(not(nullValue())));
+        assertThat(response1.getUser().getAlias(), is(firstname + '.' + lastname + address));
+
+        final CreateUserRequest request2 = new CreateUserRequest(username2, firstname, lastname);
+        final CreateUserResponse response2 = administration.createUser(token, request2);
+        assertThat(response2, is(not(nullValue())));
+        assertThat(response2.isOk(), is(true));
+        assertThat(response2.getUser(), is(not(nullValue())));
+        assertThat(response2.getUser().getAlias(), is(firstname + '.' + lastname + 2 + address));
+
+        final CreateUserRequest request3 = new CreateUserRequest(username3, firstname, lastname);
+        final CreateUserResponse response3 = administration.createUser(token, request3);
+        assertThat(response3, is(not(nullValue())));
+        assertThat(response3.isOk(), is(true));
+        assertThat(response3.getUser(), is(not(nullValue())));
+        assertThat(response3.getUser().getAlias(), is(firstname + '.' + lastname + 3 + address));
+    }
+
     @Test
     public void deleteNewAccount() {
         // Create the new User Request Object

@@ -43,41 +43,52 @@ import java.util.List;
  */
 public enum FieldOfStudy {
 
-    AERONAUTIC_ENGINEERING(Collections.<Specialization>emptyList()),
+    AERONAUTIC_ENGINEERING(Arrays.asList(
+            Specialization.AVIONICS,
+            Specialization.AEROSPACE_ENGINEERING
+    )),
 
     AGRICULTURE(Arrays.asList(
             Specialization.AGRONOMY_AGROECOLOGY,
+            Specialization.AGRIBUSINESS,
             Specialization.ANIMAL_HUSBANDRY,
             Specialization.ANIMAL_SCIENCE,
+            Specialization.BREWING,
             Specialization.DIARY_FARMING,
-            Specialization.EARTH_SCIENCES,
-            Specialization.ECOLOGY,
+            Specialization.EARTH_SCIENCE,
             Specialization.FISHERIES,
             Specialization.FOREST_ENGINEERING,
             Specialization.FORESTRY,
             Specialization.HORTICULTURE,
             Specialization.MILLING,
             Specialization.PLANT_SCIENCE,
-            Specialization.SEA_FOOD_QUALITY
+            Specialization.SEA_FOOD
     )),
 
     AQUA_CULTURE(Arrays.asList(
+            Specialization.AQUACULTURE_AQUAFARMING,
             Specialization.MARINE_BIOLOGY,
             Specialization.MARINE_GEOLOGY,
             Specialization.MARINE_TECHNOLOGY,
-            Specialization.SEA_FOOD_QUALITY
+            Specialization.SEA_FOOD
+    )),
+
+    APPLIED_ARTS(Arrays.asList(
+            Specialization.DESIGN,
+            Specialization.DRAWING,
+            Specialization.GRAPHIC_DESIGN,
+            Specialization.GRAPHICS_AND_PRINTING
     )),
 
     ARCHITECTURE(Arrays.asList(
             Specialization.INDUSTRIAL_DESIGN,
             Specialization.INTERIOR_DESIGN,
             Specialization.LANDSCAPE_ARCHITECTURE,
-            Specialization.LANDSCAPE_PLANNING,
             Specialization.URBAN_PLANNING
     )),
 
     BIOLOGY(Arrays.asList(
-            Specialization.AQUACULTURE_AQUAFARMING,
+            Specialization.ANIMAL_BEHAVIOUR,
             Specialization.ANIMAL_BIOLOGY,
             Specialization.ANIMAL_HUSBANDRY,
             Specialization.ANIMAL_SCIENCE,
@@ -86,21 +97,32 @@ public enum FieldOfStudy {
             Specialization.BOTANIC,
             Specialization.CELL_BIOLOGY,
             Specialization.ECOLOGY,
-            Specialization.EPIDEMIOLOGY,
+            Specialization.ENTOMOLOGY,
             Specialization.ETHOLOGY,
             Specialization.GENETICS,
             Specialization.IMMUNOLOGY,
-            Specialization.PLANT_BIOLOGY,
             Specialization.MARINE_BIOLOGY,
             Specialization.MICROBIOLOGY,
             Specialization.MOLECULAR_BIOLOGY,
             Specialization.MYCOLOGY,
-            Specialization.SEA_FOOD_QUALITY,
+            Specialization.NEUROSCIENCE,
+            Specialization.PLANT_BIOLOGY,
+            Specialization.SEA_FOOD,
             Specialization.TOXICOLOGY,
             Specialization.ZOOLOGY
     )),
 
-    BIOMEDICAL_ENGINEERING(Collections.<Specialization>emptyList()),
+    BIOMEDICAL_SCIENCE(Arrays.asList(
+            Specialization.BIOENGINEERING,
+            Specialization.BIOINSTRUMENTATION,
+            Specialization.BIOMATERIALS,
+            Specialization.BIOMECHANICS,
+            Specialization.BIONICS,
+            Specialization.GENETICS,
+            Specialization.MEDICAL_ENGINEERING,
+            Specialization.NANOBIOTECHNOLOGY,
+            Specialization.PROTEOMICS
+    )),
 
     BIOTECHNOLOGY(Arrays.asList(
             Specialization.BIOCHEMISTRY,
@@ -110,20 +132,22 @@ public enum FieldOfStudy {
             Specialization.GENETICS,
             Specialization.MICRO_BIOLOGY,
             Specialization.MOLECULAR_BIOLOGY,
-            Specialization.PROCESS_ENGINEERING,
-            Specialization.PROCESS_TECHNOLOGY,
-            Specialization.PHARMACY
+            Specialization.PHARMACY,
+            Specialization.PROCESS_ENGINEERING
     )),
 
-    BUSINESS_STUDIES(Arrays.asList(
+    ECONOMY_AND_MANAGEMENT(Arrays.asList(
             Specialization.ADMINISTRATION,
+            Specialization.AGRIBUSINESS,
             Specialization.COMMERCE,
             Specialization.ECONOMICS,
             Specialization.ENTERPRISE_ENGINEERING,
+            Specialization.DEVELOPMENT_STUDIES,
+            Specialization.HOTEL_MANAGEMENT,
             Specialization.INDUSTRIAL_ECONOMICS,
             Specialization.INNOVATION_MANAGEMENT,
             Specialization.LOGISTICS,
-            Specialization.MANAGEMENT,
+            Specialization.PROJECT_MANAGEMENT,
             Specialization.PRODUCTION_MANAGEMENT,
             Specialization.STATISTICS
     )),
@@ -134,48 +158,68 @@ public enum FieldOfStudy {
             Specialization.CHEMICAL_ENGINEERING,
             Specialization.INORGANIC_CHEMISTRY,
             Specialization.ORGANIC_CHEMISTRY,
-            Specialization.PHARMACEUTICAL_STUDIES,
+            Specialization.PETROLEUM_ENGINEERING,
             Specialization.PHARMACY,
+            Specialization.PHASE_TRANSITIONS,
             Specialization.PHYSICAL_CHEMISTRY,
             Specialization.POLYMER_SCIENCE,
-            Specialization.PROCESS_ENGINEERING,
-            Specialization.PROCESS_TECHNOLOGY
+            Specialization.PROCESS_ENGINEERING
     )),
 
     CIVIL_ENGINEERING(Arrays.asList(
-            Specialization.AQUATIC_ENVIRONMENTAL_ENGINEERING,
             Specialization.CONSTRUCTION,
-            Specialization.FLUID_MECHANICS,
+            Specialization.FACILITY_SURVEYING,
             Specialization.GEOTECHNOLOGY,
+            Specialization.LAND_SURVEYING,
+            Specialization.MINERAL_PROCESSING,
             Specialization.MINING,
             Specialization.PORT_LOGISTICS,
             Specialization.PROCESS_ENGINEERING,
-            Specialization.PROCESS_TECHNOLOGY,
-            Specialization.SANITARY_ENGINEERING,
+            Specialization.STRUCTURAL_ENGINEERING,
             Specialization.TRAFFIC_ENGINEERING,
+            Specialization.WATER_ENGINEERING,
             Specialization.WASTE_WATER_TREATMENT
     )),
 
     EDUCATION(Arrays.asList(
             Specialization.LANGUAGE,
-            Specialization.LIFE_SCIENCE_TEACHERS
+            Specialization.SCIENCE
     )),
 
     ELECTRICAL_ENGINEERING(Arrays.asList(
+            Specialization.AUDIO_TECHNOLOGY,
             Specialization.AUTOMATION,
             Specialization.CYBERNETICS,
+            Specialization.ELECTRIC_MOBILITY,
             Specialization.ELECTRONICS,
             Specialization.INSTRUMENTATION,
             Specialization.MECHATRONICS,
             Specialization.NANOELECTRONICS,
             Specialization.PHOTONICS,
-            Specialization.POWER_ENGINEERING
+            Specialization.POWER_ENGINEERING,
+            Specialization.POWER_GENERATION
     )),
 
     ENVIRONMENTAL_ENGINEERING(Arrays.asList(
-            Specialization.SANITARY_ENGINEERING,
+            Specialization.BIODIVERSITY,
+            Specialization.EARTH_SCIENCE,
+            Specialization.ECOLOGY,
+            Specialization.ENTOMOLOGY,
+            Specialization.LIMNOLOGY,
+            Specialization.NATURAL_RESOURCE_MANAGEMENT,
+            Specialization.MYCOLOGY,
+            Specialization.SUSTAINABILITY,
             Specialization.SOIL_AND_AIR_POLLUTION,
-            Specialization.WATER_MANAGEMENT
+            Specialization.WASTE_WATER_MANAGEMENT
+    )),
+
+    ENERGY_ENGINEERING(Arrays.asList(
+            Specialization.ENERGY_AND_PROCESS_ENGINEERING,
+            Specialization.ENERGY_SYSTEMS_PLANNING,
+            Specialization.RENEWABLE_ENERGY,
+            Specialization.NUCLEAR_ENERGY_ENGINEERING,
+            Specialization.POWER_ENGINEERING,
+            Specialization.POWER_GENERATION
     )),
 
     FOOD_SCIENCE(Arrays.asList(
@@ -183,46 +227,59 @@ public enum FieldOfStudy {
             Specialization.DIARY_FARMING,
             Specialization.FOOD_CHEMISTRY,
             Specialization.FOOD_TECHNOLOGY,
+            Specialization.FOOD_QUALITY_AND_SAFETY,
             Specialization.NUTRITIONAL_SCIENCE,
             Specialization.OECOTROPHOLOGY,
             Specialization.WINERY
     )),
 
     GEOSCIENCES(Arrays.asList(
-            Specialization.EARTH_SCIENCES,
+            Specialization.EARTH_SCIENCE,
+            Specialization.ECONOMICS_GEOGRAPHY,
             Specialization.GEOCHEMISTRY,
             Specialization.GEODESY_AND_CARTOGRAPHY,
             Specialization.GENECOLOGY,
             Specialization.GEOGRAPHY,
             Specialization.GEOLOGY,
-            Specialization.GIS,
+            Specialization.GEOMATICS,
+            Specialization.GEOPHYSICS,
             Specialization.GEOTECHNOLOGY,
+            Specialization.GIS,
             Specialization.MARINE_GEOLOGY,
             Specialization.METALLURGY,
             Specialization.MINERALOGY,
             Specialization.MINING,
-            Specialization.GEOPHYSICS
+            Specialization.OCEANOGRAPHY,
+            Specialization.SEISMOLOGY,
+            Specialization.TOPOLOGY
     )),
 
     INDUSTRIAL_ENGINEERING(Arrays.asList(
-            Specialization.PRODUCT_DESIGN
+            Specialization.INDUSTRIAL_DESIGN,
+            Specialization.INDUSTRIAL_ECONOMICS,
+            Specialization.INNOVATION_STRATEGY,
+            Specialization.PROCESS_ENGINEERING,
+            Specialization.PRODUCT_DEVELOPMENT,
+            Specialization.WASTE_WATER_MANAGEMENT
     )),
 
     IT(Arrays.asList(
             Specialization.AUTOMATION,
+            Specialization.ARTIFICIAL_INTELLIGENCE,
             Specialization.BIOINFORMATICS,
             Specialization.BUSINESS_INFORMATICS,
             Specialization.BUSINESS_INTELLIGENCE,
-            Specialization.COMPUTER_ENGINEERING,
             Specialization.COMMUNICATIONS_TECHNOLOGY,
+            Specialization.COMPUTER_ENGINEERING,
+            Specialization.COMPUTER_SCIENCE,
             Specialization.DATABASE_ADMINISTRATION,
+            Specialization.DIGITAL_MEDIA,
+            Specialization.INDUSTRIAL_LOGISTICS,
             Specialization.INFORMATICS,
             Specialization.INFORMATION_SYSTEMS,
             Specialization.INFORMATION_TECHNOLOGY,
             Specialization.NETWORKS,
-            Specialization.PROGRAMMING,
             Specialization.ROBOTICS,
-            Specialization.SECURITY,
             Specialization.SIMULATION,
             Specialization.SOFTWARE_DEVELOPMENT,
             Specialization.SOFTWARE_ENGINEERING,
@@ -237,8 +294,10 @@ public enum FieldOfStudy {
 
     MATHEMATICS(Arrays.asList(
             Specialization.APPLIED_MATHEMATICS,
+            Specialization.APPLIED_STATISTICS,
             Specialization.CALCULUS,
             Specialization.DISCRETE_MATHEMATICS,
+            Specialization.FINANCIAL_MATHEMATICS,
             Specialization.GEOMETRY,
             Specialization.OPTIMIZATION,
             Specialization.STATISTICS
@@ -247,66 +306,64 @@ public enum FieldOfStudy {
     MATERIALS_SCIENCE(Arrays.asList(
             Specialization.MATERIALS_TECHNOLOGY,
             Specialization.METALLURGY,
-            Specialization.MINING,
             Specialization.MINERAL_PROCESSING,
             Specialization.NANOMATERIALS,
+            Specialization.NANOBIOTECHNOLOGY,
             Specialization.POLYMER_ENGINEERING,
+            Specialization.PROCESS_ENGINEERING,
             Specialization.STRUCTURAL_ENGINEERING,
             Specialization.TEXTILE_TECHNOLOGY,
-            Specialization.WOOD_AND_PAPER_ENGINEERING,
-            Specialization.WOOD_SCIENCE
+            Specialization.WOOD_AND_PAPER_ENGINEERING
     )),
 
     MECHANICAL_ENGINEERING(Arrays.asList(
             Specialization.AUTOMATION,
+            Specialization.AUTOMOTIVE_ENGINEERING,
             Specialization.BIOMECHANICS,
+            Specialization.HYDRAULICS,
             Specialization.INDUSTRIAL_DESIGN,
-            Specialization.INDUSTRIAL_ENGINEERING,
             Specialization.MACHINE_TECHNOLOGY,
+            Specialization.MARINE_AND_OFFSHORE_ENGINEERING,
             Specialization.MECHATRONICS,
+            Specialization.MINERAL_PROCESSING,
             Specialization.MINING,
+            Specialization.NAVAL_ENGINEERING,
+            Specialization.SHIPBUILDING,
             Specialization.PETROLEUM_ENGINEERING,
             Specialization.PROCESS_ENGINEERING,
-            Specialization.PROCESS_TECHNOLOGY,
             Specialization.PRODUCT_DESIGN,
             Specialization.WOOD_AND_PAPER_ENGINEERING
     )),
 
     MEDIA_AND_ART(Arrays.asList(
-            Specialization.DESIGN,
-            Specialization.DRAWING,
-            Specialization.GRAPHICS_AND_PRINTING
-    )),
-
-    OFFSHORE(Arrays.asList(
-            Specialization.MARINE_ENGINEERING,
-            Specialization.NAVAL_ENGINEERING,
-            Specialization.NAVAL_SHIPBUILDING,
-            Specialization.OIL_TECHNOLOGY,
-            Specialization.PETROLEUM_ENGINEERING
+            Specialization.MEDIA_TECHNOLOGY,
+            Specialization.DIGITAL_MEDIA,
+            Specialization.MARKETING,
+            Specialization.SOCIAL_MEDIA
     )),
 
     PHYSICS(Arrays.asList(
             Specialization.ASTROPHYSICS,
-            Specialization.ASTRONOMY,
-            Specialization.APPLIED_PHYSICS,
             Specialization.BIOPHYSICS,
             Specialization.COMPUTATIONAL_PHYSICS,
-            Specialization.COSMOLOGY,
             Specialization.CYBERNETICS,
+            Specialization.FLUID_MECHANICS,
             Specialization.GEOPHYSICS,
-            Specialization.LASER_TECHNOLOGY,
+            Specialization.HYDRAULICS,
             Specialization.MEDICAL_PHYSICS,
             Specialization.NANOELECTRONICS,
             Specialization.NANOMATERIALS,
             Specialization.OPTICS,
-            Specialization.PHOTONICS,
             Specialization.QUANTUM_MECHANICS,
             Specialization.STATISTICAL_PHYSICS,
             Specialization.THERMODYNAMICS
     )),
 
-    VETERINARY_SCIENCE(Collections.<Specialization>emptyList());
+    VETERINARY_SCIENCE(Arrays.asList(
+            Specialization.BIOVETERINARY_SCIENCE,
+            Specialization.VETERINARY_MEDICINE,
+            Specialization.VETERINARY_SCIENCE
+    ));
 
     private final List<Specialization> specializations;
 

@@ -39,7 +39,7 @@ public interface IWSExchangeConstants {
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.exchange.Specialization}
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MAX_OFFER_SPECIALIZATIONS = 7;
+    int MAX_OFFER_SPECIALIZATIONS = 3;
 
     /**
      * Defines the maximum number of {@link net.iaeste.iws.api.enums.Language}

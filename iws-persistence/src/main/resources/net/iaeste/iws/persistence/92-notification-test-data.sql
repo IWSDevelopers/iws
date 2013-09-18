@@ -1,0 +1,25 @@
+-- User Notification Setting
+insert into user_notifications (user_id, notification_type, frequency) values (1, 'UPDATE_USERNAME', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (1, 'ACTIVATE_USER', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (1, 'RESET_PASSWORD', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (1, 'RESET_SESSION', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (2, 'UPDATE_USERNAME', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (2, 'ACTIVATE_USER', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (2, 'RESET_PASSWORD', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (2, 'RESET_SESSION', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (3, 'UPDATE_USERNAME', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (3, 'ACTIVATE_USER', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (3, 'RESET_PASSWORD', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (3, 'RESET_SESSION', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (4, 'UPDATE_USERNAME', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (4, 'ACTIVATE_USER', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (4, 'RESET_PASSWORD', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (4, 'RESET_SESSION', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (5, 'UPDATE_USERNAME', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (5, 'ACTIVATE_USER', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (5, 'RESET_PASSWORD', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (5, 'RESET_SESSION', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (6, 'UPDATE_USERNAME', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (6, 'ACTIVATE_USER', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (6, 'RESET_PASSWORD', 'IMMEDIATELY');
+insert into user_notifications (user_id, notification_type, frequency) values (6, 'RESET_SESSION', 'IMMEDIATELY');

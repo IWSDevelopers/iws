@@ -90,5 +90,16 @@ public enum NotificationField {
     /**
      * If a user is on a groups private mailinglist or not.
      */
-    ON_PRIVATE_LIST
+    ON_PRIVATE_LIST,
+
+    /**
+     * The name of the Country that the Group which has been created or has a change
+     * in the members belong to.
+     */
+    COUNTRY_NAME,
+
+    /**
+     * External ID of the object
+     */
+    EXTERNAL_ID
 }

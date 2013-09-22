@@ -28,6 +28,9 @@
         <class>net.iaeste.iws.persistence.entities.UserGroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserNotificationEntity</class>
 
+        <class>net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity</class>
+        <class>net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity</class>
+
         <class>net.iaeste.iws.persistence.views.UserPermissionView</class>
         <class>net.iaeste.iws.persistence.views.EmployerView</class>
         <class>net.iaeste.iws.persistence.views.CountryView</class>
@@ -40,4 +43,19 @@
         </properties>
 
     </persistence-unit>
+    <!--<persistence-unit name="mailingListDatabase" transaction-type="JTA">-->
+
+        <!--<provider>org.hibernate.ejb.HibernatePersistence</provider>-->
+
+        <!--<jta-data-source>iws-mailingList</jta-data-source>-->
+
+        <!--<class>net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity</class>-->
+        <!--<class>net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity</class>-->
+
+        <!--<properties>-->
+            <!--<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>-->
+            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>-->
+        <!--</properties>-->
+
+    <!--</persistence-unit>-->
 </persistence>

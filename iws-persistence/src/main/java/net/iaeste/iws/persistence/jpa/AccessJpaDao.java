@@ -513,4 +513,28 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
 
         return super.findUniqueResult(query, entityName);
     }
+
+    @Override
+    public List<UserGroupEntity> findGroupUsersOnPublicList(GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembersOnPublicList");
+        query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<UserGroupEntity> findGroupUsersOnPrivateList(GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembersOnPrivateList");
+        query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<UserGroupEntity> findAllUserGroups(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("usergroup.findAllUserGroups");
+        query.setParameter("uid", user.getId());
+
+        return query.getResultList();
+    }
 }

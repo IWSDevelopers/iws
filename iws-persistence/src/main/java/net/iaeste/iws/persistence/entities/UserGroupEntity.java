@@ -77,7 +77,23 @@ import java.util.Map;
         @NamedQuery(
                 name = "usergroup.findGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.id = :gid")
+                        "where ug.group.id = :gid"),
+        @NamedQuery(
+                name = "usergroup.findGroupMembersOnPublicList",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.id = :gid" +
+                        "  and ug.onPublicList = true" +
+                        "  and ug.user.status = 'ACTIVE'"),
+        @NamedQuery(
+                name = "usergroup.findGroupMembersOnPrivateList",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.id = :gid" +
+                        "  and ug.onPrivateList = true" +
+                        "  and ug.user.status = 'ACTIVE'"),
+        @NamedQuery(
+                name = "usergroup.findAllUserGroups",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.user.id = :uid")
 })
 @Entity
 @Table(name = "user_to_group")

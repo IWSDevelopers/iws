@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.ejb.notifications;
 
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.utils.Observer;
-import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
@@ -25,8 +25,10 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import org.apache.log4j.Logger;
 
+import javax.persistence.EntityManager;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -50,18 +52,23 @@ import java.util.List;
 public final class NotificationManager implements Notifications {
     private static final Logger LOG = Logger.getLogger(NotificationManager.class);
 
+    private final EntityManager iwsEntityManager;
+    private final EntityManager mailingEntityManager;
+
     private final NotificationDao dao;
-    private final AccessDao accessDao;
+
     private final NotificationMessageGenerator messageGenerator;
     private final List<Observer> observers = new ArrayList<>(10);
 
     private final boolean hostedInBean;
 
-    public NotificationManager(final NotificationDao dao, final AccessDao accessDao, final NotificationMessageGenerator messageGenerator, final boolean hostedInBean) {
-        this.dao = dao;
-        this.accessDao = accessDao;
+    public NotificationManager(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final NotificationMessageGenerator messageGenerator, final boolean hostedInBean) {
+        this.iwsEntityManager = iwsEntityManager;
+        this.mailingEntityManager = mailingEntityManager;
         this.messageGenerator = messageGenerator;
         this.hostedInBean = hostedInBean;
+
+        dao = new NotificationJpaDao(iwsEntityManager);
     }
 
     /**
@@ -72,7 +79,7 @@ public final class NotificationManager implements Notifications {
         final NotificationConsumerClassLoader classLoader = new NotificationConsumerClassLoader();
         for(final NotificationConsumerEntity consumer : consumers) {
 //            try {
-            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), dao, accessDao);
+            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), iwsEntityManager, mailingEntityManager);
             observer.setId(consumer.getId());
             addObserver(observer);
 //            } catch (IWSException e) {}
@@ -148,6 +155,8 @@ public final class NotificationManager implements Notifications {
             if (!hostedInBean) {
                 processJobs();
             }
+        } catch (IWSException e) {
+            LOG.error("Preparing notification job failed", e);
         } catch (IOException ignored) {
             //TODO write to log and skip the task or throw an exception?
 //            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
@@ -188,6 +197,8 @@ public final class NotificationManager implements Notifications {
             if (!hostedInBean) {
                 processJobs();
             }
+        } catch (IWSException e) {
+            LOG.error("Preparing notification job failed", e);
         } catch (IOException ignored) {
             //TODO write to log and skip the task or throw an exception?
 //            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);

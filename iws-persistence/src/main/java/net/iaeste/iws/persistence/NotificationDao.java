@@ -40,7 +40,7 @@ public interface NotificationDao extends BasicDao {
      *
      * @param user    The User to receive the notification
      * @param type    Type of notification
-     * @return        UserNotificationEntity
+     * @return        UserNotificationEntity, null if no setting is found, exception if more than 1 setting is found
      */
     UserNotificationEntity findUserNotificationSetting(UserEntity user, NotificationType type);
 

@@ -29,6 +29,8 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
+import net.iaeste.iws.persistence.jpa.AccessJpaDao;
+import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import net.iaeste.iws.persistence.views.NotificationJobTasksView;
 import net.timewalker.ffmq3.FFMQConstants;
 import org.apache.log4j.Logger;
@@ -45,6 +47,7 @@ import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -64,7 +67,7 @@ import java.util.Map;
  */
 public class NotificationEmailSender implements Observer {
     private Long id = null;
-    private static Integer ATTEMPTS_LIMIT = 3;
+    private static final Integer ATTEMPTS_LIMIT = 3;
 
     private final NotificationMessageGenerator messageGenerator;
     private final NotificationDao dao;
@@ -74,22 +77,22 @@ public class NotificationEmailSender implements Observer {
 
     //Need to be EJB to use @resource
 //    @Resource(mappedName = "iwsEmailQueue")
-    private static String QUEUE_NAME = "queue/iwsEmailQueue";
+    private static final String QUEUE_NAME = "queue/iwsEmailQueue";
     private Queue queue;
 
 //    @Resource(mappedName = "iwsQueueConnectionFactory")
-    private static String QUEUE_FACTORY_NAME = "factory/iwsQueueConnectionFactory";
+    private static final String QUEUE_FACTORY_NAME = "factory/iwsQueueConnectionFactory";
     private QueueConnectionFactory queueConnectionFactory;
 
     private QueueConnection queueConnection = null;
     private QueueSender sender = null;
     private QueueSession session = null;
 
-    //TODO all consumers have to have same constructor parameters -> any idea how to make it dynamic?
-    public NotificationEmailSender(final NotificationDao dao, final AccessDao accessDao) {
-        this.dao = dao;
-        this.accessDao = accessDao;
-        this.messageGenerator = new NotificationMessageGeneratorFreemarker();
+    public NotificationEmailSender(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager) {
+        dao = new NotificationJpaDao(iwsEntityManager);
+        accessDao = new AccessJpaDao(iwsEntityManager);
+
+        messageGenerator = new NotificationMessageGeneratorFreemarker();
 
         initializeQueue();
     }
@@ -213,8 +216,9 @@ public class NotificationEmailSender implements Observer {
 
         NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.ERROR;
         final List<UserEntity> recipients = getRecipients(fields, type);
-        if (recipients == null)
+        if (recipients == null) {
             return NotificationProcessTaskStatus.NOT_FOR_ME;
+        }
 
         for (final UserEntity recipient : recipients) {
             final UserNotificationEntity userSetting;
@@ -222,7 +226,7 @@ public class NotificationEmailSender implements Observer {
                 userSetting = dao.findUserNotificationSetting(recipient, type);
                 //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
                 //should be get from DB directly according to the NotificationType
-                if (userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
+                if (userSetting != null && userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
                     try {
                         final ObjectMessage msg = session.createObjectMessage();
                         final EmailMessage emsg = new EmailMessage();
@@ -258,8 +262,9 @@ public class NotificationEmailSender implements Observer {
             case RESET_SESSION:
             case UPDATE_USERNAME:
                 final UserEntity user = accessDao.findUserByUsername(fields.get(NotificationField.EMAIL));
-                if (user != null)
+                if (user != null) {
                     result.add(user);
+                }
                 break;
             default:
                 return null;

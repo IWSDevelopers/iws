@@ -336,6 +336,10 @@ public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable 
                 fields.put(NotificationField.ROLE, role.getRole());
                 fields.put(NotificationField.ON_PUBLIC_LIST, onPublicList.toString());
                 fields.put(NotificationField.ON_PRIVATE_LIST, onPrivateList.toString());
+                fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());
+                fields.put(NotificationField.EXTERNAL_ID, group.getExternalId());
+                fields.put(NotificationField.EMAIL, user.getAlias());
+                break;
             case NEW_GROUP_OWNER:
                 fields.put(NotificationField.GROUP_NAME, group.getGroupName());
                 fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());

@@ -107,6 +107,7 @@ public final class GroupService {
             } else {
                 throw new PermissionException("Not allowed to create a sub-group of type " + type);
             }
+            notifications.notify(authentication, entity, NotificationType.NEW_GROUP);
         } else {
             // We're fetching the Group with a permission check, to ensure that
             // a user is not attempting to force update different groups. The
@@ -122,6 +123,7 @@ public final class GroupService {
                 } else {
                     throw new IdentificationException("Another Group exist with a similar name " + name);
                 }
+                //TODO update mailing list when group name is changed
             } else {
                 throw new IWSException(IWSErrors.NOT_PERMITTED, "It is not permitted to update Groups of type " + type + " with this request.");
             }
@@ -224,6 +226,7 @@ public final class GroupService {
             updateSelf(authentication, invokingUser, request);
         } else if (shouldChangeOwner(invokingUser, request)) {
             updateOwner(authentication, invokingUser, request);
+            //TODO send notification to new owner?
         } else {
             final GroupType type = invokingUser.getGroup().getGroupType().getGrouptype();
             final String roleExternalId = request.getUserGroup().getRole().getRoleId();

@@ -38,12 +38,10 @@ import java.util.Date;
  * @since   1.7
  */
 @NamedQueries({
-        @NamedQuery(name = "mailing_list.clearPublicSubsriptionByExternalId",
-                query = "delete from MailingListMembershipEntity mlm " +
-                        "where mlm.mailingList.id = (select ml from MailingListEntity ml where ml.externalId = :eid and ml.privateList = false) "),
-        @NamedQuery(name = "mailing_list.clearPrivateSubsriptionByExternalId",
-                query = "delete from MailingListMembershipEntity mlm " +
-                        "where mlm.mailingList.id = (select ml from MailingListEntity ml where ml.externalId = :eid and ml.privateList = true) ")
+        @NamedQuery(name = "mailing_list.findListSubsciptionByUserAddressAndListId",
+                query = "select mlm from MailingListMembershipEntity mlm " +
+                        "where mlm.mailingList.id = :lid " +
+                        "  and mlm.member = :userAddress ")
 })
 @Entity
 @Table(name = "mailing_list_membership")

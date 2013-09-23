@@ -99,7 +99,9 @@ public enum NotificationField {
     COUNTRY_NAME,
 
     /**
-     * External ID of the object
+     * External ID of the group
      */
-    EXTERNAL_ID
+    GROUP_EXTERNAL_ID,
+
+    USER_STATUS
 }

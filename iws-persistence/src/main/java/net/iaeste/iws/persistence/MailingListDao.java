@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
+import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
 
 import java.util.List;
 
@@ -41,18 +42,13 @@ public interface MailingListDao extends BasicDao {
     MailingListEntity findPrivateMailingList(String externalId);
 
     /**
-     * Clear subscription to public Mailing List based on the given external id
+     * Finds a subscription to the Mailing List based on the given list id
+     * and user's email address
      *
-     * @param externalId The external id of the Group the mailing list belongs to
-     * @return number of removed subscriptions
+     * @param listId       The list id
+     * @param emailAddress user email address
+     * @return Found MailignListMembership or null
      */
-    Integer clearPublicSubsription(String externalId);
+    MailingListMembershipEntity findMailingListSubscription(Long listId, String emailAddress);
 
-    /**
-     * Clear subscription to private Mailing List based on the given external id
-     *
-     * @param externalId The external id of the Group the mailing list belongs to
-     * @return number of removed subscriptions
-     */
-    Integer clearPrivateSubsription(String externalId);
 }

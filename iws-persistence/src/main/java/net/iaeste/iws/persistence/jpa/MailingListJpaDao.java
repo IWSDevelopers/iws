@@ -2,6 +2,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
+import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -52,19 +53,12 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
      * {@inheritDoc}
      */
     @Override
-    public Integer clearPublicSubsription(String externalId) {
-        final Query query = entityManager.createNamedQuery("mailing_list.clearPublicSubsriptionByExternalId");
-        query.setParameter("eid", externalId);
-        return query.executeUpdate();
-    }
+    public MailingListMembershipEntity findMailingListSubscription(final Long listId, final String emailAddress) {
+        final Query query = entityManager.createNamedQuery("mailing_list.findListSubsciptionByUserAddressAndListId");
+        query.setParameter("lid", listId);
+        query.setParameter("userAddress", emailAddress);
+        final List<MailingListMembershipEntity> found = query.getResultList();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer clearPrivateSubsription(String externalId) {
-        final Query query = entityManager.createNamedQuery("mailing_list.clearPrivateSubsriptionByExternalId");
-        query.setParameter("eid", externalId);
-        return query.executeUpdate();
+        return found.size() == 1 ? found.get(0) : null;
     }
 }

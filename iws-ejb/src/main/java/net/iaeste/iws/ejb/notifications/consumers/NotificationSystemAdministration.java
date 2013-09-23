@@ -17,7 +17,7 @@ package net.iaeste.iws.ejb.notifications.consumers;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.NotificationFrequency;
-import net.iaeste.iws.common.exceptions.AuthenticationException;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
@@ -25,9 +25,7 @@ import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.NotificationDao;
-import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
@@ -109,15 +107,15 @@ public class NotificationSystemAdministration implements Observer {
                 ret = NotificationProcessTaskStatus.OK;
                 break;
             case NEW_GROUP:
-                createGroupMailinglist(fields.get(NotificationField.GROUP_NAME), fields.get(NotificationField.COUNTRY_NAME), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.EXTERNAL_ID));
+                createGroupMailinglist(fields.get(NotificationField.GROUP_NAME), fields.get(NotificationField.COUNTRY_NAME), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID));
                 ret = NotificationProcessTaskStatus.OK;
                 break;
             case PROCESS_MAILING_LIST:
-                updateGroupMailingList(fields.get(NotificationField.GROUP_NAME), fields.get(NotificationField.COUNTRY_NAME), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.EXTERNAL_ID));
+                updateGroupMailingList(fields.get(NotificationField.GROUP_NAME), fields.get(NotificationField.COUNTRY_NAME), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID));
                 ret = NotificationProcessTaskStatus.OK;
                 break;
             case CHANGE_IN_GROUP_MEMBERS:
-                updateMailingListSubscription(fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.EXTERNAL_ID));
+                updateMailingListSubscription(fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID), fields.get(NotificationField.EMAIL), fields.get(NotificationField.USER_STATUS), fields.get(NotificationField.ON_PRIVATE_LIST), fields.get(NotificationField.ON_PUBLIC_LIST));
                 ret = NotificationProcessTaskStatus.OK;
                 break;
         }
@@ -207,60 +205,45 @@ public class NotificationSystemAdministration implements Observer {
         mailingListDao.persist(list);
     }
 
-    private void updateMailingListSubscription(final String type, final String externalId) {
-        //TODO do not delete everything, just delete existing row for given address, and recreate if necesary
+    private void updateMailingListSubscription(final String type, final String groupExternalId, final String emailAddress, final String userStatus, final String onPrivateList, final String onPublicList) {
         final GroupType groupType;
-        final GroupEntity group;
         try {
             groupType = GroupType.valueOf(type);
-            group = accessDao.findGroupByExternalId(externalId);
         } catch (IllegalArgumentException ignored) {
             return;
-        } catch (AuthenticationException e) { //Group not found
-            if (e.getMessage().equals("No Group was found.")) {
-                return;
-            }
-
-            throw e;
         }
 
+        //only active users can be subscribed to mailing lists
+        final boolean subscribedToPublicList = onPublicList.equals("true") && UserStatus.ACTIVE.name().equals(userStatus);
+        final boolean subscribedToPrivateList = onPrivateList.equals("true") && UserStatus.ACTIVE.name().equals(userStatus);
+
         if (hasPublicList(groupType)) {
-            final MailingListEntity publicMailingList = mailingListDao.findPublicMailingList(externalId);
-            mailingListDao.clearPublicSubsription(externalId);
-            updatePublicListSubscription(group, publicMailingList);
+            final MailingListEntity publicMailingList = mailingListDao.findPublicMailingList(groupExternalId);
+            updateListSubscription(publicMailingList, emailAddress, subscribedToPublicList);
         }
 
         if (hasPrivateList(groupType)) {
-            final MailingListEntity privateMailingList = mailingListDao.findPrivateMailingList(externalId);
-            mailingListDao.clearPrivateSubsription(externalId);
-            updatePrivateListSubscription(group, privateMailingList);
+            final MailingListEntity privateMailingList = mailingListDao.findPrivateMailingList(groupExternalId);
+            updateListSubscription(privateMailingList, emailAddress, subscribedToPrivateList);
         }
     }
 
-    private void updatePrivateListSubscription(final GroupEntity group, final MailingListEntity mailingList) {
-        if (group != null && mailingList != null) {
-            final List<UserGroupEntity> subcribedUsers = accessDao.findGroupUsersOnPrivateList(group);
-            mailingListDao.clearPrivateSubsription(group.getExternalId());
-            for (final UserGroupEntity subcribedUser : subcribedUsers) {
-                final MailingListMembershipEntity subscription = new MailingListMembershipEntity();
-                subscription.setMailingList(mailingList);
-                subscription.setMember(subcribedUser.getUser().getAlias());
-                mailingListDao.persist(subscription);
+    private void updateListSubscription(final MailingListEntity mailingList, final String emailAddress, final boolean onList) {
+        if (mailingList != null) {
+            final MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(mailingList.getId(), emailAddress);
+            if (subscription != null && !onList) {
+                mailingListDao.delete(subscription);
+            } else if (subscription == null && onList) {
+                createListSubscription(mailingList, emailAddress);
             }
         }
     }
 
-    private void updatePublicListSubscription(final GroupEntity group, final MailingListEntity mailingList) {
-        if (group != null && mailingList != null) {
-            final List<UserGroupEntity> subcribedUsers = accessDao.findGroupUsersOnPublicList(group);
-            mailingListDao.clearPublicSubsription(group.getExternalId());
-            for (final UserGroupEntity subcribedUser : subcribedUsers) {
-                final MailingListMembershipEntity subscription = new MailingListMembershipEntity();
-                subscription.setMailingList(mailingList);
-                subscription.setMember(subcribedUser.getUser().getAlias());
-                mailingListDao.persist(subscription);
-            }
-        }
+    private void createListSubscription(final MailingListEntity mailingList, final String emailAddress) {
+        final MailingListMembershipEntity subscription = new MailingListMembershipEntity();
+        subscription.setMailingList(mailingList);
+        subscription.setMember(emailAddress);
+        mailingListDao.persist(subscription);
     }
 
     private boolean hasPublicList(final GroupType type) {

@@ -385,13 +385,13 @@ public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
                 fields.put(NotificationField.GROUP_NAME, groupName);
                 fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
                 fields.put(NotificationField.GROUP_TYPE, groupType.getGrouptype().name());
-                fields.put(NotificationField.EXTERNAL_ID, externalId);
+                fields.put(NotificationField.GROUP_EXTERNAL_ID, externalId);
                 break;
             case PROCESS_MAILING_LIST:
                 fields.put(NotificationField.GROUP_NAME, groupName);
                 fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
                 fields.put(NotificationField.GROUP_TYPE, groupType.getGrouptype().name());
-                fields.put(NotificationField.EXTERNAL_ID, externalId);
+                fields.put(NotificationField.GROUP_EXTERNAL_ID, externalId);
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");

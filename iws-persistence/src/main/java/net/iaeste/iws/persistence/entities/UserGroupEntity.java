@@ -56,7 +56,7 @@ import java.util.Map;
         @NamedQuery(
                 name = "usergroup.findMemberByGroupAndUser",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
+                        "where ug.group.groupType.grouptype = 'MEMBER'" +
                         "  and ug.group.id = :gid" +
                         "  and ug.user.externalId = :euid"),
         @NamedQuery(
@@ -67,12 +67,12 @@ import java.util.Map;
         @NamedQuery(
                 name = "usergroup.findMemberByUserExternalId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
+                        "where ug.group.groupType.grouptype = 'MEMBER'" +
                         "  and ug.user.externalId = :euid"),
         @NamedQuery(
                 name = "usergroup.findMemberByUserId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
+                        "where ug.group.groupType.grouptype = 'MEMBER'" +
                         "  and ug.user.id = :uid"),
         @NamedQuery(
                 name = "usergroup.findGroupMembers",

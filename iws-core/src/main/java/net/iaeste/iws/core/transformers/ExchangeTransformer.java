@@ -170,6 +170,7 @@ public final class ExchangeTransformer {
             result = new EmployerEntity();
 
             result.setExternalId(employer.getId());
+            result.setGroup(CommonTransformer.transform(employer.getGroup()));
             result.setName(employer.getName());
             result.setDepartment(employer.getDepartment());
             result.setBusiness(employer.getBusiness());

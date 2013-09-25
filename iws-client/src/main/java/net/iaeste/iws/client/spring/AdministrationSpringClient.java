@@ -162,6 +162,22 @@ public final class AdministrationSpringClient implements Administration {
      * {@inheritDoc}
      */
     @Override
+    public Fallible changeUserGroupOwner(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        return client.changeUserGroupOwner(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        return client.processUserGroupAssignment(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
         return client.processCountries(token, request);
     }
@@ -172,13 +188,5 @@ public final class AdministrationSpringClient implements Administration {
     @Override
     public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
         return client.fetchCountries(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        return client.processUserGroupAssignment(token, request);
     }
 }

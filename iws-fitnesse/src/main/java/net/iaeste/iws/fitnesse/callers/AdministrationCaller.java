@@ -162,6 +162,30 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
+    public Fallible changeUserGroupOwner(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        try {
+            return caller.changeUserGroupOwner(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        try {
+            return caller.processUserGroupAssignment(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
         try {
             return caller.processCountries(token, request);
@@ -177,18 +201,6 @@ public final class AdministrationCaller implements Administration {
     public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
         try {
             return caller.fetchCountries(token, request);
-        } catch (Exception e) {
-            throw new StopTestException(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        try {
-            return caller.processUserGroupAssignment(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

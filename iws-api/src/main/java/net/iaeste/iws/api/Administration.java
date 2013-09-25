@@ -171,6 +171,27 @@ public interface Administration {
      */
     FetchGroupResponse fetchGroup(AuthenticationToken token, FetchGroupRequest request);
 
+    /**
+     * As their can only be a single Owner of a Group, the changing of such is
+     * not part of the #processUserGroupAssignment request, if attempted, an
+     * Exception is thrown.
+     *   This request set the given User (which must be Active) as the new
+     * Owner, and reduce the current (invoking) User as Moderator instead,
+     * regardless if the given User is a member of the Group or not.<br />
+     *   Note, that two special cases exists for this request. Changing either
+     * a National Secretary or the General Secretary, since the request must be
+     * made against the respective National or International Groups, and the
+     * this change will also update the current owner of the Member Group. For
+     * this reason, the new NS or GS - must be an Active Member of the Member
+     * Group!
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Fetch Group Request Object
+     * @return Standard Error Object
+     */
+    Fallible changeUserGroupOwner(AuthenticationToken token, UserGroupAssignmentRequest request);
+
     Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
 
     /**

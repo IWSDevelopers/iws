@@ -321,6 +321,34 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
+    public Fallible changeUserGroupOwner(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting changeUserGroupOwner()"));
+        }
+        Fallible response;
+
+        try {
+            verify(request);
+            token.setGroupId(request.getUserGroup().getGroup().getId());
+            final Authentication authentication = verifyAccess(token, Permission.CHANGE_GROUP_OWNER);
+
+            final GroupService service = factory.prepareGroupService();
+            service.changeUserGroupOwner(authentication, request);
+            response = new FetchGroupResponse();
+        } catch (IWSException e) {
+            response = new FetchGroupResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished changeUserGroupOwner()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processUserGroupAssignment()"));

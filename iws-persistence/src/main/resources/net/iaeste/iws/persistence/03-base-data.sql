@@ -199,10 +199,9 @@ insert into permission_to_role (role_id, permission_id) values (2, 114);
 insert into permission_to_role (role_id, permission_id) values (3, 114);
 
 -- Permission: 115 - Change Group Owner
---   -> GroupTypes: All except Private
+--   -> GroupTypes: All except Private or Member
 --   -> Roles:      1 Owner
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 115);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 115);

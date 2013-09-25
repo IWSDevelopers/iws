@@ -204,9 +204,24 @@ public final class GroupService {
     }
 
     /**
-     * Assigning or updating a given users access to a specific group. The
-     * action is fairly complex, since it consist of a number of special cases,
-     * with variants for both owner and non-owner roles.
+     * Updates the Owner of a Group to the one provided, under the conditions
+     * that the new Owner is an existing and active user. The current owner is
+     * then demoted to Moderator of the Group.
+     *
+     * @param authentication User & Group information
+     * @param request        User Group Request information
+     */
+    public void changeUserGroupOwner(final Authentication authentication, final UserGroupAssignmentRequest request) {
+        throw new IWSException(IWSErrors.NOT_IMPLEMENTED, "Not implemented, see Trac Task #100, #113, #424, #426");
+    }
+
+    /**
+     * Assigning or updating a given users access to a specific group. To ensure
+     * that the logic is as simple as possible, all special cases from IW3 have
+     * currently been dropped, and will only be added, if they are explicitly
+     * requested.<br />
+     *   Note, this request will not allow changing of the Owner, that is dealt
+     * with in a different request.
      *
      * @param authentication User & Group information
      * @param request        User Group Request information

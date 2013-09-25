@@ -285,6 +285,44 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
+    public Fallible changeUserGroupOwner(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        Fallible response;
+
+        try {
+            response = controller.changeUserGroupOwner(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+        Fallible response;
+
+        try {
+            response = controller.processUserGroupAssignment(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
     public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
         Fallible response;
 
@@ -313,25 +351,6 @@ public class AdministrationBean extends AbstractBean implements Administration {
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new FetchCountryResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        Fallible response;
-
-        try {
-            response = controller.processUserGroupAssignment(token, request);
-            log.info(generateResponseLog(response, token));
-        } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

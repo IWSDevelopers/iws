@@ -15,7 +15,6 @@
 package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observer;
@@ -48,7 +47,8 @@ import javax.persistence.PersistenceContext;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {
     private static final Logger LOG = Logger.getLogger(NotificationManagerBean.class);
-    private EntityManager entityManager = null;
+    private EntityManager iwsEntityManager = null;
+    private EntityManager mailingListEntityManager = null;
     private NotificationDao dao = null;
     private AccessDao accessDao = null;
     private Notifications notifications = null;
@@ -65,22 +65,34 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      * Setter for the JNDI injected persistence context. This allows us to also
      * test the code, by invoking these setters on the instantiated Object.
      *
-     * @param entityManager Transactional Entity Manager instance
+     * @param iwsEntityManager Transactional Entity Manager instance
      */
     @PersistenceContext(unitName = "iwsDatabase")
-    public void setEntityManager(final EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public void setIwsEntityManager(final EntityManager iwsEntityManager) {
+        this.iwsEntityManager = iwsEntityManager;
     }
+
+    /**
+     * Setter for the JNDI injected persistence context. This allows us to also
+     * test the code, by invoking these setters on the instantiated Object.
+     *
+     * @param mailingListEntityManager Transactional Entity Manager instance for mailing list database
+     */
+//    @PersistenceContext(unitName = "mailingListDatabase")
+//    public void setMailingListEntityManager(final EntityManager mailingListEntityManager) {
+//        this.mailingListEntityManager = mailingListEntityManager;
+//    }
 
     /**
      * {@inheritDoc}
      */
     @PostConstruct
     public void postConstruct() {
-        dao = new NotificationJpaDao(entityManager);
-        accessDao = new AccessJpaDao(entityManager);
+        dao = new NotificationJpaDao(iwsEntityManager);
+        accessDao = new AccessJpaDao(iwsEntityManager);
 
-        final NotificationManager notificationManager = new NotificationManager(dao, accessDao, new NotificationMessageGeneratorFreemarker(), true);
+//        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, new NotificationMessageGeneratorFreemarker(), true);
+        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, iwsEntityManager, new NotificationMessageGeneratorFreemarker(), true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
 
@@ -199,9 +211,9 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
         //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
 //        LOG.info("processJobsScheduled started at " + new DateTime());
-        boolean run;
+        final boolean run;
         synchronized (LOCK) {
-            run = (processingIsRunning==false);
+            run = processingIsRunning==false;
         }
 
         if (run) {

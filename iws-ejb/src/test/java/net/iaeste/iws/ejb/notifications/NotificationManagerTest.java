@@ -41,26 +41,27 @@ import java.util.List;
  */
 public class NotificationManagerTest {
 
-    @Test
-    @Ignore("I can't write one code for both Glassfish and FFMQ, the lookup context used in NotificationEmailSender is different")
-    public void loadConsumsers() {
-        final NotificationDao dao = mock(NotificationJpaDao.class);
-        final AccessDao accessDao = mock(AccessJpaDao.class);
-        final NotificationConsumerEntity consumer = new NotificationConsumerEntity(new GroupEntity("dummyGroup"), "Consumer1", "net.iaeste.iws.ejb.notifications.consumers.NotificationEmailSender");
-        final List<NotificationConsumerEntity> consumers = new ArrayList<>(1);
-        consumers.add(consumer);
-        when(dao.findActiveNotificationConsumers()).thenReturn(consumers);
-
-        final NotificationManager notificationManager = new NotificationManager(dao, accessDao, null, false);
-        final MessageServer messageServer = new MessageServer();
-        messageServer.run();
-        while(!messageServer.isDeployed()) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) { }
-        }
-        notificationManager.startupConsumers();
-        messageServer.shutdown();
-        assertThat(notificationManager.getObserversCount(), is(1));
-    }
+//    Comment this test since it is using FFMQ which needs different JNDI lookups and I don't know how to mock entity managers & our DAOs
+//    @Test
+//    @Ignore("I can't write one code for both Glassfish and FFMQ, the lookup context used in NotificationEmailSender is different")
+//    public void loadConsumsers() {
+//        final NotificationDao dao = mock(NotificationJpaDao.class);
+//        final AccessDao accessDao = mock(AccessJpaDao.class);
+//        final NotificationConsumerEntity consumer = new NotificationConsumerEntity(new GroupEntity("dummyGroup"), "Consumer1", "net.iaeste.iws.ejb.notifications.consumers.NotificationEmailSender");
+//        final List<NotificationConsumerEntity> consumers = new ArrayList<>(1);
+//        consumers.add(consumer);
+//        when(dao.findActiveNotificationConsumers()).thenReturn(consumers);
+//
+//        final NotificationManager notificationManager = new NotificationManager(dao, accessDao, null, false);
+//        final MessageServer messageServer = new MessageServer();
+//        messageServer.run();
+//        while(!messageServer.isDeployed()) {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ignored) { }
+//        }
+//        notificationManager.startupConsumers();
+//        messageServer.shutdown();
+//        assertThat(notificationManager.getObserversCount(), is(1));
+//    }
 }

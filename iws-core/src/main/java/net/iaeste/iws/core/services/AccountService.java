@@ -107,7 +107,8 @@ public final class AccountService extends CommonService<AccessDao> {
 
                 notifications.notify(authentication, user, NotificationType.NEW_USER);
                 notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
-                notifications.notify(authentication, authentication.getGroup(), NotificationType.PROCESS_MAILING_LIST);
+                //TODO @Kim - why is there PROCESS_MAILING_LIST? it's supposed to be for creating/changing mailing list itself, not to manager subscribtion
+                //notifications.notify(authentication, authentication.getGroup(), NotificationType.PROCESS_MAILING_LIST);
             }
 
             notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
@@ -147,6 +148,15 @@ public final class AccountService extends CommonService<AccessDao> {
             user.setCode(null);
             user.setModified(new Date());
             dao.persist(user);
+
+            final Authentication authentication = new Authentication(user, UUID.randomUUID().toString());
+            notifications.notify(authentication, user, NotificationType.USER_ACTIVATED);
+
+            //notify all groups the user is member about change of mailing lists
+            final List<UserGroupEntity> userGroups = dao.findAllUserGroups(user);
+            for (final UserGroupEntity userGroup : userGroups) {
+                notifications.notify(authentication, userGroup, NotificationType.CHANGE_IN_GROUP_MEMBERS);
+            }
         } else {
             throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for this user was found.");
         }
@@ -472,6 +482,11 @@ public final class AccountService extends CommonService<AccessDao> {
             user.setPrivateData(Privacy.PRIVATE);
             user.setStatus(UserStatus.DELETED);
             dao.persist(user);
+
+            final List<UserGroupEntity> userGroups = dao.findAllUserGroups(user);
+            for (final UserGroupEntity userGroup : userGroups) {
+                notifications.notify(authentication, userGroup, NotificationType.CHANGE_IN_GROUP_MEMBERS);
+            }
 
             log.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
         }

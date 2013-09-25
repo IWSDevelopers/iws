@@ -463,6 +463,7 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
                 fields.put(NotificationField.EMAIL, username);
                 break;
             case NEW_USER:
+            case USER_ACTIVATED:
                 fields.put(NotificationField.EMAIL, username);
                 break;
             case UPDATE_USERNAME:

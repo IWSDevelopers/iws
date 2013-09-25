@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.emails.IwsSystemSetting
+ * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.IwsSystemSetting
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -30,8 +30,8 @@ import java.util.Properties;
  * @since   1.7
  */
 public class IwsSystemSetting {
-    private static String IWS_SETTING = "iws-setting";
-    private Properties iwsSetting;
+    private static final String IWS_SETTING = "iws-setting";
+    private final Properties iwsSetting;
 
     private static IwsSystemSetting instance = null;
     private static final Object LOCK = new Object();

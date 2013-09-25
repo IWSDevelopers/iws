@@ -17,6 +17,9 @@ package net.iaeste.iws.ejb.notifications.consumers;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
+
+import javax.persistence.EntityManager;
 
 /**
  * The Class requires an EJB framework to properly work. For this reason, large
@@ -43,8 +46,8 @@ public class NotificationImSender implements Observer {
 
     private final NotificationDao dao;
 
-    public NotificationImSender(final NotificationDao dao) {
-        this.dao = dao;
+    public NotificationImSender(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager) {
+        dao = new NotificationJpaDao(iwsEntityManager);
 
 //        //initialize jms message queue
 //        QueueConnection queueConnection = null;

@@ -568,7 +568,7 @@ create table user_notifications (
 
     /* Primary & Foreign Keys */
     constraint user_notifications_pk         primary key (id),
-    constraint user_notifications_fk_user_id foreign key (user_id) references users (id),
+    constraint user_notifications_fk_user_id foreign key (user_id) references users (id) on delete cascade,
 
     /* Not Null Constraints */
     constraint user_notifications_notnull_id      check (id is not null),
@@ -595,7 +595,7 @@ create table notification_messages (
 
     /* Primary & Foreign Keys */
     constraint notitication_messages_pk         primary key (id),
-    constraint notitication_messages_fk_user_id foreign key (user_id) references users (id),
+    constraint notitication_messages_fk_user_id foreign key (user_id) references users (id) on delete cascade,
 
     /* Not Null Constraints */
     constraint notitication_messages_notnull_id                check (id is not null),
@@ -623,7 +623,7 @@ create table notification_consumers (
 
     /* Primary & Foreign Keys */
     constraint notitication_consumers_pk          primary key (id),
-    constraint notitication_consumers_fk_group_id foreign key (group_id) references groups (id),
+    constraint notitication_consumers_fk_group_id foreign key (group_id) references groups (id) on delete cascade,
 
     /* Unique Constraints */
     constraint notification_consumers_unique_consumer_name unique (group_id, name),
@@ -678,7 +678,7 @@ create table notification_job_tasks (
     /* Primary & Foreign Keys */
     constraint notification_job_task_pk              primary key (id),
     constraint notification_job_task_fk_job_id       foreign key (job_id) references notification_jobs (id),
-    constraint notification_job_task_fk_consumer_id  foreign key (consumer_id) references notification_consumers (id),
+    constraint notification_job_task_fk_consumer_id  foreign key (consumer_id) references notification_consumers (id) on delete cascade,
 
     /* Not Null Constraints */
     constraint notification_job_task_notnull_id                  check (id is not null),

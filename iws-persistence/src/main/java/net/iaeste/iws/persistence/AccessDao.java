@@ -169,4 +169,28 @@ public interface AccessDao extends BasicDao {
     RoleEntity findRoleByExternalIdAndGroup(String reid, GroupEntity group);
 
     RoleEntity findRoleByExternalId(String externalId);
+
+    /**
+     * Finds all users subscribed to group's public mailing list
+     *
+     * @param  group
+     * @return List of UserGroupEntity
+     */
+    List<UserGroupEntity> findGroupUsersOnPublicList(GroupEntity group);
+
+    /**
+     * Finds all users subscribed to group's private mailing list
+     *
+     * @param  group
+     * @return List of UserGroupEntity
+     */
+    List<UserGroupEntity> findGroupUsersOnPrivateList(GroupEntity group);
+
+    /**
+     * Finds all groups the user is member
+     *
+     * @param  user UserEntity
+     * @return List of GroupEntity
+     */
+    List<UserGroupEntity> findAllUserGroups(UserEntity user);
 }

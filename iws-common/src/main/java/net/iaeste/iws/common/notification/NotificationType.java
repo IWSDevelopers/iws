@@ -76,5 +76,11 @@ public enum NotificationType {
 
     PROCESS_EMAIL_ALIAS,
 
-    PROCESS_MAILING_LIST
+    PROCESS_MAILING_LIST,
+
+    /**
+     * When user access activation link and activation is successful,
+     * some system setting has to be prepared
+     */
+    USER_ACTIVATED
 }

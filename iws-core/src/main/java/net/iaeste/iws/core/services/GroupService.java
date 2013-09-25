@@ -25,7 +25,6 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
@@ -60,9 +59,6 @@ public final class GroupService {
     private static final Logger log = Logger.getLogger(GroupService.class);
     private final AccessDao dao;
     private final Notifications notifications;
-
-    /** TODO Find the correct Id for the General Secretary Group. */
-    private static final Long GENERAL_SECRETARY_GROUP = -1L;
 
     public GroupService(final AccessDao dao, final Notifications notifications) {
         this.dao = dao;
@@ -216,62 +212,26 @@ public final class GroupService {
      * @param request        User Group Request information
      */
     public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
-        // First, check if we are allowed to make any changes at all
-        throwIfNotIllegalGroupAction(authentication.getGroup().getGroupType().getGrouptype());
-
         final UserGroupEntity invokingUser = dao.findMemberGroupByUser(authentication.getUser());
+
         if (shouldChangeSelf(authentication, request)) {
             updateSelf(authentication, invokingUser, request);
         } else if (shouldChangeOwner(invokingUser, request)) {
-            updateOwner(authentication, invokingUser, request);
+            throw new PermissionException("It is not permitted to change ownership with this request. Please use the correct request.");
         } else {
-            final GroupType type = invokingUser.getGroup().getGroupType().getGrouptype();
             final String roleExternalId = request.getUserGroup().getRole().getRoleId();
-            final RoleEntity role = dao.findRoleByExternalIdAndGroup(roleExternalId, authentication.getGroup());
-
-
-            // Throws an exception if no Role was found
-
             final String externalUserId = request.getUserGroup().getUser().getUserId();
-            final UserGroupEntity existingEntity = dao.findMemberByExternalId(externalUserId, authentication.getGroup());
-            final UserGroupEntity given = transform(request.getUserGroup());
 
-            // Special Case: User is member of the General Secretary Group, and thus
-            // any changes to this Group, also have to reflect on the Global Members
-            // Group
-            if (GENERAL_SECRETARY_GROUP.equals(authentication.getGroup().getId())) {
-                throw new NotImplementedException("The IWS currently do not support changing Group Membership for the General Secretary Group.");
-            } else
+            final RoleEntity role = dao.findRoleByExternalIdAndGroup(roleExternalId, authentication.getGroup());
+            final UserGroupEntity existingEntity = dao.findByGroupAndExternalUserId(authentication.getGroup(), externalUserId);
 
-            // Special Case: Adding / Updating a member of the National Group, means
-            // additionally Updating to the Country Members Group. However, the user
-            // must be a a Member of this Group - if not, then we do not permit this
-            // action
-            if (authentication.getGroup().getGroupType().getGrouptype() == GroupType.NATIONAL) {
-                throw new NotImplementedException("Not yet implemented.");
-            } else
-
-            // Standard Case: "Ordinary" Group, and no Ownership - but no existing relationship. We're creating a new one
-            if (existingEntity == null) {
-                // Throws an exception if no User was found
-                final UserEntity user = dao.findUserByExternalId(externalUserId);
-
-                // Now, fill in persisted Entities to the new relation
-                given.setUser(user);
-                given.setGroup(authentication.getGroup());
-                given.setRole(role);
-
-                dao.persist(given);
-                notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
-                notifications.notify(authentication, existingEntity, NotificationType.PROCESS_MAILING_LIST);
-            } else
-
-            // Finally, we're done with special cases, and the account already
-            // exists, meaning that we're going to update it.
-            {
-                dao.persist(authentication, existingEntity, given);
-                notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
+            if (request.isDeleteUserRequest()) {
+                deleteUserGroupRelation(role, existingEntity);
+            } else {
+                processUserGroupRelation(authentication, request, externalUserId, role, existingEntity);
             }
+
+            notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
         }
     }
 
@@ -284,21 +244,19 @@ public final class GroupService {
 
     /**
      * If a person updates his or her own record, it means that they can change
-     * their title,
+     * their title and mailinglist settings. As the request can only be
+     * performed by someone who is either the owner or moderator, it will not
+     * pose as a "bug", that someone else may attempt to escalate their
+     * privileges.
      *
-     * @param authentication
-     * @param request
+     * @param authentication User & Group information
+     * @param request        User Group Request information
      */
     private void updateSelf(final Authentication authentication, final UserGroupEntity currentEntity, final UserGroupAssignmentRequest request) {
-        final GroupType type = authentication.getGroup().getGroupType().getGrouptype();
-        final Long groupId = authentication.getGroup().getId();
-
-        if ((type == GroupType.NATIONAL) || (type == GroupType.SAR) || GENERAL_SECRETARY_GROUP.equals(groupId)) {
-            // Update the parent Member UserGoup relation as well
-        }
-
         // Update the UserGroup relation
         currentEntity.setTitle(request.getUserGroup().getTitle());
+        currentEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
+        currentEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
         dao.persist(authentication, currentEntity);
     }
 
@@ -310,7 +268,7 @@ public final class GroupService {
             if (IWSConstants.ROLE_OWNER.equals(invokingUser.getRole().getId())) {
                 result = true;
             } else {
-                throw new IWSException(IWSErrors.NOT_PERMITTED, "Illegal attempt at changing Ownership.");
+                throw new PermissionException("Illegal attempt at changing Ownership.");
             }
         } else {
             result = false;
@@ -319,101 +277,111 @@ public final class GroupService {
         return result;
     }
 
-    /**
-     * As there can only be a single owner of a Group, it means that changing
-     * ownership must be dealt with as a special case, where the invoking person
-     * must be the current owner, and the provided user will then be the new
-     * Owner.<br />
-     *   There exist two special cases and the general case for this Operation,
-     * changing Ownership of a National (or SAR) Group, and changing Ownership
-     * of the General Secretary Group. These special cases exists, since these
-     * groups also control the National Members and the Global Members. The
-     * special cases follow the same pattern, updating the parent Member Group,
-     * and then let the general case take over.<br />
-     *   The General Case, simply involves demoting the invoking user, and
-     * promoting the Changing Ownership of a Group means demoting the requested
-     * user.
-     *
-     * @param authentication User & Group information
-     */
-    private void updateOwner(final Authentication authentication, final UserGroupEntity currentOwner, final UserGroupAssignmentRequest request) {
-        final UserGroupEntity ownerUserGroupEntity = dao.findMemberByGroupAndUser(authentication.getGroup(), authentication.getUser());
-
-        if (IWSConstants.ROLE_OWNER.equals(ownerUserGroupEntity.getRole().getId())) {
-            final GroupType type = authentication.getGroup().getGroupType().getGrouptype();
-            final Long groupId = authentication.getGroup().getId();
-
-            // First the special cases, i.e. those cases where we have to also
-            // update the parent Member Group. Although we are dealing with
-            // different kinds of Groups, they all share the same basic
-            // characteristics - they have a Parent Group, which is defined by
-            // the given Id
-//            if (GENERAL_SECRETARY_GROUP.equals(groupId) || (type == GroupType.NATIONAL) || (type == GroupType.SAR)) {
-//                final UserGroupEntity memberUserGroupEntity = dao.findMemberGroupByUser(authentication.getUser());
-//                changeGroupOwnership(authentication, memberUserGroupEntity, newOwnerEntity);
-//            }
-//
-//            changeGroupOwnership(authentication, ownerUserGroupEntity, newOwnerEntity);
-        } else {
-            throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "The user is not authorized to change ownership.");
-        }
-    }
-
-    private void changeGroupOwnership(final Authentication authentication, final UserGroupEntity currentOwner, final UserEntity newOwner) {
-        final UserGroupEntity existingEntity = dao.findMemberByGroupAndUser(currentOwner.getGroup(), newOwner);
-
+    private void deleteUserGroupRelation(final RoleEntity role, final UserGroupEntity existingEntity) {
         if (existingEntity != null) {
-            // The new owner is already a member of the Group
-            changeGroupOwnership(authentication, currentOwner, existingEntity);
+            if (role.getId() == 1) {
+                // We're attempting to delete the owner, major no-no
+                throw new PermissionException("It is not allowed to delete the current Owner of the Group.");
+            } else {
+                dao.delete(existingEntity);
+            }
         } else {
-            // Create a new relation, and set the basic information, the rest
-            // will be set in the following method.
-            final UserGroupEntity newEntity = new UserGroupEntity();
-            newEntity.setUser(newOwner);
-            newEntity.setGroup(currentOwner.getGroup());
-
-            changeGroupOwnership(authentication, currentOwner, newEntity);
+            throw new IdentificationException("No user were found to be deleted.");
         }
     }
 
-    private void changeGroupOwnership(final Authentication authentication, final UserGroupEntity currentOwner, final UserGroupEntity newOwner) {
-        final RoleEntity moderator = dao.findRoleById(IWSConstants.ROLE_MODERATOR);
+    private void processUserGroupRelation(final Authentication authentication, final UserGroupAssignmentRequest request, final String externalUserId, final RoleEntity role, final UserGroupEntity existingEntity) {
+        final UserGroupEntity given = transform(request.getUserGroup());
 
-        // First, let's update the new Owner with the information from the existing
-        newOwner.setRole(currentOwner.getRole());
-        newOwner.setTitle(currentOwner.getTitle());
-        newOwner.setOnPublicList(currentOwner.getOnPublicList());
-        newOwner.setOnPrivateList(currentOwner.getOnPrivateList());
+        if (existingEntity == null) {
+            // Throws an exception if no User was found
+            final UserEntity user = dao.findUserByExternalId(externalUserId);
 
-        // Second, change the role & title for the existing Owner
-        currentOwner.setRole(moderator);
-        currentOwner.setTitle("");
+            // Now, fill in persisted Entities to the new relation
+            given.setUser(user);
+            given.setGroup(authentication.getGroup());
+            given.setRole(role);
 
-        // Third, save the changes
-        dao.persist(authentication, currentOwner);
-        dao.persist(authentication, newOwner);
-    }
-
-    /**
-     * When changing UserGroup settings, there are certain GroupTypes, where it
-     * is not permitted to perform such changes.<br />
-     *   The Private Group is one such case, where it is not allowed to make any
-     * changes, since this Group is purely used as an internal control to ensure
-     * that users can have their own data. Which also will be deleted if or when
-     * the user is removed from the system.<br />
-     *   The Member group is the second special case, since the Member Group is
-     * purely managed from the Staff (either National or General Secretary
-     * Groups). Changes to Member Groups is managed in parallel with changes to
-     * their Staffs.
-     *
-     * @param groupType The GroupType to check for
-     * @throws IWSException if not permitted to make changes to this GroupType
-     */
-    private static void throwIfNotIllegalGroupAction(final GroupType groupType) {
-        if ((groupType == GroupType.MEMBER) || (groupType == GroupType.PRIVATE)) {
-            throw new IWSException(IWSErrors.NOT_PERMITTED, "It is not allowed to change the roles for members of GroupType " + groupType);
+            dao.persist(given);
+        } else {
+            dao.persist(authentication, existingEntity, given);
         }
     }
+
+//    /**
+//     * As there can only be a single owner of a Group, it means that changing
+//     * ownership must be dealt with as a special case, where the invoking person
+//     * must be the current owner, and the provided user will then be the new
+//     * Owner.<br />
+//     *   There exist two special cases and the general case for this Operation,
+//     * changing Ownership of a National (or SAR) Group, and changing Ownership
+//     * of the General Secretary Group. These special cases exists, since these
+//     * groups also control the National Members and the Global Members. The
+//     * special cases follow the same pattern, updating the parent Member Group,
+//     * and then let the general case take over.<br />
+//     *   The General Case, simply involves demoting the invoking user, and
+//     * promoting the Changing Ownership of a Group means demoting the requested
+//     * user.
+//     *
+//     * @param authentication User & Group information
+//     */
+//    private void updateOwner(final Authentication authentication, final UserGroupEntity currentOwner, final UserGroupAssignmentRequest request) {
+//        final UserGroupEntity ownerUserGroupEntity = dao.findMemberByGroupAndUser(authentication.getGroup(), authentication.getUser());
+//
+//        if (IWSConstants.ROLE_OWNER.equals(ownerUserGroupEntity.getRole().getId())) {
+//            final GroupType type = authentication.getGroup().getGroupType().getGrouptype();
+//            final Long groupId = authentication.getGroup().getId();
+//
+//            // First the special cases, i.e. those cases where we have to also
+//            // update the parent Member Group. Although we are dealing with
+//            // different kinds of Groups, they all share the same basic
+//            // characteristics - they have a Parent Group, which is defined by
+//            // the given Id
+////            if (GENERAL_SECRETARY_GROUP.equals(groupId) || (type == GroupType.NATIONAL) || (type == GroupType.SAR)) {
+////                final UserGroupEntity memberUserGroupEntity = dao.findMemberGroupByUser(authentication.getUser());
+////                changeGroupOwnership(authentication, memberUserGroupEntity, newOwnerEntity);
+////            }
+////
+////            changeGroupOwnership(authentication, ownerUserGroupEntity, newOwnerEntity);
+//        } else {
+//            throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "The user is not authorized to change ownership.");
+//        }
+//    }
+
+//    private void changeGroupOwnership(final Authentication authentication, final UserGroupEntity currentOwner, final UserEntity newOwner) {
+//        final UserGroupEntity existingEntity = dao.findMemberByGroupAndUser(currentOwner.getGroup(), newOwner);
+//
+//        if (existingEntity != null) {
+//            // The new owner is already a member of the Group
+//            changeGroupOwnership(authentication, currentOwner, existingEntity);
+//        } else {
+//            // Create a new relation, and set the basic information, the rest
+//            // will be set in the following method.
+//            final UserGroupEntity newEntity = new UserGroupEntity();
+//            newEntity.setUser(newOwner);
+//            newEntity.setGroup(currentOwner.getGroup());
+//
+//            changeGroupOwnership(authentication, currentOwner, newEntity);
+//        }
+//    }
+
+//    private void changeGroupOwnership(final Authentication authentication, final UserGroupEntity currentOwner, final UserGroupEntity newOwner) {
+//        final RoleEntity moderator = dao.findRoleById(IWSConstants.ROLE_MODERATOR);
+//
+//        // First, let's update the new Owner with the information from the existing
+//        newOwner.setRole(currentOwner.getRole());
+//        newOwner.setTitle(currentOwner.getTitle());
+//        newOwner.setOnPublicList(currentOwner.getOnPublicList());
+//        newOwner.setOnPrivateList(currentOwner.getOnPrivateList());
+//
+//        // Second, change the role & title for the existing Owner
+//        currentOwner.setRole(moderator);
+//        currentOwner.setTitle("");
+//
+//        // Third, save the changes
+//        dao.persist(authentication, currentOwner);
+//        dao.persist(authentication, newOwner);
+//    }
 
     // =========================================================================
     // Internal Methods

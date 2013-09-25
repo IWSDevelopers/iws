@@ -32,6 +32,7 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private UserGroup userGroup = null;
+    private boolean deleteUser = false;
 
     // =========================================================================
     // Object Constructors
@@ -63,6 +64,14 @@ public final class UserGroupAssignmentRequest extends AbstractVerification {
 
     public UserGroup getUserGroup() {
         return new UserGroup(userGroup);
+    }
+
+    public void setDeleteUser(final boolean deleteUser) {
+        this.deleteUser = deleteUser;
+    }
+
+    public boolean isDeleteUserRequest() {
+        return deleteUser;
     }
 
     // =========================================================================

@@ -146,6 +146,8 @@ public interface AccessDao extends BasicDao {
 
     UserGroupEntity findMemberGroupByUser(UserEntity user);
 
+    UserGroupEntity findByGroupAndExternalUserId(GroupEntity group, String externalUserId);
+
     GroupTypeEntity findGroupTypeByType(GroupType groupType);
 
     CountryEntity findCountryByCode(String countryCode);

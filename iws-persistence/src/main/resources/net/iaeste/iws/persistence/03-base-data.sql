@@ -199,9 +199,8 @@ insert into permission_to_role (role_id, permission_id) values (2, 114);
 insert into permission_to_role (role_id, permission_id) values (3, 114);
 
 -- Permission: 115 - Change Group Owner
---   -> GroupTypes: All except Private & Student
+--   -> GroupTypes: All except Private
 --   -> Roles:      1 Owner
---                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 115);
@@ -210,13 +209,15 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 115
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 115);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 115);
 insert into permission_to_role (role_id, permission_id) values (1, 115);
 
 -- Permission: 116 - Process User Group Assignment
---   -> GroupTypes: All except Private & Member
+--   -> GroupTypes: All except Private
 --   -> Roles:      1 Owner
 --                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 116);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 116);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 116);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 116);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 116);

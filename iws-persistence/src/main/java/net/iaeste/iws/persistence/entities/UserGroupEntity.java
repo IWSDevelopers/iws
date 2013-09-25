@@ -45,37 +45,34 @@ import java.util.Map;
  * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "usergroup.findById",
+        @NamedQuery(name = "usergroup.findById",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.id = :id"),
-        @NamedQuery(
-                name = "usergroup.findByExternalId",
+        @NamedQuery(name = "usergroup.findByExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.externalId = :eid"),
-        @NamedQuery(
-                name = "usergroup.findMemberByGroupAndUser",
+        @NamedQuery(name = "usergroup.findMemberByGroupAndUser",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
+                        "where ug.group.groupType.grouptype = 'MEMBER'" +
                         "  and ug.group.id = :gid" +
                         "  and ug.user.externalId = :euid"),
-        @NamedQuery(
-                name = "usergroup.findByGroupAndUser",
+        @NamedQuery(name = "usergroup.findByGroupAndUser",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.id = :gid" +
                         "  and ug.user.id= :uid"),
-        @NamedQuery(
-                name = "usergroup.findMemberByUserExternalId",
+        @NamedQuery(name = "usergroup.findMemberByUserExternalId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
+                        "where ug.group.groupType.grouptype = 'MEMBER'" +
                         "  and ug.user.externalId = :euid"),
-        @NamedQuery(
-                name = "usergroup.findMemberByUserId",
+        @NamedQuery(name = "usergroup.findMemberByUserId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.groupType.grouptype = 'MEMBERS'" +
+                        "where ug.group.groupType.grouptype = 'MEMBER'" +
                         "  and ug.user.id = :uid"),
-        @NamedQuery(
-                name = "usergroup.findGroupMembers",
+        @NamedQuery(name = "userGroup.findByGroupIdAndExternalUserId",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.id = :gid" +
+                        "  and ug.user.externalId = :euid"),
+        @NamedQuery(name = "usergroup.findGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.id = :gid")
 })

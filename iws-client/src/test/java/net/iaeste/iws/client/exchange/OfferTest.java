@@ -105,6 +105,27 @@ public final class OfferTest extends AbstractTest {
         assertThat(failing.getMessage(), containsString("An Offer with the Reference Number PL-2014-123456-X already exists."));
     }
 
+    @Test
+    public void testDuplicatingOffer() {
+        final Offer offer = TestData.prepareFullOffer("PL-2013-123457-X", "Poland A/S", "PL");
+        final ProcessOfferRequest request = new ProcessOfferRequest();
+
+        // Save our first offer.
+        request.setOffer(offer);
+        final OfferResponse initial = exchange.processOffer(token, request);
+        assertThat(initial.isOk(), is(true));
+        assertThat(initial.getOffer(), is(not(nullValue())));
+        assertThat(initial.getOffer().getId(), is(not(nullValue())));
+
+        // Now, let's duplicate the Offer, and give it a new RefNo
+        final Offer duplicate = initial.getOffer();
+        duplicate.setRefNo("PL-2013-123458-Y");
+        duplicate.setId(null);
+        request.setOffer(duplicate);
+        final OfferResponse duplication = exchange.processOffer(token, request);
+        assertThat(duplication.isOk(), is(true));
+    }
+
     /**
      * Trac Bug report #418, indicates that the Exchange Transformer was faulty,
      * and thereby causing problems with updating an existing Offer.

@@ -19,12 +19,19 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.CreateUserRequest;
+import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
+import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
+import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
@@ -33,6 +40,7 @@ import org.junit.Test;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
+ * @noinspection InstanceMethodNamingConvention
  */
 public final class UserGroupTest extends AbstractAdministration {
 
@@ -42,6 +50,7 @@ public final class UserGroupTest extends AbstractAdministration {
     @Override
     public void setup() {
         token = login("denmark@iaeste.dk", "denmark");
+        spy.clear();
     }
 
     /**
@@ -54,7 +63,7 @@ public final class UserGroupTest extends AbstractAdministration {
 
     @Test
     public void testAddingUserToNationalGroup() {
-        CreateUserRequest createUserRequest = new CreateUserRequest();
+        final CreateUserRequest createUserRequest = new CreateUserRequest();
         createUserRequest.setUsername("user@iaeste.dk");
         createUserRequest.setFirstname("Firstname");
         createUserRequest.setLastname("Lastname");
@@ -70,7 +79,7 @@ public final class UserGroupTest extends AbstractAdministration {
         userGroup.setGroup(nationalGroup);
         userGroup.setUser(createUserResponse.getUser());
         userGroup.setRole(fetchRoleResponse.getRoles().get(1));
-        UserGroupAssignmentRequest request = new UserGroupAssignmentRequest(userGroup);
+        final UserGroupAssignmentRequest request = new UserGroupAssignmentRequest(userGroup);
         final Fallible response = client.processUserGroupAssignment(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
@@ -80,5 +89,97 @@ public final class UserGroupTest extends AbstractAdministration {
         final Fallible deleteResponse = client.processUserGroupAssignment(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
         assertThat(deleteResponse.isOk(), is(true));
+    }
+
+    @Test
+    public void testChangingOwnershipOfLocalCommittee() {
+        final User user = createAndActiveUser(token, "alfa@iaeste.dk", "Alfa", "Beta");
+        final Group group = createGroup(token, GroupType.LOCAL, "LC Copenhagen");
+
+        final OwnerRequest request = new OwnerRequest(group, user);
+        final Fallible response = client.changeGroupOwner(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(true));
+        final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getId());
+        groupRequest.setFetchUsers(true);
+        final FetchGroupResponse groupResponse = client.fetchGroup(token, groupRequest);
+        assertThat(groupResponse.isOk(), is(true));
+        assertThat(groupResponse.getUsers().size(), is(2));
+    }
+
+    @Test
+    public void testChangingNationalSecretaryToNewMember() {
+        final User user = createUser(token, "beta@iaeste.dk", "Beta", "Alfa");
+        final Group group = findNationalGroup(token);
+
+        final OwnerRequest request = new OwnerRequest(group, user);
+        final Fallible response = client.changeGroupOwner(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
+        assertThat(response.getMessage(), is("Cannot reassign ownership to an inactive person."));
+    }
+
+    @Test
+    public void testChangingNationalSecretaryToActiveMember() {
+        // We need to use a different token, since this test will otherwise
+        // cause other tests to fail!
+        final AuthenticationToken alternativeToken = login("sweden@iaeste.se", "sweden");
+        final User user = createAndActiveUser(alternativeToken, "gamma@iaeste.dk", "Gamma", "Beta");
+        final Group group = findNationalGroup(alternativeToken);
+
+        // Change the Owner
+        final OwnerRequest request = new OwnerRequest(group, user);
+        final Fallible response = client.changeGroupOwner(alternativeToken, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(true));
+
+        // Ensure that we now have 2 members
+        final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getId());
+        groupRequest.setFetchUsers(true);
+        final FetchGroupResponse groupResponse = client.fetchGroup(alternativeToken, groupRequest);
+        assertThat(groupResponse.isOk(), is(true));
+        assertThat(groupResponse.getUsers().size(), is(2));
+
+        // And just to verify that we're no longer the owner - we're attempting
+        // to change the Ownership again, and this time expecting an
+        // Authorization error
+        final Fallible failedResponse = client.changeGroupOwner(token, request);
+        assertThat(failedResponse, is(not(nullValue())));
+        assertThat(failedResponse.isOk(), is(false));
+        assertThat(failedResponse.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
+        assertThat(failedResponse.getMessage(), is("User is not permitted to perform actions of type: CHANGE_GROUP_OWNER"));
+        logout(alternativeToken);
+    }
+
+    @Test
+    public void testChangingNationalSecretaryToSelf() {
+        final FetchGroupRequest groupRequest = new FetchGroupRequest(GroupType.NATIONAL);
+        groupRequest.setFetchUsers(true);
+        final FetchGroupResponse groupResponse = client.fetchGroup(token, groupRequest);
+        final Group group = groupResponse.getGroup();
+        final User user = groupResponse.getUsers().get(0);
+
+        final OwnerRequest request = new OwnerRequest(group, user);
+        final Fallible response = client.changeGroupOwner(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
+        assertThat(response.getMessage(), is("Cannot reassign ownership to the current Owner."));
+    }
+
+    @Test
+    public void testChangingNationalSecretatyToNonMember() {
+        final AuthenticationToken newToken = login("norway@iaeste.no", "norway");
+        final User user = createAndActiveUser(newToken, "member@iaeste.no", "New", "Member");
+        logout(newToken);
+        final Group group = findNationalGroup(token);
+
+        final OwnerRequest request = new OwnerRequest(group, user);
+        final Fallible response = client.changeGroupOwner(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.NOT_PERMITTED));
+        assertThat(response.getMessage(), is("Cannot reassign National Secretary to a person who is not a member from Denmark."));
     }
 }

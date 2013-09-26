@@ -21,14 +21,12 @@ import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
-import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -51,7 +49,6 @@ import org.junit.Test;
  */
 public final class UserAccountTest extends AbstractAdministration {
 
-    //private static final String AUSTRIA_MEMBER_GROUP = "2cc7e1bb-01e8-43a2-9643-2e964cbd41c5";
     private final Administration administration = new AdministrationClient();
 
     @Override
@@ -244,35 +241,5 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(response.isOk(), is(true));
         // There should be a total of 5 roles for this Group
         assertThat(response.getRoles().size(), is(5));
-    }
-
-    @Test
-    @Ignore("Test is currently being ignored, since the logic is being re-constructed.")
-    public void testAddingUserToMemberGroup() {
-        final String memberGroupId = findMemberGroup(token).getId();
-        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(memberGroupId);
-        final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
-        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest();
-        final Fallible userGroupResponse = administration.processUserGroupAssignment(token, userGroupAssignmentRequest);
-
-        assertThat(userGroupResponse, is(not(nullValue())));
-        assertThat(userGroupResponse.isOk(), is(false));
-        assertThat(userGroupResponse.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
-        assertThat(userGroupResponse.getMessage(), is("User is not permitted to perform actions of type: PROCESS_USER_GROUP_ASSIGNMENT"));
-    }
-
-    @Test
-    @Ignore("Test is currently being ignored, since the logic is being re-constructed.")
-    public void testAddingUserToGroup() {
-        final Group nsGroup = findNationalGroup(token);
-        final FetchGroupRequest fetchGroupRequest = new FetchGroupRequest(nsGroup.getId());
-        final FetchGroupResponse fetchGroupResponse = administration.fetchGroup(token, fetchGroupRequest);
-        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest();
-        final Fallible userGroupResponse = administration.processUserGroupAssignment(token, userGroupAssignmentRequest);
-
-        assertThat(userGroupResponse, is(not(nullValue())));
-        assertThat(userGroupResponse.isOk(), is(false));
-        assertThat(userGroupResponse.getError(), is(IWSErrors.NOT_IMPLEMENTED));
-        assertThat(userGroupResponse.getMessage(), is("Method pending implementation."));
     }
 }

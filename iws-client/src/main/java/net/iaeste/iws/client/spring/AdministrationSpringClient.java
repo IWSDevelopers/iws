@@ -23,6 +23,7 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -162,8 +163,8 @@ public final class AdministrationSpringClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeUserGroupOwner(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
-        return client.changeUserGroupOwner(token, request);
+    public Fallible changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
+        return client.changeGroupOwner(token, request);
     }
 
     /**

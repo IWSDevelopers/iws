@@ -16,7 +16,6 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
@@ -36,6 +35,7 @@ import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.Authentication;
@@ -136,7 +136,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
                 response = new FetchOffersResponse(findSharedOffers(authentication));
                 break;
             default:
-                response = new FetchOffersResponse(IWSErrors.NOT_PERMITTED, "The search type is not permitted");
+                throw new PermissionException("The search type is not permitted.");
         }
 
         return response;

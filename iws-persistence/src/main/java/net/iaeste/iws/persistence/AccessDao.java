@@ -128,6 +128,7 @@ public interface AccessDao extends BasicDao {
 
     RoleEntity findRoleByUserAndGroup(String externalUserId, GroupEntity group);
 
+    UserEntity findActiveUserByExternalId(String externalUserId);
     UserEntity findUserByExternalId(String externalUserId);
     UserGroupEntity findMemberByGroupAndUser(GroupEntity group, UserEntity user);
 
@@ -147,6 +148,8 @@ public interface AccessDao extends BasicDao {
     UserGroupEntity findMemberGroupByUser(UserEntity user);
 
     UserGroupEntity findByGroupAndExternalUserId(GroupEntity group, String externalUserId);
+
+    UserGroupEntity findByGroupAndUser(GroupEntity group, UserEntity user);
 
     GroupTypeEntity findGroupTypeByType(GroupType groupType);
 

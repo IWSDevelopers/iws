@@ -22,6 +22,7 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -190,7 +191,7 @@ public interface Administration {
      * @param request Fetch Group Request Object
      * @return Standard Error Object
      */
-    Fallible changeUserGroupOwner(AuthenticationToken token, UserGroupAssignmentRequest request);
+    Fallible changeGroupOwner(AuthenticationToken token, OwnerRequest request);
 
     Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
 

@@ -27,6 +27,7 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -321,26 +322,26 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeUserGroupOwner(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+    public Fallible changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting changeUserGroupOwner()"));
+            log.trace(formatLogMessage(token, "Starting changeGroupOwner()"));
         }
         Fallible response;
 
         try {
             verify(request);
-            token.setGroupId(request.getUserGroup().getGroup().getId());
+            token.setGroupId(request.getGroup().getId());
             final Authentication authentication = verifyAccess(token, Permission.CHANGE_GROUP_OWNER);
 
             final GroupService service = factory.prepareGroupService();
             service.changeUserGroupOwner(authentication, request);
-            response = new FetchGroupResponse();
+            response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FetchGroupResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished changeUserGroupOwner()"));
+            log.trace(formatLogMessage(token, "Finished changeGroupOwner()"));
         }
         return response;
     }
@@ -362,7 +363,7 @@ public final class AdministrationController extends CommonController implements 
 
             final GroupService service = factory.prepareGroupService();
             service.processUserGroupAssignment(authentication, request);
-            response = new FetchGroupResponse();
+            response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FetchGroupResponse(e.getError(), e.getMessage());
         }

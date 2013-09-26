@@ -362,6 +362,17 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public UserEntity findActiveUserByExternalId(final String externalUserId) {
+        final Query query = entityManager.createNamedQuery("user.findActiveByExternalId");
+        query.setParameter("euid", externalUserId);
+
+        return findSingleResult(query, "user");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserEntity findUserByExternalId(final String externalUserId) {
         final Query query = entityManager.createNamedQuery("user.findByExternalId");
         query.setParameter("euid", externalUserId);
@@ -423,6 +434,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("userGroup.findByGroupIdAndExternalUserId");
         query.setParameter("gid", group.getId());
         query.setParameter("euid", externalUserId);
+
+        return findSingleResult(query, "userGroup");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserGroupEntity findByGroupAndUser(final GroupEntity group, final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("userGroup.findByGroupIdAndUserId");
+        query.setParameter("group", group);
+        query.setParameter("user", user);
 
         return findSingleResult(query, "userGroup");
     }

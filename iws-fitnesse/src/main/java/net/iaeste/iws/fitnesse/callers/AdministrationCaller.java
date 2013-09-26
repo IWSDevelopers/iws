@@ -23,6 +23,7 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
+import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
@@ -162,9 +163,9 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible changeUserGroupOwner(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+    public Fallible changeGroupOwner(final AuthenticationToken token, final OwnerRequest request) {
         try {
-            return caller.changeUserGroupOwner(token, request);
+            return caller.changeGroupOwner(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

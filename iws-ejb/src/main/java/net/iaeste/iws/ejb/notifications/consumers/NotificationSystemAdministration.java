@@ -22,6 +22,7 @@ import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
+import net.iaeste.iws.common.utils.StringUtils;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.NotificationDao;
@@ -294,12 +295,12 @@ public class NotificationSystemAdministration implements Observer {
 
             case NATIONAL:
             case SAR:
-                name = prepareMailingListName(countryName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
                 break;
 
             case INTERNATIONAL:
             case REGIONAL:
-                name = prepareMailingListName(groupName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
                 break;
         }
 
@@ -307,37 +308,32 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private String getPrivateListAddress(final GroupType type, final String groupName, final String countryName) {
+        //TODO possible conflict in same addresses?
         String name = "";
         switch (type) {
             //TODO general secretary
 
             case MEMBER:
-                name = prepareMailingListName(countryName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
                 break;
 
             case INTERNATIONAL:
             case REGIONAL:
-                name = prepareMailingListName(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
                 break;
 
             case NATIONAL:
             case SAR:
-                name = prepareMailingListName(countryName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
                 break;
 
             case LOCAL:
             case WORKGROUP:
-                name = prepareMailingListName(countryName) + '.' + prepareMailingListName(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '.' + StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
                 break;
         }
 
         return name;
-    }
-
-    private String prepareMailingListName(final String name) {
-        String result = name.replace(' ', '_');
-        //any other replacement
-        return result;
     }
 
     @Override

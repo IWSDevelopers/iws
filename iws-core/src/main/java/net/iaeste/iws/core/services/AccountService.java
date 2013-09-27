@@ -35,6 +35,7 @@ import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.PasswordGenerator;
+import net.iaeste.iws.common.utils.StringUtils;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -325,7 +326,7 @@ public final class AccountService extends CommonService<AccessDao> {
     }
 
     private String generateUserAlias(final CreateUserRequest request) throws IWSException {
-        final String name = request.getFirstname() + '.' + request.getLastname();
+        final String name = StringUtils.convertToAsciiMailAlias(request.getFirstname() + '.' + request.getLastname());
         final String address = '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
         final String alias;
 

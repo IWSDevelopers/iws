@@ -96,7 +96,6 @@ public final class Employer extends AbstractVerification {
 
     public void setId(final String id) throws IllegalArgumentException {
         ensureValidId("id", id);
-
         this.id = id;
     }
 
@@ -105,6 +104,7 @@ public final class Employer extends AbstractVerification {
     }
 
     public void setGroup(final Group group) {
+        ensureVerifiable("group", group);
         this.group = new Group(group);
     }
 
@@ -114,7 +114,6 @@ public final class Employer extends AbstractVerification {
 
     public void setName(final String name) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("name", name, FIELD_LENGTH);
-
         this.name = name;
     }
 
@@ -124,7 +123,6 @@ public final class Employer extends AbstractVerification {
 
     public void setBusiness(final String business) throws IllegalArgumentException {
         ensureNotTooLong("business", business, FIELD_LENGTH);
-
         this.business = business;
     }
 
@@ -134,7 +132,6 @@ public final class Employer extends AbstractVerification {
 
     public void setDepartment(final String department) throws IllegalArgumentException {
         ensureNotTooLong("department", department, FIELD_LENGTH);
-
         this.department = department;
     }
 
@@ -160,7 +157,6 @@ public final class Employer extends AbstractVerification {
 
     public void setWebsite(final String website) throws IllegalArgumentException {
         ensureNotTooLong("website", website, FIELD_LENGTH);
-
         this.website = website;
     }
 
@@ -170,7 +166,6 @@ public final class Employer extends AbstractVerification {
 
     public void setWorkingPlace(final String workingPlace) throws IllegalArgumentException {
         ensureNotTooLong("workingPlace", workingPlace, FIELD_LENGTH);
-
         this.workingPlace = workingPlace;
     }
 
@@ -188,7 +183,6 @@ public final class Employer extends AbstractVerification {
 
     public void setNearestAirport(final String nearestAirport) throws IllegalArgumentException {
         ensureNotTooLong("nearestAirport", nearestAirport, FIELD_LENGTH);
-
         this.nearestAirport = nearestAirport;
     }
 
@@ -198,7 +192,6 @@ public final class Employer extends AbstractVerification {
 
     public void setNearestPublicTransport(final String nearestPublicTransport) throws IllegalArgumentException {
         ensureNotTooLong("nearestPublicTransport", nearestPublicTransport, FIELD_LENGTH);
-
         this.nearestPublicTransport = nearestPublicTransport;
     }
 

@@ -221,28 +221,32 @@ public final class Offer extends AbstractVerification {
 
     public void setStudyLevels(final Set<StudyLevel> studyLevels) throws IllegalArgumentException {
         ensureNotNull("studyLevels", studyLevels);
-        this.studyLevels = studyLevels;
+        ensureNotTooLong("studyLevels", studyLevels.toString(), 25);
+        this.studyLevels = copy(studyLevels);
     }
 
     public Set<StudyLevel> getStudyLevels() {
-        return studyLevels;
+        return copy(studyLevels);
     }
 
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
         ensureNotNull("fieldOfStudies", fieldOfStudies);
-        this.fieldOfStudies = fieldOfStudies;
+        ensureNotTooLong("fieldOfStudies", fieldOfStudies.toString(), 1000);
+        this.fieldOfStudies = copy(fieldOfStudies);
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
-        return fieldOfStudies;
+        return copy(fieldOfStudies);
     }
 
     public void setSpecializations(final Set<String> specializations) {
-        this.specializations = specializations;
+        ensureNotNull("specializations", specializations);
+        ensureNotTooLong("specializations", specializations.toString(), 1000);
+        this.specializations = copy(specializations);
     }
 
     public Set<String> getSpecializations() {
-        return specializations;
+        return copy(specializations);
     }
 
     public void setPreviousTrainingRequired(final Boolean previousTrainingRequired) {
@@ -279,27 +283,27 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setPeriod1(final DatePeriod period1) {
-        this.period1 = period1;
+        this.period1 = new DatePeriod(period1);
     }
 
     public DatePeriod getPeriod1() {
-        return period1;
+        return new DatePeriod(period1);
     }
 
     public void setPeriod2(final DatePeriod period2) {
-        this.period2 = period2;
+        this.period2 = new DatePeriod(period2);
     }
 
     public DatePeriod getPeriod2() {
-        return period2;
+        return new DatePeriod(period2);
     }
 
     public void setUnavailable(final DatePeriod unavailable) {
-        this.unavailable = unavailable;
+        this.unavailable = new DatePeriod(unavailable);
     }
 
     public DatePeriod getUnavailable() {
-        return unavailable;
+        return new DatePeriod(unavailable);
     }
 
     public void setLanguage1(final Language language1) {
@@ -439,11 +443,11 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
-        this.nominationDeadline = nominationDeadline;
+        this.nominationDeadline = copy(nominationDeadline);
     }
 
     public Date getNominationDeadline() {
-        return nominationDeadline;
+        return copy(nominationDeadline);
     }
 
     public void setNumberOfHardCopies(final Integer numberOfHardCopies) {

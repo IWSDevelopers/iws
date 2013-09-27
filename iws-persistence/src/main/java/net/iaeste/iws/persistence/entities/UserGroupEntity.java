@@ -347,6 +347,7 @@ public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable 
                 fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());
                 fields.put(NotificationField.FIRSTNAME, user.getFirstname());
                 fields.put(NotificationField.LASTNAME, user.getLastname());
+                fields.put(NotificationField.EMAIL, user.getUsername());
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");

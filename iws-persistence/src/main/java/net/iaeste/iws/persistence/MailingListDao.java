@@ -17,14 +17,13 @@ package net.iaeste.iws.persistence;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
 
-import java.util.List;
-
 /**
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 public interface MailingListDao extends BasicDao {
+
     /**
      * Finds a public Mailing List based on the given external id
      *
@@ -50,5 +49,4 @@ public interface MailingListDao extends BasicDao {
      * @return Found MailignListMembership or null
      */
     MailingListMembershipEntity findMailingListSubscription(Long listId, String emailAddress);
-
 }

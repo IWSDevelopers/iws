@@ -107,6 +107,7 @@ public final class GroupService {
             } else {
                 throw new PermissionException("Not allowed to create a sub-group of type " + type);
             }
+            notifications.notify(authentication, entity, NotificationType.NEW_GROUP);
         } else {
             // We're fetching the Group with a permission check, to ensure that
             // a user is not attempting to force update different groups. The
@@ -123,7 +124,7 @@ public final class GroupService {
                     throw new IdentificationException("Another Group exist with a similar name " + name);
                 }
             } else {
-                throw new IWSException(IWSErrors.NOT_PERMITTED, "It is not permitted to update Groups of type " + type + " with this request.");
+                throw new PermissionException("It is not permitted to update Groups of type " + type + " with this request.");
             }
         }
 

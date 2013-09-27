@@ -107,8 +107,6 @@ public final class AccountService extends CommonService<AccessDao> {
 
                 notifications.notify(authentication, user, NotificationType.NEW_USER);
                 notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
-                //TODO @Kim - why is there PROCESS_MAILING_LIST? it's supposed to be for creating/changing mailing list itself, not to manager subscribtion
-                //notifications.notify(authentication, authentication.getGroup(), NotificationType.PROCESS_MAILING_LIST);
             }
 
             notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);

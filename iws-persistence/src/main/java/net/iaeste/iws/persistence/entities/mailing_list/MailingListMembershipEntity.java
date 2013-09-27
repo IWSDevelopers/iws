@@ -15,7 +15,6 @@
 package net.iaeste.iws.persistence.entities.mailing_list;
 
 import net.iaeste.iws.persistence.entities.IWSEntity;
-import net.iaeste.iws.persistence.entities.Updateable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,12 +36,11 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries({
+@NamedQueries(
         @NamedQuery(name = "mailing_list.findListSubsciptionByUserAddressAndListId",
                 query = "select mlm from MailingListMembershipEntity mlm " +
                         "where mlm.mailingList.id = :lid " +
-                        "  and mlm.member = :userAddress ")
-})
+                        "  and mlm.member = :userAddress "))
 @Entity
 @Table(name = "mailing_list_membership")
 public class MailingListMembershipEntity implements IWSEntity {
@@ -100,18 +98,19 @@ public class MailingListMembershipEntity implements IWSEntity {
         return member;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Date getCreated() {
         return created;
     }
-
-    // =========================================================================
-    // Other Methods required for this Entity
-    // =========================================================================
-
 }

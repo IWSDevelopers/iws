@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities.mailing_list;
 
-import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 
 import javax.persistence.Column;
@@ -68,12 +67,12 @@ public class MailingListEntity implements Updateable<MailingListEntity> {
     private boolean active = true;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false, updatable = false)
-    private Date created = new Date();
-
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     // =========================================================================
     // Entity Setters & Getters
@@ -93,16 +92,6 @@ public class MailingListEntity implements Updateable<MailingListEntity> {
     @Override
     public Long getId() {
         return id;
-    }
-
-    @Override
-    public void setCreated(final Date created) {
-        this.created = created;
-    }
-
-    @Override
-    public Date getCreated() {
-        return created;
     }
 
     /**
@@ -129,16 +118,6 @@ public class MailingListEntity implements Updateable<MailingListEntity> {
         return privateList;
     }
 
-    @Override
-    public void setModified(final Date modified) {
-        this.modified = modified;
-    }
-
-    @Override
-    public Date getModified() {
-        return modified;
-    }
-
     public void setListAddress(final String listAddress) {
         this.listAddress = listAddress;
     }
@@ -153,6 +132,38 @@ public class MailingListEntity implements Updateable<MailingListEntity> {
 
     public boolean isActive() {
         return active;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setModified(final Date modified) {
+        this.modified = modified;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getModified() {
+        return modified;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCreated(final Date created) {
+        this.created = created;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getCreated() {
+        return created;
     }
 
     // =========================================================================

@@ -205,6 +205,8 @@ public class NotificationEmailSender implements Observer {
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts()+1);
             } catch (IOException |ClassNotFoundException ignored) {
                 //TODO write to log and skip the task or throw an exception?
+                boolean processed = false;
+                dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts()+1);
             }
         }
     }
@@ -258,6 +260,7 @@ public class NotificationEmailSender implements Observer {
         final List<UserEntity> result = new ArrayList<>();
         switch (type) {
             case ACTIVATE_USER:
+            case NEW_GROUP_OWNER:
             case RESET_PASSWORD:
             case RESET_SESSION:
             case UPDATE_USERNAME:

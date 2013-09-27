@@ -137,6 +137,7 @@ public class NotificationSystemAdministration implements Observer {
         notificationTypes.add(NotificationType.UPDATE_USERNAME);
         notificationTypes.add(NotificationType.RESET_PASSWORD);
         notificationTypes.add(NotificationType.RESET_SESSION);
+        notificationTypes.add(NotificationType.NEW_GROUP_OWNER);
 
         if (user != null) {
             for (final NotificationType notificationType : notificationTypes) {

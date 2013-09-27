@@ -25,6 +25,7 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
@@ -239,7 +240,6 @@ public final class GroupService {
                 // As the NS/GS aspects are gone, we can deal with the actual
                 // change just as with any other group
                 changeGroupOwner(authentication, user, group, request.getTitle());
-                notifications.notify(authentication, group, NotificationType.NEW_GROUP_OWNER);
             } else {
                 throw new PermissionException("Cannot reassign ownership to an inactive person.");
             }
@@ -290,6 +290,9 @@ public final class GroupService {
         // Persist the two Entities
         dao.persist(authentication, newOwner);
         dao.persist(authentication, oldOwner);
+
+        notifications.notify(authentication, newOwner, NotificationType.NEW_GROUP_OWNER);
+        notifications.notify(authentication, newOwner, NotificationType.CHANGE_IN_GROUP_MEMBERS);
     }
 
     /**

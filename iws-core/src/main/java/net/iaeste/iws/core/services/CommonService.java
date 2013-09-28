@@ -15,10 +15,14 @@
 package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.Person;
 import net.iaeste.iws.core.exceptions.PermissionException;
+import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
 
@@ -39,12 +43,53 @@ public class CommonService<T extends BasicDao> {
         this.dao = dao;
     }
 
-    protected PersonEntity processPerson(final PersonEntity givenPerson) {
-        return null;
+    /**
+     * Generally speaking, if the Id is undefined, a new Entity is created. If
+     * there are changes, then it is assumed that the third parameter is set,
+     * otherwise no actions are made.
+     *
+     * @param authentication User & Group information
+     * @param entity         Entity to persist
+     * @param persons        Optional Person information, for updates
+     */
+    protected void processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
+        final Person person = getFirstObject(persons);
+
+        // First, deal with the internal Address
+        final AddressEntity address = entity.getAddress();
+        if (address != null) {
+            processAddress(authentication, entity.getAddress(), person.getAddress());
+        }
+
+        // Now, we'll persist the Person
+        if (entity.getId() == null) {
+            dao.persist(authentication, entity);
+        } else if (person != null) {
+            final PersonEntity newEntity = CommonTransformer.transform(person);
+            dao.persist(authentication, entity, newEntity);
+        }
     }
 
-    protected AddressEntity processAddress(final AddressEntity givenAddress) {
-        return null;
+    /**
+     * Generally speaking, if the Id is undefined, a new Entity is created. If
+     * there are changes, then it is assumed that the third parameter is set,
+     * otherwise no actions are made.
+     *
+     * @param authentication User & Group information
+     * @param entity         Entity to persist
+     * @param addresses      Optional Address information, for updates
+     */
+    protected void processAddress(final Authentication authentication, final AddressEntity entity, final Address... addresses) {
+        final Address address = getFirstObject(addresses);
+
+        if (entity.getId() == null) {
+            final CountryEntity country = dao.findCountry(entity.getCountry().getCountryCode());
+            entity.setCountry(country);
+            dao.persist(authentication, entity);
+        } else if (address != null) {
+            final AddressEntity newEntity = CommonTransformer.transform(address);
+            dao.persist(authentication, entity, newEntity);
+        }
     }
 
     /**
@@ -71,5 +116,17 @@ public class CommonService<T extends BasicDao> {
         if (!authentication.getGroup().getId().equals(group.getId())) {
             throw new PermissionException("User is not member of the group " + group.getGroupName());
         }
+    }
+
+    private static <T> T getFirstObject(final T... objs) {
+        final T result;
+
+        if ((objs != null) && (objs.length == 1)) {
+            result = objs[0];
+        } else {
+            result = null;
+        }
+
+        return result;
     }
 }

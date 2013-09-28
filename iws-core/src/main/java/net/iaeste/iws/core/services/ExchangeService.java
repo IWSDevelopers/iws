@@ -18,7 +18,6 @@ import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
@@ -31,7 +30,6 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
@@ -41,17 +39,13 @@ import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
-import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
-import net.iaeste.iws.persistence.entities.AddressEntity;
-import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
@@ -61,10 +55,8 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -113,26 +105,6 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         }
 
         return entity;
-    }
-
-    /**
-     * Generally speaking, if the Id is undefined, a new Entity is created. If
-     * there are changes, then it is assumed that the third parameter is set,
-     * otherwise no actions are made.
-     *
-     * @param authentication User & Group information
-     * @param entity         Entity to persist
-     * @param address        Optional Address information, for updates
-     */
-    private void processAddress(final Authentication authentication, final AddressEntity entity, final Address... address) {
-        if (entity.getId() == null) {
-            final CountryEntity country = dao.findCountry(entity.getCountry().getCountryCode());
-            entity.setCountry(country);
-            dao.persist(authentication, entity);
-        } else if ((address != null) && (address.length == 1)) {
-            final AddressEntity newEntity = CommonTransformer.transform(address[0]);
-            dao.persist(authentication, entity, newEntity);
-        }
     }
 
     /**

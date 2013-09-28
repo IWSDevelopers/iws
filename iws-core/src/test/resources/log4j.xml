@@ -20,7 +20,7 @@
     </logger>
 
     <logger name="org.hibernate">
-        <level value="error" />
+        <level value="debug" />
         <appender-ref ref="console" />
     </logger>
 

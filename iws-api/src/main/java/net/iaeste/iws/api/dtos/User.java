@@ -53,11 +53,11 @@ public final class User extends AbstractDto {
     private String alias = null;
     private String firstname = null;
     private String lastname = null;
+    private Person person = null;
     private UserStatus status = null;
     private Privacy privacy = Privacy.PRIVATE;
     private String notifications = null;
     private String memberCountryId = null;
-    private Person person = null;
 
     // =========================================================================
     // Object Constructors
@@ -124,11 +124,11 @@ public final class User extends AbstractDto {
             alias = user.alias;
             firstname = user.firstname;
             lastname = user.lastname;
+            person = new Person(user.person);
             status = user.status;
             privacy = user.privacy;
             notifications = user.notifications;
             memberCountryId = user.memberCountryId;
-            person = new Person(user.person);
         }
     }
 
@@ -181,6 +181,15 @@ public final class User extends AbstractDto {
         return lastname;
     }
 
+    public void setPerson(final Person person) {
+        ensureNotNull("person", person);
+        this.person = person;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
     public void setStatus(final UserStatus status) {
         ensureNotNull("status", status);
         this.status = status;
@@ -214,15 +223,6 @@ public final class User extends AbstractDto {
 
     public String getMemberCountryId() {
         return memberCountryId;
-    }
-
-    public void setPerson(final Person person) {
-        ensureNotNull("person", person);
-        this.person = person;
-    }
-
-    public Person getPerson() {
-        return person;
     }
 
     // =========================================================================

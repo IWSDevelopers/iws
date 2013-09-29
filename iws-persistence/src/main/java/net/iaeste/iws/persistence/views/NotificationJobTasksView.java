@@ -81,7 +81,7 @@ public class NotificationJobTasksView extends AbstractView<NotificationJobTasksV
         this.attempts = attempts;
     }
 
-    public Integer getattempts() {
+    public Integer getAttempts() {
         return attempts;
     }
 

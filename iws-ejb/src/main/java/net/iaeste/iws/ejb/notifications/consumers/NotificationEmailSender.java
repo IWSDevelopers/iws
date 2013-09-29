@@ -202,11 +202,16 @@ public class NotificationEmailSender implements Observer {
                     processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
                 boolean processed = (processedStatus != NotificationProcessTaskStatus.ERROR);
-                dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts()+1);
+                dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
             } catch (IOException |ClassNotFoundException ignored) {
                 //TODO write to log and skip the task or throw an exception?
-                boolean processed = false;
-                dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts()+1);
+                final boolean processed = false;
+                dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
+            } catch (IWSException e) {
+                //prevent throwing IWSException out, it stops the timer to run this processing
+                final boolean processed = false;
+                dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
+                LOG.error("Error during notification processing", e);
             }
         }
     }

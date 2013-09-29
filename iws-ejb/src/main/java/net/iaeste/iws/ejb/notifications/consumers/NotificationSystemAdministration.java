@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
@@ -61,6 +62,8 @@ public class NotificationSystemAdministration implements Observer {
     private Long id = null;
     private static final Integer ATTEMPTS_LIMIT = 3;
 
+    private final EntityManager mailingListEntityManager;
+
     private final AccessDao accessDao;
     private final MailingListDao mailingListDao;
     private final NotificationDao notificationDao;
@@ -68,8 +71,10 @@ public class NotificationSystemAdministration implements Observer {
     public NotificationSystemAdministration(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager) {
         notificationDao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
-        //mailingListDao = new MailingListJpaDao(mailingEntityManager);
-        mailingListDao = new MailingListJpaDao(iwsEntityManager);
+        mailingListDao = new MailingListJpaDao(mailingEntityManager);
+//        mailingListDao = new MailingListJpaDao(iwsEntityManager);
+
+        mailingListEntityManager = mailingEntityManager;
     }
 
     /**
@@ -93,9 +98,16 @@ public class NotificationSystemAdministration implements Observer {
                     processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
                 final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
-                notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts() + 1);
+                notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
             } catch (IOException|ClassNotFoundException e) {
+                final boolean processed = false;
+                notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
                 log.error(e.getMessage(), e);
+            } catch (IWSException e) {
+                //prevent throwing IWSException out, it stops the timer to run this processing
+                final boolean processed = false;
+                notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
+                log.error("Error during notification processing", e);
             }
         }
     }
@@ -183,7 +195,8 @@ public class NotificationSystemAdministration implements Observer {
                 if (publicList != null) {
                     publicList.setListAddress(getPublicListAddress(groupType, groupName, countryName));
                     publicList.setModified(new Date());
-                    mailingListDao.persist(publicList);
+                    //mailingListDao.persist(publicList);
+                    mailingListEntityManager.persist(publicList);
                 } else {
                     log.error("Logic approach unclear: Modify non-existing list -> throw exception? ignore?");
                 }
@@ -195,7 +208,8 @@ public class NotificationSystemAdministration implements Observer {
                 if (privateList != null) {
                     privateList.setListAddress(getPrivateListAddress(groupType, groupName, countryName));
                     privateList.setModified(new Date());
-                    mailingListDao.persist(privateList);
+//                    mailingListDao.persist(privateList);
+                    mailingListEntityManager.persist(privateList);
                 } else {
                     log.error("This should not be possible. The mailinglist " + privateList.getListAddress() + " doesn't exist!");
                 }
@@ -211,7 +225,8 @@ public class NotificationSystemAdministration implements Observer {
         list.setListAddress(address);
         list.setPrivateList(privateList);
 
-        mailingListDao.persist(list);
+//        mailingListDao.persist(list);
+        mailingListEntityManager.persist(list);
     }
 
     private void updateMailingListSubscription(final String type, final String groupExternalId, final String emailAddress, final String userStatus, final String onPrivateList, final String onPublicList) {
@@ -240,7 +255,8 @@ public class NotificationSystemAdministration implements Observer {
         if (mailingList != null) {
             final MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(mailingList.getId(), emailAddress);
             if (subscription != null && !onList) {
-                mailingListDao.delete(subscription);
+//                mailingListDao.delete(subscription);
+                mailingListEntityManager.remove(subscription);
             } else if (subscription == null && onList) {
                 createListSubscription(mailingList, emailAddress);
             }
@@ -251,7 +267,8 @@ public class NotificationSystemAdministration implements Observer {
         final MailingListMembershipEntity subscription = new MailingListMembershipEntity();
         subscription.setMailingList(mailingList);
         subscription.setMember(emailAddress);
-        mailingListDao.persist(subscription);
+//        mailingListDao.persist(subscription);
+        mailingListEntityManager.persist(subscription);
     }
 
     private static boolean hasPublicList(final GroupType type) {

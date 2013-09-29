@@ -78,10 +78,10 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      *
      * @param mailingListEntityManager Transactional Entity Manager instance for mailing list database
      */
-//    @PersistenceContext(unitName = "mailingListDatabase")
-//    public void setMailingListEntityManager(final EntityManager mailingListEntityManager) {
-//        this.mailingListEntityManager = mailingListEntityManager;
-//    }
+    @PersistenceContext(unitName = "mailingListDatabase")
+    public void setMailingListEntityManager(final EntityManager mailingListEntityManager) {
+        this.mailingListEntityManager = mailingListEntityManager;
+    }
 
     /**
      * {@inheritDoc}
@@ -91,8 +91,8 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
 
-//        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, new NotificationMessageGeneratorFreemarker(), true);
-        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, iwsEntityManager, new NotificationMessageGeneratorFreemarker(), true);
+        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, new NotificationMessageGeneratorFreemarker(), true);
+//        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, iwsEntityManager, new NotificationMessageGeneratorFreemarker(), true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
 

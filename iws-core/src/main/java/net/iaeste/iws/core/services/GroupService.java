@@ -22,6 +22,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -397,8 +398,20 @@ public final class GroupService {
             given.setGroup(authentication.getGroup());
             given.setRole(role);
 
+            // Now set the information from the request
+            final UserGroup information = request.getUserGroup();
+            given.setTitle(information.getTitle());
+            given.setOnPublicList(information.isOnPublicList());
+            given.setOnPrivateList(information.isOnPrivateList());
+
+            // And save...
             dao.persist(given);
         } else {
+            // We're adding the new role here, and won't have history of the
+            // changes, since the normal merge method is a general purpose
+            // method. The role is not something we should allow being handled
+            // via a general purpose method, since it critical information.
+            existingEntity.setRole(role);
             dao.persist(authentication, existingEntity, given);
         }
     }

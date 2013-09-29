@@ -318,11 +318,10 @@ public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable 
      */
     @Override
     public void merge(final UserGroupEntity obj) {
-        if (obj != null) {
+        if ((obj != null) && (id != null) && id.equals(obj.id)) {
             title = obj.title;
             onPublicList = obj.onPublicList;
             onPrivateList = obj.onPrivateList;
-            role = obj.role;
         }
     }
 
@@ -336,8 +335,8 @@ public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable 
         switch (type) {
             case CHANGE_IN_GROUP_MEMBERS:
                 fields.put(NotificationField.ROLE, role.getRole());
-                fields.put(NotificationField.ON_PUBLIC_LIST, onPublicList.toString());
-                fields.put(NotificationField.ON_PRIVATE_LIST, onPrivateList.toString());
+                fields.put(NotificationField.ON_PUBLIC_LIST, String.valueOf(onPublicList));
+                fields.put(NotificationField.ON_PRIVATE_LIST, String.valueOf(onPrivateList));
                 fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());
                 fields.put(NotificationField.GROUP_EXTERNAL_ID, group.getExternalId());
                 fields.put(NotificationField.EMAIL, user.getAlias());

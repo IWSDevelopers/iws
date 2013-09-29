@@ -25,7 +25,6 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
@@ -400,7 +399,6 @@ public final class GroupService {
 
             dao.persist(given);
         } else {
-            given.setRole(role);
             dao.persist(authentication, existingEntity, given);
         }
     }

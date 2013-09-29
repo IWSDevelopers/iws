@@ -400,6 +400,7 @@ public final class GroupService {
 
             dao.persist(given);
         } else {
+            given.setRole(role);
             dao.persist(authentication, existingEntity, given);
         }
     }

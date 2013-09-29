@@ -318,10 +318,11 @@ public class UserGroupEntity implements Updateable<UserGroupEntity>, Notifiable 
      */
     @Override
     public void merge(final UserGroupEntity obj) {
-        if ((obj != null) && (id != null) && id.equals(obj.id)) {
+        if (obj != null) {
             title = obj.title;
             onPublicList = obj.onPublicList;
             onPrivateList = obj.onPrivateList;
+            role = obj.role;
         }
     }
 

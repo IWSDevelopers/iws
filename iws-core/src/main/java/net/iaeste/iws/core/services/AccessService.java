@@ -395,6 +395,7 @@ public final class AccessService extends CommonService<AccessDao> {
         userGroup.setId(view.getExternalUserGroupId());
         userGroup.setGroup(readGroup(view));
         userGroup.setRole(readRole(view));
+        userGroup.setTitle(view.getTitle());
 
         return userGroup;
     }
@@ -415,7 +416,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final Role role = new Role();
 
         role.setRoleId(view.getExternalRoleId());
-        role.setRoleName(view.getTitle() != null ? view.getTitle() : view.getRole());
+        role.setRoleName(view.getRole());
 
         return role;
     }
@@ -440,10 +441,8 @@ public final class AccessService extends CommonService<AccessDao> {
     }
 
     private static Authorization readFromSet(final UserGroup userGroup, final Map.Entry<String, Set<Permission>> set) {
-        final Group group = userGroup.getGroup();
-        final Role role = userGroup.getRole();
-        role.setPermissions(set.getValue());
+        userGroup.getRole().setPermissions(set.getValue());
 
-        return new Authorization(group, role);
+        return new Authorization(userGroup);
     }
 }

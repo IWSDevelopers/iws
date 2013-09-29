@@ -30,8 +30,7 @@ public final class Authorization implements Serializable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Group group = null;
-    private Role role = null;
+    private UserGroup userGroup = null;
 
     // =========================================================================
     // Object Constructors
@@ -47,12 +46,10 @@ public final class Authorization implements Serializable {
     /**
      * Default Constructor.
      *
-     * @param group Group
-     * @param role  Role with Permissions
+     * @param userGroup UserGroup
      */
-    public Authorization(final Group group, final Role role) {
-        setGroup(group);
-        setRole(role);
+    public Authorization(final UserGroup userGroup) {
+        setUserGroup(userGroup);
     }
 
     /**
@@ -65,28 +62,39 @@ public final class Authorization implements Serializable {
             throw new IllegalArgumentException("the authorization Object cannot be null.");
         }
 
-        setGroup(authorization.group);
-        setRole(role);
+        setUserGroup(authorization.userGroup);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setGroup(final Group group) {
-        this.group = new Group(group);
+    public void setUserGroup(final UserGroup userGroup) {
+        this.userGroup = new UserGroup(userGroup);
     }
 
+    public UserGroup getUserGroup() {
+        return new UserGroup(userGroup);
+    }
+
+    /**
+     * Please use the #getUserGroup method.
+     *
+     * @return Group from the UserGroup Object
+     */
+    @Deprecated
     public Group getGroup() {
-        return new Group(group);
+        return new Group(userGroup.getGroup());
     }
 
-    public void setRole(final Role role) {
-        this.role = new Role(role);
-    }
-
+    /**
+     * Please use the #getUserGroup method.
+     *
+     * @return Role from the UserGroup Object
+     */
+    @Deprecated
     public Role getRole() {
-        return new Role(role);
+        return new Role(userGroup.getRole());
     }
 
     // =========================================================================
@@ -103,12 +111,7 @@ public final class Authorization implements Serializable {
         }
 
         final Authorization that = (Authorization) obj;
-
-        if (group != null ? !group.equals(that.group) : that.group != null) {
-            return false;
-        }
-
-        return !(role != null ? !role.equals(that.role) : that.role != null);
+        return !(userGroup != null ? !userGroup.equals(that.userGroup) : that.userGroup != null);
     }
 
     /**
@@ -118,8 +121,7 @@ public final class Authorization implements Serializable {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (group != null ? group.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (role != null ? role.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (userGroup != null ? userGroup.hashCode() : 0);
 
         return hash;
     }
@@ -130,8 +132,7 @@ public final class Authorization implements Serializable {
     @Override
     public String toString() {
         return "Authorization{" +
-                "group='" + group + '\'' +
-                "role='" + role + '\'' +
+                "userGroup='" + userGroup + '\'' +
                 '}';
     }
 }

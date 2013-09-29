@@ -103,6 +103,7 @@ public final class TestData {
     public static final BigDecimal OFFER_LODGING_COST = new BigDecimal(250);
     public static final PaymentFrequency OFFER_LODGING_COST_FREQUENCY = PaymentFrequency.WEEKLY;
     public static final Date OFFER_NOMINATION_DEADLINE = INITIAL_DATE.plusDays(-30);
+    public static final String OFFER_ADDITIONAL_INFORMATION = "Offer Additional Information";
 
     static {
         final Set<String> specializations = new HashSet<>(2);
@@ -157,6 +158,7 @@ public final class TestData {
         offer.setLodgingCost(OFFER_LODGING_COST);
         offer.setLodgingCostFrequency(OFFER_LODGING_COST_FREQUENCY);
         offer.setNominationDeadline(OFFER_NOMINATION_DEADLINE);
+        offer.setAdditionalInformation(OFFER_ADDITIONAL_INFORMATION);
 
         return offer;
     }

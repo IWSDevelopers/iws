@@ -643,6 +643,21 @@ public final class OfferTest extends AbstractTest {
         }
     }
 
+    @Test
+    public void testAdditionalInformation() {
+        final String additionalInformatin = "My Additional stuff.";
+        final Offer offer = TestData.prepareFullOffer("PL-2014-456457-C", "Poland A/S", "PL");
+        offer.setAdditionalInformation(additionalInformatin);
+        final ProcessOfferRequest request = new ProcessOfferRequest();
+
+        request.setOffer(offer);
+        final OfferResponse response = exchange.processOffer(token, request);
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getOffer(), is(not(nullValue())));
+        assertThat(response.getOffer().getId(), is(not(nullValue())));
+        assertThat(response.getOffer().getAdditionalInformation(), is(additionalInformatin));
+    }
+
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
         // As the IWS is replacing the new Reference Number with the correct
         // year, the only valid information to go on is the running number.

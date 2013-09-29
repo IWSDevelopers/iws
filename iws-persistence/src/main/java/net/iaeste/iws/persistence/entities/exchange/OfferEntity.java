@@ -290,6 +290,10 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
     @Column(name = "number_of_hard_copies")
     private Integer numberOfHardCopies = null;
 
+    @Monitored(name="Offer Additional Information", level = MonitoringLevel.DETAILED)
+    @Column(name = "additional_information", length = 1000)
+    private String additionalInformation = null;
+
     @Monitored(name="Offer status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 10)
@@ -635,6 +639,14 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
         return numberOfHardCopies;
     }
 
+    public void setAdditionalInformation(final String additionalInformation) {
+        this.additionalInformation = additionalInformation;
+    }
+
+    public String getAdditionalInformation() {
+        return additionalInformation;
+    }
+
     public void setStatus(final OfferState status) {
         this.status = status;
     }
@@ -741,6 +753,7 @@ public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
             // Other things
             nominationDeadline = obj.nominationDeadline;
             numberOfHardCopies = obj.numberOfHardCopies;
+            additionalInformation = obj.additionalInformation;
             status = obj.status;
         }
     }

@@ -81,6 +81,7 @@ public final class ExchangeTransformer {
             result.setLodgingCost(offer.getLodgingCost());
             result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
+            result.setAdditionalInformation(offer.getAdditionalInformation());
             result.setStatus(offer.getStatus());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setNominationDeadline(CommonTransformer.convert(offer.getNominationDeadline()));
@@ -130,6 +131,7 @@ public final class ExchangeTransformer {
             result.setLodgingCostFrequency(entity.getLodgingCostFrequency());
             result.setNominationDeadline(CommonTransformer.convert(entity.getNominationDeadline()));
             result.setNumberOfHardCopies(entity.getNumberOfHardCopies());
+            result.setAdditionalInformation(entity.getAdditionalInformation());
             result.setStatus(entity.getStatus());
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));

@@ -109,6 +109,7 @@ create table offers (
     -- Other things
     nomination_deadline       date,
     number_of_hard_copies     integer,
+    additional_information    varchar(1000),
     status                    varchar(10),
     modified                  timestamp default now(),
     created                   timestamp default now(),

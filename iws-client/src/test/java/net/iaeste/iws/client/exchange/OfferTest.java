@@ -86,8 +86,9 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testDuplicateOffer() {
-        final Offer offer = TestData.prepareFullOffer("PL-2013-123456-X", "Poland A/S", "PL");
-        final Offer duplicate = TestData.prepareFullOffer("PL-2013-123456-X", "Poland A/S", "PL");
+        final String refno = "PL-2013-123ABC-R";
+        final Offer offer = TestData.prepareFullOffer(refno, "Poland A/S", "PL");
+        final Offer duplicate = TestData.prepareFullOffer(refno, "Poland A/S", "PL");
         final ProcessOfferRequest request = new ProcessOfferRequest();
 
         // Save our first offer.
@@ -102,12 +103,14 @@ public final class OfferTest extends AbstractTest {
         final OfferResponse failing = exchange.processOffer(token, request);
         assertThat(failing.isOk(), is(false));
         assertThat(failing.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
-        assertThat(failing.getMessage(), containsString("An Offer with the Reference Number PL-2014-123456-X already exists."));
+        // We're just checking part of the message, since the trace id & refno
+        // are not fixed values.
+        assertThat(failing.getMessage(), containsString("An Offer with the Reference Number"));
     }
 
     @Test
     public void testDuplicatingOffer() {
-        final Offer offer = TestData.prepareFullOffer("PL-2013-123457-X", "Poland A/S", "PL");
+        final Offer offer = TestData.prepareFullOffer("PL-2013-123457-C", "Poland A/S", "PL");
         final ProcessOfferRequest request = new ProcessOfferRequest();
 
         // Save our first offer.
@@ -119,7 +122,7 @@ public final class OfferTest extends AbstractTest {
 
         // Now, let's duplicate the Offer, and give it a new RefNo
         final Offer duplicate = initial.getOffer();
-        duplicate.setRefNo("PL-2013-123458-Y");
+        duplicate.setRefNo("PL-2013-123458-L");
         duplicate.setId(null);
         request.setOffer(duplicate);
         final OfferResponse duplication = exchange.processOffer(token, request);
@@ -132,7 +135,7 @@ public final class OfferTest extends AbstractTest {
      */
     @Test
     public void testUpdateExistingOffer() {
-        final Offer initialOffer = TestData.prepareFullOffer("PL-2013-654321-X", "Poland GmbH", "PL");
+        final Offer initialOffer = TestData.prepareFullOffer("PL-2013-654321-C", "Poland GmbH", "PL");
         final ProcessOfferRequest request = new ProcessOfferRequest();
         request.setOffer(initialOffer);
         final OfferResponse saveResponse = exchange.processOffer(token, request);

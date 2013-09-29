@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.api.constants.exchange;
 
 import java.util.regex.Pattern;
@@ -20,13 +19,20 @@ import java.util.regex.Pattern;
 /**
  * Exchange specific constants for the IW Services.
  *
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public interface IWSExchangeConstants {
 
-    String REFNO_FORMAT = "[A-Z]{2}-\\d{4}-\\d{6}(-[A-Z0-9])?";
+    /**
+     * From Trac: https://trac.iaeste.net/ticket/414#comment:10
+     * The reference number is not yet implemented 100%. The 6 char part should
+     * allow characters and the last part should state the type of the offer
+     * (R..reserved, C..COBE, L..limited). So the reg exp should look like this:
+     * [A-Z]{2}-[0-9]{4}-[A-Z0-9]{6}(-[RLC])?
+     */
+    String REFNO_FORMAT = "[A-Z]{2}-[0-9]{4}-[A-Z0-9]{6}(-[RLC])?";
     Pattern REFNO_PATTERN = Pattern.compile(REFNO_FORMAT);
 
     /**

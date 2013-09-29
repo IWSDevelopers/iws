@@ -22,6 +22,7 @@ import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
+import net.iaeste.iws.common.utils.StringUtils;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.NotificationDao;
@@ -33,6 +34,7 @@ import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.MailingListJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import net.iaeste.iws.persistence.views.NotificationJobTasksView;
+import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.io.ByteArrayInputStream;
@@ -53,6 +55,9 @@ import java.util.Set;
  * @noinspection ObjectAllocationInLoop
  */
 public class NotificationSystemAdministration implements Observer {
+
+    private static final Logger log = Logger.getLogger(NotificationSystemAdministration.class);
+
     private Long id = null;
     private static final Integer ATTEMPTS_LIMIT = 3;
 
@@ -87,39 +92,44 @@ public class NotificationSystemAdministration implements Observer {
                 if (fields != null) {
                     processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
-                final boolean processed = (processedStatus != NotificationProcessTaskStatus.ERROR);
+                final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
                 notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getattempts() + 1);
-            } catch (IOException|ClassNotFoundException ignored) {
-                //TODO write to log and skip the task or throw an exception?
+            } catch (IOException|ClassNotFoundException e) {
+                log.error(e.getMessage(), e);
             }
         }
     }
 
     private NotificationProcessTaskStatus processTask(final Map<NotificationField, String> fields, final NotificationType type) {
-        NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.NOT_FOR_ME;
+        final NotificationProcessTaskStatus status;
+
         switch (type) {
             case NEW_USER:
                 prepareNewUserNotificationSetting(fields.get(NotificationField.EMAIL));
-                ret = NotificationProcessTaskStatus.OK;
+                status = NotificationProcessTaskStatus.OK;
                 break;
             case USER_ACTIVATED:
                 prepareActivatedUserNotificationSetting(fields.get(NotificationField.EMAIL));
-                ret = NotificationProcessTaskStatus.OK;
+                status = NotificationProcessTaskStatus.OK;
                 break;
             case NEW_GROUP:
                 createGroupMailinglist(fields.get(NotificationField.GROUP_NAME), fields.get(NotificationField.COUNTRY_NAME), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID));
-                ret = NotificationProcessTaskStatus.OK;
+                status = NotificationProcessTaskStatus.OK;
                 break;
             case PROCESS_MAILING_LIST:
                 updateGroupMailingList(fields.get(NotificationField.GROUP_NAME), fields.get(NotificationField.COUNTRY_NAME), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID));
-                ret = NotificationProcessTaskStatus.OK;
+                status = NotificationProcessTaskStatus.OK;
                 break;
             case CHANGE_IN_GROUP_MEMBERS:
                 updateMailingListSubscription(fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID), fields.get(NotificationField.EMAIL), fields.get(NotificationField.USER_STATUS), fields.get(NotificationField.ON_PRIVATE_LIST), fields.get(NotificationField.ON_PUBLIC_LIST));
-                ret = NotificationProcessTaskStatus.OK;
+                status = NotificationProcessTaskStatus.OK;
                 break;
+            default:
+                // For all other cases
+                status = NotificationProcessTaskStatus.NOT_FOR_ME;
         }
-        return ret;
+
+        return status;
     }
 
     private void prepareNewUserNotificationSetting(final String username) {
@@ -132,7 +142,7 @@ public class NotificationSystemAdministration implements Observer {
 
     private void prepareActivatedUserNotificationSetting(final String username) {
         final UserEntity user = accessDao.findUserByUsername(username);
-        final Set<NotificationType> notificationTypes = new HashSet<>();
+        final Set<NotificationType> notificationTypes = new HashSet<>(16);
         notificationTypes.add(NotificationType.UPDATE_USERNAME);
         notificationTypes.add(NotificationType.RESET_PASSWORD);
         notificationTypes.add(NotificationType.RESET_SESSION);
@@ -149,50 +159,49 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private void createGroupMailinglist(final String groupName, final String countryName, final String type, final String groupExternalId) {
-        final GroupType groupType;
         try {
-            groupType = GroupType.valueOf(type);
-        } catch (IllegalArgumentException ignored) {
-            return;
-        }
+            final GroupType groupType = GroupType.valueOf(type);
 
-        if (hasPublicList(groupType)) {
-            createMailingList(groupExternalId, getPublicListAddress(groupType, groupName, countryName), false);
-        }
+            if (hasPublicList(groupType)) {
+                createMailingList(groupExternalId, getPublicListAddress(groupType, groupName, countryName), false);
+            }
 
-        if (hasPrivateList(groupType)) {
-            createMailingList(groupExternalId, getPrivateListAddress(groupType, groupName, countryName), false);
+            if (hasPrivateList(groupType)) {
+                createMailingList(groupExternalId, getPrivateListAddress(groupType, groupName, countryName), false);
+            }
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage(), e);
         }
     }
 
     private void updateGroupMailingList(final String groupName, final String countryName, final String type, final String groupExternalId) {
-        final GroupType groupType;
         try {
-            groupType = GroupType.valueOf(type);
-        } catch (IllegalArgumentException ignored) {
-            return;
-        }
+            final GroupType groupType = GroupType.valueOf(type);
 
-        if (hasPublicList(groupType)) {
-            final MailingListEntity publicList = mailingListDao.findPublicMailingList(groupExternalId);
-            if (publicList != null) {
-                publicList.setListAddress(getPublicListAddress(groupType, groupName, countryName));
-                publicList.setModified(new Date());
-                mailingListDao.persist(publicList);
-            } else {
-                //TODO trying to modify non-existing list -> throw exception? ignore?
+            if (hasPublicList(groupType)) {
+                final MailingListEntity publicList = mailingListDao.findPublicMailingList(groupExternalId);
+                if (publicList != null) {
+                    publicList.setListAddress(getPublicListAddress(groupType, groupName, countryName));
+                    publicList.setModified(new Date());
+                    mailingListDao.persist(publicList);
+                } else {
+                    log.error("Logic approach unclear: Modify non-existing list -> throw exception? ignore?");
+                }
             }
-        }
 
-        if (hasPrivateList(groupType)) {
-            final MailingListEntity privateList = mailingListDao.findPrivateMailingList(groupExternalId);
-            if (privateList != null) {
-                privateList.setListAddress(getPrivateListAddress(groupType, groupName, countryName));
-                privateList.setModified(new Date());
-                mailingListDao.persist(privateList);
-            } else {
-                //TODO trying to modify non-existing list -> throw exception? ignore?
+            if (hasPrivateList(groupType)) {
+                final MailingListEntity privateList = mailingListDao.findPrivateMailingList(groupExternalId);
+
+                if (privateList != null) {
+                    privateList.setListAddress(getPrivateListAddress(groupType, groupName, countryName));
+                    privateList.setModified(new Date());
+                    mailingListDao.persist(privateList);
+                } else {
+                    log.error("This should not be possible. The mailinglist " + privateList.getListAddress() + " doesn't exist!");
+                }
             }
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -206,25 +215,24 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private void updateMailingListSubscription(final String type, final String groupExternalId, final String emailAddress, final String userStatus, final String onPrivateList, final String onPublicList) {
-        final GroupType groupType;
         try {
-            groupType = GroupType.valueOf(type);
-        } catch (IllegalArgumentException ignored) {
-            return;
-        }
+            final GroupType groupType = GroupType.valueOf(type);
 
-        //only active users can be subscribed to mailing lists
-        final boolean subscribedToPublicList = onPublicList.equals("true") && UserStatus.ACTIVE.name().equals(userStatus);
-        final boolean subscribedToPrivateList = onPrivateList.equals("true") && UserStatus.ACTIVE.name().equals(userStatus);
+            //only active users can be subscribed to mailing lists
+            final boolean subscribedToPublicList = "true".equals(onPublicList) && UserStatus.ACTIVE.name().equals(userStatus);
+            final boolean subscribedToPrivateList = "true".equals(onPrivateList) && UserStatus.ACTIVE.name().equals(userStatus);
 
-        if (hasPublicList(groupType)) {
-            final MailingListEntity publicMailingList = mailingListDao.findPublicMailingList(groupExternalId);
-            updateListSubscription(publicMailingList, emailAddress, subscribedToPublicList);
-        }
+            if (hasPublicList(groupType)) {
+                final MailingListEntity publicMailingList = mailingListDao.findPublicMailingList(groupExternalId);
+                updateListSubscription(publicMailingList, emailAddress, subscribedToPublicList);
+            }
 
-        if (hasPrivateList(groupType)) {
-            final MailingListEntity privateMailingList = mailingListDao.findPrivateMailingList(groupExternalId);
-            updateListSubscription(privateMailingList, emailAddress, subscribedToPrivateList);
+            if (hasPrivateList(groupType)) {
+                final MailingListEntity privateMailingList = mailingListDao.findPrivateMailingList(groupExternalId);
+                updateListSubscription(privateMailingList, emailAddress, subscribedToPrivateList);
+            }
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -246,26 +254,31 @@ public class NotificationSystemAdministration implements Observer {
         mailingListDao.persist(subscription);
     }
 
-    private boolean hasPublicList(final GroupType type) {
-        boolean result = false;
+    private static boolean hasPublicList(final GroupType type) {
+        final boolean result;
+
         switch (type) {
             //TODO general secretary
             case PRIVATE:
+                result = false;
                 //TODO this public list is alias for users
                 break;
-
             case INTERNATIONAL:
             case NATIONAL:
             case REGIONAL:
             case SAR:
                 result = true;
                 break;
+            default:
+                result = false;
         }
+
         return result;
     }
 
-    private boolean hasPrivateList(final GroupType type) {
-        boolean result = false;
+    private static boolean hasPrivateList(final GroupType type) {
+        final boolean result;
+
         switch (type) {
             //TODO general secretary
 
@@ -278,73 +291,75 @@ public class NotificationSystemAdministration implements Observer {
             case WORKGROUP:
                 result = true;
                 break;
+            default:
+                result = false;
         }
+
         return result;
     }
 
-    private String getPublicListAddress(final GroupType type, final String groupName, final String countryName) {
-        String name = "";
+    private static String getPublicListAddress(final GroupType type, final String groupName, final String countryName) {
+        final String name;
+
         switch (type) {
             //TODO general secretary
-
             case PRIVATE:
                 //TODO this public list is alias for users
                 name = "";
                 break;
-
             case NATIONAL:
             case SAR:
-                name = prepareMailingListName(countryName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
                 break;
-
             case INTERNATIONAL:
             case REGIONAL:
-                name = prepareMailingListName(groupName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
                 break;
+            default:
+                name = "";
         }
 
         return name;
     }
 
-    private String getPrivateListAddress(final GroupType type, final String groupName, final String countryName) {
-        String name = "";
+    private static String getPrivateListAddress(final GroupType type, final String groupName, final String countryName) {
+        final String name;
+
         switch (type) {
             //TODO general secretary
-
             case MEMBER:
-                name = prepareMailingListName(countryName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
                 break;
-
             case INTERNATIONAL:
             case REGIONAL:
-                name = prepareMailingListName(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
                 break;
-
             case NATIONAL:
             case SAR:
-                name = prepareMailingListName(countryName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
                 break;
-
             case LOCAL:
             case WORKGROUP:
-                name = prepareMailingListName(countryName) + '.' + prepareMailingListName(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '.' + StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
                 break;
+            default:
+                name = "";
         }
 
         return name;
     }
 
-    private String prepareMailingListName(final String name) {
-        String result = name.replace(' ', '_');
-        //any other replacement
-        return result;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setId(final Long id) {
         this.id = id;

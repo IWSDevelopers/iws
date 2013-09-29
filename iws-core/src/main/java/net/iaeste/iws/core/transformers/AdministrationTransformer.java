@@ -38,11 +38,11 @@ public final class AdministrationTransformer {
      */
     private AdministrationTransformer() {}
 
-    public static List<User> transformMembers(final List<UserGroupEntity> members) {
-        final List<User> users = new ArrayList<>(members.size());
+    public static List<UserGroup> transformMembers(final List<UserGroupEntity> members) {
+        final List<UserGroup> users = new ArrayList<>(members.size());
 
         for (final UserGroupEntity member : members) {
-            users.add(transform(member).getUser());
+            users.add(transform(member));
         }
 
         return users;

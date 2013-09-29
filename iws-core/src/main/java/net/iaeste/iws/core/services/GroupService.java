@@ -21,7 +21,6 @@ import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
-import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
@@ -185,7 +184,7 @@ public final class GroupService {
 
         if (entity != null) {
             final Group group = CommonTransformer.transform(entity);
-            final List<User> users = findGroupMembers(request.isFetchUsers(), entity);
+            final List<UserGroup> users = findGroupMembers(request.isFetchUsers(), entity);
             final List<Group> groups = findSubGroups(request.isFetchSubGroups(), entity);
 
             response = new FetchGroupResponse(group, users, groups);
@@ -464,8 +463,8 @@ public final class GroupService {
         dao.persist(userGroup);
     }
 
-    private List<User> findGroupMembers(final boolean fetchUsers, final GroupEntity entity) {
-        final List<User> result;
+    private List<UserGroup> findGroupMembers(final boolean fetchUsers, final GroupEntity entity) {
+        final List<UserGroup> result;
 
         if (fetchUsers) {
             final List<UserGroupEntity> members = dao.findGroupUsers(entity);

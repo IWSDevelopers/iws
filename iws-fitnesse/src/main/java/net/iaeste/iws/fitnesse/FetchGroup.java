@@ -43,7 +43,7 @@ public final class FetchGroup extends AbstractFixture<FetchGroupResponse> {
     }
 
     public int numberOfUsersInGroup() {
-        return getResponse() == null ? -1 : getResponse().getUsers().size();
+        return getResponse() == null ? -1 : getResponse().getUserGroups().size();
     }
 
     public String printGroup() {
@@ -66,7 +66,7 @@ public final class FetchGroup extends AbstractFixture<FetchGroupResponse> {
         } else if ((userIndex < 1) || (userIndex > numberOfUsersInGroup())) {
             retVal = "no user for given index";
         } else {
-            retVal = getResponse().getUsers().get(userIndex - 1).toString();
+            retVal = getResponse().getUserGroups().get(userIndex - 1).toString();
         }
 
         return retVal;

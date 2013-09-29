@@ -42,6 +42,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_NOT_NULL = "The field %s may not be null.";
     private static final String ERROR_NOT_EMPTY = "The field %s may not be empty.";
     private static final String ERROR_NOT_LONGER = "The field %s may not be longer than %d";
+    private static final String ERROR_COLLECTION_LONGER = "The field %s may not containt more than %d Objects.";
     private static final String ERROR_TOO_SHORT = "The field %s must be at least %d characters long";
     private static final String ERROR_NOT_EXACT_LENGTH = "The field %s is not matching the required length %d.";
     private static final String ERROR_NOT_WITHIN_LIMITS = "The field %s is not within the required limits from %s to %d.";
@@ -177,10 +178,39 @@ public abstract class AbstractVerification implements Verifiable {
      * @param length The maximum length for the field
      * @throws IllegalArgumentException if the value is too long
      */
+    protected static void ensureNotTooLong(final String field, final Collection<?> value, final int length) throws IllegalArgumentException {
+        if ((value != null) && (value.size() > length)) {
+            throw new IllegalArgumentException(format(ERROR_COLLECTION_LONGER, field, length));
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is too
+     * long.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The maximum length for the field
+     * @throws IllegalArgumentException if the value is too long
+     */
     protected static void ensureNotTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
         if ((value != null) && (value.length() > length)) {
             throw new IllegalArgumentException(format(ERROR_NOT_LONGER, field, length));
         }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * null or too long.
+     *
+     * @param field  Name of the field
+     * @param value  The value of the field
+     * @param length The maximum length for the field
+     * @throws IllegalArgumentException if the value is null or too long
+     */
+    protected static void ensureNotNullOrTooLong(final String field, final Collection<?> value, final int length) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureNotTooLong(field, value, length);
     }
 
     /**

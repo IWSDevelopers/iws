@@ -17,6 +17,7 @@ package net.iaeste.iws.api.dtos.exchange;
 import static net.iaeste.iws.api.util.Copier.copy;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
@@ -261,9 +262,19 @@ public final class Offer extends AbstractVerification {
         return copy(studyLevels);
     }
 
+    /**
+     * Sets the Offer Field of Study. The field is mandatory and may contain
+     * between 1 (one) and {@link IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY}
+     * Field of Study.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the Field
+     * of Study is either null or too numerous.
+     *
+     * @param fieldOfStudies Offer Field of Study
+     * @throws IllegalArgumentException if value is invalid
+     * @see IWSExchangeConstants#MAX_OFFER_FIELDS_OF_STUDY
+     */
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
-        ensureNotNull("fieldOfStudies", fieldOfStudies);
-        ensureNotTooLong("fieldOfStudies", fieldOfStudies.toString(), 1000);
+        ensureNotNullOrTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
         this.fieldOfStudies = copy(fieldOfStudies);
     }
 
@@ -271,9 +282,19 @@ public final class Offer extends AbstractVerification {
         return copy(fieldOfStudies);
     }
 
-    public void setSpecializations(final Set<String> specializations) {
-        ensureNotNull("specializations", specializations);
-        ensureNotTooLong("specializations", specializations.toString(), 1000);
+    /**
+     * Sets the Offer Specializations. The field is mandatory and may contain
+     * between 1 (one) and {@link IWSExchangeConstants#MAX_OFFER_SPECIALIZATIONS}
+     * Specializations.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the
+     * Specializations is either null or too numerous.
+     *
+     * @param specializations Offer Specializations
+     * @throws IllegalArgumentException if value is invalid
+     * @see IWSExchangeConstants#MAX_OFFER_SPECIALIZATIONS
+     */
+    public void setSpecializations(final Set<String> specializations) throws IllegalArgumentException {
+        ensureNotNullOrTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
         this.specializations = copy(specializations);
     }
 
@@ -289,7 +310,7 @@ public final class Offer extends AbstractVerification {
         return previousTrainingRequired;
     }
 
-    public void setOtherRequirements(final String otherRequirements) {
+    public void setOtherRequirements(final String otherRequirements) throws IllegalArgumentException {
         ensureNotTooLong("otherRequirements", otherRequirements, 4000);
         this.otherRequirements = otherRequirements;
     }
@@ -490,7 +511,7 @@ public final class Offer extends AbstractVerification {
         return numberOfHardCopies;
     }
 
-    public void setAdditionalInformation(final String additionalInformation) {
+    public void setAdditionalInformation(final String additionalInformation) throws IllegalArgumentException {
         ensureNotTooLong("additionalInformation", additionalInformation, 1000);
         this.additionalInformation = additionalInformation;
     }
@@ -507,6 +528,12 @@ public final class Offer extends AbstractVerification {
         return status;
     }
 
+    /**
+     * Sets the Offer latest modification DateTime. Note, this field is
+     * controlled by the IWS, and cannot be altered by users.
+     *
+     * @param modified DateTime of latest modification
+     */
     public void setModified(final DateTime modified) {
         this.modified = modified;
     }
@@ -515,6 +542,12 @@ public final class Offer extends AbstractVerification {
         return modified;
     }
 
+    /**
+     * Sets the Offer Creation DateTime. Note, this field is controlled by the
+     * IWS, and cannot be altered by users.
+     *
+     * @param created Offer Creation DateTime
+     */
     public void setCreated(final DateTime created) {
         this.created = created;
     }

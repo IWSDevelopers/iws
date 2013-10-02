@@ -22,16 +22,20 @@ import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.persistence.Externable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -83,7 +87,7 @@ import java.util.Map;
 @Entity
 @Table(name = "users")
 @Monitored(name = "User", level = MonitoringLevel.DETAILED)
-public class UserEntity implements Updateable<UserEntity>, Notifiable {
+public class UserEntity implements Externable<UserEntity>, Notifiable {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_sequence")
@@ -148,6 +152,16 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
     @Monitored(name="User Lastname", level = MonitoringLevel.DETAILED)
     @Column(name = "lastname", length = 50, nullable = false)
     private String lastname = null;
+
+    /**
+     * Private information for the current User. This information may only be
+     * altered by the user, and if the account is removed (status deleted), then
+     * the information must be removed completely.
+     */
+    @Monitored(name="User Person", level = MonitoringLevel.DETAILED)
+    @OneToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "person_id")
+    private PersonEntity person = null;
 
     /**
      * The current status for this User Account. Please note, that the usage of
@@ -325,6 +339,14 @@ public class UserEntity implements Updateable<UserEntity>, Notifiable {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public void setPerson(final PersonEntity person) {
+        this.person = person;
+    }
+
+    public PersonEntity getPerson() {
+        return person;
     }
 
     public void setStatus(final UserStatus status) {

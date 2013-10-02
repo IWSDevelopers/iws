@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.mailing_list;
 
-import net.iaeste.iws.persistence.entities.Updateable;
+import net.iaeste.iws.persistence.Externable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,7 +46,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "mailing_lists")
-public class MailingListEntity implements Updateable<MailingListEntity> {
+public class MailingListEntity implements Externable<MailingListEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "mailing_list_sequence")

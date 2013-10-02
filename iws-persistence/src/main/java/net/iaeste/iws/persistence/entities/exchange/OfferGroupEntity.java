@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.entities.exchange;
 
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -76,7 +77,7 @@ import java.util.Date;
 @Entity
 @Table(name = "offer_to_group")
 @Monitored(name = "Offer2Group", level = MonitoringLevel.DETAILED)
-public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> {
+public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> implements Externable<OfferGroupEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_to_group_sequence")

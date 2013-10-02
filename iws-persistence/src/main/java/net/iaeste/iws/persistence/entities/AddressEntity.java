@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.Externable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +44,8 @@ import java.util.Date;
                 query = "select a from AddressEntity a " +
                         "where a.id = :id"),
         @NamedQuery(name = "address.findByExternalId",
-                query = "select a from AddressEntity a where a.externalId = :eid"),
+                query = "select a from AddressEntity a" +
+                        " where a.externalId = :eid"),
         @NamedQuery(name = "address.findByValues",
                 query = "select a from AddressEntity a " +
                         "where lower(a.street1) = lower(:street1)" +
@@ -54,7 +56,7 @@ import java.util.Date;
 @Entity
 @Table(name = "addresses")
 @Monitored(name = "Address", level = MonitoringLevel.DETAILED)
-public class AddressEntity implements Updateable<AddressEntity> {
+public class AddressEntity implements Externable<AddressEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "address_sequence")
@@ -82,7 +84,7 @@ public class AddressEntity implements Updateable<AddressEntity> {
     private String street2 = null;
 
     @Monitored(name="Address ZIP (Postal Code)", level = MonitoringLevel.DETAILED)
-    @Column(name = "zip", length = 100)
+    @Column(name = "zip", length = 12)
     private String zip = null;
 
     @Monitored(name="Address City", level = MonitoringLevel.DETAILED)
@@ -98,7 +100,7 @@ public class AddressEntity implements Updateable<AddressEntity> {
     private String pobox = null;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false, updatable = false)
+    @JoinColumn(name = "country_id")
     private CountryEntity country = null;
 
     /**

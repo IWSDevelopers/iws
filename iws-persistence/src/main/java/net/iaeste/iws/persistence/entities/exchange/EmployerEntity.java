@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.entities.exchange;
 
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -64,7 +65,7 @@ import java.util.Date;
 @Entity
 @Table(name = "employers")
 @Monitored(name = "Employer", level = MonitoringLevel.DETAILED)
-public class EmployerEntity extends AbstractUpdateable<EmployerEntity> {
+public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implements Externable<EmployerEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "employer_sequence")

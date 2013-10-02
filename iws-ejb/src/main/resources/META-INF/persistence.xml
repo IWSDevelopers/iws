@@ -9,6 +9,7 @@
         <jta-data-source>iws</jta-data-source>
 
         <class>net.iaeste.iws.persistence.entities.AddressEntity</class>
+        <class>net.iaeste.iws.persistence.entities.PersonEntity</class>
         <class>net.iaeste.iws.persistence.entities.CountryEntity</class>
         <class>net.iaeste.iws.persistence.entities.exchange.EmployerEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupEntity</class>

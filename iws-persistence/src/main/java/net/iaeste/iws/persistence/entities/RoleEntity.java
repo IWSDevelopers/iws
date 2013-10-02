@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.persistence.Externable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -73,7 +75,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "roles")
-public class RoleEntity implements Updateable<RoleEntity> {
+public class RoleEntity implements Externable<RoleEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "role_sequence")

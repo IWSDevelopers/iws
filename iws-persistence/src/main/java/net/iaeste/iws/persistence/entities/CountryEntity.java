@@ -18,6 +18,7 @@ import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
+import net.iaeste.iws.persistence.Externable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,7 +57,7 @@ import java.util.Date;
 @Entity
 @Table(name = "countries")
 @Monitored(name = "Country", level = MonitoringLevel.DETAILED)
-public class CountryEntity implements Updateable<CountryEntity> {
+public class CountryEntity implements Externable<CountryEntity> {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "country_sequence")

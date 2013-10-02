@@ -21,6 +21,7 @@ import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.persistence.Externable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -117,7 +118,7 @@ import java.util.Map;
 @Entity
 @Table(name = "groups")
 @Monitored(name = "Group", level = MonitoringLevel.DETAILED)
-public class GroupEntity implements Updateable<GroupEntity>, Notifiable {
+public class GroupEntity implements Externable<GroupEntity>, Notifiable {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "group_sequence")

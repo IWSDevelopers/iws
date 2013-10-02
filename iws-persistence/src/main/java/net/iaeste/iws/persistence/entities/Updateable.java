@@ -48,10 +48,6 @@ public interface Updateable<T> extends IWSEntity {
      */
     void merge(T obj);
 
-    void setExternalId(String externalId);
-
-    String getExternalId();
-
     /**
      * To ensure that the field modified is always updated, it must be
      * controlled by the DAO, as part of the update process. Hence, it must be

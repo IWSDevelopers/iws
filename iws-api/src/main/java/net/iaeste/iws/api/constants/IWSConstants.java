@@ -113,6 +113,21 @@ public interface IWSConstants {
     String SUCCESS = "OK";
 
     /**
+     * Passwords must be at least 6 characters long, using whatever characters
+     * the user prefers. Although it may make sense to force control of
+     * different character groups, we also do not wish to force users to use
+     * complex passwords which they'll forget. The online comic
+     * <a href="http://xkcd.com/936/">XKCD</a> have a wonderful little cartoon
+     * on the matter.<br />
+     *   Rainbow attacks will not be possible, regardless of how simple a
+     * password a user chooses, since we're salting all incoming Passwords with
+     * a two-factor salt. Hence, we trust that users are competent enough at
+     * choosing passwords, which will protect their access.
+     */
+    String PASSWORD_REGEX = "^.{6,}$";
+    Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+
+    /**
      * The e-mail compliance regular expression.
      */
     String EMAIL_REGEX = "^[a-z0-9_\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|eu|mobi)$";

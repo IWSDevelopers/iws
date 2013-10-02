@@ -40,6 +40,7 @@ import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.PersonEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
@@ -318,6 +319,7 @@ public final class AccountService extends CommonService<AccessDao> {
         user.setLastname(request.getLastname());
         user.setAlias(alias);
         user.setCode(generateActivationCode(request));
+        user.setPerson(createEmptyPerson(authentication));
         dao.persist(authentication, user);
 
         return user;
@@ -372,12 +374,12 @@ public final class AccountService extends CommonService<AccessDao> {
      */
     private void handleUsersOwnChanges(final Authentication authentication, final UserRequest request) {
         final UserStatus newStatus = request.getNewStatus();
-        final String username = request.getNewUsername();
+        final String newUsername = request.getNewUsername();
 
-        if (username != null) {
+        if (newUsername != null) {
             final String hash = generateHash(request.getPassword(), authentication.getUser().getSalt());
             if (hash.equals(authentication.getUser().getPassword())) {
-                prepareUsernameUpdate(authentication.getUser(), username);
+                prepareUsernameUpdate(authentication.getUser(), newUsername);
             } else {
                 throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "The initiate update password request cannot be completed.");
             }
@@ -445,6 +447,7 @@ public final class AccountService extends CommonService<AccessDao> {
         } else if (newStatus == UserStatus.DELETED) {
             // We have a User Account, that was never activated. This we can
             // delete completely
+            deletePerson(user.getPerson());
             dao.delete(user);
         }
     }
@@ -460,6 +463,9 @@ public final class AccountService extends CommonService<AccessDao> {
         // First, delete the Sessions, they are linked to the User account, and
         // not the users private Group
         final int deletedSessions = dao.deleteSessions(user);
+
+        // Delete all private information
+        deletePerson(user.getPerson());
 
         // Secondly, delete all data associated with the user, meaning the users
         // private Group
@@ -492,11 +498,14 @@ public final class AccountService extends CommonService<AccessDao> {
     }
 
     private void updatePrivacyAndData(final Authentication authentication, final UserRequest request) {
-        // TODO Make the UserEntity mergeable!
-        authentication.getUser().setPrivateData(request.getUser().getPrivacy());
-        authentication.getUser().setNotifications(request.getUser().getNotifications());
+        final UserEntity user = authentication.getUser();
+        user.setPrivateData(request.getUser().getPrivacy());
+        user.setNotifications(request.getUser().getNotifications());
 
-        dao.persist(authentication.getUser());
+        final PersonEntity person = processPerson(authentication, user.getPerson(), request.getUser().getPerson());
+        user.setPerson(person);
+
+        dao.persist(user);
     }
 
     private void prepareUsernameUpdate(final UserEntity user, final String username) {

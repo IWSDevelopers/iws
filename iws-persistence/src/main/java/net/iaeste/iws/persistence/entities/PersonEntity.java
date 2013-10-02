@@ -46,17 +46,6 @@ public class PersonEntity implements Updateable<PersonEntity> {
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
-    /**
-     * The content of this Entity is exposed externally, however to avoid that
-     * someone tries to spoof the system by second guessing our Sequence values,
-     * An External Id is used, the External Id is a Uniqie UUID value, which in
-     * all external references is referred to as the "Id". Although this can be
-     * classified as StO (Security through Obscrutity), there is no need to
-     * expose more information than necessary.
-     */
-    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
-    private String externalId = null;
-
     @ManyToOne(targetEntity = AddressEntity.class)
     @JoinColumn(name = "address_id")
     private AddressEntity address = null;
@@ -112,22 +101,6 @@ public class PersonEntity implements Updateable<PersonEntity> {
     @Override
     public Long getId() {
         return id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setExternalId(final String externalId) {
-        this.externalId = externalId;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getExternalId() {
-        return externalId;
     }
 
     public void setAddress(final AddressEntity address) {

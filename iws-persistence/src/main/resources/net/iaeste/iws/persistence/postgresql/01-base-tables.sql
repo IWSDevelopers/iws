@@ -356,7 +356,6 @@ create table addresses (
     /* Not Null Constraints */
     constraint address_notnull_id          check (id is not null),
     constraint address_notnull_external_id check (external_id is not null),
-    constraint address_notnull_country_id  check (country_id is not null),
     constraint address_notnull_modified    check (modified is not null),
     constraint address_notnull_created     check (created is not null)
 );

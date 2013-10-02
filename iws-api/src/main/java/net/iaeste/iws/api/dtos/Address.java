@@ -142,7 +142,7 @@ public final class Address extends AbstractVerification {
     }
 
     public void setCountry(final Country country) {
-        ensureNotNull("country", country);
+        ensureVerifiable("country", country);
         this.country = new Country(country);
     }
 

@@ -47,6 +47,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_NOT_EXACT_LENGTH = "The field %s is not matching the required length %d.";
     private static final String ERROR_NOT_WITHIN_LIMITS = "The field %s is not within the required limits from %s to %d.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
+    private static final String ERROR_INVALID_REGEX = "The field %s does not follow the required format %s.";
     private static final String ERROR_NOT_VERIFABLE = "The field %s is not verifiable.";
     private static final String ERROR_INVALID_EMAIL = "The e-mail address %s (%s) is invalid.";
     private static final String ERROR_INVALID_REFNO = "The provided reference number (refno) %s is invalid.";
@@ -282,11 +283,28 @@ public abstract class AbstractVerification implements Verifiable {
      * @param maximum The maximally allowed value for the field
      * @throws IllegalArgumentException if the value is null not of exact length
      */
-    protected  <T extends Number>void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+    protected <T extends Number>void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
         ensureNotNull(field, value);
 
         if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
             throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is either
+     * null or doesn't follow the provided regular expression.
+     *
+     * @param field   Name of the field
+     * @param value   The value of the field
+     * @param pattern The Pattern for the Regular Expression
+     * @param regex   The Regular Expression
+     */
+    protected static void ensureNotNullAndFollowRegex(final String field, final String value, final Pattern pattern, final String regex) {
+        ensureNotNull(field, value);
+
+        if (!pattern.matcher(value).matches()) {
+            throw new IllegalArgumentException(format(ERROR_INVALID_REGEX, field, regex));
         }
     }
 

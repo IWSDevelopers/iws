@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.IWSEntity
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.Externable
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,27 +12,21 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence.entities;
+package net.iaeste.iws.persistence;
 
-import java.util.Date;
+import net.iaeste.iws.persistence.entities.Updateable;
 
 /**
+ * All Entities, which will have an ExternalId, which is required if the Object
+ * should be available externally, must extend this Interface.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface IWSEntity {
+public interface Externable<T> extends Updateable<T> {
 
-    void setId(Long id);
+    void setExternalId(String externalId);
 
-    /**
-     * The primary key in all our mergeable tables must always be retrievable
-     * with this method.
-     *
-     * @return  Entity Id
-     */
-    Long getId();
-
-    void setCreated(Date created);
-    Date getCreated();
+    String getExternalId();
 }

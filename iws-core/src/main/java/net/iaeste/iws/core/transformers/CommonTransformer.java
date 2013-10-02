@@ -18,7 +18,6 @@ import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Person;
-import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
@@ -27,7 +26,6 @@ import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
-import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 /**
  * Transformation of Common Objects.
@@ -50,7 +48,6 @@ public final class CommonTransformer {
         if (entity != null) {
             person = new Person();
 
-            person.setId(entity.getExternalId());
             person.setAddress(transform(entity.getAddress()));
             person.setAlternateEmail(entity.getEmail());
             person.setPhone(entity.getPhone());
@@ -69,7 +66,6 @@ public final class CommonTransformer {
         if (person != null) {
             entity = new PersonEntity();
 
-            entity.setExternalId(person.getId());
             entity.setAddress(transform(person.getAddress()));
             entity.setEmail(person.getAlternateEmail());
             entity.setPhone(person.getPhone());

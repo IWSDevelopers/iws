@@ -22,6 +22,7 @@ import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
+import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -255,9 +256,9 @@ public class BasicJpaDao implements BasicDao {
      * @param entity Entity to check
      */
     private static void ensureUpdateableHasExternalId(final IWSEntity entity) {
-        if (entity instanceof Updateable) {
-            if (((Updateable<?>) entity).getExternalId() == null) {
-                ((Updateable<?>) entity).setExternalId(UUID.randomUUID().toString());
+        if (entity instanceof Externable) {
+            if (((Externable<?>) entity).getExternalId() == null) {
+                ((Externable<?>) entity).setExternalId(UUID.randomUUID().toString());
             }
         }
     }

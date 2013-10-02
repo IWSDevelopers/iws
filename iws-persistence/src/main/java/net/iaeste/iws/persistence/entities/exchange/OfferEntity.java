@@ -26,8 +26,8 @@ import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.Updateable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -105,7 +105,7 @@ import java.util.Map;
 @Entity
 @Table(name = "offers")
 @Monitored(name = "Offer", level = MonitoringLevel.DETAILED)
-public class OfferEntity implements Updateable<OfferEntity>, Notifiable {
+public class OfferEntity implements Externable<OfferEntity>, Notifiable {
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_sequence")

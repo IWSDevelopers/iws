@@ -43,6 +43,27 @@ public class CommonService<T extends BasicDao> {
         this.dao = dao;
     }
 
+    // =========================================================================
+    // Common Person Entity Methods
+    // =========================================================================
+
+    /**
+     * Creates and Persists a new (empty) {@code PersonEntity} with an internal
+     * {@code AddressEntity}.
+     *
+     * @param authentication User Authentication information
+     * @return Empty {@code PersonEntity}
+     */
+    protected PersonEntity createEmptyPerson(final Authentication authentication) {
+        // Create & Persist the Person Entity
+        final PersonEntity person = new PersonEntity();
+        person.setAddress(createEmptyAddress(authentication));
+        dao.persist(authentication, person);
+
+        // Return the new Entity
+        return person;
+    }
+
     /**
      * Generally speaking, if the Id is undefined, a new Entity is created. If
      * there are changes, then it is assumed that the third parameter is set,
@@ -51,23 +72,71 @@ public class CommonService<T extends BasicDao> {
      * @param authentication User & Group information
      * @param entity         Entity to persist
      * @param persons        Optional Person information, for updates
+     * @return The persists {@code PersonEntity}
      */
-    protected void processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
+    protected PersonEntity processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
         final Person person = getFirstObject(persons);
+        final PersonEntity result;
 
-        // First, deal with the internal Address
-        final AddressEntity address = entity.getAddress();
-        if (address != null) {
-            processAddress(authentication, entity.getAddress(), person.getAddress());
-        }
+        if (person != null) {
+            // First, deal with the internal Address
+            final AddressEntity address = entity.getAddress();
+            if (address != null) {
+                processAddress(authentication, entity.getAddress(), person.getAddress());
+            }
 
-        // Now, we'll persist the Person
-        if (entity.getId() == null) {
-            dao.persist(authentication, entity);
-        } else if (person != null) {
             final PersonEntity newEntity = CommonTransformer.transform(person);
-            dao.persist(authentication, entity, newEntity);
+            // Now, we'll persist the Person
+            if (entity.getId() == null) {
+                dao.persist(authentication, newEntity);
+                result = newEntity;
+            } else {
+                dao.persist(authentication, entity, newEntity);
+                result = entity;
+            }
+        } else {
+            result = entity;
         }
+
+        return result;
+    }
+
+    /**
+     * To guarantee Personal Privacy, deleted users must have their Personal
+     * details deleted as well. This method will handle that.
+     *
+     * @param person {@code PersonEntity} to delete
+     */
+    protected void deletePerson(final PersonEntity person) {
+        if (person != null) {
+            deleteAddress(person.getAddress());
+            dao.delete(person);
+        }
+    }
+
+    // =========================================================================
+    // Common Address Entity Methods
+    // =========================================================================
+
+    /**
+     * Creates and Persists a new (empty) {@code AddressEntity}.
+     *
+     * @param authentication User Authentication information
+     * @return Empty {@code AddressEntity}
+     */
+    protected AddressEntity createEmptyAddress(final Authentication authentication) {
+        // Create & Persist the Address Entity
+        final AddressEntity address = new AddressEntity();
+
+        // By default, we're going to set the Country of the address to the one
+        // from the Group
+        address.setCountry(authentication.getGroup().getCountry());
+
+        // Now, we can persist the Address
+        dao.persist(authentication, address);
+
+        // Return the new Entity
+        return address;
     }
 
     /**
@@ -91,6 +160,21 @@ public class CommonService<T extends BasicDao> {
             dao.persist(authentication, entity, newEntity);
         }
     }
+
+    /**
+     * Delete the given Address information.
+     *
+     * @param address {@code AddressEntity} to delete
+     */
+    protected void deleteAddress(final AddressEntity address) {
+        if (address != null) {
+            dao.delete(address);
+        }
+    }
+
+    // =========================================================================
+    // Other Common Methods
+    // =========================================================================
 
     /**
      * Formats a given String using our default {@code Locale} and returns the

@@ -40,6 +40,7 @@ public final class UserRequest extends AbstractVerification {
     private User user = null;
     private UserStatus newStatus = null;
     private String newUsername = null;
+    private String newPassword = null;
     private String password = null;
 
     // =========================================================================
@@ -113,6 +114,28 @@ public final class UserRequest extends AbstractVerification {
 
     public String getNewUsername() {
         return newUsername;
+    }
+
+    /**
+     * If a user wishes to update the current passwordm then the new password
+     * must be provided, together with the existing for verification.<br />
+     *   The new Password must follow the internal regular expression for
+     * Passwords, otherwise an {@code java.lang.IllegalArgumentException} is
+     * thrown.<br />
+     *   Note, the error message from the Exception will not display the new
+     * Password, as this will potentially be logged somewhere, which could be a
+     * serious problem for the user.
+     *
+     * @param newPassword New Password for the user
+     * @see IWSConstants#PASSWORD_REGEX
+     */
+    public void setNewPassword(final String newPassword) {
+        ensureNotNullAndFollowRegex("newPassword", newPassword, IWSConstants.PASSWORD_PATTERN, IWSConstants.PASSWORD_REGEX);
+        this.newPassword = newPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
     }
 
     /**

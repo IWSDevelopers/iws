@@ -80,7 +80,7 @@ public final class ProcessGroup extends AbstractFixture<Fallible> {
     }
 
     public void setGroupId(final String groupId) {
-        group.setId(groupId);
+        group.setGroupId(groupId);
     }
 
     public void setGroupName(final String groupName) {

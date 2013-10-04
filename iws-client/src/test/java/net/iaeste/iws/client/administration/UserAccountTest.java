@@ -103,7 +103,7 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(activationCode, is(not(nullValue())));
 
         // Check that the user is in the list of members
-        final String memberGroupId = findMemberGroup(token).getId();
+        final String memberGroupId = findMemberGroup(token).getGroupId();
         token.setGroupId(memberGroupId);
         final FetchGroupRequest groupRequest = new FetchGroupRequest(memberGroupId);
         final FetchGroupResponse groupResponse = administration.fetchGroup(token, groupRequest);
@@ -235,7 +235,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // Members. The main reason for this, is to avoid that someone may
         // perform actions on the National Group, but invoking their Membership
         // privileges without having a National Group membersip.
-        final FetchRoleRequest request = new FetchRoleRequest(findNationalGroup(token).getId());
+        final FetchRoleRequest request = new FetchRoleRequest(findNationalGroup(token).getGroupId());
         final FetchRoleResponse response = administration.fetchRoles(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));

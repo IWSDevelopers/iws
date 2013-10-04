@@ -62,7 +62,7 @@ public final class EmployerTest extends AbstractTest {
     public void setup() {
         final AuthenticationRequest authenticationRequest = new AuthenticationRequest(USERNAME, PASSWORD);
         token = access.generateSession(authenticationRequest).getToken();
-        final String groupId = findNationalGroup(token).getId();
+        final String groupId = findNationalGroup(token).getGroupId();
         token.setGroupId(groupId);
     }
 
@@ -96,7 +96,7 @@ public final class EmployerTest extends AbstractTest {
         assertThat(fetchResponse1.isOk(), is(true));
 
         // Find Employer by Id
-        employerRequest.setFetchById(save1.getEmployer().getId());
+        employerRequest.setFetchById(save1.getEmployer().getEmployerId());
         final FetchEmployerResponse fetchResponse2 = client.fetchEmployers(token, employerRequest);
         assertThat(fetchResponse2.isOk(), is(true));
 

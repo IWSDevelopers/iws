@@ -66,21 +66,20 @@ public final class OfferGroup extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
+    public void setOfferRefNo(final String offerRefNo) {
+        this.offerRefNo = offerRefNo;
+    }
 
     public String getOfferRefNo() {
         return offerRefNo;
     }
 
-    public void setOfferRefNo(final String offerRefNo) {
-        this.offerRefNo = offerRefNo;
+    public void setGroupId(final String groupId) {
+        this.groupId = groupId;
     }
 
     public String getGroupId() {
         return groupId;
-    }
-
-    public void setGroupId(final String groupId) {
-        this.groupId = groupId;
     }
 
     /**

@@ -299,11 +299,11 @@ public final class AccessService extends CommonService<AccessDao> {
 
         for (final UserPermissionView view : found) {
             final UserGroup userGroup = readUserGroup(view);
-            if (!userGroups.containsKey(userGroup.getId())) {
-                userGroups.put(userGroup.getId(), userGroup);
-                permissions.put(userGroup.getId(), EnumSet.noneOf(Permission.class));
+            if (!userGroups.containsKey(userGroup.getUserGroupId())) {
+                userGroups.put(userGroup.getUserGroupId(), userGroup);
+                permissions.put(userGroup.getUserGroupId(), EnumSet.noneOf(Permission.class));
             }
-            permissions.get(userGroup.getId()).add(view.getPermission());
+            permissions.get(userGroup.getUserGroupId()).add(view.getPermission());
         }
 
         final List<Authorization> list = convertPermissionMap(userGroups, permissions);
@@ -392,7 +392,7 @@ public final class AccessService extends CommonService<AccessDao> {
     private static UserGroup readUserGroup(final UserPermissionView view) {
         final UserGroup userGroup = new UserGroup();
 
-        userGroup.setId(view.getExternalUserGroupId());
+        userGroup.setUserGroupId(view.getExternalUserGroupId());
         userGroup.setGroup(readGroup(view));
         userGroup.setRole(readRole(view));
         userGroup.setTitle(view.getTitle());
@@ -403,7 +403,7 @@ public final class AccessService extends CommonService<AccessDao> {
     private static Group readGroup(final UserPermissionView view) {
         final Group group = new Group();
 
-        group.setId(view.getExternalGroupId());
+        group.setGroupId(view.getExternalGroupId());
         group.setGroupType(view.getGroupType());
         group.setGroupName(view.getGroupName());
         group.setCountry(readCountry(view));

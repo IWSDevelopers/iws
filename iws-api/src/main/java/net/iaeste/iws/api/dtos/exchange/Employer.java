@@ -38,7 +38,7 @@ public final class Employer extends AbstractVerification {
     /** The maximum length for Employer related Strings. */
     private static final int FIELD_LENGTH = 255;
 
-    private String id = null;
+    private String employerId = null;
     private Group group = null;
     private String name = null;
     private String department = null;
@@ -71,7 +71,7 @@ public final class Employer extends AbstractVerification {
      */
     public Employer(final Employer employer) {
         if (employer != null) {
-            id = employer.id;
+            employerId = employer.employerId;
             group = new Group(employer.group);
             name = employer.name;
             business = employer.business;
@@ -97,17 +97,17 @@ public final class Employer extends AbstractVerification {
      *   The method will throw an {@code IllegalArgumentException} if the id is
      * not valid.
      *
-     * @param id Employer Id
+     * @param employerId Employer Id
      * @throws IllegalArgumentException if not valid
      * @see  AbstractVerification#UUID_FORMAT
      */
-    public void setId(final String id) throws IllegalArgumentException {
-        ensureValidId("id", id);
-        this.id = id;
+    public void setEmployerId(final String employerId) throws IllegalArgumentException {
+        ensureValidId("employerId", employerId);
+        this.employerId = employerId;
     }
 
-    public String getId() {
-        return id;
+    public String getEmployerId() {
+        return employerId;
     }
 
     /**
@@ -369,7 +369,7 @@ public final class Employer extends AbstractVerification {
 
         final Employer employer = (Employer) obj;
 
-        if (id != null ? !id.equals(employer.id) : employer.id != null) {
+        if (employerId != null ? !employerId.equals(employer.employerId) : employer.employerId != null) {
             return false;
         }
         if (group != null ? !group.equals(employer.group) : employer.group != null) {
@@ -419,7 +419,7 @@ public final class Employer extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employerId != null ? employerId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (name != null ? name.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (department != null ? department.hashCode() : 0);
@@ -443,7 +443,7 @@ public final class Employer extends AbstractVerification {
     @Override
     public String toString() {
         return "Employer{" +
-                "id='" + id + '\'' +
+                "employerId='" + employerId + '\'' +
                 ", group='" + group + '\'' +
                 ", name='" + name + '\'' +
                 ", department='" + department + '\'' +

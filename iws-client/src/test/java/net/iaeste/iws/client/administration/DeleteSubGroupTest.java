@@ -61,7 +61,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
         final ProcessGroupResponse createResponse = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, "new Local Committee");
 
         final Group memberGroup = findMemberGroup(token);
-        token.setGroupId(memberGroup.getId());
+        token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
         final Fallible deleteResponse = client.deleteSubGroup(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
@@ -75,7 +75,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
         final ProcessGroupResponse createResponse = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, "new National WorkGroup");
 
         final Group memberGroup = findMemberGroup(token);
-        token.setGroupId(memberGroup.getId());
+        token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
         final Fallible deleteResponse = client.deleteSubGroup(token, request);
         assertThat(deleteResponse, is(not(nullValue())));
@@ -92,13 +92,13 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
         final Group group = new Group();
         group.setGroupName("Our Little WorkGroup");
         group.setGroupType(GroupType.WORKGROUP);
-        token.setGroupId(createResponse.getGroup().getId());
+        token.setGroupId(createResponse.getGroup().getGroupId());
         final GroupRequest subGrouprequest = new GroupRequest(group);
         final ProcessGroupResponse subGroupResponse = client.processGroup(token, subGrouprequest);
         assertThat(subGroupResponse, is(not(nullValue())));
         assertThat(subGroupResponse.isOk(), is(true));
 
-        token.setGroupId(findMemberGroup(token).getId());
+        token.setGroupId(findMemberGroup(token).getGroupId());
         final GroupRequest request = new GroupRequest(createResponse.getGroup());
         final Fallible response = client.deleteSubGroup(token, request);
         assertThat(response, is(not(nullValue())));
@@ -112,7 +112,7 @@ public final class DeleteSubGroupTest extends AbstractAdministration {
         final Group nationalGroup = findNationalGroup(token);
         final Group memberGroup = findMemberGroup(token);
 
-        token.setGroupId(memberGroup.getId());
+        token.setGroupId(memberGroup.getGroupId());
         final GroupRequest request = new GroupRequest(nationalGroup);
         final Fallible response = client.deleteSubGroup(token, request);
         assertThat(response, is(not(nullValue())));

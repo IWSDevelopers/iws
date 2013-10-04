@@ -53,7 +53,7 @@ public final class Offer extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String id = null;
+    private String offerId = null;
     private Group group = null;
     private String refNo = null;
 
@@ -122,7 +122,7 @@ public final class Offer extends AbstractVerification {
      */
     public Offer(final Offer offer) {
         if (offer != null) {
-            id = offer.id;
+            offerId = offer.offerId;
             group = new Group(offer.group);
             refNo = offer.refNo;
             employer = new Employer(offer.employer);
@@ -174,24 +174,25 @@ public final class Offer extends AbstractVerification {
      *   The method will throw an {@code IllegalArgumentException} if the id is
      * not valid.
      *
-     * @param id Offer Id
+     * @param offerId Offer Id
      * @throws IllegalArgumentException if not valid
      * @see  AbstractVerification#UUID_FORMAT
      */
-    public void setId(final String id) throws IllegalArgumentException {
-        ensureValidId("id", id);
-        this.id = id;
+    public void setOfferId(final String offerId) throws IllegalArgumentException {
+        ensureValidId("offerId", offerId);
+        this.offerId = offerId;
     }
 
-    public String getId() {
-        return id;
+    public String getOfferId() {
+        return offerId;
     }
 
     /**
      * Sets the Offer Group. The Group is automatically set by the IWS upon
      * initial persisting of the Offer.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the Group
-     * is not valid.
+     *   The method will throw an {@code IllegalArgumentException} if the
+     * Group is not valid, i.e. if the Object is either null or not a valid
+     * Group Object.
      *
      * @param group National Group, which this Offer belongs to
      * @throws IllegalArgumentException if not valid
@@ -209,16 +210,15 @@ public final class Offer extends AbstractVerification {
      * Sets the Offer reference number. The number must be unique, and follow
      * a certain format.<br />
      *   The method will throw an {@code IllegalArgumentException} if the
-     * Reference Number is not valid. i.e. is either null or doesn't follow the
+     * Reference Number is not valid, i.e. is either null or doesn't follow the
      * allowed format.
      *
      * @param refNo Offer Reference Number
      * @throws IllegalArgumentException if not valid, i.e. null or not following the format
-     * @see net.iaeste.iws.api.constants.exchange.IWSExchangeConstants#REFNO_FORMAT
+     * @see IWSExchangeConstants#REFNO_FORMAT
      */
     public void setRefNo(final String refNo) throws IllegalArgumentException {
-        ensureNotNull("refno", refNo);
-        ensureValidRefno(refNo);
+        ensureNotNullAndValidRefno(refNo);
         this.refNo = refNo;
     }
 
@@ -226,6 +226,16 @@ public final class Offer extends AbstractVerification {
         return refNo;
     }
 
+    /**
+     * Sets the Offer Employer. The Employer must be defined, i.e. it cannot be
+     * a null value.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the
+     * Employer is not valid, i.e. if the Object is either null or not a valid
+     * Employer Object.
+     *
+     * @param employer Offer Employer
+     * @throws IllegalArgumentException if not valid, i.e. null or not verifiable
+     */
     public void setEmployer(final Employer employer) throws IllegalArgumentException {
         ensureNotNullAndVerifiable("employer", employer);
         this.employer = new Employer(employer);
@@ -235,6 +245,15 @@ public final class Offer extends AbstractVerification {
         return new Employer(employer);
     }
 
+    /**
+     * Sets the Offer Work Description. The field may be null, but if it is
+     * defined, then the length may not exceed 1000 characters.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the value
+     * is too long, the length may not exceed 1000 characters.
+     *
+     * @param workDescription Offer Work Description
+     * @throws IllegalArgumentException if the length is too long
+     */
     public void setWorkDescription(final String workDescription) throws IllegalArgumentException {
         ensureNotTooLong("workDescription", workDescription, 1000);
         this.workDescription = workDescription;
@@ -615,7 +634,7 @@ public final class Offer extends AbstractVerification {
         if (group != null ? !group.equals(offer.group) : offer.group != null) {
             return false;
         }
-        if (id != null ? !id.equals(offer.id) : offer.id != null) {
+        if (offerId != null ? !offerId.equals(offer.offerId) : offer.offerId != null) {
             return false;
         }
         if (language1 != offer.language1) {
@@ -721,7 +740,7 @@ public final class Offer extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offerId != null ? offerId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (refNo != null ? refNo.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
@@ -770,7 +789,7 @@ public final class Offer extends AbstractVerification {
     @Override
     public String toString() {
         return "Offer{" +
-                "id='" + id + '\'' +
+                "offerId='" + offerId + '\'' +
                 ", group=" + group +
                 ", refNo='" + refNo + '\'' +
                 ", employer=" + employer +

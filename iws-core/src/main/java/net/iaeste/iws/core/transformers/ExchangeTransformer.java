@@ -44,7 +44,7 @@ public final class ExchangeTransformer {
         if (offer != null) {
             result = new OfferEntity();
 
-            result.setExternalId(offer.getId());
+            result.setExternalId(offer.getOfferId());
             result.setGroup(CommonTransformer.transform(offer.getGroup()));
             result.setRefNo(offer.getRefNo());
             result.setEmployer(transform(offer.getEmployer()));
@@ -96,7 +96,7 @@ public final class ExchangeTransformer {
         if (entity != null) {
             result = new Offer();
 
-            result.setId(entity.getExternalId());
+            result.setOfferId(entity.getExternalId());
             result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setRefNo(entity.getRefNo());
             result.setEmployer(transform(entity.getEmployer()));
@@ -146,7 +146,7 @@ public final class ExchangeTransformer {
         if (entity != null) {
             result = new Employer();
 
-            result.setId(entity.getExternalId());
+            result.setEmployerId(entity.getExternalId());
             result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setName(entity.getName());
             result.setDepartment(entity.getDepartment());
@@ -171,7 +171,7 @@ public final class ExchangeTransformer {
         if (employer != null) {
             result = new EmployerEntity();
 
-            result.setExternalId(employer.getId());
+            result.setExternalId(employer.getEmployerId());
             result.setGroup(CommonTransformer.transform(employer.getGroup()));
             result.setName(employer.getName());
             result.setDepartment(employer.getDepartment());

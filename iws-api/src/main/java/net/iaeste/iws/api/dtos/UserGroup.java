@@ -38,7 +38,7 @@ public final class UserGroup extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String id = null;
+    private String userGroupId = null;
     private User user = null;
     private Group group = null;
     private Role role = null;
@@ -65,7 +65,7 @@ public final class UserGroup extends AbstractVerification {
      */
     public UserGroup(final UserGroup userGroup) {
         if (userGroup != null) {
-            id = userGroup.id;
+            userGroupId = userGroup.userGroupId;
             user = new User(userGroup.user);
             group = new Group(userGroup.group);
             role = new Role(userGroup.role);
@@ -80,13 +80,13 @@ public final class UserGroup extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setId(final String id) {
-        ensureValidId("id", id);
-        this.id = id;
+    public void setUserGroupId(final String userGroupId) {
+        ensureValidId("userGroupId", userGroupId);
+        this.userGroupId = userGroupId;
     }
 
-    public String getId() {
-        return id;
+    public String getUserGroupId() {
+        return userGroupId;
     }
 
     public void setUser(final User user) {
@@ -184,7 +184,7 @@ public final class UserGroup extends AbstractVerification {
 
         final UserGroup userGroup = (UserGroup) obj;
 
-        if (id != null ? !id.equals(userGroup.id) : userGroup.id != null) {
+        if (userGroupId != null ? !userGroupId.equals(userGroup.userGroupId) : userGroup.userGroupId != null) {
             return false;
         }
         if (user != null ? !user.equals(userGroup.user) : userGroup.user != null) {
@@ -216,7 +216,7 @@ public final class UserGroup extends AbstractVerification {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (userGroupId != null ? userGroupId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (role != null ? role.hashCode() : 0);
@@ -234,7 +234,7 @@ public final class UserGroup extends AbstractVerification {
     @Override
     public String toString() {
         return "UserGroup{" +
-                "id='" + id + '\'' +
+                "userGroupId='" + userGroupId + '\'' +
                 ", user=" + user +
                 ", group=" + group +
                 ", role=" + role +

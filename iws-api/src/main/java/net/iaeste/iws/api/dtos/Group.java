@@ -31,7 +31,7 @@ public final class Group extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String id = null;
+    private String groupId = null;
     private String groupName = null;
     private GroupType groupType = null;
     private String description = null;
@@ -55,7 +55,7 @@ public final class Group extends AbstractVerification {
      */
     public Group(final Group group) {
         if (group != null) {
-            id = group.id;
+            groupId = group.groupId;
             groupName = group.groupName;
             groupType = group.groupType;
             description = group.description;
@@ -67,13 +67,13 @@ public final class Group extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setId(final String id) {
-        ensureValidId("id", id);
-        this.id = id;
+    public void setGroupId(final String groupId) {
+        ensureValidId("groupId", groupId);
+        this.groupId = groupId;
     }
 
-    public String getId() {
-        return id;
+    public String getGroupId() {
+        return groupId;
     }
 
     public void setGroupName(final String groupName) {
@@ -142,7 +142,7 @@ public final class Group extends AbstractVerification {
 
         final Group group = (Group) obj;
 
-        if (id != null ? !id.equals(group.id) : group.id != null) {
+        if (groupId != null ? !groupId.equals(group.groupId) : group.groupId != null) {
             return false;
         }
         if (groupName != null ? !groupName.equals(group.groupName) : group.groupName != null) {
@@ -165,7 +165,7 @@ public final class Group extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupId != null ? groupId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupName != null ? groupName.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupType != null ? groupType.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (description != null ? description.hashCode() : 0);
@@ -180,7 +180,7 @@ public final class Group extends AbstractVerification {
     @Override
     public String toString() {
         return "Group{" +
-                "id='" + id + '\'' +
+                "groupId='" + groupId + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", groupType=" + groupType +
                 ", description='" + description + '\'' +

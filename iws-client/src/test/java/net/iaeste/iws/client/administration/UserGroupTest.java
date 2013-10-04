@@ -71,7 +71,7 @@ public final class UserGroupTest extends AbstractAdministration {
         assertThat(createUserResponse.isOk(), is(true));
 
         final Group nationalGroup = findNationalGroup(token);
-        final FetchRoleRequest fetchRoleRequest = new FetchRoleRequest(nationalGroup.getId());
+        final FetchRoleRequest fetchRoleRequest = new FetchRoleRequest(nationalGroup.getGroupId());
         final FetchRoleResponse fetchRoleResponse = client.fetchRoles(token, fetchRoleRequest);
 
         // Add the user to the National Group
@@ -100,7 +100,7 @@ public final class UserGroupTest extends AbstractAdministration {
         final Fallible response = client.changeGroupOwner(token, request);
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
-        final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getId());
+        final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getGroupId());
         groupRequest.setFetchUsers(true);
         final FetchGroupResponse groupResponse = client.fetchGroup(token, groupRequest);
         assertThat(groupResponse.isOk(), is(true));
@@ -135,7 +135,7 @@ public final class UserGroupTest extends AbstractAdministration {
         assertThat(response.isOk(), is(true));
 
         // Ensure that we now have 2 members
-        final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getId());
+        final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getGroupId());
         groupRequest.setFetchUsers(true);
         final FetchGroupResponse groupResponse = client.fetchGroup(alternativeToken, groupRequest);
         assertThat(groupResponse.isOk(), is(true));

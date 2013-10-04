@@ -178,7 +178,7 @@ public final class AdministrationTransformer {
         if (entity != null) {
             userGroup = new UserGroup();
 
-            userGroup.setId(entity.getExternalId());
+            userGroup.setUserGroupId(entity.getExternalId());
             userGroup.setUser(transform(entity.getUser()));
             userGroup.setGroup(CommonTransformer.transform(entity.getGroup()));
             userGroup.setRole(transform(entity.getRole()));
@@ -199,7 +199,7 @@ public final class AdministrationTransformer {
         if (userGroup != null) {
             entity = new UserGroupEntity();
 
-            entity.setExternalId(userGroup.getId());
+            entity.setExternalId(userGroup.getUserGroupId());
             entity.setUser(transform(userGroup.getUser()));
             entity.setGroup(CommonTransformer.transform(userGroup.getGroup()));
             entity.setRole(transform(userGroup.getRole()));

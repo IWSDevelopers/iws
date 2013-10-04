@@ -84,7 +84,7 @@ public final class GroupService {
      * @param request        Group Request information
      */
     public ProcessGroupResponse processGroup(final Authentication authentication, final GroupRequest request) {
-        final String externalGroupId = request.getGroup().getId();
+        final String externalGroupId = request.getGroup().getGroupId();
         final GroupEntity entity;
 
         if (externalGroupId == null) {
@@ -145,7 +145,7 @@ public final class GroupService {
     public void deleteGroup(final Authentication authentication, final GroupRequest request) {
         final GroupEntity parentGroup = authentication.getGroup();
         final Group toBeDeleted = request.getGroup();
-        final GroupEntity group = dao.findGroupByExternalId(toBeDeleted.getId());
+        final GroupEntity group = dao.findGroupByExternalId(toBeDeleted.getGroupId());
 
         if (group.getParentId().equals(parentGroup.getId())) {
             final GroupType type = group.getGroupType().getGrouptype();

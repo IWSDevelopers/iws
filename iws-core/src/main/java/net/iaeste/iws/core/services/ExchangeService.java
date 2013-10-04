@@ -82,7 +82,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     }
 
     private EmployerEntity process(final Authentication authentication, final Employer employer) {
-        final String externalId = employer.getId();
+        final String externalId = employer.getEmployerId();
         EmployerEntity entity;
 
         if (externalId == null) {
@@ -123,7 +123,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final EmployerEntity employer = process(authentication, request.getOffer().getEmployer());
         final OfferEntity newEntity = transform(request.getOffer());
         final Offer givenOffer = request.getOffer();
-        final String externalId = givenOffer.getId();
+        final String externalId = givenOffer.getOfferId();
 
         if (externalId == null) {
             // Add the Group to the Offer, otherwise our refno checks will fail

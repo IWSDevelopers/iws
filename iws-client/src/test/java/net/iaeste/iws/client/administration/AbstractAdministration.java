@@ -85,7 +85,7 @@ public abstract class AbstractAdministration extends AbstractTest {
         final Group group = new Group();
         group.setGroupName(groupName);
         group.setGroupType(subgroup);
-        token.setGroupId(fetchResponse.getGroup().getId());
+        token.setGroupId(fetchResponse.getGroup().getGroupId());
         final GroupRequest request = new GroupRequest(group);
 
         return client.processGroup(token, request);

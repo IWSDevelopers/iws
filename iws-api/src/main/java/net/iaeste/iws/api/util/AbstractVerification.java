@@ -400,6 +400,12 @@ public abstract class AbstractVerification implements Verifiable {
         }
     }
 
+    protected static void ensureNotNullAndValidRefno(final String refno) {
+        ensureNotNull("refno",  refno);
+        ensureValidRefno(refno);
+    }
+
+
     // =========================================================================
     // Other Methods
     // =========================================================================

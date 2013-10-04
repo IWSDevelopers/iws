@@ -330,7 +330,7 @@ public final class AdministrationController extends CommonController implements 
 
         try {
             verify(request);
-            token.setGroupId(request.getGroup().getId());
+            token.setGroupId(request.getGroup().getGroupId());
             final Authentication authentication = verifyAccess(token, Permission.CHANGE_GROUP_OWNER);
 
             final GroupService service = factory.prepareGroupService();
@@ -358,7 +358,7 @@ public final class AdministrationController extends CommonController implements 
 
         try {
             verify(request);
-            token.setGroupId(request.getUserGroup().getGroup().getId());
+            token.setGroupId(request.getUserGroup().getGroup().getGroupId());
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
 
             final GroupService service = factory.prepareGroupService();

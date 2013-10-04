@@ -84,7 +84,7 @@ public final class CommonTransformer {
         if (entity != null) {
             group = new Group();
 
-            group.setId(entity.getExternalId());
+            group.setGroupId(entity.getExternalId());
             group.setGroupName(entity.getGroupName());
             group.setGroupType(transform(entity.getGroupType()));
             group.setDescription(entity.getDescription());
@@ -100,7 +100,7 @@ public final class CommonTransformer {
         if (group != null) {
             entity = new GroupEntity();
 
-            entity.setExternalId(group.getId());
+            entity.setExternalId(group.getGroupId());
             entity.setGroupName(group.getGroupName());
             entity.setGroupType(transform(group.getGroupType()));
             entity.setDescription(group.getDescription());

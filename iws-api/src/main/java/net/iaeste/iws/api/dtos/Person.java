@@ -37,7 +37,6 @@ public final class Person extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String id = null;
     private Address address = null;
     private String alternateEmail = null;
     private String phone = null;
@@ -64,7 +63,6 @@ public final class Person extends AbstractVerification {
      */
     public Person(final Person person) {
         if (person != null) {
-            id = person.id;
             address = person.address;
             alternateEmail = person.alternateEmail;
             phone = person.phone;
@@ -78,16 +76,6 @@ public final class Person extends AbstractVerification {
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
-
-    public void setId(final String id) throws IllegalArgumentException {
-        ensureValidId("id", id);
-
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
 
     public void setAddress(final Address address) throws IllegalArgumentException {
         ensureNotNullAndVerifiable("address", address);
@@ -187,9 +175,6 @@ public final class Person extends AbstractVerification {
 
         final Person person = (Person) obj;
 
-        if (id != null ? !id.equals(person.id) : person.id != null) {
-            return false;
-        }
         if (address != null ? !address.equals(person.address) : person.address != null) {
             return false;
         }
@@ -219,7 +204,6 @@ public final class Person extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (id != null ? id.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (address != null ? address.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (alternateEmail != null ? alternateEmail.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (phone != null ? phone.hashCode() : 0);
@@ -237,8 +221,7 @@ public final class Person extends AbstractVerification {
     @Override
     public String toString() {
         return "Person{" +
-                "id='" + id + '\'' +
-                ", address=" + address +
+                "address=" + address +
                 ", alternateEmail='" + alternateEmail + '\'' +
                 ", phone='" + phone + '\'' +
                 ", mobile='" + mobile + '\'' +

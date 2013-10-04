@@ -41,7 +41,7 @@ public final class ViewTransformer {
         final Employer employer = new Employer();
 
         // First, read out the the common Employer fields
-        employer.setId(view.getExternalId());
+        employer.setEmployerId(view.getExternalId());
         employer.setName(view.getName());
         employer.setDepartment(view.getDepartment());
         employer.setBusiness(view.getBusiness());
@@ -56,7 +56,7 @@ public final class ViewTransformer {
 
         // Second, read out the Group of the Employer
         final Group group = new Group();
-        group.setId(view.getGroupExternalId());
+        group.setGroupId(view.getGroupExternalId());
         group.setGroupName(view.getGroupName());
         group.setGroupType(view.getGroupType());
         employer.setGroup(group);

@@ -213,7 +213,7 @@ public final class AccessClientTest extends AbstractTest {
         // Should add more assertions, however - there's still changes coming to
         // the Permission layer - so for now, we'll leave it Otherwise we will
         // constantly have to verify this.
-        authToken.setGroupId(findNationalGroup(authToken).getId());
+        authToken.setGroupId(findNationalGroup(authToken).getGroupId());
         final FetchPermissionResponse responseNational = access.fetchPermissions(authToken);
         assertThat(responseNational.isOk(), is(true));
 

@@ -110,6 +110,15 @@ public enum Permission {
      */
     CONTROL_USER_ACCOUNT,
 
+    /**
+     * If the name (firstname or lastname) is incorrect, then it requires this
+     * permission to update it. It is extracted as a separate request, to try to
+     * minimize the abuse of Accounts, i.e. that users simply hand over accounts
+     * rather than create and delete accounts, which will safeguard the user
+     * history in the system.
+     */
+    CHANGE_ACCOUNT_NAME,
+
     FETCH_GROUPS,
 
     /**

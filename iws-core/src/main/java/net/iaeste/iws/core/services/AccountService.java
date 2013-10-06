@@ -27,6 +27,8 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.UserRequest;
@@ -214,6 +216,10 @@ public final class AccountService extends CommonService<AccessDao> {
         }
     }
 
+    public void changeAccountName(final Authentication authentication, final AccountNameRequest request) {
+        throw new NotImplementedException("Method is not yet implemented, see Tract ticket #437");
+    }
+
     /**
      * Fetches a User Object. The result from the request depends on the person
      * who made the request, and the permissions. Please see the API description
@@ -257,6 +263,13 @@ public final class AccountService extends CommonService<AccessDao> {
         }
 
         return new FetchUserResponse(user);
+    }
+
+    public FetchRoleResponse fetchRoles(final Authentication authentication) {
+        final List<RoleEntity> roles = dao.findRoles(authentication.getGroup());
+        final FetchRoleResponse response = new FetchRoleResponse(transformRoleEntities(roles));
+
+        return response;
     }
 
     // =========================================================================
@@ -518,12 +531,5 @@ public final class AccountService extends CommonService<AccessDao> {
 
         // Send notification
         notifications.notify(authentication, user, NotificationType.UPDATE_USERNAME);
-    }
-
-    public FetchRoleResponse fetchRoles(final Authentication authentication) {
-        final List<RoleEntity> roles = dao.findRoles(authentication.getGroup());
-        final FetchRoleResponse response = new FetchRoleResponse(transformRoleEntities(roles));
-
-        return response;
     }
 }

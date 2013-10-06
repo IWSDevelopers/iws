@@ -16,6 +16,7 @@ package net.iaeste.iws.fitnesse.callers;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -94,6 +95,18 @@ public final class AdministrationCaller implements Administration {
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         try {
             return caller.controlUserAccount(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+        try {
+            return caller.changeAccountName(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

@@ -17,6 +17,7 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -178,6 +179,25 @@ public class AdministrationBean extends AbstractBean implements Administration {
 
         try {
             response = controller.controlUserAccount(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+        Fallible response;
+
+        try {
+            response = controller.changeAccountName(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));

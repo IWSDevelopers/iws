@@ -34,7 +34,8 @@ insert into permissions (id, permission) values ( 7, 'FETCH_COUNTRIES');
 insert into permissions (id, permission) values ( 8, 'PROCESS_COUNTRY');
 -- Administration: 1xx
 insert into permissions (id, permission) values (101, 'CONTROL_USER_ACCOUNT');
-insert into permissions (id, permission) values (102, 'FETCH_USERS');
+insert into permissions (id, permission) values (102, 'CHANGE_ACCOUNT_NAME');
+insert into permissions (id, permission) values (103, 'FETCH_USERS');
 insert into permissions (id, permission) values (111, 'PROCESS_GROUP');
 insert into permissions (id, permission) values (112, 'DELETE_GROUP');
 insert into permissions (id, permission) values (113, 'FETCH_GROUPS');
@@ -108,7 +109,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 8);
 insert into permission_to_role (role_id, permission_id) values (1, 8);
 insert into permission_to_role (role_id, permission_id) values (2, 8);
 
--- Permission 102 - Control User Account
+-- Permission 101 - Control User Account
 --   -> GroupTypes: 0 Administration
 --                  2 Member
 --   -> Roles:      1 Owner
@@ -118,22 +119,30 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 101
 insert into permission_to_role (role_id, permission_id) values (1, 101);
 insert into permission_to_role (role_id, permission_id) values (2, 101);
 
+-- Permission 102 - Change Account Name
+--   -> GroupTypes: 0 Administration
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 102);
+insert into permission_to_role (role_id, permission_id) values (1, 102);
+insert into permission_to_role (role_id, permission_id) values (2, 102);
+
 -- Permission: 103 - Fetch Users
 --   -> GroupTypes: All except Private & Student
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
-insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 102);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 102);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 102);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 102);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 102);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 102);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 102);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 102);
-insert into permission_to_role (role_id, permission_id) values (1, 102);
-insert into permission_to_role (role_id, permission_id) values (2, 102);
-insert into permission_to_role (role_id, permission_id) values (3, 102);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 103);
+insert into permission_to_role (role_id, permission_id) values (1, 103);
+insert into permission_to_role (role_id, permission_id) values (2, 103);
+insert into permission_to_role (role_id, permission_id) values (3, 103);
 
 -- Permission: 111 - Process Group
 --   -> GroupTypes: All except Private & Student

@@ -15,6 +15,7 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -129,6 +130,22 @@ public interface Administration {
      * @return Standard Error Object
      */
     Fallible controlUserAccount(AuthenticationToken token, UserRequest request);
+
+    /**
+     * The request will allow an update of the name of an Account, i.e. updating
+     * the users first and lastnames.<br />
+     *   It is only allowed to update one of the names, meaning that it is not
+     * possible to update both a users firstname and lastname at the same time.
+     * The request will first check if the lastname should be updated. If not,
+     * then the request will update the users firstname.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request data, must contain the User Account and the new
+     *                name for it
+     * @return Standard Error Object
+     */
+    Fallible changeAccountName(AuthenticationToken token, AccountNameRequest request);
 
     /**
      * Retrieves a list of users from the system.

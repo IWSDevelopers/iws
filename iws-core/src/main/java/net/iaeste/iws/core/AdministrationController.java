@@ -20,6 +20,7 @@ import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -170,6 +171,33 @@ public final class AdministrationController extends CommonController implements 
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished controlUserAccount()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting changeAccountName()"));
+        }
+        Fallible response;
+
+        try {
+            verify(request);
+            final Authentication authentication = verifyAccess(token, Permission.CHANGE_ACCOUNT_NAME);
+
+            final AccountService service = factory.prepareAccountService();
+            service.changeAccountName(authentication, request);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished changeAccountName()"));
         }
         return response;
     }

@@ -16,6 +16,7 @@ package net.iaeste.iws.client;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -80,6 +81,14 @@ public final class AdministrationClient implements Administration {
     @Override
     public Fallible controlUserAccount(final AuthenticationToken token, final UserRequest request) {
         return client.controlUserAccount(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible changeAccountName(final AuthenticationToken token, final AccountNameRequest request) {
+        return client.changeAccountName(token, request);
     }
 
     /**

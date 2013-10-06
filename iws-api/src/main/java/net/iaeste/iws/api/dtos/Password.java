@@ -106,7 +106,6 @@ public final class Password extends AbstractVerification {
      */
     public void setNewPassword(final String newPassword) throws IllegalArgumentException {
         ensureNotNullOrTooShort("newPassword", newPassword, IWSConstants.MINIMAL_PASSWORD_LENGTH);
-
         this.newPassword = newPassword;
     }
 
@@ -129,7 +128,6 @@ public final class Password extends AbstractVerification {
      */
     public void setOldPassword(final String oldPassword) throws IllegalArgumentException {
         ensureNotNull("oldPassword", oldPassword);
-
         this.oldPassword = oldPassword;
     }
 

@@ -87,7 +87,17 @@ public final class Address extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setStreet1(final String street1) {
+    /**
+     * Sets the Primary Street information for this Address. The value may be
+     * null, but cannot exceed the maximum length.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.
+     *
+     * @param street1 Primary Street information
+     * @throws IllegalArgumentException if the value exceeds the maximum length
+     * @see #FIELD_LENGTH
+     */
+    public void setStreet1(final String street1) throws IllegalArgumentException {
         ensureNotEmptyOrTooLong("street1", street1, FIELD_LENGTH);
         this.street1 = street1;
     }
@@ -96,7 +106,17 @@ public final class Address extends AbstractVerification {
         return street1;
     }
 
-    public void setStreet2(final String street2) {
+    /**
+     * Sets the Secondaty Street information for this Address. The value may be
+     * null, but cannot exceed the maximum length.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.
+     *
+     * @param street2 Secondary Street information
+     * @throws IllegalArgumentException if the value exceeds the maximum length
+     * @see #FIELD_LENGTH
+     */
+    public void setStreet2(final String street2) throws IllegalArgumentException {
         ensureNotTooLong("street2", street2, FIELD_LENGTH);
         this.street2 = street2;
     }
@@ -105,7 +125,17 @@ public final class Address extends AbstractVerification {
         return street2;
     }
 
-    public void setZip(final String zip) {
+    /**
+     * Sets the Zip (Postal) Code information for this Address. The value may be
+     * null, but cannot exceed the maximum length.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.
+     *
+     * @param zip Zip (Postal) Code
+     * @throws IllegalArgumentException if the value exceeds the maximum length
+     * @see #ZIP_LENGTH
+     */
+    public void setZip(final String zip) throws IllegalArgumentException {
         ensureNotEmptyOrTooLong("zip", zip, ZIP_LENGTH);
         this.zip = zip;
     }
@@ -114,7 +144,17 @@ public final class Address extends AbstractVerification {
         return zip;
     }
 
-    public void setCity(final String city) {
+    /**
+     * Sets the City name for this Address. The value may be null, but cannot
+     * exceed the maximum length.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.
+     *
+     * @param city City Name
+     * @throws IllegalArgumentException if the value exceeds the maximum length
+     * @see #FIELD_LENGTH
+     */
+    public void setCity(final String city) throws IllegalArgumentException {
         ensureNotEmptyOrTooLong("city", city, FIELD_LENGTH);
         this.city = city;
     }
@@ -123,7 +163,17 @@ public final class Address extends AbstractVerification {
         return city;
     }
 
-    public void setState(final String state) {
+    /**
+     * Sets the State Name for this Address. The value may be null, but cannot
+     * exceed the maximum length.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.
+     *
+     * @param state State Name
+     * @throws IllegalArgumentException if the value exceeds the maximum length
+     * @see #FIELD_LENGTH
+     */
+    public void setState(final String state) throws IllegalArgumentException {
         ensureNotTooLong("state", state, FIELD_LENGTH);
         this.state = state;
     }
@@ -132,7 +182,17 @@ public final class Address extends AbstractVerification {
         return state;
     }
 
-    public void setPobox(final String pobox) {
+    /**
+     * Sets the Post Office Box Number for this Address. The value may be null,
+     * but cannot exceed the maximum length.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value exceeds the maximum length.
+     *
+     * @param pobox Post Office Box number
+     * @throws IllegalArgumentException if the value exceeds the maximum length
+     * @see #FIELD_LENGTH
+     */
+    public void setPobox(final String pobox) throws IllegalArgumentException {
         ensureNotTooLong("pobox", pobox, FIELD_LENGTH);
         this.pobox = pobox;
     }
@@ -141,7 +201,16 @@ public final class Address extends AbstractVerification {
         return pobox;
     }
 
-    public void setCountry(final Country country) {
+    /**
+     * Sets the Country for this Address. The value may be null, but must be
+     * a valid Country Object.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the given
+     * value is not a valid Country Object.
+     *
+     * @param country Country Object
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setCountry(final Country country) throws IllegalArgumentException {
         ensureVerifiable("country", country);
         this.country = new Country(country);
     }

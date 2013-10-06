@@ -78,8 +78,7 @@ public final class Person extends AbstractVerification {
     // =========================================================================
 
     public void setAddress(final Address address) throws IllegalArgumentException {
-        ensureNotNullAndVerifiable("address", address);
-
+        ensureVerifiable("address", address);
         this.address = address;
     }
 
@@ -88,8 +87,7 @@ public final class Person extends AbstractVerification {
     }
 
     public void setAlternateEmail(final String alternateEmail) throws IllegalArgumentException {
-        ensureNotNullAndValidEmail("alternateEmail", alternateEmail);
-
+        ensureValidEmail("alternateEmail", alternateEmail);
         this.alternateEmail = alternateEmail;
     }
 
@@ -98,8 +96,7 @@ public final class Person extends AbstractVerification {
     }
 
     public void setPhone(final String phone) throws IllegalArgumentException {
-        ensureNotNullOrTooLong("phone", phone, 25);
-
+        ensureNotTooLong("phone", phone, 25);
         this.phone = phone;
     }
 
@@ -108,8 +105,7 @@ public final class Person extends AbstractVerification {
     }
 
     public void setMobile(final String mobile) throws IllegalArgumentException {
-        ensureNotNullOrTooLong("mobile", mobile, 25);
-
+        ensureNotTooLong("mobile", mobile, 25);
         this.mobile = mobile;
     }
 
@@ -118,8 +114,7 @@ public final class Person extends AbstractVerification {
     }
 
     public void setFax(final String fax) throws IllegalArgumentException {
-        ensureNotNullOrTooLong("fax", fax, 25);
-
+        ensureNotTooLong("fax", fax, 25);
         this.fax = fax;
     }
 
@@ -127,9 +122,7 @@ public final class Person extends AbstractVerification {
         return fax;
     }
 
-    public void setBirthday(final Date birthday) throws IllegalArgumentException {
-        ensureNotNull("birthday", birthday);
-
+    public void setBirthday(final Date birthday) {
         this.birthday = birthday;
     }
 
@@ -137,9 +130,7 @@ public final class Person extends AbstractVerification {
         return birthday;
     }
 
-    public void setGender(final Gender gender) throws IllegalArgumentException {
-        ensureNotNull("gender", gender);
-
+    public void setGender(final Gender gender) {
         this.gender = gender;
     }
 

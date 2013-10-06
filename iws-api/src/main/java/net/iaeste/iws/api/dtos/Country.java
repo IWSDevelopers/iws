@@ -95,9 +95,18 @@ public final class Country extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setCountryCode(final String countryCode) {
+    /**
+     * Sets the Country Code, the two letter Country Code, which is specified by
+     * the UN.<br />
+     *   This method throws an {@code IllegalArgumentException} if the given
+     * value is not a valid Country Code, i.e. it must not be null and the value
+     * has to be two characters.
+     *
+     * @param countryCode UN Country Code
+     * @throws IllegalArgumentException If either null or not two characters long
+     */
+    public void setCountryCode(final String countryCode) throws IllegalArgumentException {
         ensureNotNullAndExactLength("countryCode", countryCode, 2);
-
         this.countryCode = countryCode;
     }
 
@@ -105,9 +114,18 @@ public final class Country extends AbstractVerification {
         return countryCode;
     }
 
-    public void setCountryName(final String countryName) {
+    /**
+     * Sets the Country Name. This is the English variant of the Country Name,
+     * and it cannot neither be null nor too long. The max length is set to 100
+     * characters.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the name
+     * is invalid, i.e. null or too long.
+     *
+     * @param countryName English name of the Country
+     * @throws IllegalArgumentException if either null or too long
+     */
+    public void setCountryName(final String countryName) throws IllegalArgumentException {
         ensureNotNullOrTooLong("countryName", countryName, 100);
-
         this.countryName = countryName;
     }
 
@@ -115,9 +133,18 @@ public final class Country extends AbstractVerification {
         return countryName;
     }
 
-    public void setCountryNameFull(final String countryNameFull) {
+    /**
+     * Sets the Full Country Name. This is the complete name of the Country, and
+     * it cannot neither be null nor too long. The max length is set to 100
+     * characters.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the name
+     * is invalid, i.e. null or too long.
+     *
+     * @param countryNameFull Full Country Name
+     * @throws IllegalArgumentException if either null or too long
+     */
+    public void setCountryNameFull(final String countryNameFull) throws IllegalArgumentException {
         ensureNotTooLong("countryNameFull", countryNameFull, 100);
-
         this.countryNameFull = countryNameFull;
     }
 
@@ -125,9 +152,18 @@ public final class Country extends AbstractVerification {
         return countryNameFull;
     }
 
-    public void setCountryNameNative(final String countryNameNative) {
+    /**
+     * Sets the Native Country Name. This is the name that the Country uses for
+     * itself. It may be null, but if set, it cannot be longer than 100
+     * characters.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the name
+     * is too long.
+     *
+     * @param countryNameNative Native Country Name
+     * @throws IllegalArgumentException if the native name is too long
+     */
+    public void setCountryNameNative(final String countryNameNative) throws IllegalArgumentException {
         ensureNotTooLong("countryNameNative", countryNameNative, 100);
-
         this.countryNameNative = countryNameNative;
     }
 
@@ -135,9 +171,18 @@ public final class Country extends AbstractVerification {
         return countryNameNative;
     }
 
-    public void setNationality(final String nationality) {
+    /**
+     * Sets the Nationality of the citizens of the Country. The given value may
+     * maximum be 100 characters long. For example, the Nationality of Germany
+     * is 'German'.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param nationality The Nationality of the Citizens
+     * @throws IllegalArgumentException if the given value is too long
+     */
+    public void setNationality(final String nationality) throws IllegalArgumentException {
         ensureNotTooLong("nationality", nationality, 100);
-
         this.nationality = nationality;
     }
 
@@ -145,9 +190,18 @@ public final class Country extends AbstractVerification {
         return nationality;
     }
 
-    public void setCitizens(final String citizens) {
+    /**
+     * Sets the name of the Citizens of the Country. The given value may
+     * maximum be 100 characters long. For example, the Citizens of Germany are
+     * 'Germans'.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param citizens The name of the Citizens of the Country
+     * @throws IllegalArgumentException if the given value is too long
+     */
+    public void setCitizens(final String citizens) throws IllegalArgumentException {
         ensureNotTooLong("citizens", citizens, 100);
-
         this.citizens = citizens;
     }
 
@@ -155,9 +209,17 @@ public final class Country extends AbstractVerification {
         return citizens;
     }
 
-    public void setPhonecode(final String phonecode) {
+    /**
+     * Sets the Phonecode of the Country. The value may be not be longer than
+     * five (5) characters long.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * value is too long.
+     *
+     * @param phonecode The official phone code of the country (+xxx)
+     * @throws IllegalArgumentException if the given value is null
+     */
+    public void setPhonecode(final String phonecode) throws IllegalArgumentException {
         ensureNotTooLong("phonecode", phonecode, 5);
-
         this.phonecode = phonecode;
     }
 
@@ -165,9 +227,17 @@ public final class Country extends AbstractVerification {
         return phonecode;
     }
 
-    public void setCurrency(final Currency currency) {
+    /**
+     * Sets the Currency of the Country. The value may not be null, as it is
+     * used internally.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param currency Official Currency of the Country
+     * @throws IllegalArgumentException if the value is null
+     */
+    public void setCurrency(final Currency currency) throws IllegalArgumentException {
         ensureNotNull("currency", currency);
-
         this.currency = currency;
     }
 
@@ -175,9 +245,18 @@ public final class Country extends AbstractVerification {
         return currency;
     }
 
-    public void setLanguages(final String languages) {
+    /**
+     * Sets the official language(s) of the Country. The given value may contain
+     * several Languages, but the maximum length may only be 100
+     * characters.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param languages Officially spoken language(s) of the Country
+     * @throws IllegalArgumentException if the given value is null
+     */
+    public void setLanguages(final String languages) throws IllegalArgumentException {
         ensureNotTooLong("languages", languages, 100);
-
         this.languages = languages;
     }
 
@@ -185,9 +264,19 @@ public final class Country extends AbstractVerification {
         return languages;
     }
 
-    public void setMembership(final Membership membership) {
+    /**
+     * Sets the type of Membership of the Country, if it is an IAESTE Member,
+     * then the value can be either full member, associate member, Co-operating
+     * Institution or former member. If neither of these values are applicable,
+     * the default value will be a non-member.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * value is null.
+     *
+     * @param membership Type of IAESTE Membership
+     * @throws IllegalArgumentException if the given value is null
+     */
+    public void setMembership(final Membership membership) throws IllegalArgumentException {
         ensureNotNull("membership", membership);
-
         this.membership = membership;
     }
 
@@ -195,10 +284,21 @@ public final class Country extends AbstractVerification {
         return membership;
     }
 
-    public void setMemberSince(final Integer memberSince) {
+    /**
+     * Sets the Country's IAESTE Membership date, i.e. the year when the country
+     * joined IAESTE. The year must be a valid IAESTE year, meaning that it must
+     * be set to something between the founding year of IAESTE (1948), and the
+     * present year.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * year is invalid, i.e. not within the limits (1948 - now).
+     *
+     * @param memberSince IAESTE Membership Year
+     * @throws IllegalArgumentException if the value is invalid
+     * @see IWSConstants#FOUNDING_YEAR
+     */
+    public void setMemberSince(final Integer memberSince) throws IllegalArgumentException {
         final int currentYear = new Date().getCurrentYear();
         ensureNotNullAndWithinLimits("memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
-
         this.memberSince = memberSince;
     }
 
@@ -206,9 +306,14 @@ public final class Country extends AbstractVerification {
         return memberSince;
     }
 
+    /**
+     * The name of the mailing list for this Country, the public variant
+     * (@iaeste.org) and the private variant (@iaeste.net). The mailinglist is
+     * not updatable via the Country Object.
+     *
+     * @param listName Mailinglist name
+     */
     public void setListName(final String listName) {
-        // No checks for this field, since it is only used when reading data
-        // from the IWS, not for writing
         this.listName = listName;
     }
 
@@ -216,9 +321,13 @@ public final class Country extends AbstractVerification {
         return listName;
     }
 
+    /**
+     * The name of the National Secretary is set by the System, and cannot be
+     * updated via the Country Object.
+     *
+     * @param nsFirstname Firstname of the National Secretary
+     */
     public void setNsFirstname(final String nsFirstname) {
-        // No checks for this field, since it is only used when reading data
-        // from the IWS, not for writing
         this.nsFirstname = nsFirstname;
     }
 
@@ -226,9 +335,13 @@ public final class Country extends AbstractVerification {
         return nsFirstname;
     }
 
+    /**
+     * The name of the National Secretary is set by the System, and cannot be
+     * updated via the Country Object.
+     *
+     * @param nsLastname Lastname of the National Secretary
+     */
     public void setNsLastname(final String nsLastname) {
-        // No checks for this field, since it is only used when reading data
-        // from the IWS, not for writing
         this.nsLastname = nsLastname;
     }
 
@@ -246,21 +359,10 @@ public final class Country extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
-        //final int currentYear = new Date().getCurrentYear();
 
         isNotNull(validation, "countryCode", countryCode);
         isNotNull(validation, "countryName", countryName);
-        //hasExactSize(validation, "country", countryCode, 2);
-        //isWithinLimits(validation, "countryName", countryName, 0, 100);
-        //isWithinLimits(validation, "countryNameFull", countryNameFull, 0, 100);
-        //isWithinLimits(validation, "countryNameNative", countryNameNative, 0, 100);
-        //isWithinLimits(validation, "nationality", nationality, 0, 100);
-        //isWithinLimits(validation, "citizens", citizens, 0, 100);
-        //isWithinLimits(validation, "phonecode", phonecode, 0, 5);
-        //isNotNull(validation, "currency", currency);
-        //isWithinLimits(validation, "languages", languages, 0, 100);
-        //isNotNull(validation, "membership", membership);
-        //isWithinLimits(validation, "memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
+        isNotNull(validation, "currency", currency);
 
         return validation;
     }
@@ -300,7 +402,7 @@ public final class Country extends AbstractVerification {
         if (phonecode != null ? !phonecode.equals(country.phonecode) : country.phonecode != null) {
             return false;
         }
-        if (currency != null ? !currency.equals(country.currency) : country.currency != null) {
+        if (currency != null ? currency != country.currency : country.currency != null) {
             return false;
         }
         if (languages != null ? !languages.equals(country.languages) : country.languages != null) {

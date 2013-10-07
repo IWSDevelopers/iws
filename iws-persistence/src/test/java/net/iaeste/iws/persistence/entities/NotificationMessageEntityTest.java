@@ -56,7 +56,7 @@ public class NotificationMessageEntityTest {
     @Ignore("Ignored 20130422 by Kim - Reason: The test is unstable!")
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        final UserEntity user = dao.findUserByUsername("austria");
+        final UserEntity user = dao.findActiveUserByUsername("austria");
         assertThat(user.getUsername(), is("austria"));
 
         final NotificationMessageEntity entity = new NotificationMessageEntity();
@@ -82,7 +82,7 @@ public class NotificationMessageEntityTest {
     @Transactional
     public void testUpdateQuery() {
         final AccessDao dao = new AccessJpaDao(entityManager);
-        final UserEntity user = dao.findUserByUsername("austria@iaeste.at");
+        final UserEntity user = dao.findActiveUserByUsername("austria@iaeste.at");
         assertThat(user.getUsername(), is("austria@iaeste.at"));
 
         final NotificationMessageEntity entity = new NotificationMessageEntity();

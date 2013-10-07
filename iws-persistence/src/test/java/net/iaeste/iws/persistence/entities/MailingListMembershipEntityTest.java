@@ -58,7 +58,7 @@ public class MailingListMembershipEntityTest {
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
         final MailingListDao mailingListDao = new MailingListJpaDao(entityManager);
-        final UserEntity user = dao.findUserByUsername("austria@iaeste.at");
+        final UserEntity user = dao.findActiveUserByUsername("austria@iaeste.at");
         assertThat(user.getUsername(), is("austria@iaeste.at"));
 
         final GroupEntity group = dao.findNationalGroup(user);

@@ -219,7 +219,7 @@ public final class AccessService extends CommonService<AccessDao> {
      * @param username Username to the users account
      */
     public void forgotPassword(final String username) {
-        final UserEntity user = dao.findUserByUsername(username);
+        final UserEntity user = dao.findActiveUserByUsername(username);
 
         if (user != null) {
             user.setCode(generateHash(UUID.randomUUID().toString(), user.getSalt()));
@@ -346,7 +346,7 @@ public final class AccessService extends CommonService<AccessDao> {
     private UserEntity findUserFromCredentials(final AuthenticationRequest request) throws IWSException {
         // First, find an Entity exists for the given (lowercased) username
         final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-        final UserEntity user = dao.findUserByUsername(username);
+        final UserEntity user = dao.findActiveUserByUsername(username);
 
         if (user != null) {
             if (user.getStatus() == UserStatus.ACTIVE) {

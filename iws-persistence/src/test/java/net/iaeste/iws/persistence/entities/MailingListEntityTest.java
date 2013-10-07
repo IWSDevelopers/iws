@@ -17,7 +17,6 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
-import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.MailingListJpaDao;
 import net.iaeste.iws.persistence.setup.SpringConfig;
@@ -31,8 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -56,7 +53,7 @@ public class MailingListEntityTest {
     public void testClassflow() {
         final AccessDao dao = new AccessJpaDao(entityManager);
         final MailingListDao mailingListDao = new MailingListJpaDao(entityManager);
-        final UserEntity user = dao.findUserByUsername("austria@iaeste.at");
+        final UserEntity user = dao.findActiveUserByUsername("austria@iaeste.at");
         assertThat(user.getUsername(), is("austria@iaeste.at"));
 
         final GroupEntity group = dao.findNationalGroup(user);

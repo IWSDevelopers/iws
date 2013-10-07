@@ -38,10 +38,26 @@ import java.util.List;
 public interface AccessDao extends BasicDao {
 
     /**
-     * Finds a {@code UserEntity} based on the given (unique) username. If no
-     * such Entity exists, then a null is returned, if more than one account (!)
-     * exists, then a fatal Exception is thrown, otherwise the found Entity is
-     * returned.
+     * Finds an {@code UserEntity} based on the given (unique) username,
+     * only active users are processed.
+     * If no such Entity exists, then a null is returned,
+     * if more than one account (!) exists, then a fatal Exception is thrown,
+     * otherwise the found Entity is returned.
+     *
+     *
+     * @param username Username
+     * @return Found {@code UserEntity}
+     * @throws IWSException if multiple accounts exists
+     */
+    UserEntity findActiveUserByUsername(String username) throws IWSException;
+
+    /**
+     * Finds an {@code UserEntity} based on the given (unique) username,
+     * with no restriction on its status.
+     * If no such Entity exists, then a null is returned,
+     * if more than one account (!) exists, then a fatal Exception is thrown,
+     * otherwise the found Entity is returned.
+     *
      *
      * @param username Username
      * @return Found {@code UserEntity}

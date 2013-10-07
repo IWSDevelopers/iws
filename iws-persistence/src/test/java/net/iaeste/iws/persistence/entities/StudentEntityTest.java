@@ -62,7 +62,7 @@ public class StudentEntityTest {
 
         final AccessDao accessDao = new AccessJpaDao(entityManager);
         final AuthenticationToken token = new AuthenticationToken();
-        final UserEntity user = accessDao.findUserByUsername("austria@iaeste.at");
+        final UserEntity user = accessDao.findActiveUserByUsername("austria@iaeste.at");
 
         group = accessDao.findNationalGroup(user);
         authentication = new Authentication(token, user, group, UUID.randomUUID().toString());

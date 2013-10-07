@@ -117,12 +117,10 @@ public class NotificationSystemAdministration implements Observer {
 
         switch (type) {
             case NEW_USER:
-                prepareNewUserNotificationSetting(fields.get(NotificationField.EMAIL));
-                status = NotificationProcessTaskStatus.OK;
+                status = prepareNewUserNotificationSetting(fields.get(NotificationField.EMAIL));
                 break;
             case USER_ACTIVATED:
-                prepareActivatedUserNotificationSetting(fields.get(NotificationField.EMAIL));
-                status = NotificationProcessTaskStatus.OK;
+                status = prepareActivatedUserNotificationSetting(fields.get(NotificationField.EMAIL));
                 break;
             case NEW_GROUP:
                 createGroupMailinglist(fields.get(NotificationField.GROUP_NAME), fields.get(NotificationField.COUNTRY_NAME), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID));
@@ -144,16 +142,23 @@ public class NotificationSystemAdministration implements Observer {
         return status;
     }
 
-    private void prepareNewUserNotificationSetting(final String username) {
+    private NotificationProcessTaskStatus prepareNewUserNotificationSetting(final String username) {
+        final NotificationProcessTaskStatus status;
         final UserEntity user = accessDao.findUserByUsername(username);
         if (user != null) {
             final UserNotificationEntity userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_USER, NotificationFrequency.IMMEDIATELY);
             notificationDao.persist(userNotification);
+            status = NotificationProcessTaskStatus.OK;
+        } else {
+            status = NotificationProcessTaskStatus.ERROR;
         }
+
+        return status;
     }
 
-    private void prepareActivatedUserNotificationSetting(final String username) {
-        final UserEntity user = accessDao.findUserByUsername(username);
+    private NotificationProcessTaskStatus prepareActivatedUserNotificationSetting(final String username) {
+        final NotificationProcessTaskStatus status;
+        final UserEntity user = accessDao.findActiveUserByUsername(username);
         final Set<NotificationType> notificationTypes = new HashSet<>(16);
         notificationTypes.add(NotificationType.UPDATE_USERNAME);
         notificationTypes.add(NotificationType.RESET_PASSWORD);
@@ -167,7 +172,12 @@ public class NotificationSystemAdministration implements Observer {
                     notificationDao.persist(userNotification);
                 }
             }
+            status = NotificationProcessTaskStatus.OK;
+        } else {
+            status = NotificationProcessTaskStatus.ERROR;
         }
+
+        return status;
     }
 
     private void createGroupMailinglist(final String groupName, final String countryName, final String type, final String groupExternalId) {

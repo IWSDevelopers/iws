@@ -263,13 +263,19 @@ public class NotificationEmailSender implements Observer {
     //     for the current notification processing
     private List<UserEntity> getRecipients(final Map<NotificationField, String> fields, final NotificationType type) {
         final List<UserEntity> result = new ArrayList<>();
+        final UserEntity user;
         switch (type) {
             case ACTIVATE_USER:
+                user = accessDao.findUserByUsername(fields.get(NotificationField.EMAIL));
+                if (user != null) {
+                    result.add(user);
+                }
+                break;
             case NEW_GROUP_OWNER:
             case RESET_PASSWORD:
             case RESET_SESSION:
             case UPDATE_USERNAME:
-                final UserEntity user = accessDao.findUserByUsername(fields.get(NotificationField.EMAIL));
+                user = accessDao.findActiveUserByUsername(fields.get(NotificationField.EMAIL));
                 if (user != null) {
                     result.add(user);
                 }

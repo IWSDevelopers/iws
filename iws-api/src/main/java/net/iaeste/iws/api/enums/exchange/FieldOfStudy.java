@@ -14,10 +14,7 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,7 +32,9 @@ import java.util.List;
  * records from this list.<br />
  *   Dealing with deprecation of the records is still a pending topic, but as
  * it very rarely happens, this is more an academic topic than a practical
- * matter.
+ * matter.<br />
+ *   The initial listing is generated from the SID provided Excel Sheet, see
+ * Trac ticket #416.
  *
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -43,13 +42,13 @@ import java.util.List;
  */
 public enum FieldOfStudy {
 
-    AERONAUTIC_ENGINEERING(Arrays.asList(
+    AERONAUTIC_ENGINEERING("Aeronautic Engineering", Arrays.asList(
             Specialization.AVIONICS,
             Specialization.AEROSPACE_ENGINEERING
     )),
 
-    AGRICULTURE(Arrays.asList(
-            Specialization.AGRONOMY_AGROECOLOGY,
+    AGRICULTURE("Agriculture", Arrays.asList(
+            Specialization.AGRONOMY_AGRO_ECOLOGY,
             Specialization.AGRIBUSINESS,
             Specialization.ANIMAL_HUSBANDRY,
             Specialization.ANIMAL_SCIENCE,
@@ -62,39 +61,39 @@ public enum FieldOfStudy {
             Specialization.HORTICULTURE,
             Specialization.MILLING,
             Specialization.PLANT_SCIENCE,
-            Specialization.SEA_FOOD
+            Specialization.SEAFOOD
     )),
 
-    AQUA_CULTURE(Arrays.asList(
+    AQUA_CULTURE("Aquaculture", Arrays.asList(
             Specialization.AQUACULTURE_AQUAFARMING,
             Specialization.MARINE_BIOLOGY,
             Specialization.MARINE_GEOLOGY,
             Specialization.MARINE_TECHNOLOGY,
-            Specialization.SEA_FOOD
+            Specialization.SEAFOOD
     )),
 
-    APPLIED_ARTS(Arrays.asList(
+    APPLIED_ARTS("Applied Arts", Arrays.asList(
             Specialization.DESIGN,
             Specialization.DRAWING,
             Specialization.GRAPHIC_DESIGN,
             Specialization.GRAPHICS_AND_PRINTING
     )),
 
-    ARCHITECTURE(Arrays.asList(
+    ARCHITECTURE("Architecture", Arrays.asList(
             Specialization.INDUSTRIAL_DESIGN,
             Specialization.INTERIOR_DESIGN,
             Specialization.LANDSCAPE_ARCHITECTURE,
             Specialization.URBAN_PLANNING
     )),
 
-    BIOLOGY(Arrays.asList(
+    BIOLOGY("Biology", Arrays.asList(
             Specialization.ANIMAL_BEHAVIOUR,
             Specialization.ANIMAL_BIOLOGY,
             Specialization.ANIMAL_HUSBANDRY,
             Specialization.ANIMAL_SCIENCE,
             Specialization.BIOCHEMISTRY,
             Specialization.BIOINFORMATICS,
-            Specialization.BOTANIC,
+            Specialization.BOTANY,
             Specialization.CELL_BIOLOGY,
             Specialization.ECOLOGY,
             Specialization.ENTOMOLOGY,
@@ -107,12 +106,12 @@ public enum FieldOfStudy {
             Specialization.MYCOLOGY,
             Specialization.NEUROSCIENCE,
             Specialization.PLANT_BIOLOGY,
-            Specialization.SEA_FOOD,
+            Specialization.SEAFOOD,
             Specialization.TOXICOLOGY,
             Specialization.ZOOLOGY
     )),
 
-    BIOMEDICAL_SCIENCE(Arrays.asList(
+    BIOMEDICAL_SCIENCE("Biomedical Science", Arrays.asList(
             Specialization.BIOENGINEERING,
             Specialization.BIOINSTRUMENTATION,
             Specialization.BIOMATERIALS,
@@ -124,19 +123,19 @@ public enum FieldOfStudy {
             Specialization.PROTEOMICS
     )),
 
-    BIOTECHNOLOGY(Arrays.asList(
+    BIOTECHNOLOGY("Biotechnology", Arrays.asList(
             Specialization.BIOCHEMISTRY,
             Specialization.BIOENGINEERING,
             Specialization.BIOINFORMATICS,
             Specialization.BIOPHYSICS,
             Specialization.GENETICS,
-            Specialization.MICRO_BIOLOGY,
+            Specialization.MICROBIOLOGY,
             Specialization.MOLECULAR_BIOLOGY,
             Specialization.PHARMACY,
             Specialization.PROCESS_ENGINEERING
     )),
 
-    ECONOMY_AND_MANAGEMENT(Arrays.asList(
+    ECONOMY_AND_MANAGEMENT("Economy and Management", Arrays.asList(
             Specialization.ADMINISTRATION,
             Specialization.AGRIBUSINESS,
             Specialization.COMMERCE,
@@ -152,7 +151,7 @@ public enum FieldOfStudy {
             Specialization.STATISTICS
     )),
 
-    CHEMISTRY(Arrays.asList(
+    CHEMISTRY("Chemistry", Arrays.asList(
             Specialization.ANALYTICAL_CHEMISTRY,
             Specialization.BIOCHEMISTRY,
             Specialization.CHEMICAL_ENGINEERING,
@@ -166,7 +165,7 @@ public enum FieldOfStudy {
             Specialization.PROCESS_ENGINEERING
     )),
 
-    CIVIL_ENGINEERING(Arrays.asList(
+    CIVIL_ENGINEERING("Civil Engineering", Arrays.asList(
             Specialization.CONSTRUCTION,
             Specialization.FACILITY_SURVEYING,
             Specialization.GEOTECHNOLOGY,
@@ -178,15 +177,15 @@ public enum FieldOfStudy {
             Specialization.STRUCTURAL_ENGINEERING,
             Specialization.TRAFFIC_ENGINEERING,
             Specialization.WATER_ENGINEERING,
-            Specialization.WASTE_WATER_TREATMENT
+            Specialization.WASTEWATER_TREATMENT
     )),
 
-    EDUCATION(Arrays.asList(
+    EDUCATION("Education", Arrays.asList(
             Specialization.LANGUAGE,
             Specialization.SCIENCE
     )),
 
-    ELECTRICAL_ENGINEERING(Arrays.asList(
+    ELECTRICAL_ENGINEERING("Electrical Engineering", Arrays.asList(
             Specialization.AUDIO_TECHNOLOGY,
             Specialization.AUTOMATION,
             Specialization.CYBERNETICS,
@@ -200,7 +199,7 @@ public enum FieldOfStudy {
             Specialization.POWER_GENERATION
     )),
 
-    ENVIRONMENTAL_ENGINEERING(Arrays.asList(
+    ENVIRONMENTAL_ENGINEERING("Environmental Science", Arrays.asList(
             Specialization.BIODIVERSITY,
             Specialization.EARTH_SCIENCE,
             Specialization.ECOLOGY,
@@ -210,10 +209,10 @@ public enum FieldOfStudy {
             Specialization.MYCOLOGY,
             Specialization.SUSTAINABILITY,
             Specialization.SOIL_AND_AIR_POLLUTION,
-            Specialization.WASTE_WATER_MANAGEMENT
+            Specialization.WASTEWATER_TREATMENT
     )),
 
-    ENERGY_ENGINEERING(Arrays.asList(
+    ENERGY_ENGINEERING("Energy Engineering", Arrays.asList(
             Specialization.ENERGY_AND_PROCESS_ENGINEERING,
             Specialization.ENERGY_SYSTEMS_PLANNING,
             Specialization.RENEWABLE_ENERGY,
@@ -222,7 +221,7 @@ public enum FieldOfStudy {
             Specialization.POWER_GENERATION
     )),
 
-    FOOD_SCIENCE(Arrays.asList(
+    FOOD_SCIENCE("Food Science", Arrays.asList(
             Specialization.BREWING,
             Specialization.DIARY_FARMING,
             Specialization.FOOD_CHEMISTRY,
@@ -233,12 +232,12 @@ public enum FieldOfStudy {
             Specialization.WINERY
     )),
 
-    GEOSCIENCES(Arrays.asList(
+    GEOSCIENCE("Geoscience", Arrays.asList(
             Specialization.EARTH_SCIENCE,
-            Specialization.ECONOMICS_GEOGRAPHY,
+            Specialization.ECONOMIC_GEOGRAPHY,
             Specialization.GEOCHEMISTRY,
             Specialization.GEODESY_AND_CARTOGRAPHY,
-            Specialization.GENECOLOGY,
+            Specialization.GEOECOLOGY,
             Specialization.GEOGRAPHY,
             Specialization.GEOLOGY,
             Specialization.GEOMATICS,
@@ -254,16 +253,16 @@ public enum FieldOfStudy {
             Specialization.TOPOLOGY
     )),
 
-    INDUSTRIAL_ENGINEERING(Arrays.asList(
+    INDUSTRIAL_ENGINEERING("Industrial Engineering", Arrays.asList(
             Specialization.INDUSTRIAL_DESIGN,
             Specialization.INDUSTRIAL_ECONOMICS,
             Specialization.INNOVATION_STRATEGY,
             Specialization.PROCESS_ENGINEERING,
             Specialization.PRODUCT_DEVELOPMENT,
-            Specialization.WASTE_WATER_MANAGEMENT
+            Specialization.WASTEWATER_TREATMENT
     )),
 
-    IT(Arrays.asList(
+    IT("IT", Arrays.asList(
             Specialization.AUTOMATION,
             Specialization.ARTIFICIAL_INTELLIGENCE,
             Specialization.BIOINFORMATICS,
@@ -280,6 +279,7 @@ public enum FieldOfStudy {
             Specialization.INFORMATION_TECHNOLOGY,
             Specialization.NETWORKS,
             Specialization.ROBOTICS,
+            Specialization.SECURITY,
             Specialization.SIMULATION,
             Specialization.SOFTWARE_DEVELOPMENT,
             Specialization.SOFTWARE_ENGINEERING,
@@ -292,7 +292,7 @@ public enum FieldOfStudy {
             Specialization.WEB_DEVELOPMENT
     )),
 
-    MATHEMATICS(Arrays.asList(
+    MATHEMATICS("Mathematics", Arrays.asList(
             Specialization.APPLIED_MATHEMATICS,
             Specialization.APPLIED_STATISTICS,
             Specialization.CALCULUS,
@@ -303,8 +303,8 @@ public enum FieldOfStudy {
             Specialization.STATISTICS
     )),
 
-    MATERIALS_SCIENCE(Arrays.asList(
-            Specialization.MATERIALS_TECHNOLOGY,
+    MATERIAL_SCIENCE("Material Science", Arrays.asList(
+            Specialization.MATERIAL_TECHNOLOGY,
             Specialization.METALLURGY,
             Specialization.MINERAL_PROCESSING,
             Specialization.NANOMATERIALS,
@@ -313,10 +313,11 @@ public enum FieldOfStudy {
             Specialization.PROCESS_ENGINEERING,
             Specialization.STRUCTURAL_ENGINEERING,
             Specialization.TEXTILE_TECHNOLOGY,
-            Specialization.WOOD_AND_PAPER_ENGINEERING
+            Specialization.WOOD_AND_PAPER_ENGINEERING,
+            Specialization.WOOD_SCIENCE
     )),
 
-    MECHANICAL_ENGINEERING(Arrays.asList(
+    MECHANICAL_ENGINEERING("Mechanical Engineering", Arrays.asList(
             Specialization.AUTOMATION,
             Specialization.AUTOMOTIVE_ENGINEERING,
             Specialization.BIOMECHANICS,
@@ -335,14 +336,14 @@ public enum FieldOfStudy {
             Specialization.WOOD_AND_PAPER_ENGINEERING
     )),
 
-    MEDIA_AND_ART(Arrays.asList(
+    MEDIA_AND_MARKETING("Media and Marketing", Arrays.asList(
             Specialization.MEDIA_TECHNOLOGY,
             Specialization.DIGITAL_MEDIA,
             Specialization.MARKETING,
             Specialization.SOCIAL_MEDIA
     )),
 
-    PHYSICS(Arrays.asList(
+    PHYSICS("Physics", Arrays.asList(
             Specialization.ASTROPHYSICS,
             Specialization.BIOPHYSICS,
             Specialization.COMPUTATIONAL_PHYSICS,
@@ -359,15 +360,21 @@ public enum FieldOfStudy {
             Specialization.THERMODYNAMICS
     )),
 
-    VETERINARY_SCIENCE(Arrays.asList(
+    VETERINARY_SCIENCE("Veterinary Sciences", Arrays.asList(
             Specialization.BIOVETERINARY_SCIENCE,
             Specialization.VETERINARY_MEDICINE,
             Specialization.VETERINARY_SCIENCE
     ));
 
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
+    private final String description;
     private final List<Specialization> specializations;
 
-    FieldOfStudy(final List<Specialization> specializations) {
+    FieldOfStudy(final String description, final List<Specialization> specializations) {
+        this.description = description;
         this.specializations = specializations;
     }
 
@@ -376,6 +383,6 @@ public enum FieldOfStudy {
     }
 
     public String stringCSV() {
-        return name().charAt(0) + name().toLowerCase(IWSConstants.DEFAULT_LOCALE).replace('_', ' ').substring(1);
+        return description;
     }
 }

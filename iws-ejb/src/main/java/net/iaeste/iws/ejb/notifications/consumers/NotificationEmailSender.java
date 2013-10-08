@@ -181,7 +181,13 @@ public class NotificationEmailSender implements Observer {
      */
     @Override
     public void update(final Observable subject) {
-        processMessages();
+        try {
+            processMessages();
+        } catch (Exception e) {
+            //catching all exceptions other than IWSException to prevent
+            //stopping notification processing and leaving error message in log
+            LOG.error("System error occured", e);
+        }
     }
 
     private void processMessages() {

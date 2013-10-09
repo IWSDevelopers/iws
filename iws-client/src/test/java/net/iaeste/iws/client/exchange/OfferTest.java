@@ -27,10 +27,12 @@ import static org.junit.Assert.fail;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.dtos.TestData;
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.FetchType;
@@ -82,6 +84,30 @@ public final class OfferTest extends AbstractTest {
         logout(token);
         logout(austriaToken);
         logout(croatiaToken);
+    }
+
+    /**
+     * See trac bug report #451.
+     */
+    @Test
+    public void testSavingOfferWithoutCountry() {
+        final String refno = "PL-2013-BUG451-R";
+        final Offer offer = TestData.prepareFullOffer(refno, "Poland A/S", "PL");
+        // Now setting the value to null, we need to go through some hoops here,
+        // as our defensive copying will otherwise prevent the null from being
+        // set properly!
+        final Employer employer = offer.getEmployer();
+        final Address address = employer.getAddress();
+        address.setCountry(null);
+        employer.setAddress(address);
+        offer.setEmployer(employer);
+        final ProcessOfferRequest request = new ProcessOfferRequest(offer);
+
+        // Invoking the IWS with our null-country request
+        final OfferResponse response = exchange.processOffer(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getOffer().getEmployer().getAddress().getCountry().getCountryCode(), is("PL"));
     }
 
     @Test

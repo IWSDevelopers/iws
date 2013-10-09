@@ -152,13 +152,27 @@ public class CommonService<T extends BasicDao> {
         final Address address = getFirstObject(addresses);
 
         if (entity.getId() == null) {
-            final CountryEntity country = dao.findCountry(entity.getCountry().getCountryCode());
+            final CountryEntity country = findCountry(authentication, entity.getCountry());
             entity.setCountry(country);
             dao.persist(authentication, entity);
         } else if (address != null) {
             final AddressEntity newEntity = CommonTransformer.transform(address);
             dao.persist(authentication, entity, newEntity);
         }
+    }
+
+    private CountryEntity findCountry(final Authentication authentication, final CountryEntity country) {
+        final CountryEntity entity;
+
+        if ((country == null) || (country.getCountryCode() == null)) {
+            entity = authentication.getGroup().getCountry();
+        } else if (country.getId() == null) {
+            entity = dao.findCountry(country.getCountryCode());
+        } else {
+            entity = country;
+        }
+
+        return entity;
     }
 
     /**

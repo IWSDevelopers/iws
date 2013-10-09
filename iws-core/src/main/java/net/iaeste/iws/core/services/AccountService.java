@@ -84,7 +84,7 @@ public final class AccountService extends CommonService<AccessDao> {
 
         // To avoid problems, all internal handling of the username is in lowercase
         final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-        if (dao.findActiveUserByUsername(username) == null) {
+        if (dao.findExistingUserByUsername(username) == null) {
             final UserEntity user;
             if (request.isStudent()) {
                 final GroupEntity studentGroup = dao.findStudentGroup(authentication.getGroup());

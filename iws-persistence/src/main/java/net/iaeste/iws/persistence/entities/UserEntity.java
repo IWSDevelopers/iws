@@ -67,6 +67,10 @@ import java.util.Map;
                 query = "select u from UserEntity u " +
                         "where u.status = 'ACTIVE'" +
                         "  and u.username = :username"),
+        @NamedQuery(name = "user.findExistingByUsername",
+                query = "select u from UserEntity u " +
+                        "where u.status <> 'DELETED'" +
+                        "  and lower(u.username) = lower(:username)"),
         @NamedQuery(name = "user.findActiveByExternalId",
                 query = "select u from UserEntity u " +
                         "where u.status = 'ACTIVE'" +

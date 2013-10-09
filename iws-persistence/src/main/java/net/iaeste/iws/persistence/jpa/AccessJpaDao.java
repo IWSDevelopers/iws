@@ -70,6 +70,17 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public UserEntity findExistingUserByUsername(final String username) {
+        final Query query = entityManager.createNamedQuery("user.findExistingByUsername");
+        query.setParameter("username", username);
+
+        return findSingleResult(query, "user");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserEntity findUserByUsername(final String username) {
         final Query query = entityManager.createNamedQuery("user.findByUserName");
         query.setParameter("username", username);

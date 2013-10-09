@@ -62,6 +62,31 @@ public final class UserAccountTest extends AbstractAdministration {
         logout(token);
     }
 
+    /**
+     * Test for the Trac Bug report #442.
+     */
+    @Test
+    public void testCreateUserWithExitingUsername() {
+        final String username = "michael.pickelbauer@iaeste.at";
+        final CreateUserRequest request1 = new CreateUserRequest(username, "Michael", "Pickelbauer");
+        final CreateUserRequest request2 = new CreateUserRequest(username, "Hugo", "Mayer");
+
+        // Now let's create the two user accounts
+        final CreateUserResponse response1 = administration.createUser(token, request1);
+        final CreateUserResponse response2 = administration.createUser(token, request2);
+
+        // The first request should work like a charm
+        assertThat(response1, is(not(nullValue())));
+        assertThat(response1.isOk(), is(true));
+
+        // The second request should fail, as we already have a user with this
+        // username in the system
+        assertThat(response2, is(not(nullValue())));
+        assertThat(response2.isOk(), is(false));
+        assertThat(response2.getError(), is(IWSErrors.USER_ACCOUNT_EXISTS));
+        assertThat(response2.getMessage(), is("An account for the user with username " + username + " already exists."));
+    }
+
     @Test
     public void testCreateAccountWithPassword() {
         // Create the new User Request Object

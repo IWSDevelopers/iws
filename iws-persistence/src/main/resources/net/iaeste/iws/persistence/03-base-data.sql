@@ -121,9 +121,11 @@ insert into permission_to_role (role_id, permission_id) values (2, 101);
 
 -- Permission 102 - Change Account Name
 --   -> GroupTypes: 0 Administration
+--                  2 Member (This one should be removed if misused!!!!!)
 --   -> Roles:      1 Owner
 --                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 102);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 102);
 insert into permission_to_role (role_id, permission_id) values (1, 102);
 insert into permission_to_role (role_id, permission_id) values (2, 102);
 

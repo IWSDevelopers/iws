@@ -23,16 +23,19 @@ import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
+import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
+import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.AdministrationClient;
@@ -60,6 +63,21 @@ public final class UserAccountTest extends AbstractAdministration {
     @Override
     public void tearDown() {
         logout(token);
+    }
+
+    @Test
+    public void testAccountNameChange() {
+        token.setGroupId(findMemberGroup(token).getGroupId());
+        final String username = "alfons@iaeste.se";
+        final CreateUserRequest createRequest = new CreateUserRequest(username, "Alfons", "Åberg");
+        final CreateUserResponse createResponse = administration.createUser(token, createRequest);
+        final AccountNameRequest request = new AccountNameRequest(createResponse.getUser(), "Aaberg");
+        final Fallible response = administration.changeAccountName(token, request);
+        assertThat(response.isOk(), is(true));
+        final FetchUserRequest fetchRequest = new FetchUserRequest(createResponse.getUser().getUserId());
+        final FetchUserResponse fetchResponse = administration.fetchUser(token, fetchRequest);
+        assertThat(fetchResponse.isOk(), is(true));
+        assertThat(fetchResponse.getUser().getLastname(), is("Aaberg"));
     }
 
     /**

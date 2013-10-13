@@ -27,7 +27,7 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
@@ -216,8 +216,47 @@ public final class AccountService extends CommonService<AccessDao> {
         }
     }
 
+    /**
+     * Change account Name is only allowed by administrators of the system.
+     * Hence, if the administrator is allowed to perform the action, they may
+     * perform this on all accounts in the system.<br />
+     *   Note, an exception is added to this logic, so owners and moderators
+     * also can update their own members. If the given GroupType is then a
+     * Member, then they may update the account, if it belongs to the same
+     * member group
+     *
+     * @param authentication User & Group information
+     * @param request        Account Request information
+     */
     public void changeAccountName(final Authentication authentication, final AccountNameRequest request) {
-        throw new NotImplementedException("Method is not yet implemented, see Tract ticket #437");
+        final String externalId = request.getUser().getUserId();
+
+        if ((request.getLastname() == null) && (request.getFirstname() == null)) {
+            throw new VerificationException("Cannot update the Account Name for the user, as both the first and last names are missing.");
+        }
+
+        final GroupType type = authentication.getGroup().getGroupType().getGrouptype();
+        if (type == GroupType.MEMBER) {
+            final UserGroupEntity userGroup = dao.findByGroupAndExternalUserId(authentication.getGroup(), externalId);
+            if (userGroup != null) {
+                updateUserAccountName(authentication, userGroup.getUser(), request);
+            }
+        } else if (type == GroupType.ADMINISTRATION) {
+            final UserEntity user = dao.findUserByExternalId(externalId);
+            updateUserAccountName(authentication, user, request);
+        } else {
+            throw new VerificationException("It is not allowed to perform an AccountName change with Groups of type " + type + '.');
+        }
+    }
+
+    private void updateUserAccountName(final Authentication authentication, final UserEntity user, final AccountNameRequest request) {
+        if (request.getLastname() != null) {
+            user.setLastname(request.getLastname());
+        } else {
+            user.setFirstname(request.getFirstname());
+        }
+
+        dao.persist(authentication, user);
     }
 
     /**
@@ -242,11 +281,11 @@ public final class AccountService extends CommonService<AccessDao> {
             // First, we make an Authorization Check. If it fails, an
             // AuthorizationException is thrown
             final UserEntity administrator = authentication.getUser();
-            dao.findGroupByPermission(administrator, null, Permission.FETCH_USERS);
+            dao.findGroupByPermission(administrator, authentication.getToken().getGroupId(), Permission.FETCH_USERS);
 
             // Find the administrators MemberGroup, we need it for the lookup
             final GroupEntity member = dao.findMemberGroup(administrator);
-            final UserGroupEntity entity = dao.findMemberByExternalId(externalId, member);
+            final UserGroupEntity entity = dao.findMemberByExternalId(userId, member);
             if (entity != null) {
                 user = transform(entity).getUser();
 
@@ -254,7 +293,7 @@ public final class AccountService extends CommonService<AccessDao> {
                 // meaning that if a user has set this, then the user's private
                 // or personal data may not be displayed
                 if (user.getPrivacy() == Privacy.PRIVATE) {
-                    user.setNotifications(null);
+                    //user.setNotifications(null);
                     user.setPerson(null);
                 }
             } else {
@@ -497,6 +536,11 @@ public final class AccountService extends CommonService<AccessDao> {
             // Status to deleted, thus preventing the account from being used
             // anymore
             user.setCode(null);
+            // We remove the Username from the account as well, since it may
+            // otherwise block if the user later on create a new Account. A
+            // deleted account should remaing deleted - and we do not wish to
+            // drop the Unique Constraint in the database.
+            user.setUsername(UUID.randomUUID().toString());
             user.setPrivateData(Privacy.PRIVATE);
             user.setStatus(UserStatus.DELETED);
             dao.persist(user);

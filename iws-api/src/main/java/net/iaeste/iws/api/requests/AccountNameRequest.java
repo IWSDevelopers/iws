@@ -50,12 +50,10 @@ public final class AccountNameRequest extends AbstractVerification {
      * Default Constructor,
      *
      * @param user      The user to change the account name for
-     * @param firstname The users new firstname
      * @param lastname  The users new lastname
      */
-    public AccountNameRequest(final User user, final String firstname, final String lastname) {
+    public AccountNameRequest(final User user, final String lastname) {
         setUser(user);
-        setFirstname(firstname);
         setLastname(lastname);
     }
 

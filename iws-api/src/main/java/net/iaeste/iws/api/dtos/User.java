@@ -182,12 +182,12 @@ public final class User extends AbstractDto {
     }
 
     public void setPerson(final Person person) {
-        ensureNotNull("person", person);
-        this.person = person;
+        ensureVerifiable("person", person);
+        this.person = new Person(person);
     }
 
     public Person getPerson() {
-        return person;
+        return new Person(person);
     }
 
     public void setStatus(final UserStatus status) {

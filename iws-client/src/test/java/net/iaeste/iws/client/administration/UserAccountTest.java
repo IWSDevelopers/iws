@@ -81,6 +81,55 @@ public final class UserAccountTest extends AbstractAdministration {
     }
 
     /**
+     * Test for the Trac Bug report #452 - to reproduce:
+     * <ol>
+     *   <li>login as austria</li>
+     *   <li>create a new user</li>
+     *   <li>activate the user</li>
+     *   <li>delete the user</li>
+     * </ol>
+     */
+    @Test
+    public void testDeletingActiveUser() {
+        // 1. Login as Austria
+        //      - The test is using Austria per default
+
+        // 2. Create a new User
+        final String username = "mozart@iaeste.at";
+        final CreateUserRequest createRequest = new CreateUserRequest(username, "Wolfgang", "Amadeus");
+        final CreateUserResponse createResponse = administration.createUser(token, createRequest);
+        assertThat(createResponse.isOk(), is(true));
+
+        // 3. Acticate the new User
+        final NotificationType type = NotificationType.ACTIVATE_USER;
+        final NotificationField field = NotificationField.CODE;
+        final String activationCode = spy.getNext(type).getFields().get(field);
+        final Fallible activateResponse = client.activateUser(activationCode);
+        assertThat(activateResponse.isOk(), is(true));
+
+        // 4. Delete the new User
+        final UserRequest deleteRequest = new UserRequest();
+        deleteRequest.setUser(createResponse.getUser());
+        deleteRequest.setNewStatus(UserStatus.DELETED);
+        final Fallible deleteResponse = administration.controlUserAccount(token, deleteRequest);
+        assertThat(deleteResponse.isOk(), is(true));
+    }
+
+    @Test
+    public void testDeletingNewUser() {
+        final String username = "bach@iaeste.at";
+        final CreateUserRequest createRequest = new CreateUserRequest(username, "Johann", "Sebastian");
+        final CreateUserResponse createResponse = administration.createUser(token, createRequest);
+        assertThat(createResponse.isOk(), is(true));
+
+        final UserRequest deleteRequest = new UserRequest();
+        deleteRequest.setUser(createResponse.getUser());
+        deleteRequest.setNewStatus(UserStatus.DELETED);
+        final Fallible deleteResponse = administration.controlUserAccount(token, deleteRequest);
+        assertThat(deleteResponse.isOk(), is(true));
+    }
+
+    /**
      * Test for the Trac Bug report #442.
      */
     @Test

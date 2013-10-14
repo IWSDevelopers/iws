@@ -464,15 +464,12 @@ public final class AccountService extends CommonService<AccessDao> {
             final String username = request.getNewUsername();
 
             // Okay, we have a ball game - let's update the record with the
-            // demanded changes
+            // demanded changes. Note, we only allow that someone can perform
+            // either if two operations: Update Username or Status
             if (username != null) {
                 prepareUsernameUpdate(user, username);
             } else if (request.getNewStatus() != null) {
                 updateUserStatus(authentication, user, request.getNewStatus());
-            } else {
-                // Update User account with the new Status and save it
-                user.setStatus(request.getUser().getStatus());
-                dao.persist(user);
             }
         }
     }
@@ -486,9 +483,13 @@ public final class AccountService extends CommonService<AccessDao> {
             switch (newStatus) {
                 case ACTIVE:
                 case BLOCKED:
-                    user.setStatus(newStatus);
-                    user.setModified(new Date());
-                    dao.persist(authentication, user);
+                    if (current != UserStatus.DELETED) {
+                        user.setStatus(newStatus);
+                        user.setModified(new Date());
+                        dao.persist(authentication, user);
+                    } else {
+                        throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Cannot revive a deleted user, please create a new Account.");
+                    }
                     break;
                 case DELETED:
                     deletePrivateData(authentication, user);
@@ -516,8 +517,10 @@ public final class AccountService extends CommonService<AccessDao> {
         // not the users private Group
         final int deletedSessions = dao.deleteSessions(user);
 
-        // Delete all private information
-        deletePerson(user.getPerson());
+        // As the Person Object is an embedded Object, we cannot just delete it
+        // directly, we have to delete the references to it first, which is our
+        // User
+        final PersonEntity person = user.getPerson();
 
         // Secondly, delete all data associated with the user, meaning the users
         // private Group
@@ -529,6 +532,7 @@ public final class AccountService extends CommonService<AccessDao> {
             // with the account, and we can thus completely remove it from the
             // system
             dao.delete(user);
+            deletePerson(person);
 
             log.info(formatLogMessage(authentication, "Deleted the new user %s completely.", user));
         } else {
@@ -540,10 +544,13 @@ public final class AccountService extends CommonService<AccessDao> {
             // otherwise block if the user later on create a new Account. A
             // deleted account should remaing deleted - and we do not wish to
             // drop the Unique Constraint in the database.
-            user.setUsername(UUID.randomUUID().toString());
-            user.setPrivateData(Privacy.PRIVATE);
+            user.setUsername(UUID.randomUUID().toString() + "@iaeste.com");
+            user.setPassword(null);
+            user.setSalt(null);
+            user.setPerson(null);
             user.setStatus(UserStatus.DELETED);
             dao.persist(user);
+            deletePerson(person);
 
             final List<UserGroupEntity> userGroups = dao.findAllUserGroups(user);
             for (final UserGroupEntity userGroup : userGroups) {

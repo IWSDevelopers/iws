@@ -612,4 +612,4 @@ insert into offers (ref_no, external_id, employer_id, currency, group_id, status
 ('WB-2014-000001', '946a49f3-d3b2-486e-a5df-8d1077f3fec6', 86, 'ILS', 181, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
 
 -- Now share all offers with all national groups
-insert into offer_to_group (offer_id, group_id, external_id) select offers.id, groups.id, offers.id || 'what_ever' || groups.id from offers, groups where groups.grouptype_id = 5;
+insert into offer_to_group (offer_id, group_id, external_id) select offers.id, groups.id, offers.id || 'what_ever' || groups.id from offers, groups where groups.grouptype_id = 5 and offers.group_id != groups.id;

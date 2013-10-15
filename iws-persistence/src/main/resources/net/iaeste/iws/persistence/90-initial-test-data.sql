@@ -3,784 +3,1138 @@
 -- ============================================================================
 
 -- First reset the existing tables & sequences, regardlessly!
+delete from offers;
+delete from employers;
+delete from addresses;
 delete from user_to_group;
+delete from sessions;
+delete from history;
 delete from users;
 delete from groups where id>= 10;
 delete from countries;
 alter sequence country_sequence restart with 1;
 alter sequence group_sequence restart with 10;
 alter sequence user_sequence restart with 1;
+alter sequence address_sequence restart with 1;
+alter sequence employer_sequence restart with 1;
+alter sequence offer_sequence restart with 1;
 
 -- Generating Test data for Albania
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AL', 'Albania', 'Albania', 'ALL', 2013, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6a63dfd3-7dd7-4eb6-a209-c57447a56393', 2, null, 1, 'Albania');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('7b603907-0730-4d2d-9e97-0e1fe94f1ade', 5, 10, 1, 'Albania');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('673f38f2-324d-42d9-bef8-651412d1515b', 'ACTIVE', 'albania@iaeste.al', 'NS.Albania@iaeste.org', '341815eb7b014738f374457808ea493878ad5e1025551a874129078cf205cada', '4ad035ea-ae3a-48dd-913c-15dbd1c4f1e9', 'NS', 'Albania');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e34f0917-9ee4-4ec0-a416-0d6a694dcf82', 1, 10, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('fb3296de-250f-43ee-a352-76a95f4fbb7a', 1, 11, 1);
--- Completed generating test data for Albania
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b56c537d-31af-4537-9b2a-4a3506182016', 2, null, 1, 'Albania');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('619ba91e-5b94-4a72-9a40-5cfb074b6133', 5, 10, 1, 'Albania');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c82d5934-8979-4050-b86e-26e7ed736da5', 'ACTIVE', 'albania@iaeste.al', 'NS.Albania@iaeste.org', '3af404346eced3cf9b525c06727369d765cfd31bec764bf05292464ff5235a42', '4cb5ce2b-0aed-4040-bca9-2f911f00eaa1', 'NS', 'Albania');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('bdfb1384-6f36-4756-97ba-1cfbac3fc5c5', 1, 10, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2febfa68-0a81-4784-95a1-4ec4d279b23b', 1, 11, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('2ebbab96-2b6b-480b-831f-be55a3e1f12d', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 1);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('79657617-8846-44a8-ba33-80e3b84866c8', 11, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 1);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('AL-2014-000001', 'f4ecfe3e-db54-483b-953c-55dc1a101bb7', 1, 'ALL', 11, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Argentina
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AR', 'Argentina', 'Argentina', 'ARS', 1961, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('902cf65a-4220-4428-8167-d6695c9b84d9', 2, null, 2, 'Argentina');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('125041b8-d3f5-48ba-84e6-c3cc0e83a86a', 5, 12, 2, 'Argentina');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('b9abcede-36fa-4b8f-ba2f-82394f7dd879', 'ACTIVE', 'argentina@iaeste.ar', 'NS.Argentina@iaeste.org', '47ef62d88393740beb716cf97244e2efe034418595e6326c962f0caf2ca67060', '1849aec7-4e29-4174-981d-3f9f6f2163ee', 'NS', 'Argentina');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('54e1a3b1-1854-4455-8e37-12418b51235d', 2, 12, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e180cd2e-9c52-4b23-801f-b21023a59663', 2, 13, 1);
--- Completed generating test data for Argentina
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('528f5959-e92a-4ac5-a790-fa3c12f7c67f', 2, null, 2, 'Argentina');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('74447356-0d92-4db7-993a-db19b4e56f71', 5, 12, 2, 'Argentina');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8a2bb1bd-eccb-40d3-ba17-f70a654e3d1d', 'ACTIVE', 'argentina@iaeste.ar', 'NS.Argentina@iaeste.org', 'd4d63b83c22877fc1346a9c87c4cbdab0778569ea4702610df6aa301b8e0eea1', 'a69046ee-d557-43bf-9f1e-3a74773ddc59', 'NS', 'Argentina');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8ec31522-c33f-47d3-a6cb-6f7f1686113b', 2, 12, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('61710ea8-e5d2-4953-bd14-b4d31a6203ff', 2, 13, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('868e9987-1407-48dc-9cde-ed45c48cfa09', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 2);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('3086e095-32d7-4937-a115-4efc020464cc', 13, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 2);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('AR-2014-000001', '3f2922e6-4960-47ff-aea7-fb1952aa071d', 2, 'ARS', 13, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Australia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AU', 'Australia', 'Australia', 'AUD', 1996, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1f6fc75f-f8af-433c-bf9e-bfecb6970239', 2, null, 3, 'Australia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('dc2eff97-c6ef-4915-b2c8-9bde039c62ca', 5, 14, 3, 'Australia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('68b4a77c-f36e-44f3-8de6-b8d5dcb50970', 'ACTIVE', 'australia@iaeste.au', 'NS.Australia@iaeste.org', 'fd6489a76fad2ac1f268342b51658e49b3c7a211ed51ffab18e29afa7d14c8cd', '6aee18c7-66fc-40e0-a377-2155595aa93d', 'NS', 'Australia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('835f79bc-0f73-48d7-b23d-b57c2d74fa2d', 3, 14, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('467f693c-1033-4104-8a3b-4179e322a0bc', 3, 15, 1);
--- Completed generating test data for Australia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0de44bcd-d93e-4ac1-85f5-326201bdaa8a', 2, null, 3, 'Australia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('7d742d2e-8b28-46ff-8827-08410e099472', 5, 14, 3, 'Australia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d63ba410-2f61-4fd0-8928-fa9d4cb1b6ba', 'ACTIVE', 'australia@iaeste.au', 'NS.Australia@iaeste.org', '67c58e333eb4411c32f88786112c67b68b54e2a6353afb59f65a6c5de8f518de', 'bb154294-e2d9-4d3e-b710-5c00417cf53c', 'NS', 'Australia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('4596b481-143e-43b8-9cc4-ad5fb5f13e79', 3, 14, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8904415c-5757-4b78-adbd-7028d3186604', 3, 15, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('364b536e-eee1-4040-8698-5df5eefeac9b', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 3);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('bdc87a16-b59b-41b6-9a1f-53c76893108b', 15, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 3);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('AU-2014-000001', '825fa76b-3d77-40f8-bf54-94b53a6ffe2b', 3, 'AUD', 15, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Austria
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AT', 'Austria', 'Austria', 'EUR', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('da799505-cbf4-4bb8-bbcc-7e7705a7892f', 2, null, 4, 'Austria');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9f2c4db6-38c9-4a2f-bdaf-141bd1eb4c13', 5, 16, 4, 'Austria');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('5f2058ef-d284-4670-80a0-f3baad28a6c6', 'ACTIVE', 'austria@iaeste.at', 'NS.Austria@iaeste.org', 'b3d6fb7263c6c2c36ccf38fd6834cd3ce39da3f2f3e78e6f38817ecaa6202d8e', '05291b0f-02a3-4161-9442-978abec74985', 'NS', 'Austria');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a1a3184e-0ca7-4446-b7ef-aff14f3403aa', 4, 16, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e1fe2021-798f-427b-8363-35c53af4ca1b', 4, 17, 1);
--- Completed generating test data for Austria
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6898d3ab-3b3f-4c2e-b098-1253ac45b18e', 2, null, 4, 'Austria');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e0ab657c-9241-4402-b9e1-f5a90533c41f', 5, 16, 4, 'Austria');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('021fe95c-6e47-49cd-9980-ad8022a8043e', 'ACTIVE', 'austria@iaeste.at', 'NS.Austria@iaeste.org', '08eeb493d632fb66ef636c9d89163ce2dd651fd15dbdaf2db986eb5a8d0b5000', '9e0ef27c-1f48-4d1a-82f7-e5988675ee50', 'NS', 'Austria');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1dd35693-bec8-4da6-9d66-2b94ee56e174', 4, 16, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('601d24db-b6b3-42ad-a260-1bce1075c518', 4, 17, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('1bce146d-f5ef-478f-a918-33e884ed2cb4', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 4);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('dc8ec167-476e-4c8a-81eb-d6b8bb42cf03', 17, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 4);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('AT-2014-000001', '3c4fb909-19b6-4a59-8180-365d9e8f7d21', 4, 'EUR', 17, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Azerbaijan
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AZ', 'Azerbaijan', 'Azerbaijan', 'AZN', 2010, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c64483d8-2f73-48bc-8030-676e28e83323', 2, null, 5, 'Azerbaijan');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('df404581-d167-4c93-8d3f-9c71e71a8e92', 5, 18, 5, 'Azerbaijan');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('13fb0d94-73cd-4293-b1f8-85ec476dc89f', 'ACTIVE', 'azerbaijan@iaeste.az', 'NS.Azerbaijan@iaeste.org', '705be284c42a04e0ce8d6af32e94bbfe74ac24d51ba87e645ae48a83043905ef', 'e5568b4e-dd80-4951-9efc-fbeaa91c621b', 'NS', 'Azerbaijan');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('05fc1b8a-7f6b-4b0f-84e8-792bbbfacacc', 5, 18, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('6a5894aa-5f91-433c-8524-8382d2f104ed', 5, 19, 1);
--- Completed generating test data for Azerbaijan
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('64bbaa9a-91eb-4386-84bd-cb30306658b2', 2, null, 5, 'Azerbaijan');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c69bf3a2-746a-4e4e-b42f-9b277f1bd55d', 5, 18, 5, 'Azerbaijan');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('babc84d7-9340-4291-ab7f-42cdfa86a75a', 'ACTIVE', 'azerbaijan@iaeste.az', 'NS.Azerbaijan@iaeste.org', '5fda369e7dd56224485b24a75a9b3137c197768a4cc4aee835f4135072e36df9', 'f3e0a10f-17fa-41ab-a201-f3944c2bc5e8', 'NS', 'Azerbaijan');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e440e872-0970-4988-8b81-fcb38c313f57', 5, 18, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('7ac1336b-6267-40ce-b201-53d234e4a904', 5, 19, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('f3f0fa1e-9680-42ed-8f48-103b0feea67e', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 5);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('7477c79c-fc7e-4e44-8382-31efbdf1f80a', 19, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 5);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('AZ-2014-000001', 'b6b45a55-7e52-4ad1-b5ff-b60c9a67f8b0', 5, 'AZN', 19, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Bangladesh.Aviation
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('BD', 'Bangladesh.Aviation', 'Bangladesh.Aviation', 'BDT', 2013, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('44c9edd1-86d1-495a-876b-95b8c6c322c8', 2, null, 6, 'Bangladesh.Aviation');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f2de0d7a-e502-49ea-afe1-308884d5f22f', 5, 20, 6, 'Bangladesh.Aviation');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('3948ae8d-9bfd-4613-802b-c8996843b1f4', 'ACTIVE', 'bangladesh.aviation@iaeste.bd', 'NS.Bangladesh.Aviation@iaeste.org', '265e6af9bc2015ff32712ea02d1ad2368a5eb7c7c823b66f5bf8470b45c91fa1', '92d23e5f-a4d9-46db-95d3-74afed2e37ea', 'NS', 'Bangladesh.Aviation');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('91554e70-1004-470a-9f13-98fb6ba89725', 6, 20, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('94a23a9e-630d-4828-8e95-7981bdf11db0', 6, 21, 1);
--- Completed generating test data for Bangladesh.Aviation
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('3f1eed3c-8729-42d5-b31d-db387679a9c6', 2, null, 6, 'Bangladesh.Aviation');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('5c4435ea-a7da-4961-8d14-2c967de803cb', 5, 20, 6, 'Bangladesh.Aviation');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('cb7fccd3-c498-4e0b-a8bd-a451da04ce97', 'ACTIVE', 'bangladesh.aviation@iaeste.bd', 'NS.Bangladesh.Aviation@iaeste.org', '0cea2949a2ed0044d4e17ca801121ea206ff77726dc3fd69fede2f3bf508dde2', '72f0628c-dcb2-4346-9bc3-a7d761fa4709', 'NS', 'Bangladesh.Aviation');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fea7b80a-3fbe-49d9-a25a-3dfd774bbf9b', 6, 20, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('aa997579-afe8-4b51-93b9-5347b0e49fe2', 6, 21, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('3c434da1-a4d7-4281-9778-35c2d22b4034', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 6);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('99154157-08db-4d72-a0c5-e62baabfd472', 21, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 6);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('BD-2014-000001', 'f5a66f5f-0768-4ed0-a984-a0d5201db88e', 6, 'BDT', 21, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Belarus
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('BY', 'Belarus', 'Belarus', 'BYR', 2000, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('fea5b4ff-58a5-4d9b-a981-7f9520d9f488', 2, null, 7, 'Belarus');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('da122a82-b195-4746-9652-5d9323f4a1f6', 5, 22, 7, 'Belarus');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('65bd883b-bed9-4bc6-9b46-bc3b9fc931fd', 'ACTIVE', 'belarus@iaeste.by', 'NS.Belarus@iaeste.org', '6f0ab171bc482a5efda032d65b6edec886f13c7cc69d3b1f4acaf8557c7df8ab', '366ad5b0-7ae3-43e1-b984-68fa3e7dc05c', 'NS', 'Belarus');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('cbeb51df-c8df-43d8-b272-f557408366da', 7, 22, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('08434b07-2d09-40ce-8283-c1480f00eb69', 7, 23, 1);
--- Completed generating test data for Belarus
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('7def9dce-60e5-44d2-8449-237bdf68e05b', 2, null, 7, 'Belarus');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e005f482-51a9-40a6-878f-922a7bf409a3', 5, 22, 7, 'Belarus');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('f23e5452-994d-459b-8d5b-3101c0086dd4', 'ACTIVE', 'belarus@iaeste.by', 'NS.Belarus@iaeste.org', '83dd5d86f2a76850c1a74eb72dc4613d32ee4ccb9063421e306f4cd4ac8a9b09', 'df574fb2-1249-4f35-a757-1db0db7c1200', 'NS', 'Belarus');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('60a1a987-99ec-48d2-97e8-e597659fb82f', 7, 22, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2f461c23-1c04-4ff5-a51c-9cf8d9b73dea', 7, 23, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('03dfa5e1-37da-4d68-a814-81d1e6338c84', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 7);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('44911fa9-d7f7-4bd5-b9c8-eb012b26c3dc', 23, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 7);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('BY-2014-000001', 'b08566b9-5dc0-4f71-a936-a31ce03d6300', 7, 'BYR', 23, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Belgium
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('BE', 'Belgium', 'Belgium', 'EUR', 1948, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e375c184-dd9b-422d-ad26-7e03a3ba7dca', 2, null, 8, 'Belgium');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('02b5ddc0-541f-47eb-ae77-6d3b9a33f2a9', 5, 24, 8, 'Belgium');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('85b43aa5-8d99-48da-b9dd-ce9932bb2be1', 'ACTIVE', 'belgium@iaeste.be', 'NS.Belgium@iaeste.org', '725a027eecfb9a519b1fe2a0938e1e038f881035ce1d8e933251060895bc8070', 'f7ddb970-d93d-4ccb-a5a8-7307dcd89920', 'NS', 'Belgium');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('586ad291-74c0-4f52-9031-cf653e526e17', 8, 24, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('329cefbe-9f6a-4afa-81d8-a55f6318079d', 8, 25, 1);
--- Completed generating test data for Belgium
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e675fbad-5048-4706-a1c2-1ded38e63bd3', 2, null, 8, 'Belgium');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('52016def-96a9-48ad-b0c7-42f1fa4133a6', 5, 24, 8, 'Belgium');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('cdbc3ab5-340f-403b-9f2a-9061a4dc8946', 'ACTIVE', 'belgium@iaeste.be', 'NS.Belgium@iaeste.org', '4578fbf2c62259eafef19666e281f6a0e821f566e1e7a8441d0f4d5b877dff1d', 'bfaf04a3-6996-4926-ac00-2772cc025ac5', 'NS', 'Belgium');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('a91950c3-b714-4ff7-ae1a-8dc8c82e6f69', 8, 24, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('cd4aff61-709b-4bbd-9c6a-fc818b4acabb', 8, 25, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('6fcaf205-1bbc-4da2-b43f-e3b4149988c0', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 8);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('bf63b0f1-8aab-4b87-a5ad-a9c800fe09be', 25, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 8);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('BE-2014-000001', 'eb4d7f84-42af-49fb-b62a-5705a9d4ebef', 8, 'EUR', 25, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Bolivia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('BO', 'Bolivia', 'Bolivia', 'BOB', 2013, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a38b52a0-d05b-4bbb-a794-1ac5a17a04c1', 2, null, 9, 'Bolivia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('cac42b77-f69a-4e0e-966f-588a4960d231', 5, 26, 9, 'Bolivia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('b146fe4c-dc3d-4626-a32b-29f34bfe6d1c', 'ACTIVE', 'bolivia@iaeste.bo', 'NS.Bolivia@iaeste.org', 'a0f50e6b818e0adbc3b5567aa1793f7b122514d4245f9cbae2eb6edaca649d93', 'f43760d9-72b9-4129-a464-a5a3a4b04027', 'NS', 'Bolivia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('ca4faa6f-1b7a-4395-81a6-4f83df41a8a3', 9, 26, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('932ad701-055c-4a8c-aa92-8eee430617db', 9, 27, 1);
--- Completed generating test data for Bolivia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('daf77d86-e7f4-4f8a-b197-b3cc7689a0f6', 2, null, 9, 'Bolivia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('947dff24-9a41-4988-b2b2-fd515b4f879c', 5, 26, 9, 'Bolivia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('a19e6778-d72f-45cc-a537-5b5e00ebc0e1', 'ACTIVE', 'bolivia@iaeste.bo', 'NS.Bolivia@iaeste.org', '62c7d1da2eda41b55dc4486083b236966aedfbe651174e00d66d96008367a9cf', '8b3552c7-6bca-4219-bcb9-632ec6694893', 'NS', 'Bolivia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('364df4d2-5d49-485c-9f5a-bf2865d06042', 9, 26, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('f933a58e-bc03-4881-afaf-2bb8ed74e488', 9, 27, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('c8cd5db7-ce09-47ef-b607-d31b5f2d8372', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 9);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('e7be4608-b1bf-4729-8fa2-a4154db5324b', 27, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 9);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('BO-2014-000001', '3853c91f-3b1a-4246-9d86-2dfb3183890e', 9, 'BOB', 27, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for BosniaandHerzegovina
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('BA', 'BosniaandHerzegovina', 'BosniaandHerzegovina', 'BAM', 2000, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b11dea53-4350-4353-8008-27052e276917', 2, null, 10, 'BosniaandHerzegovina');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9da0c7b2-f3fa-40c8-89e9-126bb677a514', 5, 28, 10, 'BosniaandHerzegovina');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d780dbb3-d43e-49b2-b4e3-d9ca204615d3', 'ACTIVE', 'bosniaandherzegovina@iaeste.ba', 'NS.BosniaandHerzegovina@iaeste.org', 'de7d8b281c82bba6d6c9f7651fe7f8dad9d8899eedfd985bf9907ef1c8d61415', '53ed11f3-f688-4142-9386-2ad359fd0832', 'NS', 'BosniaandHerzegovina');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('97cb85b2-4c53-4beb-83ab-963568771e3b', 10, 28, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('65c1a98b-07f5-47fd-9627-c547b8bbda5c', 10, 29, 1);
--- Completed generating test data for BosniaandHerzegovina
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('92e183f2-2fba-4fff-bc91-324aaca6d5f1', 2, null, 10, 'BosniaandHerzegovina');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('8b98e15d-7799-4622-aaa2-1125203eb311', 5, 28, 10, 'BosniaandHerzegovina');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c286a9da-917a-4b94-9f1d-bc5bfd880f92', 'ACTIVE', 'bosniaandherzegovina@iaeste.ba', 'NS.BosniaandHerzegovina@iaeste.org', 'a394f41d43bfe3b1ab5a751fc4a97c523c21f5ba0ac5dd0a3da778290d7b41d6', '6c1edadf-f6b9-4efe-aac3-334371d492e1', 'NS', 'BosniaandHerzegovina');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c6a14ceb-3c38-42c7-aa60-bb4ad579459c', 10, 28, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2798d67d-f58c-49b7-9908-658c04701052', 10, 29, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('823d581d-d0ca-479c-9e02-593bc656685b', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 10);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('989ee4bd-a66b-43b9-a256-a7c741200eaa', 29, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 10);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('BA-2014-000001', '92ffe209-d91b-4b1b-a9bd-fae0f6ed0fc7', 10, 'BAM', 29, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Brazil
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('BR', 'Brazil', 'Brazil', 'BRL', 1982, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1dd2f402-7fbc-4ca2-9e46-036edd95b914', 2, null, 11, 'Brazil');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('54523d72-a048-4e7b-8a49-d615377fc0f7', 5, 30, 11, 'Brazil');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('138142b1-ad04-4ea2-8a6e-36ab03506bc6', 'ACTIVE', 'brazil@iaeste.br', 'NS.Brazil@iaeste.org', '692823bebc0cea9139e26083c0c6b5da0532db9f745be85aeece2b64c2664597', '04dd7015-986b-4c46-95d9-346ae9f4e817', 'NS', 'Brazil');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('17a6b95e-2c51-4f7e-8f06-4219497b618a', 11, 30, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e0e644c1-de37-467d-8f0e-1f360668ea77', 11, 31, 1);
--- Completed generating test data for Brazil
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c86dc3a8-5148-4c07-8aa3-2699a5548a10', 2, null, 11, 'Brazil');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a2f5bbb4-5dcb-429e-a204-7b0fe933dc48', 5, 30, 11, 'Brazil');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('a19f364e-3081-42d6-b25f-89e8b4692dee', 'ACTIVE', 'brazil@iaeste.br', 'NS.Brazil@iaeste.org', 'ba57449b3b83c6a570b182eb32c95a44abfec638bbc55b4be0f212460797f78a', 'cb9e4383-5284-47b1-881b-5aebba437815', 'NS', 'Brazil');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('bac39af1-4099-46dc-9c2e-a58b71c91c3f', 11, 30, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('edba20c9-437c-4e05-9ede-cab1295ff227', 11, 31, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('b1e4c0cf-a934-4941-915b-5f06bd94b85f', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 11);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('44c7e34a-99e6-419c-8e17-3d29c13a4484', 31, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 11);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('BR-2014-000001', '54196286-3e57-4f35-b535-59c744cfbe81', 11, 'BRL', 31, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Canada
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CA', 'Canada', 'Canada', 'CAD', 1953, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9fcebe71-d3fa-426e-b5ed-97d0cd4d4582', 2, null, 12, 'Canada');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('be543ebb-5052-4748-9542-4908f5769d25', 5, 32, 12, 'Canada');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('153ec144-8e7d-4138-81d1-cdb4e771245b', 'ACTIVE', 'canada@iaeste.ca', 'NS.Canada@iaeste.org', 'ee8261f4ab87347614a2d500d582b0536e082801f73584b594bd5e82f154263f', 'd891bcfa-9c04-4fe7-85de-87bdfa82044a', 'NS', 'Canada');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('06a4e199-cb44-41e4-8a9f-b53995f7940f', 12, 32, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('1402c121-c438-4894-acc2-7ffe9ad3ba4e', 12, 33, 1);
--- Completed generating test data for Canada
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('3912b7b7-6551-4f13-a8c6-cd962a74dbb8', 2, null, 12, 'Canada');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c542be13-77e4-408f-9dc9-f566286c6a07', 5, 32, 12, 'Canada');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d5918c7d-a546-43de-b549-921f7e3117dd', 'ACTIVE', 'canada@iaeste.ca', 'NS.Canada@iaeste.org', '768161ae7d56750fe795970e8c1cf085cfc6c7c68958a3cb4a8e4a23131a203c', '176b18fb-3ed8-4d69-9af7-b34f3af00925', 'NS', 'Canada');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('38c3e663-6f30-43ea-b9df-db7e39a96149', 12, 32, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('53087996-e2d5-43ad-b18a-d45410e7b85a', 12, 33, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('631b700f-ea5c-4be1-88cd-88d44121bc6a', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 12);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('7d441159-d5a7-47f7-9a26-e3d02b1fe1d7', 33, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 12);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('CA-2014-000001', '44c767c2-d6bf-4a71-86bf-2f79d6d6d119', 12, 'CAD', 33, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Chile
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CL', 'Chile', 'Chile', 'CLP', 2013, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('47d78e60-4370-4533-b936-152fc29698c5', 2, null, 13, 'Chile');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d28f856d-8b8c-4288-a193-a7dd4a2490a9', 5, 34, 13, 'Chile');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('133704f2-52ca-4550-b6e2-1a841a0ac0b6', 'ACTIVE', 'chile@iaeste.cl', 'NS.Chile@iaeste.org', 'a890c6bd0b7b0ee7b7b2c33c67922a2f4ae37aca54a676f3c6463d9b1836f6bf', 'ac6dacc3-e6bf-4ff0-8fdb-f17dd69b4f3f', 'NS', 'Chile');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('9b9ef55e-529d-460b-af3c-1b564b570ecd', 13, 34, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e8b1b80c-f26d-4e0d-af46-87b0dad8dfcb', 13, 35, 1);
--- Completed generating test data for Chile
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c38cca3d-71d0-4034-8097-b800475a64df', 2, null, 13, 'Chile');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('53c03c55-d11f-46dd-9b27-287a40c48adb', 5, 34, 13, 'Chile');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c4acf984-a5d2-4cd8-bece-8263165d4c63', 'ACTIVE', 'chile@iaeste.cl', 'NS.Chile@iaeste.org', '3c5e6408f6e29123deaac284834d1c1897b6219e19d6d46a144382057c463cb2', 'ca666dc5-5e86-4d81-a975-3ca90263d7e2', 'NS', 'Chile');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('d76d6907-35f7-4a19-bc43-00a3f00186fe', 13, 34, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('40548004-1e55-4e56-8f25-8786cc42515b', 13, 35, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('9aef6b44-065e-48f6-afc5-5b4b57c9f52f', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 13);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('6a8fc249-81c0-4c39-b103-d5f29907a5aa', 35, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 13);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('CL-2014-000001', '72d9660e-90f0-4919-b0d4-c0b3a5ec01c7', 13, 'CLP', 35, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for China
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CN', 'China', 'China', 'CNY', 2000, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('98f3aed9-4246-4bfe-bf34-a88c173c7370', 2, null, 14, 'China');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('92219b23-3bc2-4593-928c-92aee1d8dc44', 5, 36, 14, 'China');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('e5dfd97e-36f4-47bb-9472-3137c84f6e7e', 'ACTIVE', 'china@iaeste.cn', 'NS.China@iaeste.org', 'bb8b937138154726ea464401b25d347dd673af3e173555e58903c99e9411b99f', '95e4af83-fbcc-4c06-aaf3-82f07098f52b', 'NS', 'China');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('b988c4c5-df5a-411c-b869-193ee043a788', 14, 36, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('29be4afe-a489-4df3-a58e-5c4e8619af63', 14, 37, 1);
--- Completed generating test data for China
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('78293c75-fa32-47c0-9c75-58e220339c91', 2, null, 14, 'China');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('40336360-a5ea-4e99-8028-a28154a13457', 5, 36, 14, 'China');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('9acd904e-5b13-4de9-b9c7-c533d7a81f1a', 'ACTIVE', 'china@iaeste.cn', 'NS.China@iaeste.org', '1c2db57e65d9bd0b762a620476394f6739591ff1d16f0bf2712319f89bdc5018', 'cb8bf5a4-28b9-4aad-b11c-acd00497db32', 'NS', 'China');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('0e353377-2fd9-455d-a409-b9bbb05337e8', 14, 36, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('d1a3fc38-cdb7-448e-bb79-2813e46f7817', 14, 37, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('54fc07d1-ad05-40f6-ae52-d43cd98c8ead', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 14);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('677518bf-bc5b-4533-89b0-2a89f212bee1', 37, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 14);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('CN-2014-000001', 'cc833d6b-e5ef-4063-86d3-144a6b720a93', 14, 'CNY', 37, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Columbia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CO', 'Columbia', 'Columbia', 'COP', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e4012e2b-b444-4ead-9223-4efabbeaac68', 2, null, 15, 'Columbia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 5, 38, 15, 'Columbia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('2119acdb-e595-444a-81e7-3cbbe6d867dd', 'ACTIVE', 'columbia@iaeste.co', 'NS.Columbia@iaeste.org', '3791e172b4de4e935da7dda50528d679e1a2ffc44d8d1e6bb1d435d0e102a12c', 'f39bd566-d279-4efd-992f-30426f8a9f85', 'NS', 'Columbia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('f2e5369b-9d0f-4132-ae04-ed0876071636', 15, 38, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('138b754c-9bbe-4e8c-9257-4e7e6ceef5b5', 15, 39, 1);
--- Completed generating test data for Columbia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ba29828b-38ce-4f33-a216-d04d661e251f', 2, null, 15, 'Columbia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('16fad599-b7b9-4b63-b6b4-242a84c51749', 5, 38, 15, 'Columbia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('f086cdf6-c275-446e-8fae-248e486d7c5d', 'ACTIVE', 'columbia@iaeste.co', 'NS.Columbia@iaeste.org', '82dcebffcb42f0e71c93a1a86ba42027359dd4f65def63950f56ae6b8255be68', '65084cb8-feef-4175-86a2-cf4c93c64dc7', 'NS', 'Columbia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('dc05cb71-aba4-474f-a62c-67c15e3a1a29', 15, 38, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c2665449-ed21-4271-b0c2-cc0c855f1ac9', 15, 39, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('8accb1c7-2c1e-4335-a1ec-1c53ae635a6a', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 15);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('91672271-35d3-4433-8260-f1a2e984f11b', 39, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 15);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('CO-2014-000001', 'f1c569cd-6a22-4c74-8f8f-9c77c7d0a493', 15, 'COP', 39, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Croatia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('HR', 'Croatia', 'Croatia', 'HRK', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('aa681bc9-0707-4e3c-9cd1-d33c4af13f00', 2, null, 16, 'Croatia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a47fd465-bb39-4c8c-8a9e-d51671790567', 5, 40, 16, 'Croatia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('e51853c3-cf6f-4875-b646-4eb9c9a8d0c9', 'ACTIVE', 'croatia@iaeste.hr', 'NS.Croatia@iaeste.org', '9c3171c3f854418597de0de37b75fb66fde3492764ab4654c5f423b91331caa7', '851f2bbd-4716-45dd-a398-69fb0e6ef843', 'NS', 'Croatia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('abebaecf-3870-4ade-b6d2-5ce84033fc36', 16, 40, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('b618d07b-20c4-4382-9e58-a4106a227211', 16, 41, 1);
--- Completed generating test data for Croatia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b9679591-f222-4fba-b784-a247b51abc22', 2, null, 16, 'Croatia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0bc3bb47-5c28-4b96-9847-1fd556af53ce', 5, 40, 16, 'Croatia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('e56b378b-10eb-4e3f-acd6-067c6fe1124a', 'ACTIVE', 'croatia@iaeste.hr', 'NS.Croatia@iaeste.org', '135ac5dc39a5a57b57ea35f679f11f04dea12d4631c1f8415254d61d181f417c', '4c206c70-033f-412b-ba88-c8dc178e712a', 'NS', 'Croatia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('3a1fecc3-7f8f-4d40-82e3-5196764026d9', 16, 40, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('6f46a04a-89a0-4e8f-9bd1-c2cbf73317d6', 16, 41, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('c72094b4-c752-4998-bcd6-cabc7c30b195', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 16);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('159fd1ba-93ce-4493-ad3e-d63d38343983', 41, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 16);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('HR-2014-000001', 'f0c16810-1086-43d6-8044-bffa3ca4d0d6', 16, 'HRK', 41, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Cyprus
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CY', 'Cyprus', 'Cyprus', 'EUR', 1980, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('56dd0070-e1f3-403e-bf58-87f4b6b5b53e', 2, null, 17, 'Cyprus');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ff8b0c56-dfdc-43cf-9fb9-a000cbd14c56', 5, 42, 17, 'Cyprus');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d58b783a-c4b4-4ee3-b93c-0178dd626a37', 'ACTIVE', 'cyprus@iaeste.cy', 'NS.Cyprus@iaeste.org', '66a4340101ebc8e9eec1c236758919b9c6d2b619b138e462550791ba38005a1b', 'd557fd15-f438-4d88-9877-f039e794fe27', 'NS', 'Cyprus');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('7cd6485d-e255-4ecc-be11-f64633d222e8', 17, 42, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('87e8f405-b646-4522-8cb5-34fa5a65e2d2', 17, 43, 1);
--- Completed generating test data for Cyprus
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a33d33ff-62b7-4c25-a1e5-a611caf79117', 2, null, 17, 'Cyprus');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('41daf7ae-d693-495b-b6aa-dd79efacb53a', 5, 42, 17, 'Cyprus');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('3fcf42e6-4cd7-4fb2-bad5-fb131a44f5c1', 'ACTIVE', 'cyprus@iaeste.cy', 'NS.Cyprus@iaeste.org', '79b8490d1cdb284855d60aca27f52951b642863f6a43ea3dfd11fd41c1500818', '094158d5-1950-4a5e-ba02-2e81effc40f6', 'NS', 'Cyprus');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('68d8b637-90d9-4471-a926-d2f6a0f00b5e', 17, 42, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fc6da0e3-df83-432b-8147-560bb8acbef1', 17, 43, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('9ed43944-d070-47ba-997e-6ba1e3c69ef7', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 17);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('1c3bcccb-3f2c-452b-83e6-159a9f260c09', 43, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 17);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('CY-2014-000001', '0a3db820-dc6c-4268-82cd-76048bfed1b9', 17, 'EUR', 43, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for CzechRepublic
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CZ', 'CzechRepublic', 'CzechRepublic', 'CZK', 1965, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('04beae66-f474-4942-8daf-e22c3b2a9bd8', 2, null, 18, 'CzechRepublic');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('78206b95-d772-41fb-89fb-6e9993b05f80', 5, 44, 18, 'CzechRepublic');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('fb1b3517-a893-45c1-a7da-906c31e2efe8', 'ACTIVE', 'czechrepublic@iaeste.cz', 'NS.CzechRepublic@iaeste.org', '8eb12706043842ce48b5b055edee35c2b2c14e9377bb56a5710f5145230a76aa', 'b3da679b-4131-4830-a041-f3536b36ff0f', 'NS', 'CzechRepublic');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('ac79fe79-c87f-4900-b624-a0f24588c887', 18, 44, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('9deaa63e-b729-4969-b068-ee2abfc80356', 18, 45, 1);
--- Completed generating test data for CzechRepublic
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('57e2dd38-ec62-4049-bf64-cb05ba414a03', 2, null, 18, 'CzechRepublic');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('584fbabe-d41b-4c41-b095-37032e3e501f', 5, 44, 18, 'CzechRepublic');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('e7ae9d80-1278-4a98-b6c5-1c3ebc9f2f7e', 'ACTIVE', 'czechrepublic@iaeste.cz', 'NS.CzechRepublic@iaeste.org', 'e333b24abac3710706456534d871749e6b42587e2e18b1f94f099a21fd7dcf24', 'be662ead-9612-443d-9199-31a5915e824d', 'NS', 'CzechRepublic');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('444bb7b8-7ca9-410c-b891-05e421b3a986', 18, 44, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('9d31ca74-7dd3-40f1-9566-00ab735cef99', 18, 45, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('f3337a4e-dbd4-43ed-905c-5f572ec06fe4', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 18);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('de0cde6c-aed3-4205-bb10-4bdc5cbcdc36', 45, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 18);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('CZ-2014-000001', '849d878d-ab8b-4a4f-b52b-33037e36acac', 18, 'CZK', 45, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Denmark
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('DK', 'Denmark', 'Denmark', 'DKK', 1948, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('23fdd892-7cc1-49f1-b8e5-dee37f16e74d', 2, null, 19, 'Denmark');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('82c0bf70-80d3-4fbb-9832-1c772ca300c5', 5, 46, 19, 'Denmark');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('3652586a-1a2b-4fa9-9b49-b22646e353bd', 'ACTIVE', 'denmark@iaeste.dk', 'NS.Denmark@iaeste.org', 'f1b21f07cb08e67680d6e382514591547130ad9a2979317a044ad0c78d4eaa3a', '9b8fef9b-749f-4e6a-86ce-4b2ae3fed2f0', 'NS', 'Denmark');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('bcdda30b-aa0e-4fdf-93f7-50f7345fb5b2', 19, 46, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('09a511cf-9f76-4078-bb7e-863702cd0694', 19, 47, 1);
--- Completed generating test data for Denmark
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f396d126-9d69-4498-b922-79e4d0eda67a', 2, null, 19, 'Denmark');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('538c17f4-7ccf-4caf-9d86-254f792ede24', 5, 46, 19, 'Denmark');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('6a2b4ef7-cb89-4a4e-bf28-64e15bce783f', 'ACTIVE', 'denmark@iaeste.dk', 'NS.Denmark@iaeste.org', '6b1d1cb3e1ac0b5dd82ee637513b2a125a9032a4c205722e24cc9fc706662104', '0db230bf-f272-4e1d-95d1-82c9532f5126', 'NS', 'Denmark');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c141c544-cdee-44be-a04f-c54d4d42c71c', 19, 46, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ad40bd3c-41c2-4520-a38e-aed58c6b017d', 19, 47, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('ea3eb5e2-fa61-4da7-b6df-b1fc88e68b1b', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 19);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('615e64b2-87fb-4fb0-be39-4e1c64aa23fb', 47, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 19);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('DK-2014-000001', 'ef77d02e-f975-42d5-af27-b307811b61cd', 19, 'DKK', 47, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Ecuador
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('EC', 'Ecuador', 'Ecuador', 'USD', 1999, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c723609d-4623-459f-bd8c-7486a49b2364', 2, null, 20, 'Ecuador');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('06c51fe0-8d43-4a06-aa96-faaff3cdcce6', 5, 48, 20, 'Ecuador');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('76c10358-1b1b-4402-8855-c3fd03ea579c', 'ACTIVE', 'ecuador@iaeste.ec', 'NS.Ecuador@iaeste.org', 'aac930781bb498c54e2278a6c0c4c04cd8fb3c95d5238e4bc9244bf825d0b55a', '275ffce1-b3f8-4597-887a-ed7856d4304d', 'NS', 'Ecuador');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('f59461f5-775f-499c-a500-8874bc0fb3d5', 20, 48, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('bc43d69b-26fe-4326-b32f-0b036b691072', 20, 49, 1);
--- Completed generating test data for Ecuador
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('97d88bf3-f5a7-4f3a-986c-b0b8d0fca42b', 2, null, 20, 'Ecuador');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('518db699-5979-4200-b14d-f56d30964e2e', 5, 48, 20, 'Ecuador');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c4e47c9f-1866-4923-9e09-35ae28fb525f', 'ACTIVE', 'ecuador@iaeste.ec', 'NS.Ecuador@iaeste.org', 'cb6d60e09d0589077971614e5697a8399696840aa9c50d56ce8391ae56a3ee96', '88568f37-dc4c-42d7-8a68-de49694b2d22', 'NS', 'Ecuador');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('53292eb7-dddc-4169-938b-4f6bec40bdf3', 20, 48, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8012f2de-0881-4a8a-a22d-2387b054b4d5', 20, 49, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('fde2331a-bc1f-4258-8500-3f1690bdb354', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 20);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('edaf5177-7a7d-4d48-8753-2d0da551f6f4', 49, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 20);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('EC-2014-000001', '0ba10ede-3684-40a9-a0e5-61178b5f32e5', 20, 'USD', 49, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Egypt
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('EG', 'Egypt', 'Egypt', 'EGP', 1961, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ec08a712-f75b-40a7-a74d-388230f7ee0c', 2, null, 21, 'Egypt');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a37b639f-b2e9-4100-b447-59ee217ebf12', 5, 50, 21, 'Egypt');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('0d07c322-73ac-46bd-8ecc-ecc3f5d33be4', 'ACTIVE', 'egypt@iaeste.eg', 'NS.Egypt@iaeste.org', 'b238d2cc14f8113c8fe0e3cc960cb852e29ce06a2973e5d891a4576889934e47', '104988fa-d9ed-496a-a989-0526775df927', 'NS', 'Egypt');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('1bf6ecc3-882a-4d1e-ae76-903a028ea152', 21, 50, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('5b408d31-f59b-494b-95a6-2e070d2d9c7a', 21, 51, 1);
--- Completed generating test data for Egypt
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4ad490b6-6165-476d-b70e-02998b02ed72', 2, null, 21, 'Egypt');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d55e7dac-3be8-4717-8582-df8306a4e23c', 5, 50, 21, 'Egypt');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('115ab8e0-57fa-4762-932f-657105ee6f4f', 'ACTIVE', 'egypt@iaeste.eg', 'NS.Egypt@iaeste.org', 'aa97745fb6351e146643b5c6ea5ae8645ed1ef9e5e8495b1418b40b201798c99', 'bd5d7ab9-9854-4384-b03c-813da5351ef5', 'NS', 'Egypt');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5e973a9a-1f35-484a-8c15-acc521c1a8c6', 21, 50, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('cee486e6-1280-4ca5-8054-3dd0ee47e4ee', 21, 51, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('a58718f4-d98f-4f7a-90e5-fa3eb07d69a9', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 21);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('3b88b6b5-9944-4ac5-9381-e7d49754dcf3', 51, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 21);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('EG-2014-000001', '4cd4955c-454c-4f89-bf22-0af9c855ef57', 21, 'EGP', 51, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Estonia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('EE', 'Estonia', 'Estonia', 'EUR', 2010, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('eb7f2270-a777-4e82-bb49-f8d67a487594', 2, null, 22, 'Estonia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2007aabf-b156-42bc-afcc-c2086d6f879f', 5, 52, 22, 'Estonia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('66ffc7ac-0486-4b28-86ba-5b7418df3e77', 'ACTIVE', 'estonia@iaeste.ee', 'NS.Estonia@iaeste.org', 'feef02b13fcbd2faa248751597aa78a9d5d26be48e5146c295ad1d15b24448c5', 'da415e52-29f8-4285-bd70-aad344f794f0', 'NS', 'Estonia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('206c89ea-c432-48c4-b326-c52b7323fd4c', 22, 52, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('fbf41d4d-9d9c-438b-a632-52978e67c98f', 22, 53, 1);
--- Completed generating test data for Estonia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d61778cf-9530-4362-b6a9-4994413b88c1', 2, null, 22, 'Estonia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('5471055d-687c-4041-942a-920e7b7113ea', 5, 52, 22, 'Estonia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('622ac131-adb0-4e8e-bab1-f68227e44082', 'ACTIVE', 'estonia@iaeste.ee', 'NS.Estonia@iaeste.org', 'fe8902a0091a0e5d5720845c894dbdde5c82f35b059534c6594a1bebd2618353', 'f048010e-1f1b-4202-870f-bd3bac804bd6', 'NS', 'Estonia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('866ac655-8db7-4872-b48c-5f3120add759', 22, 52, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('279296d5-6215-4d12-9b02-191235b1aa58', 22, 53, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('0b9c0082-f339-4ddf-83e7-d30c77d74962', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 22);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('bbbcde9a-63bf-43ce-9027-d562e86088ca', 53, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 22);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('EE-2014-000001', 'b8a37d6c-9b77-4267-ac85-5e19c595048f', 22, 'EUR', 53, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Finland
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('FI', 'Finland', 'Finland', 'EUR', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('de8546e4-67dd-4329-9aed-0391c4390e5f', 2, null, 23, 'Finland');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('544d1a86-9163-4409-aabd-54f1096100e3', 5, 54, 23, 'Finland');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('2682f117-6322-4f5a-ab77-505d35cd981b', 'ACTIVE', 'finland@iaeste.fi', 'NS.Finland@iaeste.org', 'eaa9c6d6d31a584c7b8ea8aeaccedae5f449365e63ef575456be4b950da5d9c3', 'eb305743-d80b-415e-9358-0dfa55f54fc0', 'NS', 'Finland');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0ec4f780-35d3-4b64-83e7-31db6fb48ceb', 23, 54, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('94c27471-a7d1-49b1-bd38-4bbd12feb4c8', 23, 55, 1);
--- Completed generating test data for Finland
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c739ad31-1d61-4ef1-8ba5-d9649b497174', 2, null, 23, 'Finland');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('fbde5f2c-4edf-4dfc-96d7-f81a608ee516', 5, 54, 23, 'Finland');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('be94110b-304c-48bb-b50a-bf80d8fd1d98', 'ACTIVE', 'finland@iaeste.fi', 'NS.Finland@iaeste.org', 'e25bc932a65ed7096c3f6a534478f0c952b4bdefe6183eac24d5cd8e2beac6b0', '8f51c258-c3c9-45ba-a0e4-9f399310d559', 'NS', 'Finland');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b763786c-f068-4f07-8d62-24ecc26fc40e', 23, 54, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fe82aa61-1f4c-43e5-8f40-179850484655', 23, 55, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('c9252252-300b-478f-8ae2-bf07ade5b4a4', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 23);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('91c82f12-876b-47d4-9bf0-ecf886cf14fb', 55, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 23);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('FI-2014-000001', '8a6041f6-8026-4187-bdad-a63c29d2538e', 23, 'EUR', 55, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for France
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('FR', 'France', 'France', 'EUR', 1948, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('714c6061-4df8-469f-9998-87f17620322c', 2, null, 24, 'France');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9f26d467-f35f-44ba-8c2e-510ba05d9e11', 5, 56, 24, 'France');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('7dc36f9a-3da1-4652-bd7b-c22b3d80509a', 'ACTIVE', 'france@iaeste.fr', 'NS.France@iaeste.org', '88de2faa16b70d25e8c82a4a4df5f6d5366fcb950a24d64575204e2290c7dd48', '561fd3cb-f440-4676-be55-1bd32de51dac', 'NS', 'France');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('c7d1e436-4030-44f4-b83b-eafa840cc085', 24, 56, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('f77229fe-d2a9-4cd0-80d8-64f54eed4236', 24, 57, 1);
--- Completed generating test data for France
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9a4aed13-174e-4395-89fc-fdc265364460', 2, null, 24, 'France');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1984b14b-8f61-4bb6-8928-624c7d02fe2b', 5, 56, 24, 'France');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('28184dbc-fb8c-4a7d-9a42-93a1f338d704', 'ACTIVE', 'france@iaeste.fr', 'NS.France@iaeste.org', 'f59098a3c0182c435f277e1379575c81b366264b9ecda483b46fe67a5bd17382', '1e06de18-ef42-49d4-8b03-4984f863bf74', 'NS', 'France');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1c7d0b71-25e8-4021-b769-ceb8d9e9700a', 24, 56, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5e9fe04e-0ea9-43e0-8028-bc595491284f', 24, 57, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('13a7605a-742a-4330-960e-0680ba246978', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 24);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('e7905bee-5c2e-455c-b125-3084cd469ba5', 57, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 24);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('FR-2014-000001', 'a59143b9-74d2-47f7-a2ce-f4b147a7f770', 24, 'EUR', 57, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Gambia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('GM', 'Gambia', 'Gambia', 'GMD', 2009, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4e1503a5-45a0-421c-8c92-c0636fe849e8', 2, null, 25, 'Gambia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('089727fe-55c5-45f5-a7f9-729f9df801da', 5, 58, 25, 'Gambia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('71f73bc3-f045-4e04-98c0-0c40d0c360b9', 'ACTIVE', 'gambia@iaeste.gm', 'NS.Gambia@iaeste.org', '7235902196903e8f4efec1721bff01666c55e56f963e2262b9435e36be911235', '43b561a0-76b4-4790-b5f7-9af0b73881d5', 'NS', 'Gambia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a27656cd-48a7-4912-8226-470536b72913', 25, 58, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('2d441a71-29c9-4dc2-8071-2c212c56a38b', 25, 59, 1);
--- Completed generating test data for Gambia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ce0b0eaf-c875-4273-af2b-1848a80e3ad0', 2, null, 25, 'Gambia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('25a43302-99a8-468b-831a-cf82203c9737', 5, 58, 25, 'Gambia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('58a0a724-8dab-4e7d-8b63-4b470ce8e63a', 'ACTIVE', 'gambia@iaeste.gm', 'NS.Gambia@iaeste.org', '2ca74495d155591c195be940fc52be86cd4b30c3575031cc4724af2ecef496d8', '075615c8-afc7-4fe3-95c4-5ca094f563b1', 'NS', 'Gambia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('4d406804-3949-468c-b7f8-fa7caf43cf9b', 25, 58, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b7e22839-9280-4401-a4aa-001b5aab7e6c', 25, 59, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('17bef9ce-75e6-4d75-be52-b077e26a8529', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 25);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('ae996995-1724-4002-a2c0-593078240d8f', 59, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 25);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('GM-2014-000001', 'f9966add-16e7-4f85-9a6f-3deae586b958', 25, 'GMD', 59, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Germany
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('DE', 'Germany', 'Germany', 'EUR', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('8771e306-0e5e-4eb8-bad1-7f7837b97762', 2, null, 26, 'Germany');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9d10455b-834a-4570-89ca-c7ce4c68eb3a', 5, 60, 26, 'Germany');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c5f036b7-67a5-4ef8-a778-be1e3f51bca5', 'ACTIVE', 'germany@iaeste.de', 'NS.Germany@iaeste.org', '3131ac34e8830ac4efe3603c7b060f211e3b7dd518ea8bdadc72a3f07553e68a', '1daf2a2f-1067-46d6-a4f0-78c0d5dcbe15', 'NS', 'Germany');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('ac38b617-4f6c-4a3b-ab0f-7d6756908449', 26, 60, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a9870253-53cc-447f-9e16-25188fefd8c1', 26, 61, 1);
--- Completed generating test data for Germany
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a936c7d9-7fbe-42f0-baf2-5118a794606c', 2, null, 26, 'Germany');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b8907e6d-d8eb-4651-8bf1-29e490c29684', 5, 60, 26, 'Germany');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('35324a71-4982-4abb-b014-34148e4f27af', 'ACTIVE', 'germany@iaeste.de', 'NS.Germany@iaeste.org', 'c8244f837c8d0843466da0b0b97c67af1569f630ce00258ddc7b4cbb64343b9e', '8ed54d7c-a42a-4b66-af6f-aad32ff8960d', 'NS', 'Germany');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('10feec6d-aff3-4e4d-99ad-89e68a942b3c', 26, 60, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('9d5dc0ff-71fd-48ba-ae53-645996411217', 26, 61, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('1bdcdd86-7bf8-49b8-affc-5ea4564f3244', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 26);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('a7a4736a-e2c5-4548-aa78-9c6c02314dac', 61, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 26);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('DE-2014-000001', '958b2b04-e44f-446f-9cf1-c702ae37a15e', 26, 'EUR', 61, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Ghana
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('GH', 'Ghana', 'Ghana', 'GHS', 1970, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('28735bcd-ac28-4ad7-86da-34e342a225c3', 2, null, 27, 'Ghana');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('78c15605-f41d-4c0f-9694-140b65af9e61', 5, 62, 27, 'Ghana');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('18fe82e0-0273-4c27-bdbb-235ac321d7dd', 'ACTIVE', 'ghana@iaeste.gh', 'NS.Ghana@iaeste.org', '1c564c728fe8f9d45c71ca06052c5bd14327fcffeebed93d29755146ed8133bd', 'e63935ae-977d-4898-ab80-b7ecb1e5bd2d', 'NS', 'Ghana');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e1aa64dd-cc8b-472f-9bf1-d9a118650114', 27, 62, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0470aa87-4ae5-440f-bbdf-dfb5ec39a0e5', 27, 63, 1);
--- Completed generating test data for Ghana
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('559d76bd-3bc3-4cd1-8ae5-411c5e6ea8f9', 2, null, 27, 'Ghana');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('3915541b-4d15-48f0-818c-416aa3d905cd', 5, 62, 27, 'Ghana');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('6e6e04d1-325c-489b-81f2-d88353fc73df', 'ACTIVE', 'ghana@iaeste.gh', 'NS.Ghana@iaeste.org', '9c7ebdba2c589ee5a0e232cca0c94737b2069e8c805932e279582adc6ec89cd8', '4ae6b7d1-c549-48bd-85f1-8145f4effff9', 'NS', 'Ghana');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('07a803b1-f215-4667-97cc-3845a2a585d0', 27, 62, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('6c77372d-c649-4339-b440-a3ddf594022c', 27, 63, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('f1a14c89-818f-46c4-ba47-d67a59b4cb55', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 27);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('3532ab46-002a-4110-aa37-065b3e5a8dc2', 63, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 27);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('GH-2014-000001', 'aecd5d8a-2b11-4719-b7e7-23a51e48ca35', 27, 'GHS', 63, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Greece
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('GR', 'Greece', 'Greece', 'EUR', 1958, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f4455e0c-5b8e-4dfb-ad3b-ffc224f3824b', 2, null, 28, 'Greece');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('afc2175c-740f-4d8f-9118-70a4b7ead7c0', 5, 64, 28, 'Greece');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('de9d255b-c216-42bb-be62-8fa5458cace0', 'ACTIVE', 'greece@iaeste.gr', 'NS.Greece@iaeste.org', '9b6f61f257c6475d338b00461157a1eb0956f19ee5cb9d55af3aa76d153db9da', 'a5411776-bc7b-4ac6-997b-c21f3af505d0', 'NS', 'Greece');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('1e69c4df-9d07-49cf-b53c-085e744940f7', 28, 64, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('42680a58-04aa-4c5c-b9ba-4ccb50497212', 28, 65, 1);
--- Completed generating test data for Greece
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('de9e260f-1010-498d-8e28-a958de3d29e2', 2, null, 28, 'Greece');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a5d55bff-16b7-4906-a07d-c0eb6de77d74', 5, 64, 28, 'Greece');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('0fb072f7-56a4-4cde-93b6-06b1aaf753e0', 'ACTIVE', 'greece@iaeste.gr', 'NS.Greece@iaeste.org', '5bd4e612b650daf4fa1cf1998d1a6bbdbfc35c5c24465134a17eee7c7b827a10', 'dfefd743-626d-4328-a6ab-0a7d6f4aa370', 'NS', 'Greece');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('d0753f5f-b62d-4a0a-ac91-1890784b6a93', 28, 64, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('db2a94aa-2f26-4562-86dd-cf50dcb19e77', 28, 65, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('fe676e41-d0fc-420b-91c9-d7f2b6521812', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 28);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('8f51464f-25cd-4ffb-a9b7-943c77aca9b8', 65, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 28);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('GR-2014-000001', '24d503e2-0555-4d2c-a484-65d20deaf5b7', 28, 'EUR', 65, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for HongKong
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('HK', 'HongKong', 'HongKong', 'HKD', 1997, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('33864a9b-5032-475a-8bc5-3c43336a409e', 2, null, 29, 'HongKong');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('341ac3a6-ffde-42ec-83b1-a04227ec194b', 5, 66, 29, 'HongKong');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('f0efae8f-cc15-416a-9055-4163274452c5', 'ACTIVE', 'hongkong@iaeste.hk', 'NS.HongKong@iaeste.org', 'f2164c0aaf435561ee7c96d87587e4d933953a1518ff41b68a9ea20b656ee4f1', '7cbcfec9-2d53-4691-b5d6-5c05f498990a', 'NS', 'HongKong');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('753f942e-9e13-4f41-a94d-6b2f1d5cd5f6', 29, 66, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('b5e4457a-ca44-401f-a60d-13e95604e655', 29, 67, 1);
--- Completed generating test data for HongKong
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('003d1ad3-4e07-4a66-a42f-e29a1e906ff2', 2, null, 29, 'HongKong');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('bcc729ee-c9e3-4ec5-90b4-cd0e6e72adf7', 5, 66, 29, 'HongKong');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('7dcf95a0-ecc6-42e2-b6ba-818c82c9a5e0', 'ACTIVE', 'hongkong@iaeste.hk', 'NS.HongKong@iaeste.org', '7bc4acb93c10b374d92ae10277f776eacdbdee1297ecd0021d1d239e4947dcf5', '19bb98df-f804-403a-9e7f-539c63868bb1', 'NS', 'HongKong');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('50353a95-a21e-48e6-ba4c-88bf158d4fff', 29, 66, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5967f0e6-2821-4625-86f6-3390dcc3880b', 29, 67, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('7296dc37-2501-4140-98d8-5a99a7d36837', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 29);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('0bcea598-254b-47f7-babb-e0b847f60d86', 67, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 29);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('HK-2014-000001', '56b6c2f2-477d-4700-9af5-fa5a81b176a3', 29, 'HKD', 67, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Hungary
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('HU', 'Hungary', 'Hungary', 'HUF', 1983, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0e12c5c0-9ecc-4d35-90ef-e2d6a4cdcc6a', 2, null, 30, 'Hungary');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4f6591a4-c5fe-4885-ab9d-46cbc44bc969', 5, 68, 30, 'Hungary');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('cacebdd7-d4a0-437a-a6cb-fa6591ac6ac7', 'ACTIVE', 'hungary@iaeste.hu', 'NS.Hungary@iaeste.org', 'ac3ee95fb11d16d6b248bdf3ca269f01c6a43fe5b214d8d184b62db24a51578c', '4d4c19c0-a53c-4543-aef3-8bee76a118ce', 'NS', 'Hungary');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('1b83ba51-8cd7-4eb1-8b78-3abbe4d6e4c0', 30, 68, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('b1e3ab12-3706-4b6f-b876-e55ebf2ec999', 30, 69, 1);
--- Completed generating test data for Hungary
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('7cb4c6fb-0af5-4c8c-9351-0d95f7f3b08f', 2, null, 30, 'Hungary');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('3084f5ec-f6b4-43d6-b887-3cc5755d56d3', 5, 68, 30, 'Hungary');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8d4670d2-d09d-41ce-9582-6ca878cfb27a', 'ACTIVE', 'hungary@iaeste.hu', 'NS.Hungary@iaeste.org', 'a7fece6865532decb23410f57eeae2829a9338f999d6e98a7aaa656c1ab91e5e', '4613edee-0cfa-467f-988d-3145c86d5179', 'NS', 'Hungary');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('dac6e4cf-6ecd-4f98-848d-55a642a690f3', 30, 68, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8f2a239b-9c59-4a61-93a6-66942528b439', 30, 69, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('ed2bb4d0-5570-43e8-bf33-dedf5205fdaf', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 30);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('bea10814-5bea-4c00-b29c-b29f4e8211c2', 69, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 30);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('HU-2014-000001', 'ebd07f2b-eb44-4990-8483-29e27c8c53e2', 30, 'HUF', 69, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Iceland
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('IC', 'Iceland', 'Iceland', 'ISK', 1951, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d4352cea-a7ba-4254-82cf-f73e91a8e965', 2, null, 31, 'Iceland');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('872ead93-530b-4bf2-854f-f539077dbd1a', 5, 70, 31, 'Iceland');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('6738aeff-87a5-49ba-aee8-43549efc992f', 'ACTIVE', 'iceland@iaeste.ic', 'NS.Iceland@iaeste.org', 'bfa7f4509f8881bea8d19b2f3786f20ced82401c408354eb2751e8643f86adee', '69d3cb4f-dd68-4309-9aed-61b5ff6ffcdf', 'NS', 'Iceland');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('3c02d1b0-4f8b-42d7-a605-a295db27711e', 31, 70, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a27eca01-4e4b-41b2-8bdb-f8736d095ca9', 31, 71, 1);
--- Completed generating test data for Iceland
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ffefbec4-c505-48a8-bea6-9b37706eb0fa', 2, null, 31, 'Iceland');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('667839a7-e4da-4f97-a30d-4663838606e7', 5, 70, 31, 'Iceland');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('9afd1e57-fee4-4d2a-80dc-bebf1fcb4a4b', 'ACTIVE', 'iceland@iaeste.ic', 'NS.Iceland@iaeste.org', '3889a91e1196983aaa5f8bc93325cee670923f931e5d6303626e52fd9dcf6311', 'd5c6b046-0570-4f01-a4f0-d1aea3805160', 'NS', 'Iceland');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('67e0163f-51c5-4829-a7d8-17c64be0beb4', 31, 70, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ea051a29-fbb4-47fe-baa8-ad5b31a315e2', 31, 71, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('51c105c5-abdf-47a0-bde5-ea5f49df1b2d', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 31);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('af697b1d-6e3f-4af9-a8e6-d73c746c5b01', 71, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 31);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('IC-2014-000001', '358ac4e1-9931-4a42-a9e4-293b28c11280', 31, 'ISK', 71, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for India.KU
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('IN', 'India.KU', 'India.KU', 'INR', 2001, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b9f73e60-b07a-488b-bf5c-ef932d4d0658', 2, null, 32, 'India.KU');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('35c5df32-4543-4813-ae8e-631fd46b5b99', 5, 72, 32, 'India.KU');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('65caa708-bbf6-43f2-a9c5-24b933b65e74', 'ACTIVE', 'india.ku@iaeste.in', 'NS.India.KU@iaeste.org', 'b91501df44603e8dfe4d2a8851df847fbb7ed1a4d84cbb8b38a14f45cb92313d', '6afbd6b9-87c1-4c61-8a70-6b651a6fccb2', 'NS', 'India.KU');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('3fba082d-968a-4bf2-b25d-3127cf42e36b', 32, 72, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('73f0669b-31f7-4c8e-bc0e-b79a9bb1c617', 32, 73, 1);
--- Completed generating test data for India.KU
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('da1ee2bf-44f9-4970-a2f5-cd2749ac2d82', 2, null, 32, 'India.KU');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1b047598-a120-4ca9-b074-e67d8f8c7574', 5, 72, 32, 'India.KU');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('f1012583-9b50-4117-9379-db36526ad937', 'ACTIVE', 'india.ku@iaeste.in', 'NS.India.KU@iaeste.org', 'e8e3ae4dc7a5b0a919a24eccd8c47d268ddb01732ae61d017c8ce47a6c587086', 'b014ae87-c8ee-45c7-89ca-2febd679de4b', 'NS', 'India.KU');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('49507348-9736-480d-8f2e-058c9e200423', 32, 72, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b8f1191e-e39a-4181-8a47-22e953f7be5d', 32, 73, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('0197941b-459b-4d98-9bf5-93ed83d2726c', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 32);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('cc01a8d3-505a-4157-b5d6-0eede3939665', 73, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 32);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('IN-2014-000001', '8217317c-c262-4412-83b6-512d314297c9', 32, 'INR', 73, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Iran
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('IR', 'Iran', 'Iran', 'IRR', 2002, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('12ff37b6-5ac9-4c96-8949-5dc858fd4870', 2, null, 33, 'Iran');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e5463cb8-f6ad-49d5-83cd-2d836f70c57f', 5, 74, 33, 'Iran');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('06e0c58f-cda9-4634-923e-8a653c06e9ac', 'ACTIVE', 'iran@iaeste.ir', 'NS.Iran@iaeste.org', '3d71fbd7f3f6b05255dc8db4562cf7d576031ab33876e034427b50e893fd496a', '10a937a4-2459-4a8f-bbe8-8f622a7ac878', 'NS', 'Iran');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e0db2796-4129-4c4a-91bb-69821d9f24c4', 33, 74, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('878365e1-100f-41aa-bea3-3df25ae85458', 33, 75, 1);
--- Completed generating test data for Iran
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('91d0181b-192f-4945-a547-3f308d44e776', 2, null, 33, 'Iran');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0412010f-119f-43d4-b618-bfb09f9dc4d1', 5, 74, 33, 'Iran');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('14fab378-c566-47a2-a206-aa5cceae32fa', 'ACTIVE', 'iran@iaeste.ir', 'NS.Iran@iaeste.org', '318d2fcb90ceb45d03732df14bd712f13619279985a5718d9eeef5fedef1c31f', 'a5b98c38-6ed5-47fe-a500-e4444e331abc', 'NS', 'Iran');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ad571147-93ff-4788-9b4b-ff5629875415', 33, 74, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1b45f996-7362-4505-9eb4-ba34c9bed89a', 33, 75, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('e3e5f0fa-83e8-4e0b-8301-f1f4243bb0f3', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 33);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('341c3b9f-ab23-40b4-a0f2-da5f07199f1e', 75, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 33);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('IR-2014-000001', 'fb365977-2dcb-4374-8782-20796fa33dba', 33, 'IRR', 75, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Ireland
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('IE', 'Ireland', 'Ireland', 'EUR', 1962, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e9372753-1931-4342-bb8a-7807b64db7f0', 2, null, 34, 'Ireland');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4a209296-fabe-463b-b8c0-16dbcb7341b6', 5, 76, 34, 'Ireland');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('b00e49a8-f6ec-405a-9395-91de4157a9cf', 'ACTIVE', 'ireland@iaeste.ie', 'NS.Ireland@iaeste.org', 'ba7429c06aa19993fee55eaf416bc07c88bc3e4842a10204c22bf0f940761195', 'f9e16c2b-d4f6-4209-9fb1-8690dc14f1aa', 'NS', 'Ireland');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('138d5838-fbeb-4d8c-9495-22ecb597c3c5', 34, 76, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('1466f618-1bd8-4157-89fe-f51316a88a4e', 34, 77, 1);
--- Completed generating test data for Ireland
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6862deeb-22cf-44a9-8a58-2b5a8bb5f2dd', 2, null, 34, 'Ireland');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d0164961-3083-4a94-b1a3-b12b9066662e', 5, 76, 34, 'Ireland');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('48b1e5cd-81ae-4c9a-9efa-abd45daca1fa', 'ACTIVE', 'ireland@iaeste.ie', 'NS.Ireland@iaeste.org', 'b073d38ae3f91e2dbca2ecfe02cb165101975d1c3e0786743ac2aa44a3ebd175', '263f0adb-511b-4823-a589-9763a2dd8b47', 'NS', 'Ireland');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c2163fa4-1ebe-40e2-b275-2291d2f9eb04', 34, 76, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2cbdcc46-3e54-45f2-9b97-690f443e8a82', 34, 77, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('5f9df5c9-5307-40d3-985f-14de7813c08b', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 34);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('36249f90-e9e1-4ef4-b089-785e5f98934b', 77, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 34);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('IE-2014-000001', '17a23e2e-d960-41e9-bf08-c195b7415e9c', 34, 'EUR', 77, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Israel
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('IL', 'Israel', 'Israel', 'ILS', 1951, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e5b44bdb-170d-4fa6-aa84-6dc06f00fc6a', 2, null, 35, 'Israel');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9c564ca0-6eda-47cf-be3d-3fa6d7918142', 5, 78, 35, 'Israel');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('612511ce-5b4a-4c54-8102-c29932eddb6f', 'ACTIVE', 'israel@iaeste.il', 'NS.Israel@iaeste.org', '7f1132d07c63252fba625967bb90fd9b2f2ef52f0ac61c4afd777283bf1cf3a5', 'c9429f3a-b920-4075-99ca-ab4f1eddb5d0', 'NS', 'Israel');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('592209e9-6aa1-492f-a0e1-2f014f85d0d6', 35, 78, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('8798e068-1c5c-4882-a64d-427241da291d', 35, 79, 1);
--- Completed generating test data for Israel
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('58e123e5-8e9f-4fef-8ba7-bd383752e180', 2, null, 35, 'Israel');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1d5a7443-128e-49af-ab8d-af04947bc195', 5, 78, 35, 'Israel');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('7aeefe94-b828-484c-ad8b-a740e0987856', 'ACTIVE', 'israel@iaeste.il', 'NS.Israel@iaeste.org', '20e637e9670f9a8b1d7373d096d38bb73bdb3649e44ca3d88cd511e371a9d43c', '07649d7a-7d75-4c99-8313-ade8c8265234', 'NS', 'Israel');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('26f15130-11d9-4f90-b3ba-435d558194c7', 35, 78, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('04ae70c3-ae76-4a00-9253-2d9dd704d968', 35, 79, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('e357fc92-eb7a-4f4c-b573-26c88788253f', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 35);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('f2429ca3-d606-456c-aa89-f2f62ea16507', 79, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 35);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('IL-2014-000001', 'a098a3a0-4c41-4a82-ba38-edff4473f847', 35, 'ILS', 79, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Italy
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('IT', 'Italy', 'Italy', 'EUR', 2011, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d188373c-5692-4849-8193-51c14303245d', 2, null, 36, 'Italy');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f75c041f-e9b4-4d45-b0d7-578e29e6c54c', 5, 80, 36, 'Italy');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('374437c2-19e3-40f0-9a08-d7a1714ec0bc', 'ACTIVE', 'italy@iaeste.it', 'NS.Italy@iaeste.org', '93cce024ea12584b48ada54bc2fe98db46d0567c85f068ee89cd1b50ec89483d', 'dc322e81-3375-41f8-b781-8c08516f755f', 'NS', 'Italy');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('beac3e94-4571-47a6-9a47-5f772ce109ea', 36, 80, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('7b339bfb-4fb5-48ec-ac3b-48a5ef1cd0d9', 36, 81, 1);
--- Completed generating test data for Italy
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6a68686d-e517-4153-a4c0-10449d06cef7', 2, null, 36, 'Italy');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9ad9840c-7976-4b4b-ad10-cc54aee81ea6', 5, 80, 36, 'Italy');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('bff5ecbb-b39b-442b-b62d-855bf01ec464', 'ACTIVE', 'italy@iaeste.it', 'NS.Italy@iaeste.org', '8bb46573713a1c65f7a871fe5185a3f8264384e20218c7a974f638770a595a97', '0be1e8fe-ab94-4073-9478-2dd941cdfba6', 'NS', 'Italy');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('25daaea9-b89f-43df-8120-de56eadf6efa', 36, 80, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('f2f615d4-32ac-48b6-88a0-5016ee47ff18', 36, 81, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('bcc6b469-a0ec-4cd4-b661-d194686c702b', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 36);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('9ce8fcd2-d389-48c9-a0e1-e2d7fb8fcc71', 81, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 36);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('IT-2014-000001', 'b87e2459-f8fa-4960-9540-68bf5669cdab', 36, 'EUR', 81, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Jamaica
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('JM', 'Jamaica', 'Jamaica', 'JMD', 2006, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('cf447972-b50b-4d33-9010-cd9f0cad8f6b', 2, null, 37, 'Jamaica');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4d94ad57-0d19-4428-a9cc-7452a2d129eb', 5, 82, 37, 'Jamaica');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('9421f673-b632-407e-a0de-940ee08d7218', 'ACTIVE', 'jamaica@iaeste.jm', 'NS.Jamaica@iaeste.org', '91adcea63015a06ee8e76338e81e50c206189998d8ca7dfdb781fb9be738dc10', '6ef5e542-4091-4504-8ef4-2239927e8228', 'NS', 'Jamaica');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('114c8053-b267-4530-9479-2889647bd6a7', 37, 82, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('2279d388-cdea-454c-9479-69a1dac0233f', 37, 83, 1);
--- Completed generating test data for Jamaica
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b2a69567-17e1-4722-a1c0-7b113e159b64', 2, null, 37, 'Jamaica');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6b349d08-976b-4927-90c9-017a3380915c', 5, 82, 37, 'Jamaica');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('bb24d173-eb06-409a-8a64-730b6c4f63fa', 'ACTIVE', 'jamaica@iaeste.jm', 'NS.Jamaica@iaeste.org', '05e15ecfcb6db5b72ba5f5d994294abf01a473b4c34769a95ec45c31dbc4a107', '523e780a-e132-40de-a65a-86e5be0d45ce', 'NS', 'Jamaica');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('da02d5fb-f4eb-4930-a789-45b8f06bb043', 37, 82, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1da7acd1-b5b4-4df2-92da-a6b4346f21f5', 37, 83, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('621ac3e7-88e1-43f5-abe4-7c4ca8449197', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 37);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('e393e9cc-48bc-4bdb-8c9a-fdf288c1abf1', 83, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 37);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('JM-2014-000001', 'fda40729-3530-4a8a-bab8-1ea6cda31930', 37, 'JMD', 83, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Japan
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('JP', 'Japan', 'Japan', 'JPY', 1964, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0c40dce4-093e-4581-98f0-b8695e5a7c82', 2, null, 38, 'Japan');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6ef0a009-b279-4f20-87c8-a218488bca7f', 5, 84, 38, 'Japan');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('45bf4152-793c-4a9b-8bc8-ba3d3e0597a1', 'ACTIVE', 'japan@iaeste.jp', 'NS.Japan@iaeste.org', '8882323829e2674589301af63d88b9b97e4e2df78b5f81ca12211d5a7f29df3b', 'b721b87e-52ca-4662-8e62-c82a01b1e623', 'NS', 'Japan');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('8e5908b1-b5f6-4970-9480-62839fbc67ff', 38, 84, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('30a34d90-d8fb-4bb6-81e3-f1606e62276a', 38, 85, 1);
--- Completed generating test data for Japan
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('010fec9d-d5a0-4718-8793-d2364dadaba4', 2, null, 38, 'Japan');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c509d4bf-3037-45fd-a4aa-e060980cbba2', 5, 84, 38, 'Japan');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('b922dca5-d1b6-48bf-bd69-66c74c9637f8', 'ACTIVE', 'japan@iaeste.jp', 'NS.Japan@iaeste.org', 'a5fa16f5079d13da6b340325245979e67fb577331be2cd36b8f06915ab1d52ee', 'ff1be20b-ad03-4be7-884b-4958d863d46c', 'NS', 'Japan');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('d15aadf6-c3d0-41f3-b0ea-0081ce913902', 38, 84, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('4ce3ea21-5d03-4940-8248-fc3486b68435', 38, 85, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('f8a5f8b2-a43d-49c2-a3df-aacc4ef2871d', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 38);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('b6cb13f8-4b6a-493d-a6da-b53a2907fe21', 85, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 38);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('JP-2014-000001', 'fcc4c80a-debc-42e3-8b7b-79731febfd24', 38, 'JPY', 85, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Jordan
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('JO', 'Jordan', 'Jordan', 'JOD', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a8ba86f9-8129-4466-b9e8-6e9dd3b21a22', 2, null, 39, 'Jordan');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c24cdcf3-eeee-4bac-9107-b0570fe96fa0', 5, 86, 39, 'Jordan');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('44ad1624-02fb-47ab-9812-d12003aab234', 'ACTIVE', 'jordan@iaeste.jo', 'NS.Jordan@iaeste.org', '9a6e35f6fa0e7649d6a81e1527d30d92cc9646e68b93fb241ff31612eff5e8f5', '950b2ae5-0528-4e84-8093-9f73204a515b', 'NS', 'Jordan');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('bf29a482-6249-4617-907e-98bf842521f6', 39, 86, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('8c3076ff-91bb-4782-8b84-e3d106d75640', 39, 87, 1);
--- Completed generating test data for Jordan
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('580625af-33cf-42d3-872c-6dac4612b827', 2, null, 39, 'Jordan');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ffedf12f-54aa-4eaf-b9ec-f0d831d510ad', 5, 86, 39, 'Jordan');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('57ebfd22-b1ca-40dc-9e22-c9b0ab33d529', 'ACTIVE', 'jordan@iaeste.jo', 'NS.Jordan@iaeste.org', '81c429bbab9528b338699abfaaf2d46a3283f9f2fe8fe0d316953c3dc1bb7ff4', '48d61179-28ae-42ec-ae16-f6c955392417', 'NS', 'Jordan');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('9be9801b-89ff-4f1c-8136-15cb6b704350', 39, 86, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('75b890ac-1613-4dac-ba8b-cf43cb90509c', 39, 87, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('9732ee5b-af2a-4b4c-b8ab-d5b580885fb9', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 39);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('513e111b-3005-4ed9-881b-53cbe56ce923', 87, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 39);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('JO-2014-000001', '98b15258-5564-4381-a69d-9cdd67c2109e', 39, 'JOD', 87, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Kazakhstan
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('KZ', 'Kazakhstan', 'Kazakhstan', 'KZT', 1995, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f1556862-958e-4740-8ae6-50fe35476e66', 2, null, 40, 'Kazakhstan');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('99174b65-d9fa-42dd-a01c-4c37b832a916', 5, 88, 40, 'Kazakhstan');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('1fbd5939-1c9c-47f6-bf49-ec34ef7cfb72', 'ACTIVE', 'kazakhstan@iaeste.kz', 'NS.Kazakhstan@iaeste.org', '6176bd189124d30ddc9e3226a7280f293c519b8e7fd219d36f45e1ec58932af3', '7f75183d-33d8-4e7c-bfac-8971f9293194', 'NS', 'Kazakhstan');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('8ae7beea-2bb2-4cd1-ba3a-ff46db307f98', 40, 88, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('68544604-a928-44d5-8d1a-d97d5f6e93fb', 40, 89, 1);
--- Completed generating test data for Kazakhstan
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4a94caab-d9be-419e-a157-e8c874696167', 2, null, 40, 'Kazakhstan');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1e80fff5-c3c4-4777-bbe2-44ade0f15578', 5, 88, 40, 'Kazakhstan');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('028a3e93-2137-4788-b95b-720110962b71', 'ACTIVE', 'kazakhstan@iaeste.kz', 'NS.Kazakhstan@iaeste.org', 'a10f11e313d905fac3759e8724e5ccb4658a2dc5b64f3d946f48ba04c9a0c084', 'd9b45a32-4b07-4ade-8ac7-cc46c3d0102e', 'NS', 'Kazakhstan');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('79784dfe-e869-42e0-8c28-90934befe958', 40, 88, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('7c660e66-bbc7-4023-a578-befff7198700', 40, 89, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('4e73d4f8-85ca-4a9e-a6d2-826c28e4a5d3', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 40);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('888d6d01-5288-491d-a6f0-b74f63116024', 89, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 40);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('KZ-2014-000001', '9c53a2d1-13d0-49b8-8ba1-0755b6a611e8', 40, 'KZT', 89, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Kenya
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('KE', 'Kenya', 'Kenya', 'KES', 2004, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('505d8241-4f71-461d-b9cd-db4c90f5b844', 2, null, 41, 'Kenya');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('5f489c47-18f4-441f-a355-add05547876a', 5, 90, 41, 'Kenya');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c2155f7a-4320-4063-a81f-07b852c7f852', 'ACTIVE', 'kenya@iaeste.ke', 'NS.Kenya@iaeste.org', '7266cc5105ea40670dba166972461ee385a89abbb527c95a8cf3361587c15e4b', 'dbb201d9-3ad7-437c-b38f-b5478a55c90a', 'NS', 'Kenya');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('886a0bbd-ec70-4e77-bc80-94a9048b4d28', 41, 90, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('ef958fd5-f38d-4573-8a63-e65cc5685367', 41, 91, 1);
--- Completed generating test data for Kenya
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('99df3c75-a947-46d1-9b7d-814cbe806550', 2, null, 41, 'Kenya');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('51f76a78-2ec9-4979-9d9c-18b933c2cd2a', 5, 90, 41, 'Kenya');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('b76bb1c0-82a5-4015-b527-16c42dfdbbc6', 'ACTIVE', 'kenya@iaeste.ke', 'NS.Kenya@iaeste.org', '95cba597a2f760cd62f817c7be81d17affbb90e5a94a606f8b3d505f77594fc1', 'b6df5824-607b-4322-b664-6e05514355fa', 'NS', 'Kenya');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ec48e262-1828-4d76-9066-cbfd2d3c5af8', 41, 90, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b56fef37-06a5-4f6b-b2e8-274d86cf0444', 41, 91, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('315b41dd-2ba0-4ae3-b22c-848bd9dd70c6', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 41);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('e697c981-edc9-4d18-ba42-0a35396fe8c6', 91, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 41);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('KE-2014-000001', '60265390-6dc0-4b25-be11-f9d9aecfa334', 41, 'KES', 91, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Korea
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('KR', 'Korea', 'Korea', 'KRW', 2007, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('08676d20-4308-42df-ba67-f27927182d72', 2, null, 42, 'Korea');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('df4cdec0-b8e9-4bc3-9b8d-87f6672a9cf8', 5, 92, 42, 'Korea');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('ee8aa6b6-e77e-4c3a-9605-3e55a6d92a90', 'ACTIVE', 'korea@iaeste.kr', 'NS.Korea@iaeste.org', 'c660b05851abe27d17eac3303bb01ed0e12f0ac52e1c67071aced29359616448', '60246ad5-53c2-45e2-8439-fc90587c1190', 'NS', 'Korea');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('608a8956-3eaa-4f6b-be4c-2f0873e4133f', 42, 92, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0368c14b-290c-404a-8fd7-25a616c35dc7', 42, 93, 1);
--- Completed generating test data for Korea
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('764bef6f-fa9e-4852-b553-3bdd79128a14', 2, null, 42, 'Korea');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('fff068e3-9c3f-4ce5-95d4-00688c9df398', 5, 92, 42, 'Korea');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('aa7aaded-7d00-498a-aa3d-46f6795b8004', 'ACTIVE', 'korea@iaeste.kr', 'NS.Korea@iaeste.org', 'd59e419e3aed8d4da400a2f5987077bf20a6b4bbd0dcc1c5afb4dec4405b9efa', '7a83320d-089c-4d7c-ab12-4784727bc726', 'NS', 'Korea');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2475dc12-5e37-4127-9468-bfed969dd624', 42, 92, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('4d73e324-9fa3-43d3-90e1-c0f87d28f996', 42, 93, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('67d5f962-f7f9-4c20-ba3d-e300bacf35c7', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 42);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('d5011f4a-ac99-4230-8c2a-5d25825ea543', 93, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 42);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('KR-2014-000001', '2600bd42-6be2-4800-ae56-097c1118b3a3', 42, 'KRW', 93, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Latvia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LV', 'Latvia', 'Latvia', 'LVL', 2002, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a657b0ce-b120-4bcf-824c-ac9739ebfb37', 2, null, 43, 'Latvia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('377ab884-b042-4ffd-9041-5455bc79baf4', 5, 94, 43, 'Latvia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('1ac0b03e-3c2d-4d72-9610-2593aeac90b4', 'ACTIVE', 'latvia@iaeste.lv', 'NS.Latvia@iaeste.org', '31cd082f37c1ed15b81796e6b505ce3debdda271a1c9a56c35adf7e636bd4a68', '8644e27f-c771-4902-bfc4-ca205feb7f9f', 'NS', 'Latvia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('76be913b-e0b8-46d7-8fcf-4df8615267cd', 43, 94, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('978b76a6-acdc-4fc4-af11-d7c16bd83b21', 43, 95, 1);
--- Completed generating test data for Latvia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2b0fd87d-531b-4d3b-82fe-4ad52d75829c', 2, null, 43, 'Latvia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0d1a17c5-81e7-4478-8324-d2fc75ae33df', 5, 94, 43, 'Latvia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('a4aa6c6e-8cfa-40a5-a7b2-a80c28124546', 'ACTIVE', 'latvia@iaeste.lv', 'NS.Latvia@iaeste.org', 'e8614b3db1e9f37e1fef5e47a94ca73d872eb4c2e211ae4a65d986122bc78539', '480a6e9f-df14-4944-97e1-44f47902ce3e', 'NS', 'Latvia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1484cd7c-3fe9-4030-b6ba-714b0804e7f3', 43, 94, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c7919aa7-cdb4-48c6-af44-40bca4293a54', 43, 95, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('e40759cb-6531-43e6-b715-7ba782595ce6', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 43);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('a44e7963-9d2f-42ad-95c7-8abb6db8377b', 95, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 43);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('LV-2014-000001', 'c7fd1318-18cd-4d2a-a6e5-86f26171a525', 43, 'LVL', 95, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Lebanon
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LB', 'Lebanon', 'Lebanon', 'LBP', 1966, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('40fdc473-da7a-4a14-a60b-f40915b6936b', 2, null, 44, 'Lebanon');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('baee5c49-a95d-4811-90c3-a3d7f7069b61', 5, 96, 44, 'Lebanon');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('2b509934-0bf3-49ae-901c-59c5f7e0600d', 'ACTIVE', 'lebanon@iaeste.lb', 'NS.Lebanon@iaeste.org', '189531541de1084176b1370ecf38e9dd3c58d9430e9dadc8a6f02c910d55aeca', 'aba8188c-efd6-4e56-bfaa-f95ea225c11a', 'NS', 'Lebanon');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('bd8280e7-4af7-4b98-abb5-45af93fe05f8', 44, 96, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('dc582e0f-488f-4eb4-a773-0c73e90beaf7', 44, 97, 1);
--- Completed generating test data for Lebanon
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('408b605c-e636-4ee5-821a-efe102aa2886', 2, null, 44, 'Lebanon');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4420b81d-652b-4951-939b-424783f8a520', 5, 96, 44, 'Lebanon');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('22f2bbb7-2f20-4e80-bcb8-79bcdb6e31bb', 'ACTIVE', 'lebanon@iaeste.lb', 'NS.Lebanon@iaeste.org', '8a0a71481494b7e0b5a739a03894da8ac687e69d08627acabe0c045cc8b5d383', '0294872a-6273-433e-b376-fd0cadecef21', 'NS', 'Lebanon');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('0d2cb74a-40e2-4c15-bb2c-2b3b14756fe7', 44, 96, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c34e7cf1-7de4-4568-b145-ec4e98fe4d91', 44, 97, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('c22df5cf-ef77-4941-9ac4-86fb296fbad7', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 44);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('4ce15110-fdd9-4e03-ac01-edbd4163032e', 97, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 44);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('LB-2014-000001', 'e0bf0036-963e-42b1-bdcf-e14a541dfa48', 44, 'LBP', 97, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Liberia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LR', 'Liberia', 'Liberia', 'LRD', 2012, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('594cf553-196a-4b02-a50e-c35c6152a5ac', 2, null, 45, 'Liberia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c8aa8dd7-fad1-48ba-af26-afe1ad51ce3e', 5, 98, 45, 'Liberia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('adb381ef-9d11-4991-a58b-dae6895b11fb', 'ACTIVE', 'liberia@iaeste.lr', 'NS.Liberia@iaeste.org', 'e0a3d0a8c270eafa8a130c578fb66c364e9d7409d7e13c6a861e46461865e396', 'c19b58fe-3c61-4c00-9478-88237a587775', 'NS', 'Liberia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('93136252-0e8d-4de1-8070-96ca7f2d7e7a', 45, 98, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('4851d565-a90d-4e91-a9d6-74a12aabbb3e', 45, 99, 1);
--- Completed generating test data for Liberia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e21197e6-50fa-4690-9b00-9db4563b0a24', 2, null, 45, 'Liberia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2a965ee3-15ef-43dc-85e1-b639e1ef080e', 5, 98, 45, 'Liberia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('aa44cf72-42f2-4c81-b73c-0ffba882e9eb', 'ACTIVE', 'liberia@iaeste.lr', 'NS.Liberia@iaeste.org', 'ea02d70cff104a1c54d77721b3c85a6622e057441eaf7ddff358b82e830e6205', '0cdc1975-4837-4e0b-98d2-e51c4724ef07', 'NS', 'Liberia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('0fd116d3-e09e-4ffe-baa1-bf3ebb00beaf', 45, 98, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ab752f36-2445-4f0a-b701-6f8a37b78d03', 45, 99, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('0f6e35fc-085f-402d-8daf-a6f2918e557d', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 45);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('2698186f-f55c-4eb5-9241-39bc1f098576', 99, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 45);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('LR-2014-000001', '345897b9-06a7-407d-919b-442851aece18', 45, 'LRD', 99, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Lithuania
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LT', 'Lithuania', 'Lithuania', 'LTL', 1990, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9af8fe53-19c6-495c-a8c3-3b1c6dec2406', 2, null, 46, 'Lithuania');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('8e25de4a-da72-42c7-a035-814f85424138', 5, 100, 46, 'Lithuania');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('a832c600-cd54-4837-9965-540e43b399e3', 'ACTIVE', 'lithuania@iaeste.lt', 'NS.Lithuania@iaeste.org', '7a3b7faa6f41811df5a6b80f9cc404e3692b50a4d22f6fdccd4eef7eb3abc049', '0992fa98-aea7-4a2a-b493-dc5bbbdfaa40', 'NS', 'Lithuania');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('8d3a5a02-b58a-4f02-80d5-7b67b01cab77', 46, 100, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('3444c2f4-eb72-4d5f-9ca5-0c51081d8551', 46, 101, 1);
--- Completed generating test data for Lithuania
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a3d392f5-b75e-42ff-824e-8d20db5ac55a', 2, null, 46, 'Lithuania');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9cf024e7-4fc6-44a4-9903-dea5eb2114d2', 5, 100, 46, 'Lithuania');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('f47c850c-d57f-4103-9cb1-9684c68e98ff', 'ACTIVE', 'lithuania@iaeste.lt', 'NS.Lithuania@iaeste.org', 'afb22c5511979b017cbf860ca98a053ca6a9e68fe7da86dc40a86d1218b60ccd', '6ac6ebd4-6a59-40b9-9a81-c170fd0a6524', 'NS', 'Lithuania');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('fb36c4de-c738-445a-8876-cb0a8262ac9f', 46, 100, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b684c143-50c6-4fe2-bc0c-27728648d142', 46, 101, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('c941d78f-efe0-4e98-9841-5576663d6429', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 46);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('6e8f3845-ff68-43a6-a713-e4459e668dac', 101, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 46);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('LT-2014-000001', '3c746155-5efb-44f4-8e42-725e775bddad', 46, 'LTL', 101, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Macao
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('MO', 'Macao', 'Macao', 'MOP', 2004, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('64c1e3e4-3f67-4890-adff-8b62e9e45448', 2, null, 47, 'Macao');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('04abfe93-4720-4b24-b1e6-432489dc0819', 5, 102, 47, 'Macao');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('469677c4-1370-4021-a107-aa9ebd639c7f', 'ACTIVE', 'macao@iaeste.mo', 'NS.Macao@iaeste.org', '0d191fbc454dc78d83b102325885e6a2e9de5717a90b448804c3f9af48ea7fc2', '6678d4b2-a841-463c-a997-742fb2a84446', 'NS', 'Macao');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a5d37dd0-b119-406f-98d9-298460ed3757', 47, 102, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('1985ec8b-1a1f-4884-af05-440aee8b1d9b', 47, 103, 1);
--- Completed generating test data for Macao
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c9a94b14-712d-415f-be97-d7d4776d2994', 2, null, 47, 'Macao');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('655063c8-259d-4bc3-8331-d7d064f29a39', 5, 102, 47, 'Macao');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('3c0b71e0-c1ac-4acc-b441-606e18e3651a', 'ACTIVE', 'macao@iaeste.mo', 'NS.Macao@iaeste.org', 'ccea8caa755d47fe44cb97e04e1900d16c843925a53327063589f3021c5f1546', 'b9723ba0-6c98-4c6f-a099-972f0bb96929', 'NS', 'Macao');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('492a879b-d350-4b81-af32-46435bfc4431', 47, 102, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('a4821539-9f82-4148-ae71-c9179d6e863e', 47, 103, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('26b0d2fb-94e2-43c2-b9b9-6ca6f3c70288', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 47);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('b3db3212-2431-4595-8ea7-87bff79d31e1', 103, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 47);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('MO-2014-000001', '7c5716f2-c6f4-4cca-bedf-d59bf4485945', 47, 'MOP', 103, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Macedonia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('MK', 'Macedonia', 'Macedonia', 'MKD', 1994, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6ce74341-8f4f-4b55-8ff6-d50542217f9a', 2, null, 48, 'Macedonia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ec479694-21ed-4c24-a8a8-ef8b0eb07bd6', 5, 104, 48, 'Macedonia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('aafc6a8a-cdf2-4873-8b26-869e9e54f992', 'ACTIVE', 'macedonia@iaeste.mk', 'NS.Macedonia@iaeste.org', '3a4337186ba7b55fead9956ca6942bf809d7967550528d19319b17e7eb76cc5b', 'dc86ba87-6a24-4fc0-804c-2e4419f63b7b', 'NS', 'Macedonia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('ad5c7c64-2ac6-4a13-9262-72077ca9ce72', 48, 104, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('81576fbf-b879-4ea5-83a6-e246490f7634', 48, 105, 1);
--- Completed generating test data for Macedonia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2fa2bf8d-8b0b-468a-abdc-5e37c5611579', 2, null, 48, 'Macedonia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c186a960-024f-4fae-94c7-4dafab69d5ec', 5, 104, 48, 'Macedonia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('6444b95c-e4db-4b67-bdd7-bd57458e056f', 'ACTIVE', 'macedonia@iaeste.mk', 'NS.Macedonia@iaeste.org', '939c43aba0456f6c607ec8be6d043366bc00df6ce0dcf7adebc6be2529dc1e1d', '40ac4f08-e6bf-4e15-83cc-73fde1979411', 'NS', 'Macedonia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1dd51278-b0b6-4ab9-a85f-654121e950d3', 48, 104, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e67bedd3-c800-4c50-a41e-5ad0fce80b41', 48, 105, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('5108c2fe-6ef3-4dcb-94eb-2024397f0e5b', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 48);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('c1e2e832-d396-4296-b984-7246cee5fa2b', 105, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 48);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('MK-2014-000001', '781e4e00-da45-4a67-809b-455081436759', 48, 'MKD', 105, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Malaysia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('MY', 'Malaysia', 'Malaysia', 'MYR', 2008, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('7eae41cc-03d0-48e1-ab01-2b9ad48d7f2f', 2, null, 49, 'Malaysia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1494f627-3fba-4b3a-8cf0-dde608d5f60c', 5, 106, 49, 'Malaysia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d14077e8-bfe6-42d7-a088-71325b1e4275', 'ACTIVE', 'malaysia@iaeste.my', 'NS.Malaysia@iaeste.org', '517098b4816113f9a37f50e151e26c65eb756e7e1a5337ebf553abdc6aab142a', '8ba05e1d-db11-4ee5-a60a-2722385ac4ae', 'NS', 'Malaysia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('146c0f26-2e8c-474d-ab8f-c8087aab0ce9', 49, 106, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e25adcb2-4f0d-45a5-9855-27a7937b4cbe', 49, 107, 1);
--- Completed generating test data for Malaysia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('33695e67-9a73-40b9-bb7a-334e77dc7f18', 2, null, 49, 'Malaysia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('35366f0c-a59a-4e6a-b8fe-6091f884ca49', 5, 106, 49, 'Malaysia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('07ab663b-3fde-4e5b-afd2-aaeb4edcccd8', 'ACTIVE', 'malaysia@iaeste.my', 'NS.Malaysia@iaeste.org', '4255dfed0f622d320436639b5b0396af92c86f130effdc0bb866fcad7a2f44db', '86639caa-3584-4600-8206-41cb941c9195', 'NS', 'Malaysia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5b8df9f3-9279-46cc-9971-7265f51f27c7', 49, 106, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('7b1e1c6c-c5c6-46d2-8270-24b3c74b8577', 49, 107, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('49505a86-6a48-4cd9-a778-9de5ac3baa9f', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 49);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('0dee1121-0f65-4538-b66c-f5d717295367', 107, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 49);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('MY-2014-000001', 'feb12c1c-112e-46e5-83d3-008cb5fd15e3', 49, 'MYR', 107, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Malta
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('MT', 'Malta', 'Malta', 'EUR', 1984, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f362e01c-aa38-4e37-b221-45ddb8bdf968', 2, null, 50, 'Malta');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c75de18f-c9f0-41ed-bee3-3fe2f1826deb', 5, 108, 50, 'Malta');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('78c95454-e005-47f9-ae6d-8e60f5213b2f', 'ACTIVE', 'malta@iaeste.mt', 'NS.Malta@iaeste.org', 'cb61e9998047fb73eb488bbda053dd37ac1b3c8a6d1b27806820545ddf94eae9', 'f255c0a4-453b-4a6f-a2b5-e100b7727a2d', 'NS', 'Malta');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('eff7bec0-f3ae-450b-961d-a1fd8c1d9e1e', 50, 108, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('6de6f4f4-e2b2-4be8-b583-76564e9c4935', 50, 109, 1);
--- Completed generating test data for Malta
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d6e3aa19-fbe1-434d-9190-5ac5ec1ac76d', 2, null, 50, 'Malta');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6007aa77-bd08-41e7-9354-8b99d756ad76', 5, 108, 50, 'Malta');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('269609d0-1430-408e-940a-2ff90c9ff859', 'ACTIVE', 'malta@iaeste.mt', 'NS.Malta@iaeste.org', '5912b4b4d1b6d70b9e6b4372f1229030911113bdda312fbc63a1a68f5aa1c7cc', '8cd2429c-34db-4f7f-861e-bfb09b33d936', 'NS', 'Malta');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b466253b-709f-4fc7-9dff-2d264dcd5d4a', 50, 108, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('27f5a6bf-a926-4999-8ec5-aa7a6713233d', 50, 109, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('1e11cf87-d2c7-48bb-a7d0-8ce6d206a73f', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 50);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('02a3f6c3-043d-4199-8f3d-b6bf1d5e38d0', 109, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 50);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('MT-2014-000001', '186ede90-7eca-40e3-bcbe-5b557932463a', 50, 'EUR', 109, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Mexico
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('MX', 'Mexico', 'Mexico', 'MXN', 1985, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1e7336f2-8513-4de2-9f3b-6b73a7da5fcb', 2, null, 51, 'Mexico');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b18a734e-44fa-4a0b-8cff-3dc331d6893b', 5, 110, 51, 'Mexico');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8ec3dfb3-30ff-45dd-83d3-3891f93feb60', 'ACTIVE', 'mexico@iaeste.mx', 'NS.Mexico@iaeste.org', '3064e4567ba02f5f2d7f68f93ef01620a01a00bb69d6d17ea28a31b952a585cc', '8ec249e0-2d3d-410a-b576-5b0616963aa6', 'NS', 'Mexico');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('3f911b1f-efae-4f9c-8faa-cf3bdecd8fd2', 51, 110, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('cd72378c-f65e-4774-b758-6f2fafbc3ec0', 51, 111, 1);
--- Completed generating test data for Mexico
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ee79b96c-4ef3-42e1-b0d2-505201f66e4e', 2, null, 51, 'Mexico');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6ae170fd-6687-4002-835f-57b47237e548', 5, 110, 51, 'Mexico');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d9b34e1c-d160-4b52-aac3-90769d9d7ca9', 'ACTIVE', 'mexico@iaeste.mx', 'NS.Mexico@iaeste.org', '23629637a259fe30e126f78063d33fb961cf34dd471a52265de120b3ec1c5740', '5884527e-ff76-482c-8632-dc06a11d9da9', 'NS', 'Mexico');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('04eecede-20af-4fde-b45b-b471bdced93b', 51, 110, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('597b8e3e-365b-444d-9835-f74b46ff4ead', 51, 111, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('bb8da1e3-5e78-4c6f-97f3-5f111592a63e', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 51);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('8fcc029d-42e0-49ec-80fc-1df660ec3bbe', 111, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 51);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('MX-2014-000001', 'e5be3326-68ae-4f97-ab4a-85250eb20a79', 51, 'MXN', 111, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Mongolia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('MN', 'Mongolia', 'Mongolia', 'MNT', 2001, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f68a2678-38fe-4d69-89f9-07e01f537ef0', 2, null, 52, 'Mongolia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0ac91424-ca7e-4be4-87d7-2f35ca665cde', 5, 112, 52, 'Mongolia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8d60b75e-cd06-41fc-a4b2-4a8ac7a6d1ee', 'ACTIVE', 'mongolia@iaeste.mn', 'NS.Mongolia@iaeste.org', '5f1f8e2d49b3dc3ba01990ae055fb7636223aab5f4192736990ccaf5e114a905', 'c614e1eb-ee8c-4fdf-9c62-5d2ce7a5d51e', 'NS', 'Mongolia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('d2fe4834-ad28-47cc-81b0-e8c98ef75859', 52, 112, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('11c4f6ed-282a-44a4-8292-70d9ef2d78d0', 52, 113, 1);
--- Completed generating test data for Mongolia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('7bc98c18-b622-49d3-8fb0-a4b8b7561734', 2, null, 52, 'Mongolia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('22f042e9-271a-41e3-a45e-07e2009c9c39', 5, 112, 52, 'Mongolia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('6846bd09-e32a-4795-aab1-7f8e6cca8147', 'ACTIVE', 'mongolia@iaeste.mn', 'NS.Mongolia@iaeste.org', '81df2d039bce3563c08bf741051a4374f997dd200d59a0eeb6d42cc09e84f45c', 'c7c3e047-667a-459a-bf64-30242f01766a', 'NS', 'Mongolia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('0e58e4de-7085-4830-8d51-50c571a8f85b', 52, 112, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('cbe30328-f98b-44e5-a9ba-f52c2d4e0a11', 52, 113, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('4ca28771-700b-4c42-9433-8abb34af2a3a', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 52);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('91ba0bcd-3b15-4de8-9bc8-c5e0cb9c857d', 113, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 52);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('MN-2014-000001', 'e473e69e-adf0-41e2-b586-191704010d1f', 52, 'MNT', 113, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Montenegro
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('ME', 'Montenegro', 'Montenegro', 'EUR', 2007, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9f6adbcf-e81a-44a7-85ad-812da9796e69', 2, null, 53, 'Montenegro');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('3390a51e-311a-4c62-a61f-00fc4820e666', 5, 114, 53, 'Montenegro');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8bf79497-1f1a-41af-8b6d-afa29ca60b1b', 'ACTIVE', 'montenegro@iaeste.me', 'NS.Montenegro@iaeste.org', '86ab28c35277e95d83f9179f1939e4cbd7096849b9aa1d828cd34785e9f563e1', '7faba7c2-93ec-454c-b748-4ab7c3506ae7', 'NS', 'Montenegro');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a094b0d2-38b1-4129-8ea8-4253e5d6288c', 53, 114, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('17d6ca3f-f759-4a65-8c10-0bef9a0ea16b', 53, 115, 1);
--- Completed generating test data for Montenegro
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1635ebcd-6f25-4345-9381-e02ae8614503', 2, null, 53, 'Montenegro');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('411a8319-0146-4eea-ae13-756a5a904a79', 5, 114, 53, 'Montenegro');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('baec62eb-ef50-4c3c-ba81-65f4de705a6d', 'ACTIVE', 'montenegro@iaeste.me', 'NS.Montenegro@iaeste.org', '26d3b745261e9593446e960459edc7df9571ddcb566b2efabce3ab78cb4e22e0', '4e03e8e2-46fa-4e1c-b454-b9843caab1b7', 'NS', 'Montenegro');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('74af64bd-62c4-4707-bfc4-0fc56c49fc5e', 53, 114, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('f25ef0ac-5993-4efc-8c26-87173fad4cee', 53, 115, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('5e324ed4-1f9d-4208-80d2-411e15ff4a11', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 53);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('5f3ef52b-07d5-433e-a6aa-a10bea59f4a0', 115, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 53);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('ME-2014-000001', '51036463-1610-4c3f-b9e1-0fde37ae4f5f', 53, 'EUR', 115, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Netherlands
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('NL', 'Netherlands', 'Netherlands', 'EUR', 2011, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('161e692f-7a38-4fe5-b8c4-c58c5573b17b', 2, null, 54, 'Netherlands');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ef8762cc-3378-4dcf-b686-0baa60a4525f', 5, 116, 54, 'Netherlands');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('e1203e43-e273-46d0-9ae5-170ca998498e', 'ACTIVE', 'netherlands@iaeste.nl', 'NS.Netherlands@iaeste.org', '8db52e5e14fac5a35584d6aeb85bf08ec638d3170d2a63e5757edba8023a21e5', 'd18333b5-d6dd-4fd5-9e7d-fc3b6cb8ebd1', 'NS', 'Netherlands');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('ca3773df-da87-45f4-ba6e-c56a3527bd2d', 54, 116, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('55060933-bd23-4f25-8a0b-43d0db229137', 54, 117, 1);
--- Completed generating test data for Netherlands
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a30ca6be-a395-4511-8213-8571f09f1a82', 2, null, 54, 'Netherlands');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f9709032-dbe7-4be4-85e8-1610ea813638', 5, 116, 54, 'Netherlands');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('14073bcf-8013-4403-acf0-8c6794a7c293', 'ACTIVE', 'netherlands@iaeste.nl', 'NS.Netherlands@iaeste.org', '79c911218ded029616abfcdb0b1c7459145c38aa212fa4726b0de7e3767fc383', '17b24a7b-1c08-4390-bffb-b2e6104b4e9d', 'NS', 'Netherlands');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('a58bdd9b-275d-479d-9920-af233108a6e4', 54, 116, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('4c964508-3ed4-4441-bdc4-5c7832ebb3a7', 54, 117, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('b58fc127-f58f-430f-82ca-e860b7503ac3', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 54);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('ddb90fd7-c08e-4a6c-8c32-dbdb5a1f6e4d', 117, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 54);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('NL-2014-000001', '6eff3430-4199-42e5-a0be-ae7a91d06430', 54, 'EUR', 117, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Nigeria
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('NG', 'Nigeria', 'Nigeria', 'NGN', 2007, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1a2b1987-e955-493c-8632-9a2fdb5d44b8', 2, null, 55, 'Nigeria');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('24fd88db-8527-4c3c-9c2c-8e46a63df310', 5, 118, 55, 'Nigeria');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('a0b4f078-4b09-4f95-af07-336589dccdce', 'ACTIVE', 'nigeria@iaeste.ng', 'NS.Nigeria@iaeste.org', 'd387c52f4393df63321939780a1d0b30bab56eba25efefcf92aecbac69e8b733', '62572e02-3e5e-459d-9a41-4ae244c3e34e', 'NS', 'Nigeria');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('25f6de8c-a6c6-4931-a076-e61efdccd1eb', 55, 118, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('35795182-d5d3-45ac-b1ea-95ccb7e87a93', 55, 119, 1);
--- Completed generating test data for Nigeria
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b26c5e02-e0fa-4b58-a80e-b6ff32ea8717', 2, null, 55, 'Nigeria');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1c208d99-8d0e-4a99-a32f-900d81093b78', 5, 118, 55, 'Nigeria');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('674b8902-54da-471a-b71a-29ab53a3ee8a', 'ACTIVE', 'nigeria@iaeste.ng', 'NS.Nigeria@iaeste.org', 'c354bd6fced9fcce9c97b59d750a566a545a1d4156d592471f61f7ed30ddb0a7', '2776345b-0f2b-49ca-87b7-4e2293698ba1', 'NS', 'Nigeria');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('f0827488-f2ff-4d51-9cc8-728fe213b790', 55, 118, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('a5b08b4a-991d-4b0c-88b9-f5e66b17ef7c', 55, 119, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('ba9d9627-9d74-4997-9786-8d15db2cb600', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 55);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('96ad0fe8-b65a-41e6-bf4c-f8cf34bab721', 119, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 55);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('NG-2014-000001', '472f036d-b049-438a-858b-d4d4675e937c', 55, 'NGN', 119, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Norway
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('NO', 'Norway', 'Norway', 'NOK', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d975e033-7fc0-4980-b1e1-9ae97eb43554', 2, null, 56, 'Norway');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a9bbc993-885a-4c48-b3be-50a89d691f59', 5, 120, 56, 'Norway');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('fc1d8ab6-a980-456d-918c-818155c6ee1f', 'ACTIVE', 'norway@iaeste.no', 'NS.Norway@iaeste.org', '394a44542ac1d0cc0dbbcd6edafb1e677bdb7ec7b9e89cd9678e17b5259c4a32', 'c7ebb94b-f911-4d3d-b772-0e8e149682a2', 'NS', 'Norway');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('bce61325-914f-49ea-b3bf-da405958bcca', 56, 120, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('660837b4-1533-4476-8839-6b3fed73797b', 56, 121, 1);
--- Completed generating test data for Norway
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('38211933-bf41-4fb6-8f1d-a0198e855baa', 2, null, 56, 'Norway');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ce09be0c-c6ae-463a-b943-367107643041', 5, 120, 56, 'Norway');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8809535c-36f1-4172-9b15-4b29869bdede', 'ACTIVE', 'norway@iaeste.no', 'NS.Norway@iaeste.org', 'd3b044a3bb7f5eba8c63abe6c25d414d74cfedf653a226d2ab8ca9c2466497c5', '937aa2ca-ba01-4e7c-adf1-dd505e1af2ac', 'NS', 'Norway');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('29097cf9-12de-4fef-a48e-a269eb19ee92', 56, 120, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('33312b7d-4e0b-4783-98e4-d7a95c0dd0d3', 56, 121, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('de965a15-fa8e-4aa2-9d0a-c9d3a7929f97', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 56);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('e8f03462-38f7-4ab6-adb7-71e3aba82df4', 121, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 56);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('NO-2014-000001', '25d13e6c-5371-458d-ab4c-1287dc02da5c', 56, 'NOK', 121, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Oman
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('OM', 'Oman', 'Oman', 'OMR', 2001, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c9c2c6e8-6fbd-43ae-9bd5-cdb9c9df2068', 2, null, 57, 'Oman');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c22dd9c4-07fe-4e0a-bc5c-7120fc1c4e4d', 5, 122, 57, 'Oman');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('663bb1c3-2d8a-48cd-a93e-cdb41808ca54', 'ACTIVE', 'oman@iaeste.om', 'NS.Oman@iaeste.org', 'c0fe55e52f30d8dbb2464beb0312cc01ffe9551c590aab7bf8b13f4edd4b0d2a', '9ffefade-03b5-4e89-89eb-073b7c4add7f', 'NS', 'Oman');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('995ab456-c475-46c3-8810-2f2804abc538', 57, 122, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('686ac121-f6cc-4ef3-82d6-0e5a3cd669ee', 57, 123, 1);
--- Completed generating test data for Oman
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('db0ce736-a59e-4454-a9dc-988794fca037', 2, null, 57, 'Oman');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('da0748fd-722e-4579-ba55-8afcf2d0719c', 5, 122, 57, 'Oman');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('482651ee-25e6-4902-8b49-a5c29ecb91d5', 'ACTIVE', 'oman@iaeste.om', 'NS.Oman@iaeste.org', '8afc6405c3875a2c199b2b1a546e70e1060ba7fea4225b9fa36cb27e9ec5ae56', '9d5dd5bc-1b53-4d70-abfc-677e2eab13dc', 'NS', 'Oman');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('54e49cbb-0dce-4d14-b74d-23e062b4c35d', 57, 122, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('517cdb05-e0af-4c47-8ea9-979748b72be3', 57, 123, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('ac015303-8302-4274-b919-260b0dae3bd6', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 57);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('61be136a-981d-485b-bac9-b976ffe04fa5', 123, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 57);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('OM-2014-000001', '23c8b905-e2a9-49e4-afa8-5c7cd83c3e05', 57, 'OMR', 123, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Pakistan
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('PK', 'Pakistan', 'Pakistan', 'PKR', 1990, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('49e7dff5-e152-4da9-bc7f-e07344473eba', 2, null, 58, 'Pakistan');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('97027062-a067-4146-b5ed-858ed9d03d7d', 5, 124, 58, 'Pakistan');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('602ec7de-977f-4789-bec0-090d30abf11b', 'ACTIVE', 'pakistan@iaeste.pk', 'NS.Pakistan@iaeste.org', '74459d9497d2c031ea5cdb51319a5c4b9554484283c96d6a5afe95fa0d07a66a', 'fc7fa09a-ff57-49bb-8381-f5a154afe482', 'NS', 'Pakistan');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('fffc7496-f439-44e6-8493-2880434ce018', 58, 124, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('de87c2c5-5b93-4167-929f-e1823deabe1d', 58, 125, 1);
--- Completed generating test data for Pakistan
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('8643b8e8-4163-419a-a990-841951a21e5c', 2, null, 58, 'Pakistan');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c73d594d-0858-4d2d-90cd-20ec1e828054', 5, 124, 58, 'Pakistan');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('40120522-cb29-467d-ae06-918cd5732206', 'ACTIVE', 'pakistan@iaeste.pk', 'NS.Pakistan@iaeste.org', '9f661ae856a1ce948f1cce98cc8ddd6f5cb7508f7c05b243c651cf097d035f48', '4932ded4-5dfc-4f50-adca-b9e023a592bd', 'NS', 'Pakistan');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('a7fdda75-4e00-48ad-b00b-ee856ddcd480', 58, 124, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('3c80a401-7486-4aa8-a7b5-9a867684cec8', 58, 125, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('f21a6b13-3f89-406c-ba73-ab57c500fa16', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 58);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('fe50622c-48e6-40c1-a691-6a7b735be044', 125, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 58);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('PK-2014-000001', '810f73cb-d6ed-4c2b-8ea9-574360ec6943', 58, 'PKR', 125, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Panama
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('PA', 'Panama', 'Panama', 'PAB', 2004, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('e8922884-8d42-4541-9f08-340dd1a6b0d1', 2, null, 59, 'Panama');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('abd8b394-1fe3-4ccf-8e15-64bf4a36d8b1', 5, 126, 59, 'Panama');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('40fd60b6-2665-4ce3-818b-3fd24a2767e5', 'ACTIVE', 'panama@iaeste.pa', 'NS.Panama@iaeste.org', 'd45cc3a8441fe8a5ef768a0b43231e7ad27e5547acbbf59f7b1eb040eaba5a12', '54c5d077-b93f-4e24-a16c-2e794364e8bb', 'NS', 'Panama');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('aa938141-5197-477f-91f4-f99dc4f189e3', 59, 126, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0227b327-cf00-4267-9eaf-fce43a56e8b9', 59, 127, 1);
--- Completed generating test data for Panama
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2c4224aa-d2a2-45d2-8ad9-a6e7454c2827', 2, null, 59, 'Panama');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('af0f7f76-6bcf-4ce1-b855-c4d595c64d00', 5, 126, 59, 'Panama');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('929b58a5-b360-408f-8d7e-95ca27d91be5', 'ACTIVE', 'panama@iaeste.pa', 'NS.Panama@iaeste.org', '0069cc16e5954b01ed849699c74c044eb7cde43522a83f028ca013cbceb2c3ad', '02c8ce27-ac14-469c-9220-8b2876949667', 'NS', 'Panama');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('3ce205a3-b63b-46fa-8e9f-dca622fe6cbc', 59, 126, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c3dad6a6-c2e5-407a-9c82-f1ad6d17f56b', 59, 127, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('832178b2-a6ab-456c-8b5c-c80669db28c7', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 59);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('39eccacf-41ba-403f-8caa-311aa8f1667d', 127, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 59);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('PA-2014-000001', '4e3cb110-ce31-46d6-8e19-11ffa9f02e06', 59, 'PAB', 127, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Peru
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('PE', 'Peru', 'Peru', 'PEN', 2001, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f6269393-9df7-44ad-8ab3-6d8e8cf20a22', 2, null, 60, 'Peru');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f77f5093-31fa-40f7-b85f-9a540a8f5433', 5, 128, 60, 'Peru');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('6c0fa61d-b266-4335-bd10-9a2430b21147', 'ACTIVE', 'peru@iaeste.pe', 'NS.Peru@iaeste.org', '5864e556da24e01674c07ae866c529b9da276294cd385515e9fd33530ae0b260', '753ccc40-aa22-43c6-a5a9-15af0b633a98', 'NS', 'Peru');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('8aa4a44e-4731-4395-8b37-c1b93195d13d', 60, 128, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0056cbf4-b4b5-4831-8c37-12f29b8084b2', 60, 129, 1);
--- Completed generating test data for Peru
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c00ab2b1-3bc0-45c6-8026-b567239bd1cd', 2, null, 60, 'Peru');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('47c6fffc-3439-41e5-ab03-c708afd5c20e', 5, 128, 60, 'Peru');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('0917b0fd-90bd-4502-8671-cdf3e66da7dd', 'ACTIVE', 'peru@iaeste.pe', 'NS.Peru@iaeste.org', '64bd2c266aa3c409ff979e4868b10a910eb8595e6a29a16a7876a474ca485678', '211629a9-7da1-4608-a937-626068034843', 'NS', 'Peru');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('dd1d1102-f310-4fc8-8712-1a58c9ea054b', 60, 128, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('3317ede5-7adc-4a83-924a-6305dc6ced78', 60, 129, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('4bb9bb52-869c-4434-ac19-f7f8d724e5dc', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 60);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('ffe8a74b-e0ca-4054-a0ce-ce297fa1a75f', 129, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 60);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('PE-2014-000001', '9f00db31-50e6-442b-abe3-aadced7d4be7', 60, 'PEN', 129, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Philippines
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('PH', 'Philippines', 'Philippines', 'PHP', 2007, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a2d98692-74d2-44de-8c38-557c67721374', 2, null, 61, 'Philippines');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a230e78f-4b74-463d-b6ad-8020166c8b6a', 5, 130, 61, 'Philippines');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('ac7ccf4c-8d0b-421e-88aa-dff089667dcb', 'ACTIVE', 'philippines@iaeste.ph', 'NS.Philippines@iaeste.org', 'a7993d66d270329527b7b0f012530c178b1b111eec06fb608c055a4e3a3f53c7', '968a57b7-335d-43ac-a15e-5bae8b9122a1', 'NS', 'Philippines');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e9689b85-2248-4e4b-b9f6-d2d8255f9cee', 61, 130, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0efbce9b-2d2e-4d0a-94ba-7806fd20449b', 61, 131, 1);
--- Completed generating test data for Philippines
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c15a5bc1-912e-4218-95ee-9002fa9527e1', 2, null, 61, 'Philippines');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('5010a06e-b806-476a-b228-238136a395ef', 5, 130, 61, 'Philippines');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('724bd1bb-5669-4677-8d79-f9d282e27000', 'ACTIVE', 'philippines@iaeste.ph', 'NS.Philippines@iaeste.org', '448e527384c0386e6968c7656fd322efbd04d0848b0fd4a13dab3766725fa316', '2dfb8c78-b9f8-4f75-9801-29cb0afb846b', 'NS', 'Philippines');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('38e2f5b2-dbc3-48b4-9b13-14066369adf1', 61, 130, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('4f968eae-e5cd-4e1e-bb5b-4840de494549', 61, 131, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('81e18d59-a95b-413c-a79f-444c18c7094b', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 61);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('29bb8ba1-abd9-4f70-ba89-7088b28375c8', 131, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 61);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('PH-2014-000001', 'ac225b97-4690-40f9-9301-b23e4a4f7214', 61, 'PHP', 131, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Poland
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('PL', 'Poland', 'Poland', 'PLN', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('70e293c2-7142-4db2-91a7-cc0bf8fe5f65', 2, null, 62, 'Poland');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('dcdf3f10-3a51-4970-933e-93b01a70b0b1', 5, 132, 62, 'Poland');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c929b28f-6590-4296-a9cc-6c5f7ead8744', 'ACTIVE', 'poland@iaeste.pl', 'NS.Poland@iaeste.org', 'fe1ade81bf65e13fa965f65ae1e012fcaa059621d70391e07f9c011846ec6699', 'c26b14f3-ca89-4007-b103-e810caf30378', 'NS', 'Poland');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('8531065d-d2b8-44d4-b635-f3e5f8e6eaa1', 62, 132, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('df642030-be60-4402-be85-9c4dad60bfed', 62, 133, 1);
--- Completed generating test data for Poland
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('24aba560-e08c-493f-9112-234e6078285b', 2, null, 62, 'Poland');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('8a0e8a6e-7c95-4f32-819e-044fc799ce12', 5, 132, 62, 'Poland');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('6f49d9bb-8e06-409c-8a22-ad48628908cb', 'ACTIVE', 'poland@iaeste.pl', 'NS.Poland@iaeste.org', 'd5ea5b380c7317c95540d854e31e3f56d577a47b03a88eb6d7f115de7eba6a10', '640dfc7c-36c8-4a57-814f-3426178c741c', 'NS', 'Poland');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c8cbf7b8-162d-4e56-8117-0ea37aae4124', 62, 132, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('3836d65c-34cb-4140-aeb0-3a4f67aaeded', 62, 133, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('e2e8eb01-9a78-489c-9118-6c6a50137064', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 62);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('f9bd1a6a-083c-42d5-9aa1-de0565d650c8', 133, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 62);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('PL-2014-000001', '7e15ee18-faf5-4cd9-b086-c30bdb9f9ff3', 62, 'PLN', 133, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Portugal
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('PT', 'Portugal', 'Portugal', 'EUR', 1954, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('03fc1e57-0913-4c24-b250-5be5b64ddfad', 2, null, 63, 'Portugal');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('25d9165f-1863-4327-81f2-8d12fcf97b6e', 5, 134, 63, 'Portugal');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('10b48826-d7dc-4a66-9421-d2d5e8ed3027', 'ACTIVE', 'portugal@iaeste.pt', 'NS.Portugal@iaeste.org', 'ca73bb6161bc81fd8187a52797fce46c789482a33b2d203fbd0616e79b4b5811', 'c25d3542-88ca-446c-bb2c-76d00f09bb5a', 'NS', 'Portugal');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a57a90a4-4063-44ab-84eb-f3f002e5ce70', 63, 134, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('9f0aae57-b95e-46c1-8c59-d4a5f36d84fe', 63, 135, 1);
--- Completed generating test data for Portugal
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d3a20d4a-cc88-4222-9faa-b9c19ac5cd5d', 2, null, 63, 'Portugal');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('fa68ac5e-133f-4e89-91ef-af6e599a4676', 5, 134, 63, 'Portugal');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('901723ee-ed51-458c-abe4-8c89e7245b58', 'ACTIVE', 'portugal@iaeste.pt', 'NS.Portugal@iaeste.org', 'ebba13f2235f2e540e14adde8dd13e8ce788177d9f1dfadd67fee2c82055b1a1', '1bbf5ae2-8aa1-4c0c-9be0-87c901ffddcc', 'NS', 'Portugal');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8e2e835b-e1ce-4ed7-ac25-e2415c425c9d', 63, 134, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5f80d5f6-aa11-470b-b6c1-bd513585fe8b', 63, 135, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('8321ebc7-a30f-4244-9b83-3b9914bdf3d2', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 63);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('70d7b501-2924-41c4-8712-b16fbd739e1a', 135, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 63);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('PT-2014-000001', '770e59ea-3705-4ea2-887d-bbbb0d24ffb3', 63, 'EUR', 135, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Qatar
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('QA', 'Qatar', 'Qatar', 'QAR', 2011, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('36bcc1ad-cf1a-44dc-98ee-320b2c59f4f9', 2, null, 64, 'Qatar');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4c2a0116-14ac-4d22-8d5c-c3f3e332e4ce', 5, 136, 64, 'Qatar');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('eea82e01-cd71-4f7f-a521-2c587a733fd8', 'ACTIVE', 'qatar@iaeste.qa', 'NS.Qatar@iaeste.org', 'ed20d75fe282b9fa0cf7d0075018d8244dbcfdb5ac6bcf3516a323acd19cfdc3', '184f379e-d9a0-4550-b7d9-e112a78c9799', 'NS', 'Qatar');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a4f614c3-072f-4a21-9ad2-df1bfa47c304', 64, 136, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('35521cc4-f95c-4279-b146-85f07e8278e0', 64, 137, 1);
--- Completed generating test data for Qatar
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('fca2bf23-347e-409d-b224-67bc6a2055ae', 2, null, 64, 'Qatar');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d5f8eeda-f462-44bd-bd04-b72e5029052b', 5, 136, 64, 'Qatar');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('678b4218-6719-4edc-b159-5a0acbdd782d', 'ACTIVE', 'qatar@iaeste.qa', 'NS.Qatar@iaeste.org', '5722821f57d67a44fd2ce2b40818383f1b7aec9347df51692eb8f9fc05f4c18f', 'b6588b94-180d-4734-9135-60710c84c3d2', 'NS', 'Qatar');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('3285216d-06b9-42ae-8a61-0ae9a6d032a4', 64, 136, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('79ab6707-51c8-4195-a8d1-95240872b2bc', 64, 137, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('70e5a8af-e31e-4b1a-9563-d7e5fb92aa37', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 64);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('408a6a6d-e859-48a2-ad1b-1b574a1f6c9b', 137, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 64);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('QA-2014-000001', 'b50d94a8-8426-494d-936f-1bbd23896990', 64, 'QAR', 137, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Romania
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('RO', 'Romania', 'Romania', 'RON', 1998, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c6248151-1b55-420d-a3cf-2d5b94b533e2', 2, null, 65, 'Romania');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('fca658a0-db35-4037-b2f6-69bce461128a', 5, 138, 65, 'Romania');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('78d7260a-aed1-4002-b48f-88cdeae70184', 'ACTIVE', 'romania@iaeste.ro', 'NS.Romania@iaeste.org', '6d8bc3550f8e47cb4ca71d7eb7047701b2a03fee73b31c4978dd38f48471724a', '5926ae49-1181-4cca-bb64-2f523bfecb98', 'NS', 'Romania');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('251d118b-aa39-42e1-9379-23dbd4680f2e', 65, 138, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('32befa26-faef-4774-96f6-adf8804895af', 65, 139, 1);
--- Completed generating test data for Romania
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('35a88d2b-d4f4-41ef-a5d6-a151c186c0d6', 2, null, 65, 'Romania');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f3b52acc-f748-428f-8a26-4726b4cb2d9d', 5, 138, 65, 'Romania');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('ba81407e-18fa-491c-a523-ac5118c2a5b8', 'ACTIVE', 'romania@iaeste.ro', 'NS.Romania@iaeste.org', 'ee2bb0938eccdb5d5cb04f1814c29a48a6d2d712d655b2e33a000f244773b455', '98473542-fc39-43ff-881a-57e9de623b9c', 'NS', 'Romania');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('309bc40d-8de6-4edf-8310-8553901909c4', 65, 138, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b14c6605-2a83-4726-bbc9-d9790861423a', 65, 139, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('a353899a-37b9-4c69-8320-c01d65b42fb8', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 65);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('41fc7f16-90d4-43c5-bfbb-aee86b34872f', 139, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 65);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('RO-2014-000001', 'eb75bc11-bb7c-4a20-92f4-11fcc499e3cf', 65, 'RON', 139, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Russia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('RU', 'Russia', 'Russia', 'RUB', 1991, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('af16cc9f-0f91-4e0d-964d-62eb7b6e6977', 2, null, 66, 'Russia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ea0b915f-a84e-4f74-85ba-80b5977963fc', 5, 140, 66, 'Russia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8ce432c6-8032-4bbb-b4a2-c89b2a6719b9', 'ACTIVE', 'russia@iaeste.ru', 'NS.Russia@iaeste.org', 'b59d13e58bd9d6721b55b6850e77332deb9294439dd83676654bbd4f3fb82081', 'ad5a1d4e-8046-4d6a-bf5d-19b7a8e96d2d', 'NS', 'Russia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0336f44a-751a-47cf-9c82-9600cd5ad602', 66, 140, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('5878dba7-cdd5-48c2-b3c1-b2669c2157bb', 66, 141, 1);
--- Completed generating test data for Russia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9459df51-fb8e-4bd3-b803-8c6e7cedae7b', 2, null, 66, 'Russia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9bb47f41-a6e3-4f5a-a6ae-bbda1f4c211d', 5, 140, 66, 'Russia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('9a4eff66-2059-478c-bc56-a4f1bc2fe63a', 'ACTIVE', 'russia@iaeste.ru', 'NS.Russia@iaeste.org', '74a8e0bf3bcaab37041ce926ed3a940b1c0d552711ee08aae30c4564eebdb661', '9364cb95-d5be-4b92-9af1-c7673714c1ed', 'NS', 'Russia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ca4d9285-161d-4270-937b-728b16e3c5c4', 66, 140, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('30e67d84-c220-488d-a487-027c98ae5ad4', 66, 141, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('88b53ea5-bd7c-4930-8c15-4b507e9fe741', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 66);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('0caadc67-4b4d-4831-b7dc-f38d43938b93', 141, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 66);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('RU-2014-000001', '3a28eb1e-cb97-43ab-8f52-7bdfe77bca4d', 66, 'RUB', 141, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Serbia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('RS', 'Serbia', 'Serbia', 'RSD', 1952, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('35404eb5-c46d-4edc-96d1-0f1a6f76fc21', 2, null, 67, 'Serbia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('09fc08e7-1541-4835-a81e-ddc5df88f9e6', 5, 142, 67, 'Serbia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('1a2f1dd2-059a-4a6b-bfaf-f97d7496d694', 'ACTIVE', 'serbia@iaeste.rs', 'NS.Serbia@iaeste.org', '66b4aac7ad7547ef1407220bc0f596d58f6df31c4766574b833fe3169af1c9fd', '31ed2982-0eda-4f5c-ad18-5cba1fe81ac7', 'NS', 'Serbia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('75de9633-70cb-46e8-a3a5-f9d453b13ba8', 67, 142, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0a092328-6b45-4b91-8875-c57c8100c984', 67, 143, 1);
--- Completed generating test data for Serbia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c684b82a-845a-4ac5-bb91-bfb471f8bed3', 2, null, 67, 'Serbia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a94b0ce4-5f98-4c49-9144-55c05b024486', 5, 142, 67, 'Serbia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('82e027bd-042c-4231-93b2-9e183719d956', 'ACTIVE', 'serbia@iaeste.rs', 'NS.Serbia@iaeste.org', 'e066be5b1668d51b5c8e971593f41623c714b2c5ba963511f2ffff0a53eb78f6', '25042620-1a9f-431f-a003-03c0b4d3249e', 'NS', 'Serbia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('de7d1c15-ad2a-4e25-9a14-35d10b6edb16', 67, 142, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('0c1695c4-ea76-4ed2-b674-dd41f3a5043e', 67, 143, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('bf59cc5e-07ce-4bf6-b402-15904cd80cc8', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 67);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('ad35f1e8-8a56-496a-b35d-1659ded8b5e1', 143, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 67);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('RS-2014-000001', '8ca4e0a5-e148-443b-8346-e00729622947', 67, 'RSD', 143, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Slovakia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('SK', 'Slovakia', 'Slovakia', 'EUR', 1965, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('18767a92-94ba-4282-ab02-dc3287fd206e', 2, null, 68, 'Slovakia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b5905239-db02-4be4-81ef-a2390aafb07a', 5, 144, 68, 'Slovakia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('ca6d2106-3c1a-4257-a681-dd287514af2f', 'ACTIVE', 'slovakia@iaeste.sk', 'NS.Slovakia@iaeste.org', 'b92dad9afbe0e93088d243e5ef13cb2eca64261015878846415b26bfad5c53e3', 'd4b424eb-fe0d-49dc-b57b-4b3f06420739', 'NS', 'Slovakia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('81dfd137-fa49-47fc-99e6-7d93cfd2f800', 68, 144, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('3840803a-47c2-47ab-aa51-a34c57379825', 68, 145, 1);
--- Completed generating test data for Slovakia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('058b3c56-faca-432c-8982-7ecff250c844', 2, null, 68, 'Slovakia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4156de74-0c4f-4ed5-8ee8-cd7ed4a90590', 5, 144, 68, 'Slovakia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('069fe209-154d-4894-bc78-6241cdb20bf9', 'ACTIVE', 'slovakia@iaeste.sk', 'NS.Slovakia@iaeste.org', 'c9ae5e493c32a24d309853c2570f7a66d2e2c8c711c6ab9b02a84395390d881c', 'ee2dc7df-d52c-44b2-ae6e-8610f95f5ec0', 'NS', 'Slovakia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('57a594e8-2bff-4e8d-a83c-0982656d8914', 68, 144, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('a774cd0a-eb7e-4a79-8218-a791d9be89ab', 68, 145, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('a7ceac0f-ebaa-423a-86c9-7c888c065f3c', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 68);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('ed7239e4-9706-4935-86ae-b43e24db7cae', 145, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 68);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('SK-2014-000001', '5bd541ff-c70a-449d-873f-8d86ab19da92', 68, 'EUR', 145, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Slovenia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('SL', 'Slovenia', 'Slovenia', 'EUR', 1993, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ff5ec00d-5aad-40bf-a733-7cf3244ede4b', 2, null, 69, 'Slovenia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('dd61acdf-7a01-4123-8003-aef82310e772', 5, 146, 69, 'Slovenia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('898d3faa-93db-4b8b-a230-a1669320635a', 'ACTIVE', 'slovenia@iaeste.sl', 'NS.Slovenia@iaeste.org', 'dbdc52ee0ebb70b944c680c8ce1fccf77714513e76c49c7d107df357816932fc', 'cccb345d-ada6-4b19-8ad7-60be508b2da7', 'NS', 'Slovenia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('b85ddba8-db9c-423b-b472-a1f3cade2530', 69, 146, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('fe530d96-978f-4dc8-bcd7-3349564b1e84', 69, 147, 1);
--- Completed generating test data for Slovenia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('fbf6d39e-3040-4257-945c-716114454bcc', 2, null, 69, 'Slovenia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2797105c-0857-4b0d-a617-ea76c71a7567', 5, 146, 69, 'Slovenia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('890ecdf0-1f54-4d31-abad-01c07d3b1836', 'ACTIVE', 'slovenia@iaeste.sl', 'NS.Slovenia@iaeste.org', 'f0934a357e0b6cfd08f2c45ac0ab9dcb2ef36481a595c8e27987c6333a365d1c', 'fa895dc4-9a29-4eea-ae56-36d9295a2d7e', 'NS', 'Slovenia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e2fb3f5d-b408-456d-81b8-3f3550888b6c', 69, 146, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('4034db93-511d-4c3b-b6ed-a64f8c74d04a', 69, 147, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('e9d3c79f-6350-4080-aaf7-37f0adba7e37', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 69);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('d3510faf-fb60-4590-b815-2c1b81a6b418', 147, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 69);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('SL-2014-000001', 'b53e5b5a-4d8a-46b8-be9f-c4d9fa7079c8', 69, 'EUR', 147, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Spain
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('ES', 'Spain', 'Spain', 'EUR', 1951, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2aa253ae-c412-4041-8212-65978a14132a', 2, null, 70, 'Spain');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('052c7719-33e2-4825-baf1-39bf7d6457c2', 5, 148, 70, 'Spain');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d9273afb-13c6-418c-b328-2dd1a635cf32', 'ACTIVE', 'spain@iaeste.es', 'NS.Spain@iaeste.org', '03b43920477127ffa49bdf242f277e2744046eaf66657996b64689085fff669b', 'c0e0109e-6714-490a-bd26-7505e95c77dc', 'NS', 'Spain');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('016aabd1-53f2-4084-aa7d-faf13cb32fde', 70, 148, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('4bf951eb-70ac-419b-9b5b-5d2281890747', 70, 149, 1);
--- Completed generating test data for Spain
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1f8a22d6-8ebb-45a6-8a17-f93ab5ef523f', 2, null, 70, 'Spain');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('55580b12-1f3d-417f-8411-f9d5c29c388e', 5, 148, 70, 'Spain');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('58f9d7c3-f20c-42ab-af18-ed491ca00097', 'ACTIVE', 'spain@iaeste.es', 'NS.Spain@iaeste.org', '900073c5e5303d68801ec5d51ac0cf6e76857c5f7889f13127630cdc35cec0d4', 'b5c512f1-efe0-48df-8ca6-4f4001881ed6', 'NS', 'Spain');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('22070d7b-5467-4c00-9d77-9b8fc384a33c', 70, 148, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c30d2e1a-aea0-4d45-9485-c7ef54e353fb', 70, 149, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('638bee86-a503-4aee-812c-e20a046d7174', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 70);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('5ac0b953-99b6-42de-b016-a58ec586b0d1', 149, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 70);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('ES-2014-000001', 'ea2e6e3b-8975-49fe-b13b-93f91c4e3a6b', 70, 'EUR', 149, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for SriLanka
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LK', 'SriLanka', 'SriLanka', 'LKR', 2000, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2e6551b5-c832-43a0-bb47-88af2e82fc79', 2, null, 71, 'SriLanka');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('7ccf6069-6ada-4045-91c0-2ccdde794dc6', 5, 150, 71, 'SriLanka');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d8cc0286-a6e9-4837-93b8-04e48a33ed49', 'ACTIVE', 'srilanka@iaeste.lk', 'NS.SriLanka@iaeste.org', 'ba32f322b3fc77ff8ef8452a5f693393b64e7f485db1d056f6c94b4f3d6c4b1f', 'cc32854f-82ea-443f-b0e4-842086488f3d', 'NS', 'SriLanka');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('cefaefbd-3f21-42cf-81be-b0c721e24eab', 71, 150, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('cf0d33b7-eddc-411f-a364-7e4f39b4bf78', 71, 151, 1);
--- Completed generating test data for SriLanka
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('cc44dfaf-2bb7-4f42-baed-1be8b673e23f', 2, null, 71, 'SriLanka');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('6b6851fc-e500-4718-9deb-3bd841dac5e8', 5, 150, 71, 'SriLanka');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('3a8fe2f1-44e1-4006-bc07-967a3f1b35be', 'ACTIVE', 'srilanka@iaeste.lk', 'NS.SriLanka@iaeste.org', '27dad7356e657e27083537e54187a80872040ba3b348d8e26bac38525b1646eb', 'ab7bdcb1-e391-409f-8534-18d59d9d79ba', 'NS', 'SriLanka');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('3a9e5919-a195-4f34-9c5c-688a5f89a99c', 71, 150, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('1a96177c-b829-4937-b715-138b763c9404', 71, 151, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('5085936f-7a12-4675-9207-4fce4e76f511', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 71);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('af44a53e-1755-4fe1-887a-457a4854554d', 151, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 71);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('LK-2014-000001', '28ae66c0-5e57-4484-bc3f-315ddd2207f0', 71, 'LKR', 151, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Sweden
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('SE', 'Sweden', 'Sweden', 'SEK', 1948, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('894c8eed-27dd-45d0-b00a-d6da51bdc8aa', 2, null, 72, 'Sweden');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('df577354-cd95-4ab7-bce7-1756ecbb4b2e', 5, 152, 72, 'Sweden');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('b798605f-1eaa-48cc-9465-8227ef2632b4', 'ACTIVE', 'sweden@iaeste.se', 'NS.Sweden@iaeste.org', 'b58a9394feca148c354fa3ee31f2e84f585d2c59035120855ebcc3260ac94524', '65a326ec-9123-43e4-95f8-62ed1bb5e40e', 'NS', 'Sweden');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('27c963c3-bcb1-4835-a9ec-a4f7ff628adf', 72, 152, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('5597d1df-2b01-43e4-9b94-a5458614a70a', 72, 153, 1);
--- Completed generating test data for Sweden
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('16e5ced7-ebca-41ac-9c10-0bfb3eea1673', 2, null, 72, 'Sweden');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c482f54e-48b4-4d13-8632-abc022251091', 5, 152, 72, 'Sweden');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('99f7d36d-e0a9-44e2-8433-6e5f2bd472a7', 'ACTIVE', 'sweden@iaeste.se', 'NS.Sweden@iaeste.org', '560cf9e360502e76b6da82013c1a54beb42f843794918143d0ba3bc455fa50b1', '95517d60-3bcb-4067-b455-5be72d7df28e', 'NS', 'Sweden');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('7ce8ec5c-df04-42f3-b404-eb5938ab114b', 72, 152, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('beb4f328-847d-4a15-8dd1-3293fc52875e', 72, 153, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('61cdaff7-d898-4ba3-8251-55afcaab2a82', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 72);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('b9f05c2d-fcd5-4977-afaa-d19426e5b042', 153, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 72);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('SE-2014-000001', 'a56e386b-2717-4422-8535-e998c3fb6942', 72, 'SEK', 153, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Switzerland
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CH', 'Switzerland', 'Switzerland', 'CHF', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ddc46e01-c264-4e3c-9fb1-9914c0a3b0fe', 2, null, 73, 'Switzerland');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('523cb4df-71d3-416d-80e9-192d338fede8', 5, 154, 73, 'Switzerland');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('ec68455e-c2e7-4a9f-8ba3-36c45610bd20', 'ACTIVE', 'switzerland@iaeste.ch', 'NS.Switzerland@iaeste.org', '471d4b61d5dea4576bdc6f16e5f75cde2bf7432db9d33964ba8b6d500e000e67', '4c2341fa-6e65-4d38-9c60-4dcf9276885f', 'NS', 'Switzerland');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('364b1581-1546-47fb-9f3c-aa38e639a556', 73, 154, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('b977b640-4695-4347-a603-38ed587a3e3d', 73, 155, 1);
--- Completed generating test data for Switzerland
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0b04fed8-9dfc-456c-97d4-5585732ec5d9', 2, null, 73, 'Switzerland');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('28c59dc4-98a4-42d6-bdb8-8588fd5652b9', 5, 154, 73, 'Switzerland');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('3d170800-4eda-49a9-98b4-a665c2ae666c', 'ACTIVE', 'switzerland@iaeste.ch', 'NS.Switzerland@iaeste.org', 'e7848d9395e24ce96f411411b1b0fc187c537a6c968b8a546b99e1afee74531a', '275e3a60-2414-4e17-9fa5-0087690a63cc', 'NS', 'Switzerland');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('d3875b91-1292-49a3-917b-d43fb9925a00', 73, 154, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('218fa99b-cd9e-4140-af36-281f254ce0ba', 73, 155, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('02e244ed-5860-4cc0-ab21-57f6d1cbdb52', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 73);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('3ec8156d-4f62-4a86-97f1-921636512ec7', 155, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 73);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('CH-2014-000001', '2fd61f4c-c316-4741-9d2c-5b8774c39667', 73, 'CHF', 155, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Syria
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('SY', 'Syria', 'Syria', 'SYP', 1965, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c4990972-901c-44d2-be8e-042cead84491', 2, null, 74, 'Syria');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ddc44f18-401d-46a9-b60c-c42fa6db1958', 5, 156, 74, 'Syria');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('e074489c-90ef-4afe-b324-808810dbf474', 'ACTIVE', 'syria@iaeste.sy', 'NS.Syria@iaeste.org', 'e188a12b25a41fe2723d6a47a704c0cf1f933cb6c27ce564e174326a90f1e140', 'ea64b238-6f90-451c-a898-1727eaac0519', 'NS', 'Syria');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('c2867937-3f32-41c9-ae7c-b00b36efe9e8', 74, 156, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('58beccf9-1319-4690-9f70-80375f7331a1', 74, 157, 1);
--- Completed generating test data for Syria
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b8e9e8de-4977-4f0f-95fd-3a6b6e84c72d', 2, null, 74, 'Syria');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('dfa7bb45-ab36-42ce-be94-14efd692d0c2', 5, 156, 74, 'Syria');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('058c8977-3940-458c-b49a-5ba1e5dfd207', 'ACTIVE', 'syria@iaeste.sy', 'NS.Syria@iaeste.org', 'dafffe7bd96f5dbc77f7600ded8b57800b8d3b72ac6d3e17dae1cd9fa4e9a3c3', '53808220-73fb-404f-9c75-f81a6f461f72', 'NS', 'Syria');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ba93cd01-3e26-4a0b-98fd-649e6311a562', 74, 156, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5e7fa51d-854b-4fac-90b4-a44ccfa212ed', 74, 157, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('ff7ca02a-d631-4cc4-9bb6-a157a09ab691', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 74);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('3cb05288-9cb8-4fbd-b014-64d31d28ec90', 157, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 74);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('SY-2014-000001', '9aa0d9e1-3908-4ecd-b36f-2f2c9c480f6b', 74, 'SYP', 157, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Tajikistan
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('TJ', 'Tajikistan', 'Tajikistan', 'TJS', 1992, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('12551323-0ed7-44b0-8386-59f5e60553f2', 2, null, 75, 'Tajikistan');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('5209399e-07a4-451e-92f6-6869ee3e201d', 5, 158, 75, 'Tajikistan');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('9ca39825-a9c3-4533-b361-6738a0c8e602', 'ACTIVE', 'tajikistan@iaeste.tj', 'NS.Tajikistan@iaeste.org', '8e4c355087f4adce58919ce2b22e8419f1a74ffc31ea09537fee98a50f7a2863', '0f2b147d-7c09-4387-a1bb-9878c3092f98', 'NS', 'Tajikistan');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e6ae4e5b-d765-48d9-8c83-acedbf2657d5', 75, 158, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('2d01e29a-d634-4b15-acb5-1a924a480a7b', 75, 159, 1);
--- Completed generating test data for Tajikistan
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('8f98ed2e-c0ce-491c-afa1-f0e784616e8f', 2, null, 75, 'Tajikistan');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('87df2652-616c-45f9-b0e6-a771ecae47df', 5, 158, 75, 'Tajikistan');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('a752d0d3-487c-469e-a477-bced0152f1f8', 'ACTIVE', 'tajikistan@iaeste.tj', 'NS.Tajikistan@iaeste.org', 'a9eedec2351c46dd203445e6703bbd806920f76c6fec1079852969e171ce6d22', '11858b32-6a2b-4f8b-9cb6-e7dc06aabad0', 'NS', 'Tajikistan');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('8ccc4be0-63d0-413f-9985-a52a5475241d', 75, 158, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('dac6c4db-ed79-4804-aaae-2220fb38ace8', 75, 159, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('7e7aca81-410c-499c-b6f4-0366af967073', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 75);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('25cee6e1-4b0b-4549-80b7-d208686351e8', 159, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 75);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('TJ-2014-000001', '5cbcae49-6f1e-43be-b417-a1872bdc4d3b', 75, 'TJS', 159, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Tanzania
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('TZ', 'Tanzania', 'Tanzania', 'TZS', 2007, 'ASSOCIATE_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('bd0e94e2-fc66-400e-996f-06de6eae8292', 2, null, 76, 'Tanzania');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('22012cef-863f-45a2-adc1-168779ab587e', 5, 160, 76, 'Tanzania');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('1dc4cefb-28c2-4b7a-9918-f52d5557d1a7', 'ACTIVE', 'tanzania@iaeste.tz', 'NS.Tanzania@iaeste.org', '120adb786b6ecd5e1062cb113718b5b9349bb2c4bfcf2b23617fb5db41cc520e', '88bcbc51-af94-4dc1-b49e-042f78b39f1e', 'NS', 'Tanzania');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('798d5da3-0053-41a6-ba44-792d292190cc', 76, 160, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e1a99569-5c97-4a85-9713-0c94f16d4a59', 76, 161, 1);
--- Completed generating test data for Tanzania
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b5e1ba1c-2bcf-4986-bd3a-cb0ea4d21a81', 2, null, 76, 'Tanzania');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a187b572-9408-4301-9d32-14410aad3413', 5, 160, 76, 'Tanzania');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8cba6dca-1546-491e-b528-4a9f1190e076', 'ACTIVE', 'tanzania@iaeste.tz', 'NS.Tanzania@iaeste.org', '72582a893ab938f4166e1d162f9389a492f8610a23bf241388101f504284dcbb', '09640a99-3256-4358-8dbe-7637138b38e0', 'NS', 'Tanzania');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('7f455453-b157-4f3b-b7fb-3abaa0089ad9', 76, 160, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('9dbdf7f7-0a4a-4707-838f-c88a39184ccd', 76, 161, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('a8a1500d-0984-4eb9-8b52-f27bc2eb47d4', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 76);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('faf20f65-b77c-441b-ab85-a214194d138b', 161, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 76);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('TZ-2014-000001', '928f7463-a9ae-4daf-91e7-370692659b1a', 76, 'TZS', 161, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Thailand
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('TH', 'Thailand', 'Thailand', 'THB', 1978, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f8f550a5-a3ba-4d7f-9263-1183098f7831', 2, null, 77, 'Thailand');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f0d692ac-b2f3-4c01-813b-e7636f5ca969', 5, 162, 77, 'Thailand');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('79775883-6259-44ce-ad01-272eaf5e14b9', 'ACTIVE', 'thailand@iaeste.th', 'NS.Thailand@iaeste.org', 'f4bb6a0fefe25d1af156006a5043f8373c55099c956861fd19db38955075776d', 'dda3cdd4-68ce-4edb-9e3f-f84dda5bd833', 'NS', 'Thailand');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a1b75209-3675-469c-af16-896f7c462df9', 77, 162, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('c252ee82-08ce-419f-bca4-878489fb3dab', 77, 163, 1);
--- Completed generating test data for Thailand
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b807b140-ada8-4808-a8ea-4d9e844b20d2', 2, null, 77, 'Thailand');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('d31166cd-be13-4ef2-b8b1-cfc97ac48b69', 5, 162, 77, 'Thailand');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('367e972e-3393-45fc-8c42-fc892e551591', 'ACTIVE', 'thailand@iaeste.th', 'NS.Thailand@iaeste.org', '36b60631e1b0572045aa565d30b90d32e504f617988bf6a360a2c111ff5c845b', '0632c120-9696-4b38-8701-ffe65d2c5519', 'NS', 'Thailand');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('247147da-db6e-4751-b300-fa8d8bf7a639', 77, 162, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c9ffe1dd-4da4-4553-9061-9fceff2c3b2e', 77, 163, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('5769db7a-0465-4fa1-92ad-1999b469f4db', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 77);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('d87031cd-f8d4-4de6-ae80-1884bd8cc97c', 163, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 77);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('TH-2014-000001', '7fc5df40-c897-4a5c-ba8e-8701d9e3463e', 77, 'THB', 163, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Tunisia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('TN', 'Tunisia', 'Tunisia', 'TND', 1959, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('59f04a7e-2e80-492b-b785-2f041580fd01', 2, null, 78, 'Tunisia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('24e523a7-aed2-4f13-ae6d-c1f1c01e9776', 5, 164, 78, 'Tunisia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('d7dc5ce2-2277-4c3b-a2c5-77ddc9bd696f', 'ACTIVE', 'tunisia@iaeste.tn', 'NS.Tunisia@iaeste.org', 'c9d1c3ed832128f8042f8f781a965fb21e55a33449a7b6fea1397ce1f926791e', '856424ef-fbec-44f3-926e-9f5c04a28bf2', 'NS', 'Tunisia');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('9f7303c1-87ac-4027-9f22-a8f27e165bfc', 78, 164, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('0a1ed654-d457-4821-b102-17b15f5f9ec5', 78, 165, 1);
--- Completed generating test data for Tunisia
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('4d8d3e65-cc4c-4c37-89c1-1b4b0bd82125', 2, null, 78, 'Tunisia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2e18ff58-afd7-45b2-bc3d-bea20e7cd55d', 5, 164, 78, 'Tunisia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('9086d411-10b6-406e-8fed-2b26fde2aa3d', 'ACTIVE', 'tunisia@iaeste.tn', 'NS.Tunisia@iaeste.org', '357d4d076e03a556b3f6705fe1febd9ba3184186b750f0c17a7a140d57530691', 'b5b8a0dd-d3f1-4f1d-9803-4a99ce34707a', 'NS', 'Tunisia');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('5820bfdb-9298-4d80-8b88-0e81264ed1e7', 78, 164, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c68a851f-da2e-40e7-b98b-3896ff64d20b', 78, 165, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('17149e4f-fc89-4d5e-84a8-82383b9b6575', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 78);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('c579fbc7-a384-4934-8b83-098cce5f628d', 165, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 78);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('TN-2014-000001', '8378ed45-286c-4201-bafb-de488044cd9e', 78, 'TND', 165, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Turkey
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('TR', 'Turkey', 'Turkey', 'TRY', 1955, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('bec6ba71-282c-4681-a46b-afbdbaf8d863', 2, null, 79, 'Turkey');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('42732c68-9d2d-48e6-b06d-d8520f349df7', 5, 166, 79, 'Turkey');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('23323a60-3c9c-4686-8236-f561b173d1bd', 'ACTIVE', 'turkey@iaeste.tr', 'NS.Turkey@iaeste.org', 'a8de1335d5543e130f28a1e9a05fbd1e40402914fba23a7c9771bd596a8c89fd', '96581d0c-e6dd-4426-9eaf-4e01a16ca782', 'NS', 'Turkey');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('e7275732-f667-47de-ae0e-579d8604cde9', 79, 166, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('16931979-2eb0-4e2f-98c5-1a87b63f2d12', 79, 167, 1);
--- Completed generating test data for Turkey
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b4371d70-c9ed-4269-929f-f46d515b43a3', 2, null, 79, 'Turkey');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('66c86105-9cd1-4ffd-b7d1-6cc3d30a457f', 5, 166, 79, 'Turkey');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('9eb485dc-34a6-4a83-b6d8-e73db18c6e4d', 'ACTIVE', 'turkey@iaeste.tr', 'NS.Turkey@iaeste.org', 'fcb3159d05849f421eb2b11c2e67ea51a551d551f99c248cd0ebd3188f00921b', 'c8f9080a-40ac-41eb-afda-adf52f639f3a', 'NS', 'Turkey');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ccd7dd96-78ca-4bce-9f54-1db9be1de99b', 79, 166, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('c0a350a9-164c-447d-8b47-3b59e489835b', 79, 167, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('20dd1334-644d-4952-bf07-10db1d0e70ae', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 79);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('3b139040-48a6-4826-8b3c-a5b0f7ddb448', 167, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 79);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('TR-2014-000001', '2b90dc0a-7605-4965-84dd-5f5429b3cd45', 79, 'TRY', 167, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Ukraine
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('UA', 'Ukraine', 'Ukraine', 'UAH', 1994, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('eea96d05-6cd0-4bb7-8bed-3c4e7dadfed2', 2, null, 80, 'Ukraine');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('3dd9a7a8-ad8c-47e4-b54f-c5a2759cfe84', 5, 168, 80, 'Ukraine');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('fa57d7a5-e6af-4d3d-beee-48f0492d3748', 'ACTIVE', 'ukraine@iaeste.ua', 'NS.Ukraine@iaeste.org', '20c7014828246a1fecdc614ae2e38b053830848af250ffeec0d6aa458b7d4702', '9d3f9f71-3cf8-4ada-97ed-ebba14291a76', 'NS', 'Ukraine');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('76455bca-8c52-44d9-9920-87799c812fb3', 80, 168, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('96019d82-148b-4af5-85c7-102649609981', 80, 169, 1);
--- Completed generating test data for Ukraine
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('8fa0aa46-1d68-451f-9c41-dd530f2d224d', 2, null, 80, 'Ukraine');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('51e04f6f-94d1-4f2e-8018-e17c0fc42bc2', 5, 168, 80, 'Ukraine');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('681788f4-66ba-4737-9861-fbd68c89c7c7', 'ACTIVE', 'ukraine@iaeste.ua', 'NS.Ukraine@iaeste.org', 'a3b2bdcc85659b19c7c0be2f1bcf690fe0517cb1ea6478584ce73e4c94b974bf', 'f8b76e74-66ca-4801-83be-68dc2a796556', 'NS', 'Ukraine');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('275c9693-0443-4f80-a00b-b53cc41c4a63', 80, 168, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('ae003c43-0013-465d-9756-d4b5ee534bdd', 80, 169, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('9e27f55f-1513-40e5-a1dd-6ee73e669ef7', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 80);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('9361d366-aff7-459e-81fe-0be05c6e1da8', 169, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 80);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('UA-2014-000001', 'a460275f-db18-4527-a404-551f912314af', 80, 'UAH', 169, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for UnitedArabEmirates
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('AE', 'UnitedArabEmirates', 'UnitedArabEmirates', 'AED', 2000, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('c218e924-f123-4144-b871-8bd1097659c4', 2, null, 81, 'UnitedArabEmirates');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a4c71aee-09c0-401b-a547-d8ed4491e8e2', 5, 170, 81, 'UnitedArabEmirates');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('bdf76f19-5c33-4195-9f69-7d67fd54659a', 'ACTIVE', 'unitedarabemirates@iaeste.ae', 'NS.UnitedArabEmirates@iaeste.org', '1a8c2de095a0aa4a5ebf37aa640438d9f237a165c7c2a05e5a8330896e17f3ad', 'fb0541f0-685e-45ca-96a4-bc423e53c702', 'NS', 'UnitedArabEmirates');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a6dc77fe-4e9a-4b77-82a5-9a7a3e6e0073', 81, 170, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('20644acb-d39b-4838-b9a1-cb6da097ab11', 81, 171, 1);
--- Completed generating test data for UnitedArabEmirates
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('5f8cfa45-d7c6-4e80-a929-96850fce377d', 2, null, 81, 'UnitedArabEmirates');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('3562457e-7bfa-4ea5-88fe-8f251d15e2eb', 5, 170, 81, 'UnitedArabEmirates');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('66cf8951-44e6-4714-b838-4e751a0cd534', 'ACTIVE', 'unitedarabemirates@iaeste.ae', 'NS.UnitedArabEmirates@iaeste.org', '29d8e3107d4470abb11c0f704a3c6ecb3c1724a1f094de74855ed9af862cf967', 'e370087e-956f-4d6e-871c-dafecca12799', 'NS', 'UnitedArabEmirates');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('77f60d70-a8fd-4ec7-8f06-09b6ec99ff14', 81, 170, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('839ed3dc-ec08-4cdf-a0d7-706ffaf3d155', 81, 171, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('7927c485-1f3e-43cb-bca7-03165cea389c', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 81);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('ea44d51a-3d87-4a8a-951e-4154fbc53997', 171, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 81);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('AE-2014-000001', 'dd52795e-2605-4a87-a2f9-05c43b403fd8', 81, 'AED', 171, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for UnitedKingdom
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('UK', 'UnitedKingdom', 'UnitedKingdom', 'GBP', 1948, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('389e6fbb-9e69-4987-aafe-2d9497798ee7', 2, null, 82, 'UnitedKingdom');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9bcf5332-cd41-44f0-b902-e853c291a436', 5, 172, 82, 'UnitedKingdom');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c0a6ed81-fa0d-447e-94a6-51cc1a2b7221', 'ACTIVE', 'unitedkingdom@iaeste.uk', 'NS.UnitedKingdom@iaeste.org', 'd85fe8b67d859335a0ff703764672e0aad8cd89af6f43d4ea7b28584ca17175b', '3074dfd8-dc63-408f-af82-16e70745e17f', 'NS', 'UnitedKingdom');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('6d68494c-2201-4930-a51b-17eb73b67998', 82, 172, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('3c614a4a-8514-49a0-b73f-4c55d8c66fe6', 82, 173, 1);
--- Completed generating test data for UnitedKingdom
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9dcd687d-d7e1-4182-9fd2-8b57da3ee548', 2, null, 82, 'UnitedKingdom');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('b2cb90ae-e21d-4b61-b9d8-442dc9db6202', 5, 172, 82, 'UnitedKingdom');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8c8ebc10-343d-4e4c-8376-ebf2129355c2', 'ACTIVE', 'unitedkingdom@iaeste.uk', 'NS.UnitedKingdom@iaeste.org', '1d2499488d88d78196ea161ab3c83ec3b57fe4496cded6753c593ccff5961943', '2d8222f1-005f-4c26-ac41-1ce45c5195e0', 'NS', 'UnitedKingdom');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('9743809f-c1a2-43dc-baef-9e9ecc3e2ce6', 82, 172, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('67d83413-a979-421f-9924-65838d7dab29', 82, 173, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('aa975a49-b542-40b7-9402-a09866d75469', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 82);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('eb75ecf9-e82a-4da0-9312-9e0b1e00e23d', 173, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 82);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('UK-2014-000001', 'cec8fe51-154b-4c8e-a6d8-e22ebb4cc650', 82, 'GBP', 173, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for USA
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('US', 'USA', 'USA', 'USD', 1950, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('0b403d38-e454-45f3-b2b4-876c4e220832', 2, null, 83, 'USA');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('eed907ec-bfa3-46c7-aadf-4bc313e93e80', 5, 174, 83, 'USA');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('e2b0fd0e-0593-47f6-b7c6-9cf14356ca08', 'ACTIVE', 'usa@iaeste.us', 'NS.USA@iaeste.org', 'e1ae6cb4a3dca66e556a16efaf72f0b32d2dab286e693559fe9f8848df2c433e', '1ff542dd-3874-4b99-bb60-70df0a0fc92e', 'NS', 'USA');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('4f31d4f6-7303-4c4a-8aa1-7ab1f30d6740', 83, 174, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('364c5697-77aa-4622-b1db-97141f7ed49d', 83, 175, 1);
--- Completed generating test data for USA
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('377aae63-6b56-4e99-9832-80ac729e1760', 2, null, 83, 'USA');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f4f91b01-688e-4443-ad93-5e93c68f508c', 5, 174, 83, 'USA');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('f0db1087-e469-4ad7-9ad3-a8212d4576e4', 'ACTIVE', 'usa@iaeste.us', 'NS.USA@iaeste.org', '465b74df810fe1fc077538ee7f7b0177374faac0b1f86bbb70555cc07dad3140', '3d9b8265-4e24-4dfa-b361-82b7977373ed', 'NS', 'USA');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('d242388b-99e6-46c0-9646-ee5eacb851eb', 83, 174, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('b67ddceb-13e7-42a3-a6a8-e518a6beb1b2', 83, 175, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('202b2356-2dbd-4122-bde6-daff2fa6b4dc', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 83);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('247eca7f-be1d-4e3d-a437-0a3b10e5b8bd', 175, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 83);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('US-2014-000001', 'bb425981-5677-4f28-8143-e4dd5adab650', 83, 'USD', 175, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Uzbekistan
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('UZ', 'Uzbekistan', 'Uzbekistan', 'UZS', 1997, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('07e36800-de19-4c50-b1c4-d3e5c8e33ec7', 2, null, 84, 'Uzbekistan');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1b4a28d9-8ef3-42dc-86e1-b5043c3f1b10', 5, 176, 84, 'Uzbekistan');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('dd4e30ce-572c-49f4-b8ee-0228c4234d40', 'ACTIVE', 'uzbekistan@iaeste.uz', 'NS.Uzbekistan@iaeste.org', '8f8e02f66ae5cc10a441938dfd71493bb75cb8db245d60d4f28de0210e794ebf', '63494826-9b62-49b3-9916-c02a994f7e5f', 'NS', 'Uzbekistan');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('a1e66ead-de39-48ff-b4bf-e0385e47ae66', 84, 176, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('4e9111b7-942e-4b0e-b208-adae68e76b5e', 84, 177, 1);
--- Completed generating test data for Uzbekistan
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('9bc639db-d3e7-40ed-8dd9-431743d2b5a3', 2, null, 84, 'Uzbekistan');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('f284a6f8-e327-4162-98c0-fb8c242df68f', 5, 176, 84, 'Uzbekistan');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('1f47d15a-7fab-4445-8577-dc79a4bc7229', 'ACTIVE', 'uzbekistan@iaeste.uz', 'NS.Uzbekistan@iaeste.org', '5005925c13fb06ea672bab8e1599c313f1f2bcb5fd15178b3c507f16803f0eb1', 'fdadc479-cd8c-4eae-b492-bcd650442521', 'NS', 'Uzbekistan');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('630ee71f-cb40-4e96-8782-af79caeb211a', 84, 176, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('e6075836-e6c4-4634-9a49-569828c8190d', 84, 177, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('31b3ceb3-9b70-48d1-8f4c-7c466b649384', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 84);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('d68f1cc7-288a-4b0b-8317-1df60ba99cbe', 177, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 84);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('UZ-2014-000001', '1323109d-13ee-4c83-a3d7-0979972e95e0', 84, 'UZS', 177, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for Vietnam
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('VN', 'Vietnam', 'Vietnam', 'VND', 2006, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('2fe23724-157e-4017-8946-0a3a2bef3fa8', 2, null, 85, 'Vietnam');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('67fc0148-99c9-4991-bf0c-ca9239732e88', 5, 178, 85, 'Vietnam');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('b9bc5391-acbc-4268-b0aa-bfd5840f60be', 'ACTIVE', 'vietnam@iaeste.vn', 'NS.Vietnam@iaeste.org', 'abdeb3ed979ab33702c863c93992755716508b1fbb971e1eed23f67b16b1ecce', '1f1e28d9-78e4-4692-878e-07ce2fef7bf2', 'NS', 'Vietnam');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('6d2a8c46-3a5b-4576-9b3d-11afaecc7d86', 85, 178, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('30119c5f-133d-4d64-b928-bb4e3fb8816a', 85, 179, 1);
--- Completed generating test data for Vietnam
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('300c435f-d26d-467b-8e33-e3a7970d0d9f', 2, null, 85, 'Vietnam');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('1aca8b4c-62bf-44be-a373-759ee112034c', 5, 178, 85, 'Vietnam');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('8fa01ca1-4831-48a7-9244-0177fdc3de42', 'ACTIVE', 'vietnam@iaeste.vn', 'NS.Vietnam@iaeste.org', '11b7c09e4224e81ac21a3a2b6265559b16e70dd8761a04eece4dc06197b827b0', '574383a4-d34c-4829-a4da-1a4025e55008', 'NS', 'Vietnam');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('7b65ad0b-5f2b-449e-aedd-639f41121947', 85, 178, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('0af64063-6f32-486c-9bf3-961dae9c96b0', 85, 179, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('f69c749f-dea1-44ef-9ee1-05eeaab9b5dc', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 85);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('7e9017dd-175c-4585-87b5-8c7982b4531a', 179, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 85);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('VN-2014-000001', 'd71b0e8d-cac7-4a3e-9331-65158367b21c', 85, 'VND', 179, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
 
 -- Generating Test data for WestBank
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('WB', 'WestBank', 'WestBank', 'ILS', 2009, 'COOPERATING_INSTITUTION');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('063a150c-0ef6-4e9c-9b5a-f3d3d3e4e5c6', 2, null, 86, 'WestBank');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('16d990f9-8b82-4ca4-bb4c-a8cdb275fe4f', 5, 180, 86, 'WestBank');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('83bb4382-a328-44ff-8731-6d62d3ca28dc', 'ACTIVE', 'westbank@iaeste.wb', 'NS.WestBank@iaeste.org', '58adccbf101cb829169a4bb052aebc82114727b6af4c5c0084c469db61894763', '08852954-eebc-48e5-9489-b4c3d1d99467', 'NS', 'WestBank');
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('d4085ac6-557d-494a-b202-ef50cdf977e1', 86, 180, 1);
-insert into user_to_group (external_id, user_id, group_id, role_id) values ('b95026ab-a2b6-41c5-9b70-4edea2a887f8', 86, 181, 1);
--- Completed generating test data for WestBank
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('a9c7f5bd-a1ed-4de1-bae2-4fca379bf158', 2, null, 86, 'WestBank');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('ab3c496c-21cb-4036-bb6b-305c4805a530', 5, 180, 86, 'WestBank');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('2cb960c4-3a81-48a1-a640-72a2fde91d80', 'ACTIVE', 'westbank@iaeste.wb', 'NS.WestBank@iaeste.org', 'dde0884e4fd72d9ff4bf8af67f28230a3e2718a380b11399c90b505783325d2b', 'b5bf2ec9-2c2d-4c76-9538-3c87144e6ddf', 'NS', 'WestBank');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('51a36b2c-3abb-476d-97e5-ad886d6997f5', 86, 180, 1);
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('9d9e6e0a-ccc4-491a-b502-de48f18771c7', 86, 181, 1);
+insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('a9da9efb-b1cf-49b6-bfd1-66310c992321', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', 86);
+insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('8d5b499f-c30f-41a5-9624-4ea83baba43f', 181, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, 86);
+insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values
+('WB-2014-000001', '946a49f3-d3b2-486e-a5df-8d1077f3fec6', 86, 'ILS', 181, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');
+
+-- Now share all offers with all national groups
+insert into offer_to_group (offer_id, group_id, external_id) select offers.id, groups.id, offers.id || 'what_ever' || groups.id from offers, groups where groups.grouptype_id = 5;

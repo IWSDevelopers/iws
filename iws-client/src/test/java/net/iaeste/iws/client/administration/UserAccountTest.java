@@ -264,15 +264,18 @@ public final class UserAccountTest extends AbstractAdministration {
 
     /**
      * Testing that the generated Alias is correctly set to the name plus an
-     * increasing number, of multiple people with the same name are created.
+     * increasing number, of multiple people with the same name are
+     * created.<br />
+     *   Note, the test is using pure lowercase variants, since the IWS will
+     * internally convert all usernames and aliases to lowercase.
      */
     @Test
     public void createDuplicateAccount() {
-        final String username1 = "user1@email.org";
-        final String username2 = "user2@email.org";
-        final String username3 = "user3@email.org";
-        final String firstname = "firstname";
-        final String lastname = "lastname";
+        final String username1 = "william@shakespeare.com";
+        final String username2 = "william@shakespeare.net";
+        final String username3 = "william@shakespeare.org";
+        final String firstname = "william";
+        final String lastname = "shakespeare";
         final String address = "@iaeste.org";
 
         final CreateUserRequest request1 = new CreateUserRequest(username1, firstname, lastname);

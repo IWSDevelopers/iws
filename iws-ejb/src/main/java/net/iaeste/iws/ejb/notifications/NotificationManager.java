@@ -147,23 +147,25 @@ public final class NotificationManager implements Notifications {
 //        }
 
 //        notifyObservers();
-        try {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
-            final Map<NotificationField, String> fields = obj.prepareNotifiableFields(type);
-            objectStream.writeObject(fields);
-            final byte[] bytes = outputStream.toByteArray();
-            final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
-            dao.persist(job);
-            if (!hostedInBean) {
-                processJobs();
+        if (obj != null) {
+            try {
+                final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
+                final Map<NotificationField, String> fields = obj.prepareNotifiableFields(type);
+                objectStream.writeObject(fields);
+                final byte[] bytes = outputStream.toByteArray();
+                final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
+                dao.persist(job);
+                if (!hostedInBean) {
+                    processJobs();
+                }
+            } catch (IWSException e) {
+                LOG.error("Preparing notification job failed", e);
+            } catch (IOException ignored) {
+                //TODO write to log and skip the task or throw an exception?
+//                LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
+                LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed");
             }
-        } catch (IWSException e) {
-            LOG.error("Preparing notification job failed", e);
-        } catch (IOException ignored) {
-            //TODO write to log and skip the task or throw an exception?
-//            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
-            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed");
         }
     }
 
@@ -190,22 +192,25 @@ public final class NotificationManager implements Notifications {
             //write to log?
 //        }
 
-        try {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
-            objectStream.writeObject(user.prepareNotifiableFields(NotificationType.RESET_PASSWORD));
-            final byte[] bytes = outputStream.toByteArray();
-            final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
-            dao.persist(job);
-            if (!hostedInBean) {
-                processJobs();
+        if (user != null) {
+            try {
+                final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
+                final Map<NotificationField, String> fields = user.prepareNotifiableFields(NotificationType.RESET_PASSWORD);
+                objectStream.writeObject(fields);
+                final byte[] bytes = outputStream.toByteArray();
+                final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
+                dao.persist(job);
+                if (!hostedInBean) {
+                    processJobs();
+                }
+            } catch (IWSException e) {
+                LOG.error("Preparing notification job failed", e);
+            } catch (IOException ignored) {
+                //TODO write to log and skip the task or throw an exception?
+    //            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
+                LOG.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed");
             }
-        } catch (IWSException e) {
-            LOG.error("Preparing notification job failed", e);
-        } catch (IOException ignored) {
-            //TODO write to log and skip the task or throw an exception?
-//            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
-            LOG.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed");
         }
     }
 

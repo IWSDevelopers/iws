@@ -325,8 +325,6 @@ public final class GroupService {
             } else {
                 processUserGroupRelation(authentication, request, externalUserId, role, existingEntity);
             }
-
-            notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
         }
     }
 
@@ -405,6 +403,8 @@ public final class GroupService {
 
             // And save...
             dao.persist(given);
+
+            notifications.notify(authentication, given, NotificationType.CHANGE_IN_GROUP_MEMBERS);
         } else {
             // We're adding the new role here, and won't have history of the
             // changes, since the normal merge method is a general purpose
@@ -412,6 +412,8 @@ public final class GroupService {
             // via a general purpose method, since it critical information.
             existingEntity.setRole(role);
             dao.persist(authentication, existingEntity, given);
+
+            notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
         }
     }
 

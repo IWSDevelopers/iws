@@ -15,6 +15,7 @@
 package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
@@ -35,6 +36,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Notes; It is good to see the notification system evolving. There is just a
@@ -148,7 +150,8 @@ public final class NotificationManager implements Notifications {
         try {
             final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
-            objectStream.writeObject(obj.prepareNotifiableFields(type));
+            final Map<NotificationField, String> fields = obj.prepareNotifiableFields(type);
+            objectStream.writeObject(fields);
             final byte[] bytes = outputStream.toByteArray();
             final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
             dao.persist(job);

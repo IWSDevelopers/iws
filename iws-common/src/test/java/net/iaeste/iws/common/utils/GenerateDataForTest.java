@@ -22,6 +22,7 @@ import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.UserStatus;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -47,10 +48,19 @@ public final class GenerateDataForTest {
     private static final String GROUP_INSERT = "insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('%s', %d, %s, %d, '%s');";
     private static final String USER_INSERT = "insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');";
     private static final String USER_GROUP_INSERT = "insert into user_to_group (external_id, user_id, group_id, role_id) values ('%s', %d, %d, %d);";
+    private static final String ADDRESS_INSERT = "insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('%s', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', %d);";
+    private static final String EMPLOYER_INSERT = "insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('%s', %d, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, %d);";
+    private static final String OFFER_INSERT = "insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values\n" +
+            "('%s-2014-000001', '%s', %d, '%s', %d, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');";
+    private static final String SHARE_ALL_OFFER = "insert into offer_to_group (offer_id, group_id, external_id) select offers.id, groups.id, offers.id || 'what_ever' || groups.id from offers, groups where groups.grouptype_id = %d and offers.group_id != groups.id;";
+
     private static final int ROLE_OWNER = 1;
     private static long currentCountryId = 1;
     private static long currentGroupId = 10;
     private static long currentUserId = 1;
+    private static long currentAddressId = 1;
+    private static long currentEmployerId = 1;
+    private static long currentOfferId = 1;
 
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
@@ -165,13 +175,21 @@ public final class GenerateDataForTest {
         print("-- Preparing to create test data for users.");
         print("-- ============================================================================");
         print("\n-- First reset the existing tables & sequences, regardlessly!");
+        print("delete from offers;");
+        print("delete from employers;");
+        print("delete from addresses;");
         print("delete from user_to_group;");
+        print("delete from sessions;");
+        print("delete from history;");
         print("delete from users;");
         print("delete from groups where id>= 10;");
         print("delete from countries;");
         print(RESTART_SEQUENCE, "country_sequence", currentCountryId);
         print(RESTART_SEQUENCE, "group_sequence", currentGroupId);
         print(RESTART_SEQUENCE, "user_sequence", currentUserId);
+        print(RESTART_SEQUENCE, "address_sequence", currentAddressId);
+        print(RESTART_SEQUENCE, "employer_sequence", currentEmployerId);
+        print(RESTART_SEQUENCE, "offer_sequence", currentOfferId);
     }
 
     /**
@@ -211,19 +229,33 @@ public final class GenerateDataForTest {
         print(USER_GROUP_INSERT, generateExternalId(), currentUserId, currentGroupId, ROLE_OWNER);
         print(USER_GROUP_INSERT, generateExternalId(), currentUserId, currentGroupId + 1, ROLE_OWNER);
 
+        // Generate the Offer
+        print(ADDRESS_INSERT, generateExternalId(), currentCountryId);
+        print(EMPLOYER_INSERT, generateExternalId(), currentGroupId + 1, currentAddressId);
+        print(OFFER_INSERT, countryCode, generateExternalId(), currentEmployerId, currency, currentGroupId + 1);
+
         // Update our Id's, so we're ready for next country
         currentCountryId++;
         currentGroupId += 2;
         currentUserId++;
+        currentAddressId++;
+        currentEmployerId++;
+        currentOfferId++;
 
         // And done :-)
-        print("-- Completed generating test data for %s", committeeName);
+        //print("-- Completed generating test data for %s", committeeName);
     }
 
     @Test
     public void test() {
         // Constructor is invoked before, so we just have to sit tight here :-)
         assertThat(Boolean.TRUE, is(true));
+    }
+
+    @AfterClass
+    public static void testDown() {
+        print("-- Now share all offers with all national groups");
+        print(SHARE_ALL_OFFER, GroupType.NATIONAL.ordinal());
     }
 
     // =========================================================================

@@ -4,6 +4,8 @@
 
 -- First reset the existing tables & sequences, regardlessly!
 delete from user_to_group;
+delete from sessions;
+delete from history;
 delete from users;
 delete from groups where id>= 10;
 delete from countries;

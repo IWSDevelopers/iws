@@ -40,7 +40,7 @@ import javax.persistence.PersistenceContext;
  */
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 public class AccessDaoTest {
 
     @PersistenceContext

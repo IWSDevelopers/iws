@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
@@ -32,13 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import java.util.List;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -46,7 +45,7 @@ import static org.junit.Assert.assertThat;
  * @since   1.7
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 @TransactionConfiguration(defaultRollback = true)
 public class MailingListMembershipEntityTest {
 

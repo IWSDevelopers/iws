@@ -41,7 +41,7 @@ import java.util.List;
  * @since   1.7
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 @TransactionConfiguration(defaultRollback = true)
 public class NotificationConsumerEntityTest {
 
@@ -72,7 +72,7 @@ public class NotificationConsumerEntityTest {
 
         final List<NotificationConsumerEntity> foundAfter = query.getResultList();
 
-        assertThat(foundAfter.size(), is(foundBefore.size()+1));
-        assertThat(foundAfter.get(foundAfter.size()-1), is(entity));
+        assertThat(foundAfter.size(), is(foundBefore.size() + 1));
+        assertThat(foundAfter.get(foundAfter.size() - 1), is(entity));
     }
 }

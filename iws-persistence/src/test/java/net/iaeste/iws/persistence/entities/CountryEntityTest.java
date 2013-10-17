@@ -38,7 +38,7 @@ import java.util.List;
  * @since   1.7
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 @TransactionConfiguration(defaultRollback = true)
 public class CountryEntityTest {
 

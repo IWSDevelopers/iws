@@ -23,6 +23,8 @@
 --     - Users
 --     - Groups
 --     - User 2 GroupTypes
+-- File Handling:
+--     - Files
 -- =============================================================================
 
 
@@ -573,6 +575,66 @@ create table history (
 
 
 -- =============================================================================
+-- Files
+-- -----------------------------------------------------------------------------
+-- All files uploaded to the system will be handled in this table, using various
+-- sets of information to store the file properly.
+--   Files are stored Groupwise, which means that only the group in which the
+-- file is shared can view the file. All private files are stored with a
+-- reference to the users private Group
+--   Note; The Sequence has forced no cycle. This is because we need a check
+-- against the folder id, and folder id must always be bigger than the current,
+-- so we can safely use the id to build a tree structure on.
+--   Note; There is no requirement for the MIME Type, since neither folders nor
+-- links have MIME Types.
+--   Note; The content of the file is stored in the database, rather than
+-- externally, this is done to avoid that data replication will fail. It also
+-- means that creating a new system is easier since only the database needs to
+-- be created, rather than also ensuring that all files are correctly stored in
+-- the file system.
+--   Note; If the Group is undefined, then it means that this File is globally
+-- available.
+-- =============================================================================
+create sequence file_sequence start with 20 increment by 1 no cycle;
+create table files (
+    id           integer default nextval('file_sequence'),
+    group_id     integer,
+    external_id  varchar(36),
+    filetype     varchar(10) default 'FILE',
+    filename     varchar(100),
+    filedata     bytea,
+    filesize     integer     default 0,
+    mimetype     varchar(50),
+    folder_id    integer     default 1,
+    description  varchar(250),
+    keywords     varchar(250),
+    checksum     varchar(128),
+    modified     timestamp   default now(),
+    created      timestamp   default now(),
+
+    /* Primary & Foreign Keys */
+    constraint file_pk             primary key (id),
+    constraint file_fk_group_id    foreign key (group_id) references groups (id) on delete restrict on update cascade,
+    constraint file_fk_folder_id   foreign key (folder_id) references files (id),
+
+    /* Unique Constraints */
+    constraint file_unique_external_id unique (external_id),
+    constraint file_unique_filename    unique (group_id, filename, folder_id),
+
+    /* Validation Constraints */
+    constraint file_validate_folder_id check (folder_id <= id),
+
+    /* Not Null Constraints */
+    constraint file_notnull_id          check (id is not null),
+    constraint file_notnull_external_id check (external_id is not null),
+    constraint file_notnull_filename    check (filename is not null),
+    constraint file_notnull_folder_id   check (folder_id is not null),
+    constraint file_notnull_modified    check (modified is not null),
+    constraint file_notnull_created     check (created is not null)
+);
+
+
+-- =============================================================================
 -- User notifications setting
 -- -----------------------------------------------------------------------------
 -- The notification should additionally list the group that the notification is
@@ -656,6 +718,7 @@ create table notification_consumers (
     constraint notification_consumers_notnull_modified          check (modified is not null)
 );
 
+
 -- =============================================================================
 -- Jobs - notification jobs to be processed by Notification Manager
 -- -----------------------------------------------------------------------------
@@ -680,6 +743,7 @@ create table notification_jobs (
     constraint notification_job_notnull_modified            check (modified is not null),
     constraint notification_job_notnull_created             check (created is not null)
 );
+
 
 -- =============================================================================
 -- Notification Job Tasks - task for notification consumers

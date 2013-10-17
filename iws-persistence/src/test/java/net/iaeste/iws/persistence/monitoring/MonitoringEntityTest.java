@@ -44,7 +44,7 @@ import java.util.List;
  * @noinspection ObjectAllocationInLoop
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = {SpringConfig.class})
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { SpringConfig.class })
 public class MonitoringEntityTest {
 
     @PersistenceContext

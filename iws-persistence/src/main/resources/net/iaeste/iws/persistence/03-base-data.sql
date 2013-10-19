@@ -256,11 +256,13 @@ insert into permission_to_role (role_id, permission_id) values (2, 201);
 --                  7 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
+--                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 202);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 202);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 202);
 insert into permission_to_role (role_id, permission_id) values (1, 202);
 insert into permission_to_role (role_id, permission_id) values (2, 202);
+insert into permission_to_role (role_id, permission_id) values (3, 202);
 
 -- Permission: 203 - Process Offer
 --   -> GroupTypes: 5 National
@@ -280,11 +282,13 @@ insert into permission_to_role (role_id, permission_id) values (2, 203);
 --                  7 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
+--                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 204);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 204);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 204);
 insert into permission_to_role (role_id, permission_id) values (1, 204);
 insert into permission_to_role (role_id, permission_id) values (2, 204);
+insert into permission_to_role (role_id, permission_id) values (3, 204);
 
 -- Permission: 220 - Publish Offer
 --   -> GroupTypes: 5 National

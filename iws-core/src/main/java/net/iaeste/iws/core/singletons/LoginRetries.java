@@ -102,10 +102,11 @@ public final class LoginRetries {
     public void registerUser(final String user) {
         final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         final Date when = new Date(new Date().getTime() - blockedPeriod);
+        final String key = user.toLowerCase(IWSConstants.DEFAULT_LOCALE);
 
         synchronized (lock) {
-            if (users.containsKey(user)) {
-                final Retries retries = users.get(user);
+            if (users.containsKey(key)) {
+                final Retries retries = users.get(key);
 
                 // If we have exceeded the max allowed number of login attempts
                 if (retries.getAttempts() >= maxRetries) {
@@ -115,7 +116,7 @@ public final class LoginRetries {
                         // The login attempt is made after the cool down period
                         // is over, hence we'll reset the attempt and allow the
                         // User to try again
-                        users.put(user, new Retries());
+                        users.put(key, new Retries());
                     } else {
                         // User have exceeded allowed number of login attempts,
                         // and we're still within the cool down period... User
@@ -129,7 +130,7 @@ public final class LoginRetries {
                     retries.registerAttempt();
                 }
             } else {
-                users.put(user, new Retries());
+                users.put(key, new Retries());
             }
         }
     }

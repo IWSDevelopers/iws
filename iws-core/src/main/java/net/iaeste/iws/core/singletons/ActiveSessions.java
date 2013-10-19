@@ -252,6 +252,10 @@ public final class ActiveSessions {
         return expiredTokens;
     }
 
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
+
     /**
      * Removes a list of Tokens from the Session map.
      *

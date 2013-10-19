@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -308,7 +309,7 @@ public enum FieldOfStudy {
             Specialization.METALLURGY,
             Specialization.MINERAL_PROCESSING,
             Specialization.NANOMATERIALS,
-            Specialization.NANOBIOTECHNOLOGY,
+            Specialization.NANOTECHNOLOGY,
             Specialization.POLYMER_ENGINEERING,
             Specialization.PROCESS_ENGINEERING,
             Specialization.STRUCTURAL_ENGINEERING,
@@ -364,7 +365,11 @@ public enum FieldOfStudy {
             Specialization.BIOVETERINARY_SCIENCE,
             Specialization.VETERINARY_MEDICINE,
             Specialization.VETERINARY_SCIENCE
-    ));
+    )),
+
+    ANY("Any", new ArrayList<Specialization>(0)),
+
+    OTHER("Other", new ArrayList<Specialization>(0));
 
     // =========================================================================
     // Private Constructor & functionality

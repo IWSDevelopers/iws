@@ -38,7 +38,6 @@ import org.apache.log4j.Logger;
 public final class CommitteeController extends CommonController implements Committees {
 
     private static final Logger log = Logger.getLogger(CommitteeController.class);
-    private final ServiceFactory factory;
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -47,9 +46,7 @@ public final class CommitteeController extends CommonController implements Commi
      * @param factory  The ServiceFactory
      */
     public CommitteeController(final ServiceFactory factory) {
-        super(factory.getAccessDao());
-
-        this.factory = factory;
+        super(factory);
     }
 
     /**

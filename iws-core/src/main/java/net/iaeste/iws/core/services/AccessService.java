@@ -34,15 +34,17 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
-import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.exceptions.SessionException;
 import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.core.singletons.ActiveSessions;
+import net.iaeste.iws.core.singletons.LoginRetries;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
+import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -61,7 +63,10 @@ import java.util.UUID;
  */
 public final class AccessService extends CommonService<AccessDao> {
 
+    private static final Logger log = Logger.getLogger(AccessService.class);
     private final Notifications notifications;
+    private final ActiveSessions activeSessions;
+    private final LoginRetries loginRetries;
 
     /**
      * Default Constructor. This Service only requires an AccessDao instance,
@@ -70,10 +75,12 @@ public final class AccessService extends CommonService<AccessDao> {
      * @param dao           AccessDAO instance
      * @param notifications Notification Object
      */
-    public AccessService(final AccessDao dao, final Notifications notifications) {
+    public AccessService(final AccessDao dao, final Notifications notifications, final ActiveSessions activeSessions, final LoginRetries loginRetries) {
         super(dao);
 
         this.notifications = notifications;
+        this.activeSessions = activeSessions;
+        this.loginRetries = loginRetries;
     }
 
     /**
@@ -86,11 +93,13 @@ public final class AccessService extends CommonService<AccessDao> {
      * @throws SessionException if an Active Session already exists
      */
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
+        removeDeprecatedSessions();
         final UserEntity user = findUserFromCredentials(request);
         final SessionEntity activeSession = dao.findActiveSession(user);
 
-        if (activeSession == null) {
-            final String key = generateAndPersistSessionKey(user);
+        if ((activeSession == null) && (activeSessions.getNumberOfActiveTokens() < IWSConstants.MAX_ACTIVE_TOKENS)) {
+            final String key = generateNewActiveSession(user);
+            activeSessions.registerToken(key);
             final AuthenticationToken token = new AuthenticationToken(key);
 
             return new AuthenticationResponse(token);
@@ -114,6 +123,7 @@ public final class AccessService extends CommonService<AccessDao> {
      * @throws SessionException if no active session exists
      */
     public void requestResettingSession(final AuthenticationRequest request) {
+        removeDeprecatedSessions();
         final UserEntity user = findUserFromCredentials(request);
         final SessionEntity activeSession = dao.findActiveSession(user);
 
@@ -137,11 +147,13 @@ public final class AccessService extends CommonService<AccessDao> {
      * @return New AuthenticationToken
      */
     public AuthenticationToken resetSession(final String resetSessionString) {
+        removeDeprecatedSessions();
         final UserEntity user = dao.findUserByCodeAndStatus(resetSessionString, UserStatus.ACTIVE);
         final SessionEntity deadSession = dao.findActiveSession(user);
 
         if (deadSession != null) {
             dao.deprecateSession(user);
+            activeSessions.removeToken(deadSession.getSessionKey());
             return new AuthenticationToken(generateAndPersistSessionKey(user));
         } else {
             throw new SessionException("No Session exists to reset.");
@@ -198,15 +210,11 @@ public final class AccessService extends CommonService<AccessDao> {
      * @param token Token containing the session to deprecate
      */
     public void deprecateSession(final AuthenticationToken token) {
+        removeDeprecatedSessions();
         final SessionEntity session = dao.findActiveSession(token);
-        final Integer updated = dao.deprecateSession(session.getUser());
-
-        // If zero records were updated, then the session was already
-        // deprecated. If one record was updated, then the currently
-        // active session has been successfully deprecated.
-        if (updated > 1) {
-            throw new AuthorizationException("Multiple Active Sessions was found.");
-        }
+        dao.deprecateSession(session.getUser());
+        activeSessions.removeToken(token.getToken());
+        log.info("Deprecated session for user: " + session.getUser().toString());
     }
 
     /**
@@ -314,6 +322,32 @@ public final class AccessService extends CommonService<AccessDao> {
     // =========================================================================
     // Internal helper methods
     // =========================================================================
+
+    private String generateNewActiveSession(final UserEntity user) {
+        // If an Active Session already exists, then we'll simply remove it from
+        // the system.
+        final SessionEntity deadSession = dao.findActiveSession(user);
+        if (deadSession != null) {
+            dao.deprecateSession(user);
+            log.info("Stale Session existed, for the user " + user.toString());
+        }
+
+        log.info("New Session created for the user " + user.toString());
+
+        return generateAndPersistSessionKey(user);
+    }
+
+    /**
+     * Removes all deprecated Sessions from the in-memory listing.
+     */
+    private void removeDeprecatedSessions() {
+        for (final String token : activeSessions.findAndRemoveExpiredTokens()) {
+            final SessionEntity session = dao.findActiveSession(token);
+            final UserEntity user = session.getUser();
+            dao.deprecateSession(user);
+            log.info("Deprecated inactive session for user " + user.toString());
+        }
+    }
 
     private String generateAndPersistSessionKey(final UserEntity user) {
         // Generate new Hashcode from the User Credentials, and some other entropy

@@ -55,7 +55,6 @@ import org.apache.log4j.Logger;
 public final class ExchangeController extends CommonController implements Exchange {
 
     private static final Logger log = Logger.getLogger(ExchangeController.class);
-    private final ServiceFactory factory;
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -64,9 +63,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * @param factory The ServiceFactory
      */
     public ExchangeController(final ServiceFactory factory) {
-        super(factory.getAccessDao());
-
-        this.factory = factory;
+        super(factory);
     }
 
     /**

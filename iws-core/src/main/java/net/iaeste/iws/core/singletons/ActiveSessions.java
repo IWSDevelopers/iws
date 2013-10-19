@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.singletons;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.core.exceptions.SessionException;
 
@@ -80,15 +81,28 @@ public final class ActiveSessions {
     }
 
     /**
+     * Empty initializer for this Singleton. Initializes the singleton with the
+     * default values defined in the {@code IWSConstants} class.
+     *
+     * @return Instance
+     * @see IWSConstants#MAX_ACTIVE_TOKENS
+     * @see IWSConstants#MAX_SESSION_IDLE_PERIOD
+     */
+    public static ActiveSessions getInstance() {
+        return getInstance(IWSConstants.MAX_ACTIVE_TOKENS, IWSConstants.MAX_SESSION_IDLE_PERIOD);
+    }
+
+    /**
      * Prepares and returns the instance for this Singleton.
      *
-     * @param maxSessions Maximum number of concurrently active sessions allowed
+     * @param maxActiveTokens Maximum number of concurrently active sessions allowed
+     * @param maxMillisToLive Maximum time an idle session may live
      * @return Singleton instance of this class
      */
-    public static ActiveSessions getInstance(final int maxSessions, final long maxMillisToLive) {
+    public static ActiveSessions getInstance(final int maxActiveTokens, final long maxMillisToLive) {
         synchronized (INSTANCE_LOCK) {
             if (instance == null) {
-                instance = new ActiveSessions(maxSessions, maxMillisToLive);
+                instance = new ActiveSessions(maxActiveTokens, maxMillisToLive);
             }
 
             return instance;
@@ -161,6 +175,41 @@ public final class ActiveSessions {
     public void removeToken(final String token) {
         synchronized (lock) {
             tokens.remove(token);
+        }
+    }
+
+    /**
+     * Returns true, if the token exists in the listing, and the timestamp is
+     * not expired.
+     *
+     * @param token Token
+     * @return True, if token is valid, otherwise false
+     */
+    public boolean isActive(final String token) {
+        final Date mustBeAfter = new Date(new Date().getTime() - maxMillisToLive);
+        final boolean result;
+
+        final Date lastAccess = getLastAccess(token);
+        if (lastAccess != null) {
+            result = lastAccess.after(mustBeAfter);
+        } else {
+            result = false;
+        }
+
+        return result;
+    }
+
+    /**
+     * Updates the token entry with a new timestamp, to indicate when it was
+     * last used.
+     *
+     * @param token Token to update
+     */
+    public void updateToken(final String token) {
+        synchronized (lock) {
+            if (tokens.containsKey(token)) {
+                tokens.put(token, new Date());
+            }
         }
     }
 

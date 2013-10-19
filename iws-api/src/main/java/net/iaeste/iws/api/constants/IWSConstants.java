@@ -22,9 +22,9 @@ import java.util.regex.Pattern;
 /**
  * Generic constants, for the IW Services.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public interface IWSConstants {
 
@@ -57,6 +57,42 @@ public interface IWSConstants {
      * Passwords in the IWS must be at least this long.
      */
     int MINIMAL_PASSWORD_LENGTH = 5;
+
+    /**
+     * The maximum number of concurrently active tokens in the system. Meaning
+     * that only so many people can be logged in at the same time.<br />
+     *   The number is added to prevent that too many simultaneous users may
+     * overload the system. The tokens are kept in-memory - since read-only
+     * requests cannot update the database.
+     */
+    int MAX_ACTIVE_TOKENS = 500;
+
+    /**
+     * Sessions will time-out after a number of minutes being idle. Meaning that
+     * no activity took place using the account.
+     */
+    long MAX_SESSION_IDLE_PERIOD = 1800000L;
+
+    /**
+     * The maximum number of times a user may attempt to login with incorrect
+     * password, before the system will close the account temporarily. The
+     * duration for the blocking is specified in {@link #LOGIN_BLOCKING_PERIOD}.
+     * Once the duration is over, the count is reset and the user may again
+     * attempt at login in.<br />
+     *   The maximum retries count is added, to prevent someone from performing
+     * Denial Of Server based brute force attacks against the system. All the
+     * requests are kept in memory, and nothing is persisted, meaning that only
+     * a restart of the system will reset these.
+     */
+    int MAX_LOGIN_RETRIES = 5;
+
+    /**
+     * The amount of minutes that a user account is blocked, if too many invalid
+     * requests were made. After this period of time, it is again possible to
+     * attempt to login.<br />
+     *   The time is specified in milli seconds.
+     */
+    long LOGIN_BLOCKING_PERIOD = 1800000L;
 
     /**
      * The year that IAESTE was founded.

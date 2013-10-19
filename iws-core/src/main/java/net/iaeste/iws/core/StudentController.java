@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 public final class StudentController extends CommonController implements Student {
 
     private static final Logger log = Logger.getLogger(StudentController.class);
-    private final ServiceFactory factory;
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -50,9 +49,7 @@ public final class StudentController extends CommonController implements Student
      * @param factory The ServiceFactory
      */
     public StudentController(final ServiceFactory factory) {
-        super(factory.getAccessDao());
-
-        this.factory = factory;
+        super(factory);
     }
 
     /**

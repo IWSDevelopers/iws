@@ -51,7 +51,6 @@ public final class AccessController extends CommonController implements Access {
 
     private static final Logger log = Logger.getLogger(AccessController.class);
     private static final String AUTHENTICATION_REQUEST_ERROR = "The Authentication Request Object is undefined.";
-    private final ServiceFactory factory;
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses
@@ -60,9 +59,7 @@ public final class AccessController extends CommonController implements Access {
      * @param factory  The ServiceFactory
      */
     public AccessController(final ServiceFactory factory) {
-        super(factory.getAccessDao());
-
-        this.factory = factory;
+        super(factory);
     }
 
     /**

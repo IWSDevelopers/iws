@@ -19,7 +19,9 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.Verifiable;
+import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
+import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -36,10 +38,12 @@ import net.iaeste.iws.persistence.exceptions.PersistenceException;
 class CommonController {
 
     private static final String NULL_REQUEST = " Object may not be null.";
+    protected final ServiceFactory factory;
     private final AccessDao dao;
 
-    CommonController(final AccessDao dao) {
-        this.dao = dao;
+    CommonController(final ServiceFactory factory) {
+        this.factory = factory;
+        this.dao = factory.getAccessDao();
     }
 
     /**
@@ -87,16 +91,20 @@ class CommonController {
     }
 
     private Authentication verifyAccess(final AuthenticationToken token, final Permission permission, final String externalGroupId) {
-        try {
-            // Authentication Check; Expect Exception if unable to find a User
-            final UserEntity user = dao.findActiveSession(token).getUser();
-            // Authorization Check; Expect Exception if unable to match a Group
-            final GroupEntity group = dao.findGroupByPermission(user, externalGroupId, permission);
+        if (factory.getActiveSessions().isActive(token.getToken())) {
+            try {
+                // Authentication Check; Expect Exception if unable to find a User
+                final UserEntity user = dao.findActiveSession(token).getUser();
+                // Authorization Check; Expect Exception if unable to match a Group
+                final GroupEntity group = dao.findGroupByPermission(user, externalGroupId, permission);
 
-            // So far so good, return the information
-            return new Authentication(token, user, group, token.getTraceId());
-        } catch (PersistenceException e) {
-            throw new VerificationException(e);
+                // So far so good, return the information
+                return new Authentication(token, user, group, token.getTraceId());
+            } catch (PersistenceException e) {
+                throw new VerificationException(e);
+            }
+        } else {
+            throw new AuthenticationException("Invalid token");
         }
     }
 

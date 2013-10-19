@@ -308,11 +308,13 @@ insert into permission_to_role (role_id, permission_id) values (2, 220);
 --                  7 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
+--                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 221);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 221);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 221);
 insert into permission_to_role (role_id, permission_id) values (1, 221);
 insert into permission_to_role (role_id, permission_id) values (2, 221);
+insert into permission_to_role (role_id, permission_id) values (3, 221);
 
 -- Permission: 222 - Apply For Open Offer
 --   -> GroupTypes: 9 Student

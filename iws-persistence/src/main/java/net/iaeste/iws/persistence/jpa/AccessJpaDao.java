@@ -35,6 +35,7 @@ import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -146,8 +147,16 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public SessionEntity findActiveSession(final AuthenticationToken token) {
+        return findActiveSession(token.getToken());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SessionEntity findActiveSession(final String token) {
         final Query query = entityManager.createNamedQuery("session.findByToken");
-        query.setParameter("key", token.getToken());
+        query.setParameter("key", token);
 
         return findUniqueResult(query, "AuthenticationToken");
     }
@@ -158,11 +167,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     @Override
     public Integer deprecateSession(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("session.deprecate");
-        // Funny, setting the status to false directly in the query, causes an
-        // SQL Grammar Exception, though it actually makes sense since booleans
-        // are implemented differently in dofferent databases, so JPA needs the
-        // query pbject to convert it properly
-        query.setParameter("status", false);
+        query.setParameter("deprecated", new Date());
         query.setParameter("id", user.getId());
 
         return query.executeUpdate();

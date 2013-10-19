@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -57,13 +58,12 @@ public class AccessDaoTest {
         final SessionEntity entity = new SessionEntity();
         entity.setSessionKey(key);
         entity.setUser(user);
-        entity.setActive(true);
         dao.persist(entity);
 
         // Find the newly created Session, deprecate it, and save it again
         final SessionEntity found = dao.findActiveSession(user);
         assertThat(found, is(not(nullValue())));
-        found.setActive(false);
+        found.setDeprecated(new Date());
         dao.persist(found);
 
         // Now, we should not be able to find it

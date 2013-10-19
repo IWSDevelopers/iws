@@ -43,18 +43,18 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "session.findByToken",
                 query = "select s from SessionEntity s " +
-                        "where s.active = true " +
+                        "where s.deprecated is null " +
                         "  and s.sessionKey = :key"),
         @NamedQuery(name = "session.findByUser",
                 query = "select s from SessionEntity s " +
-                        "where s.active = true " +
+                        "where s.deprecated is null " +
                         "  and s.user.id = :id"),
         @NamedQuery(name = "session.deprecate",
                 query = "update SessionEntity s set " +
-                        "   s.active = :status, " +
+                        "   s.deprecated = :deprecated, " +
                         "   s.sessionData = null, " +
                         "   s.modified = current_timestamp " +
-                        "where s.active = true " +
+                        "where s.deprecated is null " +
                         "  and s.user.id = :id"),
         @NamedQuery(name = "session.deleteUserSessions",
                 query = "delete from SessionEntity s " +
@@ -77,8 +77,8 @@ public class SessionEntity implements Externable<SessionEntity> {
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private UserEntity user = null;
 
-    @Column(name = "active", nullable = false)
-    private Boolean active = true;
+    @Column(name = "deprecated")
+    private Date deprecated = null;
 
     @Column(name = "session_data")
     private byte[] sessionData = null;
@@ -170,12 +170,12 @@ public class SessionEntity implements Externable<SessionEntity> {
         return user;
     }
 
-    public void setActive(final Boolean active) {
-        this.active = active;
+    public void setDeprecated(final Date deprecated) {
+        this.deprecated = deprecated;
     }
 
-    public Boolean getActive() {
-        return active;
+    public Date getDeprecated() {
+        return deprecated;
     }
 
     public void setSessionData(final byte[] sessionData) {
@@ -238,7 +238,7 @@ public class SessionEntity implements Externable<SessionEntity> {
     @Override
     public void merge(final SessionEntity obj) {
         if ((obj != null) && (id != null) && id.equals(obj.id)) {
-            active = obj.active;
+            deprecated = obj.deprecated;
             sessionData = obj.sessionData;
         }
     }

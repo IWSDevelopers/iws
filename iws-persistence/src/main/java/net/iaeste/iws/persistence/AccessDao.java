@@ -87,6 +87,8 @@ public interface AccessDao extends BasicDao {
 
     SessionEntity findActiveSession(AuthenticationToken token);
 
+    SessionEntity findActiveSession(String token);
+
     Integer deprecateSession(UserEntity user);
 
     int deleteSessions(UserEntity user);

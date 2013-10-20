@@ -628,6 +628,7 @@ create table files (
     constraint file_notnull_id          check (id is not null),
     constraint file_notnull_external_id check (external_id is not null),
     constraint file_notnull_filename    check (filename is not null),
+    constraint file_notnull_filetype    check (filetype is not null),
     constraint file_notnull_folder_id   check (folder_id is not null),
     constraint file_notnull_modified    check (modified is not null),
     constraint file_notnull_created     check (created is not null)

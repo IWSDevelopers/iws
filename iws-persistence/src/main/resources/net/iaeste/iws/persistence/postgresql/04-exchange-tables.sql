@@ -63,7 +63,7 @@ create table offers (
     id                        integer default nextval('offer_sequence'),
     external_id               varchar(36),
     group_id                  integer,
-    ref_no                    varchar(255),
+    ref_no                    varchar(16),
     -- General Work Description
     employer_id               integer,
     work_description          varchar(1000),

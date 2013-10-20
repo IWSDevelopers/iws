@@ -128,8 +128,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @JoinColumn(nullable = true, name = "group_id")
     private GroupEntity group = null;
 
-    // TODO 2013-08-13 by Kim - Reason: The field is fairly large, and thus implies it is not correctly mapped. Please check actual length required
-    @Column(name = "ref_no", length = 255, nullable = false, unique = true)
+    @Column(name = "ref_no", length = 16, nullable = false, unique = true)
     private String refNo = null;
 
     @ManyToOne
@@ -178,7 +177,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @Column(name = "from_date", nullable = false)
     private Date fromDate = null;
 
-    @Monitored(name="Offer first to date", level = MonitoringLevel.DETAILED)
+    @Monitored(name="Offer first too date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "to_date", nullable = false)
     private Date toDate = null;
@@ -188,7 +187,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @Column(name = "from_date_2")
     private Date fromDate2 = null;
 
-    @Monitored(name="Offer second to date", level = MonitoringLevel.DETAILED)
+    @Monitored(name="Offer second too date", level = MonitoringLevel.DETAILED)
     @Temporal(TemporalType.DATE)
     @Column(name = "to_date_2")
     private Date toDate2 = null;

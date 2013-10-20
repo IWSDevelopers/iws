@@ -85,7 +85,7 @@ create view offer_view as
     o.additional_information   as additional_information,
     o.status                   as status,
     e.id                       as employer_id,
-    e.external_id              as employer_external_eid,
+    e.external_id              as employer_external_id,
     e.name                     as employer_name,
     e.department               as department,
     e.business                 as business,
@@ -109,6 +109,8 @@ create view offer_view as
     a.city                     as city,
     a.state                    as state,
     c.country_name             as country_name,
+    u.firstname                as ns_firstname,
+    u.lastname                 as ns_lastname,
     o.modified                 as offer_modified,
     o.created                  as offer_created
   from
@@ -116,8 +118,13 @@ create view offer_view as
     groups g,
     employers e,
     addresses a,
-    countries c
+    countries c,
+    user_to_group u2g,
+    users u
   where e.id = o.employer_id
     and g.id = o.group_id
     and a.id = e.address_id
-    and c.id = a.country_id;
+    and c.id = a.country_id
+    and u.id = u2g.user_id
+    and o.group_id = u2g.group_id
+    and u2g.role_id = 1;

@@ -1,1 +1,1 @@
-New group moderator
+IntraWeb Group Owner Assignment Notification

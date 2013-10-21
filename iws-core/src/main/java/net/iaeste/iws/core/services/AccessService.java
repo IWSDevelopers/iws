@@ -93,17 +93,18 @@ public final class AccessService extends CommonService<AccessDao> {
      * @throws SessionException if an Active Session already exists
      */
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        //removeDeprecatedSessions();
-        //loginRetries.registerUser(request.getUsername());
+        removeDeprecatedSessions();
+        loginRetries.registerUser(request.getUsername());
         final UserEntity user = findUserFromCredentials(request);
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if ((activeSession == null) && (activeSessions.getNumberOfActiveTokens() < IWSConstants.MAX_ACTIVE_TOKENS)) {
-            final String key = generateNewActiveSession(user);
+            log.info("Creating a new Session for the user " + user.toString());
+            final String key = generateAndPersistSessionKey(user);
             activeSessions.registerToken(key);
-            //loginRetries.removeAuthenticatedUser(request.getUsername());
-            final AuthenticationToken token = new AuthenticationToken(key);
+            loginRetries.removeAuthenticatedUser(request.getUsername());
 
+            final AuthenticationToken token = new AuthenticationToken(key);
             return new AuthenticationResponse(token);
         } else {
             final String msg = "An Active Session for user %s %s already exists.";
@@ -324,20 +325,6 @@ public final class AccessService extends CommonService<AccessDao> {
     // =========================================================================
     // Internal helper methods
     // =========================================================================
-
-    private String generateNewActiveSession(final UserEntity user) {
-        // If an Active Session already exists, then we'll simply remove it from
-        // the system.
-        final SessionEntity deadSession = dao.findActiveSession(user);
-        if (deadSession != null) {
-            dao.deprecateSession(user);
-            log.info("Stale Session existed, for the user " + user.toString());
-        }
-
-        log.info("New Session created for the user " + user.toString());
-
-        return generateAndPersistSessionKey(user);
-    }
 
     /**
      * Removes all deprecated Sessions from the in-memory listing.

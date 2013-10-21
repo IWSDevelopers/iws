@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.client;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -88,6 +89,19 @@ public final class AccessClientTest extends AbstractTest {
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(result.isOk(), is(true));
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
+    }
+
+    @Test
+    public void testExceedingLoginAttempts() {
+        final AuthenticationRequest request = new AuthenticationRequest("sweden@iaeste.dk", "wrongPassword");
+        for (int i = 0; i < IWSConstants.MAX_LOGIN_RETRIES; i++) {
+            assertThat(access.generateSession(request).getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        }
+
+        final AuthenticationResponse response = access.generateSession(request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.EXCEEDED_LOGIN_ATTEMPTS));
+        assertThat(response.getMessage().contains("User have attempted to login too many times unsuccessfully, the account is being Blocked"), is(true));
     }
 
     @Test

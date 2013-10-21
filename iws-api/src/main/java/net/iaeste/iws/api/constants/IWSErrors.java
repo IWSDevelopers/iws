@@ -83,9 +83,20 @@ public interface IWSErrors {
     IWSError SESSION_EXISTS = new IWSError(405, "User can only hold one active Session at the time.");
 
     /**
-     *
+     * The system has an upper limit of how many active sessions may exists,
+     * please see {@link IWSConstants#MAX_ACTIVE_TOKENS} for more information.
      */
     IWSError TOO_MANY_ACTIVE_SESSIONS = new IWSError(406, "The system has reached the maximum allowed number of concurrently active users.");
+
+    /**
+     * Session Expiration.
+     */
+    IWSError SESSION_EXPIRED = new IWSError(407, "The session has expired, and can no longer be used.");
+
+    /**
+     * The user account has seen too many attempts at login in.
+     */
+    IWSError EXCEEDED_LOGIN_ATTEMPTS = new IWSError(408, "Too many login attempts for this account.");
 
     /**
      * The database is inaccessible.

@@ -14,13 +14,14 @@
  */
 package net.iaeste.iws.core;
 
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.Verifiable;
-import net.iaeste.iws.common.exceptions.AuthenticationException;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
+import net.iaeste.iws.core.exceptions.SessionException;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -104,7 +105,7 @@ class CommonController {
                 throw new VerificationException(e);
             }
         } else {
-            throw new AuthenticationException("Invalid token");
+            throw new SessionException(IWSErrors.SESSION_EXPIRED, "The token has expired.");
         }
     }
 

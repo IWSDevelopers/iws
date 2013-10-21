@@ -15,7 +15,8 @@
 package net.iaeste.iws.core.singletons;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.common.exceptions.AuthenticationException;
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.core.exceptions.SessionException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -122,7 +123,7 @@ public final class LoginRetries {
                         // and we're still within the cool down period... User
                         // is blocked!
                         final Date time = new Date(retries.getFirstAttempt().getTime() + blockedPeriod);
-                        throw new AuthenticationException("User have attempted to login too many times unsuccessfully," +
+                        throw new SessionException(IWSErrors.EXCEEDED_LOGIN_ATTEMPTS, "User have attempted to login too many times unsuccessfully," +
                                 " the account is being Blocked until " + format.format(time));
                     }
                 } else {

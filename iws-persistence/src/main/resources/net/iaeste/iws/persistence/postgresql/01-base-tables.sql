@@ -466,7 +466,7 @@ create table sessions (
     id                  integer default nextval('session_sequence'),
     session_key         varchar(128),
     user_id             integer,
-    active              boolean default true,
+    deprecated          timestamp,
     session_data        bytea,
     modified            timestamp default now(),
     created             timestamp default now(),
@@ -477,12 +477,12 @@ create table sessions (
 
     /* Unique Constraints */
     constraint session_unique_session_key unique (session_key),
+    constraint session_unique_active_user unique (user_id, deprecated),
 
     /* Not Null Constraints */
     constraint session_notnull_id          check (id is not null),
     constraint session_notnull_session_key check (session_key is not null),
     constraint session_notnull_user_id     check (user_id is not null),
-    constraint session_notnull_active      check (active is not null),
     constraint session_notnull_modified    check (modified is not null),
     constraint session_notnull_created     check (created is not null)
 );

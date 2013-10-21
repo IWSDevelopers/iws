@@ -93,15 +93,15 @@ public final class AccessService extends CommonService<AccessDao> {
      * @throws SessionException if an Active Session already exists
      */
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
-        removeDeprecatedSessions();
-        loginRetries.registerUser(request.getUsername());
+        //removeDeprecatedSessions();
+        //loginRetries.registerUser(request.getUsername());
         final UserEntity user = findUserFromCredentials(request);
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if ((activeSession == null) && (activeSessions.getNumberOfActiveTokens() < IWSConstants.MAX_ACTIVE_TOKENS)) {
             final String key = generateNewActiveSession(user);
             activeSessions.registerToken(key);
-            loginRetries.removeAuthenticatedUser(request.getUsername());
+            //loginRetries.removeAuthenticatedUser(request.getUsername());
             final AuthenticationToken token = new AuthenticationToken(key);
 
             return new AuthenticationResponse(token);

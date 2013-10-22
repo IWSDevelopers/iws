@@ -15,16 +15,25 @@
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.enums.Currency;
+import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.*;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DatePeriod;
+import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * Note; This class needs a complete re-write, as we now have a different Object
- * structure.
- *
  * @author  Martin Eisfeld / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -34,190 +43,158 @@ public final class ProcessOffer extends AbstractFixture<OfferResponse> {
     private final Exchange exchange = new ExchangeClient();
     private Offer offer = new Offer();
     private ProcessOfferRequest request = null;
+    private Set<StudyLevel> studyLevels = new HashSet<>();
+    private Set<FieldOfStudy> fieldOfStudies = new HashSet<>();
+    private Set<String> specializations = new HashSet<>();
+
+
+    public void setOfferId(final String offerId) {
+        offer.setOfferId(offerId);
+    }
+
+    public void setGroup(final Group group) {
+        offer.setGroup(group);
+    }
 
     public void setRefNo(final String refNo) {
         offer.setRefNo(refNo);
     }
 
-//    public void setNominationDeadline(final String nominationDeadline) {
-//        offer.setNominationDeadline(new Date(nominationDeadline));
-//    }
-//
-//    public void setEmployerName(final String employerName) {
-//        offer.setEmployerName(employerName);
-//    }
-//
-//    public void setEmployerAddress(final String employerAddress) {
-//        offer.setEmployerAddress(employerAddress);
-//    }
-//
-//    public void setEmployerAddress2(final String employerAddress2) {
-//        offer.setEmployerAddress2(employerAddress2);
-//    }
-//
-//    public void setEmployerBusiness(final String employerBusiness) {
-//        offer.setEmployerBusiness(employerBusiness);
-//    }
-//
-//    public void setEmployerEmployeesCount(final Integer employerEmployeesCount) {
-//        offer.setEmployerEmployeesCount(employerEmployeesCount);
-//    }
-//
-//    public void setEmployerWebsite(final String employerWebsite) {
-//        offer.setEmployerWebsite(employerWebsite);
-//    }
-//
-//    public void setFieldOfStudies(final String fieldOfStudies) {
-//        offer.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, fieldOfStudies));
-//    }
-//
-//    public void setSpecializations(final String specializations) {
-//        offer.setSpecializations(new HashSet<>(CollectionTransformer.explodeStringList(specializations)));
-//    }
-//
-//    public void setStudyLevels(final String studyLevels) {
-//        offer.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, studyLevels));
-//    }
-//
-//    public void setPrevTrainingRequired(final Boolean prevTrainingRequired) {
-//        offer.setPreviousTrainingRequired(prevTrainingRequired);
-//    }
-//
-//    public void setOtherRequirements(final String otherRequirements) {
-//        offer.setOtherRequirements(otherRequirements);
-//    }
-//
-//    public void setLanguage1(final Language language1) {
-//        offer.setLanguage1(language1);
-//    }
-//
-//    public void setLanguage1Level(final LanguageLevel language1Level) {
-//        offer.setLanguage1Level(language1Level);
-//    }
-//
-//    public void setLanguage1Operator(final LanguageOperator language1Operator) {
-//        offer.setLanguage1Operator(language1Operator);
-//    }
-//
-//    public void setLanguage2(final Language language2) {
-//        offer.setLanguage2(language2);
-//    }
-//
-//    public void setLanguage2Level(final LanguageLevel language2Level) {
-//        offer.setLanguage2Level(language2Level);
-//    }
-//
-//    public void setLanguage2Operator(final LanguageOperator language2Operator) {
-//        offer.setLanguage2Operator(language2Operator);
-//    }
-//
-//    public void setLanguage3(final Language language3) {
-//        offer.setLanguage3(language3);
-//    }
-//
-//    public void setLanguage3Level(final LanguageLevel language3Level) {
-//        offer.setLanguage3Level(language3Level);
-//    }
-//
-//    public void setWorkDescription(final String workDescription) {
-//        offer.setWorkDescription(workDescription);
-//    }
-//
-//    public void setTypeOfWork(final TypeOfWork typeOfWork) {
-//        offer.setTypeOfWork(typeOfWork);
-//    }
-//
-//    public void setMinimumWeeks(final Integer minimumWeeks) {
-//        offer.setMinimumWeeks(minimumWeeks);
-//    }
-//
-//    public void setMaximumWeeks(final Integer maximumWeeks) {
-//        offer.setMaximumWeeks(maximumWeeks);
-//    }
-//
-//    public void setFromDate(final String fromDate) {
-//        offer.setFromDate(new Date(fromDate));
-//    }
-//
-//    public void setToDate(final String toDate) {
-//        offer.setToDate(new Date(toDate));
-//    }
-//
-//    public void setFromDate2(final String fromDate2) {
-//        offer.setFromDate2(new Date(fromDate2));
-//    }
-//
-//    public void setToDate2(final String toDate2) {
-//        offer.setToDate2(new Date(toDate2));
-//    }
-//
-//    public void setUnavailableFrom(final String unavailableFrom) {
-//        offer.setUnavailableFrom(new Date(unavailableFrom));
-//    }
-//
-//    public void setUnavailableTo(final String unavailableTo) {
-//        offer.setUnavailableTo(new Date(unavailableTo));
-//    }
-//
-//    public void setWorkingPlace(final String workingPlace) {
-//        offer.setWorkingPlace(workingPlace);
-//    }
-//
-//    public void setNearestAirport(final String nearestAirport) {
-//        offer.setNearestAirport(nearestAirport);
-//    }
-//
-//    public void setNearestPubTransport(final String nearestPubTransport) {
-//        offer.setNearestPubTransport(nearestPubTransport);
-//    }
-//
-//    public void setWeeklyHours(final Float weeklyHours) {
-//        offer.setWeeklyHours(weeklyHours);
-//    }
-//
-//    public void setDailyHours(final Float dailyHours) {
-//        offer.setDailyHours(dailyHours);
-//    }
-//
-//    public void setPayment(final BigDecimal payment) {
-//        offer.setPayment(payment);
-//    }
-//
-//    public void setCurrency(final Currency currency) {
-//        offer.setCurrency(currency);
-//    }
-//
-//    public void setPaymentFrequency(final PaymentFrequency paymentFrequency) {
-//        offer.setPaymentFrequency(paymentFrequency);
-//    }
-//
-//    public void setDeduction(final String deduction) {
-//        offer.setDeduction(deduction);
-//    }
-//
-//    public void setLodgingBy(final String lodgingBy) {
-//        offer.setLodgingBy(lodgingBy);
-//    }
-//
-//    public void setLodgingCost(final BigDecimal lodgingCost) {
-//        offer.setLodgingCost(lodgingCost);
-//    }
-//
-//    public void setLodgingCostFrequency(final PaymentFrequency lodgingCostFrequency) {
-//        offer.setLodgingCostFrequency(lodgingCostFrequency);
-//    }
-//
-//    public void setLivingCost(final BigDecimal livingCost) {
-//        offer.setLivingCost(livingCost);
-//    }
-//
-//    public void setLivingCostFrequency(final PaymentFrequency livingCostFrequency) {
-//        offer.setLivingCostFrequency(livingCostFrequency);
-//    }
-//
-//    public void setCanteen(final Boolean canteen) {
-//        offer.setCanteen(canteen);
-//    }
+    public void setEmployer(final Employer employer) {
+        offer.setEmployer(employer);
+    }
+
+    public void setWorkDescription(final String workDescription) {
+        offer.setWorkDescription(workDescription);
+    }
+
+    public void setTypeOfWork(final String typeOfWork) {
+        offer.setTypeOfWork(TypeOfWork.valueOf(typeOfWork));
+    }
+
+    public void setStudyLevels(final String studyLevels) {
+        this.studyLevels.add(StudyLevel.valueOf(studyLevels));
+    }
+
+    public void setFieldOfStudies(final String fieldOfStudies)  {
+        this.fieldOfStudies.add(FieldOfStudy.valueOf(fieldOfStudies));
+    }
+
+    public void setSpecializations(final String specializations) {
+        this.specializations.add(specializations);
+    }
+
+    public void setPreviousTrainingRequired(final Boolean previousTrainingRequired) {
+        offer.setPreviousTrainingRequired(previousTrainingRequired);
+    }
+
+    public void setOtherRequirements(final String otherRequirements) {
+        offer.setOtherRequirements(otherRequirements);
+    }
+
+    public void setMinimumWeeks(final Integer minimumWeeks) {
+        offer.setMinimumWeeks(minimumWeeks);
+    }
+
+    public void setMaximumWeeks(final Integer maximumWeeks) {
+        offer.setMaximumWeeks(maximumWeeks);
+    }
+
+    public void setPeriod1(final String fromDate, final String toDate) {
+        offer.setPeriod1(new DatePeriod(new Date(fromDate), new Date(toDate)));
+    }
+
+    public void setPeriod2(final String fromDate, final String toDate) {
+        offer.setPeriod2(new DatePeriod(new Date(fromDate), new Date(toDate)));
+    }
+
+    public void setUnavailable(final String fromDate, final String toDate) {
+        offer.setUnavailable(new DatePeriod(new Date(fromDate), new Date(toDate)));
+    }
+
+    public void setLanguage1(final String language1) {
+        offer.setLanguage1(Language.valueOf(language1));
+    }
+
+    public void setLanguage1Level(final String language1Level) {
+        offer.setLanguage1Level(LanguageLevel.valueOf(language1Level));
+    }
+
+    public void setLanguage1Operator(final String language1Operator) {
+        offer.setLanguage1Operator(LanguageOperator.valueOf(language1Operator));
+    }
+
+    public void setLanguage2(final String language2) {
+        offer.setLanguage2(Language.valueOf(language2));
+    }
+
+    public void setLanguage2Level(final String language2Level) {
+        offer.setLanguage2Level(LanguageLevel.valueOf(language2Level));
+    }
+
+    public void setLanguage2Operator(final String language2Operator) {
+        offer.setLanguage2Operator(LanguageOperator.valueOf(language2Operator));
+    }
+
+    public void setLanguage3(final String language3) {
+        offer.setLanguage3(Language.valueOf(language3));
+    }
+
+    public void setLanguage3Level(final String language3Level) {
+        offer.setLanguage3Level(LanguageLevel.valueOf(language3Level));
+    }
+
+    public void setPayment(final BigDecimal payment) {
+        offer.setPayment(payment);
+    }
+
+    public void setPaymentFrequency(final String paymentFrequency) {
+        offer.setPaymentFrequency(PaymentFrequency.valueOf(paymentFrequency));
+    }
+
+    public void setCurrency(final String currency) {
+        offer.setCurrency(Currency.valueOf(currency));
+    }
+
+    public void setDeduction(final String deduction) {
+        offer.setDeduction(deduction);
+    }
+
+    public void setLivingCost(final BigDecimal livingCost) {
+        offer.setLivingCost(livingCost);
+    }
+
+    public void setLivingCostFrequency(final String livingCostFrequency) {
+        offer.setLivingCostFrequency(PaymentFrequency.valueOf(livingCostFrequency));
+    }
+
+    public void setLodgingBy(final String lodgingBy) {
+        offer.setLodgingBy(lodgingBy);
+    }
+
+    public void setLodgingCost(final BigDecimal lodgingCost) {
+        offer.setLodgingCost(lodgingCost);
+    }
+
+    public void setLodgingCostFrequency(final String lodgingCostFrequency) {
+        offer.setLodgingCostFrequency(PaymentFrequency.valueOf(lodgingCostFrequency));
+    }
+
+    public void setNominationDeadline(final String nominationDeadline) {
+        offer.setNominationDeadline(new Date(nominationDeadline));
+    }
+
+    public void setNumberOfHardCopies(final Integer numberOfHardCopies) {
+        offer.setNumberOfHardCopies(numberOfHardCopies);
+    }
+
+    public void setAdditionalInformation(final String additionalInformation)  {
+        offer.setAdditionalInformation(additionalInformation);
+    }
+
+    public void setStatus(final String status) {
+        offer.setStatus(OfferState.valueOf(status));
+    }
 
     public void printOffer() {
         getResponse().getOffer().toString();
@@ -230,6 +207,9 @@ public final class ProcessOffer extends AbstractFixture<OfferResponse> {
     @Override
     public void execute() throws StopTestException {
         createSession();
+        offer.setStudyLevels(studyLevels);
+        offer.setFieldOfStudies(fieldOfStudies);
+        offer.setSpecializations(specializations);
         request = new ProcessOfferRequest(offer);
         setResponse(exchange.processOffer(getToken(), request));
     }

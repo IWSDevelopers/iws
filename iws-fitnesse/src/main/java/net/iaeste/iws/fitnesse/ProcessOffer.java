@@ -15,22 +15,25 @@
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.*;
+import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
-import net.iaeste.iws.api.util.DateTime;
-import net.iaeste.iws.client.ExchangeClient;
+import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -40,28 +43,29 @@ import java.util.Set;
  */
 public final class ProcessOffer extends AbstractFixture<OfferResponse> {
 
-    private final Exchange exchange = new ExchangeClient();
+    private final Exchange exchange = new ExchangeCaller();
     private Offer offer = new Offer();
     private ProcessOfferRequest request = null;
     private Set<StudyLevel> studyLevels = new HashSet<>();
     private Set<FieldOfStudy> fieldOfStudies = new HashSet<>();
     private Set<String> specializations = new HashSet<>();
-
-
-    public void setOfferId(final String offerId) {
-        offer.setOfferId(offerId);
-    }
-
-    public void setGroup(final Group group) {
-        offer.setGroup(group);
-    }
+    private Date fromDate1 = null;
+    private Date toDate1 = null;
+    private Date fromDate2 = null;
+    private Date toDate2 = null;
 
     public void setRefNo(final String refNo) {
         offer.setRefNo(refNo);
     }
 
-    public void setEmployer(final Employer employer) {
-        offer.setEmployer(employer);
+    public void setEmployer(final String employerId) {
+        FetchEmployerRequest feRequest =  new FetchEmployerRequest();
+        feRequest.setFetchById(employerId);
+        FetchEmployerResponse feResponse = exchange.fetchEmployers(getToken(), feRequest);
+
+        if(!feResponse.getEmployers().isEmpty()) {
+            offer.setEmployer(feResponse.getEmployers().get(0));
+        }
     }
 
     public void setWorkDescription(final String workDescription) {
@@ -100,12 +104,20 @@ public final class ProcessOffer extends AbstractFixture<OfferResponse> {
         offer.setMaximumWeeks(maximumWeeks);
     }
 
-    public void setPeriod1(final String fromDate, final String toDate) {
-        offer.setPeriod1(new DatePeriod(new Date(fromDate), new Date(toDate)));
+    public void setPeriod1From(final String fromDate) {
+        fromDate1 = new Date(fromDate);
     }
 
-    public void setPeriod2(final String fromDate, final String toDate) {
-        offer.setPeriod2(new DatePeriod(new Date(fromDate), new Date(toDate)));
+    public void setPeriod1To(final String toDate) {
+        toDate1 = new Date(toDate);
+    }
+
+    public void setPeriod2From(final String fromDate) {
+        fromDate2 = new Date(fromDate);
+    }
+
+    public void setPeriod2To(final String toDate) {
+        toDate2 = new Date(toDate);
     }
 
     public void setUnavailable(final String fromDate, final String toDate) {
@@ -144,8 +156,9 @@ public final class ProcessOffer extends AbstractFixture<OfferResponse> {
         offer.setLanguage3Level(LanguageLevel.valueOf(language3Level));
     }
 
-    public void setPayment(final BigDecimal payment) {
-        offer.setPayment(payment);
+    public void setPayment(final String payment) {
+
+        offer.setPayment(new BigDecimal(payment));
     }
 
     public void setPaymentFrequency(final String paymentFrequency) {
@@ -160,8 +173,8 @@ public final class ProcessOffer extends AbstractFixture<OfferResponse> {
         offer.setDeduction(deduction);
     }
 
-    public void setLivingCost(final BigDecimal livingCost) {
-        offer.setLivingCost(livingCost);
+    public void setLivingCost(final String livingCost) {
+        offer.setLivingCost(new BigDecimal(livingCost));
     }
 
     public void setLivingCostFrequency(final String livingCostFrequency) {
@@ -172,8 +185,8 @@ public final class ProcessOffer extends AbstractFixture<OfferResponse> {
         offer.setLodgingBy(lodgingBy);
     }
 
-    public void setLodgingCost(final BigDecimal lodgingCost) {
-        offer.setLodgingCost(lodgingCost);
+    public void setLodgingCost(final String lodgingCost) {
+        offer.setLodgingCost(new BigDecimal(lodgingCost));
     }
 
     public void setLodgingCostFrequency(final String lodgingCostFrequency) {
@@ -200,6 +213,10 @@ public final class ProcessOffer extends AbstractFixture<OfferResponse> {
         getResponse().getOffer().toString();
     }
 
+    public String getOfferId() {
+        return getResponse().getOffer().getOfferId();
+    }
+
     public void processOffer() {
         execute();
     }
@@ -207,6 +224,15 @@ public final class ProcessOffer extends AbstractFixture<OfferResponse> {
     @Override
     public void execute() throws StopTestException {
         createSession();
+
+        if(fromDate1 != null && toDate1 != null) {
+            offer.setPeriod1(new DatePeriod(fromDate1, toDate1));
+        }
+
+        if(fromDate2 != null && toDate2 != null) {
+            offer.setPeriod2(new DatePeriod(fromDate2, toDate2));
+        }
+
         offer.setStudyLevels(studyLevels);
         offer.setFieldOfStudies(fieldOfStudies);
         offer.setSpecializations(specializations);

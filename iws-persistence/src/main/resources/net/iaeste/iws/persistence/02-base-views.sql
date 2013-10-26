@@ -70,17 +70,20 @@ create view group_permissions as
 -- =============================================================================
 create view country_details as
   select
+    c.id                   as country_id,
     c.country_code         as country_code,
     c.country_name         as country_name,
     c.country_name_full    as country_name_full,
     c.country_name_native  as country_name_native,
-    c.nationality          as nationality,
-    c.citizens             as citizens,
-    c.phonecode            as phonecode,
-    c.currency             as currency,
-    c.languages            as languages,
-    c.membership           as membership,
-    c.member_since         as member_since,
+    c.nationality          as country_nationality,
+    c.citizens             as country_citizens,
+    c.phonecode            as country_phonecode,
+    c.currency             as country_currency,
+    c.languages            as country_languages,
+    c.membership           as country_membership,
+    c.member_since         as country_member_since,
+    c.modified             as country_modified,
+    c.created              as country_created,
     g.list_name            as list_name,
     u.firstname            as ns_firstname,
     u.lastname             as ns_lastname
@@ -103,7 +106,7 @@ create view notification_job_task_details as
     njt.attempts           as attempts,
     nj.notification_type   as notification_type,
     nj.object              as object,
-    njt.consumer_id         as consumer_id
+    njt.consumer_id        as consumer_id
   from
     notification_job_tasks njt
     left join notification_jobs nj  on njt.job_id = nj.id

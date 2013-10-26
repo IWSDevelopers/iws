@@ -317,6 +317,15 @@ public final class Country extends AbstractVerification {
         this.listName = listName;
     }
 
+    /**
+     * Retrieves the National mailinglist, however as it is not unique
+     * (Cooperating Institutions share the same Country, but have individual NS
+     * & Mailinglists), it has been deprecated.
+     *
+     * @return Listname
+     * @deprecated please use the Group instead.
+     */
+    @Deprecated
     public String getListName() {
         return listName;
     }
@@ -331,6 +340,15 @@ public final class Country extends AbstractVerification {
         this.nsFirstname = nsFirstname;
     }
 
+    /**
+     * Retrieves the NS Firstname, however as it is not unique (Cooperating
+     * Institutions share the same Country, but have individual NS &
+     * Mailinglists), it has been deprecated.
+     *
+     * @return NS Firstname
+     * @deprecated please use the Group instead.
+     */
+    @Deprecated
     public String getNsFirstname() {
         return nsFirstname;
     }
@@ -345,6 +363,15 @@ public final class Country extends AbstractVerification {
         this.nsLastname = nsLastname;
     }
 
+    /**
+     * Retrieves the NS Lastname, however as it is not unique (Cooperating
+     * Institutions share the same Country, but have individual NS &
+     * Mailinglists), it has been deprecated.
+     *
+     * @return NS Lastname
+     * @deprecated please use the Group instead.
+     */
+    @Deprecated
     public String getNsLastname() {
         return nsLastname;
     }

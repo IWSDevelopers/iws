@@ -12,10 +12,8 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.persistence.views;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.SortingField;
 
 /**
@@ -27,9 +25,6 @@ public abstract class AbstractView<T> implements IWSView<T> {
 
     protected SortingField sortField = SortingField.CREATED;
     protected boolean sortAscending = true;
-
-    /** {@see IWBaseConstats#SERIAL_VERSION_UID}. */
-    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
      * {@inheritDoc}

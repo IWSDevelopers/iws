@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence.views;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.common.notification.NotificationType;
 
 import javax.persistence.Column;
@@ -44,9 +43,6 @@ import javax.persistence.Table;
 })
 @Table(name = "notification_job_task_details")
 public class NotificationJobTasksView extends AbstractView<NotificationJobTasksView> {
-
-    /** {@see IWSConstants#SERIAL_VERSION_UID}. */
-    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @Column(name = "id")

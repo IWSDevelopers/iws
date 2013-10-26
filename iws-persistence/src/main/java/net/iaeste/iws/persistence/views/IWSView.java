@@ -16,8 +16,6 @@ package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.enums.SortingField;
 
-import java.io.Serializable;
-
 /**
  * When reading multiple records from the system, it must be possible to sort
  * these according to the user requesting it. Since sorting is a field that
@@ -32,7 +30,7 @@ import java.io.Serializable;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface IWSView<T> extends Serializable, Comparable<T> {
+public interface IWSView<T> extends Comparable<T> {
 
     /**
      * Sets the field to sort by, by default the listing is sorted according to

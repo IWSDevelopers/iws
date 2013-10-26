@@ -130,18 +130,22 @@ public final class CountryService {
     private static Country transform(final CountryView view) {
         final Country country = new Country();
 
-        country.setCountryCode(view.getCountryCode());
-        country.setCountryName(view.getCountryName());
-        country.setCountryNameFull(view.getCountryNameFull());
-        country.setCountryNameNative(view.getCountryNameNative());
-        country.setNationality(view.getNationality());
-        country.setCitizens(view.getCitizens());
-        country.setPhonecode(view.getPhonecode());
-        country.setCurrency(view.getCurrency());
-        country.setLanguages(view.getLanguages());
-        country.setMembership(view.getMembership());
-        country.setMemberSince(view.getMemberSince());
-        country.setListName(view.getListName());
+        // Note, ignored lines are either not mapped in (additional details), or
+        // is mapped in via different views (NS & Listname) since they are not
+        // uniquely distinguishable as Cooperating Institutions will have more
+        // than one NS & list
+        country.setCountryCode(view.getCountry().getCountryCode());
+        country.setCountryName(view.getCountry().getCountryName());
+        //country.setCountryNameFull(view.getCountry().getCountryNameFull());
+        //country.setCountryNameNative(view.getCountry().getCountryNameNative());
+        country.setNationality(view.getCountry().getNationality());
+        //country.setCitizens(view.getCountry().getCitizens());
+        country.setPhonecode(view.getCountry().getPhonecode());
+        country.setCurrency(view.getCountry().getCurrency());
+        //country.setLanguages(view.getCountry().getLanguages());
+        country.setMembership(view.getCountry().getMembership());
+        country.setMemberSince(view.getCountry().getMemberSince());
+        country.setListName(view.getListname());
         country.setNsFirstname(view.getNsFirstname());
         country.setNsLastname(view.getNsLastname());
 

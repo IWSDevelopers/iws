@@ -41,33 +41,33 @@ public final class ViewTransformer {
         final Employer employer = new Employer();
 
         // First, read out the the common Employer fields
-        employer.setEmployerId(view.getExternalId());
-        employer.setName(view.getName());
-        employer.setDepartment(view.getDepartment());
-        employer.setBusiness(view.getBusiness());
-        employer.setEmployeesCount(view.getNumberOfEmployees());
-        employer.setWebsite(view.getWebsite());
-        employer.setWorkingPlace(view.getWorkingPlace());
-        employer.setCanteen(view.getCanteen());
-        employer.setNearestAirport(view.getNearestAirport());
-        employer.setNearestPublicTransport(view.getNearestPublicTransport());
-        employer.setWeeklyHours(view.getWeeklyHours());
-        employer.setDailyHours(view.getDailyHours());
+        employer.setEmployerId(view.getEmployer().getExternalId());
+        employer.setName(view.getEmployer().getName());
+        employer.setDepartment(view.getEmployer().getDepartment());
+        employer.setBusiness(view.getEmployer().getBusiness());
+        employer.setEmployeesCount(view.getEmployer().getNumberOfEmployees());
+        employer.setWebsite(view.getEmployer().getWebsite());
+        employer.setWorkingPlace(view.getEmployer().getWorkingPlace());
+        employer.setCanteen(view.getEmployer().getCanteen());
+        employer.setNearestAirport(view.getEmployer().getNearestAirport());
+        employer.setNearestPublicTransport(view.getEmployer().getNearestPublicTransport());
+        employer.setWeeklyHours(view.getEmployer().getWeeklyHours());
+        employer.setDailyHours(view.getEmployer().getDailyHours());
 
         // Second, read out the Group of the Employer
         final Group group = new Group();
-        group.setGroupId(view.getGroupExternalId());
-        group.setGroupName(view.getGroupName());
-        group.setGroupType(view.getGroupType());
+        group.setGroupId(view.getGroup().getExternalId());
+        group.setGroupName(view.getGroup().getGroupName());
+        group.setGroupType(view.getGroup().getGroupType());
         employer.setGroup(group);
 
         // Third, read out the Address of the Employer
         final Address address = new Address();
-        address.setStreet1(view.getStreet1());
-        address.setStreet2(view.getStreet2());
-        address.setZip(view.getZip());
-        address.setCity(view.getCity());
-        address.setState(view.getState());
+        address.setStreet1(view.getAddress().getStreet1());
+        address.setStreet2(view.getAddress().getStreet2());
+        address.setZip(view.getAddress().getZip());
+        address.setCity(view.getAddress().getCity());
+        address.setState(view.getAddress().getState());
         employer.setAddress(address);
 
         // Finally, return our newly found Employer

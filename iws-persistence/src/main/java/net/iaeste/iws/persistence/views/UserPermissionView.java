@@ -48,9 +48,6 @@ import java.io.Serializable;
 @Table(name = "user_permissions")
 public class UserPermissionView extends AbstractView<UserPermissionView> {
 
-    /** {@see IWSConstants#SERIAL_VERSION_UID}. */
-    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-
     @EmbeddedId
     private UserPermissionViewId id = new UserPermissionViewId();
 

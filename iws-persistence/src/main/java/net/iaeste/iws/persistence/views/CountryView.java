@@ -14,23 +14,17 @@
  */
 package net.iaeste.iws.persistence.views;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.Currency;
-import net.iaeste.iws.api.enums.Membership;
-
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * Maps the CountryDetails View from the database. The View primarily lists the
- * information from the countries table, but links in the current National
- * Secretary, and general information about the National Committee.
+ * Maps the information from the Country Details view in. The information in
+ * this Object, is primarily Keys and embedded Object parts.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -41,160 +35,56 @@ import javax.persistence.Table;
 @NamedQueries({
         @NamedQuery(name = "view.findCountriesByMembership",
                 query = "select v from CountryView v " +
-                        "where v.membership = :type "),
+                        "where v.country.membership = :type "),
         @NamedQuery(name = "view.findCountriesByCountryCode",
                 query = "select v from CountryView v " +
-                        "where upper(v.countryCode) in :codes")
+                        "where upper(v.country.countryCode) in :codes")
 })
 @Table(name = "country_details")
 public class CountryView extends AbstractView<CountryView> {
 
-    /** {@see IWSConstants#SERIAL_VERSION_UID}. */
-    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-
     @Id
-    @Column(name = "country_code")
-    private String countryCode = null;
+    @Column(name = "country_id")
+    private Long id = null;
 
-    @Column(name = "country_name")
-    private String countryName = null;
+    @Embedded
+    private EmbeddedCountry country = null;
 
-    @Column(name = "country_name_full")
-    private String countryNameFull = null;
+    @Column(name = "list_name", insertable = false, updatable = false)
+    private String listname = null;
 
-    @Column(name = "country_name_native")
-    private String countryNameNative = null;
-
-    @Column(name = "nationality")
-    private String nationality = null;
-
-    @Column(name = "citizens")
-    private String citizens = null;
-
-    @Column(name = "phonecode")
-    private String phonecode = null;
-
-    @Column(name = "currency")
-    @Enumerated(EnumType.STRING)
-    private Currency currency = null;
-
-    @Column(name = "languages")
-    private String languages = null;
-
-    @Column(name = "membership")
-    @Enumerated(EnumType.STRING)
-    private Membership membership = null;
-
-    @Column(name = "member_since")
-    private Integer memberSince = null;
-
-    @Column(name = "list_name")
-    private String listName = null;
-
-    @Column(name = "ns_firstname")
+    @Column(name = "ns_firstname", insertable = false, updatable = false)
     private String nsFirstname = null;
 
-    @Column(name = "ns_lastname")
+    @Column(name = "ns_lastname", insertable = false, updatable = false)
     private String nsLastname = null;
 
     // =========================================================================
-    // Entity Setters & Getters
+    // View Setters & Getters
     // =========================================================================
 
-    public void setCountryCode(final String countryCode) {
-        this.countryCode = countryCode;
+    public void setId(final Long id) {
+        this.id = id;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public Long getId() {
+        return id;
     }
 
-    public void setCountryName(final String countryName) {
-        this.countryName = countryName;
+    public void setCountry(final EmbeddedCountry details) {
+        this.country = details;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public EmbeddedCountry getCountry() {
+        return country;
     }
 
-    public void setCountryNameFull(final String countryNameFull) {
-        this.countryNameFull = countryNameFull;
+    public void setListname(final String listname) {
+        this.listname = listname;
     }
 
-    public String getCountryNameFull() {
-        return countryNameFull;
-    }
-
-    public void setCountryNameNative(final String countryNameNative) {
-        this.countryNameNative = countryNameNative;
-    }
-
-    public String getCountryNameNative() {
-        return countryNameNative;
-    }
-
-    public void setNationality(final String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setCitizens(final String citizens) {
-        this.citizens = citizens;
-    }
-
-    public String getCitizens() {
-        return citizens;
-    }
-
-    public void setPhonecode(final String phonecode) {
-        this.phonecode = phonecode;
-    }
-
-    public String getPhonecode() {
-        return phonecode;
-    }
-
-    public void setCurrency(final Currency currency) {
-        this.currency = currency;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setLanguages(final String languages) {
-        this.languages = languages;
-    }
-
-    public String getLanguages() {
-        return languages;
-    }
-
-    public void setMembership(final Membership membership) {
-        this.membership = membership;
-    }
-
-    public Membership getMembership() {
-        return membership;
-    }
-
-    public void setMemberSince(final Integer memberSince) {
-        this.memberSince = memberSince;
-    }
-
-    public Integer getMemberSince() {
-        return memberSince;
-    }
-
-    public void setListName(final String listName) {
-        this.listName = listName;
-    }
-
-    public String getListName() {
-        return listName;
+    public String getListname() {
+        return listname;
     }
 
     public void setNsFirstname(final String nsFirstname) {
@@ -213,6 +103,37 @@ public class CountryView extends AbstractView<CountryView> {
         return nsLastname;
     }
 
+    // =========================================================================
+    // Standard View Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof CountryView)) {
+            return false;
+        }
+
+        // As the view is reading from the current data model, and the Id is
+        // always unique. It is sufficient to compare against this field.
+        final CountryView that = (CountryView) obj;
+        return id.equals(that.id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -222,40 +143,12 @@ public class CountryView extends AbstractView<CountryView> {
 
         switch (sortField) {
             case NAME:
-                result = countryName.compareTo(o.countryName);
+                result = country.getCountryCode().compareTo(o.country.getCountryCode());
                 break;
             default:
-                result = countryCode.compareTo(o.countryCode);
+                result = country.getCountryCode().compareTo(o.country.getCountryCode());
         }
 
         return sortAscending ? result : -result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        // As the View is reading unique records from the database, it is
-        // enough to simply look at their unique Id
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof CountryView)) {
-            return false;
-        }
-
-        final CountryView view = (CountryView) obj;
-        return !(countryCode != null ? !countryCode.equals(view.countryCode) : view.countryCode != null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        // As the View is reading unique records from the database, it is
-        // enough to simply look at their unique Id
-        return countryCode.hashCode();
     }
 }

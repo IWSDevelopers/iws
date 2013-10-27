@@ -34,7 +34,7 @@ public interface Student {
     /**
      * Create or update a student application.
      *
-     * @param token {@link AuthenticationToken}
+     * @param token   {@link AuthenticationToken}
      * @param request {@link ProcessStudentApplicationsRequest}
      * @return {@link} StudentApplicationResponse
      */
@@ -43,7 +43,7 @@ public interface Student {
     /**
      * Fetch student applications.
      *
-     * @param token {@link AuthenticationToken}
+     * @param token   {@link AuthenticationToken}
      * @param request {@link FetchStudentApplicationsRequest}
      * @return {@link FetchStudentApplicationsResponse}
      */
@@ -52,7 +52,7 @@ public interface Student {
     /**
      * Change the status of an application as well as additional status fields.
      *
-     * @param token {@link AuthenticationToken}
+     * @param token   {@link AuthenticationToken}
      * @param request {@link}
      * @return {@link StudentApplicationResponse}
      */

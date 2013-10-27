@@ -19,14 +19,9 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
-import net.iaeste.iws.api.requests.student.StudentRequest;
-import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
-import net.iaeste.iws.api.responses.student.FetchStudentResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.StudentController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.interceptors.Profiler;
@@ -142,8 +137,11 @@ public class StudentBean extends AbstractBean implements Student {
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StudentApplicationResponse processApplicationStatus(AuthenticationToken token, StudentApplicationRequest request) {
+    public StudentApplicationResponse processApplicationStatus(final AuthenticationToken token, final StudentApplicationRequest request) {
         StudentApplicationResponse response;
 
         try {

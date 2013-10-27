@@ -28,21 +28,42 @@ import java.util.Map;
  *
  * It also contains additional fields that are required for certain states.
  *
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
-public class StudentApplicationRequest extends AbstractVerification {
+public final class StudentApplicationRequest extends AbstractVerification {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    // TODO complete implementation, add fields for rejection messages and comments (see exchange mockups)
     private ApplicationStatus status;
 
+    // =========================================================================
+    // Object Constructors
+    // =========================================================================
+
+    /**
+     * Empty Constructor, to use if the setters are invoked. This is required
+     * for WebServices to work properly.
+     */
+    public StudentApplicationRequest() {
+    }
+
+    // =========================================================================
+    // Standard Setters & Getters
+    // =========================================================================
+
+    // =========================================================================
+    // Standard Request Methods
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> validate() {
         return new HashMap<>(0);
     }
-
-    // TODO complete implementation, add fields for rejection messages and comments (see exchange mockups)
 }

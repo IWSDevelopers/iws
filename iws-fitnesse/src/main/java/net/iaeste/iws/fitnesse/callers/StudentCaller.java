@@ -18,13 +18,9 @@ import net.iaeste.iws.api.Student;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
-import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
-import net.iaeste.iws.api.responses.student.FetchStudentResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -62,8 +58,11 @@ public final class StudentCaller implements Student {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StudentApplicationResponse processApplicationStatus(AuthenticationToken token, StudentApplicationRequest request) {
+    public StudentApplicationResponse processApplicationStatus(final AuthenticationToken token, final StudentApplicationRequest request) {
         try {
             return caller.processApplicationStatus(token, request);
         } catch (Exception e) {

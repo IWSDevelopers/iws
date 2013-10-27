@@ -23,6 +23,7 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentResponse;
@@ -50,59 +51,6 @@ public final class StudentController extends CommonController implements Student
      */
     public StudentController(final ServiceFactory factory) {
         super(factory);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processStudent()"));
-        }
-        Fallible response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENTS);
-            verify(request);
-
-            final StudentService service = factory.prepareStudentService();
-            service.processStudents(authentication, request);
-            response = new FetchStudentResponse();
-        } catch (IWSException e) {
-            response = new FetchStudentResponse(e.getError(), e.getMessage());
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processStudent()"));
-        }
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchStudents()"));
-        }
-        FetchStudentResponse response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_STUDENTS);
-            verify(request);
-
-            final StudentService service = factory.prepareStudentService();
-            response = service.fetchStudents(authentication, request);
-        } catch (IWSException e) {
-            response = new FetchStudentResponse(e.getError(), e.getMessage());
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchStudents()"));
-        }
-        return response;
     }
 
     /**
@@ -153,6 +101,32 @@ public final class StudentController extends CommonController implements Student
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished fetchStudentApplications()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StudentApplicationResponse processApplicationStatus(AuthenticationToken token, StudentApplicationRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processApplicationStatus()"));
+        }
+        StudentApplicationResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT_APPLICATION);
+            verify(request);
+
+            final StudentService service = factory.prepareStudentService();
+            response = service.processApplicationStatus(authentication, request);
+        } catch (IWSException e) {
+            response = new StudentApplicationResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processApplicationStatus()"));
         }
         return response;
     }

@@ -14,10 +14,12 @@
  */
 package net.iaeste.iws.core.services;
 
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentResponse;
@@ -38,19 +40,15 @@ public final class StudentService {
         this.studentDao = studentDao;
     }
 
-    public void processStudents(final Authentication authentication, final StudentRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
-    public FetchStudentResponse fetchStudents(final Authentication authenticationn, final FetchStudentsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
-
     public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {
         throw new NotImplementedException("Pending Implementation.");
     }
 
     public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
+        throw new NotImplementedException("Pending Implementation.");
+    }
+
+    public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
         throw new NotImplementedException("Pending Implementation.");
     }
 }

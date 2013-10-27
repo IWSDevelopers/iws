@@ -19,6 +19,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentResponse;
@@ -79,22 +80,6 @@ public final class StudentSpringClient implements Student {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
-        return client.processStudent(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        return client.fetchStudents(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
         return client.processStudentApplication(token, request);
     }
@@ -105,5 +90,13 @@ public final class StudentSpringClient implements Student {
     @Override
     public FetchStudentApplicationsResponse fetchStudentApplications(final AuthenticationToken token, final FetchStudentApplicationsRequest request) {
         return client.fetchStudentApplications(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StudentApplicationResponse processApplicationStatus(AuthenticationToken token, StudentApplicationRequest request) {
+        return client.processApplicationStatus(token, request);
     }
 }

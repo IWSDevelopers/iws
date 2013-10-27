@@ -20,6 +20,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
@@ -108,44 +109,6 @@ public class StudentBean extends AbstractBean implements Student {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
-        Fallible response;
-
-        try {
-            response = controller.processStudent(token, request);
-            log.info(generateResponseLog(response, token));
-        } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public FetchStudentResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
-        FetchStudentResponse response;
-
-        try {
-            response = controller.fetchStudents(token, request);
-            log.info(generateResponseLog(response, token));
-        } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
-            response = new FetchStudentResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
     public StudentApplicationResponse processStudentApplication(final AuthenticationToken token, final ProcessStudentApplicationsRequest request) {
         StudentApplicationResponse response;
 
@@ -174,6 +137,21 @@ public class StudentBean extends AbstractBean implements Student {
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new FetchStudentApplicationsResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    @Override
+    public StudentApplicationResponse processApplicationStatus(AuthenticationToken token, StudentApplicationRequest request) {
+        StudentApplicationResponse response;
+
+        try {
+            response = controller.processApplicationStatus(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new StudentApplicationResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

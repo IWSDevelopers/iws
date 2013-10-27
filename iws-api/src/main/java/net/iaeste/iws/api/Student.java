@@ -15,14 +15,11 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
-import net.iaeste.iws.api.requests.student.StudentRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
-import net.iaeste.iws.api.responses.student.FetchStudentResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
-import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
 
@@ -34,11 +31,30 @@ import javax.ejb.Remote;
 @Remote
 public interface Student {
 
-    Fallible processStudent(AuthenticationToken token, StudentRequest request);
-
-    FetchStudentResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
-
+    /**
+     * Create or update a student application.
+     *
+     * @param token {@link AuthenticationToken}
+     * @param request {@link ProcessStudentApplicationsRequest}
+     * @return {@link} StudentApplicationResponse
+     */
     StudentApplicationResponse processStudentApplication(AuthenticationToken token, ProcessStudentApplicationsRequest request);
 
+    /**
+     * Fetch student applications.
+     *
+     * @param token {@link AuthenticationToken}
+     * @param request {@link FetchStudentApplicationsRequest}
+     * @return {@link FetchStudentApplicationsResponse}
+     */
     FetchStudentApplicationsResponse fetchStudentApplications(AuthenticationToken token, FetchStudentApplicationsRequest request);
+
+    /**
+     * Change the status of an application as well as additional status fields.
+     *
+     * @param token {@link AuthenticationToken}
+     * @param request {@link}
+     * @return {@link StudentApplicationResponse}
+     */
+    StudentApplicationResponse processApplicationStatus(AuthenticationToken token, StudentApplicationRequest request);
 }

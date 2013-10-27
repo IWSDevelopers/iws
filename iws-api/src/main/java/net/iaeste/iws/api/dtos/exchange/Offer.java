@@ -104,6 +104,10 @@ public final class Offer extends AbstractVerification {
     private DateTime modified = null;
     private DateTime created = null;
 
+    // Additional information
+    private String nsFirstname = null;
+    private String nsLastname = null;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -161,6 +165,8 @@ public final class Offer extends AbstractVerification {
             status = offer.status;
             modified = copy(offer.modified);
             created = copy(offer.created);
+            nsFirstname = offer.nsFirstname;
+            nsLastname = offer.nsLastname;
         }
     }
 
@@ -575,7 +581,37 @@ public final class Offer extends AbstractVerification {
         return created;
     }
 
-    // =========================================================================
+    /**
+     * Sets the National Secretary for this Offer (from the National Group).
+     * Note, this field is contrlled bu the IWS and cannot be altered via this
+     * Object.
+     *
+     * @param nsFirstname NS Firstname
+     */
+    public void setNsFirstname(final String nsFirstname) {
+        this.nsFirstname = nsFirstname;
+    }
+
+    public String getNsFirstname() {
+        return nsFirstname;
+    }
+
+    /**
+     * Sets the National Secretary for this Offer (from the National Group).
+     * Note, this field is contrlled bu the IWS and cannot be altered via this
+     * Object.
+     *
+     * @param nsLastname NS Lastname
+     */
+    public void setNsLastname(final String nsLastname) {
+        this.nsLastname = nsLastname;
+    }
+
+    public String getNsLastname() {
+        return nsLastname;
+    }
+
+// =========================================================================
     // Standard DTO Methods
     // =========================================================================
 

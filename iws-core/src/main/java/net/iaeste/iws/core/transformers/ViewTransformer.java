@@ -14,10 +14,15 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static net.iaeste.iws.core.transformers.EmbeddedConverter.convert;
+
 import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.OfferView;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -30,47 +35,56 @@ public final class ViewTransformer {
     }
 
     /**
-     * The result of Views are always a full Object. However, since all fields
-     * are listed in the same Object, it is not possible to use the Entity
-     * transformations for this one.
+     * Transforms the {@link EmployerView} to an {@link Employer} DTO Object. As
+     * the DTO contains several sub-objects, which again may contain certain
+     * other objects, the transformer is building the entire Object Structure.
      *
-     * @param view Employer View to transform
-     * @return Employer DTO Object Tree
+     * @param view EmployerView to transform
+     * @return Employer DTO Object to display externally
      */
     public static Employer transform(final EmployerView view) {
-        final Employer employer = new Employer();
+        final Country country = convert(view.getCountry());
 
-        // First, read out the the common Employer fields
-        employer.setEmployerId(view.getEmployer().getExternalId());
-        employer.setName(view.getEmployer().getName());
-        employer.setDepartment(view.getEmployer().getDepartment());
-        employer.setBusiness(view.getEmployer().getBusiness());
-        employer.setEmployeesCount(view.getEmployer().getNumberOfEmployees());
-        employer.setWebsite(view.getEmployer().getWebsite());
-        employer.setWorkingPlace(view.getEmployer().getWorkingPlace());
-        employer.setCanteen(view.getEmployer().getCanteen());
-        employer.setNearestAirport(view.getEmployer().getNearestAirport());
-        employer.setNearestPublicTransport(view.getEmployer().getNearestPublicTransport());
-        employer.setWeeklyHours(view.getEmployer().getWeeklyHours());
-        employer.setDailyHours(view.getEmployer().getDailyHours());
+        final Group group = convert(view.getGroup());
+        group.setCountry(country);
 
-        // Second, read out the Group of the Employer
-        final Group group = new Group();
-        group.setGroupId(view.getGroup().getExternalId());
-        group.setGroupName(view.getGroup().getGroupName());
-        group.setGroupType(view.getGroup().getGroupType());
+        final Address address = convert(view.getAddress());
+        address.setCountry(country);
+
+        final Employer employer = convert(view.getEmployer());
+        employer.setAddress(address);
         employer.setGroup(group);
 
-        // Third, read out the Address of the Employer
-        final Address address = new Address();
-        address.setStreet1(view.getAddress().getStreet1());
-        address.setStreet2(view.getAddress().getStreet2());
-        address.setZip(view.getAddress().getZip());
-        address.setCity(view.getAddress().getCity());
-        address.setState(view.getAddress().getState());
-        employer.setAddress(address);
-
-        // Finally, return our newly found Employer
         return employer;
+    }
+
+    /**
+     * Transforms the {@link OfferView} to an {@link Offer} DTO Object. As the
+     * DTO contains several sub-objects, which again may contain certain other
+     * objects, the transformer is building the entire Object Structure.
+     *
+     * @param view OfferView to transform
+     * @return Offer DTO Object to display externally
+     */
+    public static Offer transform(final OfferView view) {
+        final Country country = convert(view.getCountry());
+
+        final Group group = convert(view.getGroup());
+        group.setCountry(country);
+
+        final Address address = convert(view.getAddress());
+        address.setCountry(country);
+
+        final Employer employer = convert(view.getEmployer());
+        employer.setAddress(address);
+        employer.setGroup(group);
+
+        final Offer offer = convert(view.getOffer());
+        offer.setNsFirstname(view.getNsFirstname());
+        offer.setNsLastname(view.getNsLastname());
+        offer.setEmployer(convert(view.getEmployer()));
+        offer.setGroup(group);
+
+        return offer;
     }
 }

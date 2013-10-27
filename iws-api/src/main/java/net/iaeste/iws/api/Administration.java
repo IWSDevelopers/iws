@@ -148,8 +148,12 @@ public interface Administration {
     Fallible changeAccountName(AuthenticationToken token, AccountNameRequest request);
 
     /**
-     * Retrieves a list of users from the system.
-     * TODO: @Kim Review description
+     * Retrieves the details about a user. The amount of details depends upon
+     * the users privacy settings. If the privacy settings are high, then only
+     * the user itself can view all the details.<br />
+     *   Note, that by default all pricacy settings are set to high, meaning
+     * that users have to actively lower them before others can view this
+     * information.
      *
      * @param token   Authentication information about the user invoking the
      *                request
@@ -211,6 +215,21 @@ public interface Administration {
      */
     Fallible changeGroupOwner(AuthenticationToken token, OwnerRequest request);
 
+    /**
+     * Processes a users relation to a Group, either by creating a new, deleting
+     * an existing or modifying an existing.<br />
+     *   If invoked by the user, then it is possible to make a couple of minor
+     * changes such as changing their title and mailinglist settings.<br />
+     *   If invoked by an administrator against a different user, then it is
+     * possible to change the persons permissions, though it is not possible to
+     * use this request to assign a new owner to a Group, this is handled via a
+     * different request.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request data, must contain the UserGroup settings
+     * @return Standard Error Object
+     */
     Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
 
     /**

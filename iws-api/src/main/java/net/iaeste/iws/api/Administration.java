@@ -149,6 +149,7 @@ public interface Administration {
 
     /**
      * Retrieves a list of users from the system.
+     * TODO: @Kim Review description
      *
      * @param token   Authentication information about the user invoking the
      *                request

@@ -74,7 +74,19 @@ public final class StudentAcceptance extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setApplicationId(final String applicationId) {
+    /**
+     * Sets the Application Id, which is the key for this Object. If the Id is
+     * undefined, i.e. null, then the system will process it as a new
+     * Application, causing errors if it already exists. Otherwise, if it is
+     * set, the system will process it as if it is an existing Object, causing
+     * problems if it doesn't exist.<br />
+     *   The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param applicationId Application Id
+     */
+    public void setApplicationId(final String applicationId) throws IllegalArgumentException {
+        ensureValidId("applicationId", applicationId);
         this.applicationId = applicationId;
     }
 

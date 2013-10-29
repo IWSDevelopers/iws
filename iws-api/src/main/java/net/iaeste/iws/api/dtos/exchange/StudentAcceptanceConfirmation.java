@@ -87,7 +87,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setApplicationId(final String applicationId) {
         ensureValidId("applicationId", applicationId);
-
         this.applicationId = applicationId;
     }
 
@@ -97,7 +96,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setDeparture(final Date departure) {
         ensureNotNull("departure", departure);
-
         this.departure = departure;
     }
 
@@ -107,7 +105,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setTransportationType(final TransportationType transportationType) {
         ensureNotNull("transportationType", transportationType);
-
         this.transportationType = transportationType;
     }
 
@@ -117,7 +114,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setDepartureFrom(final String departureFrom) {
         ensureNotNull("departureFrom", departureFrom);
-
         this.departureFrom = departureFrom;
     }
 
@@ -127,7 +123,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setTransportNumber(final String transportNumber) {
         ensureNotNull("transportNumber", transportNumber);
-
         this.transportNumber = transportNumber;
     }
 
@@ -137,7 +132,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setArrivalDateTime(final Date arrivalDateTime) {
         ensureNotNull("arrivalDateTime", arrivalDateTime);
-
         this.arrivalDateTime = arrivalDateTime;
     }
 
@@ -147,7 +141,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setPhoneNumberDuringTravel(final String phoneNumberDuringTravel) {
         ensureNotNull("phoneNumberDuringTravel", phoneNumberDuringTravel);
-
         this.phoneNumberDuringTravel = phoneNumberDuringTravel;
     }
 
@@ -157,7 +150,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setLodgingRequiredFrom(final Date lodgingRequiredFrom) {
         ensureNotNull("lodgingRequiredFrom", lodgingRequiredFrom);
-
         this.lodgingRequiredFrom = lodgingRequiredFrom;
     }
 
@@ -167,7 +159,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setLodgingRequiredTo(final Date lodgingRequiredTo) {
         ensureNotNull("lodgingRequiredTo", lodgingRequiredTo);
-
         this.lodgingRequiredTo = lodgingRequiredTo;
     }
 
@@ -177,7 +168,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setOtherInformation(final String otherInformation) {
         ensureNotNullOrTooLong("otherInformation", otherInformation, 5000);
-
         this.otherInformation = otherInformation;
     }
 
@@ -187,7 +177,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setInsuranceCompany(final String insuranceCompany) {
         ensureNotNull("insuranceCompany", insuranceCompany);
-
         this.insuranceCompany = insuranceCompany;
     }
 
@@ -197,7 +186,6 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
     public void setInsuranceReceiptNumber(final String insuranceReceiptNumber) {
         ensureNotNull("insuranceReceiptNumber", insuranceReceiptNumber);
-
         this.insuranceReceiptNumber = insuranceReceiptNumber;
     }
 

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.StudentTest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.exchange.StudentTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,14 +12,14 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.dtos;
+package net.iaeste.iws.api.dtos.exchange;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import net.iaeste.iws.api.dtos.exchange.Student;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import org.junit.Test;
 

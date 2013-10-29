@@ -22,6 +22,18 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * If requested, all changes can be monitored internally. The monitoring means
+ * that the changes are stored, either complete or just the individual fields,
+ * in a history.<br />
+ *   This Object contain the list of differences for a single update. Complete
+ * with who and when. Note, that the control what is to be stored, is set by the
+ * Group. By default. the IWS will try to uphold the strictest privacy
+ * guidelines, meaning that the initial settings is to not store any such
+ * information.<br />
+ *   It is important to note, that this Object is reading out information that
+ * is stored as part of a previous change, meaning that it is not possible to
+ * make any changes using this Object.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7

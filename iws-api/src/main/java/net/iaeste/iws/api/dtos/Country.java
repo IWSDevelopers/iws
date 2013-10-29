@@ -53,7 +53,9 @@ public final class Country extends AbstractVerification {
     private Membership membership = null;
     private Integer memberSince = null;
     private String listName = null;
+    @Deprecated
     private String nsFirstname = null;
+    @Deprecated
     private String nsLastname = null;
 
     // =========================================================================

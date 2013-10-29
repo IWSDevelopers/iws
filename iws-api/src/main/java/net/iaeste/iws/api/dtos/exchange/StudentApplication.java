@@ -15,9 +15,10 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
-import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.util.AbstractVerification;
@@ -54,10 +55,10 @@ public final class StudentApplication extends AbstractVerification {
     private ApplicationStatus status = null;
 
     // TODO complete implementation
-    private String homeAddress = null;
+    private Address homeAddress = null;
     private String email = null; // should be copied for an application if a student wants to use a different address for login
     private String phoneNumber = null;
-    private String addressDuringTerms = null;
+    private Address addressDuringTerms = null;
     private Date dateOfBirth = null;
     private String placeOfBirth = null;
     private String passportNumber = null;

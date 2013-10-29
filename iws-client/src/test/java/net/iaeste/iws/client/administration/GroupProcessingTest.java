@@ -213,14 +213,6 @@ public final class GroupProcessingTest extends AbstractAdministration {
     }
 
     @Test
-    public void testCreatingSARAsSubGroupToMembers() {
-        final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.SAR, "My Group");
-        assertThat(result.isOk(), is(false));
-        assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
-        assertThat(result.getMessage(), is("Not allowed to create a sub-group of type SAR"));
-    }
-
-    @Test
     public void testCreatingAlumniAsSubGroupToMembers() {
         final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.ALUMNI, "My Group");
         assertThat(result.isOk(), is(false));
@@ -282,14 +274,6 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type NATIONAL"));
-    }
-
-    @Test
-    public void testCreatingSARAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.SAR, "My Group");
-        assertThat(result.isOk(), is(false));
-        assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
-        assertThat(result.getMessage(), is("Not allowed to create a sub-group of type SAR"));
     }
 
     @Test

@@ -316,7 +316,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
     private static void verifyGroupTypeToBeShareTo(final List<GroupEntity> groups) {
         for (final GroupEntity group : groups) {
-            if (group.getGroupType().getGrouptype() != GroupType.NATIONAL && group.getGroupType().getGrouptype() != GroupType.SAR) {
+            if (group.getGroupType().getGrouptype() != GroupType.NATIONAL) {
                 throw new VerificationException("The group type '" + group.getGroupType().getGrouptype() + "' is not allowed to be used for publishing of offers.");
             }
         }

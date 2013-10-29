@@ -51,7 +51,6 @@ import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
-import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -662,9 +661,8 @@ public final class OfferTest extends AbstractTest {
         // 86 countries are entered in the test data, minus the own country (austria)
         assertThat("Expect from test data to get all groups minus the own -> 85", response.getGroups().size(), is(85));
 
-        final GroupType[] groupTypes = { GroupType.NATIONAL, GroupType.SAR };
         for (final Group group : response.getGroups()) {
-            assertThat(group.getGroupType(), Matchers.isIn(groupTypes));
+            assertThat(group.getGroupType(), is(GroupType.NATIONAL));
             assertThat(group.getCountry().getCountryCode(), is(not("AT")));
         }
     }

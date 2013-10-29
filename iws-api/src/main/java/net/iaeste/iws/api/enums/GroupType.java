@@ -19,8 +19,7 @@ package net.iaeste.iws.api.enums;
  * basic functionality (permissions). Please note, that certain GroupTypes, are
  * designed so any given user may only be member of 1 (one), others are open,
  * so users can be part of many. The restricted groups are: Administration,
- * Members, National and Sar - In fact, a user can only be member of either 1
- * National or 1 SAR.
+ * Members and National - In fact, a user can only be member of National Group.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -115,19 +114,9 @@ public enum GroupType {
      *   The type of functionality will consists of access to certain sections
      * of the IntraWeb, and only some of the members of the Staff group will
      * be allowed to join the NC's Mailinglist.<br />
-     *   Note; users can only be member of 1 National or SAR Group!
+     *   Note; users can only be member of 1 National Group!
      */
     NATIONAL,
-
-    /**
-     * SAR's or Self Administrated Region, is areas where there are discussions
-     * as to the regions self reliance. An example would be Denmark, where the
-     * regions Greenland and Faroe Islands are both SAR's, with independent
-     * governments, but still relying on the primary country's blessing in
-     * certain areas.<br />
-     *   Note; users can only be member of 1 National or SAR Group!
-     */
-    SAR,
 
     /**
      * Local Groups are for Local Committees around the Country. Local Groups

@@ -322,7 +322,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public GroupEntity findNationalGroup(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("group.findNationalOrSarByUser");
+        final Query query = entityManager.createNamedQuery("group.findNationalByUser");
         query.setParameter("uid", user.getId());
 
         return (GroupEntity) query.getSingleResult();

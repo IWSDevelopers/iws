@@ -227,7 +227,7 @@ public final class GroupService {
                 // If we have a National/General Secretary change, we
                 // additionally have to change the Owner of the (Parent)
                 // Member Group
-                if ((type == GroupType.NATIONAL) || (type == GroupType.SAR) || group.getId().equals(GENERAL_SECRETARY_GROUP)) {
+                if ((type == GroupType.NATIONAL) || group.getId().equals(GENERAL_SECRETARY_GROUP)) {
                     final GroupEntity memberGroup = dao.findMemberGroup(user);
                     if (memberGroup.getId().equals(group.getParentId())) {
                         changeGroupOwner(authentication, user, memberGroup, request.getTitle());

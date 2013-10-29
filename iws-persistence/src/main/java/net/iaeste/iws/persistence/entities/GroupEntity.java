@@ -74,12 +74,11 @@ import java.util.Map;
                 query = "select g from GroupEntity g " +
                         "where g.parentId = :pid" +
                         "  and lower(g.groupName) like lower(:name)"),
-        @NamedQuery(name = "group.findNationalOrSarByUser",
+        @NamedQuery(name = "group.findNationalByUser",
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
                         "where g.id = ug.group.id" +
                         "  and ug.user.id = :uid" +
-                        "  and (g.groupType.grouptype = 'NATIONAL'" +
-                        "   or g.groupType.grouptype = 'SAR')"),
+                        "  and g.groupType.grouptype = 'NATIONAL'"),
         @NamedQuery(name = "group.findSubGroupsByParentId",
                     query = "select g from GroupEntity g " +
                         "where g.status <> 'DELETED'" +
@@ -111,8 +110,7 @@ import java.util.Map;
         @NamedQuery(name = "group.findGroupsForSharing",
                 query = "select g from GroupEntity g " +
                         "where g.id <> :gid" +
-                        "  and (g.groupType.grouptype = 'NATIONAL'" +
-                        "  or  g.groupType.grouptype = 'SAR')" +
+                        "  and g.groupType.grouptype = 'NATIONAL'" +
                         "order by g.groupName")
 })
 @Entity

@@ -80,7 +80,20 @@ public final class UserGroup extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUserGroupId(final String userGroupId) {
+    /**
+     * Sets the UserGroup Id, which is the internally generated key for this
+     * Object. Note, that the presence of the value will determine if the IWS
+     * should process this record as if it exist or not. If the Id is set, but
+     * no record exists, then the system will reply with an error. Likewise, if
+     * no Id is provided, but the record exists, the system will reply with an
+     * error.<br />
+     *   The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param userGroupId UserGroup Id
+     * @throws IllegalArgumentException if the Id is set but invalid
+     */
+    public void setUserGroupId(final String userGroupId) throws IllegalArgumentException {
         ensureValidId("userGroupId", userGroupId);
         this.userGroupId = userGroupId;
     }
@@ -89,7 +102,15 @@ public final class UserGroup extends AbstractVerification {
         return userGroupId;
     }
 
-    public void setUser(final User user) {
+    /**
+     * Sets the User, which should have a Group relation. The User must be
+     * defined, otherwise the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param user The User to create / manage a Group relation for
+     * @throws IllegalArgumentException If the User is undefined
+     */
+    public void setUser(final User user) throws IllegalArgumentException {
         ensureNotNullAndVerifiable("user", user);
         this.user = new User(user);
     }
@@ -98,7 +119,15 @@ public final class UserGroup extends AbstractVerification {
         return new User(user);
     }
 
-    public void setGroup(final Group group) {
+    /**
+     * Sets the Group, which the User is / should be related to. The Group must
+     * be defined, otherwise the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param group The Group, which the User is / should be related to
+     * @throws IllegalArgumentException If the Group is invalid
+     */
+    public void setGroup(final Group group) throws IllegalArgumentException {
         ensureNotNullAndVerifiable("group", group);
         this.group = new Group(group);
     }
@@ -107,7 +136,18 @@ public final class UserGroup extends AbstractVerification {
         return new Group(group);
     }
 
-    public void setRole(final Role role) {
+    /**
+     * Sets the Users Role within a Group. The user must have a role, to what
+     * and how the user may interact with the data belonging to the Group.<br />
+     *   The User may have any valid Role, however there can be only one User
+     * who have the role "Owner" within a Group.<br />
+     *   The value is mandatory, and if not set, then the method will thrown
+     * an {@code IllegalArgumentException}.
+     *
+     * @param role User Role within the Group
+     * @throws IllegalArgumentException if the Role is invalid.
+     */
+    public void setRole(final Role role) throws IllegalArgumentException {
         ensureNotNullAndVerifiable("role", role);
         this.role = new Role(role);
     }
@@ -116,7 +156,15 @@ public final class UserGroup extends AbstractVerification {
         return role;
     }
 
-    public void setTitle(final String title) {
+    /**
+     * Sets the Users custom title within the Group. The value may not exceed
+     * the maximum allowed value of 50 characters, if it exceeds this - then the
+     * method will throw an {@code IllegalArgumentException}.
+     *
+     * @param title Custom title for the user
+     * @throws IllegalArgumentException if the value exceeds 50 chacters
+     */
+    public void setTitle(final String title) throws IllegalArgumentException {
         ensureNotTooLong("title", title, 50);
         this.title = title;
     }
@@ -125,6 +173,13 @@ public final class UserGroup extends AbstractVerification {
         return title;
     }
 
+    /**
+     * If the User should be on the public mailinglist, i.e. the @iaeste.org
+     * mailinglist. Note, that only if the Group allows public mailinglists will
+     * this have an affect for the user.
+     *
+     * @param onPublicList True if the user should be on, otherwise false
+     */
     public void setOnPublicList(final boolean onPublicList) {
         this.onPublicList = onPublicList;
     }
@@ -133,6 +188,13 @@ public final class UserGroup extends AbstractVerification {
         return onPublicList;
     }
 
+    /**
+     * If the User should be on the private mailinglist, i.e. the @iaeste.net
+     * mailinglist. Note, that only if the Group allows private mailinglists
+     * will this have an effect for the user.
+     *
+     * @param onPrivateList True if the user should be on, otherwise false
+     */
     public void setOnPrivateList(final boolean onPrivateList) {
         this.onPrivateList = onPrivateList;
     }
@@ -141,6 +203,13 @@ public final class UserGroup extends AbstractVerification {
         return onPrivateList;
     }
 
+    /**
+     * The timestamp, for when the User was added to the Group. Note, that this
+     * value is controlled by the IWS, meaning that changing it will not have
+     * any effect.
+     *
+     * @param memberSince Date when the User was added to the Group
+     */
     public void setMemberSince(final Date memberSince) {
         this.memberSince = memberSince;
     }

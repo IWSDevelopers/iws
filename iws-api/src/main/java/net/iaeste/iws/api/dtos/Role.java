@@ -88,7 +88,20 @@ public final class Role extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setRoleId(final String roleId) {
+    /**
+     * Sets the Role Id, which is the internally generated key for this Object.
+     * Note, that the presence of the value will determine if the IWS should
+     * process this record as if it exist or not. If the Id is set, but no
+     * record exists, then the system will reply with an error. Likewise, if no
+     * Id is provided, but the record exists, the system will reply with an
+     * error.<br />
+     *   The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param roleId Role Id
+     * @throws IllegalArgumentException if the Id is set but invalid
+     */
+    public void setRoleId(final String roleId) throws IllegalArgumentException {
         ensureValidId("roleId", roleId);
         this.roleId = roleId;
     }
@@ -97,7 +110,16 @@ public final class Role extends AbstractVerification {
         return roleId;
     }
 
-    public void setRoleName(final String roleName) {
+    /**
+     * Sets the name of the Role. The name must be defined but not exceed the
+     * maximum allowed length of 50 characters. If the name is either null,
+     * empty or too long, then the method will thrown an
+     * {@code IllegalArgumentException}.
+     *
+     * @param roleName Name of this Role
+     * @throws IllegalArgumentException if the name is either null, empty or too long
+     */
+    public void setRoleName(final String roleName) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("roleName", roleName, 50);
         this.roleName = roleName;
     }
@@ -106,7 +128,26 @@ public final class Role extends AbstractVerification {
         return roleName;
     }
 
-    public void setPermissions(final Set<Permission> permissions) {
+    /**
+     * The Role contains a set of Permissions. This set may not be null. It is
+     * allowed to contain any internally defined Permission. Please note, that a
+     * Role is general, and although some permissions may be added, the
+     * functionality is linked together with the Groups, so the system will
+     * determine if a User is allowed to perform the action based on the
+     * combined information of both Permission and Group, not just the
+     * one.<br />
+     *   The IWS uses the mathematical "Set" to verify if a Permission is
+     * allowed for a User in the given context or not. If both the Role and the
+     * Group have the Permission assigned, then the user may perform the action,
+     * otherwise not.<br />
+     *   If the permission is null, then the method will thrown an
+     * {@code IllegalArgumentException}.
+     *
+     * @param permissions Set of Permissions for this Role
+     * @throws IllegalArgumentException
+     */
+    public void setPermissions(final Set<Permission> permissions) throws IllegalArgumentException {
+        ensureNotNull("permissions", permissions);
         this.permissions = copy(permissions);
     }
 

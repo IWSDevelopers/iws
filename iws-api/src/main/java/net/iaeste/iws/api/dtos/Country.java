@@ -52,6 +52,7 @@ public final class Country extends AbstractVerification {
     private String languages = null;
     private Membership membership = null;
     private Integer memberSince = null;
+    @Deprecated
     private String listName = null;
     @Deprecated
     private String nsFirstname = null;
@@ -314,7 +315,9 @@ public final class Country extends AbstractVerification {
      * not updatable via the Country Object.
      *
      * @param listName Mailinglist name
+     * @deprecated please use the Group instead.
      */
+    @Deprecated
     public void setListName(final String listName) {
         this.listName = listName;
     }
@@ -337,7 +340,9 @@ public final class Country extends AbstractVerification {
      * updated via the Country Object.
      *
      * @param nsFirstname Firstname of the National Secretary
+     * @deprecated please use the Group instead.
      */
+    @Deprecated
     public void setNsFirstname(final String nsFirstname) {
         this.nsFirstname = nsFirstname;
     }
@@ -360,7 +365,9 @@ public final class Country extends AbstractVerification {
      * updated via the Country Object.
      *
      * @param nsLastname Lastname of the National Secretary
+     * @deprecated please use the Group instead
      */
+    @Deprecated
     public void setNsLastname(final String nsLastname) {
         this.nsLastname = nsLastname;
     }
@@ -440,17 +447,7 @@ public final class Country extends AbstractVerification {
         if (membership != country.membership) {
             return false;
         }
-        if (memberSince != null ? !memberSince.equals(country.memberSince) : country.memberSince != null) {
-            return false;
-        }
-        if (listName != null ? !listName.equals(country.listName) : country.listName != null) {
-            return false;
-        }
-        if (nsFirstname != null ? !nsFirstname.equals(country.nsFirstname) : country.nsFirstname != null) {
-            return false;
-        }
-
-        return !(nsLastname != null ? !nsLastname.equals(country.nsLastname) : country.nsLastname != null);
+        return !(memberSince != null ? !memberSince.equals(country.memberSince) : country.memberSince != null);
     }
 
     /**
@@ -471,9 +468,6 @@ public final class Country extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (languages != null ? languages.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (membership != null ? membership.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (memberSince != null ? memberSince.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (listName != null ? listName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nsFirstname != null ? nsFirstname.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nsLastname != null ? nsLastname.hashCode() : 0);
 
         return result;
     }
@@ -495,9 +489,6 @@ public final class Country extends AbstractVerification {
                 ", languages='" + languages + '\'' +
                 ", membership=" + membership +
                 ", memberSince=" + memberSince +
-                ", listName='" + listName + '\'' +
-                ", nsFirstname='" + nsFirstname + '\'' +
-                ", nsLastname='" + nsLastname + '\'' +
                 '}';
     }
 }

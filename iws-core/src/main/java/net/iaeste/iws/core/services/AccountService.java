@@ -80,49 +80,80 @@ public final class AccountService extends CommonService<AccessDao> {
      * @return Error information
      */
     public CreateUserResponse createUser(final Authentication authentication, final CreateUserRequest request) {
-        final CreateUserResponse result;
-
-        // To avoid problems, all internal handling of the username is in lowercase
-        final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-        if (dao.findExistingUserByUsername(username) == null) {
-            final UserEntity user;
-            if (request.isStudent()) {
-                final GroupEntity studentGroup = dao.findStudentGroup(authentication.getGroup());
-                if (studentGroup != null) {
-                    //TODO @Kim: is this comment still valid?
-                    // The data model needs to be extended with Student Role,
-                    // Student Group & Permissions
-                    user = createAndPersistUserEntity(authentication, username, request);
-                    final RoleEntity student = dao.findRoleById(IWSConstants.ROLE_STUDENT);
-
-                    addUserToGroup(user, authentication.getGroup(), student);
-                    addUserToGroup(user, studentGroup, student);
-
-                    //notifications.notify(authentication, user, NotificationType.NEW_STUDENT);
-                } else {
-                    throw new IWSException(IWSErrors.FATAL, "No StudentGroup exists, which can be used.");
-                }
-            } else {
-                final RoleEntity owner = dao.findRoleById(IWSConstants.ROLE_OWNER);
-                final RoleEntity member = dao.findRoleById(IWSConstants.ROLE_MEMBER);
-
-                user = createAndPersistUserEntity(authentication, username, request);
-                final GroupEntity privateGroup = createAndPersistPrivateGroup(user);
-                final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
-                dao.persist(privateUserGroup);
-                addUserToGroup(user, authentication.getGroup(), member);
-
-                notifications.notify(authentication, user, NotificationType.NEW_USER);
-                notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
-            }
-
-            notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
-            result = new CreateUserResponse(transform(user));
+        final UserEntity user;
+        if (request.isStudent()) {
+            user = createStudentAccount(authentication, request);
         } else {
-            result = new CreateUserResponse(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");
+            user = createUserAccount(authentication, request);
         }
 
-        return result;
+        notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
+        return new CreateUserResponse(transform(user));
+    }
+
+    private UserEntity createUserAccount(final Authentication authentication, final CreateUserRequest request) {
+        final RoleEntity owner = dao.findRoleById(IWSConstants.ROLE_OWNER);
+        final RoleEntity member = dao.findRoleById(IWSConstants.ROLE_MEMBER);
+
+        final String username = verifyUsernameNotInSystem(request.getUsername());
+        final UserEntity user = createAndPersistUserEntity(authentication, username, request);
+        final GroupEntity privateGroup = createAndPersistPrivateGroup(user);
+        final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
+
+        dao.persist(privateUserGroup);
+        addUserToGroup(user, authentication.getGroup(), member);
+
+        notifications.notify(authentication, user, NotificationType.NEW_USER);
+        notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
+
+        return user;
+    }
+
+    private UserEntity createStudentAccount(final Authentication authentication, final CreateUserRequest request) {
+        final String username = verifyUsernameNotInSystem(request.getUsername());
+        final GroupEntity studentGroup = findOrCreateStudentGroup(authentication);
+
+        final UserEntity user = createAndPersistUserEntity(authentication, username, request);
+        final RoleEntity student = dao.findRoleById(IWSConstants.ROLE_STUDENT);
+
+        addUserToGroup(user, authentication.getGroup(), student);
+        addUserToGroup(user, studentGroup, student);
+
+        //notifications.notify(authentication, user, NotificationType.NEW_STUDENT);
+
+        return user;
+    }
+
+    private GroupEntity findOrCreateStudentGroup(final Authentication authentication) {
+        final GroupEntity studentGroup;
+
+        final GroupEntity existingGroup = dao.findStudentGroup(authentication.getGroup());
+        if (existingGroup != null) {
+            studentGroup = existingGroup;
+        } else {
+            final GroupEntity memberGroup = authentication.getGroup();
+
+            studentGroup = new GroupEntity();
+            studentGroup.setExternalId(UUID.randomUUID().toString());
+            studentGroup.setCountry(memberGroup.getCountry());
+            studentGroup.setGroupName(memberGroup.getGroupName() + " Students");
+            studentGroup.setGroupType(dao.findGroupType(GroupType.STUDENTS));
+            studentGroup.setParentId(memberGroup.getId());
+            dao.persist(studentGroup);
+        }
+
+        return studentGroup;
+    }
+
+    private String verifyUsernameNotInSystem(final String toCheck) {
+        // To avoid problems, all internal handling of the username is in lowercase
+        final String username = toCheck.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+
+        if (dao.findExistingUserByUsername(username) != null) {
+            throw new IWSException(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");
+        }
+
+        return username;
     }
 
     private void addUserToGroup(final UserEntity user, final GroupEntity group, final RoleEntity role) {
@@ -345,7 +376,6 @@ public final class AccountService extends CommonService<AccessDao> {
      * @throws IWSException if unable to create the user
      */
     private UserEntity createAndPersistUserEntity(final Authentication authentication, final String username, final CreateUserRequest request) throws IWSException {
-        final String alias = generateUserAlias(request);
         final UserEntity user = new UserEntity();
 
         // First, the Password. If no password is specified, then we'll generate
@@ -372,7 +402,7 @@ public final class AccountService extends CommonService<AccessDao> {
         user.setSalt(salt);
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
-        user.setAlias(alias);
+        user.setAlias(generateUserAlias(request));
         user.setCode(generateActivationCode(request));
         user.setPerson(createEmptyPerson(authentication));
         dao.persist(authentication, user);
@@ -381,15 +411,18 @@ public final class AccountService extends CommonService<AccessDao> {
     }
 
     private String generateUserAlias(final CreateUserRequest request) throws IWSException {
-        final String name = StringUtils.convertToAsciiMailAlias(request.getFirstname() + '.' + request.getLastname());
-        final String address = '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
-        final String alias;
+        String alias = null;
 
-        final Long serialNumber = dao.findNumberOfAliasesForName(name);
-        if ((serialNumber != null) && (serialNumber > 0)) {
-            alias = name + (serialNumber + 1) + address;
-        } else {
-            alias = name + address;
+        if (!request.isStudent()) {
+            final String name = StringUtils.convertToAsciiMailAlias(request.getFirstname() + '.' + request.getLastname());
+            final String address = '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+
+            final Long serialNumber = dao.findNumberOfAliasesForName(name);
+            if ((serialNumber != null) && (serialNumber > 0)) {
+                alias = name + (serialNumber + 1) + address;
+            } else {
+                alias = name + address;
+            }
         }
 
         return alias;

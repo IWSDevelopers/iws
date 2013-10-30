@@ -62,10 +62,6 @@ public final class FetchUser extends AbstractFixture<FetchUserResponse> {
         return getResponse().getUser().getPrivacy().toString();
     }
 
-    public String getMemberCountryId() {
-        return getResponse().getUser().getMemberCountryId();
-    }
-
     public String getAlternateEmail() {
         return getResponse().getUser().getPerson().getAlternateEmail();
     }

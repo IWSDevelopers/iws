@@ -69,10 +69,6 @@ public final class ProcessGroup extends AbstractFixture<Fallible> {
         user.setPrivacy(Privacy.valueOf(privacy));
     }
 
-    public void setMemberCountryId(final String memberCountryId) {
-        user.setMemberCountryId(memberCountryId);
-    }
-
     public void setAlternateEmail(final String alternateEmail) {
         final Person person = new Person();
         person.setAlternateEmail(alternateEmail);

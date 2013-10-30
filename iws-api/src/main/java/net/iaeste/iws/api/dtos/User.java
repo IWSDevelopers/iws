@@ -57,7 +57,6 @@ public final class User extends AbstractDto {
     private UserStatus status = null;
     private Privacy privacy = Privacy.PRIVATE;
     private String notifications = null;
-    private String memberCountryId = null;
 
     // =========================================================================
     // Object Constructors
@@ -128,7 +127,6 @@ public final class User extends AbstractDto {
             status = user.status;
             privacy = user.privacy;
             notifications = user.notifications;
-            memberCountryId = user.memberCountryId;
         }
     }
 
@@ -136,7 +134,20 @@ public final class User extends AbstractDto {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setUserId(final String userId) {
+    /**
+     * Sets the User Id, which is the internally generated key for this Object.
+     * Note, that the presence of the value will determine if the IWS should
+     * process this record as if it exist or not. If the Id is set, but no
+     * record exists, then the system will reply with an error. Likewise, if no
+     * Id is provided, but the record exists, the system will reply with an
+     * error.<br />
+     *   The value must be a valid Id, otherwise the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param userId User Id
+     * @throws IllegalArgumentException if the Id is set but invalid
+     */
+    public void setUserId(final String userId) throws IllegalArgumentException {
         ensureValidId("userId", userId);
         this.userId = userId;
     }
@@ -145,7 +156,7 @@ public final class User extends AbstractDto {
         return userId;
     }
 
-    public void setUsername(final String username) {
+    public void setUsername(final String username) throws IllegalArgumentException {
         ensureValidEmail("username", username);
         this.username = username;
     }
@@ -163,7 +174,7 @@ public final class User extends AbstractDto {
         return alias;
     }
 
-    public void setFirstname(final String firstname) {
+    public void setFirstname(final String firstname) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("firstname", firstname, 50);
         this.firstname = firstname;
     }
@@ -172,7 +183,7 @@ public final class User extends AbstractDto {
         return firstname;
     }
 
-    public void setLastname(final String lastname) {
+    public void setLastname(final String lastname) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("lastname", lastname, 50);
         this.lastname = lastname;
     }
@@ -181,7 +192,7 @@ public final class User extends AbstractDto {
         return lastname;
     }
 
-    public void setPerson(final Person person) {
+    public void setPerson(final Person person) throws IllegalArgumentException {
         ensureVerifiable("person", person);
         this.person = new Person(person);
     }
@@ -190,7 +201,7 @@ public final class User extends AbstractDto {
         return new Person(person);
     }
 
-    public void setStatus(final UserStatus status) {
+    public void setStatus(final UserStatus status) throws IllegalArgumentException {
         ensureNotNull("status", status);
         this.status = status;
     }
@@ -199,7 +210,7 @@ public final class User extends AbstractDto {
         return status;
     }
 
-    public void setPrivacy(final Privacy privacy) {
+    public void setPrivacy(final Privacy privacy) throws IllegalArgumentException {
         ensureNotNull("privacy", privacy);
         this.privacy = privacy;
     }
@@ -208,21 +219,13 @@ public final class User extends AbstractDto {
         return privacy;
     }
 
-    public void setNotifications(final String notifications) {
+    public void setNotifications(final String notifications) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("notifications", notifications, 25);
         this.notifications = notifications;
     }
 
     public String getNotifications() {
         return notifications;
-    }
-
-    public void setMemberCountryId(final String memberCountryId) {
-        this.memberCountryId = memberCountryId;
-    }
-
-    public String getMemberCountryId() {
-        return memberCountryId;
     }
 
     // =========================================================================
@@ -279,11 +282,8 @@ public final class User extends AbstractDto {
         if (status != user.status) {
             return false;
         }
-        if (privacy != user.privacy) {
-            return false;
-        }
 
-        return !(memberCountryId != null ? !memberCountryId.equals(user.memberCountryId) : user.memberCountryId != null);
+        return privacy == user.privacy;
     }
 
     /**
@@ -303,7 +303,6 @@ public final class User extends AbstractDto {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (lastname != null ? lastname.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (privacy != null ? privacy.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (memberCountryId != null ? memberCountryId.hashCode() : 0);
 
         return result;
     }
@@ -324,7 +323,6 @@ public final class User extends AbstractDto {
                 ", lastname='" + lastname + '\'' +
                 ", status=" + status +
                 ", privacy=" + privacy +
-                ", memberCountryId='" + memberCountryId + '\'' +
                 '}';
     }
 }

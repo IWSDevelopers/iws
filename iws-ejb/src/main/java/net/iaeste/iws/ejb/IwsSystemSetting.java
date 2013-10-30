@@ -42,7 +42,7 @@ public class IwsSystemSetting {
             iwsSetting = (Properties)context.lookup(IWS_SETTING);
             context.close();
         } catch (NamingException e) {
-            throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailSender) initialization failed.", e);
+            throw new IWSException(IWSErrors.ERROR, "IwsSettings initialization failed.", e);
         }
     }
 

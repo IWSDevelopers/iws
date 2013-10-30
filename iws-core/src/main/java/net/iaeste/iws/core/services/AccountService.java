@@ -89,6 +89,7 @@ public final class AccountService extends CommonService<AccessDao> {
             if (request.isStudent()) {
                 final GroupEntity studentGroup = dao.findStudentGroup(authentication.getGroup());
                 if (studentGroup != null) {
+                    //TODO @Kim: is this comment still valid?
                     // The data model needs to be extended with Student Role,
                     // Student Group & Permissions
                     user = createAndPersistUserEntity(authentication, username, request);
@@ -96,6 +97,8 @@ public final class AccountService extends CommonService<AccessDao> {
 
                     addUserToGroup(user, authentication.getGroup(), student);
                     addUserToGroup(user, studentGroup, student);
+
+                    //notifications.notify(authentication, user, NotificationType.NEW_STUDENT);
                 } else {
                     throw new IWSException(IWSErrors.FATAL, "No StudentGroup exists, which can be used.");
                 }

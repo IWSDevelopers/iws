@@ -82,5 +82,7 @@ public enum NotificationType {
      * When user access activation link and activation is successful,
      * some system setting has to be prepared
      */
-    USER_ACTIVATED
+    USER_ACTIVATED,
+
+    NEW_STUDENT
 }

@@ -92,6 +92,11 @@ public final class Change implements Serializable {
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * The User who made the change.
+     *
+     * @param user User
+     */
     public void setUser(final User user) {
         this.user = user;
     }
@@ -100,6 +105,11 @@ public final class Change implements Serializable {
         return user;
     }
 
+    /**
+     * The Group, which the Data belongs too.
+     *
+     * @param group Owning Group
+     */
     public void setGroup(final Group group) {
         this.group = group;
     }
@@ -108,6 +118,11 @@ public final class Change implements Serializable {
         return group;
     }
 
+    /**
+     * List of all Fields which was changed.
+     *
+     * @param fields Changed Fields
+     */
     public void setFields(final List<Field> fields) {
         this.fields = Copier.copy(fields);
     }
@@ -116,6 +131,11 @@ public final class Change implements Serializable {
         return Copier.copy(fields);
     }
 
+    /**
+     * The Date of the change.
+     *
+     * @param changed Date of Change
+     */
     public void setChanged(final Date changed) {
         this.changed = Copier.copy(changed);
     }

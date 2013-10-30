@@ -79,6 +79,7 @@ public final class Group extends AbstractVerification {
      *
      * @param groupId Group Id
      * @throws IllegalArgumentException if the Id is set but invalid
+     * @see AbstractVerification#UUID_FORMAT
      */
     public void setGroupId(final String groupId) throws IllegalArgumentException {
         ensureValidId("groupId", groupId);

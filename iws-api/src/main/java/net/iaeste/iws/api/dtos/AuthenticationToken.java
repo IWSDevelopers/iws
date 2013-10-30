@@ -171,7 +171,17 @@ public final class AuthenticationToken extends AbstractVerification {
         return groupId;
     }
 
-    public void setTraceId(final String traceId) {
+    /**
+     * If the TraceId is set, then the IWS will use this value for all logging,
+     * making it easier for a third-party system to request log results to see
+     * what was going wrong and why.<br />
+     *   If the value is not a proper Id, then the method will thrown an
+     * {@code IllegalArgumentException}.
+     *
+     * @param traceId TraceId for logging purposes
+     * @throws IllegalArgumentException if the value is not a proper Id
+     */
+    public void setTraceId(final String traceId) throws IllegalArgumentException {
         ensureValidId("traceId", traceId);
         this.traceId = traceId;
     }

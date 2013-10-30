@@ -100,6 +100,7 @@ public final class Role extends AbstractVerification {
      *
      * @param roleId Role Id
      * @throws IllegalArgumentException if the Id is set but invalid
+     * @see AbstractVerification#UUID_FORMAT
      */
     public void setRoleId(final String roleId) throws IllegalArgumentException {
         ensureValidId("roleId", roleId);

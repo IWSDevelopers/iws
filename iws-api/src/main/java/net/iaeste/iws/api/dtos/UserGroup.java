@@ -31,7 +31,6 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyComplexMethod
  */
 public final class UserGroup extends AbstractVerification {
 
@@ -92,6 +91,7 @@ public final class UserGroup extends AbstractVerification {
      *
      * @param userGroupId UserGroup Id
      * @throws IllegalArgumentException if the Id is set but invalid
+     * @see AbstractVerification#UUID_FORMAT
      */
     public void setUserGroupId(final String userGroupId) throws IllegalArgumentException {
         ensureValidId("userGroupId", userGroupId);

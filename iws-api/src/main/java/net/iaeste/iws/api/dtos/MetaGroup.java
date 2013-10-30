@@ -29,12 +29,17 @@ import java.util.Set;
  *   An important part of the MetaGroup information, is the set of Permissions,
  * that is associated with the GroupType. The IWS determines if a user may
  * perform a specific Action, based on the joined result of the Users Role based
- * Permissions, and the GroupType specific Permissions.
+ * Permissions, and the GroupType specific Permissions.<br />
+ *   The Roles Object & the Authorization Object, both link the User associated
+ * Permissions together with the Groups. This Object is therefore considered
+ * deprecated, since the only goal is to mimic this. The Object is also not used
+ * anywhere, so it should be dropped as soon as possible.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Deprecated
 public final class MetaGroup extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */

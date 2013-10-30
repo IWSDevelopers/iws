@@ -39,7 +39,6 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyComplexMethod
  */
 public final class User extends AbstractDto {
 
@@ -146,6 +145,7 @@ public final class User extends AbstractDto {
      *
      * @param userId User Id
      * @throws IllegalArgumentException if the Id is set but invalid
+     * @see AbstractDto#UUID_FORMAT
      */
     public void setUserId(final String userId) throws IllegalArgumentException {
         ensureValidId("userId", userId);

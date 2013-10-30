@@ -30,7 +30,6 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyComplexMethod
  */
 public final class Person extends AbstractVerification {
 
@@ -77,6 +76,14 @@ public final class Person extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * Sets the Address of a Person. The Address is optional, but if set, then
+     * it must be a valid Object. If not, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param address Address for the Person
+     * @throws IllegalArgumentException
+     */
     public void setAddress(final Address address) throws IllegalArgumentException {
         ensureVerifiable("address", address);
         this.address = address;
@@ -86,6 +93,17 @@ public final class Person extends AbstractVerification {
         return address;
     }
 
+    /**
+     * Sets an alternate e-mail address, which can be used if the person is
+     * unreachable via the normal e-mail address. The alternate e-mal address
+     * is optional, but if set - then it must be a valid address. The system
+     * will not verify if the address works, only that it is a correct e-mail
+     * address. If not, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param alternateEmail Alternate E-mail address for the Person
+     * @throws IllegalArgumentException if the e-mail is incorrect
+     */
     public void setAlternateEmail(final String alternateEmail) throws IllegalArgumentException {
         ensureValidEmail("alternateEmail", alternateEmail);
         this.alternateEmail = alternateEmail;
@@ -95,6 +113,15 @@ public final class Person extends AbstractVerification {
         return alternateEmail;
     }
 
+    /**
+     * Sets the Person's landline phone number. The number is optional, but if
+     * set, then the length cannot exceed 25 characters. If the phone number
+     * exceeds the maximum allowed number of characters, then the method will
+     * throw an {@code IllegalArgumentException}.
+     *
+     * @param phone Person's Landline Phonenumber
+     * @throws IllegalArgumentException if the phonenumber exceeds 25 characters
+     */
     public void setPhone(final String phone) throws IllegalArgumentException {
         ensureNotTooLong("phone", phone, 25);
         this.phone = phone;
@@ -104,6 +131,15 @@ public final class Person extends AbstractVerification {
         return phone;
     }
 
+    /**
+     * Sets the Person's Mobile phone number. The number is optional, but if
+     * set, then the length cannot exceed 25 characters. If the mobile number
+     * exceeds the maximum allowed number of characters, then the method will
+     * throw an {@code IllegalArgumentException}.
+     *
+     * @param mobile Person's Mobile Phonenumber
+     * @throws IllegalArgumentException if the mobile number exceeds 25 characters
+     */
     public void setMobile(final String mobile) throws IllegalArgumentException {
         ensureNotTooLong("mobile", mobile, 25);
         this.mobile = mobile;
@@ -113,6 +149,15 @@ public final class Person extends AbstractVerification {
         return mobile;
     }
 
+    /**
+     * Sets the Person's Fax number. The number is optional, but if set, then
+     * the maximum allowed length cannot exceed 25 characters. If the fax number
+     * exceeds the maximum allowed number of characters, then the method will
+     * throw an {@code IllegalArgumentException}.
+     *
+     * @param fax Person's Fax Number
+     * @throws IllegalArgumentException if the fax number exceeds 25 characters
+     */
     public void setFax(final String fax) throws IllegalArgumentException {
         ensureNotTooLong("fax", fax, 25);
         this.fax = fax;
@@ -122,6 +167,12 @@ public final class Person extends AbstractVerification {
         return fax;
     }
 
+    /**
+     * Sets the Person's Date of Birth. The information is optional, and there
+     * is not made any checks for the validity of this value.
+     *
+     * @param birthday Person's Date of Birth
+     */
     public void setBirthday(final Date birthday) {
         this.birthday = birthday;
     }
@@ -130,6 +181,11 @@ public final class Person extends AbstractVerification {
         return birthday;
     }
 
+    /**
+     * Sets the Person's Gender. The information is optional.
+     *
+     * @param gender Person's Gender (Male or Female)
+     */
     public void setGender(final Gender gender) {
         this.gender = gender;
     }

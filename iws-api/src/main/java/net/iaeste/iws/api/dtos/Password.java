@@ -28,7 +28,6 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection MethodReturnAlwaysConstant
  */
 public final class Password extends AbstractVerification {
 
@@ -99,7 +98,14 @@ public final class Password extends AbstractVerification {
 
     /**
      * Ensures that the given New Password is valid, and sets it. This value is
-     * required for both the update Password and the reset Password requests.
+     * required for both the update Password and the reset Password
+     * requests.<br />
+     *   The IWS will only store a salted and hashed version of the Password
+     * internally. Hence, the password will never be retrievable in clear-text
+     * from the IWS.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the value
+     * is either null, or too short. Since the value is never stored nor logged,
+     * there are no other restrictions on it.<br />
      *
      * @param newPassword New Password for a user
      * @throws IllegalArgumentException if the given value is invalid

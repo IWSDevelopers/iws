@@ -15,7 +15,8 @@
 package net.iaeste.iws.api.enums;
 
 /**
- * Notification Frequency - when the user wants to receive notification about an IW action
+ * Notification Frequency - when the user wants to receive notification about an
+ * IW action.
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -23,7 +24,39 @@ package net.iaeste.iws.api.enums;
  */
 public enum NotificationFrequency {
 
-    IMMEDIATELY,
-    DAILY,
-    WEEKLY
+    /**
+     * The IWS Notification System will send notifications immediately.
+     */
+    IMMEDIATELY("Immediately"),
+
+    /**
+     * The IWS Notification System will collect all Notifications and only send
+     * them once a day in a single message.
+     */
+    DAILY("Daily"),
+
+    /**
+     * The IWS Notification System will collect all Notifications and only send
+     * them once a week in a single message.
+     */
+    WEEKLY("Weekly");
+
+    // =========================================================================
+    // Internal Enumeration Functionality
+    // =========================================================================
+
+    private final String description;
+
+    /**
+     * Internal Constructor, for setting the printable description.
+     *
+     * @param description Printable description of the Enumeration
+     */
+    NotificationFrequency(final String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

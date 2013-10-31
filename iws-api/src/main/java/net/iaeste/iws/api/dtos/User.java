@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.util.AbstractDto;
@@ -55,7 +56,7 @@ public final class User extends AbstractDto {
     private Person person = null;
     private UserStatus status = null;
     private Privacy privacy = Privacy.PRIVATE;
-    private String notifications = null;
+    private NotificationFrequency notifications = NotificationFrequency.IMMEDIATELY;
 
     // =========================================================================
     // Object Constructors
@@ -134,21 +135,17 @@ public final class User extends AbstractDto {
     // =========================================================================
 
     /**
-     * Sets the User Id, which is the internally generated key for this Object.
-     * Note, that the presence of the value will determine if the IWS should
-     * process this record as if it exist or not. If the Id is set, but no
-     * record exists, then the system will reply with an error. Likewise, if no
-     * Id is provided, but the record exists, the system will reply with an
-     * error.<br />
-     *   The value must be a valid Id, otherwise the method will throw an
-     * {@code IllegalArgumentException}.
+     * Sets the User Id. Users cannot be created with this Object, rather they
+     * are created with a createUser request. Hence, this field is mandatory,
+     * and must be set to a valid UserId. If the value is not set, then the
+     * method will throw an {@code IllegalArgumentException}.
      *
      * @param userId User Id
-     * @throws IllegalArgumentException if the Id is set but invalid
+     * @throws IllegalArgumentException if the Id is not set or invalid
      * @see AbstractDto#UUID_FORMAT
      */
     public void setUserId(final String userId) throws IllegalArgumentException {
-        ensureValidId("userId", userId);
+        ensureNotNullAndValidId("userId", userId);
         this.userId = userId;
     }
 
@@ -156,8 +153,15 @@ public final class User extends AbstractDto {
         return userId;
     }
 
-    public void setUsername(final String username) throws IllegalArgumentException {
-        ensureValidEmail("username", username);
+    /**
+     * Sets the Username for the user, i.e. the users e-mail address which is
+     * used as identification in the IWS. The value is set from the IWS, but
+     * cannot be updated via this Object. Instead it has to be provided with the
+     * controlUserAccount request.
+     *
+     * @param username User's e-mail address used as Identification
+     */
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -165,8 +169,15 @@ public final class User extends AbstractDto {
         return username;
     }
 
+    /**
+     * The Alias, is the e-mail address, which is generated for the User by the
+     * IWS, as part of the IAESTE Corporate Identity. The alias is only
+     * generated for IAESTE Members, not for Students. The alias cannot be
+     * updated by normal means.
+     *
+     * @param alias IWS Generated IAESTE Alias (Corporate Identity e-mail)
+     */
     public void setAlias(final String alias) {
-        ensureNotTooLong("alias", alias, 125);
         this.alias = alias;
     }
 
@@ -174,8 +185,14 @@ public final class User extends AbstractDto {
         return alias;
     }
 
-    public void setFirstname(final String firstname) throws IllegalArgumentException {
-        ensureNotNullOrEmptyOrTooLong("firstname", firstname, 50);
+    /**
+     * Reads the users firstname from the IWS, the value is set as part of
+     * creating an account, and the value is only read out from the IWS with
+     * this Object.
+     *
+     * @param firstname User's firstname
+     */
+    public void setFirstname(final String firstname) {
         this.firstname = firstname;
     }
 
@@ -183,8 +200,14 @@ public final class User extends AbstractDto {
         return firstname;
     }
 
-    public void setLastname(final String lastname) throws IllegalArgumentException {
-        ensureNotNullOrEmptyOrTooLong("lastname", lastname, 50);
+    /**
+     * Reads the users lastname from the IWS, the value is set as part of
+     * creating an account, and the value is only read out from the IWS with
+     * this Object.
+     *
+     * @param lastname User's lastname
+     */
+    public void setLastname(final String lastname) {
         this.lastname = lastname;
     }
 
@@ -192,6 +215,18 @@ public final class User extends AbstractDto {
         return lastname;
     }
 
+    /**
+     * Sets the User's Personal details. These details are important for certain
+     * things, but is generally falling under the privacy category, meaning that
+     * only of the user is lowering the privacy settings, then it will be
+     * displayed to others.<br />
+     *   The value is optional, and only requires that the Object is valid if it
+     * is set. If not, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param person User's personal details
+     * @throws IllegalArgumentException if invalid
+     */
     public void setPerson(final Person person) throws IllegalArgumentException {
         ensureVerifiable("person", person);
         this.person = new Person(person);
@@ -201,8 +236,13 @@ public final class User extends AbstractDto {
         return new Person(person);
     }
 
-    public void setStatus(final UserStatus status) throws IllegalArgumentException {
-        ensureNotNull("status", status);
+    /**
+     * Reads the User's status from the IWS, the status cannot be altered via
+     * this Object.
+     *
+     * @param status User's Status
+     */
+    public void setStatus(final UserStatus status) {
         this.status = status;
     }
 
@@ -210,6 +250,15 @@ public final class User extends AbstractDto {
         return status;
     }
 
+    /**
+     * Sets the User's privacy setting. By default, the privacy is set to max,
+     * meaning that no information whatsoever will be shared with others.<br />
+     *   The value is mandatory, and setting it to null will cause the method to
+     * throw an {@code IllegalArgumentException}.
+     *
+     * @param privacy User's privacy setting
+     * @throws IllegalArgumentException if set to null
+     */
     public void setPrivacy(final Privacy privacy) throws IllegalArgumentException {
         ensureNotNull("privacy", privacy);
         this.privacy = privacy;
@@ -219,12 +268,23 @@ public final class User extends AbstractDto {
         return privacy;
     }
 
-    public void setNotifications(final String notifications) throws IllegalArgumentException {
-        ensureNotNullOrEmptyOrTooLong("notifications", notifications, 25);
+    /**
+     * Sets the Notification frequency for a User. By default, the frequency is
+     * set to immediately, but it may also be possible to set it to a different
+     * value. Note, this value is mandatory, since it is a vital part of the
+     * inner workings of the IWS.<br />
+     *   The value is mandatory, and setting it to null will cause the method to
+     * throw an {@code IllegalArgumentException}.
+     *
+     * @param notifications User Notification Frequency
+     * @throws IllegalArgumentException if set to null
+     */
+    public void setNotifications(final NotificationFrequency notifications) throws IllegalArgumentException {
+        ensureNotNull("notifications", notifications);
         this.notifications = notifications;
     }
 
-    public String getNotifications() {
+    public NotificationFrequency getNotifications() {
         return notifications;
     }
 

@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.common.exceptions.NotificationException;
@@ -195,9 +196,10 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
      * Personal Notifications period. By default, all notifications are
      * delivered immediately.
      */
+    @Enumerated(EnumType.STRING)
     @Monitored(name="User Notifications", level = MonitoringLevel.DETAILED)
     @Column(name = "notifications", length = 25, nullable = false)
-    private String notifications = "immediately";
+    private NotificationFrequency notifications = NotificationFrequency.IMMEDIATELY;
 
     /**
      * This field is used to store the SHA-256 hashcode value of the users
@@ -372,11 +374,11 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
         return privateData;
     }
 
-    public void setNotifications(final String notifications) {
+    public void setNotifications(final NotificationFrequency notifications) {
         this.notifications = notifications;
     }
 
-    public String getNotifications() {
+    public NotificationFrequency getNotifications() {
         return notifications;
     }
 

@@ -399,7 +399,7 @@ create table users (
     person_id           integer,
     status              varchar(25) default 'NEW',
     private_data        varchar(10) default 'PRIVATE',
-    notifications       varchar(25) default 'immediately',
+    notifications       varchar(25) default 'IMMEDIATELY',
     temporary_code      varchar(128),
     temporary_data      varchar(128),
     modified            timestamp   default now(),

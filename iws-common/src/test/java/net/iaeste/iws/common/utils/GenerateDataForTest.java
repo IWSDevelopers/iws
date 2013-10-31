@@ -53,6 +53,8 @@ public final class GenerateDataForTest {
     private static final String OFFER_INSERT = "insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values\n" +
             "('%s-2014-000001', '%s', %d, '%s', %d, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');";
     private static final String SHARE_ALL_OFFER = "insert into offer_to_group (offer_id, group_id, external_id) select offers.id, groups.id, offers.id || 'what_ever' || groups.id from offers, groups where groups.grouptype_id = %d and offers.group_id != groups.id;";
+    private static final String MAILING_LIST_INSERT = "insert into mailing_lists (external_id, private, list_address, active) values ('%s', '%b', '%s', '%b')";
+    private static final String SUBSCRIBE_USER_TO_LIST = "insert into mailing_list_membership (mailing_list_id, member) values ('%d', '%s')";
 
     private static final int ROLE_OWNER = 1;
     private static long currentCountryId = 1;
@@ -61,6 +63,8 @@ public final class GenerateDataForTest {
     private static long currentAddressId = 1;
     private static long currentEmployerId = 1;
     private static long currentOfferId = 1;
+    private static long currentMailingListId = 1;
+    private static long currentListSubscriptionId = 1;
 
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
@@ -184,12 +188,16 @@ public final class GenerateDataForTest {
         print("delete from users;");
         print("delete from groups where id>= 10;");
         print("delete from countries;");
+        print("delete from mailing_lists;");
+        print("delete from mailing_list_membership;");
         print(RESTART_SEQUENCE, "country_sequence", currentCountryId);
         print(RESTART_SEQUENCE, "group_sequence", currentGroupId);
         print(RESTART_SEQUENCE, "user_sequence", currentUserId);
         print(RESTART_SEQUENCE, "address_sequence", currentAddressId);
         print(RESTART_SEQUENCE, "employer_sequence", currentEmployerId);
         print(RESTART_SEQUENCE, "offer_sequence", currentOfferId);
+        print(RESTART_SEQUENCE, "mailing_list_sequence", currentMailingListId);
+        print(RESTART_SEQUENCE, "mailing_list_membership_sequence", currentListSubscriptionId);
     }
 
     /**
@@ -217,8 +225,10 @@ public final class GenerateDataForTest {
         print(COUNTRY_INSERT, countryCode, committeeName, committeeName, currency.name(), memberSince, memberShip.name());
 
         // Generate the Group SQL, we need both a Member & National Group
-        print(GROUP_INSERT, generateExternalId(), GroupType.MEMBER.ordinal(), "null", currentCountryId, committeeName);
-        print(GROUP_INSERT, generateExternalId(), GroupType.NATIONAL.ordinal(), String.valueOf(currentGroupId), currentCountryId, committeeName);
+        final String memberExternalId = generateExternalId();
+        final String nationalExternalId = generateExternalId();
+        print(GROUP_INSERT, memberExternalId, GroupType.MEMBER.ordinal(), "null", currentCountryId, committeeName);
+        print(GROUP_INSERT, nationalExternalId, GroupType.NATIONAL.ordinal(), String.valueOf(currentGroupId), currentCountryId, committeeName);
 
         // Generate the User SQL
         final String salt = generateExternalId();
@@ -234,6 +244,18 @@ public final class GenerateDataForTest {
         print(EMPLOYER_INSERT, generateExternalId(), currentGroupId + 1, currentAddressId);
         print(OFFER_INSERT, countryCode, generateExternalId(), currentEmployerId, currency, currentGroupId + 1);
 
+        print("\n-- Generating Mailing Test data for %s, move to Mailing SQL file", committeeName);
+        //Generate the Mailing list
+        final String memberPrivateListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+        final String nationalPublicListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+        final String nationalPrivateListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+        print(MAILING_LIST_INSERT, memberExternalId, true, memberPrivateListAddress, true);
+        print(MAILING_LIST_INSERT, nationalExternalId, false, nationalPublicListAddress, true);
+        print(MAILING_LIST_INSERT, nationalExternalId, true, nationalPrivateListAddress, true);
+
+        //Subscribe the User to Group's mailing list
+        //TODO - this user probably has not working email address, subscribe anyway?
+
         // Update our Id's, so we're ready for next country
         currentCountryId++;
         currentGroupId += 2;
@@ -241,6 +263,8 @@ public final class GenerateDataForTest {
         currentAddressId++;
         currentEmployerId++;
         currentOfferId++;
+        currentMailingListId += 3;
+        currentListSubscriptionId++;
 
         // And done :-)
         //print("-- Completed generating test data for %s", committeeName);

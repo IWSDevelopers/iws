@@ -124,6 +124,15 @@ public final class UserAccountTest extends AbstractAdministration {
         deleteRequest.setNewStatus(UserStatus.DELETED);
         final Fallible deleteResponse = administration.controlUserAccount(token, deleteRequest);
         assertThat(deleteResponse.isOk(), is(true));
+
+        // Okay, now we're using the activation link to activate the Account
+        final NotificationType type = NotificationType.ACTIVATE_USER;
+        final NotificationField field = NotificationField.CODE;
+        final String activationCode = spy.getNext(type).getFields().get(field);
+        final Fallible activateResponse = client.activateUser(activationCode);
+        assertThat(activateResponse.isOk(), is(false));
+        assertThat(activateResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(activateResponse.getMessage(), is("No account for this user was found."));
     }
 
     /**

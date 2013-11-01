@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.core.singletons;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.SessionException;
 
 import java.util.ArrayList;
@@ -70,39 +70,26 @@ public final class ActiveSessions {
     /**
      * Private Constructor, this is a Singleton class.
      *
-     * @param maxActiveTokens Maximum number of concurrently active tokens allowed
-     * @param maxMillisToLive Maximum time an idle session may live
+     * @param settings System Settings
      */
-    private ActiveSessions(final int maxActiveTokens, final long maxMillisToLive) {
+    private ActiveSessions(final Settings settings) {
         this.lock = new Object();
-        this.tokens = new HashMap<>(maxActiveTokens);
-        this.maxActiveTokens = maxActiveTokens;
-        this.maxMillisToLive = maxMillisToLive;
-    }
+        this.tokens = new HashMap<>(settings.getMaxActiveTokens());
 
-    /**
-     * Empty initializer for this Singleton. Initializes the singleton with the
-     * default values defined in the {@code IWSConstants} class.
-     *
-     * @return Instance
-     * @see IWSConstants#MAX_ACTIVE_TOKENS
-     * @see IWSConstants#MAX_SESSION_IDLE_PERIOD
-     */
-    public static ActiveSessions getInstance() {
-        return getInstance(IWSConstants.MAX_ACTIVE_TOKENS, IWSConstants.MAX_SESSION_IDLE_PERIOD);
+        maxActiveTokens = settings.getMaxActiveTokens();
+        maxMillisToLive = settings.getMaxIdleTimeForSessions();
     }
 
     /**
      * Prepares and returns the instance for this Singleton.
      *
-     * @param maxActiveTokens Maximum number of concurrently active sessions allowed
-     * @param maxMillisToLive Maximum time an idle session may live
+     * @param settings System Settings
      * @return Singleton instance of this class
      */
-    public static ActiveSessions getInstance(final int maxActiveTokens, final long maxMillisToLive) {
+    public static ActiveSessions getInstance(final Settings settings) {
         synchronized (INSTANCE_LOCK) {
             if (instance == null) {
-                instance = new ActiveSessions(maxActiveTokens, maxMillisToLive);
+                instance = new ActiveSessions(settings);
             }
 
             return instance;
@@ -112,6 +99,12 @@ public final class ActiveSessions {
     // =========================================================================
     // Public Methods
     // =========================================================================
+
+    public boolean hasMaximumRegisteredSessions() {
+        synchronized (lock) {
+            return tokens.size() >= maxActiveTokens;
+        }
+    }
 
     /**
      * Reads out how many tokens currently are active in the System.

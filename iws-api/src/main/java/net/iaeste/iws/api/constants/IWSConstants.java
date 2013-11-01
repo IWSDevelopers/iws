@@ -104,8 +104,6 @@ public interface IWSConstants {
      * user aliases. The address is open for all e-mails by default. If a Group
      * or User is suspended or removed, then the public address will cease to
      * work.
-     *
-     * TODO: move to Glassfish property value
      */
     String PUBLIC_EMAIL_ADDRESS = "iaeste.org";
 
@@ -113,8 +111,6 @@ public interface IWSConstants {
      * The private e-mail address, is for all groups. This will allow a group to
      * have a private way to communicate. If a Group is suspended or removed,
      * then the private address will cease to work.
-     *
-     * TODO: move to Glassfish property value
      */
     String PRIVATE_EMAIL_ADDRESS = "iaeste.net";
 

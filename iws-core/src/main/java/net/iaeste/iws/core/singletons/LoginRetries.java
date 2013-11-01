@@ -16,6 +16,7 @@ package net.iaeste.iws.core.singletons;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.SessionException;
 
 import java.text.DateFormat;
@@ -61,25 +62,26 @@ public final class LoginRetries {
     /**
      * Private Constructor, this is a Singleton class.
      *
-     * @param maxRetries    Max number of retries before the account is blocked
-     * @param blockedPeriod How long the account is blocked for further retries
+     * @param settings System Settings
      */
-    private LoginRetries(final int maxRetries, final long blockedPeriod) {
+    private LoginRetries(final Settings settings) {
         this.lock = new Object();
         this.users = new HashMap<>(16);
-        this.maxRetries = maxRetries;
-        this.blockedPeriod = blockedPeriod;
+
+        maxRetries = settings.getMaxLoginRetries();
+        blockedPeriod = settings.getLoginBlockedTime();
     }
 
     /**
      * Prepares and returns the instance for this Singleton.
      *
+     * @param settings System Settings
      * @return Singleton instance of this class
      */
-    public static LoginRetries getInstance(final int maxRetries, final long blockedPeriod) {
+    public static LoginRetries getInstance(final Settings settings) {
         synchronized (INSTANCE_LOCK) {
             if (instance == null) {
-                instance = new LoginRetries(maxRetries, blockedPeriod);
+                instance = new LoginRetries(settings);
             }
 
             return instance;

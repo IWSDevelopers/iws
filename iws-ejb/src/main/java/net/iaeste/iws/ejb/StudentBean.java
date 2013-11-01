@@ -22,6 +22,7 @@ import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StudentController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.interceptors.Profiler;
@@ -34,6 +35,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -61,6 +63,7 @@ public class StudentBean extends AbstractBean implements Student {
     private static final Logger log = Logger.getLogger(StudentBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
+    private Settings settings = new Settings();
     private Student controller = null;
 
     /**
@@ -86,12 +89,23 @@ public class StudentBean extends AbstractBean implements Student {
     }
 
     /**
+     * Setter for the JNDI injected Settings bean. This allows us to also test
+     * the code, by invoking these setters on the instantiated Object.
+     *
+     * @param settings Settings Bean
+     */
+    @Inject
+    public void setSettings(final Settings settings) {
+        this.settings = settings;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     @PostConstruct
     public void postConstruct() {
-        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager);
+        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new StudentController(factory);
     }
 

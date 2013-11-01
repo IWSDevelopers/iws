@@ -34,6 +34,7 @@ import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.exceptions.SessionException;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -75,12 +76,12 @@ public final class AccessService extends CommonService<AccessDao> {
      * @param dao           AccessDAO instance
      * @param notifications Notification Object
      */
-    public AccessService(final AccessDao dao, final Notifications notifications, final ActiveSessions activeSessions, final LoginRetries loginRetries) {
+    public AccessService(final AccessDao dao, final Notifications notifications, final Settings settings) {
         super(dao);
 
         this.notifications = notifications;
-        this.activeSessions = activeSessions;
-        this.loginRetries = loginRetries;
+        activeSessions = ActiveSessions.getInstance(settings);
+        loginRetries = LoginRetries.getInstance(settings);
     }
 
     /**
@@ -98,7 +99,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final UserEntity user = findUserFromCredentials(request);
         final SessionEntity activeSession = dao.findActiveSession(user);
 
-        if ((activeSession == null) && (activeSessions.getNumberOfActiveTokens() < IWSConstants.MAX_ACTIVE_TOKENS)) {
+        if ((activeSession == null) && !activeSessions.hasMaximumRegisteredSessions()) {
             log.info("Creating a new Session for the user " + user.toString());
             final String key = generateAndPersistSessionKey(user);
             activeSessions.registerToken(key);

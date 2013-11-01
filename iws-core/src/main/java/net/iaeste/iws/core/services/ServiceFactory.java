@@ -14,10 +14,9 @@
  */
 package net.iaeste.iws.core.services;
 
-import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.singletons.ActiveSessions;
-import net.iaeste.iws.core.singletons.LoginRetries;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -51,37 +50,15 @@ public final class ServiceFactory {
     private final Notifications notifications;
     private final CountryDao countryDao;
     private final AccessDao accessDao;
-    private int maxActiveTokens = IWSConstants.MAX_ACTIVE_TOKENS;
-    private long maxSessionIdlePeriod = IWSConstants.MAX_SESSION_IDLE_PERIOD;
-    private int maxLoginRetries = IWSConstants.MAX_LOGIN_RETRIES;
-    private long loginBlockingPeriod = IWSConstants.LOGIN_BLOCKING_PERIOD;
+    private final Settings settings;
 
-    public ServiceFactory(final EntityManager entityManager, final Notifications notifications) {
+    public ServiceFactory(final EntityManager entityManager, final Notifications notifications, final Settings settings) {
         this.entityManager = entityManager;
         this.notifications = notifications;
+        this.settings = settings;
 
         accessDao = new AccessJpaDao(entityManager);
         countryDao = new CountryJpaDao(entityManager);
-    }
-
-    // =========================================================================
-    // Setters for the Authentication Handling
-    // =========================================================================
-
-    public void setMaxActiveTokens(final int maxActiveTokens) {
-        this.maxActiveTokens = maxActiveTokens;
-    }
-
-    public void setMaxSessionIdlePeriod(final long maxSessionIdlePeriod) {
-        this.maxSessionIdlePeriod = maxSessionIdlePeriod;
-    }
-
-    public void setMaxLoginRetries(final int maxLoginRetries) {
-        this.maxLoginRetries = maxLoginRetries;
-    }
-
-    public void setLoginBlockingPeriod(final long loginBlockingPeriod) {
-        this.loginBlockingPeriod = loginBlockingPeriod;
     }
 
     // =========================================================================
@@ -89,7 +66,7 @@ public final class ServiceFactory {
     // =========================================================================
 
     public AccountService prepareAccountService() {
-        return new AccountService(accessDao, notifications);
+        return new AccountService(accessDao, notifications, settings);
     }
 
     public GroupService prepareGroupService() {
@@ -105,9 +82,7 @@ public final class ServiceFactory {
     }
 
     public AccessService prepareAuthenticationService() {
-        final ActiveSessions activeSessions = ActiveSessions.getInstance(maxActiveTokens, maxSessionIdlePeriod);
-        final LoginRetries loginRetries = LoginRetries.getInstance(maxLoginRetries, loginBlockingPeriod);
-        return new AccessService(accessDao, notifications, activeSessions, loginRetries);
+        return new AccessService(accessDao, notifications, settings);
     }
 
     public ExchangeService prepareExchangeService() {
@@ -133,6 +108,6 @@ public final class ServiceFactory {
     }
 
     public ActiveSessions getActiveSessions() {
-        return ActiveSessions.getInstance(maxActiveTokens, maxSessionIdlePeriod);
+        return ActiveSessions.getInstance(settings);
     }
 }

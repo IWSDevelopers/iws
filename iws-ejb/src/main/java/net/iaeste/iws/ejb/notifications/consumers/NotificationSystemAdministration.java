@@ -14,11 +14,11 @@
  */
 package net.iaeste.iws.ejb.notifications.consumers;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
@@ -67,13 +67,15 @@ public class NotificationSystemAdministration implements Observer {
     private final AccessDao accessDao;
     private final MailingListDao mailingListDao;
     private final NotificationDao notificationDao;
+    private final Settings settings;
 
-    public NotificationSystemAdministration(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager) {
-        notificationDao = new NotificationJpaDao(iwsEntityManager);
-        accessDao = new AccessJpaDao(iwsEntityManager);
-        mailingListDao = new MailingListJpaDao(mailingEntityManager);
+    public NotificationSystemAdministration(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
+        this.accessDao = new AccessJpaDao(iwsEntityManager);
+        this.mailingListDao = new MailingListJpaDao(mailingEntityManager);
+        this.notificationDao = new NotificationJpaDao(iwsEntityManager);
+        this.settings = settings;
+
 //        mailingListDao = new MailingListJpaDao(iwsEntityManager);
-
         mailingListEntityManager = mailingEntityManager;
     }
 
@@ -329,7 +331,7 @@ public class NotificationSystemAdministration implements Observer {
         return result;
     }
 
-    private static String getPublicListAddress(final GroupType type, final String groupName, final String countryName) {
+    private String getPublicListAddress(final GroupType type, final String groupName, final String countryName) {
         final String name;
 
         switch (type) {
@@ -339,11 +341,11 @@ public class NotificationSystemAdministration implements Observer {
                 name = "";
                 break;
             case NATIONAL:
-                name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + settings.getPublicMailAddress();
                 break;
             case INTERNATIONAL:
             case REGIONAL:
-                name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + settings.getPublicMailAddress();
                 break;
             default:
                 name = "";
@@ -352,24 +354,24 @@ public class NotificationSystemAdministration implements Observer {
         return name;
     }
 
-    private static String getPrivateListAddress(final GroupType type, final String groupName, final String countryName) {
+    private String getPrivateListAddress(final GroupType type, final String groupName, final String countryName) {
         final String name;
 
         switch (type) {
             //TODO general secretary
             case MEMBER:
-                name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + settings.getPrivateMailAddress();
                 break;
             case INTERNATIONAL:
             case REGIONAL:
-                name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + settings.getPrivateMailAddress();
                 break;
             case NATIONAL:
-                name = StringUtils.convertToAsciiMailAlias(countryName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + ".staff" + '@' + settings.getPrivateMailAddress();
                 break;
             case LOCAL:
             case WORKGROUP:
-                name = StringUtils.convertToAsciiMailAlias(countryName) + '.' + StringUtils.convertToAsciiMailAlias(groupName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                name = StringUtils.convertToAsciiMailAlias(countryName) + '.' + StringUtils.convertToAsciiMailAlias(groupName) + '@' + settings.getPrivateMailAddress();
                 break;
             default:
                 name = "";

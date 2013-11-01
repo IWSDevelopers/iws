@@ -25,6 +25,7 @@ import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.AccessController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.interceptors.Profiler;
@@ -37,6 +38,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -70,6 +72,7 @@ public class AccessBean extends AbstractBean implements Access {
     private static final Logger log = Logger.getLogger(AccessBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
+    private Settings settings = new Settings();
     private Access controller = null;
 
     /**
@@ -97,13 +100,24 @@ public class AccessBean extends AbstractBean implements Access {
     }
 
     /**
+     * Setter for the JNDI injected Settings bean. This allows us to also test
+     * the code, by invoking these setters on the instantiated Object.
+     *
+     * @param settings Settings Bean
+     */
+    @Inject
+    public void setSettings(final Settings settings) {
+        this.settings = settings;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     @PostConstruct
     @WebMethod(exclude = true)
     public void postConstruct() {
-        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager);
+        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new AccessController(factory);
     }
 

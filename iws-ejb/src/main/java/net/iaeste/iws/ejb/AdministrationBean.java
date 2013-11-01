@@ -36,6 +36,7 @@ import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.AdministrationController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.interceptors.Profiler;
@@ -48,6 +49,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -75,6 +77,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
     private static final Logger log = Logger.getLogger(AdministrationBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
+    private Settings settings = new Settings();
     private Administration controller = null;
 
     /**
@@ -100,12 +103,23 @@ public class AdministrationBean extends AbstractBean implements Administration {
     }
 
     /**
+     * Setter for the JNDI injected Settings bean. This allows us to also test
+     * the code, by invoking these setters on the instantiated Object.
+     *
+     * @param settings Settings Bean
+     */
+    @Inject
+    public void setSettings(final Settings settings) {
+        this.settings = settings;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     @PostConstruct
     public void postConstruct() {
-        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager);
+        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new AdministrationController(factory);
     }
 

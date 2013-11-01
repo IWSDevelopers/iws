@@ -35,6 +35,7 @@ import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.PasswordGenerator;
 import net.iaeste.iws.common.utils.StringUtils;
@@ -61,11 +62,13 @@ public final class AccountService extends CommonService<AccessDao> {
 
     private static final Logger log = Logger.getLogger(AccountService.class);
     private final Notifications notifications;
+    private final Settings settings;
 
-    public AccountService(final AccessDao dao, final Notifications notifications) {
+    public AccountService(final AccessDao dao, final Notifications notifications, final Settings settings) {
         super(dao);
 
         this.notifications = notifications;
+        this.settings = settings;
     }
 
     /**
@@ -415,7 +418,7 @@ public final class AccountService extends CommonService<AccessDao> {
 
         if (!request.isStudent()) {
             final String name = StringUtils.convertToAsciiMailAlias(request.getFirstname() + '.' + request.getLastname());
-            final String address = '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+            final String address = '@' + settings.getPublicMailAddress();
 
             final Long serialNumber = dao.findNumberOfAliasesForName(name);
             if ((serialNumber != null) && (serialNumber > 0)) {

@@ -23,7 +23,7 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchStudentResponse extends AbstractFallible {
+public final class FetchStudentsResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -36,7 +36,7 @@ public final class FetchStudentResponse extends AbstractFallible {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchStudentResponse() {
+    public FetchStudentsResponse() {
     }
 
     /**
@@ -45,7 +45,7 @@ public final class FetchStudentResponse extends AbstractFallible {
      * @param error    IWS Error Object
      * @param message  Error Message
      */
-    public FetchStudentResponse(final IWSError error, final String message) {
+    public FetchStudentsResponse(final IWSError error, final String message) {
         super(error, message);
     }
 

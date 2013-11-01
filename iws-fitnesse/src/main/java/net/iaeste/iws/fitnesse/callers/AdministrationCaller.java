@@ -52,6 +52,10 @@ public final class AdministrationCaller implements Administration {
     // The Client handles the IWS for us, we use use it
     private final Administration caller = new AdministrationClient();
 
+    // =========================================================================
+    // Implementation of methods from Administration in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

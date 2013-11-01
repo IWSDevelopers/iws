@@ -88,6 +88,10 @@ public final class ExchangeSpringClient implements Exchange {
         client = exchangeBean;
     }
 
+    // =========================================================================
+    // Implementation of methods from Exchange in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

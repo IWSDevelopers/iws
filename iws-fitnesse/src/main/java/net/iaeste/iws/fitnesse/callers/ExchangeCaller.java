@@ -37,6 +37,10 @@ public final class ExchangeCaller implements Exchange {
     // The Client handles the IWS for us, we use use it
     private final Exchange caller = new ExchangeClient();
 
+    // =========================================================================
+    // Implementation of methods from Exchange in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

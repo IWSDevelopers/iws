@@ -51,6 +51,10 @@ public final class AdministrationClient implements Administration {
         client = ClientFactory.getInstance().getAdministrationImplementation();
     }
 
+    // =========================================================================
+    // Implementation of methods from Administration in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

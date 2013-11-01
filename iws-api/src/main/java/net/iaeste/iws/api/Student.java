@@ -17,8 +17,10 @@ package net.iaeste.iws.api;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 
 import javax.ejb.Remote;
@@ -32,11 +34,21 @@ import javax.ejb.Remote;
 public interface Student {
 
     /**
+     * Retrieves a list of Students, matching the criterias from the Request
+     * Object.
+     *
+     * @param token   {@link AuthenticationToken}
+     * @param request {@link FetchStudentsRequest}
+     * @return {@link FetchStudentsResponse}
+     */
+    FetchStudentsResponse fetchStudents(AuthenticationToken token, FetchStudentsRequest request);
+
+    /**
      * Create or update a student application.
      *
      * @param token   {@link AuthenticationToken}
      * @param request {@link ProcessStudentApplicationsRequest}
-     * @return {@link} StudentApplicationResponse
+     * @return {@link StudentApplicationResponse}
      */
     StudentApplicationResponse processStudentApplication(AuthenticationToken token, ProcessStudentApplicationsRequest request);
 

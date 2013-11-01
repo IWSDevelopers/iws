@@ -46,6 +46,10 @@ public final class AccessClient implements Access {
         client = ClientFactory.getInstance().getAccessImplementation();
     }
 
+    // =========================================================================
+    // Implementation of methods from Access in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

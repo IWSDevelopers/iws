@@ -55,6 +55,10 @@ public final class ExchangeClient implements Exchange {
         client = ClientFactory.getInstance().getExchangeImplementation();
     }
 
+    // =========================================================================
+    // Implementation of methods from Exchange in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

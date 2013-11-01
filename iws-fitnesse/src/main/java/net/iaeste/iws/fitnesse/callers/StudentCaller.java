@@ -18,8 +18,10 @@ import net.iaeste.iws.api.Student;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -33,6 +35,22 @@ public final class StudentCaller implements Student {
 
     // The Client handles the IWS for us, we use use it
     private final Student caller = new StudentClient();
+
+    // =========================================================================
+    // Implementation of methods from Student in the API
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchStudentsResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+        try {
+            return caller.fetchStudents(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
 
     /**
      * {@inheritDoc}

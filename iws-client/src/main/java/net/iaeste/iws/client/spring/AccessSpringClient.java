@@ -94,7 +94,7 @@ public final class AccessSpringClient implements Access {
     }
 
     // =========================================================================
-    // IWS API Access Functionality
+    // Implementation of methods from Access in the API
     // =========================================================================
 
     /**

@@ -38,6 +38,10 @@ public final class CommitteeCaller implements Committees {
     // The Client handles the IWS for us, we use use it
     private final Committees caller = new CommitteeClient();
 
+    // =========================================================================
+    // Implementation of methods from Committees in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

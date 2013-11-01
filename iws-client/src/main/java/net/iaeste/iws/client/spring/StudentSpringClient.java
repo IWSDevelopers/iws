@@ -18,8 +18,10 @@ import net.iaeste.iws.api.Student;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -70,6 +72,18 @@ public final class StudentSpringClient implements Student {
         // Set our Exchange implementation to the Exchange EJB, running withing
         // a "Spring Container".
         client = studentBean;
+    }
+
+    // =========================================================================
+    // Implementation of methods from Student in the API
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchStudentsResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+        return client.fetchStudents(token, request);
     }
 
     /**

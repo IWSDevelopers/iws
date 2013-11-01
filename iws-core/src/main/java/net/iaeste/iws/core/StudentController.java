@@ -22,8 +22,10 @@ import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.core.services.StudentService;
@@ -47,6 +49,32 @@ public final class StudentController extends CommonController implements Student
      */
     public StudentController(final ServiceFactory factory) {
         super(factory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchStudentsResponse fetchStudents(final AuthenticationToken token, final FetchStudentsRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchStudents()"));
+        }
+        FetchStudentsResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT_APPLICATION);
+            verify(request);
+
+            final StudentService service = factory.prepareStudentService();
+            response = service.fetchStudents(authentication, request);
+        } catch (IWSException e) {
+            response = new FetchStudentsResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchStudents()"));
+        }
+        return response;
     }
 
     /**

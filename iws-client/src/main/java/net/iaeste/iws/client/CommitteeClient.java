@@ -37,6 +37,10 @@ public final class CommitteeClient implements Committees {
         client = ClientFactory.getInstance().getCommitteeImplementation();
     }
 
+    // =========================================================================
+    // Implementation of methods from Committees in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

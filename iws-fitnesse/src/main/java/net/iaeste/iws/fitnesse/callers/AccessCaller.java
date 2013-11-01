@@ -43,6 +43,10 @@ public final class AccessCaller implements Access {
     // The Client handles the IWS for us, we use use it
     private final Access caller = new AccessClient();
 
+    // =========================================================================
+    // Implementation of methods from Access in the API
+    // =========================================================================
+
     /**
      * {@inheritDoc}
      */

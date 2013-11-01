@@ -68,7 +68,7 @@ public class CommitteeSpringClient implements Committees {
     }
 
     // =========================================================================
-    // IWS API Committees Functionality
+    // Implementation of methods from Committees in the API
     // =========================================================================
 
     /**

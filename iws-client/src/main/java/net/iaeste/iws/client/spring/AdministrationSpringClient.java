@@ -85,7 +85,7 @@ public final class AdministrationSpringClient implements Administration {
     }
 
     // =========================================================================
-    // IWS API Administration Functionality
+    // Implementation of methods from Administration in the API
     // =========================================================================
 
     /**

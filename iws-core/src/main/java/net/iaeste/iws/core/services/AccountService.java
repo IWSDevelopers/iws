@@ -136,7 +136,7 @@ public final class AccountService extends CommonService<AccessDao> {
             studentGroup = new GroupEntity();
             studentGroup.setExternalId(UUID.randomUUID().toString());
             studentGroup.setCountry(memberGroup.getCountry());
-            studentGroup.setGroupName(memberGroup.getGroupName() + " Students");
+            studentGroup.setGroupName(memberGroup.getGroupName() + ".Students");
             studentGroup.setGroupType(dao.findGroupType(GroupType.STUDENTS));
             studentGroup.setParentId(memberGroup.getId());
             dao.persist(studentGroup);
@@ -544,11 +544,16 @@ public final class AccountService extends CommonService<AccessDao> {
     /**
      * Deletes the private data for a user. The data has to be removed, to avoid
      * breaking any privacy laws. Only thing remaining of the User Account, will
-     * be the
+     * be the User Object with the name.<br />
+     *   Note, that the method will perform a check against ownership of the
+     * Members group, since the current Owner may not be deleted, as it will
+     * prevent others from taking over ownership of this Group.
      *
      * @param authentication User that is invoking the request
      */
     private void deletePrivateData(final Authentication authentication, final UserEntity user) {
+        final List<UserGroupEntity> groupRelations = findGroupRelationsForDeletion(user);
+
         // First, delete the Sessions, they are linked to the User account, and
         // not the users private Group
         final int deletedSessions = dao.deleteSessions(user);
@@ -588,13 +593,53 @@ public final class AccountService extends CommonService<AccessDao> {
             dao.persist(user);
             deletePerson(person);
 
-            final List<UserGroupEntity> userGroups = dao.findAllUserGroups(user);
-            for (final UserGroupEntity userGroup : userGroups) {
+            for (final UserGroupEntity userGroup : groupRelations) {
                 notifications.notify(authentication, userGroup, NotificationType.CHANGE_IN_GROUP_MEMBERS);
             }
 
             log.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
         }
+    }
+
+    /**
+     * Performs a check, to see if the user may be deleted or not. If the user
+     * is currently the owner of one of the following GroupTypes, then it is not
+     * permissible to delete it:
+     * <ul>
+     *   <li>Administration</li>
+     *   <li>International</li>
+     *   <li>Regional</li>
+     *   <li>National</li>
+     *   <li>Member</li>
+     * </ul>
+     *
+     * @param user User to check if may be deleted
+     * @return List of UserGroup relations
+     */
+    private List<UserGroupEntity> findGroupRelationsForDeletion(final UserEntity user) {
+        final List<UserGroupEntity> userGroups = dao.findAllUserGroups(user);
+
+        for (final UserGroupEntity entity : userGroups) {
+            final GroupType type = entity.getGroup().getGroupType().getGrouptype();
+            switch (type) {
+                case PRIVATE:
+                case LOCAL:
+                case WORKGROUP:
+                case ALUMNI:
+                case STUDENTS:
+                    break;
+                case ADMINISTRATION:
+                case INTERNATIONAL:
+                case REGIONAL:
+                case NATIONAL:
+                case MEMBER:
+                    if (IWSConstants.ROLE_OWNER.equals(entity.getRole().getId())) {
+                        throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Users who are currently the Owner of a Group with type '" + type.getDescription() + "', cannot be deleted.");
+                    }
+            }
+        }
+
+        return userGroups;
     }
 
     private void updatePrivacyAndData(final Authentication authentication, final UserRequest request) {

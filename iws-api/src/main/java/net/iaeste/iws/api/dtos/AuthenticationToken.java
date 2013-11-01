@@ -149,8 +149,8 @@ public final class AuthenticationToken extends AbstractVerification {
      * Sets the GroupId, for which the user wishes invoke a functionality. This
      * is required, if the functionality cannot be uniquely identified for the
      * user based on the implicit UserId & PermissionId.<br />
-     *   If the provided GroupId is not valid, then an
-     * {@code IllegalArgumentException} is thrown.
+     *   If the provided GroupId is not valid, then method will throw an
+     * {@code IllegalArgumentException}.
      *
      * @param groupId  GroupId for the Authorization check
      * @throws IllegalArgumentException if the GroupId is invalid

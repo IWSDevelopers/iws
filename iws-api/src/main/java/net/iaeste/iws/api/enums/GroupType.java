@@ -35,7 +35,7 @@ public enum GroupType {
      * such as marriage where the family name is changed.<br />
      *   There can only exists 1 Administration Group.
      */
-    ADMINISTRATION,
+    ADMINISTRATION("Administration"),
 
     /**
      * All user accounts have a private group assigned, with this type. It is
@@ -45,7 +45,7 @@ public enum GroupType {
      * from the system, then the private data can be easily removed as
      * well.
      */
-    PRIVATE,
+    PRIVATE("Private"),
 
     /**
      * All members are assigned to this type, which gives the rights to the
@@ -58,7 +58,7 @@ public enum GroupType {
      * IDT members, etc.<br />
      *   Note; users can only be member of 1 Members Group!
      */
-    MEMBER,
+    MEMBER("Member"),
 
     /**
      * A number of Groups exists, which are truly "International", meaning that
@@ -94,7 +94,7 @@ public enum GroupType {
      *   </li>
      * </ul>
      */
-    INTERNATIONAL,
+    INTERNATIONAL("International"),
 
     /**
      * Regional Groups are for a collection of Countries creating a region of
@@ -104,7 +104,7 @@ public enum GroupType {
      * difference. Members can only come from the region itself, and Regional
      * Groups cannot share information for all to review.
      */
-    REGIONAL,
+    REGIONAL("Regional"),
 
     /**
      * All Countries have both a Members group, where all the people who are a
@@ -116,13 +116,13 @@ public enum GroupType {
      * be allowed to join the NC's Mailinglist.<br />
      *   Note; users can only be member of 1 National Group!
      */
-    NATIONAL,
+    NATIONAL("National Committee"),
 
     /**
      * Local Groups are for Local Committees around the Country. Local Groups
      * will have a National Group as parent Group.
      */
-    LOCAL,
+    LOCAL("Local Committee"),
 
     /**
      * For Groups, where you need only to have a common mailinglist as well as
@@ -130,12 +130,12 @@ public enum GroupType {
      * purpose well.<br />
      *   Workgroups can be assigned as a sub-group to any of the other groups.
      */
-    WORKGROUP,
+    WORKGROUP("WorkGroup"),
 
     /**
      * Alumni Group. Currently unassigned.
      */
-    ALUMNI,
+    ALUMNI("Alumni"),
 
     /**
      * The Student Group is for Offer Applicants, meaning that if a person
@@ -149,5 +149,19 @@ public enum GroupType {
      * group (with role Student). Normal members who wishes to apply for Offers,
      * must also be added to the Student Group.
      */
-    STUDENTS
+    STUDENTS("Students");
+
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
+    private final String description;
+
+    GroupType(final String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

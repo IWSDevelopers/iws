@@ -75,27 +75,30 @@ public class CommonService<T extends BasicDao> {
      * @return The persists {@code PersonEntity}
      */
     protected PersonEntity processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
-        final Person person = getFirstObject(persons);
-        final PersonEntity result;
+        PersonEntity result = null;
 
-        if (person != null) {
-            // First, deal with the internal Address
-            final AddressEntity address = entity.getAddress();
-            if (address != null) {
-                processAddress(authentication, entity.getAddress(), person.getAddress());
-            }
+        if (entity != null) {
+            final Person person = getFirstObject(persons);
 
-            final PersonEntity newEntity = CommonTransformer.transform(person);
-            // Now, we'll persist the Person
-            if (entity.getId() == null) {
-                dao.persist(authentication, newEntity);
-                result = newEntity;
+            if (person != null) {
+                // First, deal with the internal Address
+                final AddressEntity address = entity.getAddress();
+                if (address != null) {
+                    processAddress(authentication, entity.getAddress(), person.getAddress());
+                }
+
+                final PersonEntity newEntity = CommonTransformer.transform(person);
+                // Now, we'll persist the Person
+                if (entity.getId() == null) {
+                    dao.persist(authentication, newEntity);
+                    result = newEntity;
+                } else {
+                    dao.persist(authentication, entity, newEntity);
+                    result = entity;
+                }
             } else {
-                dao.persist(authentication, entity, newEntity);
                 result = entity;
             }
-        } else {
-            result = entity;
         }
 
         return result;

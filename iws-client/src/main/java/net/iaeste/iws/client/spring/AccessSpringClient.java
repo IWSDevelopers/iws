@@ -49,7 +49,7 @@ import java.io.Serializable;
 public final class AccessSpringClient implements Access {
 
     private static final Integer MAX_ACTIVE_TOKENS = 10;
-    private static final Long MAX_IDLE_TIME_FOR_SESSIONS = 500L;
+    private static final Long MAX_IDLE_TIME_FOR_SESSIONS = 1000L;
     private static final Integer MAX_LOGIN_RETRIES = IWSConstants.MAX_LOGIN_RETRIES;
     public static final long LOGIN_BLOCKED_TIME = 500L;
 

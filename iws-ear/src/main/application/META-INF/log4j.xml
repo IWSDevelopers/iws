@@ -5,7 +5,7 @@
     <appender name="logfile" class="org.apache.log4j.FileAppender">
         <param name="Append" value="false" />
         <param name="Encoding" value="UTF-8" />
-        <param name="File" value="logs/iws.log" />
+        <param name="File" value="${com.sun.aas.instanceRoot}/logs/iws.log" />
         <layout class="com.secunet.log4j.ext.EnhancedPatternLayout">
             <param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] (%F:%L) %m %X%n" />
         </layout>
@@ -21,6 +21,7 @@
     <logger name="net.iaeste.iws">
         <level value="trace" />
         <appender-ref ref="logfile" />
+        <appender-ref ref="console" />
     </logger>
 
     <logger name="org.springframework">
@@ -36,6 +37,7 @@
     <root>
         <priority value="info" />
         <appender-ref ref="logfile" />
+        <appender-ref ref="console" />
     </root>
 
 </log4j:configuration>

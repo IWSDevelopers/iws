@@ -82,7 +82,7 @@ public final class ViewTransformer {
         final Offer offer = convert(view.getOffer());
         offer.setNsFirstname(view.getNsFirstname());
         offer.setNsLastname(view.getNsLastname());
-        offer.setEmployer(convert(view.getEmployer()));
+        offer.setEmployer(employer);
         offer.setGroup(group);
 
         return offer;

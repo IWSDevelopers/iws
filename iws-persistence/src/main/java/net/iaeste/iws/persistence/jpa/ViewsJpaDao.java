@@ -16,9 +16,11 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.OfferView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -79,5 +81,16 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("name", '%' + partialName.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%');
 
         return fetchList(query, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<OfferView> findAllOffers(final Authentication authentication) {
+        final Query query = entityManager.createNamedQuery("view.findOfferByGroup");
+        query.setParameter("gid", authentication.getGroup().getId());
+
+        return query.getResultList();
     }
 }

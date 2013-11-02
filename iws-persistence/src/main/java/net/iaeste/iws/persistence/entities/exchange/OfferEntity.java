@@ -57,50 +57,41 @@ import java.util.Map;
  * @noinspection OverlyComplexClass, OverlyLongMethod
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "offer.findAllForGroup",
+        @NamedQuery(name = "offer.findAllForGroup",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid"),
-        @NamedQuery(
-                name = "offer.findByGroupAndExternalIdAndRefNo",
+                        "where o.employer.group.id = :gid"),
+        @NamedQuery(name = "offer.findByGroupAndExternalIdAndRefNo",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
+                        "where o.employer.group.id = :gid" +
                         "  and o.externalId = :eoid" +
                         "  and o.refNo = :refno"),
-        @NamedQuery(
-                name = "offer.findByGroupAndId",
+        @NamedQuery(name = "offer.findByGroupAndId",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
+                        "where o.employer.group.id = :gid" +
                         "  and o.id = :id"),
-        @NamedQuery(
-                name = "offer.findByGroupAndIds",
+        @NamedQuery(name = "offer.findByGroupAndIds",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
+                        "where o.employer.group.id = :gid" +
                         "  and o.id in :ids"),
-        @NamedQuery(
-                name = "offer.findByGroupAndExternalIds",
+        @NamedQuery(name = "offer.findByGroupAndExternalIds",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
+                        "where o.employer.group.id = :gid" +
                         "  and o.externalId in :eoids"),
-        @NamedQuery(
-                name = "offer.findByGroupAndExternalId",
+        @NamedQuery(name = "offer.findByGroupAndExternalId",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
+                        "where o.employer.group.id = :gid" +
                         "  and o.externalId = :eoid"),
-        @NamedQuery(
-                name = "offer.findByGroupAndRefNo",
+        @NamedQuery(name = "offer.findByGroupAndRefNo",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
+                        "where o.employer.group.id = :gid" +
                         "  and o.refNo = :refNo"),
-        @NamedQuery(
-                name = "offer.findByGroupAndLikeEmployerName",
+        @NamedQuery(name = "offer.findByGroupAndLikeEmployerName",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
+                        "where o.employer.group.id = :gid" +
                         "  and lower(o.employer.name) like :employer"),
-        @NamedQuery(
-                name = "offer.findByGroupAndEmployerName",
+        @NamedQuery(name = "offer.findByGroupAndEmployerName",
                 query = "select o from OfferEntity o " +
-                        "where o.group.id = :gid" +
+                        "where o.employer.group.id = :gid" +
                         "  and o.employer.name = :employer")})
 @Entity
 @Table(name = "offers")
@@ -124,15 +115,20 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
+    /**
+     * The GroupId is also stored in the Employer Object. Meaning, that we have
+     * duplicate information, that only serve to make the Objects more complex
+     * than they have to be.
+     */
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(nullable = true, name = "group_id")
+    @JoinColumn(name = "group_id", nullable = true)
     private GroupEntity group = null;
 
     @Column(name = "ref_no", length = 16, nullable = false, unique = true)
     private String refNo = null;
 
     @ManyToOne
-    @JoinColumn(name = "employer_id")
+    @JoinColumn(name = "employer_id", nullable = false)
     private EmployerEntity employer = null;
 
     @Monitored(name="Offer work description", level = MonitoringLevel.DETAILED)

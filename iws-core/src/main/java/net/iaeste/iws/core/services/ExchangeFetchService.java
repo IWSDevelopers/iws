@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
+import static net.iaeste.iws.core.transformers.ViewTransformer.transform;
 
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
@@ -37,7 +37,7 @@ import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
-import net.iaeste.iws.core.transformers.ViewTransformer;
+import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.ViewsDao;
@@ -45,6 +45,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.OfferView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,7 +93,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         final List<Employer> result;
         if (view != null) {
-            final Employer employer = ViewTransformer.transform(view);
+            final Employer employer = transform(view);
             result = new ArrayList<>(1);
             result.add(employer);
         } else {
@@ -118,7 +119,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<Employer> result = new ArrayList<>(found.size());
 
         for (final EmployerView view : found) {
-            final Employer employer = ViewTransformer.transform(view);
+            final Employer employer = transform(view);
             result.add(employer);
         }
 
@@ -144,9 +145,19 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
     private List<Offer> findAllOffers(final Authentication authentication) {
         // Must be extended with Pagination
-        final List<OfferEntity> found = dao.findAllOffers(authentication);
+        final List<OfferView> found = viewsDao.findAllOffers(authentication);
 
-        return convertEntityList(found);
+        return convertViewList(found);
+    }
+
+    private static List<Offer> convertViewList(final List<OfferView> found) {
+        final List<Offer> result = new ArrayList<>(found.size());
+
+        for (final OfferView view : found) {
+            result.add(transform(view));
+        }
+
+        return result;
     }
 
     private List<Offer> findSharedOffers(final Authentication authentication) {
@@ -167,7 +178,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferEntity entity : found) {
-            result.add(transform(entity));
+            result.add(ExchangeTransformer.transform(entity));
         }
 
         return result;
@@ -177,7 +188,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final List<OfferGroup> result = new ArrayList<>(found.size());
 
         for (final OfferGroupEntity entity : found) {
-            result.add(transform(entity));
+            result.add(ExchangeTransformer.transform(entity));
         }
 
         return result;
@@ -207,7 +218,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         for (final String externalId : offerExternalIds) {
             if (!fetchedOffersExtId.contains(externalId)) {
-                throw new VerificationException("The offer with externalId '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
+                throw new VerificationException("The offer with id '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
             }
         }
     }

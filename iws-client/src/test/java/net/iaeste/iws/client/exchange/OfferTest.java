@@ -445,7 +445,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testNumberOfHardCopies() {
         final String refNo = "PL-2012-000042";
-        final Offer newOffer = OfferTestUtility.getFullOffer();
+        final Offer newOffer = TestData.prepareFullOffer(refNo, "Employer", "PL");
         newOffer.setRefNo(refNo);
         newOffer.setNumberOfHardCopies(2);
 

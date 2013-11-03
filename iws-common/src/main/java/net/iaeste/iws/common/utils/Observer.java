@@ -38,5 +38,5 @@ public interface Observer {
 
     //TODO better identifier, UUID?
     Long getId();
-    void setId(final Long id);
+    void setId(Long id);
 }

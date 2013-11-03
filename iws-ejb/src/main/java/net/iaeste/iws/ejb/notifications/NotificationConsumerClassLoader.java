@@ -16,6 +16,7 @@ package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.utils.Observer;
 
 import javax.persistence.EntityManager;
@@ -30,14 +31,14 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class NotificationConsumerClassLoader {
 
-    public Observer findConsumerClass(final String name, final EntityManager iwsEntityManager, final EntityManager mailingEntityManager) {
+    public Observer findConsumerClass(final String name, final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         try {
 //            this doesn't work in glassfish
 //            final Class<?> consumerClass = loadClass(name);
             //TODO all consumers have to have same constructor parameters -> any idea how to make it dynamic?
             final Class<?> consumerClass = Class.forName(name);
-            final Constructor<?> constructor = consumerClass.getDeclaredConstructor(EntityManager.class, EntityManager.class);
-            final Object consumer = constructor.newInstance(iwsEntityManager, mailingEntityManager);
+            final Constructor<?> constructor = consumerClass.getDeclaredConstructor(EntityManager.class, EntityManager.class, Settings.class);
+            final Object consumer = constructor.newInstance(iwsEntityManager, mailingEntityManager, settings);
             if (consumer instanceof Observer) {
                 return (Observer) consumer;
             }

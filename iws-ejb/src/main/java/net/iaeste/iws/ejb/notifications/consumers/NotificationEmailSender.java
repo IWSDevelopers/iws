@@ -17,6 +17,7 @@ package net.iaeste.iws.ejb.notifications.consumers;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
@@ -88,7 +89,7 @@ public class NotificationEmailSender implements Observer {
     private QueueSender sender = null;
     private QueueSession session = null;
 
-    public NotificationEmailSender(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager) {
+    public NotificationEmailSender(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
 

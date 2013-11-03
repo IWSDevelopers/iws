@@ -15,6 +15,7 @@
 package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observer;
@@ -32,7 +33,17 @@ import org.joda.time.DateTime;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.*;
+import javax.ejb.Schedule;
+import javax.ejb.Singleton;
+import javax.ejb.Stateless;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
+import javax.ejb.TimerService;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -49,6 +60,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
     private static final Logger LOG = Logger.getLogger(NotificationManagerBean.class);
     private EntityManager iwsEntityManager = null;
     private EntityManager mailingListEntityManager = null;
+    private Settings settings = null;
     private NotificationDao dao = null;
     private AccessDao accessDao = null;
     private Notifications notifications = null;
@@ -84,6 +96,17 @@ public class NotificationManagerBean implements NotificationManagerLocal {
     }
 
     /**
+     * Setter for the JNDI injected Settings bean. This allows us to also test
+     * the code, by invoking these setters on the instantiated Object.
+     *
+     * @param settings Settings Bean
+     */
+    @Inject
+    public void setSettings(final Settings settings) {
+        this.settings = settings;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @PostConstruct
@@ -91,13 +114,9 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
 
-        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, new NotificationMessageGeneratorFreemarker(), true);
-//        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, iwsEntityManager, new NotificationMessageGeneratorFreemarker(), true);
+        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, settings, new NotificationMessageGeneratorFreemarker(), true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
-
-//        final String clazz = NotificationManagerBean.class.getSimpleName();
-//        timer = timerService.createTimer(new Date().toDate(), clazz);
     }
 
     @Override
@@ -213,7 +232,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         LOG.info("processJobsScheduled started at " + new DateTime());
         final boolean run;
         synchronized (LOCK) {
-            run = processingIsRunning==false;
+            run = !processingIsRunning;
         }
 
         if (run) {

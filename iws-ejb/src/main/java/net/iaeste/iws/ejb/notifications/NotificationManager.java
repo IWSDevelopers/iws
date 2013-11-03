@@ -15,17 +15,18 @@
 package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
+import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
+import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observer;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.NotificationDao;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity;
 import net.iaeste.iws.persistence.entities.notifications.NotificationJobTaskEntity;
-import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.common.notification.Notifiable;
-import net.iaeste.iws.common.notification.NotificationType;
-import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import org.apache.log4j.Logger;
 
@@ -56,6 +57,7 @@ public final class NotificationManager implements Notifications {
 
     private final EntityManager iwsEntityManager;
     private final EntityManager mailingEntityManager;
+    private final Settings settings;
 
     private final NotificationDao dao;
 
@@ -64,9 +66,10 @@ public final class NotificationManager implements Notifications {
 
     private final boolean hostedInBean;
 
-    public NotificationManager(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final NotificationMessageGenerator messageGenerator, final boolean hostedInBean) {
+    public NotificationManager(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings, final NotificationMessageGenerator messageGenerator, final boolean hostedInBean) {
         this.iwsEntityManager = iwsEntityManager;
         this.mailingEntityManager = mailingEntityManager;
+        this.settings = settings;
         this.messageGenerator = messageGenerator;
         this.hostedInBean = hostedInBean;
 
@@ -79,12 +82,11 @@ public final class NotificationManager implements Notifications {
     public void startupConsumers() {
         final List<NotificationConsumerEntity> consumers = dao.findActiveNotificationConsumers();
         final NotificationConsumerClassLoader classLoader = new NotificationConsumerClassLoader();
-        for(final NotificationConsumerEntity consumer : consumers) {
-//            try {
-            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), iwsEntityManager, mailingEntityManager);
+
+        for (final NotificationConsumerEntity consumer : consumers) {
+            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), iwsEntityManager, mailingEntityManager, settings);
             observer.setId(consumer.getId());
             addObserver(observer);
-//            } catch (IWSException e) {}
         }
     }
 

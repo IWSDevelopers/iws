@@ -24,6 +24,8 @@ import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.StudentDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -32,6 +34,7 @@ import net.iaeste.iws.persistence.StudentDao;
  */
 public final class StudentService {
 
+    private static final Logger log = LoggerFactory.getLogger(StudentService.class);
     private final StudentDao studentDao;
 
     public StudentService(final StudentDao studentDao) {

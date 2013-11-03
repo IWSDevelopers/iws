@@ -34,7 +34,8 @@ import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import net.iaeste.iws.persistence.views.NotificationJobTasksView;
 import net.timewalker.ffmq3.FFMQConstants;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -74,7 +75,7 @@ public class NotificationEmailSender implements Observer {
     private final NotificationDao dao;
     private final AccessDao accessDao;
 
-    private static final Logger LOG = Logger.getLogger(NotificationEmailSender.class);
+    private static final Logger log = LoggerFactory.getLogger(NotificationEmailSender.class);
 
     //Need to be EJB to use @resource
 //    @Resource(mappedName = "iwsEmailQueue")
@@ -187,7 +188,7 @@ public class NotificationEmailSender implements Observer {
         } catch (Exception e) {
             //catching all exceptions other than IWSException to prevent
             //stopping notification processing and leaving error message in log
-            LOG.error("System error occured", e);
+            log.error("System error occured", e);
         }
     }
 
@@ -218,7 +219,7 @@ public class NotificationEmailSender implements Observer {
                 //prevent throwing IWSException out, it stops the timer to run this processing
                 final boolean processed = false;
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
-                LOG.error("Error during notification processing", e);
+                log.error("Error during notification processing", e);
             }
         }
     }
@@ -253,14 +254,14 @@ public class NotificationEmailSender implements Observer {
                         sender.send(msg);
                         ret = NotificationProcessTaskStatus.OK;
                     } catch (IWSException e) {
-                        LOG.error("Notification message generating failed", e);
+                        log.error("Notification message generating failed", e);
                     } catch (JMSException e) {
                         //do something, log or exception?
-                        LOG.error("Error during sending notification message to JMS queue", e);
+                        log.error("Error during sending notification message to JMS queue", e);
                     }
                 }
             } catch (IWSException ignore) {
-                LOG.warn("User " + recipient.getId() + " has not proper notification setting for notification type " + type);
+                log.warn("User " + recipient.getId() + " has not proper notification setting for notification type " + type);
             }
         }
         return ret;

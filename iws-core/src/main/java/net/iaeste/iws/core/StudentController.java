@@ -30,7 +30,8 @@ import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.core.services.StudentService;
 import net.iaeste.iws.persistence.Authentication;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -39,7 +40,7 @@ import org.apache.log4j.Logger;
  */
 public final class StudentController extends CommonController implements Student {
 
-    private static final Logger log = Logger.getLogger(StudentController.class);
+    private static final Logger log = LoggerFactory.getLogger(StudentController.class);
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses

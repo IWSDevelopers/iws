@@ -44,7 +44,8 @@ import net.iaeste.iws.core.services.CountryService;
 import net.iaeste.iws.core.services.GroupService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -53,7 +54,7 @@ import org.apache.log4j.Logger;
  */
 public final class AdministrationController extends CommonController implements Administration {
 
-    private static final Logger log = Logger.getLogger(AdministrationController.class);
+    private static final Logger log = LoggerFactory.getLogger(AdministrationController.class);
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses

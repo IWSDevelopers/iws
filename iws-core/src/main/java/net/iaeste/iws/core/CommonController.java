@@ -28,9 +28,8 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Common Controller, handles the default checks.
@@ -41,7 +40,7 @@ import java.util.logging.Logger;
  */
 class CommonController {
 
-    private static final Logger log = Logger.getLogger(CommonController.class.getSimpleName());
+    private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
     private static final String NULL_REQUEST = " Object may not be null.";
     protected final ServiceFactory factory;
@@ -152,8 +151,8 @@ class CommonController {
      * @see Verifiable#verify()
      */
     void verify(final Verifiable verifiable, final String... message) {
-        if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "Verifying Object " + verifiable.getClass().getName());
+        if (log.isTraceEnabled() && (verifiable != null)) {
+            log.trace("Verifying Object {}", verifiable.getClass().getName());
         }
 
         if (verifiable == null) {

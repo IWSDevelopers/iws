@@ -22,7 +22,8 @@ import net.timewalker.ffmq3.listeners.tcp.io.TcpListener;
 import net.timewalker.ffmq3.local.FFMQEngine;
 import net.timewalker.ffmq3.management.destination.definition.QueueDefinition;
 import net.timewalker.ffmq3.utils.Settings;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
 
@@ -40,20 +41,17 @@ import javax.jms.JMSException;
  * @since   1.7
  */
 public class MessageServer extends Thread {
+
+    private static final Logger log = LoggerFactory.getLogger(MessageServer.class);
+
     public static final String queueNameForFfmq = "IwsEmailQueue";
     public static final String queueNameForIws = "queue/IwsEmailQueue";
-
     public static final String engineName = "IwsFFMQMessageServer";
     public static final String listenAddr = "0.0.0.0";
     public static final int listenPort = 10002;
-
-    private static final Logger LOG = Logger.getLogger(MessageServer.class);
-
     private FFMQEngine engine;
     private ClientListener tcpListener;
-
     private boolean deployed = false;
-
 
     public void run() {
         try {
@@ -62,7 +60,7 @@ public class MessageServer extends Thread {
             final Settings settings = createEngineSettings();
             engine = new FFMQEngine(engineName, settings);
 
-            LOG.trace("Starting listener");
+            log.trace("Starting listener");
             tcpListener = new TcpListener(engine, listenAddr, listenPort, settings, null);
             tcpListener.start();
 
@@ -79,25 +77,25 @@ public class MessageServer extends Thread {
                 engine.createQueue(queueDef);
             }
 
-            LOG.trace("Deploying engine " + engine.getName());
+            log.trace("Deploying engine " + engine.getName());
             engine.deploy();
 
             deployed = true;
-            LOG.trace("Running");
+            log.trace("Running");
         } catch (JMSException e) {
             throw new IWSException(IWSErrors.ERROR, "Setting up FFMQ server failed.", e);
         }
     }
 
     public void shutdown() {
-        LOG.trace("Stopping listener");
+        log.trace("Stopping listener");
         tcpListener.stop();
 
-        LOG.trace("Undeploying engine");
+        log.trace("Undeploying engine");
         engine.undeploy();
         deployed = false;
 
-        LOG.trace("Done");
+        log.trace("Done");
     }
 
     public boolean isDeployed() {

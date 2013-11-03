@@ -14,7 +14,8 @@
  */
 package net.iaeste.iws.ejb.interceptors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -30,7 +31,7 @@ import java.text.DecimalFormat;
  */
 public class Profiler {
 
-    private static final Logger LOG = Logger.getLogger(Profiler.class);
+    private static final Logger log = LoggerFactory.getLogger(Profiler.class);
     private static final DecimalFormat format = new DecimalFormat("###,###.##");
 
     @AroundInvoke
@@ -44,7 +45,7 @@ public class Profiler {
             final String name = invocation.getMethod().getName();
             final String duration = format.format(time);
 
-            LOG.debug("Profile: Method " + name + " took " + duration + " ms.");
+            log.debug("Profile: Method " + name + " took " + duration + " ms.");
         }
     }
 }

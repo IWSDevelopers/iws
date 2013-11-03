@@ -17,7 +17,8 @@ package net.iaeste.iws.ejb.emails;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.ejb.IwsSystemSetting;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -50,7 +51,7 @@ import java.util.Properties;
 )
 public class EmailSender implements MessageListener {
 
-    private static final Logger LOG = Logger.getLogger(EmailSender.class);
+    private static final Logger log = LoggerFactory.getLogger(EmailSender.class);
     private IwsSystemSetting iwsSystemSetting;
 
     /**
@@ -59,7 +60,7 @@ public class EmailSender implements MessageListener {
      * Log message could be delated once we are sure it's working properly
      */
     public EmailSender() {
-        LOG.info("starting EmailSender");
+        log.info("starting EmailSender");
         iwsSystemSetting = IwsSystemSetting.getInstance();
     }
 
@@ -94,7 +95,7 @@ public class EmailSender implements MessageListener {
             message.setSubject(msg.getSubject());
             message.setText(msg.getMessage());
 
-            LOG.info("Sending email message to " + msg.getTo() + " with body " + msg.getMessage());
+            log.info("Sending email message to " + msg.getTo() + " with body " + msg.getMessage());
             Transport.send(message);
         } catch (MessagingException e) {
             throw new IWSException(IWSErrors.ERROR, "Sending to '" + msg.getTo() + "' failed.", e);

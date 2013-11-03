@@ -28,7 +28,8 @@ import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEnt
 import net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity;
 import net.iaeste.iws.persistence.entities.notifications.NotificationJobTaskEntity;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import java.io.ByteArrayOutputStream;
@@ -53,7 +54,8 @@ import java.util.Map;
  * @noinspection CastToConcreteClass, ChainOfInstanceofChecks, ObjectAllocationInLoop
  */
 public final class NotificationManager implements Notifications {
-    private static final Logger LOG = Logger.getLogger(NotificationManager.class);
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationManager.class);
 
     private final EntityManager iwsEntityManager;
     private final EntityManager mailingEntityManager;
@@ -162,11 +164,11 @@ public final class NotificationManager implements Notifications {
                     processJobs();
                 }
             } catch (IWSException e) {
-                LOG.error("Preparing notification job failed", e);
+                log.error("Preparing notification job failed", e);
             } catch (IOException ignored) {
                 //TODO write to log and skip the task or throw an exception?
 //                LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
-                LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed");
+                log.warn("Serializing of Notifiable instance for NotificationType " + type + " failed");
             }
         }
     }
@@ -207,11 +209,11 @@ public final class NotificationManager implements Notifications {
                     processJobs();
                 }
             } catch (IWSException e) {
-                LOG.error("Preparing notification job failed", e);
+                log.error("Preparing notification job failed", e);
             } catch (IOException ignored) {
                 //TODO write to log and skip the task or throw an exception?
     //            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
-                LOG.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed");
+                log.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed");
             }
         }
     }

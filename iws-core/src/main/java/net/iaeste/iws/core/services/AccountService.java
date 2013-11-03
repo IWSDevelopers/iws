@@ -47,7 +47,8 @@ import net.iaeste.iws.persistence.entities.PersonEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -60,7 +61,7 @@ import java.util.UUID;
  */
 public final class AccountService extends CommonService<AccessDao> {
 
-    private static final Logger log = Logger.getLogger(AccountService.class);
+    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     private final Notifications notifications;
     private final Settings settings;
 

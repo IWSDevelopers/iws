@@ -51,7 +51,8 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -66,7 +67,7 @@ import java.util.Set;
  */
 public final class ExchangeService extends CommonService<ExchangeDao> {
 
-    private static final Logger log = Logger.getLogger(ExchangeService.class);
+    private static final Logger log = LoggerFactory.getLogger(ExchangeService.class);
 
     private final Notifications notifications;
 

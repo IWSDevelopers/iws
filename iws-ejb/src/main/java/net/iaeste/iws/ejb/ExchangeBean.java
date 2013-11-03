@@ -43,7 +43,8 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.ExchangeController;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.ejb.interceptors.Profiler;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -80,7 +81,7 @@ import javax.persistence.PersistenceContext;
 @WebService(serviceName = "iwsService")
 public class ExchangeBean extends AbstractBean implements Exchange {
 
-    private static final Logger log = Logger.getLogger(ExchangeBean.class);
+    private static final Logger log = LoggerFactory.getLogger(ExchangeBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
     private Settings settings = new Settings();

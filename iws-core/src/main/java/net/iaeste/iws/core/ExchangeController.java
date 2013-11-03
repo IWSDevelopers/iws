@@ -45,7 +45,8 @@ import net.iaeste.iws.core.services.ExchangeFetchService;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.persistence.Authentication;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -54,7 +55,7 @@ import org.apache.log4j.Logger;
  */
 public final class ExchangeController extends CommonController implements Exchange {
 
-    private static final Logger log = Logger.getLogger(ExchangeController.class);
+    private static final Logger log = LoggerFactory.getLogger(ExchangeController.class);
 
     /**
      * Default Constructor, takes a ServiceFactory as input parameter, and uses

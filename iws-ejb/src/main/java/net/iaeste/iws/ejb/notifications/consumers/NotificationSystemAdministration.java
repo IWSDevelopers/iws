@@ -35,7 +35,8 @@ import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.MailingListJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import net.iaeste.iws.persistence.views.NotificationJobTasksView;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import java.io.ByteArrayInputStream;
@@ -57,7 +58,7 @@ import java.util.Set;
  */
 public class NotificationSystemAdministration implements Observer {
 
-    private static final Logger log = Logger.getLogger(NotificationSystemAdministration.class);
+    private static final Logger log = LoggerFactory.getLogger(NotificationSystemAdministration.class);
 
     private Long id = null;
     private static final Integer ATTEMPTS_LIMIT = 3;

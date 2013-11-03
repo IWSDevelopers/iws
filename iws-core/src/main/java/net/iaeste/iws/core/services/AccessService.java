@@ -45,7 +45,8 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ import java.util.UUID;
  */
 public final class AccessService extends CommonService<AccessDao> {
 
-    private static final Logger log = Logger.getLogger(AccessService.class);
+    private static final Logger log = LoggerFactory.getLogger(AccessService.class);
     private final Notifications notifications;
     private final ActiveSessions activeSessions;
     private final LoginRetries loginRetries;

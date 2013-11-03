@@ -20,6 +20,8 @@ import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.persistence.Authentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -27,6 +29,8 @@ import net.iaeste.iws.persistence.Authentication;
  * @since   1.7
  */
 public final class CommitteeService {
+
+    private static final Logger log = LoggerFactory.getLogger(CommitteeService.class);
 
     public Fallible createCommittee(final Authentication authentication, final CommitteeRequest request) {
         throw new NotImplementedException("Method pending implementation.");

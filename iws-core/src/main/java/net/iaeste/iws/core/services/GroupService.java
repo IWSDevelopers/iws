@@ -45,7 +45,8 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ import java.util.List;
  */
 public final class GroupService {
 
-    private static final Logger log = Logger.getLogger(GroupService.class);
+    private static final Logger log = LoggerFactory.getLogger(GroupService.class);
 
     private static final Long GENERAL_SECRETARY_GROUP = -1L;
 

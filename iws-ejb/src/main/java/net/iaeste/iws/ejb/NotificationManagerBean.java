@@ -28,8 +28,9 @@ import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -57,7 +58,8 @@ import javax.persistence.PersistenceContext;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {
-    private static final Logger LOG = Logger.getLogger(NotificationManagerBean.class);
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationManagerBean.class);
     private EntityManager iwsEntityManager = null;
     private EntityManager mailingListEntityManager = null;
     private Settings settings = null;
@@ -137,7 +139,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         try {
             notifications.notify(authentication, obj, type);
         } catch (IWSException e) {
-            LOG.error("Preparing notification failed", e);
+            log.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
@@ -152,7 +154,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
 //            }
 //            processJobs();
         } else {
-            LOG.debug("There is no TimerService, probably running outside app server");
+            log.debug("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -164,7 +166,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         try {
             notifications.notify(user);
         } catch (IWSException e) {
-            LOG.error("Preparing notification failed", e);
+            log.error("Preparing notification failed", e);
         }
 
         //TODO if to avoid problems during testing, possible fix by providing mocked TimerService
@@ -180,7 +182,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
             //start processing jobs immediately to avoid possible problems with timer running another thread
 //            processJobs();
         } else {
-            LOG.warn("There is no TimerService, probably running outside app server");
+            log.warn("There is no TimerService, probably running outside app server");
         }
     }
 
@@ -221,7 +223,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
         //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
         this.timer = null;
-        LOG.info("processJobsScheduled started at " + new DateTime());
+        log.info("processJobsScheduled started at " + new DateTime());
         notifications.processJobs();
     }
 
@@ -229,7 +231,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
     private void processJobsScheduled() {
         //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
         //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation
-        LOG.info("processJobsScheduled started at " + new DateTime());
+        log.info("processJobsScheduled started at " + new DateTime());
         final boolean run;
         synchronized (LOCK) {
             run = !processingIsRunning;

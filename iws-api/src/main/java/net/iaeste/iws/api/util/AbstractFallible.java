@@ -76,7 +76,7 @@ public abstract class AbstractFallible implements Fallible {
      */
     @Override
     public IWSError getError() {
-        return error;
+        return Copier.copy(error);
     }
 
     /**

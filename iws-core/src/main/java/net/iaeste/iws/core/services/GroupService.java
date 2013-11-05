@@ -106,7 +106,7 @@ public final class GroupService {
                 entity = createGroup(authentication, GroupType.LOCAL, request.getGroup(), authentication.getGroup());
                 setGroupOwner(entity, authentication.getUser());
             } else {
-                throw new PermissionException("Not allowed to create a sub-group of type " + type);
+                throw new PermissionException("Not allowed to create a sub-group of type '" + type.getDescription() + "'.");
             }
             notifications.notify(authentication, entity, NotificationType.NEW_GROUP);
         } else {

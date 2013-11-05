@@ -133,11 +133,6 @@ public enum GroupType {
     WORKGROUP("WorkGroup"),
 
     /**
-     * Alumni Group. Currently unassigned.
-     */
-    ALUMNI("Alumni"),
-
-    /**
      * The Student Group is for Offer Applicants, meaning that if a person
      * wishes to apply for an Open Offer for a given Country, the person must be
      * a member of the Country Student Group.<br />
@@ -149,7 +144,7 @@ public enum GroupType {
      * group (with role Student). Normal members who wishes to apply for Offers,
      * must also be added to the Student Group.
      */
-    STUDENTS("Students");
+    STUDENT("Student");
 
     // =========================================================================
     // Private Constructor & functionality

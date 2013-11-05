@@ -141,7 +141,7 @@ public final class AccountService extends CommonService<AccessDao> {
             studentGroup.setExternalId(UUID.randomUUID().toString());
             studentGroup.setCountry(memberGroup.getCountry());
             studentGroup.setGroupName(memberGroup.getGroupName() + ".Students");
-            studentGroup.setGroupType(dao.findGroupType(GroupType.STUDENTS));
+            studentGroup.setGroupType(dao.findGroupType(GroupType.STUDENT));
             studentGroup.setParentId(memberGroup.getId());
             dao.persist(studentGroup);
         }
@@ -629,8 +629,9 @@ public final class AccountService extends CommonService<AccessDao> {
                 case PRIVATE:
                 case LOCAL:
                 case WORKGROUP:
-                case ALUMNI:
-                case STUDENTS:
+                case STUDENT:
+                    // We allow that Users who are currently owner of any of
+                    // these type can be deleted. Hence, we break here
                     break;
                 case ADMINISTRATION:
                 case INTERNATIONAL:

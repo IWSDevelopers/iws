@@ -318,7 +318,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // get the group id of the students group
         String studentGroupId = "";
         for (final Group group : nationalGroupResponse.getSubGroups()) {
-            if (group.getGroupType() == GroupType.STUDENTS) {
+            if (group.getGroupType() == GroupType.STUDENT) {
                 studentGroupId = group.getGroupId();
                 assertThat(group.getGroupName(), is("Austria.Students"));
             }

@@ -12,9 +12,9 @@ insert into grouptypes (id, grouptype, description) values (2, 'MEMBER', ' All m
 insert into grouptypes (id, grouptype, description) values (3, 'INTERNATIONAL', 'A number of Groups exists, which are truly "International", meaning that members of these groups may come from anywhere and there are no restrictions to this.<br /> International Groups serve very specific needs, which means that only the International Groups can post information in the system of general nature, i.e. accessible to all.<br /> The list of pre-defined International Groups include the following: <ul> <li><b>GS</b><br /> General Secretary, and assigned assistents.</li> <li><b>Board</b><br /> Members of the IAESTE A.s.b.l. Board. </li><li><b>SID</b><br /> Members who participate in the annual Seminar on IAESTE Development. </li> <li><b>IDT</b><br /> Members of the IAESTE Internet Development Team. </li> <li><b>Alumni</b><br /> The members of the IAESTE Alumni organization, formerly known as FoIN, The Friends of IAESTE Network. </li> <li><b>Jump</b><br /> Participants in the annual Jump event, a training forum for members who wishes to participate in International IAESTE work. </li> <li><b>Ombudsmand</b><br /> The IAESTE Ombudsmand.</li></ul>');
 insert into grouptypes (id, grouptype, description) values (4, 'REGIONAL', 'Regional Groups are for a collection of Countries creating a state of the world. This can be anything like the Americas, Asia, Nordic Countries, Central European Countries, EU, etc. These types of groups have some similarities with International Groups, with some important difference. Members can only come from the state itself, and Regional Groups cannot share information for all to review.');
 insert into grouptypes (id, grouptype, description) values (5, 'NATIONAL', 'All Countries have both a Members group, where all the people who are a part of the Organization in that country are listed. However, for the staff, certain other functionality is required. The National Group will make up for that.<br />  The type of functionality will consists of access to certain sections of the IntraWeb, and only some of the members of the Staff group will be allowed to join the NC''s Mailinglist.<br /> Note; users can only be member of 1 National or SAR Group!');
-insert into grouptypes (id, grouptype, description) values (7, 'LOCAL', 'Local Groups are for Local Committees around the Country. Local Groups will have a National Group as parent Group.');
-insert into grouptypes (id, grouptype, description) values (8, 'WORKGROUP', 'For Groups, where you need only to have a common mailinglist as well as some other means of sharing information, the Workgroups will serve this purpose well.<br /> Workgroups can be assigned as a sub-group to any of the other groups.');
-insert into grouptypes (id, grouptype, description) values (9, 'STUDENTS', 'Students Group, for allowing externals access to limited parts of the IntraWeb, currently unassigned.');
+insert into grouptypes (id, grouptype, description) values (6, 'LOCAL', 'Local Groups are for Local Committees around the Country. Local Groups will have a National Group as parent Group.');
+insert into grouptypes (id, grouptype, description) values (7, 'WORKGROUP', 'For Groups, where you need only to have a common mailinglist as well as some other means of sharing information, the Workgroups will serve this purpose well.<br /> Workgroups can be assigned as a sub-group to any of the other groups.');
+insert into grouptypes (id, grouptype, description) values (8, 'STUDENT', 'Students Group, for allowing externals access to limited parts of the IntraWeb, currently unassigned.');
 
 -- =============================================================================
 -- Standard Roles
@@ -75,9 +75,9 @@ insert into permissions (id, permission) values (222, 'APPLY_FOR_OPEN_OFFER');
 --                  3 International
 --                  4 Regional
 --                  5 National
---                  7 LOCAL
---                  8 WorkGroup
---                  9 Students
+--                  6 Local
+--                  7 WorkGroup
+--                  8 Students
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
@@ -88,9 +88,9 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 7);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 7);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 7);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 7);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 7);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 7);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 7);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 7);
 insert into permission_to_role (role_id, permission_id) values (1, 7);
 insert into permission_to_role (role_id, permission_id) values (2, 7);
 insert into permission_to_role (role_id, permission_id) values (3, 7);
@@ -137,8 +137,8 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 103
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 103);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 103);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 103);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 103);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 103);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 103);
 insert into permission_to_role (role_id, permission_id) values (1, 103);
 insert into permission_to_role (role_id, permission_id) values (2, 103);
 insert into permission_to_role (role_id, permission_id) values (3, 103);
@@ -152,8 +152,8 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 111
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 111);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 111);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 111);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 111);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 111);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 111);
 insert into permission_to_role (role_id, permission_id) values (1, 111);
 insert into permission_to_role (role_id, permission_id) values (2, 111);
 
@@ -166,7 +166,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 112
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 112);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 112);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 112);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 112);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 112);
 insert into permission_to_role (role_id, permission_id) values (1, 112);
 insert into permission_to_role (role_id, permission_id) values (2, 112);
 
@@ -180,8 +180,8 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 113
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 113);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 113);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 113);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 113);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 113);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 113);
 insert into permission_to_role (role_id, permission_id) values (1, 113);
 insert into permission_to_role (role_id, permission_id) values (2, 113);
 insert into permission_to_role (role_id, permission_id) values (3, 113);
@@ -196,22 +196,23 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 114
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 114);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 114);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 114);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 114);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 114);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 114);
 insert into permission_to_role (role_id, permission_id) values (1, 114);
 insert into permission_to_role (role_id, permission_id) values (2, 114);
 insert into permission_to_role (role_id, permission_id) values (3, 114);
 
 -- Permission: 115 - Change Group Owner
---   -> GroupTypes: All except Private or Member
+--   -> GroupTypes: All except Private
 --   -> Roles:      1 Owner
 insert into permission_to_grouptype (grouptype_id, permission_id) values (0, 115);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 115);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 115);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 115);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 115);
 insert into permission_to_role (role_id, permission_id) values (1, 115);
 
 -- Permission: 116 - Process User Group Assignment
@@ -223,94 +224,94 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (2, 116
 insert into permission_to_grouptype (grouptype_id, permission_id) values (3, 116);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 116);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 116);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 116);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 116);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 116);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 116);
 insert into permission_to_role (role_id, permission_id) values (1, 116);
 insert into permission_to_role (role_id, permission_id) values (2, 116);
 
 -- Permission: 201 - Process Employer
 --   -> GroupTypes: 5 National
---                  7 Local
+--                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 201);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 201);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 201);
 insert into permission_to_role (role_id, permission_id) values (1, 201);
 insert into permission_to_role (role_id, permission_id) values (2, 201);
 
 -- Permission: 202 - Lookup Employers
 --   -> GroupTypes: 5 National
---                  7 Local
+--                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 202);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 202);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 202);
 insert into permission_to_role (role_id, permission_id) values (1, 202);
 insert into permission_to_role (role_id, permission_id) values (2, 202);
 insert into permission_to_role (role_id, permission_id) values (3, 202);
 
 -- Permission: 203 - Process Offer
 --   -> GroupTypes: 5 National
---                  7 Local
+--                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 203);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 203);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 203);
 insert into permission_to_role (role_id, permission_id) values (1, 203);
 insert into permission_to_role (role_id, permission_id) values (2, 203);
 
 -- Permission: 204 - Lookup Offers
 --   -> GroupTypes: 5 National
---                  7 Local
+--                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 204);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 204);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 204);
 insert into permission_to_role (role_id, permission_id) values (1, 204);
 insert into permission_to_role (role_id, permission_id) values (2, 204);
 insert into permission_to_role (role_id, permission_id) values (3, 204);
 
 -- Permission: 204 - Fetch Students
 --   -> GroupTypes: 5 National
---                  7 Local
+--                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 205);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 205);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 205);
 insert into permission_to_role (role_id, permission_id) values (1, 205);
 insert into permission_to_role (role_id, permission_id) values (2, 205);
 insert into permission_to_role (role_id, permission_id) values (3, 205);
 
 -- Permission: 220 - Publish Offer
 --   -> GroupTypes: 5 National
---                  7 Local
+--                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 220);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 220);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 220);
 insert into permission_to_role (role_id, permission_id) values (1, 220);
 insert into permission_to_role (role_id, permission_id) values (2, 220);
 
 -- Permission: 221 - Lookup Publish Offer
 --   -> GroupTypes: 5 National
---                  7 Local
+--                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 221);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 221);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 221);
 insert into permission_to_role (role_id, permission_id) values (1, 221);
 insert into permission_to_role (role_id, permission_id) values (2, 221);
 insert into permission_to_role (role_id, permission_id) values (3, 221);
 
 -- Permission: 222 - Apply For Open Offer
---   -> GroupTypes: 9 Student
+--   -> GroupTypes: 8 Student
 --   -> Roles:      5 Student
-insert into permission_to_grouptype (grouptype_id, permission_id) values (9, 222);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 222);
 insert into permission_to_role (role_id, permission_id) values (5, 222);
 
 -- =============================================================================

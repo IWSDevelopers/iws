@@ -91,7 +91,7 @@ import java.util.Map;
         @NamedQuery(name = "students.findAllForCountry",
                 query = "select ug.user from UserGroupEntity ug " +
                         "where ug.group.parentId = :parentId" +
-                        "  and ug.group.groupType.id = 9"),
+                        "  and ug.group.groupType.grouptype = 'STUDENT'"),
         @NamedQuery(name = "user.findNumberOfSimilarAliases",
                 query = "select count(u.id) from UserEntity u " +
                         "where lower(alias) like :startOfAlias")

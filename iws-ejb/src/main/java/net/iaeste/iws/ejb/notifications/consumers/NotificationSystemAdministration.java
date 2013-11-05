@@ -62,15 +62,19 @@ public class NotificationSystemAdministration implements Observer {
 
     private Long id = null;
     private static final Integer ATTEMPTS_LIMIT = 3;
+    private boolean initialized = false;
 
-    private final EntityManager mailingListEntityManager;
+    private EntityManager mailingListEntityManager;
 
-    private final AccessDao accessDao;
-    private final MailingListDao mailingListDao;
-    private final NotificationDao notificationDao;
-    private final Settings settings;
+    private AccessDao accessDao;
+    private MailingListDao mailingListDao;
+    private NotificationDao notificationDao;
+    private Settings settings;
 
-    public NotificationSystemAdministration(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
+    public NotificationSystemAdministration() {
+    }
+
+    public void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         this.accessDao = new AccessJpaDao(iwsEntityManager);
         this.mailingListDao = new MailingListJpaDao(mailingEntityManager);
         this.notificationDao = new NotificationJpaDao(iwsEntityManager);
@@ -78,6 +82,8 @@ public class NotificationSystemAdministration implements Observer {
 
 //        mailingListDao = new MailingListJpaDao(iwsEntityManager);
         mailingListEntityManager = mailingEntityManager;
+
+        initialized = true;
     }
 
     /**
@@ -85,12 +91,16 @@ public class NotificationSystemAdministration implements Observer {
      */
     @Override
     public void update(final Observable subject) {
-        try {
-            processMessages();
-        } catch (Exception e) {
-            //catching all exceptions other than IWSException to prevent
-            //stopping notification processing and leaving error message in log
-            log.error("System error occured", e);
+        if (initialized) {
+            try {
+                processMessages();
+            } catch (Exception e) {
+                //catching all exceptions other than IWSException to prevent
+                //stopping notification processing and leaving error message in log
+                log.error("System error occured", e);
+            }
+        } else {
+            log.warn("Update called for uninitialized observer");
         }
     }
 

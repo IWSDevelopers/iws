@@ -35,12 +35,13 @@ public final class NotificationConsumerClassLoader {
         try {
 //            this doesn't work in glassfish
 //            final Class<?> consumerClass = loadClass(name);
-            //TODO all consumers have to have same constructor parameters -> any idea how to make it dynamic?
             final Class<?> consumerClass = Class.forName(name);
-            final Constructor<?> constructor = consumerClass.getDeclaredConstructor(EntityManager.class, EntityManager.class, Settings.class);
-            final Object consumer = constructor.newInstance(iwsEntityManager, mailingEntityManager, settings);
+            final Constructor<?> constructor = consumerClass.getDeclaredConstructor();
+            final Object consumer = constructor.newInstance();
             if (consumer instanceof Observer) {
-                return (Observer) consumer;
+                final Observer observer = (Observer)consumer;
+                observer.init(iwsEntityManager, mailingEntityManager, settings);
+                return observer;
             }
 
             throw new IWSException(IWSErrors.ERROR, "Class " + name + " is not valid notification consumer");

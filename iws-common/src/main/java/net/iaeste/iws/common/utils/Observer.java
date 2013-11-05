@@ -14,6 +14,10 @@
  */
 package net.iaeste.iws.common.utils;
 
+import net.iaeste.iws.common.configuration.Settings;
+
+import javax.persistence.EntityManager;
+
 /**
  * The Observer interface is used by the "observers" in the
  * <a href="http://en.wikipedia.org/wiki/Observer_pattern">Observer Design
@@ -39,4 +43,13 @@ public interface Observer {
     //TODO better identifier, UUID?
     Long getId();
     void setId(Long id);
+
+    /**
+     * Method to initialize Observer
+     *
+     * @param iwsEntityManager
+     * @param mailingEntityManager
+     * @param settings
+     */
+    void init(EntityManager iwsEntityManager, EntityManager mailingEntityManager, Settings settings);
 }

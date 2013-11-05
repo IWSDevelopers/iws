@@ -19,6 +19,8 @@ import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 
@@ -34,6 +36,8 @@ import javax.persistence.EntityManager;
  */
 public class NotificationImSender implements Observer {
     private Long id = null;
+    private boolean initialized = false;
+
 //    //JMS message queue
 //    @Resource(mappedName = "iws-emailQueue")
 //    private Queue queue;
@@ -45,11 +49,11 @@ public class NotificationImSender implements Observer {
 //    QueueSender sender = null;
 //    QueueSession session = null;
 
-    private final NotificationDao dao;
+    private NotificationDao dao;
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationImSender.class);
 
     public NotificationImSender(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
-        dao = new NotificationJpaDao(iwsEntityManager);
-
 //        //initialize jms message queue
 //        QueueConnection queueConnection = null;
 //        try {
@@ -62,12 +66,21 @@ public class NotificationImSender implements Observer {
 //        }
     }
 
+    public void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
+        dao = new NotificationJpaDao(iwsEntityManager);
+        initialized = true;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void update(final Observable subject) {
-        processMessages();
+        if (initialized) {
+            processMessages();
+        } else {
+            log.warn("Update called for uninitialized observer");
+        }
     }
 
     @Override

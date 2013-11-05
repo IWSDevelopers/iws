@@ -70,10 +70,11 @@ import java.util.Map;
 public class NotificationEmailSender implements Observer {
     private Long id = null;
     private static final Integer ATTEMPTS_LIMIT = 3;
+    private boolean initialized = false;
 
-    private final NotificationMessageGenerator messageGenerator;
-    private final NotificationDao dao;
-    private final AccessDao accessDao;
+    private NotificationMessageGenerator messageGenerator;
+    private NotificationDao dao;
+    private AccessDao accessDao;
 
     private static final Logger log = LoggerFactory.getLogger(NotificationEmailSender.class);
 
@@ -90,13 +91,18 @@ public class NotificationEmailSender implements Observer {
     private QueueSender sender = null;
     private QueueSession session = null;
 
-    public NotificationEmailSender(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
+    public NotificationEmailSender() {
+    }
+
+    public void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
 
         messageGenerator = new NotificationMessageGeneratorFreemarker();
 
         initializeQueue();
+
+        initialized = true;
     }
 
     private void initializeQueue() {
@@ -183,12 +189,16 @@ public class NotificationEmailSender implements Observer {
      */
     @Override
     public void update(final Observable subject) {
-        try {
-            processMessages();
-        } catch (Exception e) {
-            //catching all exceptions other than IWSException to prevent
-            //stopping notification processing and leaving error message in log
-            log.error("System error occured", e);
+        if (initialized) {
+            try {
+                processMessages();
+            } catch (Exception e) {
+                //catching all exceptions other than IWSException to prevent
+                //stopping notification processing and leaving error message in log
+                log.error("System error occured", e);
+            }
+        } else {
+            log.warn("Update called for uninitialized observer");
         }
     }
 

@@ -206,3 +206,35 @@ create table offer_to_group (
     constraint offer_to_group_notnull_modified    check (modified is not null),
     constraint offer_to_group_notnull_created     check (created is not null)
 );
+
+-- =============================================================================
+-- Student Applications
+-- -----------------------------------------------------------------------------
+-- Description of Table
+-- =============================================================================
+create sequence student_application_sequence start with 1 increment by 1;
+create table student_applications (
+    id                        integer default nextval('student_application_sequence'),
+    external_id               varchar(36),
+    offer_id                  integer,
+    student_id                integer,
+    status                    varchar(25),
+    modified                  timestamp default now(),
+    created                   timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint student_application_pk             primary key (id),
+    constraint student_application_fk_offer_id    foreign key (offer_id) references offers (id) ON DELETE CASCADE,
+    constraint student_application_fk_student_id  foreign key (student_id) references users (id),
+
+    /* Unique Constraints */
+    constraint student_application_unique_external_id unique (external_id),
+
+    /* Not Null Constraints */
+    constraint student_application_notnull_id               check (id is not null),
+    constraint student_application_notnull_external_id      check (external_id is not null),
+    constraint student_application_notnull_offer_id         check (offer_id is not null),
+    constraint student_application_notnull_student_id       check (student_id is not null),
+    constraint student_application_notnull_modified         check (modified is not null),
+    constraint student_application_notnull_created          check (created is not null)
+);

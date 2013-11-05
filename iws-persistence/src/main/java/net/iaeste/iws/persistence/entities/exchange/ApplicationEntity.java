@@ -1,5 +1,6 @@
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
@@ -7,6 +8,8 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,17 +41,21 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     @JoinColumn(name = "offer_id", nullable = false)
     private OfferEntity offer = null;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(nullable = true, name = "group_id")
-    private GroupEntity group = null;
-
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "modified_by", nullable = false)
-    private UserEntity modifiedBy = null;
+    @JoinColumn(name = "student_id", nullable = false)
+    private UserEntity student = null;
 
-    @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "created_by", nullable = false)
-    private UserEntity createdBy = null;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 25, nullable = false)
+    private ApplicationStatus status = null;
+
+//    @ManyToOne(targetEntity = UserEntity.class)
+//    @JoinColumn(name = "modified_by", nullable = false)
+//    private UserEntity modifiedBy = null;
+
+//    @ManyToOne(targetEntity = UserEntity.class)
+//    @JoinColumn(name = "created_by", nullable = false)
+//    private UserEntity createdBy = null;
 
     /**
      * Last time the Entity was modified.
@@ -108,12 +115,20 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return offer;
     }
 
-    public void setGroup(final GroupEntity group) {
-        this.group = group;
+    public void setStudent(final UserEntity student) {
+        this.student = student;
     }
 
-    public GroupEntity getGroup() {
-        return group;
+    public UserEntity getStudent() {
+        return student;
+    }
+
+    public void setStatus(final ApplicationStatus status) {
+        this.status = status;
+    }
+
+    public ApplicationStatus getStatus() {
+        return status;
     }
 
     /**

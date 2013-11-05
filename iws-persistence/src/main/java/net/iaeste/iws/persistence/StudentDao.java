@@ -24,7 +24,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface StudentDao {
+public interface StudentDao extends BasicDao {
 
     /**
      * Get all students from the database.

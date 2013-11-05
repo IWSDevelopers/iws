@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.client;
 
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
@@ -30,9 +30,9 @@ import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
  * @since   1.7
  * @noinspection OverlyCoupledClass
  */
-public final class StudentClient implements Student {
+public final class StudentClient implements Students {
 
-    private final Student client;
+    private final Students client;
 
     /**
      * Default Constructor.

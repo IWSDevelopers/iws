@@ -31,7 +31,7 @@ import javax.ejb.Remote;
  * @since   1.7
  */
 @Remote
-public interface Student {
+public interface Students {
 
     /**
      * Retrieves a list of Students, matching the criterias from the Request

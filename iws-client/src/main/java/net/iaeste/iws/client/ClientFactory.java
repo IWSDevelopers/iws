@@ -18,7 +18,7 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.client.spring.Beans;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -92,7 +92,7 @@ public final class ClientFactory {
         return (Exchange) context.getBean("exchangeSpringClient");
     }
 
-    Student getStudentImplementation() {
-        return (Student) context.getBean("studentSpringClient");
+    Students getStudentImplementation() {
+        return (Students) context.getBean("studentSpringClient");
     }
 }

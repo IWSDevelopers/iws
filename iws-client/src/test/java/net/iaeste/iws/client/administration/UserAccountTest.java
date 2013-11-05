@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
@@ -253,9 +253,9 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(response1.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
 
         // Verify that the Students exists
-        final Student student = new StudentClient();
+        final Students students = new StudentClient();
         final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
-        final FetchStudentsResponse fetchStudentsResponse = student.fetchStudents(token, fetchStudentsRequest);
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
         assertThat(fetchStudentsResponse.isOk(), is(true));
         assertThat(fetchStudentsResponse.getStudents().size(), is(1));
 

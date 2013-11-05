@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.ejb;
 
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
@@ -61,13 +61,13 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class StudentBean extends AbstractBean implements Student {
+public class StudentBean extends AbstractBean implements Students {
 
     private static final Logger log = LoggerFactory.getLogger(StudentBean.class);
     private EntityManager entityManager = null;
     private NotificationManagerLocal notificationManager = null;
     private Settings settings = new Settings();
-    private Student controller = null;
+    private Students controller = null;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also

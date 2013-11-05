@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.client.spring;
 
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
@@ -44,9 +44,9 @@ import javax.persistence.PersistenceContext;
  */
 @Transactional
 @Repository("studentSpringClient")
-public final class StudentSpringClient implements Student {
+public final class StudentSpringClient implements Students {
 
-    private Student client = null;
+    private Students client = null;
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our

@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.fitnesse.callers.StudentCaller;
@@ -27,7 +27,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  */
 public final class FetchStudentApplications extends AbstractFixture<FetchStudentApplicationsResponse> {
 
-    private final Student student = new StudentCaller();
+    private final Students student = new StudentCaller();
     private FetchStudentApplicationsRequest request = new FetchStudentApplicationsRequest();
 
     public void setOfferId(final String offerId) {

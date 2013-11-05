@@ -16,7 +16,7 @@ package net.iaeste.iws.core;
 
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class StudentController extends CommonController implements Student {
+public final class StudentController extends CommonController implements Students {
 
     private static final Logger log = LoggerFactory.getLogger(StudentController.class);
 

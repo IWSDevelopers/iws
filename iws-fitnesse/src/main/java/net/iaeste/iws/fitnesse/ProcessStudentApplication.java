@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.fitnesse;
 
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
@@ -29,7 +29,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  */
 public final class ProcessStudentApplication extends AbstractFixture<StudentApplicationResponse> {
 
-    private final Student student = new StudentCaller();
+    private final Students student = new StudentCaller();
     private ProcessStudentApplicationsRequest request = new ProcessStudentApplicationsRequest();
     private StudentApplication studentApplication = new StudentApplication();
 

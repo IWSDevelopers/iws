@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.fitnesse.callers;
 
-import net.iaeste.iws.api.Student;
+import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
@@ -31,10 +31,10 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class StudentCaller implements Student {
+public final class StudentCaller implements Students {
 
     // The Client handles the IWS for us, we use use it
-    private final Student caller = new StudentClient();
+    private final Students caller = new StudentClient();
 
     // =========================================================================
     // Implementation of methods from Student in the API

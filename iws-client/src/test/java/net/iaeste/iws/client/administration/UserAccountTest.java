@@ -20,10 +20,9 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
+import net.iaeste.iws.api.Student;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
-import net.iaeste.iws.api.dtos.User;
-import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.requests.AccountNameRequest;
@@ -33,27 +32,25 @@ import net.iaeste.iws.api.requests.FetchGroupRequest;
 import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.AdministrationClient;
+import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
- * @noinspection BreakStatement
+ * @since  1.7
  */
 public final class UserAccountTest extends AbstractAdministration {
 
@@ -88,10 +85,10 @@ public final class UserAccountTest extends AbstractAdministration {
     /**
      * Test for the Trac Bug report #452 - to reproduce:
      * <ol>
-     *   <li>login as austria</li>
-     *   <li>create a new user</li>
-     *   <li>activate the user</li>
-     *   <li>delete the user</li>
+     * <li>login as austria</li>
+     * <li>create a new user</li>
+     * <li>activate the user</li>
+     * <li>delete the user</li>
      * </ol>
      */
     @Test
@@ -221,12 +218,12 @@ public final class UserAccountTest extends AbstractAdministration {
      * process, and verify that the new Student account has the expected
      * permissions. This is the steps being tested:
      * <ol>
-     *   <li><b>Success</b>: Create new Student Account</li>
-     *   <li><b>Failure</b>: Attempt to login before activation</li>
-     *   <li><b>Success</b>: Activate Student Account</li>
-     *   <li><b>Success</b>: Login with newly created & activated Student Account</li>
-     *   <li><b>Success</b>: Read Permissions for Student, verify Apply for Open Offers</li>
-     *   <li><b>Success</b>: Logout from Student Account</li>
+     * <li><b>Success</b>: Create new Student Account</li>
+     * <li><b>Failure</b>: Attempt to login before activation</li>
+     * <li><b>Success</b>: Activate Student Account</li>
+     * <li><b>Success</b>: Login with newly created & activated Student Account</li>
+     * <li><b>Success</b>: Read Permissions for Student, verify Apply for Open Offers</li>
+     * <li><b>Success</b>: Logout from Student Account</li>
      * </ol>
      */
     @Test
@@ -254,6 +251,13 @@ public final class UserAccountTest extends AbstractAdministration {
         final AuthenticationResponse response1 = accessClient.generateSession(request);
         assertThat(response1.isOk(), is(false));
         assertThat(response1.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+
+        // Verify that the Students exists
+        final Student student = new StudentClient();
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = student.fetchStudents(token, fetchStudentsRequest);
+        assertThat(fetchStudentsResponse.isOk(), is(true));
+        assertThat(fetchStudentsResponse.getStudents().size(), is(1));
 
         // Activate the Account
         final Fallible acticationResult = administration.activateUser(activationCode);
@@ -313,8 +317,8 @@ public final class UserAccountTest extends AbstractAdministration {
 
         // get the group id of the students group
         String studentGroupId = "";
-        for (Group group: nationalGroupResponse.getSubGroups()) {
-            if(group.getGroupType().equals(GroupType.STUDENTS)) {
+        for (final Group group : nationalGroupResponse.getSubGroups()) {
+            if (group.getGroupType() == GroupType.STUDENTS) {
                 studentGroupId = group.getGroupId();
                 assertThat(group.getGroupName(), is("Austria.Students"));
             }
@@ -337,7 +341,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // Extract the users from the group
         //List<User> users = new ArrayList<>();
         //for(UserGroup userGroup: studentGroupResponse.getUserGroups()) {
-               //users.add(userGroup.getUser());
+        //users.add(userGroup.getUser());
         //}
 
         //assertThat(users.contains(createUserResponse1.getUser()), is(true));
@@ -349,7 +353,7 @@ public final class UserAccountTest extends AbstractAdministration {
      * Testing that the generated Alias is correctly set to the name plus an
      * increasing number, of multiple people with the same name are
      * created.<br />
-     *   Note, the test is using pure lowercase variants, since the IWS will
+     * Note, the test is using pure lowercase variants, since the IWS will
      * internally convert all usernames and aliases to lowercase.
      */
     @Test

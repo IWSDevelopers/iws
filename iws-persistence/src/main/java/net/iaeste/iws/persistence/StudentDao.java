@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public interface StudentDao {
      *
      * @return list of {@code StudentEntity}
      */
-    List<StudentEntity> findAllStudents();
+    List<UserEntity> findAllStudents(Long parentGroupId);
 
     /**
      * Find the entity in the database, via the provided name.

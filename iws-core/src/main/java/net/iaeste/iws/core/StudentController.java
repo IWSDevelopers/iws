@@ -63,7 +63,7 @@ public final class StudentController extends CommonController implements Student
         FetchStudentsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT_APPLICATION);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_STUDENTS);
             verify(request);
 
             final StudentService service = factory.prepareStudentService();

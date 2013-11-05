@@ -14,9 +14,14 @@
  */
 package net.iaeste.iws.api.responses.student;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.util.AbstractFallible;
+
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -28,6 +33,9 @@ public final class FetchStudentsResponse extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    /** The List of Students, matching the request. */
+    private List<Student> students = null;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -37,6 +45,15 @@ public final class FetchStudentsResponse extends AbstractFallible {
      * for WebServices to work properly.
      */
     public FetchStudentsResponse() {
+    }
+
+    /**
+     * Default Constructor.
+     *
+     * @param students List of found Students
+     */
+    public FetchStudentsResponse(final List<Student> students) {
+        setStudents(students);
     }
 
     /**
@@ -53,6 +70,14 @@ public final class FetchStudentsResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
+    public void setStudents(final List<Student> students) {
+        this.students = copy(students);
+    }
+
+    public List<Student> getStudents() {
+        return copy(students);
+    }
+
     // =========================================================================
     // Standard Response Methods
     // =========================================================================
@@ -62,7 +87,18 @@ public final class FetchStudentsResponse extends AbstractFallible {
      */
     @Override
     public boolean equals(final Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof FetchStudentsResponse)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+
+        final FetchStudentsResponse that = (FetchStudentsResponse) obj;
+        return !(students != null ? !students.equals(that.students) : that.students != null);
     }
 
     /**
@@ -70,7 +106,11 @@ public final class FetchStudentsResponse extends AbstractFallible {
      */
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = super.hashCode();
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (students != null ? students.hashCode() : 0);
+
+        return result;
     }
 
     /**
@@ -78,6 +118,8 @@ public final class FetchStudentsResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "";
+        return "FetchStudentsResponse{" +
+                "students=" + students +
+                '}';
     }
 }

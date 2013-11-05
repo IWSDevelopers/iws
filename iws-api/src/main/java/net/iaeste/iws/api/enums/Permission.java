@@ -151,9 +151,9 @@ public enum Permission {
     // =========================================================================
     // Exchange related Permissions
     // =========================================================================
+    FETCH_STUDENTS,
 
     // Following are unmapped Student Permissions
-    FETCH_STUDENTS,
     PROCESS_STUDENTS,
     FETCH_STUDENT_APPLICATION,
     PROCESS_STUDENT_APPLICATION

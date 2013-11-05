@@ -100,7 +100,7 @@ public final class ServiceFactory {
 
     public StudentService prepareStudentService() {
         final StudentDao dao = new StudentJpaDao(entityManager);
-        return new StudentService(dao);
+        return new StudentService(accessDao, dao);
     }
 
     public AccessDao getAccessDao() {

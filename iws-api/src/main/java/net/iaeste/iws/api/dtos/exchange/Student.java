@@ -15,7 +15,7 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -33,9 +33,7 @@ public final class Student extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String studentId = null;
-    private String studentName = null;
-    private Group group = null;
+    private User user = null;
 
     // =========================================================================
     // Object Constructors
@@ -51,14 +49,10 @@ public final class Student extends AbstractVerification {
     /**
      * Default Constructor.
      *
-     * @param studentId   Student Id
-     * @param studentName Name of the Student
-     * @param group       National Group, which the student belongs to
+     * @param user User
      */
-    public Student(final String studentId, final String studentName, final Group group) {
-        this.studentId = studentId;
-        this.studentName = studentName;
-        this.group = group;
+    public Student(final User user) {
+        setUser(user);
     }
 
     /**
@@ -68,9 +62,7 @@ public final class Student extends AbstractVerification {
      */
     public Student(final Student student) {
         if (student != null) {
-            studentId = student.studentId;
-            studentName = student.studentName;
-            group = student.group;
+            user = student.user;
         }
     }
 
@@ -78,30 +70,13 @@ public final class Student extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setStudentId(final String studentId) {
-        ensureValidId("studentId", studentId);
-        this.studentId = studentId;
+    public void setUser(final User user) throws IllegalArgumentException {
+        ensureNotNullAndVerifiable("user", user);
+        this.user = new User(user);
     }
 
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentName(final String studentName) {
-        ensureNotNullOrEmptyOrTooLong("studentName", studentName, 100);
-        this.studentName = studentName;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setGroup(final Group group) {
-        this.group = group;
-    }
-
-    public Group getGroup() {
-        return group;
+    public User getUser() {
+        return new User(user);
     }
 
     // =========================================================================
@@ -115,9 +90,7 @@ public final class Student extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "studentId", studentId);
-        isNotNull(validation, "studentName", studentName);
-        isNotNull(validation, "group", group);
+        isNotNull(validation, "user", user);
 
         return validation;
     }
@@ -130,22 +103,12 @@ public final class Student extends AbstractVerification {
         if (this == obj) {
             return true;
         }
-
         if (!(obj instanceof Student)) {
             return false;
         }
 
         final Student student = (Student) obj;
-
-        if (studentId != null ? !studentId.equals(student.studentId) : student.studentId != null) {
-            return false;
-        }
-
-        if (group != null ? !group.equals(student.group) : student.group != null) {
-            return false;
-        }
-
-        return !(studentName != null ? !studentName.equals(student.studentName) : student.studentName != null);
+        return !(user != null ? !user.equals(student.user) : student.user != null);
     }
 
     /**
@@ -153,13 +116,7 @@ public final class Student extends AbstractVerification {
      */
     @Override
     public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
-
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + studentId.hashCode();
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + studentName.hashCode();
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (group != null ? group.hashCode() : 0);
-
-        return hash;
+        return user != null ? user.hashCode() : 0;
     }
 
     /**
@@ -168,9 +125,7 @@ public final class Student extends AbstractVerification {
     @Override
     public String toString() {
         return "Student{" +
-                "studentId=" + studentId +
-                "studentName=" + studentName +
-                "group=" + group +
+                "user=" + user +
                 '}';
     }
 }

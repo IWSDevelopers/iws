@@ -17,9 +17,11 @@ package net.iaeste.iws.core.transformers;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
@@ -199,6 +201,36 @@ public final class ExchangeTransformer {
             result.setGroupId(entity.getGroup().getExternalId());
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
+        }
+
+        return result;
+    }
+
+    public static StudentApplication transform(final ApplicationEntity entity) {
+        StudentApplication result = null;
+
+        if (entity != null) {
+            result = new StudentApplication();
+
+            result.setOffer(transform(entity.getOffer()));
+            result.setStudent(AdministrationTransformer.transform(entity.getStudent()));
+            result.setStatus(entity.getStatus());
+            result.setModified(new DateTime(entity.getModified()));
+            result.setCreated(new DateTime(entity.getCreated()));
+        }
+
+        return result;
+    }
+
+    public static ApplicationEntity transform(final StudentApplication application) {
+        ApplicationEntity result = null;
+
+        if (application != null) {
+            result = new ApplicationEntity();
+
+            result.setOffer(transform(application.getOffer()));
+            result.setStudent(AdministrationTransformer.transform(application.getStudent()));
+            result.setStatus(application.getStatus());
         }
 
         return result;

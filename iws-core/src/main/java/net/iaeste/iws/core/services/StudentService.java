@@ -18,7 +18,7 @@ import static net.iaeste.iws.core.transformers.AdministrationTransformer.transfo
 
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;

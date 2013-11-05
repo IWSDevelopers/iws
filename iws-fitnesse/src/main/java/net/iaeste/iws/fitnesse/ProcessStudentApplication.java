@@ -15,9 +15,11 @@
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Students;
+import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
-import net.iaeste.iws.api.requests.exchange.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.fitnesse.callers.StudentCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -33,12 +35,12 @@ public final class ProcessStudentApplication extends AbstractFixture<StudentAppl
     private ProcessStudentApplicationsRequest request = new ProcessStudentApplicationsRequest();
     private StudentApplication studentApplication = new StudentApplication();
 
-    public void setOfferId(final String offerId) {
-        studentApplication.setOfferId(offerId);
+    public void setOfferId(final Offer offer) {
+        studentApplication.setOffer(offer);
     }
 
-    public void setStudentId(final String studentId) {
-        studentApplication.setStudentId(studentId);
+    public void setStudentId(final User student) {
+        studentApplication.setStudent(student);
     }
 
     public void setStatus(final String status) {

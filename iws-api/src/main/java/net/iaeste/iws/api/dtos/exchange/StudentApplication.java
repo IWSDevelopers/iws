@@ -16,6 +16,7 @@ package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -23,6 +24,7 @@ import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DateTime;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -45,11 +47,11 @@ public final class StudentApplication extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** Id of the {@link Offer} that the {@link Student} is applying for */
-    private String offerId = null;
+    /** {@link Offer} that the {@link Student} is applying for */
+    private Offer offer = null;
 
-    /** Id of the {@link Student} */
-    private String studentId = null;
+    /** {@link Student} as User */
+    private User student = null;
 
     /** Status of the {@link StudentApplication} */
     private ApplicationStatus status = null;
@@ -84,6 +86,9 @@ public final class StudentApplication extends AbstractVerification {
     private StudentAcceptance acceptance = null;
     private StudentAcceptanceConfirmation travelInformation = null;
 
+    private DateTime modified = null;
+    private DateTime created = null;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -102,8 +107,8 @@ public final class StudentApplication extends AbstractVerification {
      */
     public StudentApplication(final StudentApplication studentApplication) {
         if (studentApplication != null) {
-            offerId = studentApplication.offerId;
-            studentId = studentApplication.studentId;
+            offer = new Offer(studentApplication.offer);
+            student = new User(studentApplication.student);
             status = studentApplication.status;
         }
     }
@@ -114,20 +119,20 @@ public final class StudentApplication extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOfferId(final String offerId) {
-        this.offerId = offerId;
+    public void setOffer(final Offer offer) {
+        this.offer = offer;
     }
 
-    public String getOfferId() {
-        return offerId;
+    public Offer getOffer() {
+        return offer;
     }
 
-    public void setStudentId(final String studentId) {
-        this.studentId = studentId;
+    public void setStudent(final User student) {
+        this.student = student;
     }
 
-    public String getStudentId() {
-        return studentId;
+    public User getStudent() {
+        return student;
     }
 
     public void setStatus(final ApplicationStatus status) {
@@ -136,6 +141,22 @@ public final class StudentApplication extends AbstractVerification {
 
     public ApplicationStatus getStatus() {
         return status;
+    }
+
+    public void setModified(final DateTime modified) {
+        this.modified = modified;
+    }
+
+    public DateTime getModified() {
+        return modified;
+    }
+
+    public void setCreated(final DateTime created) {
+        this.created = created;
+    }
+
+    public DateTime getCreated() {
+        return created;
     }
 
     // =========================================================================
@@ -152,8 +173,8 @@ public final class StudentApplication extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "offerId", offerId);
-        isNotNull(validation, "studentId", studentId);
+        isNotNull(validation, "offer", offer);
+        isNotNull(validation, "student", student);
 
         return validation;
     }
@@ -173,11 +194,11 @@ public final class StudentApplication extends AbstractVerification {
 
         final StudentApplication studentApplication = (StudentApplication) obj;
 
-        if (offerId != null ? !offerId.equals(studentApplication.offerId) : studentApplication.offerId != null) {
+        if (offer != null ? !offer.equals(studentApplication.offer) : studentApplication.offer != null) {
             return false;
         }
 
-        if (studentId != null ? !studentId.equals(studentApplication.studentId) : studentApplication.studentId != null) {
+        if (student != null ? !student.equals(studentApplication.student) : studentApplication.student != null) {
             return false;
         }
 
@@ -191,8 +212,8 @@ public final class StudentApplication extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offerId != null ? offerId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (studentId != null ? studentId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offer != null ? offer.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (student != null ? student.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
 
         return hash;
@@ -204,8 +225,8 @@ public final class StudentApplication extends AbstractVerification {
     @Override
     public String toString() {
         return "StudentApplication{" +
-                "offerId='" + offerId + '\'' +
-                ", studentId='" + studentId + '\'' +
+                "offer='" + offer + '\'' +
+                ", student='" + student + '\'' +
                 ", status=" + status +
                 '}';
     }

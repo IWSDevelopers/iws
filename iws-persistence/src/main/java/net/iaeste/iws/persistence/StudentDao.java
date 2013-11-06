@@ -49,4 +49,11 @@ public interface StudentDao extends BasicDao {
      * @return {@code UserEntity} if students exists withing given group, otherwise null
      */
     UserEntity findStudentByExternal(Long parentGroupId, String externalId);
+
+    /**
+     * Finds all applications for a specific Offer
+     * @param offerId Offer ID
+     * @return list of {@code ApplicationEntity}
+     */
+    List<ApplicationEntity> findApplicationsForOffer(Long offerId);
 }

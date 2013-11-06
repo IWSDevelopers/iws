@@ -30,7 +30,10 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "application.findByExternalId",
                 query = "select a from ApplicationEntity a " +
-                        "where a.externalId = :eid")
+                        "where a.externalId = :eid"),
+        @NamedQuery(name = "application.findByOfferId",
+                query = "select a from ApplicationEntity a " +
+                        "where a.offer.id = :oid")
 })
 @Entity
 @Table(name = "student_applications")

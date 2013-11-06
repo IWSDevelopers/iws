@@ -103,6 +103,26 @@ public final class StudentService {
         return applicationEntity;
     }
 
+    public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
+        final OfferEntity offer = exchangeDao.findOfferByExternalId(authentication, request.getOfferId());
+        if (offer == null) {
+            throw new VerificationException("The offer with id '" + request.getOfferId() + "' was not found.");
+        }
+
+        final List<ApplicationEntity> found = studentDao.findApplicationsForOffer(offer.getId());
+
+        final List<StudentApplication> applications = new ArrayList<>(found.size());
+        for (final ApplicationEntity entity : found) {
+            applications.add(transform(entity));
+        }
+
+        return new FetchStudentApplicationsResponse(applications);
+    }
+
+    public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
+        throw new NotImplementedException("Pending Implementation.");
+    }
+
     private OfferEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {
         OfferEntity result = null;
         final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffer(offerExternalId);
@@ -114,13 +134,5 @@ public final class StudentService {
         }
 
         return result;
-    }
-
-    public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
-    }
-
-    public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
     }
 }

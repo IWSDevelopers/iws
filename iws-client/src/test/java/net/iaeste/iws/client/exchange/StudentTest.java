@@ -40,6 +40,7 @@ import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AdministrationClient;
@@ -151,6 +152,84 @@ public final class StudentTest extends AbstractTest {
         final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
         assertThat(createStudentApplicationResponse.isOk(), is(true));
 
+    }
+
+    @Test
+    public void testUpdateStudentApplication() {
+        final Date nominationDeadline = new Date().plusDays(20);
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2014-001002");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+        final String refNo = saveResponse.getOffer().getRefNo();
+
+        // verify processResponse
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+
+        Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat(sharedOffer.getStatus(), is(OfferState.NEW));
+        assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        offersToShare.add(sharedOffer.getOfferId());
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
+
+        assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
+        assertThat(publishResponse1.isOk(), is(true));
+
+        final List<String> offersExternalId = new ArrayList<>(1);
+        offersExternalId.add(sharedOffer.getOfferId());
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
+        final FetchPublishedGroupsResponse fetchPublishResponse1 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
+
+        //is it shared to two groups?
+        assertThat(fetchPublishResponse1.isOk(), is(true));
+        List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        assertThat(2, is(offerGroupsSharedTo.size()));
+
+        allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat(sharedOffer.getRefNo(), is(saveResponse.getOffer().getRefNo()));
+        assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
+        assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
+
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app002@university.edu", "password1", "Student1", "Graduate1");
+        createUserRequest1.setStudentAccount(true);
+
+        final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
+        assertThat(createStudentResponse1.isOk(), is(true));
+        final User student = createStudentResponse1.getUser();
+
+        StudentApplication application = new StudentApplication();
+        application.setOffer(sharedOffer);
+        application.setStudent(student);
+        application.setStatus(ApplicationStatus.APPLIED);
+
+        final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
+        assertThat(createStudentApplicationResponse.isOk(), is(true));
+
+        //test updating existing application
+        application = Copier.copy(createStudentApplicationResponse.getStudentApplication());
+        application.setStatus(ApplicationStatus.NOMINATED);
+        final ProcessStudentApplicationsRequest createStudentApplicationsRequest2 = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationResponse createStudentApplicationResponse2 = students.processStudentApplication(austriaToken, createStudentApplicationsRequest2);
+        assertThat(createStudentApplicationResponse2.isOk(), is(true));
+        assertThat(createStudentApplicationResponse2.getStudentApplication().getStatus(), is(application.getStatus()));
     }
 
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {

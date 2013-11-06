@@ -194,7 +194,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     public void merge(final ApplicationEntity obj) {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
-            //merge fields
+            status = obj.status;
         }
     }
 }

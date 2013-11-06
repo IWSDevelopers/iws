@@ -109,6 +109,7 @@ public final class StudentApplication extends AbstractVerification {
      */
     public StudentApplication(final StudentApplication studentApplication) {
         if (studentApplication != null) {
+            applicationId = studentApplication.applicationId;
             offer = new Offer(studentApplication.offer);
             student = new User(studentApplication.student);
             status = studentApplication.status;
@@ -204,6 +205,10 @@ public final class StudentApplication extends AbstractVerification {
 
         final StudentApplication studentApplication = (StudentApplication) obj;
 
+        if (applicationId != null ? !applicationId.equals(studentApplication.applicationId) : studentApplication.applicationId != null) {
+            return false;
+        }
+
         if (offer != null ? !offer.equals(studentApplication.offer) : studentApplication.offer != null) {
             return false;
         }
@@ -222,6 +227,7 @@ public final class StudentApplication extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (applicationId != null ? applicationId.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offer != null ? offer.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (student != null ? student.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
@@ -235,7 +241,8 @@ public final class StudentApplication extends AbstractVerification {
     @Override
     public String toString() {
         return "StudentApplication{" +
-                "offer='" + offer + '\'' +
+                "applicationId='" + applicationId +
+                ", offer='" + offer + '\'' +
                 ", student='" + student + '\'' +
                 ", status=" + status +
                 '}';

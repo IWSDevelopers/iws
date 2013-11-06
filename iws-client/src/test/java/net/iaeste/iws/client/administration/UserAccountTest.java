@@ -14,15 +14,15 @@
  */
 package net.iaeste.iws.client.administration;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.requests.AccountNameRequest;
@@ -46,6 +46,9 @@ import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -286,6 +289,7 @@ public final class UserAccountTest extends AbstractAdministration {
 
     @Test
     public void testCreateAndListStudentAccounts() {
+        final Students students = new StudentClient();
 
         // create some student users
         final CreateUserRequest createUserRequest1 = new CreateUserRequest("s001@university.edu", "password1", "Student1", "Graduate1");
@@ -306,49 +310,23 @@ public final class UserAccountTest extends AbstractAdministration {
         final CreateUserResponse createUserResponse3 = administration.createUser(token, createUserRequest3);
         assertThat(createUserResponse3.isOk(), is(true));
 
-        // try to find students groups as subgroup of national group
-        final String nationalGroupId = findNationalGroup(token).getGroupId();
-        final FetchGroupRequest nationalGroupRequest = new FetchGroupRequest(nationalGroupId);
-        nationalGroupRequest.setFetchUsers(true);
-        nationalGroupRequest.setFetchSubGroups(true);
-        final FetchGroupResponse nationalGroupResponse = administration.fetchGroup(token, nationalGroupRequest);
-        assertThat(nationalGroupResponse, is(not(nullValue())));
-
-        assertThat(nationalGroupResponse.isOk(), is(true));
-        assertThat(nationalGroupResponse.getSubGroups().size(), is(not(0)));
-
-        // get the group id of the students group
-        String studentGroupId = "";
-        for (final Group group : nationalGroupResponse.getSubGroups()) {
-            if (group.getGroupType() == GroupType.STUDENT) {
-                studentGroupId = group.getGroupId();
-                assertThat(group.getGroupName(), is("Austria.Students"));
-            }
-        }
-        assertThat(studentGroupId, is(not("")));
-
         // fetch the students group
-        final FetchGroupRequest studentGroupRequest = new FetchGroupRequest(studentGroupId);
-        studentGroupRequest.setFetchUsers(true);
-        studentGroupRequest.setFetchSubGroups(false);
-        final FetchGroupResponse studentGroupResponse = administration.fetchGroup(token, studentGroupRequest);
-        assertThat(studentGroupResponse, is(not(nullValue())));
+        final FetchStudentsRequest studentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse studentsResponse = students.fetchStudents(token, studentsRequest);
+        assertThat(studentsResponse, is(not(nullValue())));
+        assertThat(studentsResponse.isOk(), is(true));
 
-        assertThat(studentGroupResponse.getMessage(), is("No entity found for query")); // something is wrong here!!!
-        assertThat(studentGroupResponse.isOk(), is(false)); // something is wrong here!!!
-        //assertThat(studentGroupResponse.getUserGroups().size(), is(not(0)));
-        //assertThat(studentGroupResponse.getGroup().getGroupType(), is(GroupType.STUDENTS));
-        //assertThat(studentGroupResponse.getGroup().getGroupName(), is("Austria.Students"));
+        assertThat(studentsResponse.getStudents().size(), is(greaterThanOrEqualTo(3)));
 
         // Extract the users from the group
-        //List<User> users = new ArrayList<>();
-        //for(UserGroup userGroup: studentGroupResponse.getUserGroups()) {
-        //users.add(userGroup.getUser());
-        //}
+        List<User> users = new ArrayList<>();
+        for(Student student: studentsResponse.getStudents()) {
+            users.add(student.getUser());
+        }
 
-        //assertThat(users.contains(createUserResponse1.getUser()), is(true));
-        //assertThat(users.contains(createUserResponse2.getUser()), is(true));
-        //assertThat(users.contains(createUserResponse3.getUser()), is(true));
+        assertThat(users.contains(createUserResponse1.getUser()), is(true));
+        assertThat(users.contains(createUserResponse2.getUser()), is(true));
+        assertThat(users.contains(createUserResponse3.getUser()), is(true));
     }
 
     /**

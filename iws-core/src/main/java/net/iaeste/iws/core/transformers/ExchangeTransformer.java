@@ -17,14 +17,17 @@ package net.iaeste.iws.core.transformers;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
+import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
 /**
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
@@ -204,6 +207,55 @@ public final class ExchangeTransformer {
         }
 
         return result;
+    }
+
+    public static Student transform(final StudentEntity entity) {
+        Student result = null;
+
+        if (entity != null) {
+            result = new Student();
+
+            result.setUser(AdministrationTransformer.transform(entity.getUser()));
+            result.setStudyLevel(entity.getStudyLevel());
+            result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies()));
+            result.setSpecializations(CollectionTransformer.explodeEnumSet(Specialization.class, entity.getSpecializations()));
+            result.setAvailable(CommonTransformer.transform(entity.getAvailableFrom(), entity.getAvailableTo()));
+            result.setLanguage1(entity.getLanguage1());
+            result.setLanguage1Level(entity.getLanguage1Level());
+            result.setLanguage2(entity.getLanguage2());
+            result.setLanguage2Level(entity.getLanguage2Level());
+            result.setLanguage3(entity.getLanguage3());
+            result.setLanguage3Level(entity.getLanguage3Level());
+            result.setModified(new DateTime(entity.getModified()));
+            result.setCreated(new DateTime(entity.getCreated()));
+        }
+
+        return result;
+    }
+
+    public static StudentEntity transform(final Student student) {
+        StudentEntity entity = null;
+
+        if (student != null) {
+            entity = new StudentEntity();
+
+            entity.setUser(AdministrationTransformer.transform(student.getUser()));
+            entity.setStudyLevel(student.getStudyLevel());
+            entity.setFieldOfStudies(CollectionTransformer.concatEnumCollection(student.getFieldOfStudies()));
+            entity.setSpecializations(CollectionTransformer.concatEnumCollection(student.getSpecializations()));
+            entity.setAvailableFrom(student.getAvailable().getFromDate().toDate());
+            entity.setAvailableTo(student.getAvailable().getToDate().toDate());
+            entity.setLanguage1(student.getLanguage1());
+            entity.setLanguage1Level(student.getLanguage1Level());
+            entity.setLanguage2(student.getLanguage2());
+            entity.setLanguage2Level(student.getLanguage2Level());
+            entity.setLanguage3(student.getLanguage3());
+            entity.setLanguage3Level(student.getLanguage3Level());
+            entity.setModified(student.getModified().toDate());
+            entity.setCreated(student.getCreated().toDate());
+        }
+
+        return entity;
     }
 
     public static StudentApplication transform(final ApplicationEntity entity) {

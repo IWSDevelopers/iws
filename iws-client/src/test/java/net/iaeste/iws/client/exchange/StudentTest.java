@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.client.exchange;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.Students;
@@ -46,15 +51,13 @@ import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.client.StudentClient;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -84,6 +87,7 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
+    @Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
     public void testProcessStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = OfferTestUtility.getMinimalOffer();
@@ -155,6 +159,7 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
+    @Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = OfferTestUtility.getMinimalOffer();

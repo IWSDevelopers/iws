@@ -14,16 +14,17 @@
  */
 package net.iaeste.iws.client.administration;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.exchange.Student;
-import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
@@ -53,7 +54,7 @@ import java.util.List;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since  1.7
+ * @since   1.7
  */
 public final class UserAccountTest extends AbstractAdministration {
 
@@ -262,7 +263,7 @@ public final class UserAccountTest extends AbstractAdministration {
         // Verify that the Students exists
         final FetchStudentsResponse afterFetchStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
         assertThat(afterFetchStudentsResponse.isOk(), is(true));
-        assertThat(afterFetchStudentsResponse.getStudents().size(), is(beforeStudentsResponse.getStudents().size()+1));
+        assertThat(afterFetchStudentsResponse.getStudents().size(), is(beforeStudentsResponse.getStudents().size() + 1));
 
         // Activate the Account
         final Fallible acticationResult = administration.activateUser(activationCode);
@@ -319,8 +320,9 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(studentsResponse.getStudents().size(), is(greaterThanOrEqualTo(3)));
 
         // Extract the users from the group
-        List<User> users = new ArrayList<>();
-        for(Student student: studentsResponse.getStudents()) {
+        final List<Student> foundStudents = studentsResponse.getStudents();
+        final List<User> users = new ArrayList<>(foundStudents.size());
+        for (final Student student : foundStudents) {
             users.add(student.getUser());
         }
 

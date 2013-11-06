@@ -88,15 +88,6 @@ import java.util.Map;
                 query = "select u from UserEntity u " +
                         "where u.status <> 'DELETED'" +
                         "  and u.alias = :alias"),
-        @NamedQuery(name = "students.findAllForCountry",
-                query = "select ug.user from UserGroupEntity ug " +
-                        "where ug.group.parentId = :parentId" +
-                        "  and ug.group.groupType.grouptype = 'STUDENT'"),
-        @NamedQuery(name = "students.findByExternalIdForCountry",
-                query = "select ug.user from UserGroupEntity ug " +
-                        "where ug.group.parentId = :parentId" +
-                        "  and ug.user.externalId = :eid" +
-                        "  and ug.group.groupType.grouptype = 'STUDENT'"),
         @NamedQuery(name = "user.findNumberOfSimilarAliases",
                 query = "select count(u.id) from UserEntity u " +
                         "where lower(alias) like :startOfAlias")

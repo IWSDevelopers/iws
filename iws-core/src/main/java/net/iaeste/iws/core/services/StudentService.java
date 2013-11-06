@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
 import net.iaeste.iws.api.dtos.exchange.Student;
@@ -22,9 +21,9 @@ import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
@@ -38,6 +37,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,18 +64,14 @@ public final class StudentService {
 
     public FetchStudentsResponse fetchStudents(final Authentication authentication, final FetchStudentsRequest request) {
         final GroupEntity group = accessDao.findMemberGroup(authentication.getUser());
-        final List<UserEntity> found = studentDao.findAllStudents(group.getId());
+        final List<StudentEntity> found = studentDao.findAllStudents(group.getId());
 
         final List<Student> students = new ArrayList<>(found.size());
-        for (final UserEntity entity : found) {
-            students.add(convert(entity));
+        for (final StudentEntity entity : found) {
+            students.add(transform(entity));
         }
 
         return new FetchStudentsResponse(students);
-    }
-
-    private static Student convert(final UserEntity user) {
-        return new Student(transform(user));
     }
 
     public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {

@@ -4,6 +4,32 @@
 
 
 -- =============================================================================
+-- List User Group relations
+-- =============================================================================
+create view view_user_group as
+  select
+    u.id          as user_id,
+    g.id          as group_id,
+    u.firstname   as firstname,
+    u.lastname    as lastname,
+    u.username    as username,
+    u.status      as user_status,
+    g.groupname   as groupname,
+    gt.grouptype  as grouptype,
+    r.role        as role
+  from
+    users u,
+    groups g,
+    user_to_group u2g,
+    roles r,
+    grouptypes gt
+  where g.id = u2g.group_id
+    and u.id = u2g.user_id
+    and r.id = u2g.role_id
+    and g.grouptype_id = gt.id;
+
+
+-- =============================================================================
 -- List the Permissions for a User
 -- =============================================================================
 create view user_permissions as

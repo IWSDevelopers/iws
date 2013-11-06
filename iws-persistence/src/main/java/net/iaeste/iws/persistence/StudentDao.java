@@ -28,19 +28,11 @@ import java.util.List;
 public interface StudentDao extends BasicDao {
 
     /**
-     * Get all students from the database.
+     * Get all students from the database, for a specific Committee.
      *
      * @return list of {@code StudentEntity}
      */
-    List<UserEntity> findAllStudents(Long parentGroupId);
-
-    /**
-     * Find the entity in the database, via the provided name.
-     *
-     * @param name The name of the student to find
-     * @return list of {@code StudentEntity}
-     */
-    List<StudentEntity> findByName(String name);
+    List<StudentEntity> findAllStudents(Long parentGroupId);
 
     /**
      * Find the application by its external ID

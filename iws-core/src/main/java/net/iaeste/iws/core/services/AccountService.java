@@ -47,6 +47,7 @@ import net.iaeste.iws.persistence.entities.PersonEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,6 +119,8 @@ public final class AccountService extends CommonService<AccessDao> {
         final GroupEntity studentGroup = findOrCreateStudentGroup(authentication);
 
         final UserEntity user = createAndPersistUserEntity(authentication, username, request);
+        final StudentEntity studentEntity = new StudentEntity(user);
+        dao.persist(studentEntity);
         final RoleEntity student = dao.findRoleById(IWSConstants.ROLE_STUDENT);
 
         addUserToGroup(user, authentication.getGroup(), student);

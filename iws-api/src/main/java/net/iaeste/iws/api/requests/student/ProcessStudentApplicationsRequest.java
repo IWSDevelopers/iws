@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Request to create or update student application
+ *
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7

@@ -237,6 +237,10 @@ public final class UserAccountTest extends AbstractAdministration {
         final CreateUserRequest createUserRequest = new CreateUserRequest(username, password, "Student", "Graduate");
         createUserRequest.setStudentAccount(true);
 
+        final Students students = new StudentClient();
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse beforeStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
+
         // Now, perform the actual test - create the Account, and verify that
         // the response is ok, and that a Notification was sent
         final Fallible result = administration.createUser(token, createUserRequest);
@@ -253,11 +257,9 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(response1.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
 
         // Verify that the Students exists
-        final Students students = new StudentClient();
-        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
-        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
-        assertThat(fetchStudentsResponse.isOk(), is(true));
-        assertThat(fetchStudentsResponse.getStudents().size(), is(1));
+        final FetchStudentsResponse afterFetchStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
+        assertThat(afterFetchStudentsResponse.isOk(), is(true));
+        assertThat(afterFetchStudentsResponse.getStudents().size(), is(beforeStudentsResponse.getStudents().size()+1));
 
         // Activate the Account
         final Fallible acticationResult = administration.activateUser(activationCode);

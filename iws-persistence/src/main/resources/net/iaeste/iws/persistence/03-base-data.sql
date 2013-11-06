@@ -61,6 +61,7 @@ insert into permissions (id, permission) values (205, 'FETCH_STUDENTS');
 insert into permissions (id, permission) values (220, 'PROCESS_PUBLISH_OFFER');
 insert into permissions (id, permission) values (221, 'FETCH_PUBLISH_OFFER');
 insert into permissions (id, permission) values (222, 'APPLY_FOR_OPEN_OFFER');
+insert into permissions (id, permission) values (223, 'PROCESS_STUDENT_APPLICATION');
 
 -- =============================================================================
 -- Linking the Permissions to both Roles & GroupTypes, so when we do perform a
@@ -313,6 +314,16 @@ insert into permission_to_role (role_id, permission_id) values (3, 221);
 --   -> Roles:      5 Student
 insert into permission_to_grouptype (grouptype_id, permission_id) values (8, 222);
 insert into permission_to_role (role_id, permission_id) values (5, 222);
+
+-- Permission: 223 - Process Student Application
+--   -> GroupTypes: 5 National
+--                  6 Local
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 223);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 223);
+insert into permission_to_role (role_id, permission_id) values (1, 223);
+insert into permission_to_role (role_id, permission_id) values (2, 223);
 
 -- =============================================================================
 -- Default Groups

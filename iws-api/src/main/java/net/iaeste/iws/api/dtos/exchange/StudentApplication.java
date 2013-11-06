@@ -47,6 +47,8 @@ public final class StudentApplication extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private String applicationId = null;
+
     /** {@link Offer} that the {@link Student} is applying for */
     private Offer offer = null;
 
@@ -118,6 +120,14 @@ public final class StudentApplication extends AbstractVerification {
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setApplicationId(final String applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
 
     public void setOffer(final Offer offer) {
         this.offer = offer;

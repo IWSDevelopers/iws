@@ -15,9 +15,13 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
+import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
 import net.iaeste.iws.api.dtos.exchange.Student;
+import net.iaeste.iws.api.dtos.exchange.StudentApplication;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
@@ -27,9 +31,13 @@ import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +54,11 @@ public final class StudentService {
     private static final Logger log = LoggerFactory.getLogger(StudentService.class);
     private final StudentDao studentDao;
     private final AccessDao accessDao;
+    private final ExchangeDao exchangeDao;
 
-    public StudentService(final AccessDao accessDao, final StudentDao studentDao) {
+    public StudentService(final AccessDao accessDao, final ExchangeDao exchangeDao, final StudentDao studentDao) {
         this.accessDao = accessDao;
+        this.exchangeDao = exchangeDao;
         this.studentDao = studentDao;
     }
 
@@ -69,7 +79,45 @@ public final class StudentService {
     }
 
     public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
+        final ApplicationEntity entity = processStudentApplication(authentication, request.getStudentApplication());
+        return new StudentApplicationResponse(transform(entity));
+    }
+
+    private ApplicationEntity processStudentApplication(final  Authentication authentication, final StudentApplication application) {
+        final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
+        final String externalId = application.getApplicationId();
+        ApplicationEntity applicationEntity = studentDao.findApplicationByExternalId(externalId);
+        final OfferEntity sharedOffer = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
+        final UserEntity student = studentDao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUserId());
+
+        if (sharedOffer == null || !sharedOffer.getStatus().equals(OfferState.SHARED)) {
+            throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
+        }
+
+        if (applicationEntity == null) {
+            applicationEntity = transform(application);
+            applicationEntity.setOffer(sharedOffer);
+            applicationEntity.setStudent(student);
+            studentDao.persist(authentication, applicationEntity);
+        } else {
+            final ApplicationEntity updated = transform(application);
+            studentDao.persist(authentication, applicationEntity, updated);
+        }
+
+        return applicationEntity;
+    }
+
+    private OfferEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {
+        OfferEntity result = null;
+        final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffer(offerExternalId);
+
+        for (final OfferGroupEntity offerGroup : offerGroups) {
+            if (offerGroup.getGroup().equals(group)) {
+                result = offerGroup.getOffer();
+            }
+        }
+
+        return result;
     }
 
     public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {

@@ -99,8 +99,9 @@ public final class ServiceFactory {
     }
 
     public StudentService prepareStudentService() {
-        final StudentDao dao = new StudentJpaDao(entityManager);
-        return new StudentService(accessDao, dao);
+        final ExchangeDao exchangeDao = new ExchangeJpaDao(entityManager);
+        final StudentDao studentDao = new StudentJpaDao(entityManager);
+        return new StudentService(accessDao, exchangeDao, studentDao);
     }
 
     public AccessDao getAccessDao() {

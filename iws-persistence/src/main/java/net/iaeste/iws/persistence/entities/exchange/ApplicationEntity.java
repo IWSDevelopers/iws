@@ -1,22 +1,23 @@
 package net.iaeste.iws.persistence.entities.exchange;
 
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
-import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
-import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -26,6 +27,13 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since 1.7
  */
+@NamedQueries({
+        @NamedQuery(name = "application.findByExternalId",
+                query = "select a from ApplicationEntity a " +
+                        "where a.externalId = :eid")
+})
+@Entity
+@Table(name = "student_applications")
 public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> implements Externable<ApplicationEntity> {
 
     @Id

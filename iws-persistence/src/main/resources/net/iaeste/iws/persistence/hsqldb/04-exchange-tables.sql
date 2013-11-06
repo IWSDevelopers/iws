@@ -227,7 +227,7 @@ create table student_applications (
 
     /* Primary & Foreign Keys */
     constraint student_application_pk             primary key (id),
-    constraint student_application_fk_offer_id    foreign key (offer_id) references offers (id),
+    constraint student_application_fk_offer_id    foreign key (offer_id) references offers (id) on delete cascade,
     constraint student_application_fk_student_id  foreign key (student_id) references users (id),
 
     /* Unique Constraints */

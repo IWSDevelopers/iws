@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
 import javax.persistence.EntityManager;
@@ -58,5 +59,29 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
         query.setParameter("name", name);
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationEntity findApplicationByExternalId(final String externalId) {
+        //TODO ensure that only application for owned or shared offers can be retrieved
+        final Query query = entityManager.createNamedQuery("application.findByExternalId");
+        query.setParameter("eid", externalId);
+
+        return findSingleResult(query, "Application");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserEntity findStudentByExternal(final Long parentGroupId, final String externalId) {
+        final Query query = entityManager.createNamedQuery("students.findByExternalIdForCountry");
+        query.setParameter("parentId", parentGroupId);
+        query.setParameter("eid", externalId);
+
+        return findSingleResult(query, "Student");
     }
 }

@@ -212,6 +212,7 @@ public final class ExchangeTransformer {
         if (entity != null) {
             result = new StudentApplication();
 
+            result.setApplicationId(entity.getExternalId());
             result.setOffer(transform(entity.getOffer()));
             result.setStudent(AdministrationTransformer.transform(entity.getStudent()));
             result.setStatus(entity.getStatus());
@@ -228,6 +229,7 @@ public final class ExchangeTransformer {
         if (application != null) {
             result = new ApplicationEntity();
 
+            result.setExternalId(application.getApplicationId());
             result.setOffer(transform(application.getOffer()));
             result.setStudent(AdministrationTransformer.transform(application.getStudent()));
             result.setStatus(application.getStatus());

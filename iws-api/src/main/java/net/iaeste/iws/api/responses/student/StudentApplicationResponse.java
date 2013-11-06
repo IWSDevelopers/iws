@@ -14,15 +14,11 @@
  */
 package net.iaeste.iws.api.responses.student;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.util.AbstractFallible;
-
-import java.util.List;
 
 /**
  * @author  Matej Kosco / last $Author:$
@@ -35,7 +31,6 @@ public final class StudentApplicationResponse extends AbstractFallible {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private final StudentApplication studentApplication;
-    private final List<String> errors;
 
     // =========================================================================
     // Object Constructors
@@ -48,7 +43,15 @@ public final class StudentApplicationResponse extends AbstractFallible {
     public StudentApplicationResponse() {
         super(IWSErrors.SUCCESS, IWSConstants.SUCCESS);
         studentApplication = null;
-        errors = null;
+    }
+
+    /**
+     * Constructor is used when succeed on creating or updating an application.
+     *
+     * @param studentApplication application which was saved
+     */
+    public StudentApplicationResponse(final StudentApplication studentApplication) {
+        this.studentApplication = new StudentApplication(studentApplication);
     }
 
     /**
@@ -60,22 +63,6 @@ public final class StudentApplicationResponse extends AbstractFallible {
     public StudentApplicationResponse(final IWSError error, final String message) {
         super(error, message);
         studentApplication = null;
-        errors = null;
-    }
-
-    /**
-     * Response is created when processing the studentApplication failed.
-     * <p/>
-     * Incorrect Applications should never be passed to this constructor. Instead use
-     * constructor without list of errors parameter.
-     *
-     * @param failedStudentApplication list of applications for which something went wrong
-     */
-    public StudentApplicationResponse(final StudentApplication failedStudentApplication, final List<String> errors) {
-        super(IWSErrors.PROCESSING_FAILURE, "processing of the StudentApplication failed");
-
-        studentApplication = new StudentApplication(failedStudentApplication);
-        this.errors = copy(errors);
     }
 
     // =========================================================================
@@ -105,10 +92,6 @@ public final class StudentApplicationResponse extends AbstractFallible {
 
         final StudentApplicationResponse that = (StudentApplicationResponse) obj;
 
-        if (errors != null ? !errors.equals(that.errors) : that.errors != null) {
-            return false;
-        }
-
         return !(studentApplication != null ? !studentApplication.equals(that.studentApplication) : that.studentApplication != null);
     }
 
@@ -120,7 +103,6 @@ public final class StudentApplicationResponse extends AbstractFallible {
         int result = super.hashCode();
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (studentApplication != null ? studentApplication.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (errors != null ? errors.hashCode() : 0);
 
         return result;
     }
@@ -129,7 +111,6 @@ public final class StudentApplicationResponse extends AbstractFallible {
     public String toString() {
         return "StudentApplicationResponse{" +
                 "studentApplication=" + studentApplication +
-                ", errors=" + errors +
                 '}';
     }
 }

@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
 import java.util.List;
@@ -40,4 +41,20 @@ public interface StudentDao extends BasicDao {
      * @return list of {@code StudentEntity}
      */
     List<StudentEntity> findByName(String name);
+
+    /**
+     * Find the application by its external ID
+     *
+     * @param externalId application external ID
+     * @return {@code ApplicationEntity} if exists, otherwise null
+     */
+    ApplicationEntity findApplicationByExternalId(String externalId);
+
+    /**
+     * Finds a student in the database by given external id and owning group
+     * @param parentGroupId owning group ID
+     * @param externalId student external ID
+     * @return {@code UserEntity} if students exists withing given group, otherwise null
+     */
+    UserEntity findStudentByExternal(Long parentGroupId, String externalId);
 }

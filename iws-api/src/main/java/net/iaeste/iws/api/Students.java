@@ -15,13 +15,15 @@
 package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
 
@@ -32,6 +34,16 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface Students {
+
+    /**
+     * Processes a Student Object. Meaning, either updating an existing Student,
+     * deleting an existing Student, or making an existing User a Student.
+     *
+     * @param token   {@link AuthenticationToken}
+     * @param request {@link StudentRequest}
+     * @return {@link Fallible}
+     */
+    Fallible processStudent(AuthenticationToken token, StudentRequest request);
 
     /**
      * Retrieves a list of Students, matching the criterias from the Request

@@ -20,9 +20,11 @@ import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -39,6 +41,18 @@ public final class StudentCaller implements Students {
     // =========================================================================
     // Implementation of methods from Student in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
+        try {
+            return caller.processStudent(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
 
     /**
      * {@inheritDoc}

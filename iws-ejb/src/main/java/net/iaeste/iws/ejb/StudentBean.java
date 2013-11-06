@@ -21,9 +21,12 @@ import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StudentController;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -115,6 +118,25 @@ public class StudentBean extends AbstractBean implements Students {
     // =========================================================================
     // Implementation of methods from Student in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
+        Fallible response;
+
+        try {
+            response = controller.processStudent(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
 
     /**
      * {@inheritDoc}

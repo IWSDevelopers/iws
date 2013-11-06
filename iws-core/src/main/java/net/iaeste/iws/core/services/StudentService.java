@@ -25,6 +25,7 @@ import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
@@ -60,6 +61,10 @@ public final class StudentService {
         this.accessDao = accessDao;
         this.exchangeDao = exchangeDao;
         this.studentDao = studentDao;
+    }
+
+    public void processStudent(final Authentication authentication, final StudentRequest request) {
+        throw new NotImplementedException("Pending Implementation.");
     }
 
     public FetchStudentsResponse fetchStudents(final Authentication authentication, final FetchStudentsRequest request) {

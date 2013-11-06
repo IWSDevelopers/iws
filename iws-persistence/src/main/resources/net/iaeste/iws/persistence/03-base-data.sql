@@ -49,14 +49,14 @@ insert into permissions (id, permission) values (201, 'PROCESS_EMPLOYER');
 insert into permissions (id, permission) values (202, 'FETCH_EMPLOYERS');
 insert into permissions (id, permission) values (203, 'PROCESS_OFFER');
 insert into permissions (id, permission) values (204, 'FETCH_OFFERS');
-insert into permissions (id, permission) values (205, 'FETCH_STUDENTS');
+insert into permissions (id, permission) values (210, 'PROCESS_STUDENT');
+insert into permissions (id, permission) values (211, 'FETCH_STUDENTS');
 --insert into permissions (id, permission) values (12, 'PROCESS_OFFER_TEMPLATES');
 --insert into permissions (id, permission) values (13, 'LOOKUP_OFFER_TEMPLATES');
 --insert into permissions (id, permission) values (14, 'PROCESS_OFFER_PUBLISH_GROUPS');
 --insert into permissions (id, permission) values (15, 'LOOKUP_OFFER_PUBLISH_GROUPS');
 --insert into permissions (id, permission) values (16, 'LOOKUP_FACULTIES');
 --insert into permissions (id, permission) values (17, 'PROCESS_FACULTIES');
---insert into permissions (id, permission) values (18, 'PROCESS_STUDENTS');
 --insert into permissions (id, permission) values (19, 'LOOKUP_STUDENTS');
 insert into permissions (id, permission) values (220, 'PROCESS_PUBLISH_OFFER');
 insert into permissions (id, permission) values (221, 'FETCH_PUBLISH_OFFER');
@@ -275,17 +275,24 @@ insert into permission_to_role (role_id, permission_id) values (1, 204);
 insert into permission_to_role (role_id, permission_id) values (2, 204);
 insert into permission_to_role (role_id, permission_id) values (3, 204);
 
--- Permission: 204 - Fetch Students
+-- Permission: 210 - Process Student
 --   -> GroupTypes: 5 National
---                  6 Local
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 210);
+insert into permission_to_role (role_id, permission_id) values (1, 210);
+insert into permission_to_role (role_id, permission_id) values (2, 210);
+insert into permission_to_role (role_id, permission_id) values (3, 210);
+
+-- Permission: 211 - Fetch Students
+--   -> GroupTypes: 5 National
 --   -> Roles:      1 Owner
 --                  2 Moderator
 --                  3 Member
-insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 205);
-insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 205);
-insert into permission_to_role (role_id, permission_id) values (1, 205);
-insert into permission_to_role (role_id, permission_id) values (2, 205);
-insert into permission_to_role (role_id, permission_id) values (3, 205);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 211);
+insert into permission_to_role (role_id, permission_id) values (1, 211);
+insert into permission_to_role (role_id, permission_id) values (2, 211);
+insert into permission_to_role (role_id, permission_id) values (3, 211);
 
 -- Permission: 220 - Publish Offer
 --   -> GroupTypes: 5 National

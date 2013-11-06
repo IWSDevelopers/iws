@@ -20,9 +20,11 @@ import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.util.Fallible;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -44,6 +46,14 @@ public final class StudentClient implements Students {
     // =========================================================================
     // Implementation of methods from Student in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
+        return client.processStudent(token, request);
+    }
 
     /**
      * {@inheritDoc}

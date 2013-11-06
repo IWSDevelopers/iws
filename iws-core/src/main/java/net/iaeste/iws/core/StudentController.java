@@ -24,9 +24,12 @@ import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.ServiceFactory;
 import net.iaeste.iws.core.services.StudentService;
 import net.iaeste.iws.persistence.Authentication;
@@ -50,6 +53,33 @@ public final class StudentController extends CommonController implements Student
      */
     public StudentController(final ServiceFactory factory) {
         super(factory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processStudent()"));
+        }
+        Fallible response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_STUDENT);
+            verify(request);
+
+            final StudentService service = factory.prepareStudentService();
+            service.processStudent(authentication, request);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processStudent()"));
+        }
+        return response;
     }
 
     /**

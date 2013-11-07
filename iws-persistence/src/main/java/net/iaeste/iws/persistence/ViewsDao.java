@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferView;
+import net.iaeste.iws.persistence.views.StudentView;
 
 import java.util.List;
 
@@ -35,4 +36,5 @@ public interface ViewsDao {
     List<EmployerView> findEmployers(Long groupId, Paginatable page);
     List<EmployerView> findEmployers(Long groupId, Paginatable page, String partialName);
     List<OfferView> findAllOffers(Authentication authentication);
+    List<StudentView> findStudentsForMemberGroup(Long groupId, Paginatable page);
 }

@@ -15,7 +15,6 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.StudentDao;
-import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
@@ -37,17 +36,6 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      */
     public StudentJpaDao(final EntityManager entityManager) {
         super(entityManager);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<StudentEntity> findAllStudents(final Long parentGroupId) {
-        final Query query = entityManager.createNamedQuery("students.findAllForCountry");
-        query.setParameter("parentId", parentGroupId);
-
-        return query.getResultList();
     }
 
     /**

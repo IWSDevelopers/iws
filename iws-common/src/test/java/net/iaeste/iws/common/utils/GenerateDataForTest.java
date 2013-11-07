@@ -23,6 +23,7 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.UserStatus;
 import org.junit.AfterClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -39,6 +40,7 @@ import java.util.UUID;
  * @since   1.7
  * @noinspection StaticNonFinalField, NonFinalStaticVariableUsedInClassInitialization, ConstructorWithTooManyParameters, AssignmentToStaticFieldFromInstanceMethod, UseOfSystemOutOrSystemErr
  */
+@Ignore("Ignored, while we only need this to generate test data, otherwise it simply just dump garbage out.")
 @RunWith(Parameterized.class)
 public final class GenerateDataForTest {
 

@@ -52,12 +52,12 @@ public class EmbeddedCountry {
     @Column(name = "country_phonecode", insertable = false, updatable = false)
     private String phonecode = null;
 
-    @Column(name = "country_currency", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "country_currency", insertable = false, updatable = false)
     private Currency currency = null;
 
-    @Column(name = "country_membership", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "country_membership", insertable = false, updatable = false)
     private Membership membership = null;
 
     @Column(name = "country_member_since", insertable = false, updatable = false)

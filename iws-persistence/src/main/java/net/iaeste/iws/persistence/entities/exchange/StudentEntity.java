@@ -48,11 +48,6 @@ import java.util.Date;
         @NamedQuery(name = "student.findById",
                 query = "select s from StudentEntity s " +
                         "where s.id = :id"),
-        @NamedQuery(name = "students.findAllForCountry",
-                query = "select s from StudentEntity s, UserGroupEntity ug " +
-                        "where ug.user.id = s.user.id" +
-                        "  and ug.group.parentId = :parentId" +
-                        "  and ug.group.groupType.grouptype = 'STUDENT'"),
         @NamedQuery(name = "students.findByExternalIdForCountry",
                 query = "select s from StudentEntity s, UserGroupEntity ug " +
                         "where ug.user.id = s.user.id" +

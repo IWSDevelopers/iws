@@ -29,16 +29,18 @@ import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
+import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
+import net.iaeste.iws.persistence.views.StudentView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,11 +58,13 @@ public final class StudentService {
     private final StudentDao studentDao;
     private final AccessDao accessDao;
     private final ExchangeDao exchangeDao;
+    private final ViewsDao viewsDao;
 
-    public StudentService(final AccessDao accessDao, final ExchangeDao exchangeDao, final StudentDao studentDao) {
+    public StudentService(final AccessDao accessDao, final ExchangeDao exchangeDao, final StudentDao studentDao, final ViewsDao viewsDao) {
         this.accessDao = accessDao;
         this.exchangeDao = exchangeDao;
         this.studentDao = studentDao;
+        this.viewsDao = viewsDao;
     }
 
     public void processStudent(final Authentication authentication, final StudentRequest request) {
@@ -68,15 +72,14 @@ public final class StudentService {
     }
 
     public FetchStudentsResponse fetchStudents(final Authentication authentication, final FetchStudentsRequest request) {
-        final GroupEntity group = accessDao.findMemberGroup(authentication.getUser());
-        final List<StudentEntity> found = studentDao.findAllStudents(group.getId());
+        final List<StudentView> found = viewsDao.findStudentsForMemberGroup(authentication.getGroup().getParentId(), request.getPagingInformation());
 
-        final List<Student> students = new ArrayList<>(found.size());
-        for (final StudentEntity entity : found) {
-            students.add(transform(entity));
+        final List<Student> result = new ArrayList<>(found.size());
+        for (final StudentView view : found) {
+            result.add(ViewTransformer.transform(view));
         }
 
-        return new FetchStudentsResponse(students);
+        return new FetchStudentsResponse(result);
     }
 
     public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {

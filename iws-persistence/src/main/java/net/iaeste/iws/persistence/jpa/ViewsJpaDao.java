@@ -21,6 +21,7 @@ import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferView;
+import net.iaeste.iws.persistence.views.StudentView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -92,5 +93,16 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("gid", authentication.getGroup().getId());
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<StudentView> findStudentsForMemberGroup(final Long groupId, final Paginatable page) {
+        final Query query = entityManager.createNamedQuery("view.findStudentsForMemberGroup");
+        query.setParameter("parentId", groupId);
+
+        return fetchList(query, page);
     }
 }

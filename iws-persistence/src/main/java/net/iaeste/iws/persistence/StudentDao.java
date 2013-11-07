@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
@@ -26,13 +25,6 @@ import java.util.List;
  * @since   1.7
  */
 public interface StudentDao extends BasicDao {
-
-    /**
-     * Get all students from the database, for a specific Committee.
-     *
-     * @return list of {@code StudentEntity}
-     */
-    List<StudentEntity> findAllStudents(Long parentGroupId);
 
     /**
      * Find the application by its external ID

@@ -25,8 +25,7 @@ import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.OfferTestUtility;
-import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.dtos.exchange.Student;
@@ -57,7 +56,6 @@ import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.client.StudentClient;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -93,11 +91,9 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
     public void testProcessStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2014-001001");
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001001", "Employer", "PL");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -166,15 +162,12 @@ public final class StudentTest extends AbstractTest {
         final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
         final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
         assertThat(createStudentApplicationResponse.isOk(), is(true));
-
     }
 
     @Test
-    //@Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
     public void testFetchStudentApplications() {
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2014-001003");
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001003", "Employer", "PL");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -212,7 +205,7 @@ public final class StudentTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        final List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -235,7 +228,7 @@ public final class StudentTest extends AbstractTest {
         final Student student = fetchStudentsResponse.getStudents().get(0);
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
-        StudentApplication application = new StudentApplication();
+        final StudentApplication application = new StudentApplication();
         application.setOffer(sharedOffer);
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
@@ -251,11 +244,9 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2014-001002");
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001002", "Employer", "PL");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -293,7 +284,7 @@ public final class StudentTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        final List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);

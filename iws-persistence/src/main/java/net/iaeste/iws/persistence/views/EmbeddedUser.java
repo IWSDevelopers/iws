@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.views.GroupView
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.views.EmbeddedUser
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,8 +14,7 @@
  */
 package net.iaeste.iws.persistence.views;
 
-import net.iaeste.iws.api.enums.GroupStatus;
-import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.UserStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -26,42 +25,35 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * This is the Embedded Group Object, which is used by various Views. The
- * intentions of this Object, is to have a unified way of dealing with the
- * read-only Group, so only a single DTO mapping instance is required.
- *   If any one view require more information, then all views must be extended
- * with this. All Group information must be prefixed with "group_" in the view.
- *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 @Embeddable
-public class EmbeddedGroup {
+public class EmbeddedUser {
 
-    @Column(name = "group_external_id", insertable = false, updatable = false)
+    @Column(name = "user_external_id", insertable = false, updatable = false)
     private String externalId = null;
 
-    @Column(name = "group_parent_id", insertable = false, updatable = false)
-    private Long parentId = null;
+    @Column(name = "user_username", insertable = false, updatable = false)
+    private String username = null;
+
+    @Column(name = "user_firstname", insertable = false, updatable = false)
+    private String firstname = null;
+
+    @Column(name = "user_lastname", insertable = false, updatable = false)
+    private String lastname = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "group_grouptype", insertable = false, updatable = false)
-    private GroupType groupType = null;
-
-    @Column(name = "group_groupname", insertable = false, updatable = false)
-    private String groupName = null;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "group_status", insertable = false, updatable = false)
-    private GroupStatus status = null;
+    @Column(name = "user_status", insertable = false, updatable = false)
+    private UserStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "group_modified", insertable = false, updatable = false)
+    @Column(name = "user_modified", insertable = false, updatable = false)
     private Date modified = null;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "group_created", insertable = false, updatable = false)
+    @Column(name = "user_created", insertable = false, updatable = false)
     private Date created = null;
 
     // =========================================================================
@@ -76,35 +68,35 @@ public class EmbeddedGroup {
         return externalId;
     }
 
-    public void setParentId(final Long parentId) {
-        this.parentId = parentId;
+    public void setUsername(final String username) {
+        this.username = username;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setGroupType(final GroupType groupType) {
-        this.groupType = groupType;
+    public void setFirstname(final String firstname) {
+        this.firstname = firstname;
     }
 
-    public GroupType getGroupType() {
-        return groupType;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setGroupName(final String groupName) {
-        this.groupName = groupName;
+    public void setLastname(final String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setStatus(final GroupStatus status) {
+    public void setStatus(final UserStatus status) {
         this.status = status;
     }
 
-    public GroupStatus getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 

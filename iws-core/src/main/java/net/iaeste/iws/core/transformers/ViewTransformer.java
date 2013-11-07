@@ -19,10 +19,13 @@ import static net.iaeste.iws.core.transformers.EmbeddedConverter.convert;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferView;
+import net.iaeste.iws.persistence.views.StudentView;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -86,5 +89,22 @@ public final class ViewTransformer {
         offer.setGroup(group);
 
         return offer;
+    }
+
+    /**
+     * Transforms the {@link StudentView} to an {@link Student} DTO Object. As
+     * the DTO contains several sub-objects, which again may contain certain
+     * other objects, the transformer is building the entire Object Structure.
+     *
+     * @param view StudentView to transform
+     * @return Student DTO Object to display externally
+     */
+    public static Student transform(final StudentView view) {
+        final Student student = convert(view.getStudent());
+
+        final User user = convert(view.getUser());
+        student.setUser(user);
+
+        return student;
     }
 }

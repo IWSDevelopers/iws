@@ -30,7 +30,10 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "application.findByExternalId",
                 query = "select a from ApplicationEntity a " +
-                        "where a.externalId = :eid")
+                        "where a.externalId = :eid"),
+        @NamedQuery(name = "application.findByOfferId",
+                query = "select a from ApplicationEntity a " +
+                        "where a.offer.id = :oid")
 })
 @Entity
 @Table(name = "student_applications")
@@ -46,12 +49,12 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     private String externalId = null;
 
     @ManyToOne(targetEntity = OfferEntity.class)
-    @JoinColumn(name = "offer_id", nullable = false)
+    @JoinColumn(name = "offer_id", nullable = false, updatable = false)
     private OfferEntity offer = null;
 
-    @ManyToOne(targetEntity = UserEntity.class)
+    @ManyToOne(targetEntity = StudentEntity.class)
     @JoinColumn(name = "student_id", nullable = false)
-    private UserEntity student = null;
+    private StudentEntity student = null;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 25, nullable = false)
@@ -123,11 +126,11 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return offer;
     }
 
-    public void setStudent(final UserEntity student) {
+    public void setStudent(final StudentEntity student) {
         this.student = student;
     }
 
-    public UserEntity getStudent() {
+    public StudentEntity getStudent() {
         return student;
     }
 

@@ -251,8 +251,9 @@ public final class ExchangeTransformer {
             entity.setLanguage2Level(student.getLanguage2Level());
             entity.setLanguage3(student.getLanguage3());
             entity.setLanguage3Level(student.getLanguage3Level());
-            entity.setModified(student.getModified().toDate());
-            entity.setCreated(student.getCreated().toDate());
+            //TODO there is no sense to copy modified and created from DTO to entity
+            //entity.setModified(student.getModified().toDate());
+            //entity.setCreated(student.getCreated().toDate());
         }
 
         return entity;
@@ -266,7 +267,7 @@ public final class ExchangeTransformer {
 
             result.setApplicationId(entity.getExternalId());
             result.setOffer(transform(entity.getOffer()));
-            result.setStudent(AdministrationTransformer.transform(entity.getStudent()));
+            result.setStudent(transform(entity.getStudent()));
             result.setStatus(entity.getStatus());
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
@@ -283,7 +284,7 @@ public final class ExchangeTransformer {
 
             result.setExternalId(application.getApplicationId());
             result.setOffer(transform(application.getOffer()));
-            result.setStudent(AdministrationTransformer.transform(application.getStudent()));
+            result.setStudent(transform(application.getStudent()));
             result.setStatus(application.getStatus());
         }
 

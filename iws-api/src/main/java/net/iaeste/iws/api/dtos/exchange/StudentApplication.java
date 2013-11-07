@@ -53,7 +53,7 @@ public final class StudentApplication extends AbstractVerification {
     private Offer offer = null;
 
     /** {@link Student} as User */
-    private User student = null;
+    private Student student = null;
 
     /** Status of the {@link StudentApplication} */
     private ApplicationStatus status = null;
@@ -111,7 +111,7 @@ public final class StudentApplication extends AbstractVerification {
         if (studentApplication != null) {
             applicationId = studentApplication.applicationId;
             offer = new Offer(studentApplication.offer);
-            student = new User(studentApplication.student);
+            student = new Student(studentApplication.student);
             status = studentApplication.status;
         }
     }
@@ -138,11 +138,11 @@ public final class StudentApplication extends AbstractVerification {
         return offer;
     }
 
-    public void setStudent(final User student) {
+    public void setStudent(final Student student) {
         this.student = student;
     }
 
-    public User getStudent() {
+    public Student getStudent() {
         return student;
     }
 

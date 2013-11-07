@@ -52,7 +52,12 @@ import java.util.Date;
                 query = "select s from StudentEntity s, UserGroupEntity ug " +
                         "where ug.user.id = s.user.id" +
                         "  and ug.group.parentId = :parentId" +
-                        "  and ug.group.groupType.grouptype = 'STUDENT'")
+                        "  and ug.group.groupType.grouptype = 'STUDENT'"),
+        @NamedQuery(name = "students.findByExternalIdForCountry",
+                query = "select s from StudentEntity s, UserGroupEntity ug " +
+                        "where ug.user.id = s.user.id" +
+                        "  and ug.group.parentId = :parentId" +
+                        "  and ug.user.externalId = :eid")
 })
 @Entity
 @Table(name = "students")
@@ -324,7 +329,8 @@ public class StudentEntity implements Updateable<StudentEntity> {
     @Override
     public void merge(final StudentEntity obj) {
         // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && id.equals(obj.id)) {
+        //if ((id != null) && (obj != null) && id.equals(obj.id)) {
+        if ((id != null) && (obj != null) && (user != null) && (user.getExternalId() != null) && user.getExternalId().equals(obj.user.getExternalId())) {
             studyLevel = obj.studyLevel;
             fieldOfStudies = obj.fieldOfStudies;
             specializations = obj.specializations;

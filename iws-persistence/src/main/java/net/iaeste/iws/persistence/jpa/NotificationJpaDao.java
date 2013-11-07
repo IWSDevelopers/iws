@@ -23,7 +23,6 @@ import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity;
-import net.iaeste.iws.persistence.entities.notifications.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.views.NotificationJobTasksView;
@@ -67,32 +66,6 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
         }
 
         return result.get(0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<NotificationMessageEntity> findNotificationMessages(final NotificationDeliveryMode deliveryMode, final NotificationMessageStatus status, final Date date) {
-        final Query query = entityManager.createNamedQuery("notifications.findMessagesByTypeStatusAndDate");
-        query.setParameter("deliveryMode", deliveryMode);
-        query.setParameter("status", status);
-        query.setParameter("date", date);
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateNotificationMessageStatus(final NotificationMessageEntity message, final NotificationMessageStatus status) {
-        message.setStatus(status);
-        entityManager.persist(message);
-        //final Query query = entityManager.createNamedQuery("notifications.updateStatus");
-        //query.setParameter("status", status);
-        //query.setParameter("id", message.getId());
-        //query.executeUpdate();
     }
 
     /**

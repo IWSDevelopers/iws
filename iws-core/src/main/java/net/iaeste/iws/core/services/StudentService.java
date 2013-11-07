@@ -89,23 +89,54 @@ public final class StudentService {
         final String externalId = application.getApplicationId();
         ApplicationEntity applicationEntity = studentDao.findApplicationByExternalId(externalId);
         final OfferEntity sharedOffer = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
-        final UserEntity student = studentDao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUserId());
+        final StudentEntity student = studentDao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
         if (sharedOffer == null || !sharedOffer.getStatus().equals(OfferState.SHARED)) {
             throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
 
+        //TODO StudentEntity has no externalId and StudentEntity from application has no ID so no change to Student will be reflectec in DB
+
         if (applicationEntity == null) {
             applicationEntity = transform(application);
             applicationEntity.setOffer(sharedOffer);
+            studentDao.persist(authentication, student, applicationEntity.getStudent());
             applicationEntity.setStudent(student);
             studentDao.persist(authentication, applicationEntity);
         } else {
             final ApplicationEntity updated = transform(application);
+            studentDao.persist(authentication, student, updated.getStudent());
             studentDao.persist(authentication, applicationEntity, updated);
         }
 
         return applicationEntity;
+    }
+
+    public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
+        final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffer(request.getOfferId());
+        OfferEntity offer = null;
+        for (final OfferGroupEntity offerGroup : offerGroups) {
+            if (offerGroup.getGroup().equals(authentication.getGroup())) {
+                offer = offerGroup.getOffer();
+            }
+        }
+
+        if (offer == null) {
+            throw new VerificationException("The offer with id '" + request.getOfferId() + "' was not found.");
+        }
+
+        final List<ApplicationEntity> found = studentDao.findApplicationsForOffer(offer.getId());
+
+        final List<StudentApplication> applications = new ArrayList<>(found.size());
+        for (final ApplicationEntity entity : found) {
+            applications.add(transform(entity));
+        }
+
+        return new FetchStudentApplicationsResponse(applications);
+    }
+
+    public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
+        throw new NotImplementedException("Pending Implementation.");
     }
 
     private OfferEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {
@@ -119,13 +150,5 @@ public final class StudentService {
         }
 
         return result;
-    }
-
-    public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
-    }
-
-    public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
     }
 }

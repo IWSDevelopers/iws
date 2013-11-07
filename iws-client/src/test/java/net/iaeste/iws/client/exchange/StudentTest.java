@@ -29,6 +29,7 @@ import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
@@ -38,15 +39,20 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
+import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
+import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
@@ -87,7 +93,7 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    @Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
+    //@Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
     public void testProcessStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = OfferTestUtility.getMinimalOffer();
@@ -145,7 +151,12 @@ public final class StudentTest extends AbstractTest {
 
         final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
         assertThat(createStudentResponse1.isOk(), is(true));
-        final User student = createStudentResponse1.getUser();
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
+        assertThat(fetchStudentsResponse.isOk(), is(true));
+        assertThat(fetchStudentsResponse.getStudents().isEmpty(), is(false));
+        final Student student = fetchStudentsResponse.getStudents().get(0);
+        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
         application.setOffer(sharedOffer);
@@ -159,7 +170,88 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    @Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
+    //@Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
+    public void testFetchStudentApplications() {
+        final Date nominationDeadline = new Date().plusDays(20);
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo("PL-2014-001003");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+        final String refNo = saveResponse.getOffer().getRefNo();
+
+        // verify processResponse
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+
+        Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat(sharedOffer.getStatus(), is(OfferState.NEW));
+        assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        offersToShare.add(sharedOffer.getOfferId());
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
+
+        assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
+        assertThat(publishResponse1.isOk(), is(true));
+
+        final List<String> offersExternalId = new ArrayList<>(1);
+        offersExternalId.add(sharedOffer.getOfferId());
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
+        final FetchPublishedGroupsResponse fetchPublishResponse1 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
+
+        //is it shared to two groups?
+        assertThat(fetchPublishResponse1.isOk(), is(true));
+        List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        assertThat(2, is(offerGroupsSharedTo.size()));
+
+        allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat(sharedOffer.getRefNo(), is(saveResponse.getOffer().getRefNo()));
+        assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
+        assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
+
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app003@university.edu", "password1", "Student1", "Graduate1");
+        createUserRequest1.setStudentAccount(true);
+
+        final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
+        assertThat(createStudentResponse1.isOk(), is(true));
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
+        assertThat(fetchStudentsResponse.isOk(), is(true));
+        assertThat(fetchStudentsResponse.getStudents().isEmpty(), is(false));
+        final Student student = fetchStudentsResponse.getStudents().get(0);
+        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
+
+        StudentApplication application = new StudentApplication();
+        application.setOffer(sharedOffer);
+        application.setStudent(student);
+        application.setStatus(ApplicationStatus.APPLIED);
+
+        final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
+        assertThat(createStudentApplicationResponse.isOk(), is(true));
+
+        final FetchStudentApplicationsRequest fetchStudentApplicationsRequest = new FetchStudentApplicationsRequest(sharedOffer.getOfferId());
+        final FetchStudentApplicationsResponse fetchStudentApplicationsResponse = students.fetchStudentApplications(austriaToken, fetchStudentApplicationsRequest);
+        assertThat(fetchStudentApplicationsResponse.isOk(), is(true));
+        assertThat(fetchStudentApplicationsResponse.getStudentApplications().size(), is(1));
+    }
+
+    @Test
+    //@Ignore("Ignored 2013-11-06 by Kim - Reason: The Student logic is being restructured to a datamodel which we do not have to completely rewrite after the go-live.")
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = OfferTestUtility.getMinimalOffer();
@@ -217,7 +309,12 @@ public final class StudentTest extends AbstractTest {
 
         final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
         assertThat(createStudentResponse1.isOk(), is(true));
-        final User student = createStudentResponse1.getUser();
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
+        assertThat(fetchStudentsResponse.isOk(), is(true));
+        assertThat(fetchStudentsResponse.getStudents().isEmpty(), is(false));
+        final Student student = fetchStudentsResponse.getStudents().get(0);
+        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         StudentApplication application = new StudentApplication();
         application.setOffer(sharedOffer);

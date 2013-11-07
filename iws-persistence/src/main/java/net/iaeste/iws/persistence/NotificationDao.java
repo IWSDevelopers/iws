@@ -19,7 +19,6 @@ import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity;
-import net.iaeste.iws.persistence.entities.notifications.NotificationMessageEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.views.NotificationJobTasksView;
@@ -43,25 +42,6 @@ public interface NotificationDao extends BasicDao {
      * @return        UserNotificationEntity, null if no setting is found, exception if more than 1 setting is found
      */
     UserNotificationEntity findUserNotificationSetting(UserEntity user, NotificationType type);
-
-    /**
-     * Finds all NotificationMessageEntity for selected notification channel
-     * with specific status and processing date
-     *
-     * @param deliveryMode   Type of notification channel
-     * @param status Status of the message (i.e. new, processing, ...)
-     * @param date   Date when to process the message
-     * @return       List of NotificationMessageEntity
-     */
-    List<NotificationMessageEntity> findNotificationMessages(NotificationDeliveryMode deliveryMode, NotificationMessageStatus status, Date date);
-
-    /**
-     * Updates the notification message to the new specified status
-     *
-     * @param message The message to be updated
-     * @param status  New status of the message (i.e. new, processing, ...)
-     */
-    void updateNotificationMessageStatus(NotificationMessageEntity message, NotificationMessageStatus status);
 
     /**
      * Finds all NotificationConsumerEntities that are set as active

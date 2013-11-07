@@ -86,8 +86,22 @@ public final class Student extends AbstractVerification {
      */
     public Student(final Student student) {
         if (student != null) {
-            setUser(student.user);
+            // We copy the Object over directly, without the checks from our
+            // setters, since we trust that the previously created Student
+            // Object is correct.
+            user = new User(student.user);
+            studyLevel = student.studyLevel;
+            fieldOfStudies = copy(student.fieldOfStudies);
+            specializations = copy(student.specializations);
             available = student.available;
+            language1 = student.language1;
+            language1Level = student.language1Level;
+            language2 = student.language2;
+            language2Level = student.language2Level;
+            language3 = student.language3;
+            language3Level = student.language3Level;
+            modified = student.modified;
+            created = student.created;
         }
     }
 
@@ -324,8 +338,6 @@ public final class Student extends AbstractVerification {
                 ", language2Level=" + language2Level +
                 ", language3=" + language3 +
                 ", language3Level=" + language3Level +
-                ", modified=" + modified +
-                ", created=" + created +
                 '}';
     }
 }

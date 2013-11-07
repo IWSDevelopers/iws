@@ -86,7 +86,8 @@ public final class Student extends AbstractVerification {
      */
     public Student(final Student student) {
         if (student != null) {
-            user = student.user;
+            setUser(student.user);
+            available = student.available;
         }
     }
 

@@ -66,7 +66,7 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * {@inheritDoc}
      */
     @Override
-    public UserEntity findStudentByExternal(final Long parentGroupId, final String externalId) {
+    public StudentEntity findStudentByExternal(final Long parentGroupId, final String externalId) {
         final Query query = entityManager.createNamedQuery("students.findByExternalIdForCountry");
         query.setParameter("parentId", parentGroupId);
         query.setParameter("eid", externalId);

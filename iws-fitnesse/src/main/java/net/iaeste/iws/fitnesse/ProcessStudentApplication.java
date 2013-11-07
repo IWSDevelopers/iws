@@ -17,6 +17,7 @@ package net.iaeste.iws.fitnesse;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
@@ -35,11 +36,11 @@ public final class ProcessStudentApplication extends AbstractFixture<StudentAppl
     private ProcessStudentApplicationsRequest request = new ProcessStudentApplicationsRequest();
     private StudentApplication studentApplication = new StudentApplication();
 
-    public void setOfferId(final Offer offer) {
+    public void setOffer(final Offer offer) {
         studentApplication.setOffer(offer);
     }
 
-    public void setStudentId(final User student) {
+    public void setStudent(final Student student) {
         studentApplication.setStudent(student);
     }
 

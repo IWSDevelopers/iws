@@ -84,19 +84,23 @@ public final class StudentService {
         final String externalId = application.getApplicationId();
         ApplicationEntity applicationEntity = studentDao.findApplicationByExternalId(externalId);
         final OfferEntity sharedOffer = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
-        final UserEntity student = studentDao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUserId());
+        final StudentEntity student = studentDao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
         if (sharedOffer == null || !sharedOffer.getStatus().equals(OfferState.SHARED)) {
             throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
 
+        //TODO StudentEntity has no externalId and StudentEntity from application has no ID so no change to Student will be reflectec in DB
+
         if (applicationEntity == null) {
             applicationEntity = transform(application);
             applicationEntity.setOffer(sharedOffer);
+            studentDao.persist(authentication, student, applicationEntity.getStudent());
             applicationEntity.setStudent(student);
             studentDao.persist(authentication, applicationEntity);
         } else {
             final ApplicationEntity updated = transform(application);
+            studentDao.persist(authentication, student, updated.getStudent());
             studentDao.persist(authentication, applicationEntity, updated);
         }
 
@@ -104,7 +108,14 @@ public final class StudentService {
     }
 
     public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
-        final OfferEntity offer = exchangeDao.findOfferByExternalId(authentication, request.getOfferId());
+        final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffer(request.getOfferId());
+        OfferEntity offer = null;
+        for (final OfferGroupEntity offerGroup : offerGroups) {
+            if (offerGroup.getGroup().equals(authentication.getGroup())) {
+                offer = offerGroup.getOffer();
+            }
+        }
+
         if (offer == null) {
             throw new VerificationException("The offer with id '" + request.getOfferId() + "' was not found.");
         }

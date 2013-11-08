@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.enums;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-
 /**
  * All languages that can be selected in the system
  *
@@ -25,47 +23,57 @@ import net.iaeste.iws.api.constants.IWSConstants;
  */
 public enum Language {
 
-    ENGLISH,
-    ARABIC,
-    BELARUSIAN,
-    BULGARIAN,
-    CANTONESE_YUE_CHINESE,
-    CROATIAN,
-    CZECH,
-    DANISH,
-    DUTCH,
-    ESTONIAN,
-    FINNISH,
-    FRENCH,
-    GERMAN,
-    GREEK,
-    HUNGARIAN,
-    INDONESIAN,
-    ITALIAN,
-    JAPANESE,
-    KOREAN,
-    LATVIAN,
-    LITHUANIAN,
-    MANDARIN_CHINESE,
-    NORWEGIAN,
-    PERSIAN,
-    POLISH,
-    PORTUGUESE,
-    ROMANIAN,
-    RUSSIAN,
-    SERBIAN,
-    SLOVAKIAN,
-    SLOVENIAN,
-    SPANISH,
-    SWEDISH,
-    TAJIK,
-    THAI,
-    TURKISH,
-    VIETNAMESE,
-    UKRAINIAN,
-    ANY;
+    ENGLISH("English"),
+    ARABIC("Arabic"),
+    BELARUSIAN("Belarusian"),
+    BULGARIAN("Bulgarian"),
+    CANTONESE_YUE_CHINESE("Cantonese Yue Chinese"),
+    CROATIAN("Croatian"),
+    CZECH("Czech"),
+    DANISH("Danish"),
+    DUTCH("Dutch"),
+    ESTONIAN("Estonian"),
+    FINNISH("Finnish"),
+    FRENCH("French"),
+    GERMAN("German"),
+    GREEK("Greek"),
+    HUNGARIAN("Hungarian"),
+    INDONESIAN("Indonesian"),
+    ITALIAN("Italian"),
+    JAPANESE("Japanese"),
+    KOREAN("Korean"),
+    LATVIAN("Latvian"),
+    LITHUANIAN("Lithuanian"),
+    MANDARIN_CHINESE("Mandarin Chinese"),
+    NORWEGIAN("Norwegian"),
+    PERSIAN("Persian"),
+    POLISH("Polish"),
+    PORTUGUESE("Portuguese"),
+    ROMANIAN("Romanian"),
+    RUSSIAN("Russian"),
+    SERBIAN("Serbian"),
+    SLOVAKIAN("Slovakian"),
+    SLOVENIAN("Slovenian"),
+    SPANISH("Spanish"),
+    SWEDISH("Swedish"),
+    TAJIK("Tajik"),
+    THAI("Thai"),
+    TURKISH("Turkish"),
+    VIETNAMESE("Vietnamese"),
+    UKRAINIAN("Ukrainian"),
+    ANY("Any");
 
-    public String stringCSV() {
-        return name().charAt(0) + name().toLowerCase(IWSConstants.DEFAULT_LOCALE).replace('_', ' ').substring(1);
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
+    private final String description;
+
+    Language(final String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

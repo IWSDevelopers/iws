@@ -388,7 +388,7 @@ public enum FieldOfStudy {
         return specializations;
     }
 
-    public String stringCSV() {
+    public String getDescription() {
         return description;
     }
 }

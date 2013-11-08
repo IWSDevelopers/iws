@@ -26,6 +26,10 @@ public enum StudyLevel {
     M("Middle"),
     E("End");
 
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
     private final String description;
 
     StudyLevel(final String description) {

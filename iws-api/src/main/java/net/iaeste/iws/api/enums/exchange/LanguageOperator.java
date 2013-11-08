@@ -27,6 +27,10 @@ public enum LanguageOperator {
     A("And"),
     O("Or");
 
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
     private final String description;
 
     LanguageOperator(final String description) {

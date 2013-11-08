@@ -29,6 +29,10 @@ public enum TypeOfWork {
     W("Working Environment"),
     N("Non Specific");
 
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
     private final String description;
 
     TypeOfWork(final String description) {

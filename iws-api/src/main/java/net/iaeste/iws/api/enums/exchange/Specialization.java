@@ -246,7 +246,7 @@ public enum Specialization {
         this.description = description;
     }
 
-    public String stringCSV() {
+    public String getDescription() {
         return description;
     }
 }

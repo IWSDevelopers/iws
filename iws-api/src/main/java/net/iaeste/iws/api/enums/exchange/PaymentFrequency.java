@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-
 /**
  * PaymentFrequency Object for the Exchange Module.
  *
@@ -28,24 +26,34 @@ public enum PaymentFrequency {
     /**
      * When the Payment frequency is daily.
      */
-    DAILY,
+    DAILY("Daily"),
 
     /**
      * When the Payment frequency is weekly.
      */
-    WEEKLY,
+    WEEKLY("Weekly"),
 
     /**
      * When the Payment frequency is monthly.
      */
-    MONTHLY,
+    MONTHLY("Monthly"),
 
     /**
      * When the Payment frequency is yearly.
      */
-    YEARLY;
+    YEARLY("Yearly");
+
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
+    private final String description;
+
+    PaymentFrequency(final String description) {
+        this.description = description;
+    }
 
     public String getDescription() {
-        return name().substring(0,1) + name().substring(1).toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        return description;
     }
 }

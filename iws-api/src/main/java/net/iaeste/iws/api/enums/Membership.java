@@ -58,14 +58,5 @@ public enum Membership {
      * List of UN countries, which for various reasons is not necessary to list
      * in the ordinary list.
      */
-    UNLISTED,
-
-    /**
-     * Self Administrated Regions or SAR's, are countries which have their own
-     * entry in the UN table, can act in almost all capacities on its own, but
-     * is for various reasons controlled by a different entity.<br />
-     *   Example; Greenland, is a SAR under Denmark.
-     */
-    SELF_ADMINISTRATED_REGION
-
+    UNLISTED
 }

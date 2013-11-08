@@ -28,6 +28,10 @@ public enum LanguageLevel {
     G("Good"),
     F("Fair");
 
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
     private final String description;
 
     LanguageLevel(final String description) {

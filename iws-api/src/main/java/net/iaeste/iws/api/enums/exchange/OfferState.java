@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.enums.exchange;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-
 /**
  * Defines the possible states for an Offer
  *
@@ -28,29 +26,39 @@ public enum OfferState {
     /**
      * In an offer is not shared
      */
-    NEW,
+    NEW("New"),
 
     /**
      * If an offer is shared to multiple countries
      */
-    SHARED,
+    SHARED("Shared"),
 
     /**
      * If an offer is shared to one country only
      */
-    EXCHANGED,
+    EXCHANGED("Exchanged"),
 
     /**
      * If an offer has student applications
      */
-    APPLICATIONS,
+    APPLICATIONS("Applications"),
 
     /**
      * If an offer has student nominations
      */
-    NOMINATIONS;
+    NOMINATIONS("Nominations");
+
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
+    private final String description;
+
+    OfferState(final String description) {
+        this.description = description;
+    }
 
     public String getDescription() {
-        return name().substring(0,1) + name().substring(1).toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        return description; //name().substring(0,1) + name().substring(1).toLowerCase(IWSConstants.DEFAULT_LOCALE);
     }
 }

@@ -190,6 +190,10 @@ public enum Currency {
     ZMW("Zambia Kwacha"),
     ZWD("Zimbabwe Dollar");
 
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
     private final String description;
 
     Currency(final String description) {

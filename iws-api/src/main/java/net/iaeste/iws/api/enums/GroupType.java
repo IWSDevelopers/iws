@@ -81,10 +81,6 @@ public enum GroupType {
      *   <li><b>IDT</b><br />
      *   Members of the IAESTE Internet Development Team.
      *   </li>
-     *   <li><b>Alumni</b><br />
-     *   The members of the IAESTE Alumni organization, formerly known as FoIN,
-     *   The Friends of IAESTE Network.
-     *   </li>
      *   <li><b>Jump</b><br />
      *   Participants in the annual Jump event, a training forum for members
      *   who wishes to participate in International IAESTE work.

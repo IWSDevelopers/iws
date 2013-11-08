@@ -135,7 +135,7 @@ public class StudentView extends AbstractView<StudentView> {
             return true;
         }
 
-        if (!(obj instanceof EmployerView)) {
+        if (!(obj instanceof StudentView)) {
             return false;
         }
 

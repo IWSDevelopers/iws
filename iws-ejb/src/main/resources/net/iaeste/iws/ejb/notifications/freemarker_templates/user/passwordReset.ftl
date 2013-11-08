@@ -1,4 +1,4 @@
-This is your requested password reset form the IAESTE asbl IntraWeb.
+This is your requested password reset from the IAESTE asbl IntraWeb.
 
 NOTE: If you didn't requested a password reset, ignore this mail!
 

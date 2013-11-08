@@ -1,4 +1,4 @@
-This is your requested session reset form the IAESTE asbl IntraWeb.
+This is your requested session reset from the IAESTE asbl IntraWeb.
 
 NOTE: If you didn't requested a session reset, ignore this mail!
 

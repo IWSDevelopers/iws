@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests.student;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -24,12 +25,13 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection RedundantNoArgConstructor
  */
 public final class StudentRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private Student student = null;
 
     // =========================================================================
     // Object Constructors
@@ -42,9 +44,21 @@ public final class StudentRequest extends AbstractVerification {
     public StudentRequest() {
     }
 
+    public StudentRequest(final Student student) {
+        this.student = new Student(student);
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setStudent(final Student student) {
+        this.student = student;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -56,6 +70,9 @@ public final class StudentRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "student", student);
+
         return validation;
     }
 }

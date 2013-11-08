@@ -16,7 +16,6 @@ package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Address;
-import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -58,22 +57,19 @@ public final class StudentApplication extends AbstractVerification {
     /** Status of the {@link StudentApplication} */
     private ApplicationStatus status = null;
 
-    // TODO complete implementation
+    // TODO Move to Student
     private Address homeAddress = null;
     private String email = null; // should be copied for an application if a student wants to use a different address for login
     private String phoneNumber = null;
     private Address addressDuringTerms = null;
     private Date dateOfBirth = null;
-    private String placeOfBirth = null;
-    private String passportNumber = null;
-    private String passportPlaceOfIssue = null;
-    private String passportValidUntil = null;
-
     private String university = null;
-    private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
-    private Set<Specialization> specializations = EnumSet.noneOf(Specialization.class);
+    private String placeOfBirth = null;
     private Integer completedYearsOfStudy = null;
     private Integer totalYearsOfStudy = null;
+    private boolean lodgingByIaeste = false;
+
+    // Language is already part of the Student Object
     private Language language1 = null;
     private LanguageLevel language1Level = null;
     private Language language2 = null;
@@ -81,9 +77,30 @@ public final class StudentApplication extends AbstractVerification {
     private Language language3 = null;
     private LanguageLevel language3Level = null;
 
+    // The internshop period is added as an "availability period" in the Student Object
     private Date internshipStart = null;
     private Date internshipEnd = null;
-    private boolean lodgingByIaeste = false;
+
+    // Field of Studies & Specializations are part of the Student Object
+    private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
+    private Set<Specialization> specializations = EnumSet.noneOf(Specialization.class);
+
+    // TODO Critical information, what is the procedure to deal with this ?
+    //   The problem is that certain countries have very strict rules regarding
+    // private data, and Passport information can, together with name and
+    // birthday, be used to steal identities!
+    //   Suggestions, we use the RSA algorithm, where the receiving country &
+    // student both provide the public keys, and we store the public keys
+    // together with the encrypted values. We can also perform the actual
+    // encryption/decryption operations, but under the notion that the
+    // information is only provided over an encrypted channel, and that none of
+    // the information is logged anywhere. Since we're talking encryption, and
+    // critical information, it would be even better, if the operations were
+    // performed client-side in a JavaScript. So all we store is the public keys
+    // and the encrypted container.
+    private String passportNumber = null;
+    private String passportPlaceOfIssue = null;
+    private String passportValidUntil = null;
 
     private StudentAcceptance acceptance = null;
     private StudentAcceptanceConfirmation travelInformation = null;

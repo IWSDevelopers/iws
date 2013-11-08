@@ -109,6 +109,17 @@ public final class Student extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * This getter is a simple wrapper for the UserId, since the Student is just
+     * an add-on Object for the User, to provide the necessary Student
+     * information.
+     *
+     * @return Student (User) Id
+     */
+    public String getStudentId() {
+        return user.getUserId();
+    }
+
     public void setUser(final User user) throws IllegalArgumentException {
         ensureVerifiable("user", user);
         this.user = new User(user);

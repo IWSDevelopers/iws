@@ -18,7 +18,6 @@
         <class>net.iaeste.iws.persistence.entities.UserEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserGroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserNotificationEntity</class>
-        <class>net.iaeste.iws.persistence.entities.notifications.NotificationMessageEntity</class>
         <class>net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity</class>
         <class>net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity</class>
         <class>net.iaeste.iws.persistence.entities.notifications.NotificationJobTaskEntity</class>

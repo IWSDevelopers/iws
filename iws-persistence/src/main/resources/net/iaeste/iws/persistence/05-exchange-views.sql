@@ -61,7 +61,7 @@ create view employer_view as
     and a.country_id = c.id;
 
 -- =============================================================================
--- The Employer View, which embeds Address & Group
+-- The Offer View, which embeds ???
 -- =============================================================================
 create view offer_view as
   select

@@ -97,7 +97,8 @@ public final class NotificationManager implements Notifications {
      */
     @Override
     public void processJobs() {
-        final List<NotificationJobEntity> unprocessedJobs = dao.findUnprocessedNotificationJobs();
+        final Date now = new Date();
+        final List<NotificationJobEntity> unprocessedJobs = dao.findUnprocessedNotificationJobs(now);
         if (!unprocessedJobs.isEmpty()) {
             for (final NotificationJobEntity job : unprocessedJobs) {
                 prepareJobTasks(job);

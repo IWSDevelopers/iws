@@ -83,9 +83,10 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
      * {@inheritDoc}
      */
     @Override
-    public List<NotificationJobEntity> findUnprocessedNotificationJobs() {
-        final Query query = entityManager.createNamedQuery("notifications.findJobsByNotified");
+    public List<NotificationJobEntity> findUnprocessedNotificationJobs(final Date date) {
+        final Query query = entityManager.createNamedQuery("notifications.findJobsByNotifiedAndDate");
         query.setParameter("notified", false);
+        query.setParameter("date", date);
 
         return query.getResultList();
     }

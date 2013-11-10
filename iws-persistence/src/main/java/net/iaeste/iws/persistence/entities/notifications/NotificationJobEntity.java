@@ -41,9 +41,10 @@ import java.util.Date;
  * @since   1.7
  */
 @NamedQueries(@NamedQuery(
-        name = "notifications.findJobsByNotified",
+        name = "notifications.findJobsByNotifiedAndDate",
         query = "select nj from NotificationJobEntity nj " +
-                "where nj.notified = :notified"))
+                "where nj.notified = :notified " +
+                "  and nj.modified <= :date"))
 @Entity
 @Table(name = "notification_jobs")
 public class NotificationJobEntity implements IWSEntity {

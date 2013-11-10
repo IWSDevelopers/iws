@@ -53,9 +53,10 @@ public interface NotificationDao extends BasicDao {
     /**
      * Finds all NotificationJobEntities that are set as processed=false
      *
+     * @param date Date how old Jobs will be retrieved
      * @return List of NotificationJobEntity
      */
-    List<NotificationJobEntity> findUnprocessedNotificationJobs();
+    List<NotificationJobEntity> findUnprocessedNotificationJobs(Date date);
 
     /**
      * Finds NotificationConsumerEntity by Id

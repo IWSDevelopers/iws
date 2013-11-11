@@ -340,7 +340,7 @@ public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable 
                 fields.put(NotificationField.ON_PRIVATE_LIST, String.valueOf(onPrivateList));
                 fields.put(NotificationField.GROUP_TYPE, group.getGroupType().getGrouptype().name());
                 fields.put(NotificationField.GROUP_EXTERNAL_ID, group.getExternalId());
-                fields.put(NotificationField.EMAIL, user.getAlias());
+                fields.put(NotificationField.EMAIL, user.getUsername());
                 fields.put(NotificationField.USER_STATUS, user.getStatus().name());
                 break;
             case NEW_GROUP_OWNER:

@@ -360,7 +360,16 @@ public final class Offer extends AbstractVerification {
         return maximumWeeks;
     }
 
-    public void setPeriod1(final DatePeriod period1) {
+    /**
+     * The primary period for the Offer must be defined, i.e. it cannot be null.
+     * If set to null, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param period1 Primary Period for this Offer
+     * @throws IllegalArgumentException if value is null
+     */
+    public void setPeriod1(final DatePeriod period1) throws IllegalArgumentException {
+        ensureNotNull("period1", period1);
         this.period1 = new DatePeriod(period1);
     }
 

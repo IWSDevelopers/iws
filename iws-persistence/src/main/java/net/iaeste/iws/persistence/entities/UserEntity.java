@@ -504,7 +504,13 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
             case UPDATE_USERNAME:
                 // When updating the username, we're having a new address that
                 // we need to send it to
-                fields.put(NotificationField.EMAIL, data);
+                fields.put(NotificationField.EMAIL, username);
+                fields.put(NotificationField.NEW_USERNAME, data);
+                fields.put(NotificationField.CODE, code);
+                break;
+            case USERNAME_UPDATED:
+                fields.put(NotificationField.EMAIL, temporary);
+                fields.put(NotificationField.NEW_USERNAME, username);
                 break;
             case PROCESS_EMAIL_ALIAS:
                 fields.put(NotificationField.EMAIL, data);

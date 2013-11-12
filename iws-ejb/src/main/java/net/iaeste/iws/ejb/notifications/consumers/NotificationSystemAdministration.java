@@ -153,6 +153,10 @@ public class NotificationSystemAdministration implements Observer {
                 updateMailingListSubscription(fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID), fields.get(NotificationField.EMAIL), fields.get(NotificationField.USER_STATUS), fields.get(NotificationField.ON_PRIVATE_LIST), fields.get(NotificationField.ON_PUBLIC_LIST));
                 status = NotificationProcessTaskStatus.OK;
                 break;
+            case USERNAME_UPDATED:
+                updateUserSubscriptionEmail(fields.get(NotificationField.EMAIL), fields.get(NotificationField.NEW_USERNAME));
+                status = NotificationProcessTaskStatus.OK;
+                break;
             default:
                 // For all other cases
                 status = NotificationProcessTaskStatus.NOT_FOR_ME;
@@ -298,6 +302,12 @@ public class NotificationSystemAdministration implements Observer {
         subscription.setMember(emailAddress);
 //        mailingListDao.persist(subscription);
         mailingListEntityManager.persist(subscription);
+    }
+
+    private void updateUserSubscriptionEmail(final String oldAddress, final String newAddress) {
+        if (newAddress != null && newAddress.length() > 0) {
+            mailingListDao.updateUserSubscriptionEmail(newAddress, oldAddress);
+        }
     }
 
     private static boolean hasPublicList(final GroupType type) {

@@ -36,6 +36,11 @@ public enum NotificationType {
     UPDATE_USERNAME,
 
     /**
+     * For post user name update actions
+     */
+    USERNAME_UPDATED,
+
+    /**
      * For Activating newly created User Accounts.
      */
     ACTIVATE_USER,

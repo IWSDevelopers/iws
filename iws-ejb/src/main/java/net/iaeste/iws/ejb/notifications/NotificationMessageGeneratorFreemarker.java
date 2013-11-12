@@ -81,6 +81,11 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
                 titleTemplateName = "resetSessionTitle.ftl";
                 dir = USER_TEMPLATE_DIR;
                 break;
+            case UPDATE_USERNAME:
+                templateName = "updateUsername.ftl";
+                titleTemplateName = "updateUsernameTitle.ftl";
+                dir = USER_TEMPLATE_DIR;
+                break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");
 //                throw new IWSException(IWSErrors.ERROR, "Unsupported object for notification");

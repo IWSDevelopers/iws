@@ -215,11 +215,14 @@ public final class AccountService extends CommonService<AccessDao> {
 
         if (user != null) {
             // Update the UserEntity with the new Username
+            user.setTemporary(user.getUsername());
             user.setUsername(user.getData());
             user.setCode(null);
             user.setData(null);
             user.setModified(new Date());
             dao.persist(user);
+            final Authentication authentication = new Authentication(user, UUID.randomUUID().toString());
+            notifications.notify(authentication, user, NotificationType.USERNAME_UPDATED);
         } else {
             throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for this user was found.");
         }

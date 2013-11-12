@@ -255,7 +255,7 @@ public class NotificationEmailSender implements Observer {
                     try {
                         final ObjectMessage msg = session.createObjectMessage();
                         final EmailMessage emsg = new EmailMessage();
-                        emsg.setTo(recipient.getUsername());
+                        emsg.setTo(getTargetEmailAddress(recipient, type));
                         final Map<String, String> messageData = messageGenerator.generateFromTemplate(fields, type);
                         emsg.setSubject(messageData.get("title"));
                         emsg.setMessage(messageData.get("body"));
@@ -292,14 +292,38 @@ public class NotificationEmailSender implements Observer {
             case NEW_GROUP_OWNER:
             case RESET_PASSWORD:
             case RESET_SESSION:
-            case UPDATE_USERNAME:
                 user = accessDao.findActiveUserByUsername(fields.get(NotificationField.EMAIL));
                 if (user != null) {
                     result.add(user);
                 }
                 break;
+            //TODO disable sending notification about updating username, uncomment once we want to enable this feature
+//            case UPDATE_USERNAME:
+//                user = accessDao.findActiveUserByUsername(fields.get(NotificationField.EMAIL));
+//                if (user != null) {
+//                    result.add(user);
+//                }
+//                break;
             default:
                 return null;
+        }
+        return result;
+    }
+
+    private String getTargetEmailAddress(final UserEntity recipient, final NotificationType type) {
+        final String result;
+        switch (type) {
+            case ACTIVATE_USER:
+            case NEW_GROUP_OWNER:
+            case RESET_PASSWORD:
+            case RESET_SESSION:
+                result = recipient.getUsername();
+                break;
+            case UPDATE_USERNAME:
+                result = recipient.getData();
+                break;
+            default:
+                result = "";
         }
         return result;
     }

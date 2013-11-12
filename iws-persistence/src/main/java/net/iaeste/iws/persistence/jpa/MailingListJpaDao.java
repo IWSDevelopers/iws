@@ -70,4 +70,16 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
 
         return findSingleResult(query, "mailinglist");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateUserSubscriptionEmail(final String newEmailAddress, final String oldEmailAddress) {
+        final Query query = entityManager.createNamedQuery("mailing_list.updateUserSubscriptionEmail");
+        query.setParameter("newUserAddress", newEmailAddress);
+        query.setParameter("oldUserAddress", oldEmailAddress);
+
+        query.executeUpdate();
+    }
 }

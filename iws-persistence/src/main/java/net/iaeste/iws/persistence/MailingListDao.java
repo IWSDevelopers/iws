@@ -49,4 +49,12 @@ public interface MailingListDao extends BasicDao {
      * @return Found MailignListMembership or null
      */
     MailingListMembershipEntity findMailingListSubscription(Long listId, String emailAddress);
+
+    /**
+     * Update user's address used to subscribed to a mailing list. This happens when user requested a change of username
+     *
+     * @param newEmailAddress new user private email address
+     * @param oldEmailAddress old user private email address
+     */
+    void updateUserSubscriptionEmail(final String newEmailAddress, final String oldEmailAddress);
 }

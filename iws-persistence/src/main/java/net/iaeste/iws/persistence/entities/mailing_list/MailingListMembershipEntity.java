@@ -36,11 +36,16 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(
+@NamedQueries({
         @NamedQuery(name = "mailing_list.findListSubsciptionByUserAddressAndListId",
                 query = "select mlm from MailingListMembershipEntity mlm " +
                         "where mlm.mailingList.id = :lid " +
-                        "  and mlm.member = :userAddress "))
+                        "  and mlm.member = :userAddress "),
+        @NamedQuery(name = "mailing_list.updateUserSubscriptionEmail",
+                query = "update MailingListMembershipEntity mlm " +
+                        "set mlm.member = :newUserAddress " +
+                        "where mlm.member = :oldUserAddress ")
+})
 @Entity
 @Table(name = "mailing_list_membership")
 public class MailingListMembershipEntity implements IWSEntity {

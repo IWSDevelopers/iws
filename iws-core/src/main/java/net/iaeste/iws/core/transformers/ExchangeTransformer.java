@@ -33,7 +33,7 @@ import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
  *
- * @author  Michal Knapik / last $Author:$
+ * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection OverlyLongMethod
@@ -269,6 +269,7 @@ public final class ExchangeTransformer {
             result.setOffer(transform(entity.getOffer()));
             result.setStudent(transform(entity.getStudent()));
             result.setStatus(entity.getStatus());
+            result.setNominatedAt(entity.getNominatedAt() != null ? new DateTime(entity.getNominatedAt()) : null);
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
         }
@@ -286,6 +287,7 @@ public final class ExchangeTransformer {
             result.setOffer(transform(application.getOffer()));
             result.setStudent(transform(application.getStudent()));
             result.setStatus(application.getStatus());
+            result.setNominatedAt(application.getNominatedAt() != null ? application.getNominatedAt().toDate() : null);
         }
 
         return result;

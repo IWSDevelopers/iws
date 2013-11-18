@@ -228,6 +228,7 @@ create table student_applications (
     offer_id                  integer,
     student_id                integer,
     status                    varchar(25),
+    nominated_at              timestamp,
     modified                  timestamp default now(),
     created                   timestamp default now(),
 

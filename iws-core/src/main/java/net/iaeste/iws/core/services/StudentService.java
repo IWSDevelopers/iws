@@ -29,6 +29,8 @@ import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -48,9 +50,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class StudentService {
 
@@ -87,7 +89,7 @@ public final class StudentService {
         return new StudentApplicationResponse(transform(entity));
     }
 
-    private ApplicationEntity processStudentApplication(final  Authentication authentication, final StudentApplication application) {
+    private ApplicationEntity processStudentApplication(final Authentication authentication, final StudentApplication application) {
         final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
         final String externalId = application.getApplicationId();
         ApplicationEntity applicationEntity = studentDao.findApplicationByExternalId(externalId);
@@ -139,7 +141,28 @@ public final class StudentService {
     }
 
     public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
+        final ApplicationEntity found = studentDao.findApplicationByExternalId(request.getApplicationId());
+
+        if (found == null) {
+            throw new VerificationException("The application with id '" + request.getApplicationId() + "' was not found.");
+        }
+
+        final StudentApplication studentApplication = ExchangeTransformer.transform(found);
+
+        switch (studentApplication.getStatus()) {
+            case APPLIED:
+                switch (request.getStatus()) {
+                    case NOMINATED:
+                        studentApplication.setNominatedAt(new DateTime());
+                        studentApplication.setStatus(request.getStatus());
+                        studentDao.persist(authentication, found, ExchangeTransformer.transform(studentApplication));
+                        return new StudentApplicationResponse(studentApplication);
+                    default:
+                        throw new VerificationException("Unsupported transition from '" + studentApplication.getStatus() + "' to " + request.getStatus());
+                }
+            default:
+                throw new NotImplementedException("Pending Implementation.");
+        }
     }
 
     private OfferEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {

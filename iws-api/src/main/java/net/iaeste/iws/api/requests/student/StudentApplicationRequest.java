@@ -28,9 +28,9 @@ import java.util.Map;
  *
  * It also contains additional fields that are required for certain states.
  *
- * @author  Matej Kosco / last $Author:$
+ * @author Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
 public final class StudentApplicationRequest extends AbstractVerification {
 
@@ -39,6 +39,8 @@ public final class StudentApplicationRequest extends AbstractVerification {
 
     // TODO complete implementation, add fields for rejection messages and comments (see exchange mockups)
     private ApplicationStatus status;
+
+    private String applicationId;
 
     // =========================================================================
     // Object Constructors
@@ -51,19 +53,35 @@ public final class StudentApplicationRequest extends AbstractVerification {
     public StudentApplicationRequest() {
     }
 
+    public StudentApplicationRequest(final String applicationId, final ApplicationStatus status) {
+        this.status = status;
+        this.applicationId = applicationId;
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
 
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Map<String, String> validate() {
-        return new HashMap<>(0);
+        final HashMap<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "applicationId", applicationId);
+        isNotNull(validation, "status", status);
+
+        return validation;
     }
 }

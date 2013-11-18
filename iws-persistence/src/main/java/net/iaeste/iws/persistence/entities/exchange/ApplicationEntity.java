@@ -3,7 +3,6 @@ package net.iaeste.iws.persistence.entities.exchange;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
-import net.iaeste.iws.persistence.entities.UserEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -67,6 +66,10 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 //    @ManyToOne(targetEntity = UserEntity.class)
 //    @JoinColumn(name = "created_by", nullable = false)
 //    private UserEntity createdBy = null;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "nominated_at", nullable = true)
+    private Date nominatedAt = null;
 
     /**
      * Last time the Entity was modified.
@@ -142,6 +145,14 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return status;
     }
 
+    public void setNominatedAt(final Date nominatedAt) {
+        this.nominatedAt = nominatedAt;
+    }
+
+    public Date getNominatedAt() {
+        return nominatedAt;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -198,6 +209,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             status = obj.status;
+            nominatedAt = obj.nominatedAt;
         }
     }
 }

@@ -108,6 +108,8 @@ public final class StudentApplication extends AbstractVerification {
     private DateTime modified = null;
     private DateTime created = null;
 
+    private DateTime nominatedAt = null;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -130,6 +132,7 @@ public final class StudentApplication extends AbstractVerification {
             offer = new Offer(studentApplication.offer);
             student = new Student(studentApplication.student);
             status = studentApplication.status;
+            nominatedAt = studentApplication.nominatedAt;
         }
     }
 
@@ -173,6 +176,14 @@ public final class StudentApplication extends AbstractVerification {
 
     public void setModified(final DateTime modified) {
         this.modified = modified;
+    }
+
+    public void setNominatedAt(final DateTime nominatedAt) {
+        this.nominatedAt = nominatedAt;
+    }
+
+    public DateTime getNominatedAt() {
+        return nominatedAt;
     }
 
     public DateTime getModified() {
@@ -234,6 +245,10 @@ public final class StudentApplication extends AbstractVerification {
             return false;
         }
 
+        if (nominatedAt != null ? !nominatedAt.equals(studentApplication.nominatedAt) : studentApplication.nominatedAt != null) {
+            return false;
+        }
+
         return !(status != null ? status != studentApplication.status : studentApplication.status != null);
     }
 
@@ -248,6 +263,7 @@ public final class StudentApplication extends AbstractVerification {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offer != null ? offer.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (student != null ? student.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nominatedAt != null ? nominatedAt.hashCode() : 0);
 
         return hash;
     }
@@ -262,6 +278,7 @@ public final class StudentApplication extends AbstractVerification {
                 ", offer='" + offer + '\'' +
                 ", student='" + student + '\'' +
                 ", status=" + status +
+                ", nominatedAt=" + nominatedAt +
                 '}';
     }
 }

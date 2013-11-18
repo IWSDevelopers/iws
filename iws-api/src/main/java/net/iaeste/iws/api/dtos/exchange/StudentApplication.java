@@ -277,7 +277,7 @@ public final class StudentApplication extends AbstractVerification {
                 "applicationId='" + applicationId +
                 ", offer='" + offer + '\'' +
                 ", student='" + student + '\'' +
-                ", status=" + status +
+                ", status='" + status + '\'' +
                 ", nominatedAt=" + nominatedAt +
                 '}';
     }

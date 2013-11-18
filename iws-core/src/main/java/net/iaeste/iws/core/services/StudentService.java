@@ -18,6 +18,7 @@ import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
+import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
@@ -30,7 +31,6 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.util.DateTime;
-import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -50,9 +50,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class StudentService {
 
@@ -96,7 +96,7 @@ public final class StudentService {
         final OfferEntity sharedOffer = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
         final StudentEntity student = studentDao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
-        if (sharedOffer == null || !sharedOffer.getStatus().equals(OfferState.SHARED)) {
+        if ((sharedOffer == null) || (sharedOffer.getStatus() != OfferState.SHARED)) {
             throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
 
@@ -147,21 +147,20 @@ public final class StudentService {
             throw new VerificationException("The application with id '" + request.getApplicationId() + "' was not found.");
         }
 
-        final StudentApplication studentApplication = ExchangeTransformer.transform(found);
+        final StudentApplication studentApplication = transform(found);
 
-        switch (studentApplication.getStatus()) {
-            case APPLIED:
-                switch (request.getStatus()) {
-                    case NOMINATED:
-                        studentApplication.setNominatedAt(new DateTime());
-                        studentApplication.setStatus(request.getStatus());
-                        studentDao.persist(authentication, found, ExchangeTransformer.transform(studentApplication));
-                        return new StudentApplicationResponse(studentApplication);
-                    default:
-                        throw new VerificationException("Unsupported transition from '" + studentApplication.getStatus() + "' to " + request.getStatus());
-                }
-            default:
-                throw new NotImplementedException("Pending Implementation.");
+        if (studentApplication.getStatus() == ApplicationStatus.APPLIED) {
+            switch (request.getStatus()) {
+                case NOMINATED:
+                    studentApplication.setNominatedAt(new DateTime());
+                    studentApplication.setStatus(request.getStatus());
+                    studentDao.persist(authentication, found, transform(studentApplication));
+                    return new StudentApplicationResponse(studentApplication);
+                default:
+                    throw new VerificationException("Unsupported transition from '" + studentApplication.getStatus() + "' to " + request.getStatus());
+            }
+        } else {
+            throw new NotImplementedException("Pending Implementation.");
         }
     }
 

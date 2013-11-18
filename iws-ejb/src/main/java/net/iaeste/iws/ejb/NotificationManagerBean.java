@@ -44,7 +44,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -62,7 +61,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
     private static final Logger log = LoggerFactory.getLogger(NotificationManagerBean.class);
     private EntityManager iwsEntityManager = null;
     private EntityManager mailingListEntityManager = null;
-    private Settings settings = null;
+    private Settings settings = new Settings();
     private NotificationDao dao = null;
     private AccessDao accessDao = null;
     private Notifications notifications = null;
@@ -103,9 +102,11 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      *
      * @param settings Settings Bean
      */
-    @Inject
+    //@Inject
     public void setSettings(final Settings settings) {
-        this.settings = settings;
+        if (settings != null) {
+            this.settings = settings;
+        }
     }
 
     /**

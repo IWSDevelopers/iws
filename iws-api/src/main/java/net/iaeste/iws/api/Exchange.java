@@ -41,7 +41,11 @@ import javax.ejb.Remote;
 
 /**
  * Exchange related functionality is covered with this interface. Only exception
- * here, the handling of students is done vai the {@link Student} interface.
+ * here, the handling of students is done vai the {@link Students} interface.
+ *
+ * @author  Kim Jensen / last $Author:$
+ * @version $Revision:$ / $Date:$
+ * @since   1.7
  */
 @Remote
 public interface Exchange {

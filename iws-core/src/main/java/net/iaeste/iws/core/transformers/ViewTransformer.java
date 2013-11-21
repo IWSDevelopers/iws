@@ -34,6 +34,9 @@ import net.iaeste.iws.persistence.views.StudentView;
  */
 public final class ViewTransformer {
 
+    /**
+     * Private Constructor, this is a utility class.
+     */
     private ViewTransformer() {
     }
 

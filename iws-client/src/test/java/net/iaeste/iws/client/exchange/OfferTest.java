@@ -107,6 +107,14 @@ public final class OfferTest extends AbstractTest {
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
         assertThat(response.getOffer().getEmployer().getAddress().getCountry().getCountryCode(), is("PL"));
+
+        // Find All offers, should review this one.
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
+        assertThat(fetchResponse.getOffers().isEmpty(), is(false));
+        final Offer offerWithNS = fetchResponse.getOffers().get(0);
+        assertThat(offerWithNS.getNsFirstname(), is("NS"));
+        assertThat(offerWithNS.getNsLastname(), is("Poland"));
     }
 
     @Test

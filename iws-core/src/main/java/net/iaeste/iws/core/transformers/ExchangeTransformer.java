@@ -40,6 +40,9 @@ import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
  */
 public final class ExchangeTransformer {
 
+    /**
+     * Private Constructor, this is a utility class.
+     */
     private ExchangeTransformer() {
     }
 

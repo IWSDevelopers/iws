@@ -40,6 +40,9 @@ public final class CollectionTransformer {
     private static final String DELIMITER_REG_EXP = "\\|";
     private static final Pattern SPLIT_PATTERN = Pattern.compile(DELIMITER_REG_EXP);
 
+    /**
+     * Private Constructor, this is a utility class.
+     */
     private CollectionTransformer() {
     }
 

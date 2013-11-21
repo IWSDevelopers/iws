@@ -14,15 +14,18 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.enums.Availability;
 import net.iaeste.iws.api.enums.FileType;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -69,15 +72,26 @@ public class FileEntity implements Externable<FileEntity> {
     @JoinColumn(name = "group_id", updatable = false)
     private GroupEntity group = null;
 
+    @ManyToOne(targetEntity = UserEntity.class)
+    @JoinColumn(name = "user_id", updatable = false)
+    private UserEntity user = null;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "filetype", nullable = false, updatable = false)
+    @Column(name = "filetype", length = 10, nullable = false, updatable = false)
     private FileType filetype = FileType.FILE;
 
     @Monitored(name="File Name", level = MonitoringLevel.DETAILED)
-    @Column(name = "filename", length = 100)
+    @Column(name = "filename", length = 100, nullable = false)
     private String filename = null;
 
-    @Monitored(name="File Date", level = MonitoringLevel.DETAILED)
+    /**
+     * The file data is not read out here, since it may be a rather large blob.
+     * Instead, there is a View which will handle the read requests. Changes to
+     * this field is likewise not dealt with in details, but rather the changes
+     * can only be marked.
+     */
+    @Monitored(name="File Date", level = MonitoringLevel.MARKED)
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "filedata")
     private byte[] filedata = null;
 
@@ -103,6 +117,10 @@ public class FileEntity implements Externable<FileEntity> {
     @Monitored(name="Checksum", level = MonitoringLevel.DETAILED)
     @Column(name = "checksum", length = 128)
     private String checksum = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "availability", length = 10, nullable = false)
+    private Availability availability = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
@@ -154,6 +172,14 @@ public class FileEntity implements Externable<FileEntity> {
 
     public GroupEntity getGroup() {
         return group;
+    }
+
+    public void setUser(final  UserEntity user) {
+        this.user = user;
+    }
+
+    public UserEntity getUser() {
+        return user;
     }
 
     public void setFiletype(final FileType filetype) {
@@ -228,6 +254,14 @@ public class FileEntity implements Externable<FileEntity> {
         return checksum;
     }
 
+    public void setAvailability(final Availability availability) {
+        this.availability = availability;
+    }
+
+    public Availability getAvailability() {
+        return availability;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -289,6 +323,7 @@ public class FileEntity implements Externable<FileEntity> {
             description = obj.description;
             keywords = obj.keywords;
             checksum = obj.checksum;
+            availability = obj.availability;
         }
     }
 }

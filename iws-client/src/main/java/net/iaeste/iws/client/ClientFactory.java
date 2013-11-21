@@ -18,6 +18,7 @@ import net.iaeste.iws.api.Access;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.client.spring.Beans;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -82,6 +83,10 @@ public final class ClientFactory {
 
     Administration getAdministrationImplementation() {
         return (Administration) context.getBean("administrationSpringClient");
+    }
+
+    Storage getStorageImplementation() {
+        return (Storage) context.getBean("storageSpringClient");
     }
 
     Committees getCommitteeImplementation() {

@@ -81,6 +81,10 @@ public final class ServiceFactory {
         return new CountryService(countryDao);
     }
 
+    public StorageService prepareStorageService() {
+        return new StorageService(accessDao);
+    }
+
     public AccessService prepareAuthenticationService() {
         return new AccessService(accessDao, notifications, settings);
     }

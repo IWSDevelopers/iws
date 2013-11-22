@@ -118,6 +118,10 @@ public class AccessBean extends AbstractBean implements Access {
     @PostConstruct
     @WebMethod(exclude = true)
     public void postConstruct() {
+        if (settings.getDoJndiLookup()) {
+            settings.init();
+        }
+
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new AccessController(factory);
     }

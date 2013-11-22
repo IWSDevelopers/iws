@@ -16,12 +16,14 @@ package net.iaeste.iws.ejb.emails;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.ejb.IwsSystemSetting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -52,7 +54,10 @@ import java.util.Properties;
 public class EmailSender implements MessageListener {
 
     private static final Logger log = LoggerFactory.getLogger(EmailSender.class);
-    private IwsSystemSetting iwsSystemSetting;
+    //private IwsSystemSetting iwsSystemSetting;
+
+    @Inject
+    private Settings settings;
 
     /**
      * Default constructor
@@ -60,8 +65,10 @@ public class EmailSender implements MessageListener {
      * Log message could be delated once we are sure it's working properly
      */
     public EmailSender() {
-        log.info("starting EmailSender");
-        iwsSystemSetting = IwsSystemSetting.getInstance();
+        log.info("Starting EmailSender");
+        //iwsSystemSetting = IwsSystemSetting.getInstance();
+        settings = new Settings();
+        settings.init();
     }
 
     /**
@@ -90,7 +97,7 @@ public class EmailSender implements MessageListener {
         try {
             // Create a default MimeMessage object.
             final MimeMessage message = new MimeMessage(session);
-            message.setFrom(prepareAddress(iwsSystemSetting.getSendingEmailAddress()));
+            message.setFrom(prepareAddress(settings.getSendingEmailAddress()));
             message.addRecipient(javax.mail.Message.RecipientType.TO, prepareAddress(msg.getTo()));
             message.setSubject(msg.getSubject());
             message.setText(msg.getMessage());
@@ -106,8 +113,8 @@ public class EmailSender implements MessageListener {
         // Get system properties
         final Properties properties = System.getProperties();
         // Setup mail server
-        properties.setProperty("mail.smtp.host", iwsSystemSetting.getSmtpAddress());
-        properties.setProperty("mail.smtp.port", iwsSystemSetting.getSmtpPort());
+        properties.setProperty("mail.smtp.host", settings.getSmtpAddress());
+        properties.setProperty("mail.smtp.port", settings.getSmtpPort());
 
         // Get the default Session object.
         return Session.getDefaultInstance(properties);

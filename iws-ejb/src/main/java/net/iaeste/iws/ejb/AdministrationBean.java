@@ -120,6 +120,10 @@ public class AdministrationBean extends AbstractBean implements Administration {
     @Override
     @PostConstruct
     public void postConstruct() {
+        if (settings.getDoJndiLookup()) {
+            settings.init();
+        }
+
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new AdministrationController(factory);
     }

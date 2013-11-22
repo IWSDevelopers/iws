@@ -128,6 +128,10 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @PostConstruct
     public void postConstruct() {
+        if (settings.getDoJndiLookup()) {
+            settings.init();
+        }
+
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new ExchangeController(factory);
     }

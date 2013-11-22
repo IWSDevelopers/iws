@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.ejb.notifications;
 
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 
@@ -34,4 +35,6 @@ public interface NotificationMessageGenerator {
      * @return  Generated message as String
      */
     Map<String, String> generateFromTemplate(Map<NotificationField, String> fields, NotificationType type);
+
+    void setSettings(Settings settings);
 }

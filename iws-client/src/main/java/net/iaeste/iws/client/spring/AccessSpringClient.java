@@ -57,6 +57,7 @@ public final class AccessSpringClient implements Access {
 
     public Settings initSettings() {
         final Settings settings = new Settings();
+        settings.setDoJndiLookup(false);
 
         settings.setMaxActiveTokens(MAX_ACTIVE_TOKENS);
         settings.setMaxIdleTimeForSessions(MAX_IDLE_TIME_FOR_SESSIONS);

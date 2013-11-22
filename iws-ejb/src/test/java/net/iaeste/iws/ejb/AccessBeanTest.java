@@ -17,13 +17,20 @@ package net.iaeste.iws.ejb;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.core.notifications.Notifications;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
+import java.util.Properties;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -37,7 +44,9 @@ public class AccessBeanTest {
     private AccessBean bean = null;
 
     @Before
-    public void before() {
+    public void before() throws NamingException{
+        Context context = mock(Context.class);
+        when(context.lookup("iws-settings")).thenReturn(new Properties());
         final NotificationManagerBean notificationManagerBean = new NotificationManagerBean();
         bean = new AccessBean();
 

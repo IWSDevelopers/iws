@@ -111,6 +111,10 @@ public class StudentBean extends AbstractBean implements Students {
     @Override
     @PostConstruct
     public void postConstruct() {
+        if (settings.getDoJndiLookup()) {
+            settings.init();
+        }
+
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new StudentController(factory);
     }

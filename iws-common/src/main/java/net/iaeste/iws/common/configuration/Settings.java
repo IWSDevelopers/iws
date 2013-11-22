@@ -15,6 +15,14 @@
 package net.iaeste.iws.common.configuration;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
+
+import javax.annotation.PostConstruct;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.Properties;
 
 /**
  * This Object contains those values that have a default value defined as a
@@ -26,6 +34,12 @@ import net.iaeste.iws.api.constants.IWSConstants;
  * @since   1.7
  */
 public final class Settings {
+    private static final String SETTING_JNDI = "iws-setting";
+
+    private boolean doJndiLookup = true;
+    private boolean lookupDone = false;
+
+    private Properties setting;
 
     private int maxActiveTokens = IWSConstants.MAX_ACTIVE_TOKENS;
     private int maxLoginRetries = IWSConstants.MAX_LOGIN_RETRIES;
@@ -33,10 +47,47 @@ public final class Settings {
     private long loginBlockedTime = IWSConstants.LOGIN_BLOCKING_PERIOD;
     private String publicMailAddress = IWSConstants.PUBLIC_EMAIL_ADDRESS;
     private String privateMailAddress = IWSConstants.PRIVATE_EMAIL_ADDRESS;
+    private String smtpAddress = "";
+    private String smtpPort = "";
+    private String baseUrl = IWSConstants.BASE_URL;
+    private String sendingEmailAddress = IWSConstants.IWS_EMAIL_SENDER;
+
+    public Settings() {
+    }
+
+    public void init() {
+        if (!lookupDone) {
+            try {
+                final Context context = new InitialContext();
+                setting = (Properties)context.lookup(SETTING_JNDI);
+                context.close();
+
+                smtpAddress = setting.getProperty("smtpAddress");
+                smtpPort = setting.getProperty("smtpPort");
+                baseUrl = setting.getProperty("iw4BaseUrl");
+                sendingEmailAddress = setting.getProperty("sendingEmailAddress");
+                publicMailAddress = setting.getProperty("publicMailAddress");
+                privateMailAddress = setting.getProperty("privateMailAddress");
+
+                lookupDone = true;
+            } catch (NamingException e) {
+                throw new IWSException(IWSErrors.ERROR, "Lookup for System settings failed.", e);
+            }
+        }
+    }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+
+    public void setDoJndiLookup(final boolean doJndiLookup) {
+        this.doJndiLookup = doJndiLookup;
+    }
+
+    public boolean getDoJndiLookup() {
+        return doJndiLookup;
+    }
 
     public void setMaxActiveTokens(final Integer maxActiveTokens) throws IllegalArgumentException {
         throwIfNull("maxActiveTokens", maxActiveTokens);
@@ -90,6 +141,42 @@ public final class Settings {
 
     public String getPrivateMailAddress() {
         return privateMailAddress;
+    }
+
+    public void setSmtpAddress(final String smtpAddress) {
+        throwIfNull("smtpAddress", smtpAddress);
+        this.smtpAddress = smtpAddress;
+    }
+
+    public String getSmtpAddress() {
+        return smtpAddress;
+    }
+
+    public void setSmtpPort(final String smtpPort) {
+        throwIfNull("smtpPort", smtpPort);
+        this.smtpPort = smtpPort;
+    }
+
+    public String getSmtpPort() {
+        return smtpPort;
+    }
+
+    public void setBaseUrl(final String baseUrl) {
+        throwIfNull("baseUrl", baseUrl);
+        this.baseUrl = baseUrl;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setSendingEmailAddress(final String sendingEmailAddress) {
+        throwIfNull("sendingEmailAddress", sendingEmailAddress);
+        this.sendingEmailAddress = sendingEmailAddress;
+    }
+
+    public String getSendingEmailAddress() {
+        return sendingEmailAddress;
     }
 
     private static void throwIfNull(final String name, final Object obj) {

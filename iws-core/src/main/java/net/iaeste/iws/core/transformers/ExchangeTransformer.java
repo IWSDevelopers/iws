@@ -29,10 +29,8 @@ import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
-import java.util.Date;
-
 /**
- * Tranformer for the Exchange module, handles transformation of the DTO Objects
+ * Transformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
  *
  * @author Michal Knapik / last $Author:$
@@ -319,7 +317,7 @@ public final class ExchangeTransformer {
             result.setEmail(application.getEmail());
             result.setPhoneNumber(application.getPhoneNumber());
             result.setAddressDuringTerms(CommonTransformer.transform(application.getAddressDuringTerms()));
-            result.setDateOfBirth(application.getDateOfBirth() != null ? application.getDateOfBirth().toDate() : null);
+            result.setDateOfBirth(CommonTransformer.convert(application.getDateOfBirth()));
             result.setUniversity(application.getUniversity());
             result.setPlaceOfBirth(application.getPlaceOfBirth());
             result.setCompletedYearsOfStudy(application.getCompletedYearsOfStudy());
@@ -331,8 +329,8 @@ public final class ExchangeTransformer {
             result.setLanguage2Level(application.getLanguage2Level());
             result.setLanguage3(application.getLanguage3());
             result.setLanguage3Level(application.getLanguage3Level());
-            result.setInternshipStart(application.getInternshipStart() != null ? application.getInternshipStart().toDate() : null);
-            result.setInternshipEnd(application.getInternshipEnd() != null ? application.getInternshipEnd().toDate() : null);
+            result.setInternshipStart(CommonTransformer.convert(application.getInternshipStart()));
+            result.setInternshipEnd(CommonTransformer.convert(application.getInternshipEnd()));
             result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(application.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.concatEnumCollection(application.getSpecializations()));
             result.setPassportNumber(application.getPassportNumber());

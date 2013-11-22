@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 /**
  * Contains information about a Student applying for an Offer
  * <p/>
@@ -174,208 +176,204 @@ public final class StudentApplication extends AbstractVerification {
         return status;
     }
 
+    public void setHomeAddress(final Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
     public Address getHomeAddress() {
         return homeAddress;
     }
 
-    public void setHomeAddress(Address homeAddress) {
-        this.homeAddress = homeAddress;
+    public void setEmail(final String email) {
+        this.email = email;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhoneNumber(final String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setAddressDuringTerms(final Address addressDuringTerms) {
+        this.addressDuringTerms = addressDuringTerms;
     }
 
     public Address getAddressDuringTerms() {
         return addressDuringTerms;
     }
 
-    public void setAddressDuringTerms(Address addressDuringTerms) {
-        this.addressDuringTerms = addressDuringTerms;
+    public void setDateOfBirth(final Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setUniversity(final String university) {
+        this.university = university;
     }
 
     public String getUniversity() {
         return university;
     }
 
-    public void setUniversity(String university) {
-        this.university = university;
+    public void setPlaceOfBirth(final String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
     }
 
     public String getPlaceOfBirth() {
         return placeOfBirth;
     }
 
-    public void setPlaceOfBirth(String placeOfBirth) {
-        this.placeOfBirth = placeOfBirth;
+    public void setCompletedYearsOfStudy(final Integer completedYearsOfStudy) {
+        this.completedYearsOfStudy = completedYearsOfStudy;
     }
 
     public Integer getCompletedYearsOfStudy() {
         return completedYearsOfStudy;
     }
 
-    public void setCompletedYearsOfStudy(Integer completedYearsOfStudy) {
-        this.completedYearsOfStudy = completedYearsOfStudy;
+    public void setTotalYearsOfStudy(final Integer totalYearsOfStudy) {
+        this.totalYearsOfStudy = totalYearsOfStudy;
     }
 
     public Integer getTotalYearsOfStudy() {
         return totalYearsOfStudy;
     }
 
-    public void setTotalYearsOfStudy(Integer totalYearsOfStudy) {
-        this.totalYearsOfStudy = totalYearsOfStudy;
+    public void setIsLodgingByIaeste(final boolean lodgingByIaeste) {
+        this.lodgingByIaeste = lodgingByIaeste;
     }
 
     public boolean getIsLodgingByIaeste() {
         return lodgingByIaeste;
     }
 
-    public void setIsLodgingByIaeste(boolean lodgingByIaeste) {
-        this.lodgingByIaeste = lodgingByIaeste;
+    public void setLanguage1(final Language language1) {
+        this.language1 = language1;
     }
 
     public Language getLanguage1() {
         return language1;
     }
 
-    public void setLanguage1(Language language1) {
-        this.language1 = language1;
+    public void setLanguage1Level(final LanguageLevel language1Level) {
+        this.language1Level = language1Level;
     }
 
     public LanguageLevel getLanguage1Level() {
         return language1Level;
     }
 
-    public void setLanguage1Level(LanguageLevel language1Level) {
-        this.language1Level = language1Level;
+    public void setLanguage2(final Language language2) {
+        this.language2 = language2;
     }
 
     public Language getLanguage2() {
         return language2;
     }
 
-    public void setLanguage2(Language language2) {
-        this.language2 = language2;
+    public void setLanguage2Level(final LanguageLevel language2Level) {
+        this.language2Level = language2Level;
     }
 
     public LanguageLevel getLanguage2Level() {
         return language2Level;
     }
 
-    public void setLanguage2Level(LanguageLevel language2Level) {
-        this.language2Level = language2Level;
+    public void setLanguage3(final Language language3) {
+        this.language3 = language3;
     }
 
     public Language getLanguage3() {
         return language3;
     }
 
-    public void setLanguage3(Language language3) {
-        this.language3 = language3;
+    public void setLanguage3Level(final LanguageLevel language3Level) {
+        this.language3Level = language3Level;
     }
 
     public LanguageLevel getLanguage3Level() {
         return language3Level;
     }
 
-    public void setLanguage3Level(LanguageLevel language3Level) {
-        this.language3Level = language3Level;
+    public void setInternshipStart(final Date internshipStart) {
+        this.internshipStart = copy(internshipStart);
     }
 
     public Date getInternshipStart() {
-        return internshipStart;
+        return copy(internshipStart);
     }
 
-    public void setInternshipStart(Date internshipStart) {
-        this.internshipStart = internshipStart;
+    public void setInternshipEnd(final Date internshipEnd) {
+        this.internshipEnd = copy(internshipEnd);
     }
 
     public Date getInternshipEnd() {
-        return internshipEnd;
+        return copy(internshipEnd);
     }
 
-    public void setInternshipEnd(Date internshipEnd) {
-        this.internshipEnd = internshipEnd;
+    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
+        this.fieldOfStudies = copy(fieldOfStudies);
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
-        return fieldOfStudies;
+        return copy(fieldOfStudies);
     }
 
-    public void setFieldOfStudies(Set<FieldOfStudy> fieldOfStudies) {
-        this.fieldOfStudies = fieldOfStudies;
+    public void setSpecializations(final Set<Specialization> specializations) {
+        this.specializations = copy(specializations);
     }
 
     public Set<Specialization> getSpecializations() {
-        return specializations;
+        return copy(specializations);
     }
 
-    public void setSpecializations(Set<Specialization> specializations) {
-        this.specializations = specializations;
+    public void setPassportNumber(final String passportNumber) {
+        this.passportNumber = passportNumber;
     }
 
     public String getPassportNumber() {
         return passportNumber;
     }
 
-    public void setPassportNumber(String passportNumber) {
-        this.passportNumber = passportNumber;
+    public void setPassportPlaceOfIssue(final String passportPlaceOfIssue) {
+        this.passportPlaceOfIssue = passportPlaceOfIssue;
     }
 
     public String getPassportPlaceOfIssue() {
         return passportPlaceOfIssue;
     }
 
-    public void setPassportPlaceOfIssue(String passportPlaceOfIssue) {
-        this.passportPlaceOfIssue = passportPlaceOfIssue;
+    public void setPassportValidUntil(final String passportValidUntil) {
+        this.passportValidUntil = passportValidUntil;
     }
 
     public String getPassportValidUntil() {
         return passportValidUntil;
     }
 
-    public void setPassportValidUntil(String passportValidUntil) {
-        this.passportValidUntil = passportValidUntil;
+    public void setAcceptance(final StudentAcceptance acceptance) {
+        this.acceptance = new StudentAcceptance(acceptance);
     }
 
     public StudentAcceptance getAcceptance() {
-        return acceptance;
+        return new StudentAcceptance(acceptance);
     }
 
-    public void setAcceptance(StudentAcceptance acceptance) {
-        this.acceptance = acceptance;
+    public void setTravelInformation(final StudentAcceptanceConfirmation travelInformation) {
+        this.travelInformation = new StudentAcceptanceConfirmation(travelInformation);
     }
 
     public StudentAcceptanceConfirmation getTravelInformation() {
-        return travelInformation;
-    }
-
-    public void setTravelInformation(StudentAcceptanceConfirmation travelInformation) {
-        this.travelInformation = travelInformation;
-    }
-
-    public void setModified(final DateTime modified) {
-        this.modified = modified;
+        return new StudentAcceptanceConfirmation(travelInformation);
     }
 
     public void setNominatedAt(final DateTime nominatedAt) {
@@ -384,6 +382,10 @@ public final class StudentApplication extends AbstractVerification {
 
     public DateTime getNominatedAt() {
         return nominatedAt;
+    }
+
+    public void setModified(final DateTime modified) {
+        this.modified = modified;
     }
 
     public DateTime getModified() {

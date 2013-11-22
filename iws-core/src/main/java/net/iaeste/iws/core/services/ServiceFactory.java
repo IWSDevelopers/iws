@@ -20,11 +20,13 @@ import net.iaeste.iws.core.singletons.ActiveSessions;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.StorageDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.CountryJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
+import net.iaeste.iws.persistence.jpa.StorageJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
 import net.iaeste.iws.persistence.jpa.ViewsJpaDao;
 
@@ -82,7 +84,8 @@ public final class ServiceFactory {
     }
 
     public StorageService prepareStorageService() {
-        return new StorageService(accessDao);
+        final StorageDao storageDao = new StorageJpaDao(entityManager);
+        return new StorageService(storageDao);
     }
 
     public AccessService prepareAuthenticationService() {

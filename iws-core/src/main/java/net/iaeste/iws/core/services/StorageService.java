@@ -19,8 +19,8 @@ import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FileResponse;
-import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
+import net.iaeste.iws.persistence.StorageDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,14 +33,20 @@ public final class StorageService {
 
     private static final Logger log = LoggerFactory.getLogger(StorageService.class);
 
-    private final AccessDao dao;
+    private final StorageDao dao;
 
-    public StorageService(final AccessDao dao) {
+    public StorageService(final StorageDao dao) {
         this.dao = dao;
     }
 
     public FileResponse processFile(final Authentication authentication, final FileRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        final String externalId = request.getFile().getFileId();
+
+        if (externalId != null) {
+            throw new NotImplementedException("Method pending implementation.");
+        } else {
+            throw new NotImplementedException("Method pending implementation.");
+        }
     }
 
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {

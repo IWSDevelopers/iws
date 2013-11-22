@@ -31,6 +31,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -42,6 +44,18 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@NamedQueries({
+        @NamedQuery(name = "file.findById",
+                query = "select f from FileEntity f " +
+                        "where f.id = :id"),
+        @NamedQuery(name = "file.findByExternalId",
+                query = "select f from FileEntity f " +
+                        "where f.externalId = :eid"),
+        @NamedQuery(name = "file.findByUserAndExternalId",
+                query = "select f from FileEntity f " +
+                        "where f.id = :eid" +
+                        "  and f.user.id = :uid")
+})
 @Entity
 @Table(name = "files")
 @Monitored(name = "File", level = MonitoringLevel.DETAILED)

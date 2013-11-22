@@ -52,7 +52,7 @@ import java.util.Properties;
 public class EmailSender implements MessageListener {
 
     private static final Logger log = LoggerFactory.getLogger(EmailSender.class);
-    private IwsSystemSetting iwsSystemSetting;
+    private final IwsSystemSetting iwsSystemSetting;
 
     /**
      * Default constructor

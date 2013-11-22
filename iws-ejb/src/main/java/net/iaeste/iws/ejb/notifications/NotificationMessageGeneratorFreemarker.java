@@ -42,7 +42,7 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
      */
     private final String TEMPLATE_DIR = "freemarker_templates";
     private final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
-    private IwsSystemSetting iwsSystemSetting;
+    private final IwsSystemSetting iwsSystemSetting;
 
     public NotificationMessageGeneratorFreemarker() {
         iwsSystemSetting = IwsSystemSetting.getInstance();

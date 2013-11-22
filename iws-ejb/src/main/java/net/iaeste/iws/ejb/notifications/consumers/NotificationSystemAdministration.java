@@ -244,7 +244,7 @@ public class NotificationSystemAdministration implements Observer {
 //                    mailingListDao.persist(privateList);
                     mailingListEntityManager.persist(privateList);
                 } else {
-                    log.error("This should not be possible. The mailinglist " + privateList.getListAddress() + " doesn't exist!");
+                    log.error("Logic approach unclear: Modify non-existing list -> throw exception? ignore?");
                 }
             }
         } catch (IllegalArgumentException e) {

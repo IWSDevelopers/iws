@@ -177,6 +177,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setHomeAddress(final Address homeAddress) {
+        ensureVerifiable("homeAddress", homeAddress);
         this.homeAddress = homeAddress;
     }
 
@@ -185,6 +186,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setEmail(final String email) {
+        ensureValidEmail("alternateEmail", email);
         this.email = email;
     }
 
@@ -201,6 +203,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setAddressDuringTerms(final Address addressDuringTerms) {
+        ensureVerifiable("addressDuringTerms", addressDuringTerms);
         this.addressDuringTerms = addressDuringTerms;
     }
 

@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
-import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
@@ -22,7 +21,21 @@ import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
@@ -237,188 +250,188 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return status;
     }
 
+    public void setHomeAddress(final AddressEntity homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
     public AddressEntity getHomeAddress() {
         return homeAddress;
     }
 
-    public void setHomeAddress(AddressEntity homeAddress) {
-        this.homeAddress = homeAddress;
+    public void setEmail(final String email) {
+        this.email = email;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhoneNumber(final String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setAddressDuringTerms(final AddressEntity addressDuringTerms) {
+        this.addressDuringTerms = addressDuringTerms;
     }
 
     public AddressEntity getAddressDuringTerms() {
         return addressDuringTerms;
     }
 
-    public void setAddressDuringTerms(AddressEntity addressDuringTerms) {
-        this.addressDuringTerms = addressDuringTerms;
+    public void setDateOfBirth(final Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setUniversity(final String university) {
+        this.university = university;
     }
 
     public String getUniversity() {
         return university;
     }
 
-    public void setUniversity(String university) {
-        this.university = university;
+    public void setPlaceOfBirth(final String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
     }
 
     public String getPlaceOfBirth() {
         return placeOfBirth;
     }
 
-    public void setPlaceOfBirth(String placeOfBirth) {
-        this.placeOfBirth = placeOfBirth;
+    public void setCompletedYearsOfStudy(final Integer completedYearsOfStudy) {
+        this.completedYearsOfStudy = completedYearsOfStudy;
     }
 
     public Integer getCompletedYearsOfStudy() {
         return completedYearsOfStudy;
     }
 
-    public void setCompletedYearsOfStudy(Integer completedYearsOfStudy) {
-        this.completedYearsOfStudy = completedYearsOfStudy;
+    public void setTotalYearsOfStudy(final Integer totalYearsOfStudy) {
+        this.totalYearsOfStudy = totalYearsOfStudy;
     }
 
     public Integer getTotalYearsOfStudy() {
         return totalYearsOfStudy;
     }
 
-    public void setTotalYearsOfStudy(Integer totalYearsOfStudy) {
-        this.totalYearsOfStudy = totalYearsOfStudy;
+    public void setIsLodgingByIaeste(final boolean lodgingByIaeste) {
+        this.lodgingByIaeste = lodgingByIaeste;
     }
 
     public boolean getIsLodgingByIaeste() {
         return lodgingByIaeste;
     }
 
-    public void setIsLodgingByIaeste(boolean lodgingByIaeste) {
-        this.lodgingByIaeste = lodgingByIaeste;
+    public void setLanguage1(final Language language1) {
+        this.language1 = language1;
     }
 
     public Language getLanguage1() {
         return language1;
     }
 
-    public void setLanguage1(Language language1) {
-        this.language1 = language1;
+    public void setLanguage1Level(final LanguageLevel language1Level) {
+        this.language1Level = language1Level;
     }
 
     public LanguageLevel getLanguage1Level() {
         return language1Level;
     }
 
-    public void setLanguage1Level(LanguageLevel language1Level) {
-        this.language1Level = language1Level;
+    public void setLanguage2(final Language language2) {
+        this.language2 = language2;
     }
 
     public Language getLanguage2() {
         return language2;
     }
 
-    public void setLanguage2(Language language2) {
-        this.language2 = language2;
+    public void setLanguage2Level(final LanguageLevel language2Level) {
+        this.language2Level = language2Level;
     }
 
     public LanguageLevel getLanguage2Level() {
         return language2Level;
     }
 
-    public void setLanguage2Level(LanguageLevel language2Level) {
-        this.language2Level = language2Level;
+    public void setLanguage3(final Language language3) {
+        this.language3 = language3;
     }
 
     public Language getLanguage3() {
         return language3;
     }
 
-    public void setLanguage3(Language language3) {
-        this.language3 = language3;
+    public void setLanguage3Level(final LanguageLevel language3Level) {
+        this.language3Level = language3Level;
     }
 
     public LanguageLevel getLanguage3Level() {
         return language3Level;
     }
 
-    public void setLanguage3Level(LanguageLevel language3Level) {
-        this.language3Level = language3Level;
+    public void setInternshipStart(final Date internshipStart) {
+        this.internshipStart = internshipStart;
     }
 
     public Date getInternshipStart() {
         return internshipStart;
     }
 
-    public void setInternshipStart(Date internshipStart) {
-        this.internshipStart = internshipStart;
+    public void setInternshipEnd(final Date internshipEnd) {
+        this.internshipEnd = internshipEnd;
     }
 
     public Date getInternshipEnd() {
         return internshipEnd;
     }
 
-    public void setInternshipEnd(Date internshipEnd) {
-        this.internshipEnd = internshipEnd;
+    public void setFieldOfStudies(final String fieldOfStudies) {
+        this.fieldOfStudies = fieldOfStudies;
     }
 
     public String getFieldOfStudies() {
         return fieldOfStudies;
     }
 
-    public void setFieldOfStudies(String fieldOfStudies) {
-        this.fieldOfStudies = fieldOfStudies;
+    public void setSpecializations(final String specializations) {
+        this.specializations = specializations;
     }
 
     public String getSpecializations() {
         return specializations;
     }
 
-    public void setSpecializations(String specializations) {
-        this.specializations = specializations;
+    public void setPassportNumber(final String passportNumber) {
+        this.passportNumber = passportNumber;
     }
 
     public String getPassportNumber() {
         return passportNumber;
     }
 
-    public void setPassportNumber(String passportNumber) {
-        this.passportNumber = passportNumber;
+    public void setPassportPlaceOfIssue(final String passportPlaceOfIssue) {
+        this.passportPlaceOfIssue = passportPlaceOfIssue;
     }
 
     public String getPassportPlaceOfIssue() {
         return passportPlaceOfIssue;
     }
 
-    public void setPassportPlaceOfIssue(String passportPlaceOfIssue) {
-        this.passportPlaceOfIssue = passportPlaceOfIssue;
+    public void setPassportValidUntil(final String passportValidUntil) {
+        this.passportValidUntil = passportValidUntil;
     }
 
     public String getPassportValidUntil() {
         return passportValidUntil;
-    }
-
-    public void setPassportValidUntil(String passportValidUntil) {
-        this.passportValidUntil = passportValidUntil;
     }
 
     public void setNominatedAt(final Date nominatedAt) {

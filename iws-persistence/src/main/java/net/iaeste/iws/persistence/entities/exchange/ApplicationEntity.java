@@ -14,25 +14,15 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
+import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
+import net.iaeste.iws.persistence.entities.AddressEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -80,6 +70,94 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 //    @ManyToOne(targetEntity = UserEntity.class)
 //    @JoinColumn(name = "created_by", nullable = false)
 //    private UserEntity createdBy = null;
+
+    @ManyToOne(targetEntity = AddressEntity.class)
+    @JoinColumn(name = "homeAddress_id", nullable = false, updatable = true)
+    private AddressEntity homeAddress = null;
+
+    @Column(name = "email")
+    private String email = null;
+
+    @Column(name = "phoneNumber")
+    private String phoneNumber = null;
+
+    @ManyToOne(targetEntity = AddressEntity.class)
+    @JoinColumn(name = "addressDuringTerms_id", nullable = false, updatable = true)
+    private AddressEntity addressDuringTerms = null;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "dateOfBirth")
+    private Date dateOfBirth = null;
+
+    @Column(name = "university")
+    private String university = null;
+
+    @Column(name = "placeOfBirth")
+    private String placeOfBirth = null;
+
+    @Column(name = "completedYearsOfStudy")
+    private Integer completedYearsOfStudy = null;
+
+    @Column(name = "totalYearsOfStudy")
+    private Integer totalYearsOfStudy = null;
+
+    @Column(name = "lodgingByIaeste")
+    private boolean lodgingByIaeste = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language_1", length = 255)
+    private Language language1 = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language_1_level", length = 1)
+    private LanguageLevel language1Level = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language_2", length = 255)
+    private Language language2 = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language_2_level", length = 1)
+    private LanguageLevel language2Level = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language_3", length = 255)
+    private Language language3 = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language_3_level", length = 1)
+    private LanguageLevel language3Level = null;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "internshipStart")
+    private Date internshipStart = null;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "internshipEnd")
+    private Date internshipEnd = null;
+
+    @Column(name = "study_fields", length = 1000)
+    private String fieldOfStudies = null;
+
+    @Column(name = "specializations")
+    private String specializations = null;
+
+    @Column(name = "passportNumber")
+    private String passportNumber = null;
+
+    @Column(name = "passportPlaceOfIssue")
+    private String passportPlaceOfIssue = null;
+
+    @Column(name = "passportValidUntil")
+    private String passportValidUntil = null;
+
+//    @OneToOne(targetEntity = StudentAcceptanceEntity.class)
+//    @JoinColumn(name = "acceptance", nullable = true)
+//    private StudentAcceptanceEntity acceptance = null;
+
+//    @OneToOne(targetEntity = StudentAcceptanceConfirmationEntity.class)
+//    @JoinColumn(name = "travelInformation", nullable = true)
+//    private StudentAcceptanceConfirmationEntity travelInformation = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "nominated_at", nullable = true)
@@ -157,6 +235,190 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 
     public ApplicationStatus getStatus() {
         return status;
+    }
+
+    public AddressEntity getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(AddressEntity homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public AddressEntity getAddressDuringTerms() {
+        return addressDuringTerms;
+    }
+
+    public void setAddressDuringTerms(AddressEntity addressDuringTerms) {
+        this.addressDuringTerms = addressDuringTerms;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
+    }
+
+    public Integer getCompletedYearsOfStudy() {
+        return completedYearsOfStudy;
+    }
+
+    public void setCompletedYearsOfStudy(Integer completedYearsOfStudy) {
+        this.completedYearsOfStudy = completedYearsOfStudy;
+    }
+
+    public Integer getTotalYearsOfStudy() {
+        return totalYearsOfStudy;
+    }
+
+    public void setTotalYearsOfStudy(Integer totalYearsOfStudy) {
+        this.totalYearsOfStudy = totalYearsOfStudy;
+    }
+
+    public boolean getIsLodgingByIaeste() {
+        return lodgingByIaeste;
+    }
+
+    public void setIsLodgingByIaeste(boolean lodgingByIaeste) {
+        this.lodgingByIaeste = lodgingByIaeste;
+    }
+
+    public Language getLanguage1() {
+        return language1;
+    }
+
+    public void setLanguage1(Language language1) {
+        this.language1 = language1;
+    }
+
+    public LanguageLevel getLanguage1Level() {
+        return language1Level;
+    }
+
+    public void setLanguage1Level(LanguageLevel language1Level) {
+        this.language1Level = language1Level;
+    }
+
+    public Language getLanguage2() {
+        return language2;
+    }
+
+    public void setLanguage2(Language language2) {
+        this.language2 = language2;
+    }
+
+    public LanguageLevel getLanguage2Level() {
+        return language2Level;
+    }
+
+    public void setLanguage2Level(LanguageLevel language2Level) {
+        this.language2Level = language2Level;
+    }
+
+    public Language getLanguage3() {
+        return language3;
+    }
+
+    public void setLanguage3(Language language3) {
+        this.language3 = language3;
+    }
+
+    public LanguageLevel getLanguage3Level() {
+        return language3Level;
+    }
+
+    public void setLanguage3Level(LanguageLevel language3Level) {
+        this.language3Level = language3Level;
+    }
+
+    public Date getInternshipStart() {
+        return internshipStart;
+    }
+
+    public void setInternshipStart(Date internshipStart) {
+        this.internshipStart = internshipStart;
+    }
+
+    public Date getInternshipEnd() {
+        return internshipEnd;
+    }
+
+    public void setInternshipEnd(Date internshipEnd) {
+        this.internshipEnd = internshipEnd;
+    }
+
+    public String getFieldOfStudies() {
+        return fieldOfStudies;
+    }
+
+    public void setFieldOfStudies(String fieldOfStudies) {
+        this.fieldOfStudies = fieldOfStudies;
+    }
+
+    public String getSpecializations() {
+        return specializations;
+    }
+
+    public void setSpecializations(String specializations) {
+        this.specializations = specializations;
+    }
+
+    public String getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
+    }
+
+    public String getPassportPlaceOfIssue() {
+        return passportPlaceOfIssue;
+    }
+
+    public void setPassportPlaceOfIssue(String passportPlaceOfIssue) {
+        this.passportPlaceOfIssue = passportPlaceOfIssue;
+    }
+
+    public String getPassportValidUntil() {
+        return passportValidUntil;
+    }
+
+    public void setPassportValidUntil(String passportValidUntil) {
+        this.passportValidUntil = passportValidUntil;
     }
 
     public void setNominatedAt(final Date nominatedAt) {

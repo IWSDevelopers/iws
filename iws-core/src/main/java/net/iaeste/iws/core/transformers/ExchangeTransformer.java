@@ -29,6 +29,8 @@ import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
+import java.util.Date;
+
 /**
  * Tranformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
@@ -272,6 +274,29 @@ public final class ExchangeTransformer {
             result.setOffer(transform(entity.getOffer()));
             result.setStudent(transform(entity.getStudent()));
             result.setStatus(entity.getStatus());
+            result.setHomeAddress(CommonTransformer.transform(entity.getHomeAddress()));
+            result.setEmail(entity.getEmail());
+            result.setPhoneNumber(entity.getPhoneNumber());
+            result.setAddressDuringTerms(CommonTransformer.transform(entity.getAddressDuringTerms()));
+            result.setDateOfBirth(CommonTransformer.convert(entity.getDateOfBirth()));
+            result.setUniversity(entity.getUniversity());
+            result.setPlaceOfBirth(entity.getPlaceOfBirth());
+            result.setCompletedYearsOfStudy(entity.getCompletedYearsOfStudy());
+            result.setTotalYearsOfStudy(entity.getTotalYearsOfStudy());
+            result.setIsLodgingByIaeste(entity.getIsLodgingByIaeste());
+            result.setLanguage1(entity.getLanguage1());
+            result.setLanguage1Level(entity.getLanguage1Level());
+            result.setLanguage2(entity.getLanguage2());
+            result.setLanguage2Level(entity.getLanguage2Level());
+            result.setLanguage3(entity.getLanguage3());
+            result.setLanguage3Level(entity.getLanguage3Level());
+            result.setInternshipStart(CommonTransformer.convert(entity.getInternshipStart()));
+            result.setInternshipEnd(CommonTransformer.convert(entity.getInternshipEnd()));
+            result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies()));
+            result.setSpecializations(CollectionTransformer.explodeEnumSet(Specialization.class, entity.getSpecializations()));
+            result.setPassportNumber(entity.getPassportNumber());
+            result.setPassportPlaceOfIssue(entity.getPassportPlaceOfIssue());
+            result.setPassportValidUntil(entity.getPassportValidUntil());
             result.setNominatedAt(entity.getNominatedAt() != null ? new DateTime(entity.getNominatedAt()) : null);
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
@@ -290,6 +315,29 @@ public final class ExchangeTransformer {
             result.setOffer(transform(application.getOffer()));
             result.setStudent(transform(application.getStudent()));
             result.setStatus(application.getStatus());
+            result.setHomeAddress(CommonTransformer.transform(application.getHomeAddress()));
+            result.setEmail(application.getEmail());
+            result.setPhoneNumber(application.getPhoneNumber());
+            result.setAddressDuringTerms(CommonTransformer.transform(application.getAddressDuringTerms()));
+            result.setDateOfBirth(application.getDateOfBirth() != null ? application.getDateOfBirth().toDate() : null);
+            result.setUniversity(application.getUniversity());
+            result.setPlaceOfBirth(application.getPlaceOfBirth());
+            result.setCompletedYearsOfStudy(application.getCompletedYearsOfStudy());
+            result.setTotalYearsOfStudy(application.getTotalYearsOfStudy());
+            result.setIsLodgingByIaeste(application.getIsLodgingByIaeste());
+            result.setLanguage1(application.getLanguage1());
+            result.setLanguage1Level(application.getLanguage1Level());
+            result.setLanguage2(application.getLanguage2());
+            result.setLanguage2Level(application.getLanguage2Level());
+            result.setLanguage3(application.getLanguage3());
+            result.setLanguage3Level(application.getLanguage3Level());
+            result.setInternshipStart(application.getInternshipStart() != null ? application.getInternshipStart().toDate() : null);
+            result.setInternshipEnd(application.getInternshipEnd() != null ? application.getInternshipEnd().toDate() : null);
+            result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(application.getFieldOfStudies()));
+            result.setSpecializations(CollectionTransformer.concatEnumCollection(application.getSpecializations()));
+            result.setPassportNumber(application.getPassportNumber());
+            result.setPassportPlaceOfIssue(application.getPassportPlaceOfIssue());
+            result.setPassportValidUntil(application.getPassportValidUntil());
             result.setNominatedAt(application.getNominatedAt() != null ? application.getNominatedAt().toDate() : null);
         }
 

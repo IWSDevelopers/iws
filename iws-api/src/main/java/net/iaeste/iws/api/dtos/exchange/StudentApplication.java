@@ -174,6 +174,206 @@ public final class StudentApplication extends AbstractVerification {
         return status;
     }
 
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Address getAddressDuringTerms() {
+        return addressDuringTerms;
+    }
+
+    public void setAddressDuringTerms(Address addressDuringTerms) {
+        this.addressDuringTerms = addressDuringTerms;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
+    }
+
+    public Integer getCompletedYearsOfStudy() {
+        return completedYearsOfStudy;
+    }
+
+    public void setCompletedYearsOfStudy(Integer completedYearsOfStudy) {
+        this.completedYearsOfStudy = completedYearsOfStudy;
+    }
+
+    public Integer getTotalYearsOfStudy() {
+        return totalYearsOfStudy;
+    }
+
+    public void setTotalYearsOfStudy(Integer totalYearsOfStudy) {
+        this.totalYearsOfStudy = totalYearsOfStudy;
+    }
+
+    public boolean getIsLodgingByIaeste() {
+        return lodgingByIaeste;
+    }
+
+    public void setIsLodgingByIaeste(boolean lodgingByIaeste) {
+        this.lodgingByIaeste = lodgingByIaeste;
+    }
+
+    public Language getLanguage1() {
+        return language1;
+    }
+
+    public void setLanguage1(Language language1) {
+        this.language1 = language1;
+    }
+
+    public LanguageLevel getLanguage1Level() {
+        return language1Level;
+    }
+
+    public void setLanguage1Level(LanguageLevel language1Level) {
+        this.language1Level = language1Level;
+    }
+
+    public Language getLanguage2() {
+        return language2;
+    }
+
+    public void setLanguage2(Language language2) {
+        this.language2 = language2;
+    }
+
+    public LanguageLevel getLanguage2Level() {
+        return language2Level;
+    }
+
+    public void setLanguage2Level(LanguageLevel language2Level) {
+        this.language2Level = language2Level;
+    }
+
+    public Language getLanguage3() {
+        return language3;
+    }
+
+    public void setLanguage3(Language language3) {
+        this.language3 = language3;
+    }
+
+    public LanguageLevel getLanguage3Level() {
+        return language3Level;
+    }
+
+    public void setLanguage3Level(LanguageLevel language3Level) {
+        this.language3Level = language3Level;
+    }
+
+    public Date getInternshipStart() {
+        return internshipStart;
+    }
+
+    public void setInternshipStart(Date internshipStart) {
+        this.internshipStart = internshipStart;
+    }
+
+    public Date getInternshipEnd() {
+        return internshipEnd;
+    }
+
+    public void setInternshipEnd(Date internshipEnd) {
+        this.internshipEnd = internshipEnd;
+    }
+
+    public Set<FieldOfStudy> getFieldOfStudies() {
+        return fieldOfStudies;
+    }
+
+    public void setFieldOfStudies(Set<FieldOfStudy> fieldOfStudies) {
+        this.fieldOfStudies = fieldOfStudies;
+    }
+
+    public Set<Specialization> getSpecializations() {
+        return specializations;
+    }
+
+    public void setSpecializations(Set<Specialization> specializations) {
+        this.specializations = specializations;
+    }
+
+    public String getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
+    }
+
+    public String getPassportPlaceOfIssue() {
+        return passportPlaceOfIssue;
+    }
+
+    public void setPassportPlaceOfIssue(String passportPlaceOfIssue) {
+        this.passportPlaceOfIssue = passportPlaceOfIssue;
+    }
+
+    public String getPassportValidUntil() {
+        return passportValidUntil;
+    }
+
+    public void setPassportValidUntil(String passportValidUntil) {
+        this.passportValidUntil = passportValidUntil;
+    }
+
+    public StudentAcceptance getAcceptance() {
+        return acceptance;
+    }
+
+    public void setAcceptance(StudentAcceptance acceptance) {
+        this.acceptance = acceptance;
+    }
+
+    public StudentAcceptanceConfirmation getTravelInformation() {
+        return travelInformation;
+    }
+
+    public void setTravelInformation(StudentAcceptanceConfirmation travelInformation) {
+        this.travelInformation = travelInformation;
+    }
+
     public void setModified(final DateTime modified) {
         this.modified = modified;
     }

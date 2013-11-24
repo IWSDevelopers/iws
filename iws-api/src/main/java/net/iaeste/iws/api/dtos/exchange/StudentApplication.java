@@ -186,7 +186,6 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setEmail(final String email) {
-        ensureValidEmail("alternateEmail", email);
         this.email = email;
     }
 

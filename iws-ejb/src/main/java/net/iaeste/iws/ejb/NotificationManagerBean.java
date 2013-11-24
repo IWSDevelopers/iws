@@ -118,15 +118,15 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
 
+        if (settings.getDoJndiLookup()) {
+            settings.init();
+        }
+
         NotificationMessageGenerator generator = new NotificationMessageGeneratorFreemarker();
         generator.setSettings(settings);
         final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, settings, generator, true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
-
-        if (settings.getDoJndiLookup()) {
-            settings.init();
-        }
     }
 
     @Override

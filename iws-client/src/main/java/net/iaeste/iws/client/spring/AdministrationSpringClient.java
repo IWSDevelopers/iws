@@ -35,6 +35,7 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.ejb.AdministrationBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -58,6 +59,13 @@ public final class AdministrationSpringClient implements Administration {
 
     private Administration client = null;
 
+    public Settings initSettings() {
+        final Settings settings = new Settings();
+        settings.setDoJndiLookup(false);
+
+        return settings;
+    }
+
     /**
      * Injects the {@code EntityManager} instance required to invoke our
      * transactional daos. The EntityManager instance can only be injected into
@@ -77,6 +85,7 @@ public final class AdministrationSpringClient implements Administration {
         final AdministrationBean administrationBean = new AdministrationBean();
         administrationBean.setEntityManager(entityManager);
         administrationBean.setNotificationManager(notificationBean);
+        administrationBean.setSettings(initSettings());
         administrationBean.postConstruct();
 
         // Set our Administration implementation to the Administration EJB,

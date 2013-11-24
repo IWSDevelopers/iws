@@ -21,10 +21,14 @@ import static org.mockito.Mockito.when;
 
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.ejb.util.SettingJndiProperties;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -43,10 +47,21 @@ public class AccessBeanTest {
     private final Notifications notifications = mock(Notifications.class);
     private AccessBean bean = null;
 
+    private static SimpleNamingContextBuilder builder;
+
+    @AfterClass
+    public static void afterClass() throws Exception {
+        builder.clear();
+    }
+
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        builder = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+        builder.bind("iws-setting", SettingJndiProperties.getProperties());
+    }
+
     @Before
     public void before() throws NamingException{
-        Context context = mock(Context.class);
-        when(context.lookup("iws-settings")).thenReturn(new Properties());
         final NotificationManagerBean notificationManagerBean = new NotificationManagerBean();
         bean = new AccessBean();
 
@@ -61,5 +76,4 @@ public class AccessBeanTest {
         final FetchPermissionResponse response = bean.fetchPermissions(null);
         assertThat(response.isOk(), is(false));
     }
-
 }

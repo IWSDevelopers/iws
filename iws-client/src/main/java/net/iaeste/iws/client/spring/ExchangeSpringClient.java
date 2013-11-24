@@ -38,6 +38,7 @@ import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.ExchangeBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
@@ -62,6 +63,13 @@ public final class ExchangeSpringClient implements Exchange {
 
     private Exchange client = null;
 
+    public Settings initSettings() {
+        final Settings settings = new Settings();
+        settings.setDoJndiLookup(false);
+
+        return settings;
+    }
+
     /**
      * Injects the {@code EntityManager} instance required to invoke our
      * transactional daos. The EntityManager instance can only be injected into
@@ -81,6 +89,7 @@ public final class ExchangeSpringClient implements Exchange {
         final ExchangeBean exchangeBean = new ExchangeBean();
         exchangeBean.setEntityManager(entityManager);
         exchangeBean.setNotificationManager(notificationBean);
+        exchangeBean.setSettings(initSettings());
         exchangeBean.postConstruct();
 
         // Set our Exchange implementation to the Exchange EJB, running within

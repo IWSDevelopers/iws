@@ -37,6 +37,7 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
+import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
@@ -54,7 +55,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class StudentService {
+public final class StudentService extends CommonService<StudentDao> {
 
     private static final Logger log = LoggerFactory.getLogger(StudentService.class);
     private final StudentDao studentDao;
@@ -63,6 +64,7 @@ public final class StudentService {
     private final ViewsDao viewsDao;
 
     public StudentService(final AccessDao accessDao, final ExchangeDao exchangeDao, final StudentDao studentDao, final ViewsDao viewsDao) {
+        super(studentDao);
         this.accessDao = accessDao;
         this.exchangeDao = exchangeDao;
         this.studentDao = studentDao;
@@ -105,11 +107,15 @@ public final class StudentService {
         if (applicationEntity == null) {
             applicationEntity = transform(application);
             applicationEntity.setOffer(sharedOffer);
+            processAddress(authentication, applicationEntity.getHomeAddress());
+            processAddress(authentication, applicationEntity.getAddressDuringTerms());
             studentDao.persist(authentication, student, applicationEntity.getStudent());
             applicationEntity.setStudent(student);
             studentDao.persist(authentication, applicationEntity);
         } else {
             final ApplicationEntity updated = transform(application);
+            processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
+            processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
             studentDao.persist(authentication, student, updated.getStudent());
             studentDao.persist(authentication, applicationEntity, updated);
         }

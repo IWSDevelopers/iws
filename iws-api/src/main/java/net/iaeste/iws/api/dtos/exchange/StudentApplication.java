@@ -134,6 +134,8 @@ public final class StudentApplication extends AbstractVerification {
             offer = new Offer(studentApplication.offer);
             student = new Student(studentApplication.student);
             status = studentApplication.status;
+            homeAddress = new Address(studentApplication.homeAddress);
+            addressDuringTerms = new Address(studentApplication.addressDuringTerms);
             nominatedAt = studentApplication.nominatedAt;
         }
     }
@@ -177,7 +179,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setHomeAddress(final Address homeAddress) {
-        ensureVerifiable("homeAddress", homeAddress);
+        ensureNotNullAndVerifiable("homeAddress", homeAddress);
         this.homeAddress = homeAddress;
     }
 
@@ -202,7 +204,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setAddressDuringTerms(final Address addressDuringTerms) {
-        ensureVerifiable("addressDuringTerms", addressDuringTerms);
+        ensureNotNullAndVerifiable("addressDuringTerms", addressDuringTerms);
         this.addressDuringTerms = addressDuringTerms;
     }
 

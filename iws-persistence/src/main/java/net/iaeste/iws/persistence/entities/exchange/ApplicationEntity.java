@@ -85,36 +85,36 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 //    private UserEntity createdBy = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "homeAddress_id", nullable = false, updatable = true)
+    @JoinColumn(name = "home_address_id", nullable = false, updatable = true)
     private AddressEntity homeAddress = null;
 
     @Column(name = "email")
     private String email = null;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "addressDuringTerms_id", nullable = false, updatable = true)
+    @JoinColumn(name = "address_during_terms_id", nullable = false, updatable = true)
     private AddressEntity addressDuringTerms = null;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "dateOfBirth")
+    @Column(name = "date_of_birth")
     private Date dateOfBirth = null;
 
     @Column(name = "university")
     private String university = null;
 
-    @Column(name = "placeOfBirth")
+    @Column(name = "place_of_birth")
     private String placeOfBirth = null;
 
-    @Column(name = "completedYearsOfStudy")
+    @Column(name = "completed_years_of_study")
     private Integer completedYearsOfStudy = null;
 
-    @Column(name = "totalYearsOfStudy")
+    @Column(name = "total_years_of_study")
     private Integer totalYearsOfStudy = null;
 
-    @Column(name = "lodgingByIaeste")
+    @Column(name = "lodging_by_iaeste")
     private boolean lodgingByIaeste = false;
 
     @Enumerated(EnumType.STRING)
@@ -142,11 +142,11 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     private LanguageLevel language3Level = null;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "internshipStart")
+    @Column(name = "internship_start")
     private Date internshipStart = null;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "internshipEnd")
+    @Column(name = "internship_end")
     private Date internshipEnd = null;
 
     @Column(name = "study_fields", length = 1000)
@@ -155,13 +155,13 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     @Column(name = "specializations")
     private String specializations = null;
 
-    @Column(name = "passportNumber")
+    @Column(name = "passport_number")
     private String passportNumber = null;
 
-    @Column(name = "passportPlaceOfIssue")
+    @Column(name = "passport_place_of_issue")
     private String passportPlaceOfIssue = null;
 
-    @Column(name = "passportValidUntil")
+    @Column(name = "passport_valid_until")
     private String passportValidUntil = null;
 
 //    @OneToOne(targetEntity = StudentAcceptanceEntity.class)
@@ -169,7 +169,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 //    private StudentAcceptanceEntity acceptance = null;
 
 //    @OneToOne(targetEntity = StudentAcceptanceConfirmationEntity.class)
-//    @JoinColumn(name = "travelInformation", nullable = true)
+//    @JoinColumn(name = "travel_information", nullable = true)
 //    private StudentAcceptanceConfirmationEntity travelInformation = null;
 
     @Temporal(TemporalType.TIMESTAMP)

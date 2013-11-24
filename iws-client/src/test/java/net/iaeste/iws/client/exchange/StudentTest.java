@@ -14,11 +14,6 @@
  */
 package net.iaeste.iws.client.exchange;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.Students;
@@ -64,6 +59,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Pavel Fiala / last $Author:$
@@ -160,6 +158,8 @@ public final class StudentTest extends AbstractTest {
         application.setOffer(sharedOffer);
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
+        application.setHomeAddress(TestData.prepareAddress("DE"));
+        application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
         final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
@@ -234,6 +234,8 @@ public final class StudentTest extends AbstractTest {
         application.setOffer(sharedOffer);
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
+        application.setHomeAddress(TestData.prepareAddress("DE"));
+        application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
         final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
@@ -313,6 +315,8 @@ public final class StudentTest extends AbstractTest {
         application.setOffer(sharedOffer);
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
+        application.setHomeAddress(TestData.prepareAddress("DE"));
+        application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
         final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
@@ -366,6 +370,8 @@ public final class StudentTest extends AbstractTest {
         application.setOffer(saveResponse.getOffer());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
+        application.setHomeAddress(TestData.prepareAddress("DE"));
+        application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
         final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);

@@ -39,6 +39,7 @@ import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
@@ -72,7 +73,17 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     public void processStudent(final Authentication authentication, final StudentRequest request) {
-        throw new NotImplementedException("Pending Implementation.");
+        final Student student = request.getStudent();
+        final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
+        final UserEntity user = accessDao.findUserByExternalId(student.getStudentId());
+        final StudentEntity newEntity = transform(student);
+        newEntity.setUser(user);
+        final StudentEntity existingEntity = studentDao.findStudentByExternal(memberGroup.getId(), student.getStudentId());
+        if (existingEntity != null) {
+            studentDao.persist(authentication, existingEntity, newEntity);
+        } else {
+            throw new VerificationException("The student with id '" + student.getStudentId() + "' was not found.");
+        }
     }
 
     public FetchStudentsResponse fetchStudents(final Authentication authentication, final FetchStudentsRequest request) {

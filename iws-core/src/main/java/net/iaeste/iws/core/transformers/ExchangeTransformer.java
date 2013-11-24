@@ -246,8 +246,8 @@ public final class ExchangeTransformer {
             entity.setStudyLevel(student.getStudyLevel());
             entity.setFieldOfStudies(CollectionTransformer.concatEnumCollection(student.getFieldOfStudies()));
             entity.setSpecializations(CollectionTransformer.concatEnumCollection(student.getSpecializations()));
-            entity.setAvailableFrom(student.getAvailable().getFromDate().toDate());
-            entity.setAvailableTo(student.getAvailable().getToDate().toDate());
+            entity.setAvailableFrom(CommonTransformer.readFromDateFromPeriod(student.getAvailable()));
+            entity.setAvailableTo(CommonTransformer.readToDateFromPeriod(student.getAvailable()));
             entity.setLanguage1(student.getLanguage1());
             entity.setLanguage1Level(student.getLanguage1Level());
             entity.setLanguage2(student.getLanguage2());

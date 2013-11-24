@@ -37,6 +37,7 @@ import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
+import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
@@ -49,6 +50,7 @@ import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
@@ -396,6 +398,25 @@ public final class StudentTest extends AbstractTest {
 
         assertThat("Make sure that new application state has been persisted", foundApplication.getStatus(), is(ApplicationStatus.NOMINATED));
         assertThat("Nomination date is set", foundApplication.getNominatedAt(), not(nullValue()));
+    }
+
+    @Test
+    public void testProcessStudent() {
+        final CreateUserRequest createUserRequest = new CreateUserRequest("student_app005@university.edu", "password1", "Student1", "Graduate1");
+        createUserRequest.setStudentAccount(true);
+        final CreateUserResponse createStudentResponse = administration.createUser(austriaToken, createUserRequest);
+        assertThat(createStudentResponse.isOk(), is(true));
+
+        final Student newStudent = new Student();
+        newStudent.setUser(createStudentResponse.getUser());
+
+        final StudentRequest processStudentRequest = new StudentRequest(newStudent);
+        final Fallible processStudentResponse = students.processStudent(austriaToken, processStudentRequest);
+        assertThat(processStudentResponse.isOk(), is(true));
+
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
+        assertThat(fetchStudentsResponse.isOk(), is(true));
     }
 
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {

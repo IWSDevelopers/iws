@@ -16,6 +16,7 @@ package net.iaeste.iws.ejb.notifications;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.exceptions.NotificationException;
@@ -46,6 +47,15 @@ public class NotificationMessageGeneratorVelocity implements NotificationMessage
 
     private final String TEMPLATE_DIR = "velocity_templates";
     private final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
+    private Settings settings;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSettings(final Settings settings) {
+        this.settings = settings;
+    }
 
     /**
      * {@inheritDoc}

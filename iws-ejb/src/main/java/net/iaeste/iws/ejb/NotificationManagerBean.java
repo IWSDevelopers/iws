@@ -21,6 +21,7 @@ import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.notifications.NotificationManager;
+import net.iaeste.iws.ejb.notifications.NotificationMessageGenerator;
 import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -117,7 +118,13 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
 
-        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, settings, new NotificationMessageGeneratorFreemarker(), true);
+        if (settings.getDoJndiLookup()) {
+            settings.init();
+        }
+
+        NotificationMessageGenerator generator = new NotificationMessageGeneratorFreemarker();
+        generator.setSettings(settings);
+        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, settings, generator, true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
     }

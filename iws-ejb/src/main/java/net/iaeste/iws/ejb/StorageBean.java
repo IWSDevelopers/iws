@@ -17,6 +17,7 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FileRequest;
@@ -110,6 +111,10 @@ public class StorageBean extends AbstractBean implements Storage {
     @Override
     @PostConstruct
     public void postConstruct() {
+        if (settings.getDoJndiLookup()) {
+            settings.init();
+        }
+
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new StorageController(factory);
     }

@@ -17,6 +17,7 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
@@ -111,6 +112,10 @@ public class StudentBean extends AbstractBean implements Students {
     @Override
     @PostConstruct
     public void postConstruct() {
+        if (settings.getDoJndiLookup()) {
+            settings.init();
+        }
+
         final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
         controller = new StudentController(factory);
     }

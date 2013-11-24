@@ -18,8 +18,12 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.ejb.util.SettingJndiProperties;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import javax.persistence.EntityManager;
 
@@ -37,6 +41,19 @@ public class ExchangeBeanTest {
     private final EntityManager mockedEntityManager = mock(EntityManager.class);
     private final Notifications notifications = mock(Notifications.class);
     private ExchangeBean bean = null;
+
+    private static SimpleNamingContextBuilder builder;
+
+    @AfterClass
+    public static void afterClass() throws Exception {
+        builder.clear();
+    }
+
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        builder = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+        builder.bind("iws-setting", SettingJndiProperties.getProperties());
+    }
 
     @Before
     public void before() {

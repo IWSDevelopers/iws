@@ -99,6 +99,7 @@ public class NotificationEmailSender implements Observer {
         accessDao = new AccessJpaDao(iwsEntityManager);
 
         messageGenerator = new NotificationMessageGeneratorFreemarker();
+        messageGenerator.setSettings(settings);
 
         initializeQueue();
 

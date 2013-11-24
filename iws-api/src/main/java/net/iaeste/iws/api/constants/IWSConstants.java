@@ -114,6 +114,10 @@ public interface IWSConstants {
      */
     String PRIVATE_EMAIL_ADDRESS = "iaeste.net";
 
+    //TODO review default values
+    String BASE_URL = "https://www.iaeste.net/intraweb";
+    String IWS_EMAIL_SENDER = "intraweb@iaeste.net";
+
     /**
      * A non-zero, odd number used as the initial value, when generating
      * HashCode values. See Item 9, from Effective Java 2nd Edition by

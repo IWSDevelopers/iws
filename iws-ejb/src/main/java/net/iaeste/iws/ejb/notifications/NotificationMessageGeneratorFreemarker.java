@@ -18,11 +18,13 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.ejb.IwsSystemSetting;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.notification.NotificationType;
 
+import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -42,10 +44,17 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
      */
     private final String TEMPLATE_DIR = "freemarker_templates";
     private final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
-    private final IwsSystemSetting iwsSystemSetting;
+    private Settings settings;
 
     public NotificationMessageGeneratorFreemarker() {
-        iwsSystemSetting = IwsSystemSetting.getInstance();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSettings(final Settings settings) {
+        this.settings = settings;
     }
 
     /**
@@ -126,7 +135,7 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
 
     private Map<String, String> prepareInputMap(final Map<NotificationField, String> inputMap) {
         Map<String, String> outputMap = new HashMap<>(inputMap.size());
-        outputMap.put("baseUrl", iwsSystemSetting.getBaseUrl());
+        outputMap.put("baseUrl", settings.getBaseUrl());
 
         for (NotificationField field : inputMap.keySet()) {
             outputMap.put(field.name(), inputMap.get(field));

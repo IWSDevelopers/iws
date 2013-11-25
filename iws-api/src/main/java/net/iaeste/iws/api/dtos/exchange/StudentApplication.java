@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
@@ -47,6 +48,8 @@ public final class StudentApplication extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private static final int FIELD_LENGTH = 100;
 
     private String applicationId = null;
 
@@ -135,7 +138,32 @@ public final class StudentApplication extends AbstractVerification {
             student = new Student(studentApplication.student);
             status = studentApplication.status;
             homeAddress = new Address(studentApplication.homeAddress);
+            email = studentApplication.email;
+            phoneNumber = studentApplication.phoneNumber;
             addressDuringTerms = new Address(studentApplication.addressDuringTerms);
+            dateOfBirth = studentApplication.dateOfBirth;
+            university = studentApplication.university;
+            placeOfBirth = studentApplication.placeOfBirth;
+            completedYearsOfStudy = studentApplication.completedYearsOfStudy;
+            totalYearsOfStudy = studentApplication.totalYearsOfStudy;
+            lodgingByIaeste = studentApplication.lodgingByIaeste;
+            language1 = studentApplication.language1;
+            language1Level = studentApplication.language1Level;
+            language2 = studentApplication.language2;
+            language2Level = studentApplication.language2Level;
+            language3 = studentApplication.language3;
+            language3Level = studentApplication.language3Level;
+            internshipStart = copy(studentApplication.internshipStart);
+            internshipEnd = copy(studentApplication.internshipEnd);
+            fieldOfStudies = copy(studentApplication.fieldOfStudies);
+            specializations = copy(studentApplication.specializations);
+            passportNumber = studentApplication.passportNumber;
+            passportPlaceOfIssue = studentApplication.passportPlaceOfIssue;
+            passportValidUntil = studentApplication.passportValidUntil;
+            acceptance = new StudentAcceptance(studentApplication.acceptance);
+            travelInformation = new StudentAcceptanceConfirmation(studentApplication.travelInformation);
+            modified = studentApplication.modified;
+            created = studentApplication.created;
             nominatedAt = studentApplication.nominatedAt;
         }
     }
@@ -155,19 +183,19 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setOffer(final Offer offer) {
-        this.offer = offer;
+        this.offer = new Offer(offer);
     }
 
     public Offer getOffer() {
-        return offer;
+        return new Offer(offer);
     }
 
     public void setStudent(final Student student) {
-        this.student = student;
+        this.student = new Student(student);
     }
 
     public Student getStudent() {
-        return student;
+        return new Student(student);
     }
 
     public void setStatus(final ApplicationStatus status) {
@@ -180,11 +208,11 @@ public final class StudentApplication extends AbstractVerification {
 
     public void setHomeAddress(final Address homeAddress) {
         ensureNotNullAndVerifiable("homeAddress", homeAddress);
-        this.homeAddress = homeAddress;
+        this.homeAddress = new Address(homeAddress);
     }
 
     public Address getHomeAddress() {
-        return homeAddress;
+        return new Address(homeAddress);
     }
 
     public void setEmail(final String email) {
@@ -192,10 +220,12 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public String getEmail() {
+        ensureNotTooLong("email", email, FIELD_LENGTH);
         return email;
     }
 
     public void setPhoneNumber(final String phoneNumber) {
+        ensureNotTooLong("phoneNumber", phoneNumber, 25);
         this.phoneNumber = phoneNumber;
     }
 
@@ -205,22 +235,23 @@ public final class StudentApplication extends AbstractVerification {
 
     public void setAddressDuringTerms(final Address addressDuringTerms) {
         ensureNotNullAndVerifiable("addressDuringTerms", addressDuringTerms);
-        this.addressDuringTerms = addressDuringTerms;
+        this.addressDuringTerms = new Address(addressDuringTerms);
     }
 
     public Address getAddressDuringTerms() {
-        return addressDuringTerms;
+        return new Address(addressDuringTerms);
     }
 
     public void setDateOfBirth(final Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = copy(dateOfBirth);
     }
 
     public Date getDateOfBirth() {
-        return dateOfBirth;
+        return copy(dateOfBirth);
     }
 
     public void setUniversity(final String university) {
+        ensureNotTooLong("university", university, FIELD_LENGTH);
         this.university = university;
     }
 
@@ -229,6 +260,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setPlaceOfBirth(final String placeOfBirth) {
+        ensureNotTooLong("placeOfBirth", placeOfBirth, FIELD_LENGTH);
         this.placeOfBirth = placeOfBirth;
     }
 
@@ -325,6 +357,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
+        ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
         this.fieldOfStudies = copy(fieldOfStudies);
     }
 
@@ -333,6 +366,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setSpecializations(final Set<Specialization> specializations) {
+        ensureNotTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
         this.specializations = copy(specializations);
     }
 
@@ -341,6 +375,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setPassportNumber(final String passportNumber) {
+        ensureNotTooLong("passportNumber", passportNumber, FIELD_LENGTH);
         this.passportNumber = passportNumber;
     }
 
@@ -349,6 +384,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setPassportPlaceOfIssue(final String passportPlaceOfIssue) {
+        ensureNotTooLong("passportPlaceOfIssue", passportPlaceOfIssue, FIELD_LENGTH);
         this.passportPlaceOfIssue = passportPlaceOfIssue;
     }
 
@@ -357,6 +393,7 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setPassportValidUntil(final String passportValidUntil) {
+        ensureNotTooLong("passportValidUntil", passportValidUntil, FIELD_LENGTH);
         this.passportValidUntil = passportValidUntil;
     }
 
@@ -389,19 +426,19 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setModified(final DateTime modified) {
-        this.modified = modified;
+        this.modified = copy(modified);
     }
 
     public DateTime getModified() {
-        return modified;
+        return copy(modified);
     }
 
     public void setCreated(final DateTime created) {
-        this.created = created;
+        this.created = copy(created);
     }
 
     public DateTime getCreated() {
-        return created;
+        return copy(created);
     }
 
     // =========================================================================
@@ -420,6 +457,8 @@ public final class StudentApplication extends AbstractVerification {
 
         isNotNull(validation, "offer", offer);
         isNotNull(validation, "student", student);
+        isNotNull(validation, "homeAddress", homeAddress);
+        isNotNull(validation, "addressDuringTerms", addressDuringTerms);
 
         return validation;
     }
@@ -439,23 +478,135 @@ public final class StudentApplication extends AbstractVerification {
 
         final StudentApplication studentApplication = (StudentApplication) obj;
 
-        if (applicationId != null ? !applicationId.equals(studentApplication.applicationId) : studentApplication.applicationId != null) {
+        if(applicationId != null ? !applicationId.equals(studentApplication.applicationId) : studentApplication.applicationId != null) {
             return false;
         }
 
-        if (offer != null ? !offer.equals(studentApplication.offer) : studentApplication.offer != null) {
+        if(offer != null ? !offer.equals(studentApplication.offer) : studentApplication.offer != null) {
             return false;
         }
 
-        if (student != null ? !student.equals(studentApplication.student) : studentApplication.student != null) {
+        if(student != null ? !student.equals(studentApplication.student) : studentApplication.student != null) {
             return false;
         }
 
-        if (nominatedAt != null ? !nominatedAt.equals(studentApplication.nominatedAt) : studentApplication.nominatedAt != null) {
+        if(status != null ? !status.equals(studentApplication.status) : studentApplication.status != null) {
             return false;
         }
 
-        return !(status != null ? status != studentApplication.status : studentApplication.status != null);
+        if(homeAddress != null ? !homeAddress.equals(studentApplication.homeAddress) : studentApplication.homeAddress != null) {
+            return false;
+        }
+
+        if(email != null ? !email.equals(studentApplication.email) : studentApplication.email != null) {
+            return false;
+        }
+
+        if(phoneNumber != null ? !phoneNumber.equals(studentApplication.phoneNumber) : studentApplication.phoneNumber != null) {
+            return false;
+        }
+
+        if(addressDuringTerms != null ? !addressDuringTerms.equals(studentApplication.addressDuringTerms) : studentApplication.addressDuringTerms != null) {
+            return false;
+        }
+
+        if(dateOfBirth != null ? !dateOfBirth.equals(studentApplication.dateOfBirth) : studentApplication.dateOfBirth != null) {
+            return false;
+        }
+
+        if(university != null ? !university.equals(studentApplication.university) : studentApplication.university != null) {
+            return false;
+        }
+
+        if(placeOfBirth != null ? !placeOfBirth.equals(studentApplication.placeOfBirth) : studentApplication.placeOfBirth != null) {
+            return false;
+        }
+
+        if(completedYearsOfStudy != null ? !completedYearsOfStudy.equals(studentApplication.completedYearsOfStudy) : studentApplication.completedYearsOfStudy != null) {
+            return false;
+        }
+
+        if(totalYearsOfStudy != null ? !totalYearsOfStudy.equals(studentApplication.totalYearsOfStudy) : studentApplication.totalYearsOfStudy != null) {
+            return false;
+        }
+
+        if(lodgingByIaeste != studentApplication.lodgingByIaeste) {
+            return false;
+        }
+
+        if(language1 != null ? !language1.equals(studentApplication.language1) : studentApplication.language1 != null) {
+            return false;
+        }
+
+        if(language1Level != null ? !language1Level.equals(studentApplication.language1Level) : studentApplication.language1Level != null) {
+            return false;
+        }
+
+        if(language2 != null ? !language2.equals(studentApplication.language2) : studentApplication.language2 != null) {
+            return false;
+        }
+
+        if(language2Level != null ? !language2Level.equals(studentApplication.language2Level) : studentApplication.language2Level != null) {
+            return false;
+        }
+
+        if(language3 != null ? !language3.equals(studentApplication.language3) : studentApplication.language3 != null) {
+            return false;
+        }
+
+        if(language3Level != null ? !language3Level.equals(studentApplication.language3Level) : studentApplication.language3Level != null) {
+            return false;
+        }
+
+        if(internshipStart != null ? !internshipStart.equals(studentApplication.internshipStart) : studentApplication.internshipStart != null) {
+            return false;
+        }
+
+        if(internshipEnd != null ? !internshipEnd.equals(studentApplication.internshipEnd) : studentApplication.internshipEnd != null) {
+            return false;
+        }
+
+        if(fieldOfStudies != null ? !fieldOfStudies.equals(studentApplication.fieldOfStudies) : studentApplication.fieldOfStudies != null) {
+            return false;
+        }
+
+        if(specializations != null ? !specializations.equals(studentApplication.specializations) : studentApplication.specializations != null) {
+            return false;
+        }
+
+        if(passportNumber != null ? !passportNumber.equals(studentApplication.passportNumber) : studentApplication.passportNumber != null) {
+            return false;
+        }
+
+        if(passportPlaceOfIssue != null ? !passportPlaceOfIssue.equals(studentApplication.passportPlaceOfIssue) : studentApplication.passportPlaceOfIssue != null) {
+            return false;
+        }
+
+        if(passportValidUntil != null ? !passportValidUntil.equals(studentApplication.passportValidUntil) : studentApplication.passportValidUntil != null) {
+            return false;
+        }
+
+        if(acceptance != null ? !acceptance.equals(studentApplication.acceptance) : studentApplication.acceptance != null) {
+            return false;
+        }
+
+        if(travelInformation != null ? !travelInformation.equals(studentApplication.travelInformation) : studentApplication.travelInformation != null) {
+            return false;
+        }
+
+        if(modified != null ? !modified.equals(studentApplication.modified) : studentApplication.modified != null) {
+            return false;
+        }
+
+        if(created != null ? !created.equals(studentApplication.created) : studentApplication.created != null) {
+            return false;
+        }
+
+        if(nominatedAt != null ? !nominatedAt.equals(studentApplication.nominatedAt) : studentApplication.nominatedAt != null) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -469,6 +620,33 @@ public final class StudentApplication extends AbstractVerification {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offer != null ? offer.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (student != null ? student.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (homeAddress != null ? homeAddress.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (email != null ? email.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (addressDuringTerms != null ? addressDuringTerms.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (university != null ? university.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (placeOfBirth != null ? placeOfBirth.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (completedYearsOfStudy != null ? completedYearsOfStudy.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (totalYearsOfStudy != null ? totalYearsOfStudy.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (lodgingByIaeste ? 1 : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language1 != null ? language1.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language1Level != null ? language1Level.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language2 != null ? language2.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language2Level != null ? language2Level.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language3 != null ? language3.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language3Level != null ? language3Level.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (internshipStart != null ? internshipStart.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (internshipEnd != null ? internshipEnd.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (fieldOfStudies != null ? fieldOfStudies.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (specializations != null ? specializations.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (passportNumber != null ? passportNumber.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (passportPlaceOfIssue != null ?  passportPlaceOfIssue.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (passportValidUntil != null ? passportValidUntil.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (acceptance != null ? acceptance.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (travelInformation != null ? travelInformation.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (modified != null ? modified.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (created != null ? created.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nominatedAt != null ? nominatedAt.hashCode() : 0);
 
         return hash;
@@ -480,11 +658,38 @@ public final class StudentApplication extends AbstractVerification {
     @Override
     public String toString() {
         return "StudentApplication{" +
-                "applicationId='" + applicationId +
+                "applicationId='" + applicationId + '\'' +
                 ", offer='" + offer + '\'' +
                 ", student='" + student + '\'' +
-                ", status='" + status + '\'' +
-                ", nominatedAt=" + nominatedAt +
+                ", status ='" + status + '\'' +
+                ", homeAddress='" + homeAddress + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", addressDuringTerms='" + addressDuringTerms + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", university='" + university + '\'' +
+                ", placeOfBirth='" + placeOfBirth + '\'' +
+                ", completedYearsOfStudy='" + completedYearsOfStudy + '\'' +
+                ", totalYearsOfStudy='" + totalYearsOfStudy + '\'' +
+                ", lodgingByIaeste='" + lodgingByIaeste + '\'' +
+                ", language1='" + language1 + '\'' +
+                ", language1Level='" + language1Level + '\'' +
+                ", language2='" + language2 + '\'' +
+                ", language2Level='" + language2Level + '\'' +
+                ", language3='" + language3 + '\'' +
+                ", language3Level='" + language3Level + '\'' +
+                ", internshipStart='" + internshipStart + '\'' +
+                ", internshipEnd='" + internshipEnd + '\'' +
+                ", fieldOfStudies='" + fieldOfStudies + '\'' +
+                ", specializations='" + specializations + '\'' +
+                ", passportNumber='" + passportNumber + '\'' +
+                ", passportPlaceOfIssue='" + passportPlaceOfIssue + '\'' +
+                ", passportValidUntil='" + passportValidUntil + '\'' +
+                ", acceptance='" + acceptance + '\'' +
+                ", travelInformation='" + travelInformation + '\'' +
+                ", modified='" + modified + '\'' +
+                ", created='" + created + '\'' +
+                ", nominatedAt='" + nominatedAt + '\'' +
                 '}';
     }
 }

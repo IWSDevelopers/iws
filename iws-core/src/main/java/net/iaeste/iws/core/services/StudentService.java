@@ -59,7 +59,6 @@ import java.util.List;
 public final class StudentService extends CommonService<StudentDao> {
 
     private static final Logger log = LoggerFactory.getLogger(StudentService.class);
-    private final StudentDao studentDao;
     private final AccessDao accessDao;
     private final ExchangeDao exchangeDao;
     private final ViewsDao viewsDao;
@@ -68,7 +67,6 @@ public final class StudentService extends CommonService<StudentDao> {
         super(studentDao);
         this.accessDao = accessDao;
         this.exchangeDao = exchangeDao;
-        this.studentDao = studentDao;
         this.viewsDao = viewsDao;
     }
 
@@ -78,9 +76,9 @@ public final class StudentService extends CommonService<StudentDao> {
         final UserEntity user = accessDao.findUserByExternalId(student.getStudentId());
         final StudentEntity newEntity = transform(student);
         newEntity.setUser(user);
-        final StudentEntity existingEntity = studentDao.findStudentByExternal(memberGroup.getId(), student.getStudentId());
+        final StudentEntity existingEntity = dao.findStudentByExternal(memberGroup.getId(), student.getStudentId());
         if (existingEntity != null) {
-            studentDao.persist(authentication, existingEntity, newEntity);
+            dao.persist(authentication, existingEntity, newEntity);
         } else {
             throw new VerificationException("The student with id '" + student.getStudentId() + "' was not found.");
         }
@@ -105,9 +103,9 @@ public final class StudentService extends CommonService<StudentDao> {
     private ApplicationEntity processStudentApplication(final Authentication authentication, final StudentApplication application) {
         final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
         final String externalId = application.getApplicationId();
-        ApplicationEntity applicationEntity = studentDao.findApplicationByExternalId(externalId);
+        ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
         final OfferEntity sharedOffer = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
-        final StudentEntity student = studentDao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
+        final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
         if ((sharedOffer == null) || (sharedOffer.getStatus() != OfferState.SHARED)) {
             throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
@@ -120,15 +118,15 @@ public final class StudentService extends CommonService<StudentDao> {
             applicationEntity.setOffer(sharedOffer);
             processAddress(authentication, applicationEntity.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms());
-            studentDao.persist(authentication, student, applicationEntity.getStudent());
+            dao.persist(authentication, student, applicationEntity.getStudent());
             applicationEntity.setStudent(student);
-            studentDao.persist(authentication, applicationEntity);
+            dao.persist(authentication, applicationEntity);
         } else {
             final ApplicationEntity updated = transform(application);
             processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
-            studentDao.persist(authentication, student, updated.getStudent());
-            studentDao.persist(authentication, applicationEntity, updated);
+            dao.persist(authentication, student, updated.getStudent());
+            dao.persist(authentication, applicationEntity, updated);
         }
 
         return applicationEntity;
@@ -147,7 +145,7 @@ public final class StudentService extends CommonService<StudentDao> {
             throw new VerificationException("The offer with id '" + request.getOfferId() + "' was not found.");
         }
 
-        final List<ApplicationEntity> found = studentDao.findApplicationsForOffer(offer.getId());
+        final List<ApplicationEntity> found = dao.findApplicationsForOffer(offer.getId());
 
         final List<StudentApplication> applications = new ArrayList<>(found.size());
         for (final ApplicationEntity entity : found) {
@@ -158,7 +156,7 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
-        final ApplicationEntity found = studentDao.findApplicationByExternalId(request.getApplicationId());
+        final ApplicationEntity found = dao.findApplicationByExternalId(request.getApplicationId());
 
         if (found == null) {
             throw new VerificationException("The application with id '" + request.getApplicationId() + "' was not found.");
@@ -171,7 +169,7 @@ public final class StudentService extends CommonService<StudentDao> {
                 case NOMINATED:
                     studentApplication.setNominatedAt(new DateTime());
                     studentApplication.setStatus(request.getStatus());
-                    studentDao.persist(authentication, found, transform(studentApplication));
+                    dao.persist(authentication, found, transform(studentApplication));
                     return new StudentApplicationResponse(studentApplication);
                 default:
                     throw new VerificationException("Unsupported transition from '" + studentApplication.getStatus() + "' to " + request.getStatus());

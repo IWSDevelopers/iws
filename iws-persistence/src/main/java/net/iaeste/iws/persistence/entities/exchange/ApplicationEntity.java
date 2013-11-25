@@ -172,7 +172,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 //    @JoinColumn(name = "travel_information", nullable = true)
 //    private StudentAcceptanceConfirmationEntity travelInformation = null;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "nominated_at", nullable = true)
     private Date nominatedAt = null;
 

@@ -254,7 +254,7 @@ create table student_applications (
     passport_number           varchar(100),
     passport_place_of_issue   varchar(100),
     passport_valid_until      varchar(100),
-    nominated_at              timestamp,
+    nominated_at              date,
     modified                  timestamp default now(),
     created                   timestamp default now(),
 

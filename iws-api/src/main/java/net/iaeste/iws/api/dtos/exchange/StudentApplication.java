@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.Address;
@@ -30,8 +32,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static net.iaeste.iws.api.util.Copier.copy;
 
 /**
  * Contains information about a Student applying for an Offer
@@ -234,7 +234,9 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setAddressDuringTerms(final Address addressDuringTerms) {
-        ensureNotNullAndVerifiable("addressDuringTerms", addressDuringTerms);
+        // The Address during term should not be mandatory, since there are
+        // people who stay "at home" during term.
+        ensureVerifiable("addressDuringTerms", addressDuringTerms);
         this.addressDuringTerms = new Address(addressDuringTerms);
     }
 

@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.persistence.entities;
 
-import net.iaeste.iws.api.enums.Availability;
-import net.iaeste.iws.api.enums.FileType;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
@@ -23,8 +21,6 @@ import net.iaeste.iws.persistence.Externable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -90,10 +86,6 @@ public class FileEntity implements Externable<FileEntity> {
     @JoinColumn(name = "user_id", updatable = false)
     private UserEntity user = null;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "filetype", length = 10, nullable = false, updatable = false)
-    private FileType filetype = FileType.FILE;
-
     @Monitored(name="File Name", level = MonitoringLevel.DETAILED)
     @Column(name = "filename", length = 100, nullable = false)
     private String filename = null;
@@ -117,9 +109,6 @@ public class FileEntity implements Externable<FileEntity> {
     @Column(name = "mimetype", length = 50)
     private String mimetype = null;
 
-    @Column(name = "folder_id", nullable = false)
-    private Integer folderId = null;
-
     @Monitored(name="Description", level = MonitoringLevel.DETAILED)
     @Column(name = "description", length = 250)
     private String description = null;
@@ -131,10 +120,6 @@ public class FileEntity implements Externable<FileEntity> {
     @Monitored(name="Checksum", level = MonitoringLevel.DETAILED)
     @Column(name = "checksum", length = 128)
     private String checksum = null;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "availability", length = 10, nullable = false)
-    private Availability availability = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
@@ -196,14 +181,6 @@ public class FileEntity implements Externable<FileEntity> {
         return user;
     }
 
-    public void setFiletype(final FileType filetype) {
-        this.filetype = filetype;
-    }
-
-    public FileType getFiletype() {
-        return filetype;
-    }
-
     public void setFilename(final String filename) {
         this.filename = filename;
     }
@@ -236,14 +213,6 @@ public class FileEntity implements Externable<FileEntity> {
         return mimetype;
     }
 
-    public void setFolderId(final Integer folderId) {
-        this.folderId = folderId;
-    }
-
-    public Integer getFolderId() {
-        return folderId;
-    }
-
     public void setDescription(final String description) {
         this.description = description;
     }
@@ -266,14 +235,6 @@ public class FileEntity implements Externable<FileEntity> {
 
     public String getChecksum() {
         return checksum;
-    }
-
-    public void setAvailability(final Availability availability) {
-        this.availability = availability;
-    }
-
-    public Availability getAvailability() {
-        return availability;
     }
 
     /**
@@ -331,13 +292,14 @@ public class FileEntity implements Externable<FileEntity> {
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             // Note; Id & ExternalId are *not* allowed to be updated!
             filename = obj.filename;
-            filedata = obj.filedata;
+            if (obj.filedata != null) {
+                filedata = obj.filedata;
+            }
             filesize = obj.filesize;
             mimetype = obj.mimetype;
             description = obj.description;
             keywords = obj.keywords;
             checksum = obj.checksum;
-            availability = obj.availability;
         }
     }
 }

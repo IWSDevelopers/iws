@@ -561,32 +561,15 @@ create table history (
 -- =============================================================================
 -- Files
 -- -----------------------------------------------------------------------------
--- All files uploaded to the system will be handled in this table, using various
--- sets of information to store the file properly.
---   Files are stored Groupwise, which means that only the group in which the
--- file is shared can view the file. All private files are stored with a
--- reference to the users private Group
---   Note; The Sequence has forced no cycle. This is because we need a check
--- against the folder id, and folder id must always be bigger than the current,
--- so we can safely use the id to build a tree structure on.
---   Note; There is no requirement for the MIME Type, since neither folders nor
--- links have MIME Types.
---   Note; The content of the file is stored in the database, rather than
--- externally, this is done to avoid that data replication will fail. It also
--- means that creating a new system is easier since only the database needs to
--- be created, rather than also ensuring that all files are correctly stored in
--- the file system. The filesize in the table refers to the "raw" filesize,
--- meaning the actual number of Bytes uploaded.
---   Both the GroupId & UserId are required, since they are used to determine
--- who owns the file (group) and who uploaded it (user). Neither field may be
--- null. The Availability flag is set by default to Private, but may also have
--- other values, like "Restricted", meaning only to subgroups of the Groups from
--- the same Member Parent Group - which will allow Members from a Local
--- Committee to see restricted documents from the National Committee. Finally,
--- there is Public, which means that all files set to Public is visible by all
--- Members globally. Note, that in order for a file to be viewable, the entire
--- folder tree must be made public, otherwise only the file itself can be
--- fetched.
+-- File handling in IWS is different than in IW3, in the sense that in IW3, all
+-- files were stored with "classic" file system information, so it was possible
+-- to browse the file structure. In IWS, the files are considered attachments to
+-- other Objects, so only relevant information is stored.
+--   Relevant information is file name, size, mimetype and ownership, together
+-- with some additional information that may or may nor be relevant depending on
+-- the context. The file itself is stored compressed, so the stored size will
+-- differ from the provided file size. The checksum is added to ensure that the
+-- raw file is valid.
 -- =============================================================================
 create sequence file_sequence start with 20 increment by 1 no cycle;
 create table files (
@@ -594,16 +577,13 @@ create table files (
     group_id      integer,
     user_id       integer,
     external_id   varchar(36),
-    filetype      varchar(10) default 'FILE',
     filename      varchar(100),
     filedata      longvarbinary(26214400),
     filesize      integer     default 0,
     mimetype      varchar(50),
-    folder_id     integer     default -1,
     description   varchar(250),
     keywords      varchar(250),
     checksum      varchar(128),
-    availability  varchar(10) default 'PRIVATE',
     modified      timestamp   default now(),
     created       timestamp   default now(),
 
@@ -611,22 +591,16 @@ create table files (
     constraint file_pk             primary key (id),
     constraint file_fk_group_id    foreign key (group_id) references groups (id) on delete restrict on update cascade,
     constraint file_fk_user_id     foreign key (user_id) references users (id),
-    constraint file_fk_folder_id   foreign key (folder_id) references files (id),
 
     /* Unique Constraints */
     constraint file_unique_external_id unique (external_id),
-    constraint file_unique_filename    unique (group_id, filename, folder_id),
-
-    /* Validation Constraints */
-    constraint file_validate_folder_id check (folder_id <= id),
 
     /* Not Null Constraints */
     constraint file_notnull_id           check (id is not null),
     constraint file_notnull_external_id  check (external_id is not null),
+    constraint file_notnull_group_id     check (group_id is not null),
+    constraint file_notnull_user_id      check (user_id is not null),
     constraint file_notnull_filename     check (filename is not null),
-    constraint file_notnull_filetype     check (filetype is not null),
-    constraint file_notnull_folder_id    check (folder_id is not null),
-    constraint file_notnull_availability check (availability is not null),
     constraint file_notnull_modified     check (modified is not null),
     constraint file_notnull_created      check (created is not null)
 );

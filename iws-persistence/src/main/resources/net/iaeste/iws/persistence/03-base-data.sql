@@ -395,21 +395,21 @@ insert into groups (id, external_id, grouptype_id, groupName, full_name) values 
 insert into groups (id, external_id, grouptype_id, groupName, full_name) values (3, 'd8325230-a4b5-4063-b949-3233693c980d', 3, 'SID', 'Seminar on IAESTE Development');
 insert into groups (id, external_id, grouptype_id, groupName, full_name) values (4, '2e351535-1609-4867-b713-2f8d6a2aab3f', 3, 'IDT', 'IAESTE Internet Development Team');
 
--- =============================================================================
--- Default Folders for file handling
--- =============================================================================
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', null, 'FOLDER', 'PUBLIC',  1, 'Root');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 2, '0a0260bd-244d-4a87-a53e-b613dbbaf265', null, 'FOLDER', 'PUBLIC',  1, 'Library');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 3, '59d02455-1537-49cb-9bf8-77a3aa755d18', null, 'FOLDER', 'PRIVATE', 1, 'Private');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 4, '770ccaff-e739-43f2-b812-f30be84442bf', null, 'FOLDER', 'PRIVATE', 1, 'Committees');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (10, '9af925e7-4d3c-4762-992e-148200d7397f',    0, 'FOLDER', 'PRIVATE', 1, 'SysOp');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (11, '8018e16e-b5ac-40ed-bdcf-9b2b6122631f', null, 'FOLDER', 'PRIVATE', 1, 'GS');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (12, '09521a54-f5b2-4316-8fd0-793f23e6994e',    1, 'FOLDER', 'PRIVATE', 1, 'Board');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (13, 'c1722a2a-57ce-4f72-bd49-2880cdbd6f13',    3, 'FOLDER', 'PRIVATE', 1, 'SID');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (14, 'c23e2aba-05cb-4b09-8a34-e0191f6aebfe',    4, 'FOLDER', 'PRIVATE', 1, 'IDT');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (15, 'f3bc213f-be2b-4154-bdfa-1a022539d9c7', null, 'FOLDER', 'PRIVATE', 1, 'Alumni');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (16, 'f1145b61-2ec1-4a59-b442-57f76e096d57', null, 'FOLDER', 'PRIVATE', 1, 'Jump');
-insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (17, '44b71637-789d-452e-8d9a-1b7ff848343d', null, 'FOLDER', 'PRIVATE', 1, 'Global');
+-- -- =============================================================================
+-- -- Default Folders for file handling
+-- -- =============================================================================
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 1, 'afec3bc0-296b-4bf2-8a9e-c2d7b74e93a0', null, 'FOLDER', 'PUBLIC',  1, 'Root');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 2, '0a0260bd-244d-4a87-a53e-b613dbbaf265', null, 'FOLDER', 'PUBLIC',  1, 'Library');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 3, '59d02455-1537-49cb-9bf8-77a3aa755d18', null, 'FOLDER', 'PRIVATE', 1, 'Private');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES ( 4, '770ccaff-e739-43f2-b812-f30be84442bf', null, 'FOLDER', 'PRIVATE', 1, 'Committees');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (10, '9af925e7-4d3c-4762-992e-148200d7397f',    0, 'FOLDER', 'PRIVATE', 1, 'SysOp');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (11, '8018e16e-b5ac-40ed-bdcf-9b2b6122631f', null, 'FOLDER', 'PRIVATE', 1, 'GS');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (12, '09521a54-f5b2-4316-8fd0-793f23e6994e',    1, 'FOLDER', 'PRIVATE', 1, 'Board');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (13, 'c1722a2a-57ce-4f72-bd49-2880cdbd6f13',    3, 'FOLDER', 'PRIVATE', 1, 'SID');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (14, 'c23e2aba-05cb-4b09-8a34-e0191f6aebfe',    4, 'FOLDER', 'PRIVATE', 1, 'IDT');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (15, 'f3bc213f-be2b-4154-bdfa-1a022539d9c7', null, 'FOLDER', 'PRIVATE', 1, 'Alumni');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (16, 'f1145b61-2ec1-4a59-b442-57f76e096d57', null, 'FOLDER', 'PRIVATE', 1, 'Jump');
+-- insert into files (id, external_id, group_id, filetype, availability, folder_id, filename) VALUES (17, '44b71637-789d-452e-8d9a-1b7ff848343d', null, 'FOLDER', 'PRIVATE', 1, 'Global');
 
 -- =============================================================================
 -- Default Setup for notification consumers

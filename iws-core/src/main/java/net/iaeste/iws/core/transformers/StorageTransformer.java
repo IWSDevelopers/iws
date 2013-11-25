@@ -43,7 +43,7 @@ public final class StorageTransformer {
             result.setUser(AdministrationTransformer.transform(entity.getUser()));
             result.setFilename(entity.getFilename());
             // File Data is omitted here, since we do not wish to overload
-            result.setFiletype(entity.getFiletype());
+            //result.setFiletype(entity.getFiletype());
             result.setFilesize(entity.getFilesize());
             result.setMimetype(entity.getMimetype());
             // ToDo 2013-11-21 by Kim; We need to add a mapping of the Folder!
@@ -51,7 +51,7 @@ public final class StorageTransformer {
             result.setKeywords(entity.getKeywords());
             // ToDo 2013-11-21 by Kim: We need to verify the Checksum.
             result.setChecksum(entity.getChecksum());
-            result.setAvailability(entity.getAvailability());
+            //result.setAvailability(entity.getAvailability());
             result.setModified(convert(entity.getModified()));
             result.setCreated(convert(entity.getCreated()));
         }
@@ -77,7 +77,7 @@ public final class StorageTransformer {
             entity.setKeywords(file.getKeywords());
             // ToDo 2013-11-21 by Kim: We need to generate the Checksum.
             entity.setChecksum(file.getChecksum());
-            entity.setAvailability(file.getAvailability());
+            //entity.setAvailability(file.getAvailability());
         }
 
         return entity;

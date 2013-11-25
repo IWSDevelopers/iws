@@ -17,8 +17,6 @@ package net.iaeste.iws.api.dtos;
 import static net.iaeste.iws.api.util.Copier.copy;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.Availability;
-import net.iaeste.iws.api.enums.FileType;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
@@ -40,16 +38,16 @@ public final class File extends AbstractVerification {
     private String fileId = null;
     private Group group = null;
     private User user = null;
-    private FileType filetype = FileType.FILE;
+    //private FileType filetype = FileType.FILE;
     private String filename = null;
     private byte[] filedata = null;
     private Integer filesize = null;
     private String mimetype = null;
-    private String folder = null;
+    //private String folder = null;
     private String description = null;
     private String keywords = null;
     private String checksum = null;
-    private Availability availability = Availability.PRIVATE;
+    //private Availability availability = Availability.PRIVATE;
     private Date modified = new Date();
     private Date created = new Date();
 
@@ -74,16 +72,16 @@ public final class File extends AbstractVerification {
             fileId = file.fileId;
             group = new Group(group);
             user = new User(file.user);
-            filetype = file.filetype;
+            //filetype = file.filetype;
             filename = file.filename;
             filedata = copy(file.filedata);
             filesize = file.filesize;
             mimetype = file.mimetype;
-            folder = file.folder;
+            //folder = file.folder;
             description = file.description;
             keywords = file.keywords;
             checksum = file.checksum;
-            availability = file.availability;
+            //availability = file.availability;
             modified = file.modified;
             created = file.created;
         }
@@ -111,7 +109,8 @@ public final class File extends AbstractVerification {
         return fileId;
     }
 
-    public void setGroup(final Group group) {
+    public void setGroup(final Group group) throws IllegalArgumentException {
+        ensureNotNullAndVerifiable("group", group);
         this.group = group;
     }
 
@@ -119,7 +118,8 @@ public final class File extends AbstractVerification {
         return group;
     }
 
-    public void setUser(final User user) {
+    public void setUser(final User user) throws IllegalArgumentException {
+        ensureNotNullAndVerifiable("user", user);
         this.user = user;
     }
 
@@ -127,15 +127,8 @@ public final class File extends AbstractVerification {
         return user;
     }
 
-    public void setFiletype(final FileType filetype) {
-        this.filetype = filetype;
-    }
-
-    public FileType getFiletype() {
-        return filetype;
-    }
-
-    public void setFilename(final String filename) {
+    public void setFilename(final String filename) throws IllegalArgumentException {
+        ensureNotNullOrEmptyOrTooLong("filename", filename, 100);
         this.filename = filename;
     }
 
@@ -177,14 +170,6 @@ public final class File extends AbstractVerification {
         return mimetype;
     }
 
-    public void setFolder(final String folder) {
-        this.folder = folder;
-    }
-
-    public String getFolder() {
-        return folder;
-    }
-
     public void setDescription(final String description) {
         this.description = description;
     }
@@ -207,26 +192,6 @@ public final class File extends AbstractVerification {
 
     public String getChecksum() {
         return checksum;
-    }
-
-    /**
-     * Sets the availability of the File. The availability determines how others
-     * may access the file, if stored in a folder (not if it is attached to an
-     * Object).<br />
-     *   Regardlessly of the file usage, this field may not be null, if it is
-     * attempted to set the field to null, then the method will thrown an
-     * {@code IllegalArgumentException}.
-     *
-     * @param availability File Availability when stored in folders
-     * @throws IllegalArgumentException if set to null
-     */
-    public void setAvailability(final Availability availability) throws IllegalArgumentException {
-        ensureNotNull("availability", availability);
-        this.availability = availability;
-    }
-
-    public Availability getAvailability() {
-        return availability;
     }
 
     /**
@@ -269,8 +234,6 @@ public final class File extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "filename", filename);
-        isNotNull(validation, "filetype", filetype);
-        isNotNull(validation, "availability", availability);
 
         return validation;
     }
@@ -289,9 +252,9 @@ public final class File extends AbstractVerification {
 
         final File file = (File) obj;
 
-        if (availability != file.availability) {
-            return false;
-        }
+        //if (availability != file.availability) {
+        //    return false;
+        //}
         if (checksum != null ? !checksum.equals(file.checksum) : file.checksum != null) {
             return false;
         }
@@ -313,12 +276,12 @@ public final class File extends AbstractVerification {
         if (filesize != null ? !filesize.equals(file.filesize) : file.filesize != null) {
             return false;
         }
-        if (filetype != file.filetype) {
-            return false;
-        }
-        if (folder != null ? !folder.equals(file.folder) : file.folder != null) {
-            return false;
-        }
+        //if (filetype != file.filetype) {
+        //    return false;
+        //}
+        //if (folder != null ? !folder.equals(file.folder) : file.folder != null) {
+        //    return false;
+        //}
         if (group != null ? !group.equals(file.group) : file.group != null) {
             return false;
         }
@@ -345,16 +308,16 @@ public final class File extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (fileId != null ? fileId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (filetype != null ? filetype.hashCode() : 0);
+        //result = IWSConstants.HASHCODE_MULTIPLIER * result + (filetype != null ? filetype.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (filename != null ? filename.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (filedata != null ? Arrays.hashCode(filedata) : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (filesize != null ? filesize.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (mimetype != null ? mimetype.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (folder != null ? folder.hashCode() : 0);
+        //result = IWSConstants.HASHCODE_MULTIPLIER * result + (folder != null ? folder.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (description != null ? description.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (keywords != null ? keywords.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (checksum != null ? checksum.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (availability != null ? availability.hashCode() : 0);
+        //result = IWSConstants.HASHCODE_MULTIPLIER * result + (availability != null ? availability.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
 
@@ -370,16 +333,16 @@ public final class File extends AbstractVerification {
                 "fileId='" + fileId + '\'' +
                 ", group=" + group +
                 ", user=" + user +
-                ", filetype=" + filetype +
+                //", filetype=" + filetype +
                 ", filename='" + filename + '\'' +
                 ", filedata=" + Arrays.toString(filedata) +
                 ", filesize=" + filesize +
                 ", mimetype='" + mimetype + '\'' +
-                ", folder='" + folder + '\'' +
+                //", folder='" + folder + '\'' +
                 ", description='" + description + '\'' +
                 ", keywords='" + keywords + '\'' +
                 ", checksum='" + checksum + '\'' +
-                ", availability=" + availability +
+                //", availability=" + availability +
                 ", modified=" + modified +
                 ", created=" + created +
                 '}';

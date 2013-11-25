@@ -499,6 +499,27 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             status = obj.status;
             nominatedAt = obj.nominatedAt;
+            fieldOfStudies = obj.fieldOfStudies;
+            specializations = obj.specializations;
+            email = obj.email;
+            phoneNumber = obj.phoneNumber;
+            dateOfBirth = obj.dateOfBirth;
+            university = obj.university;
+            placeOfBirth = obj.placeOfBirth;
+            completedYearsOfStudy = obj.completedYearsOfStudy;
+            totalYearsOfStudy = obj.totalYearsOfStudy;
+            lodgingByIaeste = obj.lodgingByIaeste;
+            language1 = obj.language1;
+            language1Level = obj.language1Level;
+            language2 = obj.language2;
+            language2Level = obj.language2Level;
+            language3 = obj.language3;
+            language3Level = obj.language3Level;
+            internshipStart = obj.internshipStart;
+            internshipEnd = obj.internshipEnd;
+            passportNumber = obj.passportNumber;
+            passportPlaceOfIssue = obj.passportPlaceOfIssue;
+            passportValidUntil = obj.passportValidUntil;
         }
     }
 }

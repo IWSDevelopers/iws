@@ -287,7 +287,7 @@ public class AddressEntity implements Externable<AddressEntity> {
      */
     @Override
     public void merge(final AddressEntity obj) {
-        if ((obj != null) && externalId.equals(obj.externalId)) {
+        if (obj != null) { // cannot compare external id because the Address DTO does not have an id param
             street1 = obj.street1;
             street2 = obj.street2;
             zip = obj.zip;

@@ -127,23 +127,4 @@ public interface BasicDao {
      * @return Unique Address Entity
      */
     AddressEntity findAddress(Long id);
-
-    /**
-     * Find Address from the Id. If no such entity exists, then an exception is
-     * thrown, otherwise the found Address Entity is returned.
-     *
-     * @param externalId External Address Id
-     * @return Unique Address Entity
-     */
-    AddressEntity findAddress(String externalId);
-
-    /**
-     * Attempts to find a Unique Address Entity, based on the provided
-     * parameters. If no such address exists, then a null is returned, otherwise
-     * the unique address entity is returned.
-     *
-     * @param newAddress New unpersisted Address Entity
-     * @return Unique Address Entity or null
-     */
-    AddressEntity findUniqueAddress(AddressEntity newAddress);
 }

@@ -217,31 +217,6 @@ public class BasicJpaDao implements BasicDao {
         return findUniqueResult(query, "address");
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AddressEntity findAddress(final String externalId) {
-        final Query query = entityManager.createNamedQuery("address.findByExternalId");
-        query.setParameter("eid", externalId);
-
-        return findUniqueResult(query, "address");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AddressEntity findUniqueAddress(final AddressEntity newAddress) {
-        final Query query = entityManager.createNamedQuery("address.findByValues");
-        query.setParameter("street1", toLower(newAddress.getStreet1()));
-        query.setParameter("zip", toLower(newAddress.getZip()));
-        query.setParameter("city", toLower(newAddress.getCity()));
-        query.setParameter("state", toLower(newAddress.getState()));
-
-        return findSingleResult(query, "address");
-    }
-
     // =========================================================================
     // Internal Methods
     // =========================================================================

@@ -67,12 +67,6 @@ public class BasicDaoTest {
 
         // Now, we should have both an Internal & External Id
         assertThat(entity.getId(), is(not(nullValue())));
-        assertThat(entity.getExternalId(), is(not(nullValue())));
-
-        // Find the Entity based on both Id's
-        final AddressEntity foundByInternalId = dao.findAddress(entity.getId());
-        final AddressEntity foundByExternalId = dao.findAddress(entity.getExternalId());
-        assertThat(foundByInternalId, is(foundByExternalId));
 
         // Now, delete and see if we can find it again
         dao.delete(entity);

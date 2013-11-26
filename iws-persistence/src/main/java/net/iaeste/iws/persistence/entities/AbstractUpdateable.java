@@ -15,9 +15,12 @@
 package net.iaeste.iws.persistence.entities;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * To Implement the diff method required by the Updateable interface, we have
+ * this little Abstract class that contains helper methods.
+ *
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public abstract class AbstractUpdateable<T> implements Updateable<T> {
 
@@ -30,7 +33,25 @@ public abstract class AbstractUpdateable<T> implements Updateable<T> {
      * @return 1 (one) if the Objects are different, otherwise 0 (zero)
      */
     protected static <T> int different(final T first, final T second) {
-        return (first != null ? first.equals(second) : (second == null)) ? 0 : 1;
-    }
+        // To make it easier to read, the conditional expression is expanded
+        final int result;
 
+        if (first != null) {
+            if (first.equals(second)) {
+                result = 0;
+            } else {
+                result = 1;
+            }
+        } else {
+            if (second == null) {
+                result = 0;
+            } else {
+                result = 1;
+            }
+        }
+
+        return result;
+
+        //return (first != null ? first.equals(second) : second == null) ? 0 : 1;
+    }
 }

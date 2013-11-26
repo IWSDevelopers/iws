@@ -58,7 +58,7 @@ import java.util.Date;
                 query = "select e from EmployerEntity e " +
                         "where e.group.id = :gid" +
                         "  and lower(e.name) = lower(:name)" +
-                        // Why we cannot use a lowe on the Department is a mystery
+                        // Why we cannot use a lower on the Department is a mystery
                         //"  and e.department = :department" +
                         "  and lower(e.workingPlace) = lower(:workingPlace)")
 })
@@ -84,7 +84,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = GroupEntity.class)
     @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group = null;
 
@@ -104,7 +104,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     @Column(name = "working_place")
     private String workingPlace = null;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = AddressEntity.class)
     @JoinColumn(name = "address_id")
     private AddressEntity address = null;
 

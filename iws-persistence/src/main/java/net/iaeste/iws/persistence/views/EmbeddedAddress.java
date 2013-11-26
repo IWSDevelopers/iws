@@ -35,9 +35,6 @@ import java.util.Date;
 @Embeddable
 public class EmbeddedAddress {
 
-    @Column(name = "address_external_id", insertable = false, updatable = false)
-    private String externalId = null;
-
     @Column(name = "address_street1", insertable = false, updatable = false)
     private String street1 = null;
 
@@ -64,14 +61,6 @@ public class EmbeddedAddress {
     // =========================================================================
     // View Setters & Getters
     // =========================================================================
-
-    public void setExternalId(final String externalId) {
-        this.externalId = externalId;
-    }
-
-    public String getExternalId() {
-        return externalId;
-    }
 
     public void setStreet1(final String street1) {
         this.street1 = street1;

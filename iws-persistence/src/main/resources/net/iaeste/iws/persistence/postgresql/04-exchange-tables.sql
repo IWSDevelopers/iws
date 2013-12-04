@@ -237,7 +237,7 @@ create table student_applications (
     place_of_birth            varchar(100),
     completed_years_of_study  integer,
     total_years_of_study      integer,
-    lodging_by_iaeste         integer,
+    lodging_by_iaeste         boolean,
     language_1                varchar(255),
     language_1_level          varchar(1),
     language_2                varchar(255),

@@ -51,6 +51,7 @@ public final class StorageService {
 
     public FileResponse processFile(final Authentication authentication, final FileRequest request) {
         final String externalId = request.getFile().getFileId();
+        final FileResponse response;
         final FileEntity entity;
 
         if (externalId == null) {
@@ -62,18 +63,27 @@ public final class StorageService {
             entity.setGroup(authentication.getGroup());
             storageDao.persist(authentication, entity);
             log.info(LogUtil.formatLogMessage(authentication, "File %s successfully uploaded for the user.", entity.getFilename()));
+            response = new FileResponse(transform(entity));
         } else {
             entity = storageDao.findFileByUserAndExternalId(authentication.getUser(), externalId);
             if (entity != null) {
-                final FileEntity changes = transform(request.getFile());
-                storageDao.persist(authentication, entity, changes);
-                log.info(LogUtil.formatLogMessage(authentication, "File %s successfully updated by the user.", entity.getFilename()));
+                if (request.getDeleteFile()) {
+                    final String filename = entity.getFilename();
+                    storageDao.delete(entity);
+                    log.info("File %s has been successfully deleted from the IWS.", filename);
+                    response = new FileResponse();
+                } else {
+                    final FileEntity changes = transform(request.getFile());
+                    storageDao.persist(authentication, entity, changes);
+                    log.info(LogUtil.formatLogMessage(authentication, "File %s successfully updated by the user.", entity.getFilename()));
+                    response = new FileResponse(transform(entity));
+                }
             } else {
                 throw new AuthorizationException("The user is not authorized to process this file.");
             }
         }
 
-        return new FileResponse(transform(entity));
+        return response;
     }
 
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {

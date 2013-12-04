@@ -18,7 +18,9 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.Storage;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.File;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
@@ -53,10 +55,11 @@ public class StorageTest extends AbstractTest {
         file.setFiledata(testdata);
         file.setKeywords("Test, File, Finland");
         file.setDescription("Finish Testfile");
-        file.setMimetype("temp file");
+        file.setMimetype("text/plain");
 
         final FileRequest request = new FileRequest(file);
-        token.setGroupId(findNationalGroup(token).getGroupId());
+        final Group nationalGroup = findNationalGroup(token);
+        token.setGroupId(nationalGroup.getGroupId());
         final FileResponse response = storage.processFile(token, request);
         assertThat(response.isOk(), is(true));
         final FetchFileRequest fetchRequest = new FetchFileRequest(response.getFile().getFileId());
@@ -69,5 +72,15 @@ public class StorageTest extends AbstractTest {
         assertThat(fetchResponseForUser.isOk(), is(true));
         assertThat(fetchResponseForUser.getFile().getFiledata(), is(testdata));
         assertThat(fetchResponseForUser.getFile().getChecksum(), is(response.getFile().getChecksum()));
+        final FileRequest deleteRequest = new FileRequest(response.getFile());
+        deleteRequest.setDeleteFile(true);
+        token.setGroupId(nationalGroup.getGroupId());
+        final FileResponse deleteResponse = storage.processFile(token, deleteRequest);
+        assertThat(deleteResponse.isOk(), is(true));
+        token.setGroupId(null);
+        final FetchFileResponse findDeletedFileResponse = storage.fetchFile(token, fetchRequest);
+        assertThat(findDeletedFileResponse.isOk(), is(false));
+        assertThat(findDeletedFileResponse.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
+        assertThat(findDeletedFileResponse.getMessage(), is("No File was found."));
     }
 }

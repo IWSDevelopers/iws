@@ -54,7 +54,7 @@ public class StorageJpaDao extends BasicJpaDao implements StorageDao {
         query.setParameter("uid", user.getId());
         query.setParameter("efid", externalId);
 
-        return findSingleResult(query, "File");
+        return findUniqueResult(query, "File");
     }
 
     /**
@@ -67,6 +67,6 @@ public class StorageJpaDao extends BasicJpaDao implements StorageDao {
         query.setParameter("gid", group.getId());
         query.setParameter("efid", externalId);
 
-        return findSingleResult(query, "file");
+        return findUniqueResult(query, "file");
     }
 }

@@ -32,10 +32,10 @@ public final class FileRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
-     * The newly created File Object. The Object is containing the new File Id
-     * together with other meta information.
+     * The File Object to process.
      */
     private File file = null;
+    private Boolean deleteFile = false;
 
     // =========================================================================
     // Object Constructors
@@ -77,7 +77,27 @@ public final class FileRequest extends AbstractVerification {
         return new File(file);
     }
 
-    // =========================================================================
+    /**
+     * Sets the Delete File flag. If the file exists and this flag is set, then
+     * the file will be removed from the system. The deleting operation will
+     * wipe the data from the system, and later recovery will not be possible.
+     * By default, the value of this flag is set to false.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the value
+     * is set to null.
+     *
+     * @param deleteFile True if the file should be deleted, otherwise false
+     * @throws IllegalArgumentException if the value is null
+     */
+    public void setDeleteFile(final Boolean deleteFile) throws IllegalArgumentException {
+        ensureNotNull("deleteFile", deleteFile);
+        this.deleteFile = deleteFile;
+    }
+
+    public Boolean getDeleteFile() {
+        return deleteFile;
+    }
+
+// =========================================================================
     // Standard Request Methods
     // =========================================================================
 

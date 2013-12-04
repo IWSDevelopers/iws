@@ -44,13 +44,19 @@ import java.util.Date;
         @NamedQuery(name = "file.findById",
                 query = "select f from FileEntity f " +
                         "where f.id = :id"),
-        @NamedQuery(name = "file.findByExternalId",
-                query = "select f from FileEntity f " +
-                        "where f.externalId = :eid"),
         @NamedQuery(name = "file.findByUserAndExternalId",
                 query = "select f from FileEntity f " +
-                        "where f.id = :eid" +
-                        "  and f.user.id = :uid")
+                        "where f.user.id = :uid" +
+                        "  and f.externalId = :efid"),
+        @NamedQuery(name = "file.findByUserGroupAndExternalId",
+                query = "select f " +
+                        "from" +
+                        "  FileEntity f," +
+                        "  UserGroupEntity u2g " +
+                        "where f.group.id = u2g.group.id" +
+                        "  and u2g.user.id = :uid" +
+                        "  and u2g.group.id = :gid" +
+                        "  and f.externalId = :efid")
 })
 @Entity
 @Table(name = "files")
@@ -119,7 +125,7 @@ public class FileEntity implements Externable<FileEntity> {
 
     @Monitored(name="Checksum", level = MonitoringLevel.DETAILED)
     @Column(name = "checksum", length = 128)
-    private String checksum = null;
+    private Long checksum = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
@@ -229,11 +235,11 @@ public class FileEntity implements Externable<FileEntity> {
         return keywords;
     }
 
-    public void setChecksum(final String checksum) {
+    public void setChecksum(final Long checksum) {
         this.checksum = checksum;
     }
 
-    public String getChecksum() {
+    public Long getChecksum() {
         return checksum;
     }
 

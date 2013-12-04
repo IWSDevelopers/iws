@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.client;
 
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -138,9 +137,9 @@ public final class AccessClientTest extends AbstractTest {
 
     @Test
     public void testCallWithInvalidToken() {
-        final AuthenticationToken token = new AuthenticationToken("9e107d9d372bb6826bd81d3542a419d6");
+        final AuthenticationToken invalidToken = new AuthenticationToken("9e107d9d372bb6826bd81d3542a419d6");
 
-        final FetchPermissionResponse response = access.fetchPermissions(token);
+        final FetchPermissionResponse response = access.fetchPermissions(invalidToken);
         //final List<Authorization> permissions = response.getAuthorizations();
 
         // Verify that the call went through - however, as we just invented a
@@ -153,21 +152,21 @@ public final class AccessClientTest extends AbstractTest {
     @Test
     public void testSavingReadingSessionData() {
         // Create a new Token, that we can use for the test
-        final AuthenticationToken token = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
+        final AuthenticationToken newToken = access.generateSession(new AuthenticationRequest("austria@iaeste.at", "austria")).getToken();
 
         // Perform the actual test, first we create a simple Object, and saves it
         final Date data = new Date();
         final SessionDataRequest<Date> sessionData = new SessionDataRequest<>(data);
-        final Fallible saving = access.saveSessionData(token, sessionData);
+        final Fallible saving = access.saveSessionData(newToken, sessionData);
         assertThat(saving.isOk(), is(true));
 
         // Object saved, now - let's read it from the IWS
-        final SessionDataResponse<Date> response = access.readSessionData(token);
+        final SessionDataResponse<Date> response = access.readSessionData(newToken);
         assertThat(response.isOk(), is(true));
         assertThat(response.getSessionData(), is(data));
 
         // Finalize the test, by deprecating the token
-        assertThat(access.deprecateSession(token).isOk(), is(true));
+        assertThat(access.deprecateSession(newToken).isOk(), is(true));
     }
 
     @Test
@@ -233,7 +232,7 @@ public final class AccessClientTest extends AbstractTest {
 
         // When we make a request for a specific Group, we only expect to find a single element
         assertThat(responseNational.getAuthorizations().size(), is(1));
-        assertThat(responseNational.getAuthorizations().get(0).getRole().getPermissions().contains(Permission.PROCESS_OFFER), is(true));
+        assertThat(responseNational.getAuthorizations().get(0).getUserGroup().getRole().getPermissions().contains(Permission.PROCESS_OFFER), is(true));
         authToken.setGroupId(userId);
 
         // Finally, let's see what happens when we try to find the information

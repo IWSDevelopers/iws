@@ -32,22 +32,19 @@ import java.util.Map;
  */
 public final class File extends AbstractVerification {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String fileId = null;
     private Group group = null;
     private User user = null;
-    //private FileType filetype = FileType.FILE;
     private String filename = null;
     private byte[] filedata = null;
     private Integer filesize = null;
     private String mimetype = null;
-    //private String folder = null;
     private String description = null;
     private String keywords = null;
-    private String checksum = null;
-    //private Availability availability = Availability.PRIVATE;
+    private Long checksum = null;
     private Date modified = new Date();
     private Date created = new Date();
 
@@ -70,18 +67,15 @@ public final class File extends AbstractVerification {
     public File(final File file) {
         if (file != null) {
             fileId = file.fileId;
-            group = new Group(group);
+            group = new Group(file.group);
             user = new User(file.user);
-            //filetype = file.filetype;
             filename = file.filename;
             filedata = copy(file.filedata);
             filesize = file.filesize;
             mimetype = file.mimetype;
-            //folder = file.folder;
             description = file.description;
             keywords = file.keywords;
             checksum = file.checksum;
-            //availability = file.availability;
             modified = file.modified;
             created = file.created;
         }
@@ -186,11 +180,11 @@ public final class File extends AbstractVerification {
         return keywords;
     }
 
-    public void setChecksum(final String checksum) {
+    public void setChecksum(final Long checksum) {
         this.checksum = checksum;
     }
 
-    public String getChecksum() {
+    public Long getChecksum() {
         return checksum;
     }
 
@@ -252,9 +246,6 @@ public final class File extends AbstractVerification {
 
         final File file = (File) obj;
 
-        //if (availability != file.availability) {
-        //    return false;
-        //}
         if (checksum != null ? !checksum.equals(file.checksum) : file.checksum != null) {
             return false;
         }
@@ -276,12 +267,6 @@ public final class File extends AbstractVerification {
         if (filesize != null ? !filesize.equals(file.filesize) : file.filesize != null) {
             return false;
         }
-        //if (filetype != file.filetype) {
-        //    return false;
-        //}
-        //if (folder != null ? !folder.equals(file.folder) : file.folder != null) {
-        //    return false;
-        //}
         if (group != null ? !group.equals(file.group) : file.group != null) {
             return false;
         }
@@ -308,16 +293,13 @@ public final class File extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (fileId != null ? fileId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
-        //result = IWSConstants.HASHCODE_MULTIPLIER * result + (filetype != null ? filetype.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (filename != null ? filename.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (filedata != null ? Arrays.hashCode(filedata) : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (filesize != null ? filesize.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (mimetype != null ? mimetype.hashCode() : 0);
-        //result = IWSConstants.HASHCODE_MULTIPLIER * result + (folder != null ? folder.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (description != null ? description.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (keywords != null ? keywords.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (checksum != null ? checksum.hashCode() : 0);
-        //result = IWSConstants.HASHCODE_MULTIPLIER * result + (availability != null ? availability.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
 
@@ -333,16 +315,13 @@ public final class File extends AbstractVerification {
                 "fileId='" + fileId + '\'' +
                 ", group=" + group +
                 ", user=" + user +
-                //", filetype=" + filetype +
                 ", filename='" + filename + '\'' +
                 ", filedata=" + Arrays.toString(filedata) +
                 ", filesize=" + filesize +
                 ", mimetype='" + mimetype + '\'' +
-                //", folder='" + folder + '\'' +
                 ", description='" + description + '\'' +
                 ", keywords='" + keywords + '\'' +
                 ", checksum='" + checksum + '\'' +
-                //", availability=" + availability +
                 ", modified=" + modified +
                 ", created=" + created +
                 '}';

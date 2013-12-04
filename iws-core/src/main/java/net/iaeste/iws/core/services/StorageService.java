@@ -14,13 +14,21 @@
  */
 package net.iaeste.iws.core.services;
 
-import net.iaeste.iws.api.exceptions.NotImplementedException;
+import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
+import static net.iaeste.iws.core.util.StorageUtil.calculateChecksum;
+
+import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FileResponse;
+import net.iaeste.iws.common.exceptions.AuthorizationException;
+import net.iaeste.iws.core.util.LogUtil;
+import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.StorageDao;
+import net.iaeste.iws.persistence.entities.FileEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,23 +41,55 @@ public final class StorageService {
 
     private static final Logger log = LoggerFactory.getLogger(StorageService.class);
 
-    private final StorageDao dao;
+    private final StorageDao storageDao;
+    private final AccessDao accessDao;
 
-    public StorageService(final StorageDao dao) {
-        this.dao = dao;
+    public StorageService(final AccessDao accessDao, final StorageDao storageDao) {
+        this.accessDao = accessDao;
+        this.storageDao = storageDao;
     }
 
     public FileResponse processFile(final Authentication authentication, final FileRequest request) {
         final String externalId = request.getFile().getFileId();
+        final FileEntity entity;
 
-        if (externalId != null) {
-            throw new NotImplementedException("Method pending implementation.");
+        if (externalId == null) {
+            entity = transform(request.getFile());
+            entity.setChecksum(calculateChecksum(entity.getFiledata()));
+            final byte[] data = entity.getFiledata();
+            entity.setFilesize(data != null ? data.length : 0);
+            entity.setUser(authentication.getUser());
+            entity.setGroup(authentication.getGroup());
+            storageDao.persist(authentication, entity);
+            log.info(LogUtil.formatLogMessage(authentication, "File %s successfully uploaded for the user.", entity.getFilename()));
         } else {
-            throw new NotImplementedException("Method pending implementation.");
+            entity = storageDao.findFileByUserAndExternalId(authentication.getUser(), externalId);
+            if (entity != null) {
+                final FileEntity changes = transform(request.getFile());
+                storageDao.persist(authentication, entity, changes);
+                log.info(LogUtil.formatLogMessage(authentication, "File %s successfully updated by the user.", entity.getFilename()));
+            } else {
+                throw new AuthorizationException("The user is not authorized to process this file.");
+            }
         }
+
+        return new FileResponse(transform(entity));
     }
 
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        final FetchFileResponse response;
+        final String externalGroupId = request.getGroupId();
+
+        if (externalGroupId == null) {
+            final FileEntity entity = storageDao.findFileByUserAndExternalId(authentication.getUser(), request.getFileId());
+            response = new FetchFileResponse(transform(entity));
+        } else {
+            // Check if the user is permitted to fetch files for the group.
+            final GroupEntity group = accessDao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.FETCH_FILE);
+            final FileEntity entity = storageDao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
+            response = new FetchFileResponse(transform(entity));
+        }
+
+        return response;
     }
 }

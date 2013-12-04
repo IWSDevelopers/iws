@@ -85,7 +85,7 @@ public final class ServiceFactory {
 
     public StorageService prepareStorageService() {
         final StorageDao storageDao = new StorageJpaDao(entityManager);
-        return new StorageService(storageDao);
+        return new StorageService(accessDao, storageDao);
     }
 
     public AccessService prepareAuthenticationService() {

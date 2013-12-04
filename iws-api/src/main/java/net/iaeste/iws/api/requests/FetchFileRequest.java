@@ -31,6 +31,7 @@ public final class FetchFileRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String fileId = null;
+    private String groupId = null;
     private Boolean readFileData = false;
 
     // =========================================================================
@@ -58,8 +59,15 @@ public final class FetchFileRequest extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * The FileId is a mandatory field, and must be a proper Id, otherwise the
+     * method will throw an {£code IllegalArgumentException}.
+     *
+     * @param fileId Id of the file to fetch
+     * @throws IllegalArgumentException if null or an invalid Id
+     */
     public void setFileId(final String fileId) throws IllegalArgumentException {
-        ensureValidId("fileId", fileId);
+        ensureNotNullAndValidId("fileId", fileId);
         this.fileId = fileId;
     }
 
@@ -67,6 +75,34 @@ public final class FetchFileRequest extends AbstractVerification {
         return fileId;
     }
 
+    /**
+     * If the file to be fetched is not owned by the user, but is rather an
+     * attachment to a different Object, then it is required that the GroupId
+     * is set, otherwise the system will reject the request.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the given
+     * GroupId is invalid.
+     *
+     * @param groupId GroupId
+     * @throws IllegalArgumentException if the given GroupId is invalid
+     */
+    public void setGroupId(final String groupId) throws IllegalArgumentException {
+        ensureValidId("groupId", groupId);
+        this.groupId = groupId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * Determines if the data of the file should also be read out. If not set,
+     * then the data is not returned, only the file information.<br />
+     *   The method requires that this value is defined. If undefined, i.e.
+     * null, then the method will throw an {@code IllegalArgumentException}.
+     *
+     * @param readFileData Boolean flag to read file data or not
+     * @throws IllegalArgumentException if set to null
+     */
     public void setReadFileData(final Boolean readFileData) throws IllegalArgumentException {
         ensureNotNull("readFileData", readFileData);
         this.readFileData = readFileData;

@@ -594,7 +594,7 @@ create table files (
     mimetype      varchar(50),
     description   varchar(250),
     keywords      varchar(250),
-    checksum      varchar(128),
+    checksum      bigint,
     modified      timestamp   default now(),
     created       timestamp   default now(),
 

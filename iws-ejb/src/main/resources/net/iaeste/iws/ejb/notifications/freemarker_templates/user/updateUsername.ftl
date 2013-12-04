@@ -1,8 +1,8 @@
-This is your requested username update from the IAESTE asbl IntraWeb.
+This is your requested email address change from the IAESTE asbl IntraWeb.
 
-NOTE: If you didn't requested an username update, ignore this mail!
+NOTE: If you didn't requested an email address change, ignore this mail!
 
-To complete the username update, please open the following page.
+To complete the changing of the email address, please confirm the reception by opening following page:
 
 ${baseUrl}/pages/activateUser.xhtml?code=${CODE}
 

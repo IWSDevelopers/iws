@@ -27,15 +27,12 @@ import javax.persistence.Table;
  * @since   1.7
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "permission.findAll",
+        @NamedQuery(name = "permission.findAll",
                 query = "select p from PermissionEntity p"),
-        @NamedQuery(
-                name= "permission.findAllNotRestricted",
+        @NamedQuery(name = "permission.findAllNotRestricted",
                 query = "select p from PermissionEntity p " +
                         "where p.restricted = false"),
-        @NamedQuery(
-                name = "permission.findByName",
+        @NamedQuery(name = "permission.findByName",
                 query = "select p from PermissionEntity p " +
                         "where p.permission = :permission")
 })

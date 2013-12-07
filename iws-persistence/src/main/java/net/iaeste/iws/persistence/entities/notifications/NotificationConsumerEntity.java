@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.persistence.entities.notifications;
 
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -41,12 +40,10 @@ import java.util.Date;
  * @since 1.7
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "notifications.findConsumersByActive",
+        @NamedQuery(name = "notifications.findConsumersByActive",
                 query = "select nc from NotificationConsumerEntity nc " +
                         "where nc.active = :active"),
-        @NamedQuery(
-                name = "notifications.findConsumersById",
+        @NamedQuery(name = "notifications.findConsumersById",
                 query = "select nc from NotificationConsumerEntity nc " +
                         "where nc.id = :id")
 })
@@ -83,14 +80,7 @@ public class NotificationConsumerEntity implements IWSEntity {
      * Is activate - do we want to load this consumer?
      */
     @Column(name = "active")
-    private boolean active = false;
-
-    /**
-     * Timestamp when the Entity was created.
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false, updatable = false)
-    private Date created = new Date();
+    private Boolean active = false;
 
     /**
      * Timestamp when the Entity was modified.
@@ -98,6 +88,13 @@ public class NotificationConsumerEntity implements IWSEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
+
+    /**
+     * Timestamp when the Entity was created.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     // =========================================================================
     // Entity Constructors
@@ -166,12 +163,20 @@ public class NotificationConsumerEntity implements IWSEntity {
         return className;
     }
 
-    public void setActive(final boolean active) {
+    public void setActive(final Boolean active) {
         this.active = active;
     }
 
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
+    }
+
+    public void setModified(final Date modified) {
+        this.modified = modified;
+    }
+
+    public Date getModified() {
+        return modified;
     }
 
     /**
@@ -188,13 +193,5 @@ public class NotificationConsumerEntity implements IWSEntity {
     @Override
     public Date getCreated() {
         return created;
-    }
-
-    public void setModified(final Date modified) {
-        this.modified = modified;
-    }
-
-    public Date getModified() {
-        return modified;
     }
 }

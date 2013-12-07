@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.persistence.entities.notifications;
 
 import net.iaeste.iws.persistence.entities.IWSEntity;
@@ -40,13 +39,11 @@ import java.util.Date;
  * @since   1.7
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "notifications.findJobTasksByConsumerIdAndProcessed",
+        @NamedQuery(name = "notifications.findJobTasksByConsumerIdAndProcessed",
                 query = "select njt from NotificationJobTaskEntity njt " +
                         "where njt.consumer.id = :consumerId " +
                         "      and njt.processed = :processed"),
-        @NamedQuery(
-                name = "notifications.updateJobTaskProcessedAndAttempts",
+        @NamedQuery(name = "notifications.updateJobTaskProcessedAndAttempts",
                 query = "update NotificationJobTaskEntity njt set" +
                         "   njt.processed = :processed, " +
                         "   njt.attempts = :attempts, " +
@@ -90,18 +87,18 @@ public class NotificationJobTaskEntity implements IWSEntity {
     private int attempts = 0;
 
     /**
-     * Timestamp when the Entity was created.
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false, updatable = false)
-    private Date created = new Date();
-
-    /**
      * Timestamp when the Entity was modified.
      */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
+
+    /**
+     * Timestamp when the Entity was created.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     // =========================================================================
     // Entity Constructors
@@ -176,6 +173,14 @@ public class NotificationJobTaskEntity implements IWSEntity {
         return attempts;
     }
 
+    public void setModified(final Date modified) {
+        this.modified = modified;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -190,13 +195,5 @@ public class NotificationJobTaskEntity implements IWSEntity {
     @Override
     public Date getCreated() {
         return created;
-    }
-
-    public void setModified(final Date modified) {
-        this.modified = modified;
-    }
-
-    public Date getModified() {
-        return modified;
     }
 }

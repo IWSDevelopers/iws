@@ -12,7 +12,6 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-
 package net.iaeste.iws.persistence.entities.notifications;
 
 import net.iaeste.iws.common.notification.NotificationType;
@@ -40,8 +39,7 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(@NamedQuery(
-        name = "notifications.findJobsByNotifiedAndDate",
+@NamedQueries(@NamedQuery(name = "notifications.findJobsByNotifiedAndDate",
         query = "select nj from NotificationJobEntity nj " +
                 "where nj.notified = :notified " +
                 "  and nj.modified <= :date"))
@@ -75,18 +73,18 @@ public class NotificationJobEntity implements IWSEntity {
     private boolean notified = false;
 
     /**
-     * Timestamp when the Entity was created.
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false, updatable = false)
-    private Date created = new Date();
-
-    /**
      * Timestamp when the Entity was modified.
      */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified", nullable = false)
     private Date modified = new Date();
+
+    /**
+     * Timestamp when the Entity was created.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     // =========================================================================
     // Entity Constructors
@@ -161,19 +159,19 @@ public class NotificationJobEntity implements IWSEntity {
         this.created = created;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Date getCreated() {
-        return created;
-    }
-
     public void setModified(final Date modified) {
         this.modified = modified;
     }
 
     public Date getModified() {
         return modified;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getCreated() {
+        return created;
     }
 }

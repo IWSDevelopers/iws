@@ -45,16 +45,13 @@ import java.util.Date;
  * @since   1.7
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "employer.findAllForGroup",
+        @NamedQuery(name = "employer.findAllForGroup",
                 query = "select e from EmployerEntity e " +
                         "where e.group.id = :gid"),
-        @NamedQuery(
-                name = "employer.findByExternalId",
+        @NamedQuery(name = "employer.findByExternalId",
                 query = "select e from EmployerEntity e " +
                         "where e.externalId = :eid"),
-        @NamedQuery(
-                name = "employer.findEmployerByValues",
+        @NamedQuery(name = "employer.findEmployerByValues",
                 query = "select e from EmployerEntity e " +
                         "where e.group.id = :gid" +
                         "  and lower(e.name) = lower(:name)" +

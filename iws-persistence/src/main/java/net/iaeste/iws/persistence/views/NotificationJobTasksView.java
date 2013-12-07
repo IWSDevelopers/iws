@@ -35,12 +35,10 @@ import javax.persistence.Table;
  * @noinspection CompareToUsesNonFinalVariable
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "view.NotificationJobTasksByConsumerId",
-                query = "select v from NotificationJobTasksView v " +
-                        "where v.consumerId = :consumerId " +
-                        "      and v.attempts < :attempts")
-})
+@NamedQueries(@NamedQuery(name = "view.NotificationJobTasksByConsumerId",
+        query = "select v from NotificationJobTasksView v " +
+                "where v.consumerId = :consumerId " +
+                "      and v.attempts < :attempts"))
 @Table(name = "notification_job_task_details")
 public class NotificationJobTasksView extends AbstractView<NotificationJobTasksView> {
 

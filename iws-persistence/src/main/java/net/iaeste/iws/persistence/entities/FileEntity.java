@@ -85,11 +85,11 @@ public class FileEntity implements Externable<FileEntity> {
      * associated, which will otherwise limit the viewing.
      */
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(name = "group_id", updatable = false)
+    @JoinColumn(name = "group_id", referencedColumnName = "id", updatable = false)
     private GroupEntity group = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "user_id", updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", updatable = false)
     private UserEntity user = null;
 
     @Monitored(name="File Name", level = MonitoringLevel.DETAILED)

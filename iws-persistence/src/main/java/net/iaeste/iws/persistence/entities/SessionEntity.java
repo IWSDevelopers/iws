@@ -74,7 +74,7 @@ public class SessionEntity implements Externable<SessionEntity> {
     private String sessionKey = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
     private UserEntity user = null;
 
     @Column(name = "deprecated")

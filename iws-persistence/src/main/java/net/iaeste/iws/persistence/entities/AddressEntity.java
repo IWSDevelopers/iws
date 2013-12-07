@@ -77,7 +77,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
     private String pobox = null;
 
     @ManyToOne
-    @JoinColumn(name = "country_id")
+    @JoinColumn(name = "country_id", referencedColumnName = "id")
     private CountryEntity country = null;
 
     /**

@@ -167,7 +167,7 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
      */
     @Monitored(name="User Person", level = MonitoringLevel.DETAILED)
     @OneToOne(fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity person = null;
 
     /**

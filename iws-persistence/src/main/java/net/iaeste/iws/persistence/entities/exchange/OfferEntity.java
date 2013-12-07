@@ -121,14 +121,14 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
      * than they have to be.
      */
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "group_id", nullable = true)
+    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = true)
     private GroupEntity group = null;
 
     @Column(name = "ref_no", length = 16, nullable = false, unique = true)
     private String refNo = null;
 
     @ManyToOne
-    @JoinColumn(name = "employer_id", nullable = false)
+    @JoinColumn(name = "employer_id", referencedColumnName = "id", nullable = false)
     private EmployerEntity employer = null;
 
     @Monitored(name="Offer work description", level = MonitoringLevel.DETAILED)

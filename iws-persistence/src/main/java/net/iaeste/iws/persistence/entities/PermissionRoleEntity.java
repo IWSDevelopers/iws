@@ -49,14 +49,14 @@ public class PermissionRoleEntity implements IWSEntity {
      * The Permission, that is granted to a Role.
      */
     @ManyToOne(targetEntity = PermissionEntity.class)
-    @JoinColumn(name = "permission_id", updatable = false)
+    @JoinColumn(name = "permission_id", referencedColumnName = "id", updatable = false)
     private PermissionEntity permission = null;
 
     /**
      * The Role, which is granted this permission.
      */
     @ManyToOne(targetEntity = RoleEntity.class)
-    @JoinColumn(name = "role_id", updatable = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", updatable = false)
     private RoleEntity role = null;
 
     /**

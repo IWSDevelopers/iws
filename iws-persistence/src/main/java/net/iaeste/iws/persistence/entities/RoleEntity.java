@@ -114,7 +114,7 @@ public class RoleEntity implements Externable<RoleEntity> {
      * users otherwise.
      */
     @ManyToOne(targetEntity = CountryEntity.class)
-    @JoinColumn(name = "country_id", updatable = false)
+    @JoinColumn(name = "country_id", referencedColumnName = "id", updatable = false)
     private CountryEntity country = null;
 
     /**
@@ -126,7 +126,7 @@ public class RoleEntity implements Externable<RoleEntity> {
      * users otherwise.
      */
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(name = "group_id", updatable = false)
+    @JoinColumn(name = "group_id", referencedColumnName = "id", updatable = false)
     private GroupEntity group = null;
 
     /**

@@ -64,11 +64,11 @@ public class MonitoringEntity implements IWSEntity {
     private Long id = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
     private UserEntity user = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(name = "group_id", nullable = false, updatable = false)
+    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false, updatable = false)
     private GroupEntity group = null;
 
     @Column(name = "tablename", length = 50, nullable = false, updatable = false)

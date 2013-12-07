@@ -82,7 +82,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     private String externalId = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(name = "group_id", nullable = false)
+    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
     private GroupEntity group = null;
 
     @Monitored(name="Employer name", level = MonitoringLevel.DETAILED)
@@ -102,7 +102,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     private String workingPlace = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address = null;
 
     @Monitored(name="Employer number of employees", level = MonitoringLevel.DETAILED)

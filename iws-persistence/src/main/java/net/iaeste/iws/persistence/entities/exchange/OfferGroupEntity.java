@@ -96,11 +96,11 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     private String externalId = null;
 
     @ManyToOne(targetEntity = OfferEntity.class)
-    @JoinColumn(name = "offer_id", nullable = false)
+    @JoinColumn(name = "offer_id", referencedColumnName = "id", nullable = false)
     private OfferEntity offer = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(name = "group_id", nullable = false)
+    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
     private GroupEntity group = null;
 
     @Monitored(name="Offer2Group comment", level = MonitoringLevel.DETAILED)
@@ -108,11 +108,11 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     private String comment = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "modified_by", nullable = false)
+    @JoinColumn(name = "modified_by", referencedColumnName = "id", nullable = false)
     private UserEntity modifiedBy = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "created_by", nullable = false)
+    @JoinColumn(name = "created_by", referencedColumnName = "id", nullable = false)
     private UserEntity createdBy = null;
 
     /**

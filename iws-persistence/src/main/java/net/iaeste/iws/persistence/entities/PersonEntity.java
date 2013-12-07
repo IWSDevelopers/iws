@@ -47,7 +47,7 @@ public class PersonEntity implements Updateable<PersonEntity> {
     private Long id = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address = null;
 
     @Column(name = "email", length = 100)

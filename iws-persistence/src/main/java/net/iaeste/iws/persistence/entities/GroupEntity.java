@@ -147,7 +147,7 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     private Long parentId = null;
 
     @ManyToOne(targetEntity = GroupTypeEntity.class)
-    @JoinColumn(name = "grouptype_id", nullable = false, updatable = false)
+    @JoinColumn(name = "grouptype_id", referencedColumnName = "id", nullable = false, updatable = false)
     private GroupTypeEntity groupType = null;
 
     @Monitored(name="Group Name", level = MonitoringLevel.DETAILED)
@@ -163,7 +163,7 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     private String description = null;
 
     @ManyToOne(targetEntity = CountryEntity.class)
-    @JoinColumn(name = "country_id", updatable = false)
+    @JoinColumn(name = "country_id", referencedColumnName = "id", updatable = false)
     private CountryEntity country = null;
 
     @Monitored(name="Group Mailinglist Name", level = MonitoringLevel.DETAILED)

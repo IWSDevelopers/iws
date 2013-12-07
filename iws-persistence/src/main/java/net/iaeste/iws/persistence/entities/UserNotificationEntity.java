@@ -57,7 +57,7 @@ public class UserNotificationEntity implements IWSEntity {
     private Long id = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user = null;
 
     @Column(name = "notification_type")

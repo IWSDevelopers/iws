@@ -70,7 +70,7 @@ public class StudentEntity implements Updateable<StudentEntity> {
      * contains no ExternalId, rather it relies on the User Object.
      */
     @OneToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
     private UserEntity user = null;
 
     @Monitored(name="Student study level", level = MonitoringLevel.DETAILED)

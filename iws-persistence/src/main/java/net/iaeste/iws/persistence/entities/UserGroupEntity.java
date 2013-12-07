@@ -117,16 +117,16 @@ public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable 
     private String externalId = null;
 
     @ManyToOne(targetEntity = UserEntity.class)
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
     private UserEntity user = null;
 
     @ManyToOne(targetEntity = GroupEntity.class)
-    @JoinColumn(name = "group_id", nullable = false, updatable = false)
+    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false, updatable = false)
     private GroupEntity group = null;
 
     @Monitored(name="User2Group Role", level = MonitoringLevel.DETAILED)
     @ManyToOne(targetEntity = RoleEntity.class)
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private RoleEntity role = null;
 
     @Monitored(name="User2Group Custom Title", level = MonitoringLevel.DETAILED)

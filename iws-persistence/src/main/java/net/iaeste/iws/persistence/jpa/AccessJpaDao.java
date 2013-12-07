@@ -42,7 +42,6 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection ReturnOfNull, CastToConcreteClass
  */
 public class AccessJpaDao extends BasicJpaDao implements AccessDao {
 
@@ -75,7 +74,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("user.findExistingByUsername");
         query.setParameter("username", username);
 
-        return findSingleResult(query, "user");
+        return findSingleResult(query, "User");
     }
 
     /**
@@ -139,7 +138,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
             throw new AuthenticationException("Multiple Active sessions exists.");
         }
 
-        return found.isEmpty() ? null : found.get(0);
+        return findSingleResult(query, "Session");
     }
 
     /**
@@ -214,9 +213,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("grouptype.findByName");
         // Query runs a String lower check on the value
         query.setParameter("name", groupType.name());
-        final List<GroupTypeEntity> groupTypes = query.getResultList();
 
-        return groupTypes.get(0);
+        return findSingleResult(query, "GroupType");
     }
 
     /**
@@ -254,7 +252,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("uid", user.getId());
         query.setParameter("eid", externalGroupId);
 
-        return (GroupEntity) query.getSingleResult();
+        return findSingleResult(query, "Group");
     }
 
     /**
@@ -289,8 +287,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("pid", group.getParentId());
         query.setParameter("name", name.toLowerCase(IWSConstants.DEFAULT_LOCALE));
 
-        final List<GroupEntity> result = query.getResultList();
-        return !result.isEmpty();
+        return !query.getResultList().isEmpty();
     }
 
     /**
@@ -314,7 +311,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("uid", user.getId());
         query.setParameter("type", GroupType.MEMBER);
 
-        return (GroupEntity) query.getSingleResult();
+        return findSingleResult(query, "User");
     }
 
     /**
@@ -325,7 +322,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("group.findNationalByUser");
         query.setParameter("uid", user.getId());
 
-        return (GroupEntity) query.getSingleResult();
+        return findSingleResult(query, "Group");
     }
 
     /**
@@ -337,7 +334,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("uid", user.getId());
         query.setParameter("type", GroupType.PRIVATE);
 
-        return (GroupEntity) query.getSingleResult();
+        return findSingleResult(query, "Group");
     }
 
     /**
@@ -371,7 +368,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("role.findById");
         query.setParameter("id", id);
 
-        return (RoleEntity) query.getSingleResult();
+        return findSingleResult(query, "Role");
     }
 
     /**
@@ -383,7 +380,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("euid", externalUserId);
         query.setParameter("gid", group.getId());
 
-        return findSingleResult(query, "role");
+        return findSingleResult(query, "Role");
     }
 
     /**
@@ -394,7 +391,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("user.findActiveByExternalId");
         query.setParameter("euid", externalUserId);
 
-        return findSingleResult(query, "user");
+        return findSingleResult(query, "User");
     }
 
     /**
@@ -417,7 +414,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("gid", group.getId());
         query.setParameter("uid", user.getId());
 
-        return findSingleResult(query, "usergroup");
+        return findSingleResult(query, "UserGroup");
     }
 
     /**
@@ -429,7 +426,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("gid", group.getId());
         query.setParameter("euid", externalUserId);
 
-        return findSingleResult(query, "usergroup");
+        return findSingleResult(query, "UserGroup");
     }
 
     /**
@@ -440,7 +437,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("usergroup.findMemberByUserExternalId");
         query.setParameter("euid", externalUserId);
 
-        return findUniqueResult(query, "usergroup");
+        return findUniqueResult(query, "UserGroup");
     }
 
     /**
@@ -451,7 +448,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("usergroup.findMemberByUserId");
         query.setParameter("uid", user.getId());
 
-        return findUniqueResult(query, "userGroup");
+        return findUniqueResult(query, "UserGroup");
     }
 
     /**
@@ -463,7 +460,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("gid", group.getId());
         query.setParameter("euid", externalUserId);
 
-        return findSingleResult(query, "userGroup");
+        return findSingleResult(query, "UserGroup");
     }
 
     /**
@@ -475,7 +472,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("group", group);
         query.setParameter("user", user);
 
-        return findSingleResult(query, "userGroup");
+        return findSingleResult(query, "UserGroup");
     }
 
     /**
@@ -485,9 +482,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public List<RoleEntity> findRolesByName(final String role) {
         final Query query = entityManager.createNamedQuery("role.findRoleByName");
         query.setParameter("role", role);
-        final List<RoleEntity> list = query.getResultList();
 
-        return list;
+        return query.getResultList();
     }
 
     /**
@@ -497,9 +493,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public GroupTypeEntity findGroupTypeByType(final GroupType groupType) {
         final Query query = entityManager.createNamedQuery("grouptype.findByType");
         query.setParameter("type", groupType);
-        final List<GroupTypeEntity> list = query.getResultList();
 
-        return list.isEmpty() ? null : list.get(0);
+        return findSingleResult(query, "GroupType");
     }
 
     /**
@@ -509,9 +504,8 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public CountryEntity findCountryByCode(final String countryCode) {
         final Query query = entityManager.createNamedQuery("country.findByCountryCode");
         query.setParameter("code", countryCode);
-        final List<CountryEntity> list = query.getResultList();
 
-        return list.isEmpty() ? null : list.get(0);
+        return findSingleResult(query, "Country");
     }
 
     /**
@@ -524,7 +518,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("cid", group.getCountry().getId());
         query.setParameter("gid", group.getId());
 
-        return findUniqueResult(query, "role");
+        return findUniqueResult(query, "Role");
     }
 
     /**
@@ -535,7 +529,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         final Query query = entityManager.createNamedQuery("role.findByExternalId");
         query.setParameter("erid", externalId);
 
-        return findUniqueResult(query, "role");
+        return findUniqueResult(query, "Role");
     }
 
     /**
@@ -545,9 +539,41 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public GroupEntity findStudentGroup(final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("group.findStudentGroup");
         query.setParameter("gid", group.getId());
-        final List<GroupEntity> list = query.getResultList();
 
-        return list.isEmpty() ? null : list.get(0);
+        return findSingleResult(query, "Group");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findGroupUsersOnPublicList(final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembersOnPublicList");
+        query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findGroupUsersOnPrivateList(final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembersOnPrivateList");
+        query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findAllUserGroups(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("usergroup.findAllUserGroups");
+        query.setParameter("uid", user.getId());
+
+        return query.getResultList();
     }
 
     // =========================================================================
@@ -575,29 +601,5 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         }
 
         return super.findUniqueResult(query, entityName);
-    }
-
-    @Override
-    public List<UserGroupEntity> findGroupUsersOnPublicList(GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembersOnPublicList");
-        query.setParameter("gid", group.getId());
-
-        return query.getResultList();
-    }
-
-    @Override
-    public List<UserGroupEntity> findGroupUsersOnPrivateList(GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembersOnPrivateList");
-        query.setParameter("gid", group.getId());
-
-        return query.getResultList();
-    }
-
-    @Override
-    public List<UserGroupEntity> findAllUserGroups(final UserEntity user) {
-        final Query query = entityManager.createNamedQuery("usergroup.findAllUserGroups");
-        query.setParameter("uid", user.getId());
-
-        return query.getResultList();
     }
 }

@@ -46,11 +46,11 @@ import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
@@ -66,9 +66,9 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class StudentTest extends AbstractTest {
 
@@ -133,7 +133,7 @@ public final class StudentTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        final List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -184,7 +184,7 @@ public final class StudentTest extends AbstractTest {
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
 
-        Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        Offer sharedOffer = findOfferFromResponse(refNo, allOffersResponse);
         assertThat(sharedOffer, is(not(nullValue())));
         assertThat(sharedOffer.getStatus(), is(OfferState.NEW));
         assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
@@ -411,7 +411,7 @@ public final class StudentTest extends AbstractTest {
         newStudent.setUser(createStudentResponse.getUser());
 
         final StudentRequest processStudentRequest = new StudentRequest(newStudent);
-        final Fallible processStudentResponse = students.processStudent(austriaToken, processStudentRequest);
+        final StudentResponse processStudentResponse = students.processStudent(austriaToken, processStudentRequest);
         assertThat(processStudentResponse.isOk(), is(true));
 
         final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();

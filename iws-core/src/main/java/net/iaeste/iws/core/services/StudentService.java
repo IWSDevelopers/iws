@@ -30,6 +30,7 @@ import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
+import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
@@ -37,7 +38,6 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
-import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
@@ -70,8 +70,12 @@ public final class StudentService extends CommonService<StudentDao> {
         this.viewsDao = viewsDao;
     }
 
-    public void processStudent(final Authentication authentication, final StudentRequest request) {
-        final Student student = request.getStudent();
+    public StudentResponse processStudent(final Authentication authentication, final StudentRequest request) {
+        final StudentEntity studentEntity = processStudent(authentication, request.getStudent());
+        return new StudentResponse(transform(studentEntity));
+    }
+
+    public StudentEntity processStudent(final Authentication authentication, final Student student) {
         final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
         final UserEntity user = accessDao.findUserByExternalId(student.getStudentId());
         final StudentEntity newEntity = transform(student);
@@ -82,6 +86,8 @@ public final class StudentService extends CommonService<StudentDao> {
         } else {
             throw new VerificationException("The student with id '" + student.getStudentId() + "' was not found.");
         }
+
+        return existingEntity;
     }
 
     public FetchStudentsResponse fetchStudents(final Authentication authentication, final FetchStudentsRequest request) {

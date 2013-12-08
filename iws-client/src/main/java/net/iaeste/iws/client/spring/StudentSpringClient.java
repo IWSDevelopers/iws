@@ -24,7 +24,7 @@ import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -93,7 +93,7 @@ public final class StudentSpringClient implements Students {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processStudent(final AuthenticationToken token, final StudentRequest request) {
+    public StudentResponse processStudent(final AuthenticationToken token, final StudentRequest request) {
         return client.processStudent(token, request);
     }
 

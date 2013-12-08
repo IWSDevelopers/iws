@@ -23,7 +23,7 @@ import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
-import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.api.responses.student.StudentResponse;
 
 import javax.ejb.Remote;
 
@@ -41,9 +41,9 @@ public interface Students {
      *
      * @param token   {@link AuthenticationToken}
      * @param request {@link StudentRequest}
-     * @return {@link Fallible}
+     * @return {@link StudentResponse}
      */
-    Fallible processStudent(AuthenticationToken token, StudentRequest request);
+    StudentResponse processStudent(AuthenticationToken token, StudentRequest request);
 
     /**
      * Retrieves a list of Students, matching the criterias from the Request

@@ -585,9 +585,9 @@ create table history (
 create sequence file_sequence start with 20 increment by 1 no cycle;
 create table files (
     id            integer default nextval('file_sequence'),
+    external_id   varchar(36),
     group_id      integer,
     user_id       integer,
-    external_id   varchar(36),
     filename      varchar(100),
     filedata      bytea,
     filesize      integer     default 0,

@@ -72,7 +72,7 @@ public final class StudentApplication extends AbstractVerification {
     private String placeOfBirth = null;
     private Integer completedYearsOfStudy = null;
     private Integer totalYearsOfStudy = null;
-    private boolean lodgingByIaeste = false;
+    private Boolean lodgingByIaeste = false;
 
     // Language is already part of the Student Object
     private Language language1 = null;
@@ -286,11 +286,11 @@ public final class StudentApplication extends AbstractVerification {
         return totalYearsOfStudy;
     }
 
-    public void setIsLodgingByIaeste(final boolean lodgingByIaeste) {
+    public void setIsLodgingByIaeste(final Boolean lodgingByIaeste) {
         this.lodgingByIaeste = lodgingByIaeste;
     }
 
-    public boolean getIsLodgingByIaeste() {
+    public Boolean getIsLodgingByIaeste() {
         return lodgingByIaeste;
     }
 
@@ -460,7 +460,6 @@ public final class StudentApplication extends AbstractVerification {
         isNotNull(validation, "offer", offer);
         isNotNull(validation, "student", student);
         isNotNull(validation, "homeAddress", homeAddress);
-        isNotNull(validation, "addressDuringTerms", addressDuringTerms);
 
         return validation;
     }
@@ -480,135 +479,131 @@ public final class StudentApplication extends AbstractVerification {
 
         final StudentApplication studentApplication = (StudentApplication) obj;
 
-        if(applicationId != null ? !applicationId.equals(studentApplication.applicationId) : studentApplication.applicationId != null) {
+        if (applicationId != null ? !applicationId.equals(studentApplication.applicationId) : studentApplication.applicationId != null) {
             return false;
         }
 
-        if(offer != null ? !offer.equals(studentApplication.offer) : studentApplication.offer != null) {
+        if (offer != null ? !offer.equals(studentApplication.offer) : studentApplication.offer != null) {
             return false;
         }
 
-        if(student != null ? !student.equals(studentApplication.student) : studentApplication.student != null) {
+        if (student != null ? !student.equals(studentApplication.student) : studentApplication.student != null) {
             return false;
         }
 
-        if(status != null ? !status.equals(studentApplication.status) : studentApplication.status != null) {
+        if (status != null ? status != studentApplication.status : studentApplication.status != null) {
             return false;
         }
 
-        if(homeAddress != null ? !homeAddress.equals(studentApplication.homeAddress) : studentApplication.homeAddress != null) {
+        if (homeAddress != null ? !homeAddress.equals(studentApplication.homeAddress) : studentApplication.homeAddress != null) {
             return false;
         }
 
-        if(email != null ? !email.equals(studentApplication.email) : studentApplication.email != null) {
+        if (email != null ? !email.equals(studentApplication.email) : studentApplication.email != null) {
             return false;
         }
 
-        if(phoneNumber != null ? !phoneNumber.equals(studentApplication.phoneNumber) : studentApplication.phoneNumber != null) {
+        if (phoneNumber != null ? !phoneNumber.equals(studentApplication.phoneNumber) : studentApplication.phoneNumber != null) {
             return false;
         }
 
-        if(addressDuringTerms != null ? !addressDuringTerms.equals(studentApplication.addressDuringTerms) : studentApplication.addressDuringTerms != null) {
+        if (addressDuringTerms != null ? !addressDuringTerms.equals(studentApplication.addressDuringTerms) : studentApplication.addressDuringTerms != null) {
             return false;
         }
 
-        if(dateOfBirth != null ? !dateOfBirth.equals(studentApplication.dateOfBirth) : studentApplication.dateOfBirth != null) {
+        if (dateOfBirth != null ? !dateOfBirth.equals(studentApplication.dateOfBirth) : studentApplication.dateOfBirth != null) {
             return false;
         }
 
-        if(university != null ? !university.equals(studentApplication.university) : studentApplication.university != null) {
+        if (university != null ? !university.equals(studentApplication.university) : studentApplication.university != null) {
             return false;
         }
 
-        if(placeOfBirth != null ? !placeOfBirth.equals(studentApplication.placeOfBirth) : studentApplication.placeOfBirth != null) {
+        if (placeOfBirth != null ? !placeOfBirth.equals(studentApplication.placeOfBirth) : studentApplication.placeOfBirth != null) {
             return false;
         }
 
-        if(completedYearsOfStudy != null ? !completedYearsOfStudy.equals(studentApplication.completedYearsOfStudy) : studentApplication.completedYearsOfStudy != null) {
+        if (completedYearsOfStudy != null ? !completedYearsOfStudy.equals(studentApplication.completedYearsOfStudy) : studentApplication.completedYearsOfStudy != null) {
             return false;
         }
 
-        if(totalYearsOfStudy != null ? !totalYearsOfStudy.equals(studentApplication.totalYearsOfStudy) : studentApplication.totalYearsOfStudy != null) {
+        if (totalYearsOfStudy != null ? !totalYearsOfStudy.equals(studentApplication.totalYearsOfStudy) : studentApplication.totalYearsOfStudy != null) {
             return false;
         }
 
-        if(lodgingByIaeste != studentApplication.lodgingByIaeste) {
+        if (lodgingByIaeste != studentApplication.lodgingByIaeste) {
             return false;
         }
 
-        if(language1 != null ? !language1.equals(studentApplication.language1) : studentApplication.language1 != null) {
+        if (language1 != null ? language1 != studentApplication.language1 : studentApplication.language1 != null) {
             return false;
         }
 
-        if(language1Level != null ? !language1Level.equals(studentApplication.language1Level) : studentApplication.language1Level != null) {
+        if (language1Level != null ? language1Level != studentApplication.language1Level : studentApplication.language1Level != null) {
             return false;
         }
 
-        if(language2 != null ? !language2.equals(studentApplication.language2) : studentApplication.language2 != null) {
+        if (language2 != null ? language2 != studentApplication.language2 : studentApplication.language2 != null) {
             return false;
         }
 
-        if(language2Level != null ? !language2Level.equals(studentApplication.language2Level) : studentApplication.language2Level != null) {
+        if (language2Level != null ? language2Level != studentApplication.language2Level : studentApplication.language2Level != null) {
             return false;
         }
 
-        if(language3 != null ? !language3.equals(studentApplication.language3) : studentApplication.language3 != null) {
+        if (language3 != null ? language3 != studentApplication.language3 : studentApplication.language3 != null) {
             return false;
         }
 
-        if(language3Level != null ? !language3Level.equals(studentApplication.language3Level) : studentApplication.language3Level != null) {
+        if (language3Level != null ? language3Level != studentApplication.language3Level : studentApplication.language3Level != null) {
             return false;
         }
 
-        if(internshipStart != null ? !internshipStart.equals(studentApplication.internshipStart) : studentApplication.internshipStart != null) {
+        if (internshipStart != null ? !internshipStart.equals(studentApplication.internshipStart) : studentApplication.internshipStart != null) {
             return false;
         }
 
-        if(internshipEnd != null ? !internshipEnd.equals(studentApplication.internshipEnd) : studentApplication.internshipEnd != null) {
+        if (internshipEnd != null ? !internshipEnd.equals(studentApplication.internshipEnd) : studentApplication.internshipEnd != null) {
             return false;
         }
 
-        if(fieldOfStudies != null ? !fieldOfStudies.equals(studentApplication.fieldOfStudies) : studentApplication.fieldOfStudies != null) {
+        if (fieldOfStudies != null ? !fieldOfStudies.equals(studentApplication.fieldOfStudies) : studentApplication.fieldOfStudies != null) {
             return false;
         }
 
-        if(specializations != null ? !specializations.equals(studentApplication.specializations) : studentApplication.specializations != null) {
+        if (specializations != null ? !specializations.equals(studentApplication.specializations) : studentApplication.specializations != null) {
             return false;
         }
 
-        if(passportNumber != null ? !passportNumber.equals(studentApplication.passportNumber) : studentApplication.passportNumber != null) {
+        if (passportNumber != null ? !passportNumber.equals(studentApplication.passportNumber) : studentApplication.passportNumber != null) {
             return false;
         }
 
-        if(passportPlaceOfIssue != null ? !passportPlaceOfIssue.equals(studentApplication.passportPlaceOfIssue) : studentApplication.passportPlaceOfIssue != null) {
+        if (passportPlaceOfIssue != null ? !passportPlaceOfIssue.equals(studentApplication.passportPlaceOfIssue) : studentApplication.passportPlaceOfIssue != null) {
             return false;
         }
 
-        if(passportValidUntil != null ? !passportValidUntil.equals(studentApplication.passportValidUntil) : studentApplication.passportValidUntil != null) {
+        if (passportValidUntil != null ? !passportValidUntil.equals(studentApplication.passportValidUntil) : studentApplication.passportValidUntil != null) {
             return false;
         }
 
-        if(acceptance != null ? !acceptance.equals(studentApplication.acceptance) : studentApplication.acceptance != null) {
+        if (acceptance != null ? !acceptance.equals(studentApplication.acceptance) : studentApplication.acceptance != null) {
             return false;
         }
 
-        if(travelInformation != null ? !travelInformation.equals(studentApplication.travelInformation) : studentApplication.travelInformation != null) {
+        if (travelInformation != null ? !travelInformation.equals(studentApplication.travelInformation) : studentApplication.travelInformation != null) {
             return false;
         }
 
-        if(modified != null ? !modified.equals(studentApplication.modified) : studentApplication.modified != null) {
+        if (modified != null ? !modified.equals(studentApplication.modified) : studentApplication.modified != null) {
             return false;
         }
 
-        if(created != null ? !created.equals(studentApplication.created) : studentApplication.created != null) {
+        if (created != null ? !created.equals(studentApplication.created) : studentApplication.created != null) {
             return false;
         }
 
-        if(nominatedAt != null ? !nominatedAt.equals(studentApplication.nominatedAt) : studentApplication.nominatedAt != null) {
-            return false;
-        }
-
-        return true;
+        return !(nominatedAt != null ? !nominatedAt.equals(studentApplication.nominatedAt) : studentApplication.nominatedAt != null);
     }
 
     /**

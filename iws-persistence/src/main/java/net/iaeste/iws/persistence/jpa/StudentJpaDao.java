@@ -44,10 +44,8 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
     @Override
     public ApplicationEntity findApplicationByExternalId(final String externalId) {
         //TODO ensure that only application for owned or shared offers can be retrieved
-        final Query query = entityManager
-                .createNamedQuery("application.findAlternate")
-                .setParameter("eaid", externalId);
-        //query.setParameter("eaid", externalId);
+        final Query query = entityManager.createNamedQuery("application.findByExternalId");
+        query.setParameter("eid", externalId);
 
         return findSingleResult(query, "Application");
     }

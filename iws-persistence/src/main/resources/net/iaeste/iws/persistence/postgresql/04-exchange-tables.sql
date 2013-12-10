@@ -270,8 +270,8 @@ create table student_applications (
     constraint student_application_notnull_external_id             check (external_id is not null),
     constraint student_application_notnull_offer_id                check (offer_id is not null),
     constraint student_application_notnull_student_id              check (student_id is not null),
-    constraint student_application_notnull_home_address_id         check (home_address_id is not null),
-    constraint student_application_notnull_address_during_terms_id check (address_during_terms_id is not null),
+    -- Removed, see Trac ticket #512
+    --constraint student_application_notnull_home_address_id         check (home_address_id is not null),
     constraint student_application_notnull_modified                check (modified is not null),
     constraint student_application_notnull_created                 check (created is not null)
 );

@@ -207,7 +207,9 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setHomeAddress(final Address homeAddress) {
-        ensureNotNullAndVerifiable("homeAddress", homeAddress);
+        //ensureNotNullAndVerifiable("homeAddress", homeAddress);
+        // Optional, please see Trac Ticket #512
+        ensureVerifiable("homeAddress", homeAddress);
         this.homeAddress = new Address(homeAddress);
     }
 
@@ -459,7 +461,8 @@ public final class StudentApplication extends AbstractVerification {
 
         isNotNull(validation, "offer", offer);
         isNotNull(validation, "student", student);
-        isNotNull(validation, "homeAddress", homeAddress);
+        // Made optional, please see Trac ticket #512
+        //isNotNull(validation, "homeAddress", homeAddress);
 
         return validation;
     }

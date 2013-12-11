@@ -39,9 +39,9 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 @NamedQueries({
         @NamedQuery(name = "application.findByExternalId",
@@ -49,7 +49,7 @@ import java.util.Date;
                         "where a.externalId = :eid"),
         @NamedQuery(name = "application.findByOfferId",
                 query = "select a from ApplicationEntity a " +
-                        "where a.offer.id = :oid")
+                        "where a.offerGroup.offer.id = :oid")
 })
 @Entity
 @Table(name = "student_applications")
@@ -64,9 +64,9 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
-    @ManyToOne(targetEntity = OfferEntity.class)
-    @JoinColumn(name = "offer_id", nullable = false, updatable = false)
-    private OfferEntity offer = null;
+    @ManyToOne(targetEntity = OfferGroupEntity.class)
+    @JoinColumn(name = "offer_group_id", nullable = false, updatable = false)
+    private OfferGroupEntity offerGroup = null;
 
     @ManyToOne(targetEntity = StudentEntity.class)
     @JoinColumn(name = "student_id", nullable = false)
@@ -226,12 +226,12 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return externalId;
     }
 
-    public void setOffer(final OfferEntity offer) {
-        this.offer = offer;
+    public void setOfferGroup(final OfferGroupEntity offerGroup) {
+        this.offerGroup = offerGroup;
     }
 
-    public OfferEntity getOffer() {
-        return offer;
+    public OfferGroupEntity getOfferGroup() {
+        return offerGroup;
     }
 
     public void setStudent(final StudentEntity student) {

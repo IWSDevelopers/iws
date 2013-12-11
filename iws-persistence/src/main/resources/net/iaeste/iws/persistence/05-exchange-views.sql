@@ -231,3 +231,49 @@ create view student_view as
     and r.id = ug.role_id
     and g.grouptype_id = gt.id
     and gt.grouptype = 'STUDENT';
+
+-- =============================================================================
+-- The Application View, which embeds Offer, Student, User, Roles & Countries
+-- =============================================================================
+create view application_view as
+  select
+    sa.id                      as application_id,
+    sa.external_id             as application_external_id,
+    sa.status                  as application_status,
+    sa.modified                as application_modified,
+    sa.created                 as application_created,
+    s.id                       as student_id,
+    s.study_level              as student_study_level,
+    s.study_fields             as student_study_fields,
+    s.specializations          as student_specializations,
+    s.available_from           as student_available_from,
+    s.available_to             as student_available_to,
+    s.language_1               as student_language_1,
+    s.language_1_level         as student_language_1_level,
+    s.language_2               as student_language_2,
+    s.language_2_level         as student_language_2_level,
+    s.language_3               as student_language_3,
+    s.language_3_level         as student_language_3_level,
+    s.modified                 as student_modified,
+    s.created                  as student_created,
+    u.id                       as user_id,
+    u.external_id              as user_external_id,
+    u.username                 as user_username,
+    u.firstname                as user_firstname,
+    u.lastname                 as user_lastname,
+    u.status                   as user_status,
+    u.modified                 as user_modified,
+    u.created                  as user_created,
+    o.id                       as offer_id,
+    o.group_id                 as offer_owner_group_id,
+    og.group_id                as application_owner_group_id
+  from
+    student_applications sa,
+    students s,
+    users u,
+    offer_to_group og,
+    offers o
+  where sa.student_id = s.id
+    and s.user_id = u.id
+    and sa.offer_group_id = og.id
+    and og.offer_id = o.id;

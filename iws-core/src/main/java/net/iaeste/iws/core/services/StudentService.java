@@ -110,10 +110,10 @@ public final class StudentService extends CommonService<StudentDao> {
         final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
         final String externalId = application.getApplicationId();
         ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
-        final OfferEntity sharedOffer = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
+        final OfferGroupEntity sharedOfferGroup = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
         final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
-        if ((sharedOffer == null) || (sharedOffer.getStatus() != OfferState.SHARED)) {
+        if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup() == null) || (sharedOfferGroup.getOffer().getStatus() != OfferState.SHARED)) {
             throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
 
@@ -121,7 +121,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
         if (applicationEntity == null) {
             applicationEntity = transform(application);
-            applicationEntity.setOffer(sharedOffer);
+            applicationEntity.setOfferGroup(sharedOfferGroup);
             processAddress(authentication, applicationEntity.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms());
             dao.persist(authentication, student, applicationEntity.getStudent());
@@ -129,6 +129,8 @@ public final class StudentService extends CommonService<StudentDao> {
             dao.persist(authentication, applicationEntity);
         } else {
             final ApplicationEntity updated = transform(application);
+            //using OfferGroup from found entity since this field can't be updated
+            updated.setOfferGroup(applicationEntity.getOfferGroup());
             processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
             dao.persist(authentication, student, updated.getStudent());
@@ -184,7 +186,10 @@ public final class StudentService extends CommonService<StudentDao> {
                 case NOMINATED:
                     studentApplication.setNominatedAt(new DateTime());
                     studentApplication.setStatus(request.getStatus());
-                    dao.persist(authentication, found, transform(studentApplication));
+                    ApplicationEntity updated = transform(studentApplication);
+                    //using OfferGroup from found entity since this field can't be updated
+                    updated.setOfferGroup(found.getOfferGroup());
+                    dao.persist(authentication, found, updated);
                     return new StudentApplicationResponse(studentApplication);
                 default:
                     throw new VerificationException("Unsupported transition from '" + studentApplication.getStatus() + "' to " + request.getStatus());
@@ -194,13 +199,13 @@ public final class StudentService extends CommonService<StudentDao> {
         }
     }
 
-    private OfferEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {
-        OfferEntity result = null;
+    private OfferGroupEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {
+        OfferGroupEntity result = null;
         final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffer(offerExternalId);
 
         for (final OfferGroupEntity offerGroup : offerGroups) {
             if (offerGroup.getGroup().equals(group)) {
-                result = offerGroup.getOffer();
+                result = offerGroup;
             }
         }
 

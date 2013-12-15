@@ -28,13 +28,13 @@ public enum GroupStatus {
     ACTIVE,
 
     /**
-     * Groups, which are currently blocked, will not be visible or accessible.
+     * Groups, which are currently suspended, will not be visible or accessible.
      * If the Group is a Members Group, the users from this Group can no longer
      * log into the system. The purpose of this option, is to prevent misusage
      * of the system, without deleting the information. A Group with status
      * Blocked, can always be reactivated.
      */
-    BLOCKED,
+    SUSPENDED,
 
     /**
      * Groups, which are Deleted, can no longer be used. Data belonging to the

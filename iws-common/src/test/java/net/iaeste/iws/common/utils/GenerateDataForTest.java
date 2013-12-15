@@ -44,16 +44,21 @@ import java.util.UUID;
 @RunWith(Parameterized.class)
 public final class GenerateDataForTest {
 
+    // Control what you want to get generated
+    private static final boolean GENERATE_INITIAL_DATA = false;
+    private static final boolean GENERATE_OFFER_DATA = true;
+    private static final boolean GENERATE_MAILING_LIST_DATA = false;
+
     private static final String FIRST_NAME = "NS";
     private static final String RESTART_SEQUENCE = "alter sequence %s restart with %d;";
     private static final String COUNTRY_INSERT = "insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('%s', '%s', '%s', '%s', %d, '%s');";
     private static final String GROUP_INSERT = "insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('%s', %d, %s, %d, '%s');";
     private static final String USER_INSERT = "insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');";
     private static final String USER_GROUP_INSERT = "insert into user_to_group (external_id, user_id, group_id, role_id) values ('%s', %d, %d, %d);";
-    private static final String ADDRESS_INSERT = "insert into addresses (external_id, street1, street2, zip, city, state, pobox, country_id) values ('%s', 'Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', %d);";
+    private static final String ADDRESS_INSERT = "insert into addresses (street1, street2, zip, city, state, pobox, country_id) values ('Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', %d);";
     private static final String EMPLOYER_INSERT = "insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('%s', %d, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, %d);";
     private static final String OFFER_INSERT = "insert into offers (ref_no, external_id, employer_id, currency, group_id, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values\n" +
-            "('%s-2014-000001', '%s', %d, '%s', %d, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + '3 month'::INTERVAL, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');";
+            "('%s-2014-000001', '%s', %d, '%s', %d, 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + INTERVAL '0-3' YEAR TO MONTH, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');";
     private static final String SHARE_ALL_OFFER = "insert into offer_to_group (offer_id, group_id, external_id) select offers.id, groups.id, offers.id || 'what_ever' || groups.id from offers, groups where groups.grouptype_id = %d and offers.group_id != groups.id;";
     private static final String MAILING_LIST_INSERT = "insert into mailing_lists (external_id, private, list_address, active) values ('%s', '%b', '%s', '%b');";
     private static final String SUBSCRIBE_USER_TO_LIST = "insert into mailing_list_membership (mailing_list_id, member) values ('%d', '%s');";
@@ -182,27 +187,47 @@ public final class GenerateDataForTest {
         print("-- Preparing to create test data for users.");
         print("-- ============================================================================");
         print("\n-- First reset the existing tables & sequences, regardlessly!");
-        print("delete from offers;");
-        print("delete from employers;");
-        print("delete from addresses;");
-        print("delete from user_to_group;");
-        print("delete from user_notifications;");
-        print("delete from sessions;");
-        print("delete from history;");
-        print("delete from users;");
-        print("delete from groups where id>= 10;");
-        print("delete from countries;");
-        print("delete from mailing_lists;");
-        print("delete from mailing_list_membership;");
-        print(RESTART_SEQUENCE, "country_sequence", currentCountryId);
-        print(RESTART_SEQUENCE, "group_sequence", currentGroupId);
-        print(RESTART_SEQUENCE, "user_sequence", currentUserId);
-        print(RESTART_SEQUENCE, "address_sequence", currentAddressId);
-        print(RESTART_SEQUENCE, "employer_sequence", currentEmployerId);
-        print(RESTART_SEQUENCE, "offer_sequence", currentOfferId);
-        print(RESTART_SEQUENCE, "mailing_list_sequence", currentMailingListId);
-        print(RESTART_SEQUENCE, "mailing_list_membership_sequence", currentListSubscriptionId);
+        if (GENERATE_OFFER_DATA) {
+            print("delete from offers;");
+            print("delete from employers;");
+            print("delete from addresses;");
+        }
+        if (GENERATE_INITIAL_DATA) {
+            print("delete from user_to_group;");
+            print("delete from user_notifications;");
+            print("delete from sessions;");
+            print("delete from history;");
+            print("delete from users;");
+            print("delete from groups where id>= 10;");
+            print("delete from countries;");
+        }
+
+        if (GENERATE_MAILING_LIST_DATA) {
+            print("delete from mailing_lists;");
+            print("delete from mailing_list_membership;");
+        }
+
+        if (GENERATE_INITIAL_DATA) {
+            print(RESTART_SEQUENCE, "country_sequence", currentCountryId);
+            print(RESTART_SEQUENCE, "group_sequence", currentGroupId);
+            print(RESTART_SEQUENCE, "user_sequence", currentUserId);
+        }
+
+        if (GENERATE_OFFER_DATA) {
+            print(RESTART_SEQUENCE, "address_sequence", currentAddressId);
+            print(RESTART_SEQUENCE, "employer_sequence", currentEmployerId);
+            print(RESTART_SEQUENCE, "offer_sequence", currentOfferId);
+        }
+
+        if (GENERATE_MAILING_LIST_DATA) {
+            print(RESTART_SEQUENCE, "mailing_list_sequence", currentMailingListId);
+            print(RESTART_SEQUENCE, "mailing_list_membership_sequence", currentListSubscriptionId);
+        }
     }
+
+    // Write everything to the buffer and then print it at once. With dual core PCUs and threads
+    // the output gets messed up
+    private static StringBuffer sb = new StringBuffer();
 
     /**
      * Default Constructor for the Parameterized Test, it will take a series of
@@ -222,50 +247,57 @@ public final class GenerateDataForTest {
             final int memberSince,
             final Membership memberShip) {
         // First a little heads-up regarding which country data is being created
-        print("\n-- Generating Test data for %s", committeeName);
+        print(sb, "\n-- Generating Test data for %s", committeeName);
         final String password = committeeName.toLowerCase(IWSConstants.DEFAULT_LOCALE);
 
-        // Generate the SQL for the Country Table
-        print(COUNTRY_INSERT, countryCode, committeeName, committeeName, currency.name(), memberSince, memberShip.name());
+        if (GENERATE_INITIAL_DATA) {
+            // Generate the SQL for the Country Table
+            print(sb, COUNTRY_INSERT, countryCode, committeeName, committeeName, currency.name(), memberSince, memberShip.name());
 
-        // Generate the Group SQL, we need both a Member & National Group
-        final String memberExternalId = generateExternalId();
-        final String nationalExternalId = generateExternalId();
-        print(GROUP_INSERT, memberExternalId, GroupType.MEMBER.ordinal(), "null", currentCountryId, committeeName);
-        print(GROUP_INSERT, nationalExternalId, GroupType.NATIONAL.ordinal(), String.valueOf(currentGroupId), currentCountryId, committeeName);
+            // Generate the Group SQL, we need both a Member & National Group
+            final String memberExternalId = generateExternalId();
+            final String nationalExternalId = generateExternalId();
+            print(sb, GROUP_INSERT, memberExternalId, GroupType.MEMBER.ordinal(), "null", currentCountryId, committeeName);
+            print(sb, GROUP_INSERT, nationalExternalId, GroupType.NATIONAL.ordinal(), String.valueOf(currentGroupId), currentCountryId, committeeName);
 
-        // Generate the User SQL
-        final String salt = generateExternalId();
-        final String username = password + "@iaeste." + countryCode.toLowerCase(IWSConstants.DEFAULT_LOCALE);
-        print(USER_INSERT, generateExternalId(), UserStatus.ACTIVE, username, generateAlias(FIRST_NAME, committeeName), generateHashedPassword(password, salt), salt, FIRST_NAME, committeeName);
+            // Generate the User SQL
+            final String salt = generateExternalId();
+            final String username = password + "@iaeste." + countryCode.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+            print(sb, USER_INSERT, generateExternalId(), UserStatus.ACTIVE, username, generateAlias(FIRST_NAME, committeeName), generateHashedPassword(password, salt), salt, FIRST_NAME, committeeName);
 
-        // Generate the User Group relations
-        print(USER_GROUP_INSERT, generateExternalId(), currentUserId, currentGroupId, ROLE_OWNER);
-        print(USER_GROUP_INSERT, generateExternalId(), currentUserId, currentGroupId + 1, ROLE_OWNER);
+            // Generate the User Group relations
+            print(sb, USER_GROUP_INSERT, generateExternalId(), currentUserId, currentGroupId, ROLE_OWNER);
+            print(sb, USER_GROUP_INSERT, generateExternalId(), currentUserId, currentGroupId + 1, ROLE_OWNER);
 
-        // Generate the User Notification settings
-        print(USER_NOTIFICATION_INSERT, currentUserId, "ACTIVATE_USER", "IMMEDIATELY");
-        print(USER_NOTIFICATION_INSERT, currentUserId, "RESET_PASSWORD", "IMMEDIATELY");
-        print(USER_NOTIFICATION_INSERT, currentUserId, "UPDATE_USERNAME", "IMMEDIATELY");
-        print(USER_NOTIFICATION_INSERT, currentUserId, "RESET_SESSION", "IMMEDIATELY");
+            // Generate the User Notification settings
+            print(sb, USER_NOTIFICATION_INSERT, currentUserId, "ACTIVATE_USER", "IMMEDIATELY");
+            print(sb, USER_NOTIFICATION_INSERT, currentUserId, "RESET_PASSWORD", "IMMEDIATELY");
+            print(sb, USER_NOTIFICATION_INSERT, currentUserId, "UPDATE_USERNAME", "IMMEDIATELY");
+            print(sb, USER_NOTIFICATION_INSERT, currentUserId, "RESET_SESSION", "IMMEDIATELY");
 
+            if (GENERATE_MAILING_LIST_DATA) {
+                print(sb, "\n-- Generating Mailing Test data for %s, move to Mailing SQL file", committeeName);
+                //Generate the Mailing list
+                final String memberPrivateListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                final String nationalPublicListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+                final String nationalPrivateListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                print(sb, MAILING_LIST_INSERT, memberExternalId, true, memberPrivateListAddress, true);
+                print(sb, MAILING_LIST_INSERT, nationalExternalId, false, nationalPublicListAddress, true);
+                print(sb, MAILING_LIST_INSERT, nationalExternalId, true, nationalPrivateListAddress, true);
 
-        // Generate the Offer
-        print(ADDRESS_INSERT, generateExternalId(), currentCountryId);
-        print(EMPLOYER_INSERT, generateExternalId(), currentGroupId + 1, currentAddressId);
-        print(OFFER_INSERT, countryCode, generateExternalId(), currentEmployerId, currency, currentGroupId + 1);
+                //Subscribe the User to Group's mailing list
+                //TODO - this user probably has not working email address, subscribe anyway?
+            }
 
-        print("\n-- Generating Mailing Test data for %s, move to Mailing SQL file", committeeName);
-        //Generate the Mailing list
-        final String memberPrivateListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
-        final String nationalPublicListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
-        final String nationalPrivateListAddress = StringUtils.convertToAsciiMailAlias(committeeName) + ".staff" + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
-        print(MAILING_LIST_INSERT, memberExternalId, true, memberPrivateListAddress, true);
-        print(MAILING_LIST_INSERT, nationalExternalId, false, nationalPublicListAddress, true);
-        print(MAILING_LIST_INSERT, nationalExternalId, true, nationalPrivateListAddress, true);
+        }
 
-        //Subscribe the User to Group's mailing list
-        //TODO - this user probably has not working email address, subscribe anyway?
+        if (GENERATE_OFFER_DATA) {
+            print(sb, "\n-- Generating Offer Test data for %s", committeeName);
+            // Generate the Offer
+            print(sb, ADDRESS_INSERT, currentCountryId);
+            print(sb, EMPLOYER_INSERT, generateExternalId(), currentGroupId + 1, currentAddressId);
+            print(sb, OFFER_INSERT, countryCode, generateExternalId(), currentEmployerId, currency, currentGroupId + 1);
+        }
 
         // Update our Id's, so we're ready for next country
         currentCountryId++;
@@ -289,8 +321,10 @@ public final class GenerateDataForTest {
 
     @AfterClass
     public static void testDown() {
-        print("-- Now share all offers with all national groups");
-        print(SHARE_ALL_OFFER, GroupType.NATIONAL.ordinal());
+        print(sb, "-- Now share all offers with all national groups");
+        print(sb, SHARE_ALL_OFFER, GroupType.NATIONAL.ordinal());
+
+        System.out.print(sb.toString());
     }
 
     // =========================================================================
@@ -311,5 +345,9 @@ public final class GenerateDataForTest {
 
     private static void print(final String query, final Object... args) {
         System.out.println(String.format(query, args));
+    }
+
+    private static void print(StringBuffer sb, final String query, final Object... args) {
+        sb.append(String.format(query + "\n", args));
     }
 }

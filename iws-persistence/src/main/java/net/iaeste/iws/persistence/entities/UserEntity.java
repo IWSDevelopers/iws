@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.entities;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.enums.UserType;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
@@ -182,6 +183,17 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
     private UserStatus status = UserStatus.NEW;
 
     /**
+     * The Type of User Account. A User can have different types reflecting the
+     * association with the organization. The information has no internal
+     * business logic purpose, and thus only serves the purpose as being a
+     * visualisation of the account.
+     */
+    @Monitored(name="User Type", level = MonitoringLevel.DETAILED)
+    @Enumerated(EnumType.STRING)
+    @Column(name="user_type", length = 10, nullable = false)
+    private UserType type = UserType.VOLUNTEER;
+
+    /**
      * Privacy is a rather important topic. A users data is only exposed to be
      * exposed to those groups where user user is a member. Only Exception, is
      * the NC's mailinglist, and the corresponding Contact list, which will
@@ -217,6 +229,17 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
      */
     @Column(name = "temporary_data", length = 128)
     private String data = null;
+
+    /**
+     * For the data migration, it is problematic to use the old Id's, hence
+     * we're storing the old Id in a separate field - which is purely internal,
+     * and should be dropped once the IWS has become feature complete in
+     * relation to IW3. The plan is that this should happen during 2014. Once
+     * the IWS is feature complete, it means that all old data has been properly
+     * migrated over, and the old Id is then considered obsolete.
+     */
+    @Column(name = "old_iw3_id")
+    private Integer oldId = null;
 
     /**
      * Last time the Entity was modified.
@@ -365,6 +388,14 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
         return status;
     }
 
+    public void setType(final UserType type) {
+        this.type = type;
+    }
+
+    public UserType getType() {
+        return type;
+    }
+
     public void setPrivateData(final Privacy privateData) {
         this.privateData = privateData;
     }
@@ -395,6 +426,14 @@ public class UserEntity implements Externable<UserEntity>, Notifiable {
 
     public String getData() {
         return data;
+    }
+
+    public void setOldId(final Integer oldId) {
+        this.oldId = oldId;
+    }
+
+    public Integer getOldId() {
+        return oldId;
     }
 
     /**

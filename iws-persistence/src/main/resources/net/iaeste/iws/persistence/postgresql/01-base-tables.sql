@@ -191,6 +191,7 @@ create table groups (
     country_id          integer,
     list_name           varchar(75),
     status              varchar(10) default 'ACTIVE',
+    old_iw3_id          integer,
     modified            timestamp default now(),
     created             timestamp default now(),
 
@@ -373,6 +374,7 @@ create table persons (
     id               integer default nextval('person_sequence'),
     firstname        varchar(50),
     lastname         varchar(50),
+    nationality      integer,
     address_id       integer,
     email            varchar(100),
     phone            varchar(25),
@@ -384,8 +386,9 @@ create table persons (
     created          timestamp default now(),
 
     /* Primary & Foreign Keys */
-    constraint person_pk           primary key (id),
-    constraint person_fk_address_id foreign key (address_id) references addresses (id),
+    constraint persons_pk             primary key (id),
+    constraint persons_fk_nationality foreign key (nationality) references countries (id),
+    constraint persons_fk_address_id  foreign key (address_id) references addresses (id),
 
     /* Not Null Constraints */
     constraint person_notnull_id          check (id is not null),
@@ -414,10 +417,12 @@ create table users (
     lastname            varchar(50),
     person_id           integer,
     status              varchar(25) default 'NEW',
+    user_type           varchar(10) default 'VOLUNTEER',
     private_data        varchar(10) default 'PRIVATE',
     notifications       varchar(25) default 'IMMEDIATELY',
     temporary_code      varchar(128),
     temporary_data      varchar(128),
+    old_iw3_id          integer,
     modified            timestamp   default now(),
     created             timestamp   default now(),
 
@@ -438,6 +443,7 @@ create table users (
     constraint user_notnull_firstname     check (firstname is not null),
     constraint user_notnull_lastname      check (lastname is not null),
     constraint user_notnull_status        check (status is not null),
+    constraint user_notnull_user_type     check (user_type is not null),
     constraint user_notnull_private_data  check (private_data is not null),
     constraint user_notnull_notifications check (notifications is not null),
     constraint user_notnull_modified      check (modified is not null),

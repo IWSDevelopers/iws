@@ -46,6 +46,10 @@ public class PersonEntity implements Updateable<PersonEntity> {
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Long id = null;
 
+    @ManyToOne(targetEntity = CountryEntity.class)
+    @JoinColumn(name = "nationality", referencedColumnName = "id")
+    private CountryEntity nationality = null;
+
     @ManyToOne(targetEntity = AddressEntity.class)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address = null;
@@ -101,6 +105,14 @@ public class PersonEntity implements Updateable<PersonEntity> {
     @Override
     public Long getId() {
         return id;
+    }
+
+    public void setNationality(final CountryEntity nationality) {
+        this.nationality = nationality;
+    }
+
+    public CountryEntity getNationality() {
+        return nationality;
     }
 
     public void setAddress(final AddressEntity address) {

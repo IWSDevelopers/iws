@@ -33,7 +33,7 @@ public enum UserStatus {
 
     ACTIVE,
 
-    BLOCKED,
+    SUSPENDED,
 
     DELETED
 }

@@ -528,7 +528,7 @@ public final class AccountService extends CommonService<AccessDao> {
         if (current != UserStatus.NEW) {
             switch (newStatus) {
                 case ACTIVE:
-                case BLOCKED:
+                case SUSPENDED:
                     if (current != UserStatus.DELETED) {
                         user.setStatus(newStatus);
                         user.setModified(new Date());

@@ -97,7 +97,7 @@ public final class User extends AbstractDto {
      *              NEW
      *             /   \
      *            /     \
-     *       ACTIVE <-> BLOCKED
+     *       ACTIVE <-> SUSPENDED
      *           \      /
      *            \    /
      *            DELETED

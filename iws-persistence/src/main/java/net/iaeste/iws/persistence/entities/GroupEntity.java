@@ -176,6 +176,17 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     private GroupStatus status = GroupStatus.ACTIVE;
 
     /**
+     * For the data migration, it is problematic to use the old Id's, hence
+     * we're storing the old Id in a separate field - which is purely internal,
+     * and should be dropped once the IWS has become feature complete in
+     * relation to IW3. The plan is that this should happen during 2014. Once
+     * the IWS is feature complete, it means that all old data has been properly
+     * migrated over, and the old Id is then considered obsolete.
+     */
+    @Column(name = "old_iw3_id")
+    private Integer oldId = null;
+
+    /**
      * Last time the Entity was modified.
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -309,6 +320,14 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
 
     public GroupStatus getStatus() {
         return status;
+    }
+
+    public void setOldId(final Integer oldId) {
+        this.oldId = oldId;
+    }
+
+    public Integer getOldId() {
+        return oldId;
     }
 
     /**

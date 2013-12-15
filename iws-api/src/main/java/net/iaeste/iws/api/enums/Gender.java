@@ -22,5 +22,6 @@ package net.iaeste.iws.api.enums;
 public enum Gender {
 
     MALE,
-    FEMALE
+    FEMALE,
+    UNKNOWN
 }

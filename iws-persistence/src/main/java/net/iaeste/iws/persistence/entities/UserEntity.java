@@ -56,6 +56,9 @@ import java.util.Map;
         @NamedQuery(name = "user.findById",
                 query = "select u from UserEntity u " +
                         "where u.id = :id"),
+        @NamedQuery(name = "user.findByIW3Id",
+                query = "select u from UserEntity u " +
+                        "where u.oldId = :oldid"),
         @NamedQuery(name = "user.loginCredentials",
                 query = "select u from UserEntity u " +
                         "where u.status = 'ACTIVE'" +

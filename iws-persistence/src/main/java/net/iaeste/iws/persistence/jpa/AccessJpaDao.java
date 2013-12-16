@@ -258,6 +258,17 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public UserEntity findUserByIW3Id(final Integer oldId) {
+        final Query query = entityManager.createNamedQuery("user.findByIW3Id");
+        query.setParameter("oldid", oldId);
+
+        return findSingleResult(query, "User");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public GroupEntity findGroupByIW3Id(final Integer oldId) {
         final Query query = entityManager.createNamedQuery("group.findByIW3Id");
         query.setParameter("oldid", oldId);
@@ -286,6 +297,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("gid", group.getId());
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserGroupEntity findIw3UserGroup(final Integer iw3UserId, final Integer iw3GroupId) {
+        final Query query = entityManager.createNamedQuery("usergroup.findByIw3UserAndGroup");
+        query.setParameter("iw3User", iw3UserId);
+        query.setParameter("iw3Group", iw3GroupId);
+
+        return findSingleResult(query, "UserGroup");
     }
 
     /**

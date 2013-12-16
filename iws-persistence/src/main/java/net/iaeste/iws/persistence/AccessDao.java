@@ -111,11 +111,15 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroupById(Long id);
 
+    UserEntity findUserByIW3Id(Integer oldId);
+
     GroupEntity findGroupByIW3Id(Integer oldId);
 
     GroupEntity findGroup(UserEntity user, String externalGroupId);
 
     List<UserGroupEntity> findGroupUsers(GroupEntity group);
+
+    UserGroupEntity findIw3UserGroup(Integer iw3UserId, Integer iw3GroupId);
 
     List<GroupEntity> findSubGroups(Long parentId);
 

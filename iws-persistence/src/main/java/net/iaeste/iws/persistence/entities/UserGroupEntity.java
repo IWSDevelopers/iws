@@ -49,6 +49,10 @@ import java.util.Map;
         @NamedQuery(name = "usergroup.findById",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.id = :id"),
+        @NamedQuery(name = "usergroup.findByIw3UserAndGroup",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.user.oldId = :iw3User" +
+                        "  and ug.group.oldId = :iw3Group"),
         @NamedQuery(name = "usergroup.findByExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.externalId = :eid"),

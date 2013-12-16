@@ -179,7 +179,7 @@ create table grouptypes (
 --   All member groups (with the exception of the Global Members group) must
 -- have a Country Id assigned.
 -- =============================================================================
-create sequence group_sequence start with 50 increment by 1;
+create sequence group_sequence start with 10 increment by 1;
 create table groups (
     id                  integer default nextval('group_sequence'),
     external_id         varchar(36),
@@ -203,6 +203,7 @@ create table groups (
 
     /* Unique Constraints */
     constraint group_unique_external_id unique (external_id),
+    constraint group_unique_old_iw3_id  unique (old_iw3_id),
 
     /* Not Null & Other Constraints */
     constraint group_notnull_id           check (id is not null),
@@ -528,7 +529,7 @@ create table user_to_group (
     /* Not Null Constraints */
     constraint u2g_notnull_id              check (id is not null),
     constraint u2g_notnull_external_id     check (external_id is not null),
-    constraint u2g_notnull_user_idd        check (user_id is not null),
+    constraint u2g_notnull_user_id         check (user_id is not null),
     constraint u2g_notnull_group_id        check (group_id is not null),
     constraint u2g_notnull_role_id         check (role_id is not null),
     constraint u2g_notnull_on_public_list  check (on_public_list is not null),

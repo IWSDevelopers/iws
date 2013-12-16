@@ -204,10 +204,11 @@ create table groups (
     /* Unique Constraints */
     constraint group_unique_external_id unique (external_id),
 
-    /* Not Null Constraints */
+    /* Not Null & Other Constraints */
     constraint group_notnull_id           check (id is not null),
     constraint group_notnull_external_id  check (external_id is not null),
     constraint group_notnull_grouptype_id check (grouptype_id is not null),
+    constraint group_parent_before_id     check (parent_id <= id),
     constraint group_notnull_status       check (status is not null),
     constraint group_notnull_modified     check (modified is not null),
     constraint group_notnull_created      check (created is not null)

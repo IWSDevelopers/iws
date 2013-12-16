@@ -21,6 +21,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -96,6 +97,13 @@ public class OfferGroupEntityTest {
 
     @After
     public void cleanUp() {
+    }
+
+    @Test
+    public void testDefaultOfferGroupStatus() {
+        final OfferGroupEntity offerGroupEntity = new OfferGroupEntity();
+
+        assertThat(offerGroupEntity.getStatus(), is(OfferState.NEW));
     }
 
     @Test

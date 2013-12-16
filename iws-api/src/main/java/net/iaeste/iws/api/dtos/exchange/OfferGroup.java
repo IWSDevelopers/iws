@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.AbstractFallible;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.DateTime;
@@ -31,6 +32,7 @@ public final class OfferGroup extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private OfferState status = null;
     private String offerRefNo = null;
     private String groupId = null;
     private DateTime modified = null;
@@ -80,6 +82,14 @@ public final class OfferGroup extends AbstractFallible {
 
     public String getGroupId() {
         return groupId;
+    }
+
+    public OfferState getStatus() {
+        return status;
+    }
+
+    public void setStatus(final OfferState status) {
+        this.status = status;
     }
 
     /**
@@ -132,6 +142,9 @@ public final class OfferGroup extends AbstractFallible {
         if ((groupId != null) ? !groupId.equals(offerGroup.groupId) : (offerGroup.groupId != null)) {
             return false;
         }
+        if (status != offerGroup.status) {
+            return false;
+        }
 
         // #modified and #created are not relevant for the equality of the offers.
         return true;
@@ -146,6 +159,7 @@ public final class OfferGroup extends AbstractFallible {
 
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offerRefNo != null ? offerRefNo.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupId != null ? groupId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
 
         return hash;
     }
@@ -158,6 +172,7 @@ public final class OfferGroup extends AbstractFallible {
         return "OfferGroup{" +
                 "offerRefNo=" + offerRefNo +
                 ", groupId=" + groupId +
+                ", status=" + status +
                 ", modified=" + modified +
                 ", created=" + created +
                 '}';

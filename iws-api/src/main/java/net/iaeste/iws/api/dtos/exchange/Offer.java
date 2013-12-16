@@ -592,7 +592,7 @@ public final class Offer extends AbstractVerification {
 
     /**
      * Sets the National Secretary for this Offer (from the National Group).
-     * Note, this field is contrlled bu the IWS and cannot be altered via this
+     * Note, this field is controlled by the IWS and cannot be altered via this
      * Object.
      *
      * @param nsFirstname NS Firstname
@@ -607,7 +607,7 @@ public final class Offer extends AbstractVerification {
 
     /**
      * Sets the National Secretary for this Offer (from the National Group).
-     * Note, this field is contrlled bu the IWS and cannot be altered via this
+     * Note, this field is controlled by the IWS and cannot be altered via this
      * Object.
      *
      * @param nsLastname NS Lastname

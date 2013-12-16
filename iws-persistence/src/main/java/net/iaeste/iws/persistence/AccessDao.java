@@ -109,7 +109,9 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroupByPermission(UserEntity user, String groupId, Permission permission);
 
-    GroupEntity findGroupById(Integer id);
+    GroupEntity findGroupById(Long id);
+
+    GroupEntity findGroupByIW3Id(Integer oldId);
 
     GroupEntity findGroup(UserEntity user, String externalGroupId);
 

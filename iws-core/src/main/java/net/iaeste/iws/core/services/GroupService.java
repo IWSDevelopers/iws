@@ -60,7 +60,7 @@ public final class GroupService {
 
     private static final Logger log = LoggerFactory.getLogger(GroupService.class);
 
-    private static final Long GENERAL_SECRETARY_GROUP = -1L;
+    private static final Long GENERAL_SECRETARY_GROUP = 2L;
 
     private final AccessDao dao;
     private final Notifications notifications;

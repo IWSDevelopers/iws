@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
@@ -23,6 +24,8 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -106,6 +109,11 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     @Monitored(name="Offer2Group comment", level = MonitoringLevel.DETAILED)
     @Column(name = "comment", length = 1000)
     private String comment = null;
+
+    @Monitored(name="Offer2Group status", level = MonitoringLevel.DETAILED)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 10)
+    private OfferState status = OfferState.NEW;
 
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "modified_by", referencedColumnName = "id", nullable = false)
@@ -208,6 +216,14 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
 
     public String getComment() {
         return comment;
+    }
+
+    public OfferState getStatus() {
+        return status;
+    }
+
+    public void setStatus(final OfferState status) {
+        this.status = status;
     }
 
     public void setModifiedBy(final UserEntity modifiedBy) {

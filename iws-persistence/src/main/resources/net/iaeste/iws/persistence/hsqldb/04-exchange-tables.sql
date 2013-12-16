@@ -156,6 +156,7 @@ create table offer_to_group (
     comment            varchar(1000)  default '',
     modified_by        integer,
     created_by         integer,
+    status             varchar(10),
     modified           timestamp default now(),
     created            timestamp default now(),
 

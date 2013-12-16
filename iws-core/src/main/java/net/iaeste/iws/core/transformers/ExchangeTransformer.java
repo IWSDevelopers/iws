@@ -205,6 +205,7 @@ public final class ExchangeTransformer {
 
             result.setOfferRefNo(entity.getOffer().getRefNo());
             result.setGroupId(entity.getGroup().getExternalId());
+            result.setStatus(entity.getStatus());
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
         }
@@ -291,7 +292,7 @@ public final class ExchangeTransformer {
             result.setInternshipStart(CommonTransformer.convert(entity.getInternshipStart()));
             result.setInternshipEnd(CommonTransformer.convert(entity.getInternshipEnd()));
             result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies()));
-            result.setSpecializations(CollectionTransformer.explodeEnumSet(Specialization.class, entity.getSpecializations()));
+            result.setSpecializations(CollectionTransformer.explodeStringList(entity.getSpecializations()));
             result.setPassportNumber(entity.getPassportNumber());
             result.setPassportPlaceOfIssue(entity.getPassportPlaceOfIssue());
             result.setPassportValidUntil(entity.getPassportValidUntil());
@@ -332,7 +333,7 @@ public final class ExchangeTransformer {
             result.setInternshipStart(CommonTransformer.convert(application.getInternshipStart()));
             result.setInternshipEnd(CommonTransformer.convert(application.getInternshipEnd()));
             result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(application.getFieldOfStudies()));
-            result.setSpecializations(CollectionTransformer.concatEnumCollection(application.getSpecializations()));
+            result.setSpecializations(CollectionTransformer.join(application.getSpecializations()));
             result.setPassportNumber(application.getPassportNumber());
             result.setPassportPlaceOfIssue(application.getPassportPlaceOfIssue());
             result.setPassportValidUntil(application.getPassportValidUntil());

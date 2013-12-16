@@ -28,10 +28,7 @@ import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Contains information about a Student applying for an Offer
@@ -88,7 +85,7 @@ public final class StudentApplication extends AbstractVerification {
 
     // Field of Studies & Specializations are part of the Student Object
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
-    private Set<Specialization> specializations = EnumSet.noneOf(Specialization.class);
+    private List<String> specializations = new ArrayList<>();
 
     // TODO Critical information, what is the procedure to deal with this ?
     //   The problem is that certain countries have very strict rules regarding
@@ -369,12 +366,12 @@ public final class StudentApplication extends AbstractVerification {
         return copy(fieldOfStudies);
     }
 
-    public void setSpecializations(final Set<Specialization> specializations) {
-        ensureNotTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
+    public void setSpecializations(final List<String> specializations) throws IllegalArgumentException {
+        ensureNotNullOrTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
         this.specializations = copy(specializations);
     }
 
-    public Set<Specialization> getSpecializations() {
+    public List<String> getSpecializations() {
         return copy(specializations);
     }
 

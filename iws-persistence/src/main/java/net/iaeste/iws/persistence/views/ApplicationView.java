@@ -18,6 +18,8 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -26,6 +28,16 @@ import javax.persistence.Table;
  * @since   1.7
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "view.findForeignApplicationsByOfferExternalId",
+                query = "select v from ApplicationView v " +
+                        "where v.offerOwnerGroupId = :offerOwnerId " +
+                        "  and v.offer.externalId = :oeid "),
+        @NamedQuery(name = "view.findDomesticApplicationsByOfferExternalId",
+                query = "select v from ApplicationView v " +
+                        "where v.applicationOwnerGroupId = :applicationOwnerId " +
+                        "  and v.offer.externalId = :oeid "),
+})
 @Table(name = "application_view")
 public class ApplicationView extends AbstractView<ApplicationView> {
 
@@ -41,6 +53,15 @@ public class ApplicationView extends AbstractView<ApplicationView> {
 
     @Embedded
     private EmbeddedApplication application = null;
+
+    @Embedded
+    private EmbeddedAddress homeAddress = null;
+
+    @Embedded
+    private EmbeddedAddress2 termsAddress = null;
+
+    @Embedded
+    private EmbeddedOffer offer = null;
 
     @Embedded
     private EmbeddedStudent student = null;
@@ -82,6 +103,30 @@ public class ApplicationView extends AbstractView<ApplicationView> {
 
     public EmbeddedApplication getApplication() {
         return application;
+    }
+
+    public void setHomeAddress(final EmbeddedAddress homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public EmbeddedAddress getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setTermsAddress(final EmbeddedAddress2 termsAddress) {
+        this.termsAddress = termsAddress;
+    }
+
+    public EmbeddedAddress2 getTermsAddress() {
+        return termsAddress;
+    }
+
+    public void setOffer(final EmbeddedOffer offer) {
+        this.offer = offer;
+    }
+
+    public EmbeddedOffer getOffer() {
+        return offer;
     }
 
     public void setStudent(final EmbeddedStudent student) {

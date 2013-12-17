@@ -115,7 +115,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     private Integer totalYearsOfStudy = null;
 
     @Column(name = "lodging_by_iaeste")
-    private boolean lodgingByIaeste = false;
+    private Boolean lodgingByIaeste = false;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "language_1", length = 255)

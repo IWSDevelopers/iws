@@ -44,6 +44,7 @@ import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
+import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.StudentView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,32 +142,19 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
-        //TODO temporary fix for #510
-        final OfferEntity offerByExternalId = exchangeDao.findOfferByExternalId(authentication, request.getOfferId());
+        final String offerExternalId = request.getOfferId();
+        final OfferEntity ownedOffer = exchangeDao.findOfferByExternalId(authentication, offerExternalId);
 
-        final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffer(request.getOfferId());
-        OfferEntity offer = null;
-
-        //TODO temporary fix for #510
-        if(offerByExternalId != null && offerByExternalId.getGroup().equals(authentication.getGroup())) {
-            offer = offerByExternalId;
+        List<ApplicationView> found;
+        if(ownedOffer != null && ownedOffer.getGroup().equals(authentication.getGroup())) {
+            found = dao.findForeignApplicationsForOffer(offerExternalId, authentication.getGroup().getId());
+        } else {
+            found = dao.findDomesticApplicationsForOffer(offerExternalId, authentication.getGroup().getId());
         }
-
-        for (final OfferGroupEntity offerGroup : offerGroups) {
-            if (offerGroup.getGroup().equals(authentication.getGroup())) {
-                offer = offerGroup.getOffer();
-            }
-        }
-
-        if (offer == null) {
-            throw new VerificationException("The offer with id '" + request.getOfferId() + "' was not found.");
-        }
-
-        final List<ApplicationEntity> found = dao.findApplicationsForOffer(offer.getId());
 
         final List<StudentApplication> applications = new ArrayList<>(found.size());
-        for (final ApplicationEntity entity : found) {
-            applications.add(transform(entity));
+        for (final ApplicationView entity : found) {
+            applications.add(ViewTransformer.transform(entity));
         }
 
         return new FetchStudentApplicationsResponse(applications);

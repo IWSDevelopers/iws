@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
+import net.iaeste.iws.persistence.views.ApplicationView;
 
 import java.util.List;
 
@@ -43,9 +44,18 @@ public interface StudentDao extends BasicDao {
     StudentEntity findStudentByExternal(Long parentGroupId, String externalId);
 
     /**
-     * Finds all applications for a specific Offer
-     * @param offerId Offer ID
-     * @return list of {@code ApplicationEntity}
+     * Finds all applications for a specific Offer owned by specified group
+     * @param offerExternalId Offer ID
+     * @param offerOwnerId Offer Owner Group ID
+     * @return list of {@code ApplicationView}
      */
-    List<ApplicationEntity> findApplicationsForOffer(Long offerId);
+    List<ApplicationView> findForeignApplicationsForOffer(String offerExternalId, Long offerOwnerId);
+
+    /**
+     * Finds all applications owned by specified group for a specific Offer
+     * @param offerExternalId Offer ID
+     * @param applicaitonOwnerId Offer Owner Group ID
+     * @return list of {@code ApplicationView}
+     */
+    List<ApplicationView> findDomesticApplicationsForOffer(String offerExternalId, Long applicaitonOwnerId);
 }

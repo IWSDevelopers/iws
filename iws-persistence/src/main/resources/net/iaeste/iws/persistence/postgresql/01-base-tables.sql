@@ -626,6 +626,44 @@ create table files (
 
 
 -- =============================================================================
+-- Attachments
+-- -----------------------------------------------------------------------------
+-- Files can be attached to many kinds of documents. And as the IWS requires a
+-- dynamic listing, we need a relation table to handle it. To avoid that
+-- multiple tables exists for each Objects that can contain the Attachments, a
+-- single Attachment table is made.
+--   Attachments are considered binany, either they are there or they aren't.
+-- There is no state for an attachment, hence there is only a Created timestamp,
+-- no Modified! Further, as the attachment is dynamic in nature, the Table &
+-- Record which the Attachment belongs to are free fields. Mostly just use for
+-- searching. Te AttachedToTable field is the name of the Table, and the Record
+-- is then the Id within the AttachedToTable, which the Attachment belongs to.
+-- =============================================================================
+create sequence attachment_sequence start with 1 increment by 1 no cycle;
+create table attachments (
+    id                  integer default nextval('attachment_sequence'),
+    attached_to_table   varchar(50),
+    attached_to_record  integer,
+    attached_file_id    integer,
+    created             timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint attachment_pk          primary key (id),
+    constraint attachment_fk_file_id  foreign key (attached_file_id) references files (id),
+
+    /* Unique Constraints */
+    constraint attachment_unique_record_file unique (attached_to_table, attached_to_record, attached_file_id),
+
+    /* Not Null Constraints */
+    constraint attachment_notnull_id       check (id is not null),
+    constraint attachment_notnull_table    check (attached_to_table is not null),
+    constraint attachment_notnull_record   check (attached_to_record is not null),
+    constraint attachment_notnull_file_id  check (attached_file_id is not null),
+    constraint attachment_notnull_created  check (created is not null)
+);
+
+
+-- =============================================================================
 -- User notifications setting
 -- -----------------------------------------------------------------------------
 -- The notification should additionally list the group that the notification is

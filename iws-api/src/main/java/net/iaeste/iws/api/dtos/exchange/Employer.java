@@ -44,7 +44,7 @@ public final class Employer extends AbstractVerification {
     private String department = null;
     private String business = null;
     private Address address = null;
-    private Integer employeesCount = null;
+    private String employeesCount = null;
     private String website = null;
     private String workingPlace = null;
     private Boolean canteen = null;
@@ -211,15 +211,20 @@ public final class Employer extends AbstractVerification {
     }
 
     /**
-     * Sets the Employer Employees Count.
+     * Sets the Employer Employees Count. Ther eare not rules applied to the
+     * values of this field, as long as it does not exceed 25 characters.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the
+     * employees Count value is too long.
      *
      * @param employeesCount Employer Employees Count
+     * @throws IllegalArgumentException if the field is longer than 25 characters
      */
-    public void setEmployeesCount(final Integer employeesCount) {
+    public void setEmployeesCount(final String employeesCount) throws IllegalArgumentException {
+        ensureNotTooLong("employeesCount", employeesCount, 25);
         this.employeesCount = employeesCount;
     }
 
-    public Integer getEmployeesCount() {
+    public String getEmployeesCount() {
         return employeesCount;
     }
 

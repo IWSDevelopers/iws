@@ -25,7 +25,7 @@ create table employers (
     business                  varchar(255),
     working_place             varchar(255),
     address_id                integer,
-    number_of_employees       integer,
+    number_of_employees       varchar(25),
     website                   varchar(255),
     canteen                   boolean,
     nearest_airport           varchar(255),

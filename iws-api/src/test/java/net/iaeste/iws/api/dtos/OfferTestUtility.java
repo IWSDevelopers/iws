@@ -55,7 +55,7 @@ public final class OfferTestUtility {
     public static final String EMPLOYER_ADDRESS = TestData.ADDRESS_STREET1;
     public static final String EMPLOYER_ADDRESS2 = TestData.ADDRESS_STREET2;
     public static final String EMPLOYER_BUSINESS = TestData.EMPLOYER_BUSINESS;
-    public static final Integer EMPLOYER_EMPLOYEES_COUNT = TestData.EMPLOYER_EMPLOYEES_COUNT;
+    public static final String EMPLOYER_EMPLOYEES_COUNT = TestData.EMPLOYER_EMPLOYEES_COUNT;
     public static final String EMPLOYER_WEBSITE = TestData.EMPLOYER_WEBSITE;
     public static final String OTHER_REQUIREMENTS = TestData.OFFER_OTHER_REQUIREMENTS;
     public static final String WORKING_PLACE = TestData.EMPLOYER_WORKING_PLACE;

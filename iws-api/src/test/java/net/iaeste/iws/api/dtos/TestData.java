@@ -68,7 +68,7 @@ public final class TestData {
     // Name of the Employer, which must be provided
     public static final String EMPLOYER_DEPARTMENT = "Employer Department";
     public static final String EMPLOYER_BUSINESS = "Employer Business";
-    public static final Integer EMPLOYER_EMPLOYEES_COUNT = 10;
+    public static final String EMPLOYER_EMPLOYEES_COUNT = "Ca. 10";
     public static final String EMPLOYER_WEBSITE = "www.iaeste.org";
     public static final String EMPLOYER_WORKING_PLACE = "Employer Working Place";
     public static final Boolean EMPLOYER_CANTEEN = Boolean.TRUE;

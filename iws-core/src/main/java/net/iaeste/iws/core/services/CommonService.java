@@ -189,6 +189,18 @@ public class CommonService<T extends BasicDao> {
         }
     }
 
+//    // =========================================================================
+//    // Common Attachment Methods
+//    // =========================================================================
+//
+//    protected processAttachedFiles(final Authentication authentication, final String table, final Long record, final List<FileEntity> files) {
+//
+//    }
+//
+//    protected List<FileEntity> fetchAttachedFiles(final Authentication authentication, final String table, final Long record) {
+//
+//    }
+
     // =========================================================================
     // Other Common Methods
     // =========================================================================

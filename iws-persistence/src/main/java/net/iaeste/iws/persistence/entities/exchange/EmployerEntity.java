@@ -106,8 +106,8 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     private AddressEntity address = null;
 
     @Monitored(name="Employer number of employees", level = MonitoringLevel.DETAILED)
-    @Column(name = "number_of_employees")
-    private Integer numberOfEmployees = null;
+    @Column(name = "number_of_employees", length = 25)
+    private String numberOfEmployees = null;
 
     @Monitored(name="Employer website", level = MonitoringLevel.DETAILED)
     @Column(name = "website", length = 255)
@@ -252,11 +252,11 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
         return address;
     }
 
-    public void setNumberOfEmployees(final Integer numberOfEmployees) {
+    public void setNumberOfEmployees(final String numberOfEmployees) {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public Integer getNumberOfEmployees() {
+    public String getNumberOfEmployees() {
         return numberOfEmployees;
     }
 

@@ -32,8 +32,8 @@ public final class ProcessEmployer extends AbstractFixture<EmployerResponse> {
 
     private final Exchange exchange = new ExchangeCaller();
     private ProcessEmployerRequest request = null;
-    private Employer employer = new Employer();
-    private Address address = new Address();
+    private final Employer employer = new Employer();
+    private final Address address = new Address();
 
     public void setName(final String name) {
         employer.setName(name);
@@ -75,7 +75,7 @@ public final class ProcessEmployer extends AbstractFixture<EmployerResponse> {
         address.setCountry(country);
     }
 
-    public void setEmployeesCount(final Integer employeesCount) {
+    public void setEmployeesCount(final String employeesCount) {
         employer.setEmployeesCount(employeesCount);
     }
 

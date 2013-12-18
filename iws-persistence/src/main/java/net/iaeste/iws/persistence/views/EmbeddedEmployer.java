@@ -48,7 +48,7 @@ public class EmbeddedEmployer {
     private String business = null;
 
     @Column(name = "employer_number_of_employees", insertable = false, updatable = false)
-    private Integer numberOfEmployees = null;
+    private String numberOfEmployees = null;
 
     @Column(name = "employer_website", insertable = false, updatable = false)
     private String website = null;
@@ -115,11 +115,11 @@ public class EmbeddedEmployer {
         return business;
     }
 
-    public void setNumberOfEmployees(final Integer numberOfEmployees) {
+    public void setNumberOfEmployees(final String numberOfEmployees) {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public Integer getNumberOfEmployees() {
+    public String getNumberOfEmployees() {
         return numberOfEmployees;
     }
 

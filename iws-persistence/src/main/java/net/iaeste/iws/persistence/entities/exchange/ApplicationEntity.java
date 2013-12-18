@@ -85,7 +85,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 //    private UserEntity createdBy = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "home_address_id", nullable = false, updatable = true)
+    @JoinColumn(name = "home_address_id", updatable = true)
     private AddressEntity homeAddress = null;
 
     @Column(name = "email")
@@ -95,7 +95,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     private String phoneNumber = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "address_during_terms_id", nullable = false, updatable = true)
+    @JoinColumn(name = "address_during_terms_id", updatable = true)
     private AddressEntity addressDuringTerms = null;
 
     @Temporal(TemporalType.DATE)

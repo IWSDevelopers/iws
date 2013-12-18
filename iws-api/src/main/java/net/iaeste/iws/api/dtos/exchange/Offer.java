@@ -54,7 +54,6 @@ public final class Offer extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String offerId = null;
-    private Group group = null;
     private String refNo = null;
 
     // General Work Description
@@ -127,7 +126,6 @@ public final class Offer extends AbstractVerification {
     public Offer(final Offer offer) {
         if (offer != null) {
             offerId = offer.offerId;
-            group = new Group(offer.group);
             refNo = offer.refNo;
             employer = new Employer(offer.employer);
             workDescription = offer.workDescription;
@@ -202,14 +200,17 @@ public final class Offer extends AbstractVerification {
      *
      * @param group National Group, which this Offer belongs to
      * @throws IllegalArgumentException if not valid
+     * @deprecated Please use the Group in the Employer Object
      */
+    @Deprecated
     public void setGroup(final Group group) throws IllegalArgumentException {
         ensureNotNullAndVerifiable("group", group);
-        this.group = new Group(group);
+        //this.group = new Group(group);
     }
 
+    @Deprecated
     public Group getGroup() {
-        return new Group(group);
+        return employer.getGroup();
     }
 
     /**
@@ -676,9 +677,6 @@ public final class Offer extends AbstractVerification {
         if (fieldOfStudies != null ? !fieldOfStudies.equals(offer.fieldOfStudies) : offer.fieldOfStudies != null) {
             return false;
         }
-        if (group != null ? !group.equals(offer.group) : offer.group != null) {
-            return false;
-        }
         if (offerId != null ? !offerId.equals(offer.offerId) : offer.offerId != null) {
             return false;
         }
@@ -786,7 +784,6 @@ public final class Offer extends AbstractVerification {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (offerId != null ? offerId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (refNo != null ? refNo.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (workDescription != null ? workDescription.hashCode() : 0);
@@ -835,7 +832,6 @@ public final class Offer extends AbstractVerification {
     public String toString() {
         return "Offer{" +
                 "offerId='" + offerId + '\'' +
-                ", group=" + group +
                 ", refNo='" + refNo + '\'' +
                 ", employer=" + employer +
                 ", workDescription='" + workDescription + '\'' +

@@ -89,7 +89,6 @@ public final class ViewTransformer {
         offer.setNsFirstname(view.getNsFirstname());
         offer.setNsLastname(view.getNsLastname());
         offer.setEmployer(employer);
-        offer.setGroup(group);
 
         return offer;
     }

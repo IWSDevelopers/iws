@@ -26,7 +26,7 @@ create view employer_view as
     g.external_id              as group_external_id,
     g.parent_id                as group_parent_id,
     g.grouptype_id             as group_grouptype,
-    g.groupName                as group_groupname,
+    g.groupname                as group_groupname,
     g.status                   as group_status,
     g.modified                 as group_modified,
     g.created                  as group_created,
@@ -125,7 +125,7 @@ create view offer_view as
     g.external_id              as group_external_id,
     g.parent_id                as group_parent_id,
     g.grouptype_id             as group_grouptype,
-    g.groupName                as group_groupname,
+    g.groupname                as group_groupname,
     g.status                   as group_status,
     g.modified                 as group_modified,
     g.created                  as group_created,
@@ -158,11 +158,11 @@ create view offer_view as
     user_to_group u2g,
     users u
   where e.id = o.employer_id
-    and g.id = o.group_id
+    and g.id = e.group_id
     and a.id = e.address_id
     and c.id = a.country_id
     and u.id = u2g.user_id
-    and o.group_id = u2g.group_id
+    and e.group_id = u2g.group_id
     and u2g.role_id = 1;
 
 
@@ -197,7 +197,7 @@ create view student_view as
     g.external_id              as group_external_id,
     g.grouptype_id             as group_grouptype,
     g.parent_id                as group_parent_id,
-    g.groupName                as group_groupname,
+    g.groupname                as group_groupname,
     g.status                   as group_status,
     g.modified                 as group_modified,
     g.created                  as group_created,

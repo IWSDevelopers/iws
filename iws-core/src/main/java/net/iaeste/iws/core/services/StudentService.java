@@ -146,7 +146,7 @@ public final class StudentService extends CommonService<StudentDao> {
         OfferEntity offer = null;
 
         //TODO temporary fix for #510
-        if(offerByExternalId != null && offerByExternalId.getGroup().equals(authentication.getGroup())) {
+        if (offerByExternalId != null && offerByExternalId.getEmployer().getGroup().equals(authentication.getGroup())) {
             offer = offerByExternalId;
         }
 

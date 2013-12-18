@@ -128,7 +128,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
         if (externalId == null) {
             // Add the Group to the Offer, otherwise our refno checks will fail
-            newEntity.setGroup(authentication.getGroup());
+            newEntity.getEmployer().setGroup(authentication.getGroup());
             // Before we can persist the Offer, we need to check that the refno
             // is valid. Since the Country is part of the Group, we can simply
             // compare the refno with that
@@ -181,7 +181,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     }
 
     private static void verifyRefnoValidity(final Authentication authentication, final OfferEntity offer) {
-        final String countryCode = offer.getGroup().getCountry().getCountryCode();
+        final String countryCode = offer.getEmployer().getGroup().getCountry().getCountryCode();
         final String refno = offer.getRefNo();
 
         if (!refno.startsWith(countryCode)) {

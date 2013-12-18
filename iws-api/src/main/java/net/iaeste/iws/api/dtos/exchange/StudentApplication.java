@@ -19,16 +19,21 @@ import static net.iaeste.iws.api.util.Copier.copy;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
-import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Contains information about a Student applying for an Offer
@@ -85,7 +90,7 @@ public final class StudentApplication extends AbstractVerification {
 
     // Field of Studies & Specializations are part of the Student Object
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
-    private List<String> specializations = new ArrayList<>();
+    private List<String> specializations = new ArrayList<>(0);
 
     // TODO Critical information, what is the procedure to deal with this ?
     //   The problem is that certain countries have very strict rules regarding
@@ -107,10 +112,16 @@ public final class StudentApplication extends AbstractVerification {
     private StudentAcceptance acceptance = null;
     private StudentAcceptanceConfirmation travelInformation = null;
 
+    private DateTime nominatedAt = null;
+
+    /**
+     * Files are attached to an Application as a List, meaning that it is
+     * possible to have an arbitrary number of Files as part of the Application.
+     */
+    private List<File> attachments = new ArrayList<>(0);
+
     private DateTime modified = null;
     private DateTime created = null;
-
-    private DateTime nominatedAt = null;
 
     // =========================================================================
     // Object Constructors
@@ -159,9 +170,10 @@ public final class StudentApplication extends AbstractVerification {
             passportValidUntil = studentApplication.passportValidUntil;
             acceptance = new StudentAcceptance(studentApplication.acceptance);
             travelInformation = new StudentAcceptanceConfirmation(studentApplication.travelInformation);
+            nominatedAt = studentApplication.nominatedAt;
+            attachments = copy(attachments);
             modified = studentApplication.modified;
             created = studentApplication.created;
-            nominatedAt = studentApplication.nominatedAt;
         }
     }
 
@@ -426,6 +438,22 @@ public final class StudentApplication extends AbstractVerification {
         return nominatedAt;
     }
 
+    /**
+     * Adds Attachments to the Application. If the List is null, then the method
+     * will throw an {@code IllegalArgumentException}.
+     *
+     * @param attachments Attachments
+     * @throws IllegalArgumentException if the attachments are null
+     */
+    public void setAttachments(final List<File> attachments) throws  IllegalArgumentException {
+        ensureNotNull("attachments", attachments);
+        this.attachments = copy(attachments);
+    }
+
+    public List<File> getAttachments() {
+        return copy(attachments);
+    }
+
     public void setModified(final DateTime modified) {
         this.modified = copy(modified);
     }
@@ -642,9 +670,9 @@ public final class StudentApplication extends AbstractVerification {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (passportValidUntil != null ? passportValidUntil.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (acceptance != null ? acceptance.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (travelInformation != null ? travelInformation.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nominatedAt != null ? nominatedAt.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (modified != null ? modified.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (created != null ? created.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nominatedAt != null ? nominatedAt.hashCode() : 0);
 
         return hash;
     }
@@ -684,9 +712,9 @@ public final class StudentApplication extends AbstractVerification {
                 ", passportValidUntil='" + passportValidUntil + '\'' +
                 ", acceptance='" + acceptance + '\'' +
                 ", travelInformation='" + travelInformation + '\'' +
+                ", nominatedAt='" + nominatedAt + '\'' +
                 ", modified='" + modified + '\'' +
                 ", created='" + created + '\'' +
-                ", nominatedAt='" + nominatedAt + '\'' +
                 '}';
     }
 }

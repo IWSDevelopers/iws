@@ -53,7 +53,6 @@ public final class ExchangeTransformer {
             result = new OfferEntity();
 
             result.setExternalId(offer.getOfferId());
-            result.setGroup(CommonTransformer.transform(offer.getGroup()));
             result.setRefNo(offer.getRefNo());
             result.setEmployer(transform(offer.getEmployer()));
             result.setWorkDescription(offer.getWorkDescription());
@@ -105,7 +104,6 @@ public final class ExchangeTransformer {
             result = new Offer();
 
             result.setOfferId(entity.getExternalId());
-            result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setRefNo(entity.getRefNo());
             result.setEmployer(transform(entity.getEmployer()));
             result.setWorkDescription(entity.getWorkDescription());

@@ -27,13 +27,11 @@ import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.Externable;
-import net.iaeste.iws.persistence.entities.GroupEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -114,15 +112,6 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
      */
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
-
-    /**
-     * The GroupId is also stored in the Employer Object. Meaning, that we have
-     * duplicate information, that only serve to make the Objects more complex
-     * than they have to be.
-     */
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = true)
-    private GroupEntity group = null;
 
     @Column(name = "ref_no", length = 16, nullable = false, unique = true)
     private String refNo = null;
@@ -336,14 +325,6 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @Override
     public String getExternalId() {
         return externalId;
-    }
-
-    public void setGroup(final GroupEntity group) {
-        this.group = group;
-    }
-
-    public GroupEntity getGroup() {
-        return group;
     }
 
     public void setRefNo(final String refNo) {

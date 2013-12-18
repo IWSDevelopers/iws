@@ -62,7 +62,6 @@ create sequence offer_sequence start with 100 increment by 1;
 create table offers (
     id                        integer default nextval('offer_sequence'),
     external_id               varchar(36),
-    group_id                  integer,
     ref_no                    varchar(16),
     -- General Work Description
     employer_id               integer,
@@ -113,7 +112,6 @@ create table offers (
 
     /* Primary & Foreign Keys */
     constraint offer_pk             primary key (id),
-    constraint offer_fk_group_id    foreign key (group_id) references groups (id),
     constraint offer_fk_employer_id foreign key (employer_id) references employers (id),
 
     /* Unique Constraints */
@@ -124,7 +122,6 @@ create table offers (
     constraint offer_notnull_id               check (id is not null),
     constraint offer_notnull_ref_no           check (ref_no is not null),
     constraint offer_notnull_external_id      check (external_id is not null),
-    constraint offer_notnull_group_id         check (group_id is not null),
     constraint offer_notnull_from_date        check (from_date is not null),
     constraint offer_notnull_to_date          check (to_date is not null),
     constraint offer_notnull_language_1       check (language_1 is not null),

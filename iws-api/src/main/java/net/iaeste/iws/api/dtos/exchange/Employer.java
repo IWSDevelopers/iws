@@ -118,13 +118,13 @@ public final class Employer extends AbstractVerification {
      * Sets the Employer Group. The Group is automatically set by the IWS upon
      * initial persisting of the Employer.<br />
      *   The method will throw an {@code IllegalArgumentException} if the Group
-     * is not valid.
+     * is not valid, i.e. if the Group is either null or not verifiable.
      *
      * @param group National Group, which this Employer belongs to
-     * @throws IllegalArgumentException if not valid
+     * @throws IllegalArgumentException if null or not valid
      */
     public void setGroup(final Group group) throws IllegalArgumentException {
-        ensureVerifiable("group", group);
+        ensureNotNullAndVerifiable("group", group);
         this.group = new Group(group);
     }
 

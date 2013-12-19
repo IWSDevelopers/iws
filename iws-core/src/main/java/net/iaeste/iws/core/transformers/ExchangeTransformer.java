@@ -87,7 +87,6 @@ public final class ExchangeTransformer {
             result.setLodgingBy(offer.getLodgingBy());
             result.setLodgingCost(offer.getLodgingCost());
             result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
-            result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setAdditionalInformation(offer.getAdditionalInformation());
             result.setStatus(offer.getStatus());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
@@ -190,6 +189,7 @@ public final class ExchangeTransformer {
             result.setNearestPublicTransport(employer.getNearestPublicTransport());
             result.setWeeklyHours(employer.getWeeklyHours());
             result.setDailyHours(employer.getDailyHours());
+            result.setCanteen(employer.getCanteen());
         }
 
         return result;

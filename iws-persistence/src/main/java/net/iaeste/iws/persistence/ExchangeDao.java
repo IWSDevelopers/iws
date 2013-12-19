@@ -15,10 +15,10 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.exchange.Employer;
-import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.views.EmployerView;
 
@@ -37,6 +37,7 @@ public interface ExchangeDao extends BasicDao {
     EmployerEntity findEmployer(String externalId);
 
     EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer);
+    EmployerEntity findUniqueEmployer(GroupEntity group, EmployerEntity employer);
 
     /**
      * Get all offers from the database.

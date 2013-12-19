@@ -63,6 +63,8 @@ create table offers (
     id                        integer default nextval('offer_sequence'),
     external_id               varchar(36),
     ref_no                    varchar(16),
+    old_refno                 varchar(36),
+    exchange_year             integer,
     -- General Work Description
     employer_id               integer,
     work_description          varchar(1000),
@@ -120,8 +122,9 @@ create table offers (
 
     /* Not Null Constraints */
     constraint offer_notnull_id               check (id is not null),
-    constraint offer_notnull_ref_no           check (ref_no is not null),
     constraint offer_notnull_external_id      check (external_id is not null),
+    constraint offer_notnull_ref_no           check (ref_no is not null),
+    constraint offer_notnull_exchange_year    check (exchange_year is not null),
     constraint offer_notnull_from_date        check (from_date is not null),
     constraint offer_notnull_to_date          check (to_date is not null),
     constraint offer_notnull_language_1       check (language_1 is not null),

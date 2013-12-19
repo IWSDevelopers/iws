@@ -18,10 +18,10 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
-import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.views.EmployerView;
 
 import javax.persistence.EntityManager;
@@ -65,6 +65,23 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public EmployerEntity findUniqueEmployer(final Authentication authentication, final Employer employer) {
         final Query query = entityManager.createNamedQuery("employer.findEmployerByValues");
         query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("name", employer.getName());
+        // Note by Kim; If someone can explain why PostgreSQL throws an
+        // exception with function 'lower(bytea) unknown', when we're trying to
+        // make a lowercase comparison of the Department field, then let me know
+        //query.setParameter("department", employer.getDepartment());
+        query.setParameter("workingPlace", employer.getWorkingPlace());
+
+        return findSingleResult(query, "Employer");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EmployerEntity findUniqueEmployer(final GroupEntity group, final EmployerEntity employer) {
+        final Query query = entityManager.createNamedQuery("employer.findEmployerByValues");
+        query.setParameter("gid", group.getId());
         query.setParameter("name", employer.getName());
         // Note by Kim; If someone can explain why PostgreSQL throws an
         // exception with function 'lower(bytea) unknown', when we're trying to

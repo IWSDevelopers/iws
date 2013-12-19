@@ -113,8 +113,31 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
     private String externalId = null;
 
+    /**
+     * The Standard reference number for all Offers. Note, that the migration
+     * of the IW3 based Offers, means that all the old reference numbers are as
+     * well migrated to the new format. The mapping of the old and new reference
+     * numbers are automated, so it is easy to make a reverse mapping - hence,
+     * we're not storing the old generated reference number.
+     */
     @Column(name = "ref_no", length = 16, nullable = false, unique = true)
     private String refNo = null;
+
+    /**
+     * The IW3 database contained two reference numbers, System & Local RefNo.
+     * The System refno is a generated reference number, whereas the local is
+     * there to map the Offer to the local database.<br />
+     *   With IWS, there was a Board decision that the Reference numbers should
+     * follow a certain format, which means that all new Offers must be
+     * generated with a proper new format. To ensure that it is still possible
+     * for the Staff members to map back the migrated Offers, we're storing the
+     * old local value.
+     */
+    @Column(name = "old_refno", length = 36)
+    private String oldRefno = null;
+
+    @Column(name = "exchange_year", length = 4)
+    private String exchangeYear = null;
 
     @ManyToOne
     @JoinColumn(name = "employer_id", referencedColumnName = "id", nullable = false)
@@ -333,6 +356,22 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
 
     public String getRefNo() {
         return refNo;
+    }
+
+    public void setOldRefno(final String oldRefno) {
+        this.oldRefno = oldRefno;
+    }
+
+    public String getOldRefno() {
+        return oldRefno;
+    }
+
+    public void setExchangeYear(final String exchangeYear) {
+        this.exchangeYear = exchangeYear;
+    }
+
+    public String getExchangeYear() {
+        return exchangeYear;
     }
 
     public void setEmployer(final EmployerEntity employer) {

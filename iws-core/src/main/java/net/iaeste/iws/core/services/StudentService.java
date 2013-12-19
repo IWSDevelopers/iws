@@ -146,7 +146,7 @@ public final class StudentService extends CommonService<StudentDao> {
         final OfferEntity ownedOffer = exchangeDao.findOfferByExternalId(authentication, offerExternalId);
 
         List<ApplicationView> found;
-        if(ownedOffer != null && ownedOffer.getGroup().equals(authentication.getGroup())) {
+        if (ownedOffer != null && ownedOffer.getEmployer().getGroup().equals(authentication.getGroup())) {
             found = dao.findForeignApplicationsForOffer(offerExternalId, authentication.getGroup().getId());
         } else {
             found = dao.findDomesticApplicationsForOffer(offerExternalId, authentication.getGroup().getId());

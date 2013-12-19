@@ -340,7 +340,7 @@ create view application_view as
     o.status                     as offer_status,
     o.modified                   as offer_modified,
     o.created                    as offer_created,
-    o.group_id                   as offer_owner_group_id,
+    e.group_id                   as offer_owner_group_id,
     og.group_id                  as application_owner_group_id
   from
     student_applications sa,
@@ -348,11 +348,13 @@ create view application_view as
     users u,
     offer_to_group og,
     offers o,
+    employers e,
     addresses a_h,
     addresses a_t
   where sa.student_id = s.id
     and s.user_id = u.id
-    and sa.offer_group_id = og.id
+    and e.group_id = og.id
+    and e.id = o.employer_id
     and og.offer_id = o.id
     and sa.home_address_id = a_h.id
     and sa.address_during_terms_id = a_t.id;

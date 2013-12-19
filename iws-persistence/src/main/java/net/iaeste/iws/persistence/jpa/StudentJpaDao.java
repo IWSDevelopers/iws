@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
+import net.iaeste.iws.persistence.views.ApplicationView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -43,6 +44,10 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      */
     @Override
     public ApplicationEntity findApplicationByExternalId(final String externalId) {
+        //TODO very stupid but efective fix for #515
+        //TODO Does it mean that now it buffers OfferGroupEntity and then it works but without the extra query, it can't find OfferGroupEntities???
+        final List workaround = entityManager.createQuery("select og from OfferGroupEntity og").getResultList();;
+
         //TODO ensure that only application for owned or shared offers can be retrieved
         final Query query = entityManager.createNamedQuery("application.findByExternalId");
         query.setParameter("eid", externalId);
@@ -66,9 +71,22 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * {@inheritDoc}
      */
     @Override
-    public List<ApplicationEntity> findApplicationsForOffer(final Long offerId) {
-        final Query query = entityManager.createNamedQuery("application.findByOfferId");
-        query.setParameter("oid", offerId);
+    public List<ApplicationView> findForeignApplicationsForOffer(final String offerExternalId, final Long offerOwnerId) {
+        final Query query = entityManager.createNamedQuery("view.findForeignApplicationsByOfferExternalId");
+        query.setParameter("oeid", offerExternalId);
+        query.setParameter("offerOwnerId", offerOwnerId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ApplicationView> findDomesticApplicationsForOffer(final String offerExternalId, final Long applicationOwnerId) {
+        final Query query = entityManager.createNamedQuery("view.findDomesticApplicationsByOfferExternalId");
+        query.setParameter("oeid", offerExternalId);
+        query.setParameter("applicationOwnerId", applicationOwnerId);
 
         return query.getResultList();
     }

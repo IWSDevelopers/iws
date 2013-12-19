@@ -268,7 +268,7 @@ public final class ExchangeTransformer {
             result = new StudentApplication();
 
             result.setApplicationId(entity.getExternalId());
-            result.setOffer(transform(entity.getOffer()));
+            result.setOffer(transform(entity.getOfferGroup().getOffer()));
             result.setStudent(transform(entity.getStudent()));
             result.setStatus(entity.getStatus());
             result.setHomeAddress(CommonTransformer.transform(entity.getHomeAddress()));
@@ -309,7 +309,8 @@ public final class ExchangeTransformer {
             result = new ApplicationEntity();
 
             result.setExternalId(application.getApplicationId());
-            result.setOffer(transform(application.getOffer()));
+            //Can't get OfferGroup from Offer, leaving empty and it has to be completed directly by OfferGroupEntity
+            //result.setOffer(transform(application.getOffer()));
             result.setStudent(transform(application.getStudent()));
             result.setStatus(application.getStatus());
             result.setHomeAddress(CommonTransformer.transform(application.getHomeAddress()));

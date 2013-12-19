@@ -23,6 +23,8 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.Student;
+import net.iaeste.iws.api.dtos.exchange.StudentApplication;
+import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.StudentView;
@@ -108,5 +110,34 @@ public final class ViewTransformer {
         student.setUser(user);
 
         return student;
+    }
+
+    /**
+     * Transforms the {@link net.iaeste.iws.persistence.views.ApplicationView}
+     * to an {@link net.iaeste.iws.api.dtos.exchange.StudentApplication} DTO Object.
+     * As the DTO contains several sub-objects, which again may contain certain
+     * other objects, the transformer is building the entire Object Structure.
+     *
+     * @param view ApplicationView to transform
+     * @return StudentApplication DTO Object to display externally
+     */
+    public static StudentApplication transform(final ApplicationView view) {
+        final StudentApplication application = convert(view.getApplication());
+
+        final Address homeAddress = convert(view.getHomeAddress());
+        application.setHomeAddress(homeAddress);
+
+        final Address termsAddress = convert(view.getTermsAddress());
+        application.setAddressDuringTerms(termsAddress);
+
+        final Student student = convert(view.getStudent());
+        final User user = convert(view.getUser());
+        student.setUser(user);
+        application.setStudent(student);
+
+        final Offer offer = convert(view.getOffer());
+        application.setOffer(offer);
+
+        return application;
     }
 }

@@ -44,6 +44,7 @@ import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
+import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.StudentView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,10 +111,10 @@ public final class StudentService extends CommonService<StudentDao> {
         final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
         final String externalId = application.getApplicationId();
         ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
-        final OfferEntity sharedOffer = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
+        final OfferGroupEntity sharedOfferGroup = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
         final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
-        if ((sharedOffer == null) || (sharedOffer.getStatus() != OfferState.SHARED)) {
+        if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup() == null) || (sharedOfferGroup.getOffer().getStatus() != OfferState.SHARED)) {
             throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
 
@@ -121,7 +122,7 @@ public final class StudentService extends CommonService<StudentDao> {
 
         if (applicationEntity == null) {
             applicationEntity = transform(application);
-            applicationEntity.setOffer(sharedOffer);
+            applicationEntity.setOfferGroup(sharedOfferGroup);
             processAddress(authentication, applicationEntity.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms());
             dao.persist(authentication, student, applicationEntity.getStudent());
@@ -129,6 +130,8 @@ public final class StudentService extends CommonService<StudentDao> {
             dao.persist(authentication, applicationEntity);
         } else {
             final ApplicationEntity updated = transform(application);
+            //using OfferGroup from found entity since this field can't be updated
+            updated.setOfferGroup(applicationEntity.getOfferGroup());
             processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
             dao.persist(authentication, student, updated.getStudent());
@@ -139,32 +142,19 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {
-        //TODO temporary fix for #510
-        final OfferEntity offerByExternalId = exchangeDao.findOfferByExternalId(authentication, request.getOfferId());
+        final String offerExternalId = request.getOfferId();
+        final OfferEntity ownedOffer = exchangeDao.findOfferByExternalId(authentication, offerExternalId);
 
-        final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffer(request.getOfferId());
-        OfferEntity offer = null;
-
-        //TODO temporary fix for #510
-        if (offerByExternalId != null && offerByExternalId.getEmployer().getGroup().equals(authentication.getGroup())) {
-            offer = offerByExternalId;
+        List<ApplicationView> found;
+        if(ownedOffer != null && ownedOffer.getGroup().equals(authentication.getGroup())) {
+            found = dao.findForeignApplicationsForOffer(offerExternalId, authentication.getGroup().getId());
+        } else {
+            found = dao.findDomesticApplicationsForOffer(offerExternalId, authentication.getGroup().getId());
         }
-
-        for (final OfferGroupEntity offerGroup : offerGroups) {
-            if (offerGroup.getGroup().equals(authentication.getGroup())) {
-                offer = offerGroup.getOffer();
-            }
-        }
-
-        if (offer == null) {
-            throw new VerificationException("The offer with id '" + request.getOfferId() + "' was not found.");
-        }
-
-        final List<ApplicationEntity> found = dao.findApplicationsForOffer(offer.getId());
 
         final List<StudentApplication> applications = new ArrayList<>(found.size());
-        for (final ApplicationEntity entity : found) {
-            applications.add(transform(entity));
+        for (final ApplicationView entity : found) {
+            applications.add(ViewTransformer.transform(entity));
         }
 
         return new FetchStudentApplicationsResponse(applications);
@@ -184,7 +174,10 @@ public final class StudentService extends CommonService<StudentDao> {
                 case NOMINATED:
                     studentApplication.setNominatedAt(new DateTime());
                     studentApplication.setStatus(request.getStatus());
-                    dao.persist(authentication, found, transform(studentApplication));
+                    ApplicationEntity updated = transform(studentApplication);
+                    //using OfferGroup from found entity since this field can't be updated
+                    updated.setOfferGroup(found.getOfferGroup());
+                    dao.persist(authentication, found, updated);
                     return new StudentApplicationResponse(studentApplication);
                 default:
                     throw new VerificationException("Unsupported transition from '" + studentApplication.getStatus() + "' to " + request.getStatus());
@@ -194,13 +187,13 @@ public final class StudentService extends CommonService<StudentDao> {
         }
     }
 
-    private OfferEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {
-        OfferEntity result = null;
+    private OfferGroupEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {
+        OfferGroupEntity result = null;
         final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffer(offerExternalId);
 
         for (final OfferGroupEntity offerGroup : offerGroups) {
             if (offerGroup.getGroup().equals(group)) {
-                result = offerGroup.getOffer();
+                result = offerGroup;
             }
         }
 

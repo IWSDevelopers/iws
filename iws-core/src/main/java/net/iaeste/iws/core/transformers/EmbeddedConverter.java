@@ -21,11 +21,15 @@ import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.Student;
+import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
+import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.persistence.views.EmbeddedAddress;
+import net.iaeste.iws.persistence.views.EmbeddedAddress2;
+import net.iaeste.iws.persistence.views.EmbeddedApplication;
 import net.iaeste.iws.persistence.views.EmbeddedCountry;
 import net.iaeste.iws.persistence.views.EmbeddedEmployer;
 import net.iaeste.iws.persistence.views.EmbeddedGroup;
@@ -63,6 +67,18 @@ public final class EmbeddedConverter {
     }
 
     public static Address convert(final EmbeddedAddress embedded) {
+        final Address result = new Address();
+
+        result.setStreet1(embedded.getStreet1());
+        result.setStreet2(embedded.getStreet2());
+        result.setZip(embedded.getZip());
+        result.setCity(embedded.getCity());
+        result.setState(embedded.getState());
+
+        return result;
+    }
+
+    public static Address convert(final EmbeddedAddress2 embedded) {
         final Address result = new Address();
 
         result.setStreet1(embedded.getStreet1());
@@ -175,6 +191,39 @@ public final class EmbeddedConverter {
         result.setLanguage2Level(embedded.getLanguage2Level());
         result.setLanguage3(embedded.getLanguage3());
         result.setLanguage3Level(embedded.getLanguage3Level());
+
+        return result;
+    }
+
+    public static StudentApplication convert(final EmbeddedApplication embedded) {
+        final StudentApplication result = new StudentApplication();
+
+        result.setApplicationId(embedded.getExternalId());
+        result.setStatus(embedded.getStatus());
+        result.setEmail(embedded.getEmail());
+        result.setPhoneNumber(embedded.getPhoneNumber());
+        result.setDateOfBirth(embedded.getDateOfBirth() != null ? new Date(embedded.getDateOfBirth()) : null);
+        result.setUniversity(embedded.getUniversity());
+        result.setPlaceOfBirth(embedded.getPlaceOfBirth());
+        result.setCompletedYearsOfStudy(embedded.getCompletedYearsOfStudy());
+        result.setTotalYearsOfStudy(embedded.getTotalYearsOfStudy());
+        result.setIsLodgingByIaeste(embedded.isLodgingByIaeste());
+        result.setLanguage1(embedded.getLanguage1());
+        result.setLanguage1Level(embedded.getLanguage1Level());
+        result.setLanguage1(embedded.getLanguage2());
+        result.setLanguage1Level(embedded.getLanguage2Level());
+        result.setLanguage1(embedded.getLanguage3());
+        result.setLanguage1Level(embedded.getLanguage3Level());
+        result.setInternshipStart(embedded.getInternshipStart() != null ? new Date(embedded.getInternshipStart()) : null);
+        result.setInternshipEnd(embedded.getInternshipEnd() != null ? new Date(embedded.getInternshipEnd()) : null);
+        result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embedded.getFieldOfStudies()));
+        result.setSpecializations(CollectionTransformer.explodeStringList(embedded.getSpecializations()));
+        result.setPassportNumber(embedded.getPassportNumber());
+        result.setPassportPlaceOfIssue(embedded.getPassportPlaceOfIssue());
+        result.setPassportValidUntil(embedded.getPassportValidUntil());
+        result.setNominatedAt(new DateTime(embedded.getNominatedAt()));
+        result.setCreated(new DateTime(embedded.getCreated()));
+        result.setModified(new DateTime(embedded.getModified()));
 
         return result;
     }

@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.exchange.ApplicationEntity
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.views.EmbeddedApplication
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,28 +12,16 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.persistence.entities.exchange;
+package net.iaeste.iws.persistence.views;
 
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
-import net.iaeste.iws.persistence.Externable;
-import net.iaeste.iws.persistence.entities.AbstractUpdateable;
-import net.iaeste.iws.persistence.entities.AddressEntity;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -43,203 +31,109 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries({
-        @NamedQuery(name = "application.findByExternalId",
-                query = "select a from ApplicationEntity a " +
-                        "where a.externalId = :eid"),
-        @NamedQuery(name = "application.findByOfferId",
-                query = "select a from ApplicationEntity a " +
-                        "where a.offerGroup.offer.id = :oid")
-})
-@Entity
-@Table(name = "student_applications")
-public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> implements Externable<ApplicationEntity> {
-
-    @Id
-    @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_sequence")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false, updatable = false)
-    private Long id = null;
-
-    @Column(name = "external_id", length = 36, unique = true, nullable = false, updatable = false)
+@Embeddable
+public class EmbeddedApplication {
+    @Column(name = "application_external_id", insertable = false, updatable = false)
     private String externalId = null;
 
-    @ManyToOne(targetEntity = OfferGroupEntity.class)
-    @JoinColumn(name = "offer_group_id", nullable = false, updatable = false)
-    private OfferGroupEntity offerGroup = null;
-
-    @ManyToOne(targetEntity = StudentEntity.class)
-    @JoinColumn(name = "student_id", nullable = false)
-    private StudentEntity student = null;
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 25, nullable = false)
+    @Column(name = "application_status", insertable = false, updatable = false)
     private ApplicationStatus status = null;
 
-//    @ManyToOne(targetEntity = UserEntity.class)
-//    @JoinColumn(name = "modified_by", nullable = false)
-//    private UserEntity modifiedBy = null;
-
-//    @ManyToOne(targetEntity = UserEntity.class)
-//    @JoinColumn(name = "created_by", nullable = false)
-//    private UserEntity createdBy = null;
-
-    @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "home_address_id", updatable = true)
-    private AddressEntity homeAddress = null;
-
-    @Column(name = "email")
+    @Column(name = "application_email", insertable = false, updatable = false)
     private String email = null;
 
-    @Column(name = "phone_number")
+    @Column(name = "application_phone_number", insertable = false, updatable = false)
     private String phoneNumber = null;
 
-    @ManyToOne(targetEntity = AddressEntity.class)
-    @JoinColumn(name = "address_during_terms_id", updatable = true)
-    private AddressEntity addressDuringTerms = null;
-
     @Temporal(TemporalType.DATE)
-    @Column(name = "date_of_birth")
+    @Column(name = "application_date_of_birth", insertable = false, updatable = false)
     private Date dateOfBirth = null;
 
-    @Column(name = "university")
+    @Column(name = "application_university", insertable = false, updatable = false)
     private String university = null;
 
-    @Column(name = "place_of_birth")
+    @Column(name = "application_place_of_birth", insertable = false, updatable = false)
     private String placeOfBirth = null;
 
-    @Column(name = "completed_years_of_study")
+    @Column(name = "application_completed_years_of_study", insertable = false, updatable = false)
     private Integer completedYearsOfStudy = null;
 
-    @Column(name = "total_years_of_study")
+    @Column(name = "application_total_years_of_study", insertable = false, updatable = false)
     private Integer totalYearsOfStudy = null;
 
-    @Column(name = "lodging_by_iaeste")
+    @Column(name = "application_lodging_by_iaeste", insertable = false, updatable = false)
     private Boolean lodgingByIaeste = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_1", length = 255)
+    @Column(name = "application_language_1", insertable = false, updatable = false)
     private Language language1 = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_1_level", length = 1)
+    @Column(name = "application_language_1_level", insertable = false, updatable = false)
     private LanguageLevel language1Level = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_2", length = 255)
+    @Column(name = "application_language_2", insertable = false, updatable = false)
     private Language language2 = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_2_level", length = 1)
+    @Column(name = "application_language_2_level", insertable = false, updatable = false)
     private LanguageLevel language2Level = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_3", length = 255)
+    @Column(name = "application_language_3", insertable = false, updatable = false)
     private Language language3 = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language_3_level", length = 1)
+    @Column(name = "application_language_3_level", insertable = false, updatable = false)
     private LanguageLevel language3Level = null;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "internship_start")
+    @Column(name = "application_internship_start", insertable = false, updatable = false)
     private Date internshipStart = null;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "internship_end")
+    @Column(name = "application_internship_end", insertable = false, updatable = false)
     private Date internshipEnd = null;
 
-    @Column(name = "study_fields", length = 1000)
+    @Column(name = "application_study_fields", insertable = false, updatable = false)
     private String fieldOfStudies = null;
 
-    @Column(name = "specializations")
+    @Column(name = "application_specializations", insertable = false, updatable = false)
     private String specializations = null;
 
-    @Column(name = "passport_number")
+    @Column(name = "application_passport_number", insertable = false, updatable = false)
     private String passportNumber = null;
 
-    @Column(name = "passport_place_of_issue")
+    @Column(name = "application_passport_place_of_issue", insertable = false, updatable = false)
     private String passportPlaceOfIssue = null;
 
-    @Column(name = "passport_valid_until")
+    @Column(name = "application_passport_valid_until", insertable = false, updatable = false)
     private String passportValidUntil = null;
 
-//    @OneToOne(targetEntity = StudentAcceptanceEntity.class)
-//    @JoinColumn(name = "acceptance", nullable = true)
-//    private StudentAcceptanceEntity acceptance = null;
-
-//    @OneToOne(targetEntity = StudentAcceptanceConfirmationEntity.class)
-//    @JoinColumn(name = "travel_information", nullable = true)
-//    private StudentAcceptanceConfirmationEntity travelInformation = null;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "nominated_at", nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "application_nominated_at", insertable = false, updatable = false)
     private Date nominatedAt = null;
 
-    /**
-     * Last time the Entity was modified.
-     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified", nullable = false)
-    private Date modified = new Date();
+    @Column(name = "application_modified", insertable = false, updatable = false)
+    private Date modified = null;
 
-    /**
-     * Timestamp when the Entity was created.
-     */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false, updatable = false)
-    private Date created = new Date();
+    @Column(name = "application_created", insertable = false, updatable = false)
+    private Date created = null;
 
     // =========================================================================
-    // Entity Setters & Getters
+    // View Setters & Getters
     // =========================================================================
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getExternalId() {
         return externalId;
-    }
-
-    public void setOfferGroup(final OfferGroupEntity offerGroup) {
-        this.offerGroup = offerGroup;
-    }
-
-    public OfferGroupEntity getOfferGroup() {
-        return offerGroup;
-    }
-
-    public void setStudent(final StudentEntity student) {
-        this.student = student;
-    }
-
-    public StudentEntity getStudent() {
-        return student;
     }
 
     public void setStatus(final ApplicationStatus status) {
@@ -248,14 +142,6 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 
     public ApplicationStatus getStatus() {
         return status;
-    }
-
-    public void setHomeAddress(final AddressEntity homeAddress) {
-        this.homeAddress = homeAddress;
-    }
-
-    public AddressEntity getHomeAddress() {
-        return homeAddress;
     }
 
     public void setEmail(final String email) {
@@ -272,14 +158,6 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public void setAddressDuringTerms(final AddressEntity addressDuringTerms) {
-        this.addressDuringTerms = addressDuringTerms;
-    }
-
-    public AddressEntity getAddressDuringTerms() {
-        return addressDuringTerms;
     }
 
     public void setDateOfBirth(final Date dateOfBirth) {
@@ -322,11 +200,11 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return totalYearsOfStudy;
     }
 
-    public void setIsLodgingByIaeste(final boolean lodgingByIaeste) {
+    public void setLodgingByIaeste(final Boolean lodgingByIaeste) {
         this.lodgingByIaeste = lodgingByIaeste;
     }
 
-    public boolean getIsLodgingByIaeste() {
+    public Boolean isLodgingByIaeste() {
         return lodgingByIaeste;
     }
 
@@ -442,84 +320,19 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return nominatedAt;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setModified(final Date modified) {
         this.modified = modified;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Date getModified() {
         return modified;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setCreated(final Date created) {
         this.created = created;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Date getCreated() {
         return created;
-    }
-
-    // =========================================================================
-    // Standard Entity Methods
-    // =========================================================================
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean diff(final ApplicationEntity obj) {
-        int changes = 0;
-
-        //changes += different("aaa", "bbb");
-
-        return changes == 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void merge(final ApplicationEntity obj) {
-        // don't merge if objects are not the same entity
-        if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
-            status = obj.status;
-            nominatedAt = obj.nominatedAt;
-            fieldOfStudies = obj.fieldOfStudies;
-            specializations = obj.specializations;
-            email = obj.email;
-            phoneNumber = obj.phoneNumber;
-            dateOfBirth = obj.dateOfBirth;
-            university = obj.university;
-            placeOfBirth = obj.placeOfBirth;
-            completedYearsOfStudy = obj.completedYearsOfStudy;
-            totalYearsOfStudy = obj.totalYearsOfStudy;
-            lodgingByIaeste = obj.lodgingByIaeste;
-            language1 = obj.language1;
-            language1Level = obj.language1Level;
-            language2 = obj.language2;
-            language2Level = obj.language2Level;
-            language3 = obj.language3;
-            language3Level = obj.language3Level;
-            internshipStart = obj.internshipStart;
-            internshipEnd = obj.internshipEnd;
-            passportNumber = obj.passportNumber;
-            passportPlaceOfIssue = obj.passportPlaceOfIssue;
-            passportValidUntil = obj.passportValidUntil;
-        }
     }
 }

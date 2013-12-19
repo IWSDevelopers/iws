@@ -40,6 +40,10 @@ public class CommonConverter {
     // General Converters
     // =========================================================================
 
+    public static Float round(final Float value) {
+        return (float) Math.round(value * 100) / 100;
+    }
+
     public static Long convertId(final Integer oldId) {
         // Seriously, why can't I just upgrade an Integer!
         return 0L + oldId;

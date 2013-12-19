@@ -34,6 +34,11 @@ public enum PaymentFrequency {
     WEEKLY("Weekly"),
 
     /**
+     * When the Payment frequence is every second week.
+     */
+    BYWEEKLY("By Weekly"),
+
+    /**
      * When the Payment frequency is monthly.
      */
     MONTHLY("Monthly"),

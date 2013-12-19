@@ -17,6 +17,7 @@ package net.iaeste.iws.migrate.daos;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.migrate.entities.IW3FacultiesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
+import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,15 @@ public class IW3JpaDao implements IW3Dao {
     @Override
     public List<IW3User2GroupEntity> findAllUserGroups() {
         final Query query = entityManager.createNamedQuery("usergroup.findAll");
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<IW3OffersEntity> findAllOffers() {
+        final Query query = entityManager.createNamedQuery("offers.findAll");
         return query.getResultList();
     }
 }

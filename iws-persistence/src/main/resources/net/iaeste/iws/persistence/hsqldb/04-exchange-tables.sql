@@ -127,6 +127,7 @@ create table offers (
     constraint offer_notnull_id               check (id is not null),
     constraint offer_notnull_external_id      check (external_id is not null),
     constraint offer_notnull_ref_no           check (ref_no is not null),
+    -- Must be left ignored until added to OfferDTO
     --constraint offer_notnull_exchange_year    check (exchange_year is not null),
     constraint offer_notnull_from_date        check (from_date is not null),
     constraint offer_notnull_to_date          check (to_date is not null),

@@ -137,7 +137,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     private String oldRefno = null;
 
     @Column(name = "exchange_year", length = 4)
-    private String exchangeYear = null;
+    private Integer exchangeYear = null;
 
     @ManyToOne
     @JoinColumn(name = "employer_id", referencedColumnName = "id", nullable = false)
@@ -366,11 +366,11 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
         return oldRefno;
     }
 
-    public void setExchangeYear(final String exchangeYear) {
+    public void setExchangeYear(final Integer exchangeYear) {
         this.exchangeYear = exchangeYear;
     }
 
-    public String getExchangeYear() {
+    public Integer getExchangeYear() {
         return exchangeYear;
     }
 

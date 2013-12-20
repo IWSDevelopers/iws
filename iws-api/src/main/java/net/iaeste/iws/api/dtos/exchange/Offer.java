@@ -244,7 +244,8 @@ public final class Offer extends AbstractVerification {
      * @throws IllegalArgumentException if not valid, i.e. null or not verifiable
      */
     public void setEmployer(final Employer employer) throws IllegalArgumentException {
-        ensureNotNullAndVerifiable("employer", employer);
+        //ensureNotNullAndVerifiable("employer", employer);
+        ensureNotNull("employer", employer);
         this.employer = new Employer(employer);
     }
 
@@ -621,7 +622,7 @@ public final class Offer extends AbstractVerification {
         return nsLastname;
     }
 
-// =========================================================================
+    // =========================================================================
     // Standard DTO Methods
     // =========================================================================
 
@@ -635,6 +636,8 @@ public final class Offer extends AbstractVerification {
         // These checks match those from the Database, remaining are implicit
         // filled by the IWS Logic as part of the processing of the Offer
         isNotNull(validation, "refNo", refNo);
+        // We need to ensure that the Employer is verifiable also!
+        //isNotNullAndVerifiable(validation, "employer", employer);
         isNotNull(validation, "employer", employer);
         isNotNull(validation, "workDescription", workDescription);
         isNotNull(validation, "studyLevels", studyLevels);

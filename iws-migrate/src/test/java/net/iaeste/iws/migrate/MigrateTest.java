@@ -22,30 +22,38 @@ import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.CommonTransformer;
+import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.migrate.converters.CommonConverter;
 import net.iaeste.iws.migrate.converters.CountryConverter;
 import net.iaeste.iws.migrate.converters.GroupConverter;
+import net.iaeste.iws.migrate.converters.OfferConverter;
 import net.iaeste.iws.migrate.converters.UserConverter;
 import net.iaeste.iws.migrate.daos.IW3Dao;
 import net.iaeste.iws.migrate.daos.IW3JpaDao;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
+import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
 import net.iaeste.iws.migrate.spring.Config;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
+import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -83,11 +91,13 @@ public class MigrateTest {
     @PersistenceContext(unitName = "IWSPersistenceUnit")
     private EntityManager iwsEntityManager;
 
+    private ExchangeDao exchangeDao = null;
     private AccessDao accessDao = null;
     private IW3Dao iw3Dao = null;
 
     @Before
     public void before() {
+        exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
         iw3Dao = new IW3JpaDao(iw3EntityManager);
     }
@@ -259,7 +269,6 @@ public class MigrateTest {
 
                 if (user != null) {
                     toPersist = entity;
-                    //accessDao.persist(entity);
                     persisted++;
                 } else {
                     skipped++;
@@ -275,7 +284,6 @@ public class MigrateTest {
                     userGroup.setOnPublicList(oldUserGroupEntity.getOnmailinglist());
                     userGroup.setOnPrivateList(oldUserGroupEntity.getOnmailinglist());
                     userGroup.setModified(CommonConverter.convert(oldUserGroupEntity.getModified()));
-                    //accessDao.persist(userGroup);
                     toPersist = userGroup;
                     updated++;
                 } else {
@@ -300,6 +308,45 @@ public class MigrateTest {
 
         assertThat(persisted + updated + skipped, is(userGroups.size()));
         log.info("Completed Migrating UserGroups; Persisted " + persisted + ", updated " + updated + " & skipped " + skipped + '.');
+    }
+
+    @Test
+    @Transactional("transactionManagerIWS")
+    public void test5ReadingWritingOffers() {
+        final OfferConverter converter = new OfferConverter();
+        final List<IW3OffersEntity> offers = iw3Dao.findAllOffers();
+        log.info("Found " + offers.size() + " Offers to migrate.");
+        int persisted = 0;
+        int skipped = 0;
+
+        for (final IW3OffersEntity oldEntity : offers) {
+            final OfferEntity offerEntity = converter.convert(oldEntity);
+            final GroupEntity groupEntity = accessDao.findGroupByIW3Id(oldEntity.getGroupid());
+            EmployerEntity employerEntity = exchangeDao.findUniqueEmployer(groupEntity, offerEntity.getEmployer());
+
+            try {
+                final Offer offer = ExchangeTransformer.transform(offerEntity);
+                offer.verify();
+                if (employerEntity == null) {
+                    employerEntity = offerEntity.getEmployer();
+                    final CountryEntity countryEntity = accessDao.findCountryByCode(oldEntity.getCountryid());
+                    employerEntity.getAddress().setCountry(countryEntity);
+                    employerEntity.setGroup(groupEntity);
+                    accessDao.persist(employerEntity.getAddress());
+                    accessDao.persist(employerEntity);
+                }
+                offerEntity.setEmployer(employerEntity);
+                accessDao.persist(offerEntity);
+                persisted++;
+            } catch (IllegalArgumentException | VerificationException e) {
+                log.error("Cannot process Offer with refno:" + offerEntity.getRefNo(), e);
+                skipped++;
+            }
+        }
+
+        // We should have all minus the invalid Chile & Training Session Country
+        assertThat(persisted + skipped, is(offers.size()));
+        log.info("Completed Migratring Offers; Persisted " + persisted + " & skipped " + skipped + '.');
     }
 
     // =========================================================================

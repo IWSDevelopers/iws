@@ -20,7 +20,7 @@ import java.math.BigDecimal;
  */
 public final class OfferConverter extends CommonConverter {
 
-    public static OfferEntity convert(final IW3OffersEntity oldOffer) {
+    public OfferEntity convert(final IW3OffersEntity oldOffer) {
         final OfferEntity entity = new OfferEntity();
 
         entity.setRefNo(convertRefno(oldOffer.getSystemrefno()));
@@ -63,6 +63,7 @@ public final class OfferConverter extends CommonConverter {
         entity.setStatus(convertOfferState(oldOffer.getStatus()));
         entity.setNumberOfHardCopies(oldOffer.getNohardcopies());
         entity.setNominationDeadline(oldOffer.getDeadline());
+        entity.setExchangeYear(convertExchangeYear(oldOffer.getExchangeyear()));
         entity.setModified(convert(oldOffer.getModified()));
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
@@ -70,7 +71,13 @@ public final class OfferConverter extends CommonConverter {
     }
 
     private static String convertRefno(final String systemrefno) {
-        return "AA-2014-123456";
+        // IW3 Refno format: CCYY-nnnn
+        // IWS Refno format: CC-YYYY-nnnnnn
+        final String countryCode = systemrefno.substring(0,2);
+        final String year = systemrefno.substring(2,4);
+        final String serialNumber = systemrefno.substring(5,9);
+
+        return countryCode + "-20" + year + "-00" + serialNumber;
     }
 
     private static TypeOfWork convertTypeOfWork(final String worktype) {
@@ -111,6 +118,10 @@ public final class OfferConverter extends CommonConverter {
 
     private static OfferState convertOfferState(final String status) {
         return OfferState.NEW;
+    }
+
+    private Integer convertExchangeYear(final Integer exchangeyear) {
+        return 2013;
     }
 
     private static EmployerEntity convertEmployer(final IW3OffersEntity oldOffer) {

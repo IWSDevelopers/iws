@@ -360,6 +360,8 @@ public final class Employer extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "name", name);
+        isVerifiable(validation, "address", address);
+        isVerifiable(validation, "group", group);
 
         return validation;
     }

@@ -137,15 +137,15 @@ public final class User extends AbstractDto {
     /**
      * Sets the User Id. Users cannot be created with this Object, rather they
      * are created with a createUser request. Hence, this field is mandatory,
-     * and must be set to a valid UserId. If the value is not set, then the
-     * method will throw an {@code IllegalArgumentException}.
+     * and must be set to a valid UserId. If the value is not then the method
+     * will throw an {@code IllegalArgumentException}.
      *
      * @param userId User Id
-     * @throws IllegalArgumentException if the Id is not set or invalid
+     * @throws IllegalArgumentException if the Id is invalid
      * @see AbstractDto#UUID_FORMAT
      */
     public void setUserId(final String userId) throws IllegalArgumentException {
-        ensureNotNullAndValidId("userId", userId);
+        ensureValidId("userId", userId);
         this.userId = userId;
     }
 
@@ -299,7 +299,7 @@ public final class User extends AbstractDto {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "userId", userId);
+        isVerifiable(validation, "person", person);
 
         return validation;
     }

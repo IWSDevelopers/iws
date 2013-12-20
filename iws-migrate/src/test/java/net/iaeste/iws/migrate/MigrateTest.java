@@ -15,15 +15,17 @@
 package net.iaeste.iws.migrate;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.migrate.converters.CommonConverter;
 import net.iaeste.iws.migrate.converters.CountryConverter;
@@ -100,8 +102,8 @@ public class MigrateTest {
         final CountryConverter converter = new CountryConverter();
         final List<IW3CountriesEntity> countries = iw3Dao.findAllCountries();
         log.info("Found " + countries.size() + " Countries to migrate.");
-        assertThat(countries.isEmpty(), is(false));
         int persisted = 0;
+        int skipped = 0;
 
         for (final IW3CountriesEntity oldCountry : countries) {
             // Skip incorrect Chile Country record
@@ -114,11 +116,16 @@ public class MigrateTest {
                     persisted++;
                 } catch (IllegalArgumentException | VerificationException e) {
                     log.error("Cannot process Country id:" + oldCountry.getCountryid() + ", name = " + oldCountry.getCountryname(), e);
+                    skipped++;
                 }
+            } else {
+                skipped++;
             }
         }
 
-        log.info("Completed Migratring Countries; Persisted " + persisted + '.');
+        // We should have all minus the invalid Chile & Training Session Country
+        assertThat(persisted + skipped, is(countries.size()));
+        log.info("Completed Migratring Countries; Persisted " + persisted + " & skipped " + skipped + '.');
     }
 
     @Test
@@ -127,7 +134,6 @@ public class MigrateTest {
         final GroupConverter converter = new GroupConverter();
         final List<IW3GroupsEntity> groups = iw3Dao.findAllGroups();
         log.info("Found " + groups.size() + " Groups to migrate.");
-        assertThat(groups.isEmpty(), is(false));
         int persisted = 0;
         int dropped = 0;
 
@@ -181,7 +187,8 @@ public class MigrateTest {
             }
         }
 
-        log.info("Completed Migrating Groups; Persisted " + persisted + ", Dropped " + dropped + '.');
+        assertThat(persisted + dropped, is(groups.size()));
+        log.info("Completed Migrating Groups; Persisted " + persisted + " & dropped " + dropped + '.');
     }
 
     @Test
@@ -190,7 +197,6 @@ public class MigrateTest {
         final UserConverter converter = new UserConverter();
         final List<IW3ProfilesEntity> profiles = iw3Dao.findAllProfiles();
         log.info("Found " + profiles.size() + " Users to migrate.");
-        assertThat(profiles.isEmpty(), is(false));
         int persisted = 0;
 
         for (final IW3ProfilesEntity profile : profiles) {
@@ -199,18 +205,30 @@ public class MigrateTest {
             final GroupTypeEntity groupType = accessDao.findGroupType(GroupType.PRIVATE);
             final RoleEntity role = accessDao.findRoleById(IWSConstants.ROLE_OWNER);
 
-            final UserEntity entity = converter.convert(profile);
-            entity.getPerson().setNationality(nationality);
-            entity.getPerson().getAddress().setCountry(country);
-            final UserGroupEntity userGroup = converter.preparePrivateGroup(entity, groupType, role);
-            accessDao.persist(entity.getPerson().getAddress());
-            accessDao.persist(entity.getPerson());
-            accessDao.persist(entity);
-            accessDao.persist(userGroup.getGroup());
-            accessDao.persist(userGroup);
-            persisted++;
+            final UserEntity userEntity = converter.convert(profile);
+            userEntity.getPerson().setNationality(nationality);
+            userEntity.getPerson().getAddress().setCountry(country);
+            final UserGroupEntity entity = converter.preparePrivateGroup(userEntity, groupType, role);
+
+            // Done with preparations, let's verify and persists the User
+            User user = null;
+            try {
+                user = AdministrationTransformer.transform(userEntity);
+                user.verify();
+                accessDao.persist(userEntity.getPerson().getAddress());
+                accessDao.persist(userEntity.getPerson());
+                accessDao.persist(userEntity);
+                accessDao.persist(entity.getGroup());
+                accessDao.persist(entity);
+                persisted++;
+            } catch (IllegalArgumentException | VerificationException e) {
+                log.error("Cannot process User " + user, e);
+            } catch (RuntimeException e) {
+                log.error("Unknown problem while migrating User " + user, e);
+            }
         }
 
+        assertThat(persisted, is(profiles.size()));
         log.info("Completed Migrating Users; Persisted " + persisted + '.');
     }
 
@@ -219,12 +237,13 @@ public class MigrateTest {
     public void test4ReadingWritingUserGroups() {
         final List<IW3User2GroupEntity> userGroups = iw3Dao.findAllUserGroups();
         log.info("Found " + userGroups.size() + " UserGroups to migrate.");
-        assertThat(userGroups.size(), is(not(0)));
         int persisted = 0;
+        int skipped = 0;
         int updated = 0;
 
         for (final IW3User2GroupEntity oldUserGroupEntity : userGroups) {
             final UserGroupEntity userGroup = accessDao.findIw3UserGroup(oldUserGroupEntity.getUser().getUserid(), oldUserGroupEntity.getGroup().getGroupid());
+            UserGroupEntity toPersist = null;
 
             if (userGroup == null) {
                 final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
@@ -239,9 +258,11 @@ public class MigrateTest {
                 entity.setCreated(CommonConverter.convert(oldUserGroupEntity.getCreated(), oldUserGroupEntity.getModified()));
 
                 if (user != null) {
-                    accessDao.persist(entity);
+                    toPersist = entity;
+                    //accessDao.persist(entity);
                     persisted++;
                 } else {
+                    skipped++;
                     log.info("Skipping UserGroup Entity where the user no longer exists (userid=" + oldUserGroupEntity.getUser().getUserid() + ").");
                 }
             } else {
@@ -254,15 +275,31 @@ public class MigrateTest {
                     userGroup.setOnPublicList(oldUserGroupEntity.getOnmailinglist());
                     userGroup.setOnPrivateList(oldUserGroupEntity.getOnmailinglist());
                     userGroup.setModified(CommonConverter.convert(oldUserGroupEntity.getModified()));
-                    accessDao.persist(userGroup);
+                    //accessDao.persist(userGroup);
+                    toPersist = userGroup;
                     updated++;
                 } else {
-                    log.info("changes are older than the existing record - skipping.");
+                    skipped++;
+                    log.info("Changes are older than the existing record - skipping.");
+                }
+            }
+
+            if (toPersist != null) {
+                UserGroup dto = null;
+                try {
+                    dto = AdministrationTransformer.transform(toPersist);
+                    dto.verify();
+                    accessDao.persist(toPersist);
+                } catch (IllegalArgumentException | VerificationException e) {
+                    log.error("Cannot process UserGroup " + dto, e);
+                } catch (RuntimeException e) {
+                    log.error("Unknown problem while migrating UserGroup " + dto, e);
                 }
             }
         }
 
-        log.info("Completed Migrating UserGroups; Persisted " + persisted + " and updated " + updated + '.');
+        assertThat(persisted + updated + skipped, is(userGroups.size()));
+        log.info("Completed Migrating UserGroups; Persisted " + persisted + ", updated " + updated + " & skipped " + skipped + '.');
     }
 
     // =========================================================================

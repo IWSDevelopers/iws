@@ -104,15 +104,17 @@ public class MigrateTest {
         int persisted = 0;
 
         for (final IW3CountriesEntity oldCountry : countries) {
-            final CountryEntity entity = converter.convert(oldCountry);
-            Country country= null;
-            try {
-                country = CommonTransformer.transform(entity);
-                country.verify();
-                accessDao.persist(entity);
-                persisted++;
-            } catch (IllegalArgumentException | VerificationException e) {
-                log.error("Cannot process Country " + country, e);
+            // Skip incorrect Chile Country record
+            if (!"c".equals(oldCountry.getCountryid())) {
+                final CountryEntity entity = converter.convert(oldCountry);
+                try {
+                    final Country country = CommonTransformer.transform(entity);
+                    country.verify();
+                    accessDao.persist(entity);
+                    persisted++;
+                } catch (IllegalArgumentException | VerificationException e) {
+                    log.error("Cannot process Country id:" + oldCountry.getCountryid() + ", name = " + oldCountry.getCountryname(), e);
+                }
             }
         }
 
@@ -187,7 +189,7 @@ public class MigrateTest {
     public void test3ReadingWritingUsers() {
         final UserConverter converter = new UserConverter();
         final List<IW3ProfilesEntity> profiles = iw3Dao.findAllProfiles();
-        System.out.println("Found " + profiles.size() + " Users to migrate.");
+        log.info("Found " + profiles.size() + " Users to migrate.");
         assertThat(profiles.isEmpty(), is(false));
         int persisted = 0;
 
@@ -209,14 +211,14 @@ public class MigrateTest {
             persisted++;
         }
 
-        System.out.println("Completed Migrating Users; Persisted " + persisted + '.');
+        log.info("Completed Migrating Users; Persisted " + persisted + '.');
     }
 
     @Test
     @Transactional("transactionManagerIWS")
     public void test4ReadingWritingUserGroups() {
         final List<IW3User2GroupEntity> userGroups = iw3Dao.findAllUserGroups();
-        System.out.println("Found " + userGroups.size() + " UserGroups to migrate.");
+        log.info("Found " + userGroups.size() + " UserGroups to migrate.");
         assertThat(userGroups.size(), is(not(0)));
         int persisted = 0;
         int updated = 0;
@@ -240,14 +242,14 @@ public class MigrateTest {
                     accessDao.persist(entity);
                     persisted++;
                 } else {
-                    System.out.println("Skipping UserGroup Entity where the user no longer exists (userid=" + oldUserGroupEntity.getUser().getUserid() + ").");
+                    log.info("Skipping UserGroup Entity where the user no longer exists (userid=" + oldUserGroupEntity.getUser().getUserid() + ").");
                 }
             } else {
-                System.out.print("Duplicate UserGroup Entity found, ");
+                log.info("Duplicate UserGroup Entity found, ");
                 final Date modified = oldUserGroupEntity.getModified();
 
                 if ((modified != null) && modified.after(userGroup.getModified())) {
-                    System.out.println("changes are more recent than existing record - merging.");
+                    log.info("changes are more recent than existing record - merging.");
                     userGroup.setTitle(oldUserGroupEntity.getUsertitle());
                     userGroup.setOnPublicList(oldUserGroupEntity.getOnmailinglist());
                     userGroup.setOnPrivateList(oldUserGroupEntity.getOnmailinglist());
@@ -255,12 +257,12 @@ public class MigrateTest {
                     accessDao.persist(userGroup);
                     updated++;
                 } else {
-                    System.out.println("changes are older than the existing record - skipping.");
+                    log.info("changes are older than the existing record - skipping.");
                 }
             }
         }
 
-        System.out.println("Completed Migrating UserGroups; Persisted " + persisted + " and updated " + updated + '.');
+        log.info("Completed Migrating UserGroups; Persisted " + persisted + " and updated " + updated + '.');
     }
 
     // =========================================================================

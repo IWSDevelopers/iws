@@ -300,7 +300,7 @@ public final class Country extends AbstractVerification {
      */
     public void setMemberSince(final Integer memberSince) throws IllegalArgumentException {
         final int currentYear = new Date().getCurrentYear();
-        ensureNotNullAndWithinLimits("memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
+        ensureWithinLimits("memberSince", memberSince, IWSConstants.FOUNDING_YEAR, currentYear);
         this.memberSince = memberSince;
     }
 

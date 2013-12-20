@@ -25,23 +25,23 @@ import net.iaeste.iws.persistence.entities.CountryEntity;
  */
 public final class CountryConverter extends CommonConverter {
 
-    public CountryEntity convert(final IW3CountriesEntity entity) {
+    public CountryEntity convert(final IW3CountriesEntity oldCountry) {
         final CountryEntity result = new CountryEntity();
 
-        result.setCountryCode(upper(convert(entity.getCountryid())));
-        result.setCountryName(convert(entity.getCountryname()));
-        result.setCountryNameFull(convert(entity.getCountrynamefull()));
-        result.setCountryNameNative(convert(entity.getCountrynamenative()));
-        result.setNationality(convert(entity.getNationality()));
-        result.setCitizens(convert(entity.getCitizens()));
-        result.setLanguages(convert(entity.getLanguages()));
-        result.setCurrency(convertCurrency(entity.getCurrency(), entity.getCountryname()));
-        result.setPhonecode(convert(entity.getPhonecode()));
-        result.setMembership(convertMembership(entity.getMembership()));
-        result.setMemberSince(entity.getMembershipyear());
+        result.setCountryCode(upper(convert(oldCountry.getCountryid())));
+        result.setCountryName(convert(oldCountry.getCountryname()));
+        result.setCountryNameFull(convert(oldCountry.getCountrynamefull()));
+        result.setCountryNameNative(convert(oldCountry.getCountrynamenative()));
+        result.setNationality(convert(oldCountry.getNationality()));
+        result.setCitizens(convert(oldCountry.getCitizens()));
+        result.setLanguages(convert(oldCountry.getLanguages()));
+        result.setCurrency(convertCurrency(oldCountry.getCurrency(), oldCountry.getCountryname()));
+        result.setPhonecode(convert(oldCountry.getPhonecode()));
+        result.setMembership(convertMembership(oldCountry.getMembership()));
+        result.setMemberSince(convertMemberSince(oldCountry));
 
-        result.setModified(convert(entity.getModified()));
-        result.setCreated(convert(entity.getCreated(), entity.getModified()));
+        result.setModified(convert(oldCountry.getModified()));
+        result.setCreated(convert(oldCountry.getCreated(), oldCountry.getModified()));
 
         return result;
     }
@@ -72,6 +72,27 @@ public final class CountryConverter extends CommonConverter {
             default:
                 // Damn, we have no clue!
                 result = Membership.UNKNOWN;
+        }
+
+        return result;
+    }
+
+    private static Integer convertMemberSince(final IW3CountriesEntity oldCountry) {
+        Integer result;
+
+        switch (oldCountry.getMembership()) {
+            case 1:
+            case 2:
+            case 3:
+                result = oldCountry.getMembershipyear();
+                break;
+            default:
+                result = null;
+        }
+
+        // Jamaica has incorrect membership since information in IW3!
+        if ("jm".equals(oldCountry.getCountryid())) {
+            result = 2006;
         }
 
         return result;

@@ -101,18 +101,18 @@ public abstract class AbstractVerification implements Verifiable {
         }
     }
 
-    /**
-     * Throws an {@code IllegalArgumentException} if the given value is empty.
-     *
-     * @param field Name of the field
-     * @param value The value for the fieldERROR_TOO_SHORT
-     * @throws IllegalArgumentException if the value is empty
-     */
-    protected static void ensureNotEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
-        if (value != null && value.isEmpty()) {
-            throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
-        }
-    }
+    ///**
+    // * Throws an {@code IllegalArgumentException} if the given value is empty.
+    // *
+    // * @param field Name of the field
+    // * @param value The value for the fieldERROR_TOO_SHORT
+    // * @throws IllegalArgumentException if the value is empty
+    // */
+    //protected static void ensureNotEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
+    //    if (value != null && value.isEmpty()) {
+    //        throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
+    //    }
+    //}
 
     /**
      * Throws an {@code IllegalArgumentException} if the given value is null or
@@ -127,18 +127,18 @@ public abstract class AbstractVerification implements Verifiable {
         ensureNotEmpty(field, value);
     }
 
-    /**
-     * Throws an {@code IllegalArgumentException} if the given value is null or
-     * empty.
-     *
-     * @param field Name of the field
-     * @param value The value of the field
-     * @throws IllegalArgumentException if the value is null or empty
-     */
-    protected static void ensureNotNullOrEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
-        ensureNotNull(field, value);
-        ensureNotEmpty(field, value);
-    }
+    ///**
+    // * Throws an {@code IllegalArgumentException} if the given value is null or
+    // * empty.
+    // *
+    // * @param field Name of the field
+    // * @param value The value of the field
+    // * @throws IllegalArgumentException if the value is null or empty
+    // */
+    //protected static void ensureNotNullOrEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
+    //    ensureNotNull(field, value);
+    //    ensureNotEmpty(field, value);
+    //}
 
     /**
      * Throws an {@code IllegalArgumentException} if the given value is either
@@ -274,20 +274,20 @@ public abstract class AbstractVerification implements Verifiable {
         }
     }
 
-    /**
-     * Throws an {@code IllegalArgumentException} if the given value is defined
-     * and not the exact length.
-     *
-     * @param field  Name of the field
-     * @param value  The value of the field
-     * @param length The exact length of the field
-     * @throws IllegalArgumentException if the value is not of exact length
-     */
-    protected static void ensureExactLength(final String field, final String value, final int length) throws IllegalArgumentException {
-        if ((value != null) && (value.length() != length)) {
-            throw new IllegalArgumentException(format(ERROR_NOT_EXACT_LENGTH, field, length));
-        }
-    }
+    ///**
+    // * Throws an {@code IllegalArgumentException} if the given value is defined
+    // * and not the exact length.
+    // *
+    // * @param field  Name of the field
+    // * @param value  The value of the field
+    // * @param length The exact length of the field
+    // * @throws IllegalArgumentException if the value is not of exact length
+    // */
+    //protected static void ensureExactLength(final String field, final String value, final int length) throws IllegalArgumentException {
+    //    if ((value != null) && (value.length() != length)) {
+    //        throw new IllegalArgumentException(format(ERROR_NOT_EXACT_LENGTH, field, length));
+    //    }
+    //}
 
     /**
      * Throws an {@code IllegalArgumentException} if the given value is either
@@ -299,11 +299,11 @@ public abstract class AbstractVerification implements Verifiable {
      * @param maximum The maximally allowed value for the field
      * @throws IllegalArgumentException if the value is null not of exact length
      */
-    protected <T extends Number>void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
-        ensureNotNull(field, value);
-
-        if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
-            throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
+    protected <T extends Number>void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+        if (value != null) {
+            if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
+                throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
+            }
         }
     }
 
@@ -440,24 +440,47 @@ public abstract class AbstractVerification implements Verifiable {
     /**
      * The method takes a value, and verifies that this value is not null. If an
      * error is found, then the information is added to the validation
-     * Map.<br />
-     *   If an error was found, then a false is returned, otherwise the method
-     * will return true.
+     * Map.
      *
      * @param validation Map with Error information
      * @param field      The name of the field (value) to be verified
      * @param value      The value to verify
-     * @return True if field is valid, otherwise false
      */
-    protected boolean isNotNull(final Map<String, String> validation, final String field, final Object value) {
-        boolean check = true;
-
+    protected void isNotNull(final Map<String, String> validation, final String field, final Object value) {
         if (value == null) {
             addError(validation, field, "The field may not be null.");
-            check = false;
         }
+    }
 
-        return check;
+    /**
+     * The method takes a value, and verifies that this value is verifiable. If
+     * an error is found, then the information is added to the validation
+     * Map.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     */
+    protected void isVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
+        if (value != null) {
+            for (final Map.Entry<String, String> entry : value.validate().entrySet()) {
+                addError(validation, "field:" + entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    /**
+     * The method takes a value, and verifies that this value is neither null
+     * nor not verifable. If an error is found, then the information is added to
+     * the validation Map.
+     *
+     * @param validation Map with Error information
+     * @param field      The name of the field (value) to be verified
+     * @param value      The value to verify
+     */
+    protected void isNotNullAndVerifiable(final Map<String, String> validation, final String field, final Verifiable value) {
+        isNotNull(validation, field, value);
+        isVerifiable(validation, field, value);
     }
 
     /**
@@ -482,23 +505,23 @@ public abstract class AbstractVerification implements Verifiable {
         validation.put(field, message);
     }
 
-    /**
-     * The method add error messages from {@code errors} to validation
-     * Map.<br />
-     *   If the field in validation Map already had an error, then the error
-     * messages are concatenated.
-     *
-     * @param validation Map with Error information to which errors will be added
-     * @param errors     Map with Error information to be added
-     * @param field      The field of the first field, as a prefix
-     * @see #addError(java.util.Map, String, String)
-     */
-    protected void addAllErrors(final Map<String, String> validation, final Map<String, String> errors, final String field) {
-        for (final Map.Entry<String, String> stringStringEntry : errors.entrySet()) {
-            final String fieldName = field + '.' + stringStringEntry.getKey();
-            addError(validation, fieldName, stringStringEntry.getValue());
-        }
-    }
+    ///**
+    // * The method add error messages from {@code errors} to validation
+    // * Map.<br />
+    // *   If the field in validation Map already had an error, then the error
+    // * messages are concatenated.
+    // *
+    // * @param validation Map with Error information to which errors will be added
+    // * @param errors     Map with Error information to be added
+    // * @param field      The field of the first field, as a prefix
+    // * @see #addError(java.util.Map, String, String)
+    // */
+    //protected void addAllErrors(final Map<String, String> validation, final Map<String, String> errors, final String field) {
+    //    for (final Map.Entry<String, String> stringStringEntry : errors.entrySet()) {
+    //        final String fieldName = field + '.' + stringStringEntry.getKey();
+    //        addError(validation, fieldName, stringStringEntry.getValue());
+    //    }
+    //}
 
     /**
      * Formats a given String, using the built-in String format method. If there

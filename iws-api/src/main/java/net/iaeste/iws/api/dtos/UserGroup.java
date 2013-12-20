@@ -229,8 +229,8 @@ public final class UserGroup extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "user", user);
-        isNotNull(validation, "group", group);
+        isNotNullAndVerifiable(validation, "user", user);
+        isNotNullAndVerifiable(validation, "group", group);
         isNotNull(validation, "role", role);
 
         return validation;

@@ -19,8 +19,12 @@ import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.migrate.converters.CommonConverter;
 import net.iaeste.iws.migrate.converters.CountryConverter;
 import net.iaeste.iws.migrate.converters.GroupConverter;
@@ -45,6 +49,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -66,6 +72,8 @@ import java.util.List;
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { Config.class })
 @TransactionConfiguration(defaultRollback = false)
 public class MigrateTest {
+
+    private static final Logger log = LoggerFactory.getLogger(MigrateTest.class);
 
     @PersistenceContext(unitName = "IW3PersistenceUnit")
     private EntityManager iw3EntityManager;
@@ -91,16 +99,24 @@ public class MigrateTest {
     public void test1ReadingWritingCountries() {
         final CountryConverter converter = new CountryConverter();
         final List<IW3CountriesEntity> countries = iw3Dao.findAllCountries();
-        System.out.println("Found " + countries.size() + " Countries to migrate.");
+        log.info("Found " + countries.size() + " Countries to migrate.");
         assertThat(countries.isEmpty(), is(false));
         int persisted = 0;
 
         for (final IW3CountriesEntity oldCountry : countries) {
             final CountryEntity entity = converter.convert(oldCountry);
-            accessDao.persist(entity);
+            Country country= null;
+            try {
+                country = CommonTransformer.transform(entity);
+                country.verify();
+                accessDao.persist(entity);
+                persisted++;
+            } catch (IllegalArgumentException | VerificationException e) {
+                log.error("Cannot process Country " + country, e);
+            }
         }
 
-        System.out.println("Completed Countries Groups; Persisted " + persisted + '.');
+        log.info("Completed Migratring Countries; Persisted " + persisted + '.');
     }
 
     @Test
@@ -108,21 +124,25 @@ public class MigrateTest {
     public void test2ReadingWritingGroups() {
         final GroupConverter converter = new GroupConverter();
         final List<IW3GroupsEntity> groups = iw3Dao.findAllGroups();
-        System.out.println("Found " + groups.size() + " Groups to migrate.");
+        log.info("Found " + groups.size() + " Groups to migrate.");
         assertThat(groups.isEmpty(), is(false));
         int persisted = 0;
         int dropped = 0;
 
         for (final IW3GroupsEntity oldGroup : groups) {
-            GroupEntity entity = converter.convert(oldGroup);
-            if (entity.getOldId() < 10) {
-                final GroupEntity existing = accessDao.findGroupByIW3Id(entity.getOldId());
+            final GroupEntity converted = converter.convert(oldGroup);
+            GroupEntity toPersist = null;
+
+            // Handling standard Groups, these already exists, so we need to
+            // properly map the old information into the new Groups - hence
+            // we're dealing with them in a special way
+            if (converted.getOldId() < 10) {
+                final GroupEntity existing = accessDao.findGroupByIW3Id(converted.getOldId());
                 if (existing != null) {
-                    existing.merge(entity);
-                    accessDao.persist(existing);
-                    persisted++;
+                    existing.merge(converted);
+                    toPersist = existing;
                 } else {
-                    System.out.println("The standard group " + entity.getGroupName() + " (id " + entity.getOldId() + "), is dropped.");
+                    log.info("The standard group " + converted.getGroupName() + " (id " + converted.getOldId() + "), is dropped.");
                     dropped++;
                 }
             } else {
@@ -130,20 +150,36 @@ public class MigrateTest {
                 final GroupEntity parent = accessDao.findGroupByIW3Id(oldGroup.getParentid());
                 if (parent == null) {
                     // For Holland, we have the problem that Group 629 exists, but 628 (the parent) doesn't.
-                    System.out.println("Couldn't find a parent for " + oldGroup.getGroupname() + " with id " + oldGroup.getGroupid());
-                    entity.setParentId(0L);
+                    log.info("Couldn't find a parent for " + oldGroup.getGroupname() + " with id " + oldGroup.getGroupid());
+                    converted.setParentId(0L);
                 } else {
-                    entity.setParentId(parent.getId());
+                    converted.setParentId(parent.getId());
                 }
                 final GroupTypeEntity groupType = accessDao.findGroupType(GroupConverter.convertGroupType(oldGroup.getGrouptype().getGrouptype()));
-                entity.setCountry(country);
-                entity.setGroupType(groupType);
-                accessDao.persist(entity);
-                persisted++;
+                converted.setCountry(country);
+                converted.setGroupType(groupType);
+                toPersist = converted;
+            }
+
+            // Done with the preparations, now we're going to verify the entity
+            // and then persist it
+            if (toPersist != null) {
+                Group group = null;
+                try {
+                    group = CommonTransformer.transform(toPersist);
+                    group.verify();
+                    accessDao.persist(toPersist);
+
+                    persisted++;
+                } catch (IllegalArgumentException | VerificationException e) {
+                    log.error("Cannot process Group " + group, e);
+                } catch (RuntimeException e) {
+                    log.error("Unknown problem while migrating Group " + group, e);
+                }
             }
         }
 
-        System.out.println("Completed Migrating Groups; Persisted " + persisted + ", dropped " + dropped + '.');
+        log.info("Completed Migrating Groups; Persisted " + persisted + ", Dropped " + dropped + '.');
     }
 
     @Test

@@ -33,7 +33,7 @@ import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
  * Transformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
  *
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  * @noinspection OverlyLongMethod

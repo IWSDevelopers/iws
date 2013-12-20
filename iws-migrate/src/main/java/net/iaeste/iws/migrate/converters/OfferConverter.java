@@ -12,6 +12,7 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -35,12 +36,12 @@ public final class OfferConverter extends CommonConverter {
         entity.setOtherRequirements(oldOffer.getOtherrequirements());
         entity.setMinimumWeeks(oldOffer.getWeeksmin());
         entity.setMaximumWeeks(oldOffer.getWeeksmax());
-        entity.setFromDate(oldOffer.getFromdate());
-        entity.setToDate(oldOffer.getTodate());
-        entity.setFromDate2(oldOffer.getFromdate2());
-        entity.setToDate2(oldOffer.getTodate2());
-        entity.setUnavailableFrom(oldOffer.getHolidaysfromdate());
-        entity.setUnavailableTo(oldOffer.getHolidaystodate());
+        entity.setFromDate(selectMinDate(oldOffer.getFromdate(), oldOffer.getTodate()));
+        entity.setToDate(selectMaxDate(oldOffer.getFromdate(), oldOffer.getTodate()));
+        entity.setFromDate2(selectMinDate(oldOffer.getFromdate2(), oldOffer.getTodate2()));
+        entity.setToDate2(selectMaxDate(oldOffer.getFromdate2(), oldOffer.getTodate2()));
+        entity.setUnavailableFrom(selectMinDate(oldOffer.getHolidaysfromdate(), oldOffer.getHolidaystodate()));
+        entity.setUnavailableTo(selectMaxDate(oldOffer.getHolidaysfromdate(), oldOffer.getHolidaystodate()));
         entity.setLanguage1(convertLanguage(oldOffer.getLanguage1(), Language.ENGLISH));
         entity.setLanguage1Level(convertLanguageLevel(oldOffer.getLanguage1Level()));
         entity.setLanguage1Operator(convertLanguageOperator(oldOffer.getLanguage1Or()));
@@ -68,6 +69,30 @@ public final class OfferConverter extends CommonConverter {
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
         return entity;
+    }
+
+    private static Date selectMinDate(final Date fromdate, final Date todate) {
+        final Date result;
+
+        if ((fromdate != null) && (todate != null)) {
+            result = fromdate.before(todate) ? fromdate : todate;
+        } else {
+            result = fromdate;
+        }
+
+        return result;
+    }
+
+    private static Date selectMaxDate(final Date fromdate, final Date todate) {
+        final Date result;
+
+        if ((fromdate != null) && (todate != null)) {
+            result = fromdate.before(todate) ? todate : fromdate;
+        } else {
+            result = todate;
+        }
+
+        return result;
     }
 
     private static String convertRefno(final String systemrefno) {
@@ -140,6 +165,7 @@ public final class OfferConverter extends CommonConverter {
         entity.setWeeklyHours(round(oldOffer.getHoursweekly()));
         entity.setDailyHours(round(oldOffer.getHoursdaily()));
         entity.setModified(convert(oldOffer.getModified()));
+        System.out.println("Workhours: weekly = " + entity.getWeeklyHours() + ", daily = " + entity.getDailyHours());
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
         return entity;
@@ -148,12 +174,24 @@ public final class OfferConverter extends CommonConverter {
     private static AddressEntity convertAddress(final IW3OffersEntity oldOffer) {
         final AddressEntity entity = new AddressEntity();
 
-        entity.setStreet1(convert(oldOffer.getEmployeraddress1()));
-        entity.setStreet2(convert(oldOffer.getEmployeraddress2()));
+        entity.setStreet1(convertStreet(oldOffer.getEmployeraddress1()));
+        entity.setStreet2(convertStreet(oldOffer.getEmployeraddress2()));
         // Country will be set in the invoking method
         entity.setModified(convert(oldOffer.getModified()));
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
         return entity;
+    }
+
+    private static String convertStreet(final String street) {
+        final String result;
+
+        if (street != null && !street.isEmpty()) {
+            result = convert(street);
+        } else {
+            result = "-";
+        }
+
+        return result;
     }
 }

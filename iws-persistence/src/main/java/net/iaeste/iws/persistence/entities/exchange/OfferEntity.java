@@ -144,7 +144,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     private EmployerEntity employer = null;
 
     @Monitored(name="Offer work description", level = MonitoringLevel.DETAILED)
-    @Column(name = "work_description", length = 1000, nullable = false)
+    @Column(name = "work_description", length = 3000, nullable = false)
     private String workDescription = null;
 
     @Monitored(name="Offer type of work", level = MonitoringLevel.DETAILED)
@@ -298,7 +298,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     private Integer numberOfHardCopies = null;
 
     @Monitored(name="Offer Additional Information", level = MonitoringLevel.DETAILED)
-    @Column(name = "additional_information", length = 1000)
+    @Column(name = "additional_information", length = 3000)
     private String additionalInformation = null;
 
     @Monitored(name="Offer status", level = MonitoringLevel.DETAILED)

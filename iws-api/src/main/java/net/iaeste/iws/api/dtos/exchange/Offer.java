@@ -257,13 +257,13 @@ public final class Offer extends AbstractVerification {
      * Sets the Offer Work Description. The field may be null, but if it is
      * defined, then the length may not exceed 1000 characters.<br />
      *   The method will thrown an {@code IllegalArgumentException} if the value
-     * is too long, the length may not exceed 1000 characters.
+     * is too long, the length may not exceed 3000 characters.
      *
      * @param workDescription Offer Work Description
      * @throws IllegalArgumentException if the length is too long
      */
     public void setWorkDescription(final String workDescription) throws IllegalArgumentException {
-        ensureNotTooLong("workDescription", workDescription, 1000);
+        ensureNotTooLong("workDescription", workDescription, 3000);
         this.workDescription = workDescription;
     }
 
@@ -548,7 +548,7 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setAdditionalInformation(final String additionalInformation) throws IllegalArgumentException {
-        ensureNotTooLong("additionalInformation", additionalInformation, 1000);
+        ensureNotTooLong("additionalInformation", additionalInformation, 3000);
         this.additionalInformation = additionalInformation;
     }
 

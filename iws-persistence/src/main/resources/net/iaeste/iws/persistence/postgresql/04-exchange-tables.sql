@@ -67,7 +67,7 @@ create table offers (
     exchange_year             integer,
     -- General Work Description
     employer_id               integer,
-    work_description          varchar(1000),
+    work_description          varchar(3000),
     work_type                 char(1),
     study_levels              varchar(25),
     study_fields              varchar(1000),
@@ -107,7 +107,7 @@ create table offers (
     -- Other things
     nomination_deadline       date,
     number_of_hard_copies     integer,
-    additional_information    varchar(1000),
+    additional_information    varchar(3000),
     status                    varchar(10),
     modified                  timestamp default now(),
     created                   timestamp default now(),

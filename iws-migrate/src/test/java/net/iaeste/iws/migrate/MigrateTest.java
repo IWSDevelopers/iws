@@ -22,6 +22,7 @@ import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
@@ -325,18 +326,20 @@ public class MigrateTest {
             EmployerEntity employerEntity = exchangeDao.findUniqueEmployer(groupEntity, offerEntity.getEmployer());
 
             try {
-                final Offer offer = ExchangeTransformer.transform(offerEntity);
-                offer.verify();
                 if (employerEntity == null) {
                     employerEntity = offerEntity.getEmployer();
                     final CountryEntity countryEntity = accessDao.findCountryByCode(oldEntity.getCountryid());
                     employerEntity.getAddress().setCountry(countryEntity);
                     employerEntity.setGroup(groupEntity);
+                    final Employer employer = ExchangeTransformer.transform(employerEntity);
+                    employer.verify();
                     accessDao.persist(employerEntity.getAddress());
                     accessDao.persist(employerEntity);
                 }
                 offerEntity.setEmployer(employerEntity);
-                accessDao.persist(offerEntity);
+                final Offer offer = ExchangeTransformer.transform(offerEntity);
+                offer.verify();
+                //accessDao.persist(offerEntity);
                 persisted++;
             } catch (IllegalArgumentException | VerificationException e) {
                 log.error("Cannot process Offer with refno:" + offerEntity.getRefNo(), e);

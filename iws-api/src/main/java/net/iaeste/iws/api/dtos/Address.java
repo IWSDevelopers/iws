@@ -97,7 +97,7 @@ public final class Address extends AbstractVerification {
      * @see #FIELD_LENGTH
      */
     public void setStreet1(final String street1) throws IllegalArgumentException {
-        ensureNotEmptyOrTooLong("street1", street1, FIELD_LENGTH);
+        ensureNotTooLong("street1", street1, FIELD_LENGTH);
         this.street1 = street1;
     }
 
@@ -135,7 +135,7 @@ public final class Address extends AbstractVerification {
      * @see #ZIP_LENGTH
      */
     public void setZip(final String zip) throws IllegalArgumentException {
-        ensureNotEmptyOrTooLong("zip", zip, ZIP_LENGTH);
+        ensureNotTooLong("zip", zip, ZIP_LENGTH);
         this.zip = zip;
     }
 
@@ -154,7 +154,7 @@ public final class Address extends AbstractVerification {
      * @see #FIELD_LENGTH
      */
     public void setCity(final String city) throws IllegalArgumentException {
-        ensureNotEmptyOrTooLong("city", city, FIELD_LENGTH);
+        ensureNotTooLong("city", city, FIELD_LENGTH);
         this.city = city;
     }
 

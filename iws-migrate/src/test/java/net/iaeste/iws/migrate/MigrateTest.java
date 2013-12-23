@@ -310,11 +310,16 @@ public class MigrateTest {
         log.info("Completed Migrating UserGroups; Persisted {}, Updated {} & Skipped {}.", persisted, updated, skipped);
     }
 
+    /**
+     * Note, that due to the problem with existing duplication among the IW3
+     * Reference Numbers, re-running this test will not fail, since the
+     * correction logic will simply try to fix the problems.
+     */
     @Test
     @Transactional("transactionManagerIWS")
     public void test5ReadingWritingOffers() {
         final OfferConverter converter = new OfferConverter(iwsEntityManager);
-        final List<IW3OffersEntity> offers = iw3Dao.findAllOffers(0, 1000);
+        final List<IW3OffersEntity> offers = iw3Dao.findAllOffers(0, 100000);
         log.info("Found {} Offers to migrate.", offers.size());
         int persisted = 0;
         int skipped = 0;
@@ -344,7 +349,7 @@ public class MigrateTest {
             }
         }
 
-        assertThat(persisted + + skipped, is(offers.size()));
+        assertThat(persisted + skipped, is(offers.size()));
         log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", persisted, skipped);
     }
 
@@ -360,7 +365,7 @@ public class MigrateTest {
                 entity = accessDao.findCountry(countrycode.toUpperCase(IWSConstants.DEFAULT_LOCALE));
             }
         } catch (IWSException e) {
-            System.out.println("Couldn't find Entity for country " + countrycode);
+            log.warn("Couldn't find Entity for country {} => {}.", countrycode, e.getMessage());
             entity = null;
         }
 

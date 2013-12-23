@@ -5,7 +5,9 @@ import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
+import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
+import net.iaeste.iws.core.transformers.CollectionTransformer;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
@@ -17,6 +19,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -41,7 +45,7 @@ public final class OfferConverter extends CommonConverter {
         entity.setOldRefno(convert(oldOffer.getLocalrefno()));
         entity.setEmployer(convertEmployer(oldOffer));
         entity.setWorkDescription(convert(oldOffer.getWorkkind()));
-        entity.setTypeOfWork(convertTypeOfWork(oldOffer.getWorktype()));
+        entity.setTypeOfWork(convertTypeOfWork(oldOffer));
         entity.setStudyLevels(convertStudyLevels(oldOffer));
         entity.setFieldOfStudies(convertFieldOfStudies(oldOffer));
         entity.setSpecializations(convertSpecializations(oldOffer.getSpecialization()));
@@ -88,8 +92,8 @@ public final class OfferConverter extends CommonConverter {
      * In IW3, there exists 25.335 Offers, for which there is 25.211 unique
      * reference numbers, with some being reused up to 4 times!
      *
-     * @param systemrefno
-     * @return
+     * @param systemrefno IW3 System Refno
+     * @return IWS RefNo
      */
     private String convertRefno(final String systemrefno) {
         // IW3 Refno format: CCYY-nnnn
@@ -128,66 +132,375 @@ public final class OfferConverter extends CommonConverter {
         return result;
     }
 
-    private static TypeOfWork convertTypeOfWork(final String worktype) {
-        return TypeOfWork.R;
-    }
+    /**
+     * IW3 contains several fields where the information about work type is
+     * divied. In IWS, there's a single entry. So the question is how to map it
+     * over, since there can be several types marked for the IW3 records.<br />
+     *   The following query will yield the result from below, using the
+     * Mid-November snapshot of the IW3 database, that Henrik made.
+     * <pre>
+     *   select
+     *     count(offerid) as records,
+     *     worktype,
+     *     worktype_n,
+     *     worktype_p,
+     *     worktype_r,
+     *     worktype_w
+     *   from offers
+     *   group by
+     *     worktype,
+     *     worktype_n,
+     *     worktype_p,
+     *     worktype_r,
+     *     worktype_w;
+     * </pre>
+     * <br />
+     * <pre>
+     * records   worktype   worktype_n   worktype_p   worktype_r   worktype_w
+     *    9311          x     false        true         false        false
+     *       5          x     true         true         true         true
+     *    1260          x     false        true         true         false
+     *       4          x     true         true         false        true
+     *     780          x     false        false        false        false
+     *   12022          x     false        false        true         false
+     *      11          x     true         false        false        true
+     *     581          x     false        true         false        true
+     *       5          x     true         true         true         false
+     *      93          x     false        true         true         true
+     *      10          x     true         true         false        false
+     *     679          x     false        false        false        true
+     *       7          x     true         false        true         false
+     *     335          x     true         false        false        false
+     *     232          x     false        false        true         true
+     * </pre>
+     *
+     * @param oldOffer IW3 Offer
+     * @return Type of Work
+     */
+    private static TypeOfWork convertTypeOfWork(final IW3OffersEntity oldOffer) {
+        final TypeOfWork result;
 
-    private static String convertStudyLevels(final IW3OffersEntity oldOffer) {
-        return "B,M,E";
-    }
-
-    private static String convertFieldOfStudies(final IW3OffersEntity oldOffer) {
-        return "Something";
-    }
-
-    private static String convertSpecializations(final String specialization) {
-        return "Something";
-    }
-
-    private static Boolean convertTrainingRequired(final String trainingrequired) {
-        return true;
-    }
-
-    private static Language convertLanguage(final String language, final Language defaultLanguage) {
-        return defaultLanguage;
-    }
-
-    private static LanguageLevel convertLanguageLevel(final Integer languageLevel) {
-        return LanguageLevel.E;
-    }
-
-    private static LanguageOperator convertLanguageOperator(final Boolean languageOr) {
-        return null;
-    }
-
-    private static PaymentFrequency convertFrequency(final String frequency) {
-        final PaymentFrequency result;
-
-        if ("d".equals(frequency)) {
-            result = PaymentFrequency.DAILY;
-        } else if ("w".equals(frequency)) {
-            result = PaymentFrequency.WEEKLY;
-        } else if ("2".equals(frequency)) {
-            result = PaymentFrequency.BYWEEKLY;
-        } else if ("m".equals(frequency)) {
-            result = PaymentFrequency.MONTHLY;
+        if (oldOffer.getWorktypeR()) {
+            result = TypeOfWork.R;
+        } else if (oldOffer.getWorktypeP()) {
+            result = TypeOfWork.P;
+        } else if (oldOffer.getWorktypeW()) {
+            result = TypeOfWork.W;
         } else {
-            result = PaymentFrequency.YEARLY;
+            result = TypeOfWork.N;
         }
 
         return result;
     }
 
+    /**
+     * StudyLevel is handled using a concatenated String in IWS, but in IW3, it
+     * is comprised of 4 different fields.
+     * <pre>
+     *   select
+     *     count(offerid) as records,
+     *     studycompleted,
+     *     studycompleted_b,
+     *     studycompleted_m,
+     *     studycompleted_e
+     *   from offers
+     *   group by
+     *     studycompleted,
+     *     studycompleted_b,
+     *     studycompleted_m,
+     *     studycompleted_e;
+     * </pre>
+     * Yielding the following result:
+     * <pre>
+     *   records  studycompleted  studycompleted_b  studycompleted_m  studycompleted_e
+     *         7       NULL            true              false             true
+     *        12       a               false             false             false
+     *      3348       m               false             true              false
+     *       672       NULL            true              true              true
+     *         1       5               false             false             true
+     *         1       b               false             true              false
+     *      3137       NULL            false             true              false
+     *        19       m               false             true              true
+     *         2       b               false             false             true
+     *         5       5               true              true              true
+     *      6753       NULL            false             false             true
+     *         3       e               false             true              true
+     *       169       NULL            true              false             false
+     *         2       m               true              true              false
+     *       350       b               true              false             false
+     *         1       b               false             true              true
+     *      7778       NULL            false             true              true
+     *      2584       e               false             false             true
+     *       281       NULL            true              true              false
+     *       209       5               false             false             false
+     *         1       b               true              true              false
+     * </pre>
+     *
+     * @param oldOffer IW3 Offer to read studylevel from
+     * @return IWS StudyLevel
+     */
+    private static String convertStudyLevels(final IW3OffersEntity oldOffer) {
+        final Set<StudyLevel> result = EnumSet.noneOf (StudyLevel.class);
+
+        if (oldOffer.getStudycompletedB()) {
+            result.add(StudyLevel.B);
+        }
+        if (oldOffer.getStudycompletedM()) {
+            result.add(StudyLevel.M);
+        }
+        if (oldOffer.getStudycompletedE()) {
+            result.add(StudyLevel.E);
+        }
+
+        return CollectionTransformer.concatEnumCollection(result);
+    }
+
+    private static String convertFieldOfStudies(final IW3OffersEntity oldOffer) {
+        return convert(oldOffer.getFaculty().getFaculty());
+    }
+
+    private static String convertSpecializations(final String specialization) {
+        return convert(specialization);
+    }
+
+    /**
+     * In IW3, the Trainingrequired fiels was a String, in IWS it is a Boolean. Converting means that we have to cover crawl through the long and boring list of crapola that people can add...<br />
+     *   The following query gives a hint has to what have to deal with:<br />
+     * <pre>
+     *   select
+     *     count(a.offerid) as records,
+     *     a.required
+     *   from (
+     *     select
+     *       o.offerid,
+     *       lower(left(o.trainingrequired, 4)) as required
+     *     from offers o) a
+     *   group by a.required;
+     * </pre>
+     * Note; that by using a left function call - we're only looking at the
+     * first few letters, making it easier to just have a trimmed result to
+     * look at.
+     *
+     * @param trainingrequired IW3 field for training required
+     * @return True or False
+     */
+    private static Boolean convertTrainingRequired(final String trainingrequired) {
+        // Whoopsie... causes index out of bounds exception!
+        final String required = lowerAndShorten(trainingrequired, 4);
+        final Boolean result;
+
+        switch (required) {
+            case "": // Empty String
+            case "-":
+            case "kein":
+            case "no":
+            case "no.":
+            case "no,":
+            case "not":
+            case "none":
+            case "nil":
+            case "n/a":
+            case "n.a.":
+            case "n":
+            case "no(s":
+            case "no n":
+            case "no b":
+            case "on":
+                result = false;
+                break;
+            default:
+                result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Languages are a nightmare in IW3, since there exists so many different
+     * ways whereby our über intelligent administrators and professors believe
+     * they should be written! The Enlish language variant alone constitues 42
+     * different ways of being added (and add the German offers where language
+     * must be "good")! The following query can help by only looking at the
+     * first few letters, and this making it easier to find patterns.<br />
+     * <pre>
+     *   select
+     *     count(offerid) as records,
+     *     language1
+     *   from (
+     *     select
+     *       i.offerid,
+     *       lower(left(i.language1, 3)) as language1
+     *     from offers i) o
+     *   group by language1
+     *   order by records desc;
+     * </pre>
+     *
+     * @param language        Language to map
+     * @param defaultLanguage Default language if given is null
+     * @return IWS Language
+     */
+    private static Language convertLanguage(final String language, final Language defaultLanguage) {
+        final String toCheck = upper(language);
+        final Language result;
+
+        if (toCheck != null && !toCheck.isEmpty()) {
+            // Seriously, we have so many language requirements... For
+            // simplicity, we're defaulting to English, and just adding a large
+            // enough base for the remainder to hopefully not offend too many.
+            switch (toCheck) {
+                // The cases are according to popularity, ignoring "good" and "excellent"
+                case "DEU": // Deutsch
+                case "GEM": // GE[R]MAN
+                case "GER": // German
+                    result = Language.GERMAN;
+                    break;
+                case "SPA": // Spanish
+                    result = Language.SPANISH;
+                    break;
+                case "FRE": // French
+                    result = Language.FRENCH;
+                    break;
+                case "POR": // Portuguese
+                    result = Language.PORTUGUESE;
+                    break;
+                case "RUS": // Russian
+                    result = Language.RUSSIAN;
+                    break;
+                case "ITA": // Italian
+                    result = Language.ITALIAN;
+                    break;
+                case "POL": // Polish
+                    result = Language.POLISH;
+                    break;
+                case "HUN": // Hungarian
+                    result = Language.HUNGARIAN;
+                    break;
+                case "ARA": // Arabic
+                    result = Language.ARABIC;
+                    break;
+                default:
+                    result = Language.ENGLISH;
+            }
+        } else {
+            result = defaultLanguage;
+        }
+
+        return result;
+    }
+
+    /**
+     * From the IW3 source code (upl/exchange/outbox/update.upl), we can see
+     * that the level is defined as follows:
+     * <ol>
+     *   <li>Fair</li>
+     *   <li>Good</li>
+     *   <li>Excellent</li>
+     * </ol>
+     * However, from the IW3 database we can see that 357 records have level 0
+     * (zero) or -1 (minus one). Hence, we simply convert these to null!
+     *
+     * @param languageLevel IW3 Language Level
+     * @return IWS Language Level
+     */
+    private static LanguageLevel convertLanguageLevel(final Integer languageLevel) {
+        final LanguageLevel result;
+
+        if (languageLevel == 1) {
+            result = LanguageLevel.F;
+        } else if (languageLevel == 2) {
+            result = LanguageLevel.G;
+        } else if (languageLevel == 3) {
+            result = LanguageLevel.E;
+        } else {
+            result = null;
+        }
+
+        return result;
+    }
+
+    private static LanguageOperator convertLanguageOperator(final Boolean languageOr) {
+        final LanguageOperator result;
+
+        if (languageOr != null) {
+            if (languageOr) {
+                result = LanguageOperator.O;
+            } else {
+                result = LanguageOperator.A;
+            }
+        } else {
+            result = null;
+        }
+
+        return result;
+    }
+
+    private static PaymentFrequency convertFrequency(final String frequency) {
+        final PaymentFrequency result;
+
+        switch (frequency) {
+            case "d":
+                result = PaymentFrequency.DAILY;
+                break;
+            case "w":
+                result = PaymentFrequency.WEEKLY;
+                break;
+            case "2":
+                result = PaymentFrequency.BYWEEKLY;
+                break;
+            case "m":
+                result = PaymentFrequency.MONTHLY;
+                break;
+            default:
+                result = PaymentFrequency.YEARLY;
+        }
+
+        return result;
+    }
+
+    /**
+     * From the IW3 database, we can dig out the usage using this query:
+     * <pre>
+     *   select count(offerid) as records, status from offers group by status;
+     * </pre>
+     * Result is:
+     * <pre>
+     *     Records   Status
+     *       23953     n
+     *        1382     d
+     * </pre>
+     *
+     * @param status IW3 Offer Status
+     * @return IWS Offer Status
+     */
     private static OfferState convertOfferState(final String status) {
-        return OfferState.NEW;
+        final OfferState result;
+
+        if (status != null) {
+            switch (status) {
+                case "n":
+                    result = OfferState.NEW;
+                    break;
+                case "d":
+                    // Okay, we have some with status 'd', assuming it means that
+                    // they are deleted!
+                    result = OfferState.DELETED;
+                    break;
+                default:
+                    result = null;
+            }
+        } else {
+            result = null;
+        }
+
+        return result;
     }
 
     private Integer convertExchangeYear(final Integer exchangeyear) {
-        // Switcherland is having a couple of Offers with Exchange year 1970,
-        // although their reference numbers are marked as 2011
         final Integer result;
 
         if (exchangeyear == 1970) {
+            // Switcherland is having a couple of Offers with Exchange year
+            // 1970, although their reference numbers are marked as 2011
             result = 2011;
         } else {
             result = exchangeyear;

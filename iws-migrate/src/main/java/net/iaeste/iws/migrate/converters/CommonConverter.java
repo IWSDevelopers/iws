@@ -40,7 +40,7 @@ public class CommonConverter {
     // General Converters
     // =========================================================================
 
-    public static Float round(final Float value) {
+    protected static Float round(final Float value) {
         return (float) Math.round(value * 100) / 100;
     }
 
@@ -66,8 +66,20 @@ public class CommonConverter {
         return StringEscapeUtils.unescapeHtml4(str);
     }
 
-    public static String upper(final String str) {
+    protected static String upper(final String str) {
         return str != null ? str.toUpperCase(IWSConstants.DEFAULT_LOCALE) : null;
+    }
+
+    protected static String lowerAndShorten(final String str, final int maxLength) {
+        final String result;
+
+        if (str != null && str.length() > maxLength) {
+            result = str.substring(0,maxLength).toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        } else {
+            result = str;
+        }
+
+        return result;
     }
 
     // =========================================================================

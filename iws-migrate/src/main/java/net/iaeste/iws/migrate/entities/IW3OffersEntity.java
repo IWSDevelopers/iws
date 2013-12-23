@@ -17,6 +17,8 @@ package net.iaeste.iws.migrate.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -97,8 +99,9 @@ public class IW3OffersEntity {
     @Column(name = "hoursdaily", length = 8, precision = 8)
     private Float hoursdaily = null;
 
-    @Column(name = "facultyid", nullable = false, length = 10)
-    private Integer facultyid = null;
+    @ManyToOne
+    @JoinColumn(name = "facultyid", referencedColumnName = "facultyid", nullable = false)
+    private IW3FacultiesEntity faculty = null;
 
     @Column(name = "facultyother", length = 2147483647)
     private String facultyother = null;
@@ -454,12 +457,12 @@ public class IW3OffersEntity {
         return hoursdaily;
     }
 
-    public void setFacultyid(final Integer facultyid) {
-        this.facultyid = facultyid;
+    public void setFaculty(final IW3FacultiesEntity faculty) {
+        this.faculty = faculty;
     }
 
-    public Integer getFacultyid() {
-        return facultyid;
+    public IW3FacultiesEntity getFaculty() {
+        return faculty;
     }
 
     public void setFacultyother(final String facultyother) {

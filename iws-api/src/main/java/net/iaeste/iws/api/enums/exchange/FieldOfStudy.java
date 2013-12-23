@@ -65,7 +65,6 @@ public enum FieldOfStudy {
             Specialization.SEAFOOD
     )),
 
-
     APPLIED_ARTS("Applied Arts", Arrays.asList(
             Specialization.DESIGN,
             Specialization.DRAWING,

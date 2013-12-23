@@ -46,7 +46,12 @@ public enum OfferState {
     /**
      * If an offer has student nominations
      */
-    NOMINATIONS("Nominations");
+    NOMINATIONS("Nominations"),
+
+    /**
+     * In IW3, some offers were stored with status 'D' as in deleted.
+     */
+    DELETED("Deleted");
 
     // =========================================================================
     // Private Constructor & functionality

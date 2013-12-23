@@ -249,7 +249,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
      * need big numbers, e.g. 1 EUR = 26.435,00 VND
      */
     @Monitored(name="Offer payment", level = MonitoringLevel.DETAILED)
-    @Column(name = "payment", scale = 12, precision = 2)
+    @Column(name = "payment")
     private BigDecimal payment = null;
 
     @Monitored(name="Offer payment frequency", level = MonitoringLevel.DETAILED)
@@ -267,7 +267,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     private String deduction = null;
 
     @Monitored(name="Offer living cost", level = MonitoringLevel.DETAILED)
-    @Column(name = "living_cost", scale = 12, precision = 2)
+    @Column(name = "living_cost")
     private BigDecimal livingCost = null;
 
     @Monitored(name="Offer living cost frequency", level = MonitoringLevel.DETAILED)
@@ -280,7 +280,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     private String lodgingBy = null;
 
     @Monitored(name="Offer lodging cost", level = MonitoringLevel.DETAILED)
-    @Column(name = "lodging_cost", scale = 12, precision = 2)
+    @Column(name = "lodging_cost")
     private BigDecimal lodgingCost = null;
 
     @Monitored(name="Offer lodging cost frequency", level = MonitoringLevel.DETAILED)

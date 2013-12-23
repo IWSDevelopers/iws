@@ -40,5 +40,5 @@ public interface IW3Dao {
 
     List<IW3User2GroupEntity> findAllUserGroups();
 
-    List<IW3OffersEntity> findAllOffers();
+    List<IW3OffersEntity> findAllOffers(int page, int size);
 }

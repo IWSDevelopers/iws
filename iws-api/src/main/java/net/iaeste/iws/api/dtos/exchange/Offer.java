@@ -637,7 +637,7 @@ public final class Offer extends AbstractVerification {
         // filled by the IWS Logic as part of the processing of the Offer
         isNotNull(validation, "refNo", refNo);
         // We need to ensure that the Employer is verifiable also!
-        //isNotNullAndVerifiable(validation, "employer", employer);
+        isNotNullAndVerifiable(validation, "employer", employer);
         isNotNull(validation, "employer", employer);
         isNotNull(validation, "workDescription", workDescription);
         isNotNull(validation, "studyLevels", studyLevels);

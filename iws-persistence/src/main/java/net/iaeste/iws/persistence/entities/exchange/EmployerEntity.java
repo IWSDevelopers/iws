@@ -126,11 +126,11 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     private String nearestPublicTransport = null;
 
     @Monitored(name="Employer weekly hours", level = MonitoringLevel.DETAILED)
-    @Column(name = "weekly_hours", scale = 5, precision = 3)
+    @Column(name = "weekly_hours")
     private Float weeklyHours = null;
 
     @Monitored(name="Employer daily hours", level = MonitoringLevel.DETAILED)
-    @Column(name = "daily_hours", scale = 5, precision = 3)
+    @Column(name = "daily_hours")
     private Float dailyHours = null;
 
     /**

@@ -100,8 +100,17 @@ public final class DatePeriod extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * Sets the start date or from date for this Period. The value must be set,
+     * i.e. not null. The from date cannot be before the paired to date, if
+     * either null or after the to date, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param fromDate Start of the Period
+     * @throws IllegalArgumentException if either null or after the to date
+     */
     public void setFromDate(final Date fromDate) throws IllegalArgumentException {
-        ensureNotNullAndBeforeDate("fromDate", fromDate, toDate);
+        ensureNotNullAndBeforeOrAtDate("fromDate", fromDate, toDate);
 
         this.fromDate = fromDate;
     }
@@ -110,8 +119,17 @@ public final class DatePeriod extends AbstractVerification {
         return fromDate;
     }
 
+    /**
+     * Sets the end date or to date for this Period. The value must be set, i.e.
+     * not null. The to date cannot be before the paired from date, if either
+     * null or before the from date, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param toDate End of the Period
+     * @throws IllegalArgumentException if either null or before the from date
+     */
     public void setToDate(final Date toDate) throws IllegalArgumentException {
-        ensureNotNullAndAfterDate("toDate", toDate, fromDate);
+        ensureNotNullAndAfterOrAtDate("toDate", toDate, fromDate);
 
         this.toDate = toDate;
     }
@@ -184,19 +202,19 @@ public final class DatePeriod extends AbstractVerification {
     // Internal Methods
     // =========================================================================
 
-    private static void ensureNotNullAndBeforeDate(final String field, final Date date, final Date mustBeBefore) throws IllegalArgumentException {
+    private static void ensureNotNullAndBeforeOrAtDate(final String field, final Date date, final Date mustBeBefore) throws IllegalArgumentException {
         ensureNotNull(field, date);
 
-        if ((mustBeBefore != null) && !date.isBefore(mustBeBefore)) {
-            throw new IllegalArgumentException("Date " + field + " is not before the given from date.");
+        if ((mustBeBefore != null) && date.isAfter(mustBeBefore)) {
+            throw new IllegalArgumentException("Date " + field + " is not at or before the given from date.");
         }
     }
 
-    private static void ensureNotNullAndAfterDate(final String field, final Date date, final Date mustBeAfter) throws IllegalArgumentException {
+    private static void ensureNotNullAndAfterOrAtDate(final String field, final Date date, final Date mustBeAfter) throws IllegalArgumentException {
         ensureNotNull(field, date);
 
-        if ((mustBeAfter != null) && !date.isAfter(mustBeAfter)) {
-            throw new IllegalArgumentException("Date " + field + " is not after the given from date.");
+        if ((mustBeAfter != null) && date.isBefore(mustBeAfter)) {
+            throw new IllegalArgumentException("Date " + field + " is not at or after the given from date.");
         }
     }
 }

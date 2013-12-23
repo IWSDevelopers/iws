@@ -30,8 +30,8 @@ create table employers (
     canteen                   boolean,
     nearest_airport           varchar(255),
     nearest_public_transport  varchar(255),
-    weekly_hours              decimal(5,3),
-    daily_hours               decimal(5,3),
+    weekly_hours              float,
+    daily_hours               float,
     modified                  timestamp default now(),
     created                   timestamp default now(),
 
@@ -96,16 +96,16 @@ create table offers (
     language_3                varchar(255),
     language_3_level          varchar(1),
     -- Payment & Cost information
-    payment                   decimal(12,2),
+    payment                   float,
     payment_frequency         varchar(10),
     -- Currency is general information, which belongs in the Employer Object
     currency                  varchar(3),
-    -- Deduction is general information, which belongs in the Employer Object
-    deduction                 varchar(20),
-    living_cost               decimal(12,2),
+    -- Deduction is up to 50 chars in IW3
+    deduction                 varchar(50),
+    living_cost               float,
     living_cost_frequency     varchar(10),
     lodging_by                varchar(255),
-    lodging_cost              decimal(12,2),
+    lodging_cost              float,
     lodging_cost_frequency    varchar(10),
     -- Other things
     nomination_deadline       date,

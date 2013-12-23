@@ -10,7 +10,11 @@ import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -20,6 +24,15 @@ import java.sql.Date;
  * @since   1.7
  */
 public final class OfferConverter extends CommonConverter {
+
+    private static final Logger log = LoggerFactory.getLogger(OfferConverter.class);
+    private static final Character REFNO_START_SERIALNUMBER = 'A';
+
+    private final EntityManager manager;
+
+    public OfferConverter(final EntityManager manager) {
+        this.manager = manager;
+    }
 
     public OfferEntity convert(final IW3OffersEntity oldOffer) {
         final OfferEntity entity = new OfferEntity();
@@ -71,6 +84,26 @@ public final class OfferConverter extends CommonConverter {
         return entity;
     }
 
+    /**
+     * In IW3, there exists 25.335 Offers, for which there is 25.211 unique
+     * reference numbers, with some being reused up to 4 times!
+     *
+     * @param systemrefno
+     * @return
+     */
+    private String convertRefno(final String systemrefno) {
+        // IW3 Refno format: CCYY-nnnn
+        // IWS Refno format: CC-YYYY-nnnnnn
+        final String countryCode = systemrefno.substring(0,2);
+        final String year = systemrefno.substring(2,4);
+        final String serialNumber = systemrefno.substring(5,9);
+        final Query query = manager.createQuery("select count(refNo) from OfferEntity where refNo like '" + countryCode + "-20" + year + '%' + serialNumber + '\'');
+        final Long count = (Long) query.getResultList().get(0);
+        final Character appender = (char) (REFNO_START_SERIALNUMBER + count);
+
+        return countryCode + "-20" + year + '-' + appender + '0' + serialNumber;
+    }
+
     private static Date selectMinDate(final Date fromdate, final Date todate) {
         final Date result;
 
@@ -93,16 +126,6 @@ public final class OfferConverter extends CommonConverter {
         }
 
         return result;
-    }
-
-    private static String convertRefno(final String systemrefno) {
-        // IW3 Refno format: CCYY-nnnn
-        // IWS Refno format: CC-YYYY-nnnnnn
-        final String countryCode = systemrefno.substring(0,2);
-        final String year = systemrefno.substring(2,4);
-        final String serialNumber = systemrefno.substring(5,9);
-
-        return countryCode + "-20" + year + "-00" + serialNumber;
     }
 
     private static TypeOfWork convertTypeOfWork(final String worktype) {
@@ -138,7 +161,21 @@ public final class OfferConverter extends CommonConverter {
     }
 
     private static PaymentFrequency convertFrequency(final String frequency) {
-        return PaymentFrequency.MONTHLY;
+        final PaymentFrequency result;
+
+        if ("d".equals(frequency)) {
+            result = PaymentFrequency.DAILY;
+        } else if ("w".equals(frequency)) {
+            result = PaymentFrequency.WEEKLY;
+        } else if ("2".equals(frequency)) {
+            result = PaymentFrequency.BYWEEKLY;
+        } else if ("m".equals(frequency)) {
+            result = PaymentFrequency.MONTHLY;
+        } else {
+            result = PaymentFrequency.YEARLY;
+        }
+
+        return result;
     }
 
     private static OfferState convertOfferState(final String status) {
@@ -146,7 +183,17 @@ public final class OfferConverter extends CommonConverter {
     }
 
     private Integer convertExchangeYear(final Integer exchangeyear) {
-        return 2013;
+        // Switcherland is having a couple of Offers with Exchange year 1970,
+        // although their reference numbers are marked as 2011
+        final Integer result;
+
+        if (exchangeyear == 1970) {
+            result = 2011;
+        } else {
+            result = exchangeyear;
+        }
+
+        return result;
     }
 
     private static EmployerEntity convertEmployer(final IW3OffersEntity oldOffer) {
@@ -165,7 +212,7 @@ public final class OfferConverter extends CommonConverter {
         entity.setWeeklyHours(round(oldOffer.getHoursweekly()));
         entity.setDailyHours(round(oldOffer.getHoursdaily()));
         entity.setModified(convert(oldOffer.getModified()));
-        System.out.println("Workhours: weekly = " + entity.getWeeklyHours() + ", daily = " + entity.getDailyHours());
+        log.debug("Workhours: weekly = %, daily = %", entity.getWeeklyHours(), entity.getDailyHours());
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
         return entity;
@@ -174,24 +221,12 @@ public final class OfferConverter extends CommonConverter {
     private static AddressEntity convertAddress(final IW3OffersEntity oldOffer) {
         final AddressEntity entity = new AddressEntity();
 
-        entity.setStreet1(convertStreet(oldOffer.getEmployeraddress1()));
-        entity.setStreet2(convertStreet(oldOffer.getEmployeraddress2()));
+        entity.setStreet1(convert(oldOffer.getEmployeraddress1()));
+        entity.setStreet2(convert(oldOffer.getEmployeraddress2()));
         // Country will be set in the invoking method
         entity.setModified(convert(oldOffer.getModified()));
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
         return entity;
-    }
-
-    private static String convertStreet(final String street) {
-        final String result;
-
-        if (street != null && !street.isEmpty()) {
-            result = convert(street);
-        } else {
-            result = "-";
-        }
-
-        return result;
     }
 }

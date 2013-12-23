@@ -98,8 +98,11 @@ public class IW3JpaDao implements IW3Dao {
      * {@inheritDoc}
      */
     @Override
-    public List<IW3OffersEntity> findAllOffers() {
+    public List<IW3OffersEntity> findAllOffers(final int page, final int size) {
         final Query query = entityManager.createNamedQuery("offers.findAll");
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
         return query.getResultList();
     }
 }

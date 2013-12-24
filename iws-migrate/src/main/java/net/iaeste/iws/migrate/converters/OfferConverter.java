@@ -60,13 +60,13 @@ public final class OfferConverter extends CommonConverter {
         entity.setUnavailableFrom(selectMinDate(oldOffer.getHolidaysfromdate(), oldOffer.getHolidaystodate()));
         entity.setUnavailableTo(selectMaxDate(oldOffer.getHolidaysfromdate(), oldOffer.getHolidaystodate()));
         entity.setLanguage1(convertLanguage(oldOffer.getLanguage1(), Language.ENGLISH));
-        entity.setLanguage1Level(convertLanguageLevel(oldOffer.getLanguage1Level()));
+        entity.setLanguage1Level(convertLanguageLevel(oldOffer.getLanguage1Level(), LanguageLevel.E));
         entity.setLanguage1Operator(convertLanguageOperator(oldOffer.getLanguage1Or()));
         entity.setLanguage2(convertLanguage(oldOffer.getLanguage2(), null));
-        entity.setLanguage2Level(convertLanguageLevel(oldOffer.getLanguage2Level()));
+        entity.setLanguage2Level(convertLanguageLevel(oldOffer.getLanguage2Level(), null));
         entity.setLanguage2Operator(convertLanguageOperator(oldOffer.getLanguage2Or()));
         entity.setLanguage3(convertLanguage(oldOffer.getLanguage3(), null));
-        entity.setLanguage3Level(convertLanguageLevel(oldOffer.getLanguage3Level()));
+        entity.setLanguage3Level(convertLanguageLevel(oldOffer.getLanguage3Level(), null));
         entity.setPayment(BigDecimal.valueOf(oldOffer.getPayment()));
         entity.setPaymentFrequency(convertFrequency(oldOffer.getPaymentfrequency()));
         // Set via the Employer Country
@@ -402,7 +402,7 @@ public final class OfferConverter extends CommonConverter {
      * @param languageLevel IW3 Language Level
      * @return IWS Language Level
      */
-    private static LanguageLevel convertLanguageLevel(final Integer languageLevel) {
+    private static LanguageLevel convertLanguageLevel(final Integer languageLevel, final LanguageLevel defaultLevel) {
         final LanguageLevel result;
 
         if (languageLevel == 1) {
@@ -412,7 +412,7 @@ public final class OfferConverter extends CommonConverter {
         } else if (languageLevel == 3) {
             result = LanguageLevel.E;
         } else {
-            result = null;
+            result = defaultLevel;
         }
 
         return result;

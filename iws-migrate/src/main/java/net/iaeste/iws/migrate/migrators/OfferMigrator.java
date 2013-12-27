@@ -1,5 +1,6 @@
-package net.iaeste.iws.migrate.converters;
+package net.iaeste.iws.migrate.migrators;
 
+import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
@@ -7,9 +8,15 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.enums.exchange.PaymentFrequency;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
+import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.CollectionTransformer;
+import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
+import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import org.slf4j.Logger;
@@ -20,25 +27,78 @@ import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 /**
+ * Note, that due to the problem with existing duplication among the IW3
+ * Reference Numbers, re-running this migration will not fail, since the
+ * correction logic will simply try to fix the problems.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class OfferConverter extends CommonConverter {
+public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(OfferConverter.class);
+    private static final Logger log = LoggerFactory.getLogger(OfferMigrator.class);
     private static final Character REFNO_START_SERIALNUMBER = 'A';
 
+    private final ExchangeDao exchangeDao;
     private final EntityManager manager;
 
-    public OfferConverter(final EntityManager manager) {
+    public OfferMigrator(final AccessDao accessDao, final ExchangeDao exchangeDao, final EntityManager manager) {
+        super(accessDao);
+        this.exchangeDao = exchangeDao;
         this.manager = manager;
     }
 
-    public OfferEntity convert(final IW3OffersEntity oldOffer) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MigrationResult migrate(final List<IW3OffersEntity> oldEntities) {
+        int persisted = 0;
+        int skipped = 0;
+
+        for (final IW3OffersEntity oldEntity : oldEntities) {
+            final OfferEntity offerEntity = convertOffer(oldEntity);
+            final GroupEntity groupEntity = accessDao.findGroupByIW3Id(oldEntity.getGroupid());
+            EmployerEntity employerEntity = exchangeDao.findUniqueEmployer(groupEntity, offerEntity.getEmployer());
+
+            try {
+                if (employerEntity == null) {
+                    employerEntity = prepareAndPersistEmployer(oldEntity, offerEntity, groupEntity);
+                }
+                offerEntity.setEmployer(employerEntity);
+                final Offer offer = ExchangeTransformer.transform(offerEntity);
+                offer.verify();
+                accessDao.persist(offerEntity);
+                persisted++;
+            } catch (IllegalArgumentException | VerificationException e) {
+                log.error("Cannot process Offer with refno:{} => {}", offerEntity.getRefNo(), e.getMessage());
+                skipped++;
+            }
+        }
+
+        return new MigrationResult(persisted, skipped);
+    }
+
+    private EmployerEntity prepareAndPersistEmployer(final IW3OffersEntity oldEntity, final OfferEntity offerEntity, final GroupEntity groupEntity) {
+        final CountryEntity countryEntity = accessDao.findCountryByCode(oldEntity.getCountryid());
+
+        final EmployerEntity employerEntity;
+        employerEntity = offerEntity.getEmployer();
+        employerEntity.getAddress().setCountry(countryEntity);
+        employerEntity.setGroup(groupEntity);
+
+        accessDao.persist(employerEntity.getAddress());
+        accessDao.persist(employerEntity);
+
+        return employerEntity;
+    }
+
+    private OfferEntity convertOffer(final IW3OffersEntity oldOffer) {
         final OfferEntity entity = new OfferEntity();
 
         entity.setRefNo(convertRefno(oldOffer.getSystemrefno()));
@@ -285,7 +345,8 @@ public final class OfferConverter extends CommonConverter {
      * @return True or False
      */
     private static Boolean convertTrainingRequired(final String trainingrequired) {
-        // Whoopsie... causes index out of bounds exception!
+        // We're looking at the first 4 characters, since we need to
+        // differentiate between "not " and "nothing"
         final String required = lowerAndShorten(trainingrequired, 4);
         final Boolean result;
 

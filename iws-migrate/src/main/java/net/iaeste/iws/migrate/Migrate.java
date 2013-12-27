@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.migrate;
 
+import net.iaeste.iws.migrate.spring.ContextProvider;
+import net.iaeste.iws.migrate.spring.MigrateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -21,7 +26,23 @@ package net.iaeste.iws.migrate;
  */
 public final class Migrate {
 
+    private static final Logger log = LoggerFactory.getLogger(Migrate.class);
+    private static final ContextProvider context = ContextProvider.getInstance();
+
+    private Migrate() {
+    }
+
     public static void main(final String [] args) {
-        System.out.println("Start the migration.");
+        log.info("Starting Migration of the IW3 Database to IWS.");
+        final MigrateService service = context.getBean(MigrateService.class);
+
+        // Now run the migrations
+        service.migrateCountries();
+        service.migrateGroups();
+        service.migrateUsers();
+        service.migrateUserGroups();
+        service.migrateOffers();
+
+        log.info("Migration of the IW3 Database to IWS has been completed.");
     }
 }

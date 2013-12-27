@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.MigrateTest
+ * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.spring.ProcessData
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,10 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.migrate;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+package net.iaeste.iws.migrate.spring;
 
 import net.iaeste.iws.migrate.daos.IW3Dao;
 import net.iaeste.iws.migrate.daos.IW3JpaDao;
@@ -30,22 +27,14 @@ import net.iaeste.iws.migrate.migrators.MigrationResult;
 import net.iaeste.iws.migrate.migrators.OfferMigrator;
 import net.iaeste.iws.migrate.migrators.UserGroupMigrator;
 import net.iaeste.iws.migrate.migrators.UserMigrator;
-import net.iaeste.iws.migrate.spring.Config;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -57,13 +46,9 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = { Config.class })
-@TransactionConfiguration(defaultRollback = false)
-public class MigrateTest {
+public class MigrateService implements ApplicationListener<ContextRefreshedEvent>  {
 
-    private static final Logger log = LoggerFactory.getLogger(MigrateTest.class);
+    private static final Logger log = LoggerFactory.getLogger(MigrateService.class);
 
     @PersistenceContext(unitName = "IW3PersistenceUnit")
     private EntityManager iw3EntityManager;
@@ -75,90 +60,110 @@ public class MigrateTest {
     private AccessDao accessDao = null;
     private IW3Dao iw3Dao = null;
 
-    @Before
-    public void before() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onApplicationEvent(final ContextRefreshedEvent event) {
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
         iw3Dao = new IW3JpaDao(iw3EntityManager);
     }
 
     // =========================================================================
-    // Migration is done using the following test methods, in order
+    // Actual Migrators
     // =========================================================================
 
-    @Test
+    /**
+     * Countries Migration Service.
+     */
     @Transactional("transactionManagerIWS")
-    public void test1ReadingWritingCountries() {
+    public void migrateCountries() {
+        // Our Migrator
         final CountryMigrator migrator = new CountryMigrator(accessDao);
+
+        // Fetch the List of Country Entities from IW3 to migrate
         final List<IW3CountriesEntity> countries = iw3Dao.findAllCountries();
         log.info("Found {} Countries to migrate.", countries.size());
 
+        // Now, run the migration
         final MigrationResult result = migrator.migrate(countries);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
 
-        // We should have all minus the invalid Chile & Training Session Country
-        assertThat(persisted + skipped, is(countries.size()));
+        // And log the result
         log.info("Completed Migratring Countries; Persisted {} & Skipped {}.", persisted, skipped);
     }
 
-    @Test
     @Transactional("transactionManagerIWS")
-    public void test2ReadingWritingGroups() {
+    public void migrateGroups() {
+        // Our Migrator
         final GroupMigrator migrator = new GroupMigrator(accessDao);
+
+        // Fetch the List of Group Entities from IW3 to migrate
         final List<IW3GroupsEntity> groups = iw3Dao.findAllGroups();
         log.info("Found {} Groups to migrate.", groups.size());
 
+        // Now, run the migration
         final MigrationResult result = migrator.migrate(groups);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
 
-        assertThat(persisted + skipped, is(groups.size()));
+        // And log the result
         log.info("Completed Migrating Groups; Persisted {} & Skipped {}.", persisted, skipped);
     }
 
-    @Test
     @Transactional("transactionManagerIWS")
-    public void test3ReadingWritingUsers() {
+    public void migrateUsers() {
+        // Our Migrator
         final UserMigrator migrator = new UserMigrator(accessDao);
+
+        // Fetch the List of Profile (User) Entities from IW3 to migrate
         final List<IW3ProfilesEntity> profiles = iw3Dao.findAllProfiles();
         log.info("Found {} Users to migrate.", profiles.size());
 
+        // Now, run the migration
         final MigrationResult result = migrator.migrate(profiles);
         final int persisted = result.getPersisted();
 
-        assertThat(persisted, is(profiles.size()));
+        // And log the result
         log.info("Completed Migrating Users; Persisted {}.", persisted);
     }
 
-    @Test
     @Transactional("transactionManagerIWS")
-    public void test4ReadingWritingUserGroups() {
+    public void migrateUserGroups() {
+        // Our Migrator
         final UserGroupMigrator migrator = new UserGroupMigrator(accessDao);
+
+        // Fetch the List of User2Group Entities from IW3 to migrate
         final List<IW3User2GroupEntity> userGroups = iw3Dao.findAllUserGroups();
         log.info("Found {} UserGroups to migrate.", userGroups.size());
 
+        // Now, run the migration
         final MigrationResult result = migrator.migrate(userGroups);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
         final int updated = result.getUpdated();
 
-        assertThat(persisted + skipped + updated, is(userGroups.size()));
+        // And log the result
         log.info("Completed Migrating UserGroups; Persisted {}, Updated {} & Skipped {}.", persisted, updated, skipped);
     }
 
-    @Test
     @Transactional("transactionManagerIWS")
-    public void test5ReadingWritingOffers() {
+    public void migrateOffers() {
+        // Our Migrator
         final OfferMigrator migrator = new OfferMigrator(accessDao, exchangeDao, iwsEntityManager);
+
+        // Fetch the List of Offer Entities from IW3 to migrate
         final List<IW3OffersEntity> offers = iw3Dao.findAllOffers(0, 100000);
         log.info("Found {} Offers to migrate.", offers.size());
 
+        // Now, run the migration
         final MigrationResult result = migrator.migrate(offers);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
 
-        assertThat(persisted + skipped, is(offers.size()));
+        // And log the result
         log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", persisted, skipped);
     }
 }

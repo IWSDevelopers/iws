@@ -38,8 +38,13 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class Config {
 
+    @Bean(name = "migrateService")
+    public MigrateService migrateService() {
+        return new MigrateService();
+    }
+
     @Bean(name = "dataSourceIW3")
-    protected static DataSource dataSourceIW3() {
+    public DataSource dataSourceIW3() {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
         dataSource.setServerName("localhost");
@@ -50,7 +55,7 @@ public class Config {
     }
 
     @Bean(name = "dataSourceIWS")
-    protected static DataSource dataSourceIWS() {
+    public DataSource dataSourceIWS() {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
         dataSource.setServerName("localhost");
@@ -61,7 +66,7 @@ public class Config {
     }
 
     @Bean(name = "entityManagerFactoryIW3Bean")
-    protected LocalContainerEntityManagerFactoryBean entityManagerFactoryIW3Bean() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryIW3Bean() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
@@ -75,7 +80,7 @@ public class Config {
     }
 
     @Bean(name = "entityManagerFactoryIWSBean")
-    protected LocalContainerEntityManagerFactoryBean entityManagerFactoryIWSBean() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryIWSBean() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
@@ -105,7 +110,7 @@ public class Config {
     }
 
     @Bean(name = "jpaProperties")
-    protected Properties jpaProperties() {
+    public Properties jpaProperties() {
         final Properties properties = new Properties();
 
         // For testing the result, it is helpful to be able to see the queries

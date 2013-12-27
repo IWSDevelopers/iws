@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
  * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.converters.UserConverter
+ * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.migrators.UserMigrator
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,16 +12,31 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.migrate.converters;
+package net.iaeste.iws.migrate.migrators;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.dtos.User;
+import net.iaeste.iws.api.enums.Gender;
+import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.Privacy;
+import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.enums.UserType;
+import net.iaeste.iws.api.exceptions.VerificationException;
+import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
+import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Converts the IW3 User + Profile Object to the IWS User, Person & Address
@@ -31,9 +46,62 @@ import net.iaeste.iws.persistence.entities.UserGroupEntity;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class UserConverter extends CommonConverter {
+public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
 
-    public UserEntity convert(final IW3ProfilesEntity profile) {
+    private static final Logger log = LoggerFactory.getLogger(UserMigrator.class);
+
+    /**
+     * Default Constructor for the Users Migration.
+     *
+     * @param accessDao IWS Dao for persisting the new IWS Entities
+     */
+    public UserMigrator(final AccessDao accessDao) {
+        super(accessDao);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MigrationResult migrate(final List<IW3ProfilesEntity> oldEntities) {
+        int persisted = 0;
+        int skipped = 0;
+
+        for (final IW3ProfilesEntity profile : oldEntities) {
+            final CountryEntity country = findExistingCountry(profile.getUser().getCountry());
+            final CountryEntity nationality = findExistingCountry(profile.getUser().getNationality());
+            final GroupTypeEntity groupType = accessDao.findGroupType(GroupType.PRIVATE);
+            final RoleEntity role = accessDao.findRoleById(IWSConstants.ROLE_OWNER);
+
+            final UserEntity userEntity = convertUser(profile);
+            userEntity.getPerson().setNationality(nationality);
+            userEntity.getPerson().getAddress().setCountry(country);
+            final UserGroupEntity entity = preparePrivateGroup(userEntity, groupType, role);
+
+            // Done with preparations, let's verify and persists the User
+            User user = null;
+            try {
+                user = AdministrationTransformer.transform(userEntity);
+                user.verify();
+                accessDao.persist(userEntity.getPerson().getAddress());
+                accessDao.persist(userEntity.getPerson());
+                accessDao.persist(userEntity);
+                accessDao.persist(entity.getGroup());
+                accessDao.persist(entity);
+                persisted++;
+            } catch (IllegalArgumentException | VerificationException e) {
+                log.error("Cannot process User {} => {}", user, e.getMessage());
+                skipped++;
+            } catch (final RuntimeException e) {
+                log.error("Unknown problem while migrating User {} => {}", user, e.getMessage());
+                skipped++;
+            }
+        }
+
+        return new MigrationResult(persisted, skipped);
+    }
+
+    private static UserEntity convertUser(final IW3ProfilesEntity profile) {
         final UserEntity entity = new UserEntity();
 
         // We're saving the IW3 Id temporarily in IWS, meaning until IWS has
@@ -56,7 +124,7 @@ public final class UserConverter extends CommonConverter {
         return entity;
     }
 
-    public UserGroupEntity preparePrivateGroup(final UserEntity user, final GroupTypeEntity groupType, final RoleEntity role) {
+    private static UserGroupEntity preparePrivateGroup(final UserEntity user, final GroupTypeEntity groupType, final RoleEntity role) {
         final GroupEntity group = new GroupEntity();
         group.setGroupName(convert(user.getFirstname() + ' ' + user.getLastname()));
         group.setGroupType(groupType);
@@ -110,5 +178,61 @@ public final class UserConverter extends CommonConverter {
         entity.setCreated(convert(profile.getUser().getCreated(), profile.getUser().getModified()));
 
         return entity;
+    }
+
+    private static Gender convertGender(final String gender) {
+        final Gender result;
+
+        switch (upper(gender)) {
+            case "MALE" :
+                result = Gender.MALE;
+                break;
+            case "FEMALE" :
+                result = Gender.FEMALE;
+                break;
+            default:
+                result = Gender.UNKNOWN;
+        }
+
+        return result;
+    }
+
+    private static Privacy convertPrivacy(final IW3ProfilesEntity profile) {
+        final Privacy privacy;
+
+        // Although we have 3 different levels of privacy, we're only using
+        // either the Private or Protected mode. Meaning, that either the data
+        // is fully privaticed or it is only viewable by the Groups. If the user
+        // wishes to open up further for it, then the user must actively select
+        // the public variant
+        if (profile.getPrivateaddress() && profile.getPrivatephones()) {
+            privacy = Privacy.PROTECTED;
+        } else {
+            privacy = Privacy.PRIVATE;
+        }
+
+        return privacy;
+    }
+
+    private static UserStatus convertUserStatus(final String status) {
+        return UserStatus.valueOf(upper(status));
+    }
+
+    private static UserType convertUserType(final String type) {
+        final UserType result;
+
+        switch (upper(type)) {
+            case "V":
+                result = UserType.VOLUNTEER;
+                break;
+            case "E":
+                result = UserType.EMPLOYED;
+                break;
+            case "X":
+            default:
+                result = UserType.UNKNOWN;
+        }
+
+        return result;
     }
 }

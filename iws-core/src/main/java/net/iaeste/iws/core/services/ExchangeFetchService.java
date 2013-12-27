@@ -167,6 +167,10 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         for (final OfferEntity offer : dao.findSharedOffers(authentication)) {
             if (!offer.getNominationDeadline().before(now)) {
+                //TODO - slow? might be better to use offer view?
+                OfferGroupEntity og = dao.findInfoForSharedOfferAndGroup(offer.getId(), authentication.getGroup().getId());
+                //overwrite status for each country - it's independent for each counry in sharing process
+                offer.setStatus(og.getStatus());
                 found.add(offer);
             }
         }

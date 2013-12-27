@@ -81,4 +81,11 @@ public interface IWSExchangeConstants {
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     int MIN_OFFER_MINIMUM_WEEKS = 1;
+
+    /**
+     * Defines the maximum number of additional documents
+     * allowed to attach to a {@link net.iaeste.iws.api.dtos.exchange.StudentApplication}
+     */
+    int MAX_NUMBER_OF_ADDITIONAL_DOCUMENTS = 10;
+
 }

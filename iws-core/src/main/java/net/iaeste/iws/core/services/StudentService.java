@@ -161,6 +161,7 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
+        //TODO - verify that only owner of the application or offer can change the status
         final ApplicationEntity found = dao.findApplicationByExternalId(request.getApplicationId());
 
         if (found == null) {
@@ -169,6 +170,8 @@ public final class StudentService extends CommonService<StudentDao> {
 
         final StudentApplication studentApplication = transform(found);
 
+        //TODO - see #526
+        //TODO - when application status affects also offer status, change it accordingly
         if (studentApplication.getStatus() == ApplicationStatus.APPLIED) {
             switch (request.getStatus()) {
                 case NOMINATED:
@@ -185,6 +188,10 @@ public final class StudentService extends CommonService<StudentDao> {
         } else {
             throw new NotImplementedException("Pending Implementation.");
         }
+    }
+
+    private void verifyApplicationStatusTransition(final ApplicationStatus oldStatus, final ApplicationStatus newStatus) {
+        //TODO - move switch from processApplicationStatus, check correct order and throw exception if violated
     }
 
     private OfferGroupEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {

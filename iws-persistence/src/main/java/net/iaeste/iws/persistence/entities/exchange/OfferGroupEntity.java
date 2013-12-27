@@ -52,6 +52,10 @@ import java.util.Date;
         @NamedQuery(name = "offerGroup.findByOffer",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
+        @NamedQuery(name = "offerGroup.findByOfferAndGroup",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.id = :oid " +
+                        "  and og.group.id = :gid"),
         @NamedQuery(name = "offerGroup.findByExternalOfferId",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.externalId = :eoid"),
@@ -113,7 +117,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     @Monitored(name="Offer2Group status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 10)
-    private OfferState status = OfferState.NEW;
+    private OfferState status = OfferState.SHARED;
 
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "modified_by", referencedColumnName = "id", nullable = false)

@@ -102,7 +102,7 @@ public class OfferGroupEntityTest {
     public void testDefaultOfferGroupStatus() {
         final OfferGroupEntity offerGroupEntity = new OfferGroupEntity();
 
-        assertThat(offerGroupEntity.getStatus(), is(OfferState.NEW));
+        assertThat(offerGroupEntity.getStatus(), is(OfferState.SHARED));
     }
 
     @Test

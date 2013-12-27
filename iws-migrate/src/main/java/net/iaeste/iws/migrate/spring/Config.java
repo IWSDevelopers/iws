@@ -16,6 +16,7 @@ package net.iaeste.iws.migrate.spring;
 
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -35,10 +36,11 @@ import java.util.Properties;
  * @since   1.7
  */
 @Configuration
+@ComponentScan("net.iaeste.iws.migrate.spring")
 @EnableTransactionManagement
 public class Config {
 
-    @Bean(name = "migrateService")
+    @Bean
     public MigrateService migrateService() {
         return new MigrateService();
     }

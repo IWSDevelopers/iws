@@ -16,10 +16,8 @@ package net.iaeste.iws.migrate.spring;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -35,14 +33,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @version $Revision:$ / $Date: $
  * @since   1.7
  */
-public final class ContextProvider /*implements ApplicationContextAware*/ {
-
-    private static final Logger log = LoggerFactory.getLogger(ContextProvider.class);
+public final class ContextProvider {
 
     private static final Object LOCK = new Object();
     private static ContextProvider instance = null;
-    private final Object contextLock = new Object();
-    private ApplicationContext applicationContext = null;
+    private ConfigurableApplicationContext applicationContext = null;
 
     // =========================================================================
     // Factory Instantiation Methods
@@ -74,77 +69,12 @@ public final class ContextProvider /*implements ApplicationContextAware*/ {
         }
     }
 
-    ///**
-    // * {@inheritDoc}
-    // */
-    //@Override
-    //public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-    //    log.info("Setting of Application Context is prohibited.");
-    //    //log.info("Setting context.");
-    //    //synchronized (contextLock) {
-    //    //    this.applicationContext = applicationContext;
-    //    //}
-    //}
-
-    /**
-     * Return the bean instance that uniquely matches the given object type, if
-     * any.<br />
-     *   This method goes into {@link org.springframework.beans.factory.ListableBeanFactory}
-     * by-type lookup territory but may also be translated into a conventional
-     * by-name lookup based on the name of the given type.
-     *
-     * @param requiredType type the bean must match; can be an interface or superclass.
-     *                     {@code null} is disallowed.
-     * @return an instance of the single bean matching the required type
-     * @throws IWSException if the bean could not be obtained
-     */
-    public <T> T getBean(final Class<T> requiredType) {
-        synchronized (contextLock) {
-            final T bean;
-
-            if (applicationContext != null) {
-                try {
-                    bean = applicationContext.getBean(requiredType);
-                } catch (BeansException e) {
-                    throw new IWSException(IWSErrors.FATAL, e);
-                }
-            } else {
-                throw new IWSException(IWSErrors.FATAL, "Spring Context not loaded.");
-            }
-
-            return bean;
+    public MigrateService getMigrateService() {
+        try {
+            //return applicationContext.getBean(MigrateService.class);
+            return (MigrateService) applicationContext.getBean("migrateService");
+        } catch (final BeansException e) {
+            throw new IWSException(IWSErrors.FATAL, e);
         }
     }
-
-    ///**
-    // * Return an instance, which may be shared or independent, of the specified
-    // * bean.<br />
-    // *   This method allows a Spring BeanFactory to be used as a replacement for
-    // * the Singleton or Prototype design pattern. Callers may retain references
-    // * to returned objects in the case of Singleton beans.<br />
-    // *   Translates aliases back to the corresponding canonical bean name. Will
-    // * ask the parent factory if the bean cannot be found in this factory
-    // * instance.
-    // *
-    // * @param name the name of the bean to retrieve
-    // * @return an instance of the bean
-    // * @throws IWSException if the bean could not be obtained
-    // */
-    //public Object getBean(final String name) throws IWSException {
-    //    synchronized (contextLock) {
-    //        final Object bean;
-    //
-    //        if (applicationContext != null) {
-    //            try {
-    //                bean = applicationContext.getBean(name);
-    //            } catch (BeansException e) {
-    //                throw new IWSException(IWSErrors.FATAL, e);
-    //            }
-    //        } else {
-    //            throw new IWSException(IWSErrors.FATAL, "Spring Context not loaded.");
-    //        }
-    //
-    //        return bean;
-    //    }
-    //}
 }

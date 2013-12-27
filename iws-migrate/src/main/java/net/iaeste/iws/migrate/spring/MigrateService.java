@@ -46,7 +46,9 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class MigrateService implements ApplicationListener<ContextRefreshedEvent>  {
+//@Transactional("transactionManagerIWS")
+//@Repository("migrateService")
+public class MigrateService implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger log = LoggerFactory.getLogger(MigrateService.class);
 

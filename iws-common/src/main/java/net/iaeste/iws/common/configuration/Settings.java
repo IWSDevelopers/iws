@@ -18,7 +18,6 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 
-import javax.annotation.PostConstruct;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -41,6 +40,7 @@ public final class Settings {
 
     private Properties setting;
 
+    private String rootFilePath = IWSConstants.ROOT_FILE_PATH;
     private int maxActiveTokens = IWSConstants.MAX_ACTIVE_TOKENS;
     private int maxLoginRetries = IWSConstants.MAX_LOGIN_RETRIES;
     private long maxIdleTimeForSessions = IWSConstants.MAX_SESSION_IDLE_PERIOD;
@@ -80,13 +80,20 @@ public final class Settings {
     // Standard Setters & Getters
     // =========================================================================
 
-
     public void setDoJndiLookup(final boolean doJndiLookup) {
         this.doJndiLookup = doJndiLookup;
     }
 
     public boolean getDoJndiLookup() {
         return doJndiLookup;
+    }
+
+    public void setRootFilePath(final String rootFilePath) {
+        this.rootFilePath = rootFilePath;
+    }
+
+    public String getRootFilePath() {
+        return rootFilePath;
     }
 
     public void setMaxActiveTokens(final Integer maxActiveTokens) throws IllegalArgumentException {

@@ -4,7 +4,7 @@
 -- table is here to simulate remote mailing list database
 -- =============================================================================
 create sequence mailing_list_sequence start with 1 increment by 1;
-CREATE TABLE mailing_lists (
+create table mailing_lists (
     id            integer default nextval('mailing_list_sequence'),
     external_id   varchar(36),
     private       boolean default true,
@@ -26,13 +26,14 @@ CREATE TABLE mailing_lists (
     constraint mailing_lists_notnull_modified            check (modified is not null)
 );
 
+
 -- =============================================================================
 -- Mailing lists
 -- -----------------------------------------------------------------------------
 -- table is here to simulate remote mailing list database
 -- =============================================================================
 create sequence mailing_list_membership_sequence start with 1 increment by 1;
-CREATE TABLE mailing_list_membership (
+create table mailing_list_membership (
     id               integer default nextval('mailing_list_membership_sequence'),
     mailing_list_id  integer,
     member           varchar(100),
@@ -48,4 +49,28 @@ CREATE TABLE mailing_list_membership (
     constraint mailing_list_membership_notnull_mailing_list_id     check (mailing_list_id is not null),
     constraint mailing_list_membership_notnull_list_member         check (member is not null),
     constraint mailing_list_membership_notnull_created             check (created is not null)
+);
+
+
+-- =============================================================================
+-- Mailing Aliases
+-- -----------------------------------------------------------------------------
+--
+-- =============================================================================
+create sequence mailing_alias_sequence start with 1 increment by 1;
+create table mailing_aliases (
+    id               integer default nextval('mailing_alias_sequence'),
+    user_name        varchar(100),
+    user_alias       varchar(125),
+    created          timestamp default now(),
+
+    /* Primary & Foreign Keys */
+    constraint mailing_aliases_pk                  primary key (id),
+    constraint mailing_list_membership_unique_user unique (user_name, user_alias),
+
+    /* Not Null Constraints */
+    constraint mailing_aliases_notnull_id          check (id is not null),
+    constraint mailing_aliases_notnull_user_name   check (user_name is not null),
+    constraint mailing_aliases_notnull_user_alias  check (user_alias is not null),
+    constraint mailing_aliases_notnull_created     check (created is not null)
 );

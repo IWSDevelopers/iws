@@ -48,6 +48,7 @@
 
         <jta-data-source>mailingList</jta-data-source>
 
+        <class>net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity</class>
         <class>net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity</class>
         <class>net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity</class>
 

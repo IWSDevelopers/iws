@@ -171,7 +171,7 @@ public final class StudentApplication extends AbstractVerification {
             acceptance = new StudentAcceptance(studentApplication.acceptance);
             travelInformation = new StudentAcceptanceConfirmation(studentApplication.travelInformation);
             nominatedAt = studentApplication.nominatedAt;
-            attachments = copy(attachments);
+            attachments = copy(studentApplication.attachments);
             modified = studentApplication.modified;
             created = studentApplication.created;
         }

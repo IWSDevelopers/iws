@@ -60,6 +60,26 @@
         </pluginManagement>
         <plugins>
             <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-jgitflow-plugin</artifactId>
+                <version>1.0-alpha21.1</version>
+                <configuration>
+                    <flowInitContext>
+                        <masterBranchName>stable</masterBranchName>
+                        <developBranchName>master</developBranchName>
+                        <featureBranchPrefix>feature/</featureBranchPrefix>
+                        <releaseBranchPrefix>release/</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                        <versionTagPrefix>v</versionTagPrefix>
+                    </flowInitContext>
+                    <pushReleases>true</pushReleases>
+                    <noDeploy>true</noDeploy>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <allowUntracked>false</allowUntracked>
+                    <enableSshAgent>true</enableSshAgent>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>

@@ -14,15 +14,21 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
+import static net.iaeste.iws.core.util.StorageUtil.calculateChecksum;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Person;
+import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
 
@@ -189,10 +195,35 @@ public class CommonService<T extends BasicDao> {
         }
     }
 
-//    // =========================================================================
-//    // Common Attachment Methods
-//    // =========================================================================
-//
+    // =========================================================================
+    // Common Attachment Methods
+    // =========================================================================
+
+    protected FileEntity processFile(final Authentication authentication, final File file) {
+        final String externalId = file.getFileId();
+        final FileEntity entity;
+
+        if (externalId == null) {
+            entity = transform(file);
+            entity.setChecksum(calculateChecksum(entity.getFiledata()));
+            final byte[] data = entity.getFiledata();
+            entity.setFilesize(data != null ? data.length : 0);
+            entity.setUser(authentication.getUser());
+            entity.setGroup(authentication.getGroup());
+            dao.persist(authentication, entity);
+        } else {
+            entity = dao.findFileByUserAndExternalId(authentication.getUser(), externalId);
+            if (entity != null) {
+                final FileEntity changes = transform(file);
+                dao.persist(authentication, entity, changes);
+            } else {
+                throw new AuthorizationException("The user is not authorized to process this file.");
+            }
+        }
+
+        return entity;
+    }
+
 //    protected processAttachedFiles(final Authentication authentication, final String table, final Long record, final List<FileEntity> files) {
 //
 //    }

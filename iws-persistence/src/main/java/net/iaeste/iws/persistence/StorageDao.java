@@ -35,17 +35,6 @@ public interface StorageDao extends BasicDao {
     FileEntity findFileById(Long id);
 
     /**
-     * Finds a file for a given User with the provided External File Id. This
-     * method is used to find a file that the user owns.
-     *
-     * @param user       User
-     * @param externalId External File Id
-     * @return File
-     * @throws PersistenceException if a single file could not be found
-     */
-    FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
-
-    /**
      * Finds a file for a given Group with the given External File Id, which the
      * user is associated with.
      *

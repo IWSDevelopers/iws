@@ -49,18 +49,6 @@ public class StorageJpaDao extends BasicJpaDao implements StorageDao {
      * {@inheritDoc}
      */
     @Override
-    public FileEntity findFileByUserAndExternalId(final UserEntity user, final String externalId) {
-        final Query query = entityManager.createNamedQuery("file.findByUserAndExternalId");
-        query.setParameter("uid", user.getId());
-        query.setParameter("efid", externalId);
-
-        return findUniqueResult(query, "File");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public FileEntity findFileByUserGroupAndExternalId(final UserEntity user, final GroupEntity group, final String externalId) {
         final Query query = entityManager.createNamedQuery("file.findByUserGroupAndExternalId");
         query.setParameter("uid", user.getId());

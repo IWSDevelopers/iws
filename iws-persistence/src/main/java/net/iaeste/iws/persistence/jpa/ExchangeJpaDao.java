@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
@@ -364,6 +365,18 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public List<GroupEntity> findGroupsForSharing(final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("group.findGroupsForSharing");
         query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<AttachmentEntity> findAttachments(final String table, final Long id) {
+        final Query query = entityManager.createNamedQuery("attachments.findForRecord");
+        query.setParameter("table", table);
+        query.setParameter("record", id);
 
         return query.getResultList();
     }

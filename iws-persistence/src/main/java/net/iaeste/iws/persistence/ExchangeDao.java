@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
@@ -136,7 +137,7 @@ public interface ExchangeDao extends BasicDao {
      * @param  groupId id of the group to get sharing info for
      * @return {@link OfferGroupEntity}
      */
-    public OfferGroupEntity findInfoForSharedOfferAndGroup(Long offerId, Long groupId);
+    OfferGroupEntity findInfoForSharedOfferAndGroup(Long offerId, Long groupId);
 
     /**
      * Finds information about sharing of the offer
@@ -206,4 +207,6 @@ public interface ExchangeDao extends BasicDao {
     GroupEntity findGroupByExternalId(String externalId);
 
     List<GroupEntity> findGroupsForSharing(GroupEntity group);
+
+    List<AttachmentEntity> findAttachments(String table, Long id);
 }

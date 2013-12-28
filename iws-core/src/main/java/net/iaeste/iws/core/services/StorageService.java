@@ -17,6 +17,7 @@ package net.iaeste.iws.core.services;
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
 import static net.iaeste.iws.core.util.StorageUtil.calculateChecksum;
 
+import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FileRequest;

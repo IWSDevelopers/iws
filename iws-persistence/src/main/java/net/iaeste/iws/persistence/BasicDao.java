@@ -17,11 +17,14 @@ package net.iaeste.iws.persistence;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
+import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.views.IWSView;
 
 import javax.persistence.Query;
@@ -127,4 +130,15 @@ public interface BasicDao {
      * @return Unique Address Entity
      */
     AddressEntity findAddress(Long id);
+
+    /**
+     * Finds a file for a given User with the provided External File Id. This
+     * method is used to find a file that the user owns.
+     *
+     * @param user       User
+     * @param externalId External File Id
+     * @return File
+     * @throws net.iaeste.iws.persistence.exceptions.PersistenceException if a single file could not be found
+     */
+    FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
 }

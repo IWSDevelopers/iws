@@ -16,6 +16,7 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
+import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
@@ -38,6 +39,8 @@ import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
+import net.iaeste.iws.persistence.entities.AttachmentEntity;
+import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
@@ -104,6 +107,8 @@ public final class StudentService extends CommonService<StudentDao> {
 
     public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {
         final ApplicationEntity entity = processStudentApplication(authentication, request.getStudentApplication());
+        final List<AttachmentEntity> attachments = processAttachments(authentication, entity, request.getStudentApplication().getAttachments());
+
         return new StudentApplicationResponse(transform(entity));
     }
 
@@ -139,6 +144,33 @@ public final class StudentService extends CommonService<StudentDao> {
         }
 
         return applicationEntity;
+    }
+
+    private List<AttachmentEntity> processAttachments(final Authentication authentication, final ApplicationEntity applicationEntity, final List<File> files) {
+        final List<AttachmentEntity> attachments = new ArrayList<>(files.size());
+
+        for (final File file : files) {
+            final FileEntity fileEntity = processFile(authentication, file);
+            final AttachmentEntity attachmentEntity = processAttachment(authentication, applicationEntity, fileEntity);
+            attachments.add(attachmentEntity);
+        }
+
+        return attachments;
+    }
+
+    private AttachmentEntity processAttachment(final Authentication authentication, final ApplicationEntity applicationEntity, final FileEntity fileEntity) {
+        AttachmentEntity attachmentEntity = dao.findAttachment("student_applications", applicationEntity.getId(), fileEntity.getId());
+
+        if (attachmentEntity == null) {
+            attachmentEntity = new AttachmentEntity();
+            attachmentEntity.setTable("student_applications");
+            attachmentEntity.setRecord(applicationEntity.getId());
+            attachmentEntity.setFile(fileEntity);
+
+            dao.persist(authentication, attachmentEntity);
+        }
+
+        return attachmentEntity;
     }
 
     public FetchStudentApplicationsResponse fetchStudentApplications(final Authentication authentication, final FetchStudentApplicationsRequest request) {

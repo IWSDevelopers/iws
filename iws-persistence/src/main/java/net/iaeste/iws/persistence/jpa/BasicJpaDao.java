@@ -25,11 +25,13 @@ import net.iaeste.iws.persistence.BasicDao;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
 import net.iaeste.iws.persistence.views.IWSView;
@@ -215,6 +217,18 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("id", id);
 
         return findUniqueResult(query, "address");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileEntity findFileByUserAndExternalId(final UserEntity user, final String externalId) {
+        final Query query = entityManager.createNamedQuery("file.findByUserAndExternalId");
+        query.setParameter("uid", user.getId());
+        query.setParameter("efid", externalId);
+
+        return findUniqueResult(query, "File");
     }
 
     // =========================================================================

@@ -54,7 +54,12 @@ import java.util.Date;
         @NamedQuery(name = "attachments.findForRecord",
                 query = "select a from AttachmentEntity a " +
                         "where a.table = :table" +
-                        "  and a.record = :record")
+                        "  and a.record = :record"),
+        @NamedQuery(name = "attachments.findForRecordAndFile",
+                query = "select a from AttachmentEntity a " +
+                        "where a.table = :table" +
+                        "  and a.record = :recordid" +
+                        "  and a.file.id = :fileid")
 })
 @Entity
 @Table(name = "attachments")

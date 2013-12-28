@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.StudentDao;
+import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.ApplicationView;
@@ -89,5 +90,18 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
         query.setParameter("applicationOwnerId", applicationOwnerId);
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AttachmentEntity findAttachment(final String table, final Long recordId, final Long fileId) {
+        final Query query = entityManager.createNamedQuery("attachments.findForRecordAndFile");
+        query.setParameter("table", table);
+        query.setParameter("recordid", recordId);
+        query.setParameter("fileid", fileId);
+
+        return findSingleResult(query, "Attachment");
     }
 }

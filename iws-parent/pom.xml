@@ -4,7 +4,7 @@
     <groupId>net.iaeste.iws</groupId>
     <artifactId>iws-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>IWS - Parent</name>
     <description>IntraWeb Services - Parent Module</description>
 
@@ -244,32 +244,32 @@
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-api</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-common</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-persistence</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-core</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-ejb</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-client</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>javax</groupId>

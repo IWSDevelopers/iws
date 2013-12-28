@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>iws-parent</artifactId>
         <groupId>net.iaeste.iws</groupId>
-        <version>1.0.0</version>
+        <artifactId>iws-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath>../iws-parent/pom.xml</relativePath>
     </parent>
     <artifactId>iws-fitnesse</artifactId>
@@ -89,11 +90,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.iaeste.iws</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>iws-client</artifactId>
         </dependency>
         <dependency>

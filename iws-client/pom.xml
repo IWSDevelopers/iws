@@ -120,7 +120,7 @@
         <dependency>
             <groupId>net.iaeste.iws</groupId>
             <artifactId>iws-api</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

@@ -96,6 +96,18 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * {@inheritDoc}
      */
     @Override
+    public List<AttachmentEntity> findAttachments(final String table, final Long recordId) {
+        final Query query = entityManager.createNamedQuery("attachments.findForRecord");
+        query.setParameter("table", table);
+        query.setParameter("recordid", recordId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public AttachmentEntity findAttachment(final String table, final Long recordId, final Long fileId) {
         final Query query = entityManager.createNamedQuery("attachments.findForRecordAndFile");
         query.setParameter("table", table);

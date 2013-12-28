@@ -33,6 +33,7 @@ import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.core.transformers.StorageTransformer;
 import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -177,7 +178,7 @@ public final class StudentService extends CommonService<StudentDao> {
         final String offerExternalId = request.getOfferId();
         final OfferEntity ownedOffer = exchangeDao.findOfferByExternalId(authentication, offerExternalId);
 
-        List<ApplicationView> found;
+        final List<ApplicationView> found;
         if (ownedOffer != null && ownedOffer.getEmployer().getGroup().equals(authentication.getGroup())) {
             found = dao.findForeignApplicationsForOffer(offerExternalId, authentication.getGroup().getId());
         } else {
@@ -186,10 +187,26 @@ public final class StudentService extends CommonService<StudentDao> {
 
         final List<StudentApplication> applications = new ArrayList<>(found.size());
         for (final ApplicationView entity : found) {
-            applications.add(ViewTransformer.transform(entity));
+            final StudentApplication application = ViewTransformer.transform(entity);
+            final List<File> attachments = findAndTransformAttachments(entity);
+            application.setAttachments(attachments);
+
+            applications.add(application);
         }
 
         return new FetchStudentApplicationsResponse(applications);
+    }
+
+    private List<File> findAndTransformAttachments(final ApplicationView view) {
+        final List<AttachmentEntity> attachments = dao.findAttachments("", view.getId());
+        final List<File> files = new ArrayList<>(attachments.size());
+
+        for (final AttachmentEntity entity : attachments) {
+            final File file = StorageTransformer.transform(entity.getFile());
+            files.add(file);
+        }
+
+        return files;
     }
 
     public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {

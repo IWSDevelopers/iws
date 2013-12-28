@@ -60,5 +60,7 @@ public interface StudentDao extends BasicDao {
      */
     List<ApplicationView> findDomesticApplicationsForOffer(String offerExternalId, Long applicationOwnerId);
 
+    List<AttachmentEntity> findAttachments(String table, Long recordId);
+
     AttachmentEntity findAttachment(String table, Long recordId, Long fileId);
 }

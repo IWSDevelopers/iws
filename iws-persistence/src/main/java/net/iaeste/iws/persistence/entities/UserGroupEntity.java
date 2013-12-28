@@ -69,6 +69,11 @@ import java.util.Map;
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.groupType.grouptype = 'MEMBER'" +
                         "  and ug.user.externalId = :euid"),
+        @NamedQuery(name = "usergroup.findNationalSecretaryByMemberGroup",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.groupType.grouptype = 'NATIONAL'" +
+                        "  and ug.role.id = 1" +
+                        "  and ug.group.parentId = :memberGroupId"),
         @NamedQuery(name = "usergroup.findMemberByUserId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.groupType.grouptype = 'MEMBER'" +
@@ -94,6 +99,8 @@ import java.util.Map;
                         "where ug.group.id = :gid" +
                         "  and ug.onPrivateList = true" +
                         "  and ug.user.status = 'ACTIVE'"),
+        @NamedQuery(name = "",
+                query = ""),
         @NamedQuery(name = "usergroup.findAllUserGroups",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.user.id = :uid")

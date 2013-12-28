@@ -91,6 +91,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             if (entity == null) {
                 entity = transform(employer);
+                // TODO Martin; Please verify that the Group *is* the National Group
                 entity.setGroup(authentication.getGroup());
                 processAddress(authentication, entity.getAddress());
                 dao.persist(authentication, entity);

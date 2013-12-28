@@ -103,6 +103,15 @@ public final class File extends AbstractVerification {
         return fileId;
     }
 
+    /**
+     * The owning group for this file. All file management is handled via the
+     * Group, and this this is a mandatory field.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the Group
+     * is either null or invalid.
+     *
+     * @param group Group
+     * @throws IllegalArgumentException if null or not verifiable
+     */
     public void setGroup(final Group group) throws IllegalArgumentException {
         ensureNotNullAndVerifiable("group", group);
         this.group = group;
@@ -112,6 +121,14 @@ public final class File extends AbstractVerification {
         return group;
     }
 
+    /**
+     * Sets the User who uploaded the file. The field is mandatory, which means
+     * that the method will thrown an {@code IllegalArgumentException} if the
+     * value is either null or not verifiable.
+     *
+     * @param user User who uploaded the File
+     * @throws IllegalArgumentException if null or not verifiable
+     */
     public void setUser(final User user) throws IllegalArgumentException {
         ensureNotNullAndVerifiable("user", user);
         this.user = user;
@@ -121,6 +138,11 @@ public final class File extends AbstractVerification {
         return user;
     }
 
+    /**
+     *
+     * @param filename
+     * @throws IllegalArgumentException
+     */
     public void setFilename(final String filename) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("filename", filename, 100);
         this.filename = filename;

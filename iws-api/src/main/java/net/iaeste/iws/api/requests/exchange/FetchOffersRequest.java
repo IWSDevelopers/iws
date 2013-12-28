@@ -28,10 +28,11 @@ import java.util.Map;
  */
 public final class FetchOffersRequest extends AbstractVerification {
 
-    private FetchType fetchType;
-
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
+    private FetchType fetchType;
+    private Integer exchangeYear;
 
     // =========================================================================
     // Object Constructors
@@ -42,7 +43,8 @@ public final class FetchOffersRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public FetchOffersRequest() {
-        fetchType = null;
+        this.fetchType = null;
+        this.exchangeYear = calculateExchangeYear();
     }
 
     /**
@@ -50,6 +52,7 @@ public final class FetchOffersRequest extends AbstractVerification {
      */
     public FetchOffersRequest(final FetchType fetchType) {
         this.fetchType = fetchType;
+        this.exchangeYear = calculateExchangeYear();
     }
 
     // =========================================================================
@@ -64,7 +67,15 @@ public final class FetchOffersRequest extends AbstractVerification {
         return fetchType;
     }
 
-    // =========================================================================
+    public void setExchangeYear(final Integer exchangeYear) {
+        this.exchangeYear = exchangeYear;
+    }
+
+    public Integer getExchangeYear() {
+        return exchangeYear;
+    }
+
+// =========================================================================
     // Standard Request Methods
     // =========================================================================
 
@@ -76,6 +87,7 @@ public final class FetchOffersRequest extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "fetchType", fetchType);
+        isNotNull(validation, "exchangeYear", exchangeYear);
 
         return validation;
     }

@@ -145,6 +145,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             if (existingEntity == null) {
                 // Create a new Offer
 
+                newEntity.setExchangeYear(calculateCurrentExchangeYear());
                 // Add the employer to the Offer
                 newEntity.setEmployer(employer);
                 // Set the Offer status to New
@@ -190,6 +191,12 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         offer.setNsLastname(nationalSecretary.getLastname());
 
         return new OfferResponse(offer);
+    }
+
+    private static Integer calculateCurrentExchangeYear() {
+        final Date date = new Date();
+
+        return date.getCurrentYear() + (date.getCurrentMonth() >= Calendar.SEPTEMBER ? 1 : 0);
     }
 
     private static void verifyRefnoValidity(final Authentication authentication, final OfferEntity offer) {

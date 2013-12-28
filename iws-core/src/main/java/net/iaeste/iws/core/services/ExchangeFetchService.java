@@ -128,13 +128,14 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
     public FetchOffersResponse fetchOffers(final Authentication authentication, final FetchOffersRequest request) {
         final FetchOffersResponse response;
+        final int year = request.getExchangeYear();
 
         switch (request.getFetchType()) {
             case ALL:
-                response = new FetchOffersResponse(findAllOffers(authentication));
+                response = new FetchOffersResponse(findAllOffers(authentication, year));
                 break;
             case SHARED:
-                response = new FetchOffersResponse(findSharedOffers(authentication));
+                response = new FetchOffersResponse(findSharedOffers(authentication, year));
                 break;
             default:
                 throw new PermissionException("The search type is not permitted.");
@@ -143,9 +144,9 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return response;
     }
 
-    private List<Offer> findAllOffers(final Authentication authentication) {
+    private List<Offer> findAllOffers(final Authentication authentication, final int exchangeYear) {
         // Must be extended with Pagination
-        final List<OfferView> found = viewsDao.findAllOffers(authentication);
+        final List<OfferView> found = viewsDao.findAllOffers(authentication, exchangeYear);
 
         return convertViewList(found);
     }
@@ -160,12 +161,12 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    private List<Offer> findSharedOffers(final Authentication authentication) {
+    private List<Offer> findSharedOffers(final Authentication authentication, final Integer exchangeYear) {
         // Must be extended with Pagination
         final List<OfferEntity> found = new ArrayList<>(10);
         final java.util.Date now = new Date().toDate();
 
-        for (final OfferEntity offer : dao.findSharedOffers(authentication)) {
+        for (final OfferEntity offer : dao.findSharedOffers(authentication, exchangeYear)) {
             if (!offer.getNominationDeadline().before(now)) {
                 //TODO - slow? might be better to use offer view?
                 OfferGroupEntity og = dao.findInfoForSharedOfferAndGroup(offer.getId(), authentication.getGroup().getId());

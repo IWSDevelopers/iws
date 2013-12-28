@@ -31,12 +31,13 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "view.findOfferByGroup",
-                query = "select e from OfferView e " +
-                        "where e.groupId = :gid "),
+                query = "select o from OfferView o " +
+                        "where o.groupId = :gid" +
+                        "  and o.exchangeYear = :year"),
         @NamedQuery(name = "view.findOfferByGroupAndId",
-                query = "select e from OfferView e " +
-                        "where e.groupId = :gid" +
-                        "  and e.offer.externalId = :oeid")
+                query = "select o from OfferView o " +
+                        "where o.groupId = :gid" +
+                        "  and o.offer.externalId = :oeid")
 })
 @Table(name = "offer_view")
 public class OfferView extends AbstractView<OfferView> {
@@ -44,6 +45,9 @@ public class OfferView extends AbstractView<OfferView> {
     @Id
     @Column(name = "offer_id", insertable = false, updatable = false)
     private Long id = null;
+
+    @Column(name = "offer_exchange_year", insertable = false, updatable = false)
+    private Integer exchangeYear = null;
 
     @Column(name = "group_id", insertable = false, updatable = false)
     private Long groupId = null;
@@ -79,6 +83,14 @@ public class OfferView extends AbstractView<OfferView> {
 
     public Long getId() {
         return id;
+    }
+
+    public void setExchangeYear(final Integer exchangeYear) {
+        this.exchangeYear = exchangeYear;
+    }
+
+    public Integer getExchangeYear() {
+        return exchangeYear;
     }
 
     public void setGroupId(final Long groupId) {

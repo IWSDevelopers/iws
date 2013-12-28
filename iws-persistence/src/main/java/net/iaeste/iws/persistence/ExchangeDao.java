@@ -120,7 +120,7 @@ public interface ExchangeDao extends BasicDao {
      *
      * @return list of {@link OfferEntity} which are shared
      */
-    List<OfferEntity> findSharedOffers(Authentication authentication);
+    List<OfferEntity> findSharedOffers(Authentication authentication, Integer exchangeYear);
 
     /**
      * Finds information about sharing of the offer

@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.exceptions.VerificationException;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -101,19 +102,6 @@ public abstract class AbstractVerification implements Verifiable {
         }
     }
 
-    ///**
-    // * Throws an {@code IllegalArgumentException} if the given value is empty.
-    // *
-    // * @param field Name of the field
-    // * @param value The value for the fieldERROR_TOO_SHORT
-    // * @throws IllegalArgumentException if the value is empty
-    // */
-    //protected static void ensureNotEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
-    //    if (value != null && value.isEmpty()) {
-    //        throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
-    //    }
-    //}
-
     /**
      * Throws an {@code IllegalArgumentException} if the given value is null or
      * empty.
@@ -125,33 +113,6 @@ public abstract class AbstractVerification implements Verifiable {
     protected static void ensureNotNullOrEmpty(final String field, final String value) throws IllegalArgumentException {
         ensureNotNull(field, value);
         ensureNotEmpty(field, value);
-    }
-
-    ///**
-    // * Throws an {@code IllegalArgumentException} if the given value is null or
-    // * empty.
-    // *
-    // * @param field Name of the field
-    // * @param value The value of the field
-    // * @throws IllegalArgumentException if the value is null or empty
-    // */
-    //protected static void ensureNotNullOrEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
-    //    ensureNotNull(field, value);
-    //    ensureNotEmpty(field, value);
-    //}
-
-    /**
-     * Throws an {@code IllegalArgumentException} if the given value is either
-     * empty or too long.
-     *
-     * @param field  Name of the field
-     * @param value  The value of the field
-     * @param length The maximum length for the field
-     * @throws IllegalArgumentException if the value is empty or too long
-     */
-    protected static void ensureNotEmptyOrTooLong(final String field, final String value, final int length) throws IllegalArgumentException {
-        ensureNotEmpty(field, value);
-        ensureNotTooLong(field, value, length);
     }
 
     /**
@@ -273,21 +234,6 @@ public abstract class AbstractVerification implements Verifiable {
             throw new IllegalArgumentException(format(ERROR_NOT_EXACT_LENGTH, field, length));
         }
     }
-
-    ///**
-    // * Throws an {@code IllegalArgumentException} if the given value is defined
-    // * and not the exact length.
-    // *
-    // * @param field  Name of the field
-    // * @param value  The value of the field
-    // * @param length The exact length of the field
-    // * @throws IllegalArgumentException if the value is not of exact length
-    // */
-    //protected static void ensureExactLength(final String field, final String value, final int length) throws IllegalArgumentException {
-    //    if ((value != null) && (value.length() != length)) {
-    //        throw new IllegalArgumentException(format(ERROR_NOT_EXACT_LENGTH, field, length));
-    //    }
-    //}
 
     /**
      * Throws an {@code IllegalArgumentException} if the given value is either
@@ -421,10 +367,30 @@ public abstract class AbstractVerification implements Verifiable {
         ensureValidRefno(refno);
     }
 
-
     // =========================================================================
     // Other Methods
     // =========================================================================
+
+    /**
+     * Calculates the Exchange Year for Offers. Used for both searching for
+     * Offers, and for creating Offers. According to the specifications, the
+     * Exchange year changes on Septmber first to the next year, meaning that
+     * the "Current Exchange Year" is the same as the "Current Year" until
+     * Sepber 1st, and the following year afterworth.<br />
+     * <ul>
+     *   <li>Example 1: April 1st, 2014 => Current Exchange Year is 2014</li>
+     *   <li>Example 2: Auguet 31st, 2014 => Current Exchange Year is 2014</li>
+     *   <li>Example 3: September 1st, 2014 => Current Exchange Year is 2015</li>
+     *   <li>Example 4: October 1st, 2014 => Current Exchange Year is 2015</li>
+     * </ul>
+     *
+     * @return Current Exchange Year
+     */
+    protected Integer calculateExchangeYear() {
+        final Date date = new Date();
+
+        return date.getCurrentYear() + (date.getCurrentMonth() >= Calendar.SEPTEMBER ? 1 : 0);
+    }
 
     /**
      * For those cases where an {@code IllegalArgumentException} should be

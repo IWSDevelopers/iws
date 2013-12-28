@@ -231,9 +231,10 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findSharedOffers(final Authentication authentication) {
+    public List<OfferEntity> findSharedOffers(final Authentication authentication, final Integer exchangeYear) {
         final Query query = entityManager.createNamedQuery("offerGroup.findSharedToGroup");
         query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("year", exchangeYear);
 
         return query.getResultList();
     }

@@ -88,9 +88,10 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferView> findAllOffers(final Authentication authentication) {
+    public List<OfferView> findAllOffers(final Authentication authentication, final Integer exchangeYear) {
         final Query query = entityManager.createNamedQuery("view.findOfferByGroup");
         query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("year", exchangeYear);
 
         return query.getResultList();
     }

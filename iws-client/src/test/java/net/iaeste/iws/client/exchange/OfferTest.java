@@ -67,6 +67,9 @@ import java.util.Set;
  */
 public final class OfferTest extends AbstractTest {
 
+    private static final String PL_YEAR = "PL-2014";
+    private static final String AT_YEAR = "AT-2014";
+
     private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
@@ -90,7 +93,7 @@ public final class OfferTest extends AbstractTest {
      */
     @Test
     public void testSavingOfferWithoutCountry() {
-        final String refno = "PL-2013-BUG451-R";
+        final String refno = PL_YEAR + "-BUG451-R";
         final Offer offer = TestData.prepareFullOffer(refno, "Poland A/S", "PL");
         // Now setting the value to null, we need to go through some hoops here,
         // as our defensive copying will otherwise prevent the null from being
@@ -213,7 +216,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testProcessOfferCreateMinimalOffer() {
         final Offer minimalOffer = OfferTestUtility.getMinimalOffer();
-        minimalOffer.setRefNo("PL-2012-000001");
+        minimalOffer.setRefNo(PL_YEAR + "-000001");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(minimalOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
@@ -233,7 +236,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testProcessOfferCreateFullOffer() {
         final Offer fullOffer = OfferTestUtility.getFullOffer();
-        fullOffer.setRefNo("PL-2012-000002");
+        fullOffer.setRefNo(PL_YEAR + "-000002");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(fullOffer);
         final OfferResponse processResponse = exchange.processOffer(token, offerRequest);
@@ -253,7 +256,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testDeleteOffer() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2012-000003");
+        offer.setRefNo(PL_YEAR + "-000003");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -287,7 +290,7 @@ public final class OfferTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2012-000004");
+        offer.setRefNo(PL_YEAR + "-000004");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -361,7 +364,7 @@ public final class OfferTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2012-000005");
+        offer.setRefNo(PL_YEAR + "-000005");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -394,7 +397,7 @@ public final class OfferTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2012-000006");
+        offer.setRefNo(PL_YEAR + "-000006");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -428,7 +431,7 @@ public final class OfferTest extends AbstractTest {
         final Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2012-000007");
+        offer.setRefNo(PL_YEAR + "-000007");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
@@ -458,7 +461,7 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testNumberOfHardCopies() {
-        final String refNo = "PL-2012-000042";
+        final String refNo = PL_YEAR + "-000042";
         final Offer newOffer = TestData.prepareFullOffer(refNo, "Employer", "PL");
         newOffer.setRefNo(refNo);
         newOffer.setNumberOfHardCopies(2);
@@ -491,7 +494,7 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testFetchForeignOffer() {
-        final String refNo = "AT-2013-000001";
+        final String refNo = AT_YEAR + "-000001";
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo(refNo);
 
@@ -511,7 +514,7 @@ public final class OfferTest extends AbstractTest {
     public void testFetchSharedForeignOffer() {
         final Date nominationDeadline = new Date().plusDays(20);
 
-        final String refNo = "AT-2013-000002";
+        final String refNo = AT_YEAR + "-000002";
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo(refNo);
 
@@ -544,7 +547,7 @@ public final class OfferTest extends AbstractTest {
     public void testFetchSharedOfferAfterDeadline() {
         final Date nominationDeadlineInThePast = new Date().plusDays(-20);
 
-        final String refNo = "PL-2012-000010";
+        final String refNo = PL_YEAR + "-000010";
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo(refNo);
 
@@ -584,7 +587,7 @@ public final class OfferTest extends AbstractTest {
         final Date nominationDeadlineToday = new Date();
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2012-000011");
+        offer.setRefNo(PL_YEAR + "-000011");
 
         final ProcessOfferRequest saveRequest2 = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse2 = exchange.processOffer(token, saveRequest2);
@@ -623,7 +626,7 @@ public final class OfferTest extends AbstractTest {
         final Date deadlineInThePast = new Date().plusDays(-20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2012-000014");
+        offer.setRefNo(PL_YEAR + "-000014");
 
         final ProcessOfferRequest saveRequest1 = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse1 = exchange.processOffer(token, saveRequest1);
@@ -652,7 +655,7 @@ public final class OfferTest extends AbstractTest {
         final Date nominationDeadlineToday = new Date();
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
-        offer.setRefNo("PL-2012-000012");
+        offer.setRefNo(PL_YEAR + "-000012");
 
         final ProcessOfferRequest saveRequest2 = new ProcessOfferRequest(offer);
         final OfferResponse saveResponse2 = exchange.processOffer(token, saveRequest2);
@@ -689,7 +692,7 @@ public final class OfferTest extends AbstractTest {
     @Test(expected = IllegalArgumentException.class)
     public void testFetchSharedOfferBadIdFormat() {
         final List<String> offerIds = new ArrayList<>(0);
-        offerIds.add("pl-2012-000001");
+        offerIds.add(PL_YEAR + "-000001");
         final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offerIds);
         final FetchPublishedGroupsResponse fetchPublishResponse = exchange.fetchPublishedGroups(token, fetchPublishRequest);
 
@@ -717,7 +720,7 @@ public final class OfferTest extends AbstractTest {
     @Test
     public void testAdditionalInformation() {
         final String additionalInformatin = "My Additional stuff.";
-        final Offer offer = TestData.prepareFullOffer("PL-2014-456457-C", "Poland A/S", "PL");
+        final Offer offer = TestData.prepareFullOffer(PL_YEAR + "-456457-C", "Poland A/S", "PL");
         offer.setAdditionalInformation(additionalInformatin);
         final ProcessOfferRequest request = new ProcessOfferRequest();
 

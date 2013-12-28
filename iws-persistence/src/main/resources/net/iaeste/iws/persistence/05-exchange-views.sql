@@ -70,6 +70,7 @@ create view offer_view as
     u.lastname                 as ns_lastname,
     o.external_id              as offer_external_id,
     o.ref_no                   as offer_ref_no,
+    o.exchange_year            as offer_exchange_year,
     o.work_description         as offer_work_description,
     o.work_type                as offer_work_type,
     o.study_levels             as offer_study_levels,

@@ -168,6 +168,14 @@ public final class StudentService extends CommonService<StudentDao> {
             throw new VerificationException("The application with id '" + request.getApplicationId() + "' was not found.");
         }
 
+        final OfferGroupEntity foundOfferGroup = found.getOfferGroup();
+        if (foundOfferGroup == null ||
+            (!authentication.getGroup().equals(foundOfferGroup.getGroup())
+             && !authentication.getGroup().equals(foundOfferGroup.getOffer().getEmployer().getGroup()))
+           ) {
+            throw new VerificationException("Only groups related to the application can change its status");
+        }
+
         final StudentApplication studentApplication = transform(found);
 
         //TODO - see #526

@@ -139,9 +139,11 @@ public final class File extends AbstractVerification {
     }
 
     /**
+     * The fileName is mandatory in the IWS, and if not set or too long, the
+     * method will throw an {@code IllegalArgumentException}.
      *
-     * @param filename
-     * @throws IllegalArgumentException
+     * @param filename Name of the File
+     * @throws IllegalArgumentException if null, empty or too long
      */
     public void setFilename(final String filename) throws IllegalArgumentException {
         ensureNotNullOrEmptyOrTooLong("filename", filename, 100);
@@ -170,6 +172,12 @@ public final class File extends AbstractVerification {
         return copy(filedata);
     }
 
+    /**
+     * The filesize is set by the IWS internally, and simply matches the size of
+     * the file data upon creation.
+     *
+     * @param filesize Size of the File
+     */
     public void setFilesize(final Integer filesize) {
         this.filesize = filesize;
     }
@@ -178,7 +186,17 @@ public final class File extends AbstractVerification {
         return filesize;
     }
 
-    public void setMimetype(final String mimetype) {
+    /**
+     * The file MIME Type, which is used for Clients to determine what
+     * Application should be used to handle the file.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the
+     * MIME Type is too long.
+     *
+     * @param mimetype File MIME Type
+     * @throws java.lang.IllegalArgumentException if the MIME Type value exceeds 50 characters
+     */
+    public void setMimetype(final String mimetype) throws IllegalArgumentException {
+        ensureNotTooLong("mimetype", mimetype, 50);
         this.mimetype = mimetype;
     }
 
@@ -186,7 +204,18 @@ public final class File extends AbstractVerification {
         return mimetype;
     }
 
-    public void setDescription(final String description) {
+    /**
+     * Sets the description of the File, the Description can be anything as long
+     * as the length does not exceed the maximum allowed length of 250
+     * characters.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the length
+     * of the description exceeds 250 characters.
+     *
+     * @param description File Description
+     * @throws IllegalArgumentException if the length exceeds 250 characters
+     */
+    public void setDescription(final String description) throws IllegalArgumentException {
+        ensureNotTooLong("description", description, 250);
         this.description = description;
     }
 
@@ -194,7 +223,18 @@ public final class File extends AbstractVerification {
         return description;
     }
 
-    public void setKeywords(final String keywords) {
+    /**
+     * Sets the Keywords for the File, meaning a list of words used for indexing
+     * the file. The Keywords are not used by the IWS, but is purely for client
+     * side usage, and is thus an optional value.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the length
+     * of the Keywords exceeds 250 characters.
+     *
+     * @param keywords File Keywords
+     * @throws IllegalArgumentException if the length exceeds 250 characters.
+     */
+    public void setKeywords(final String keywords) throws IllegalArgumentException {
+        ensureNotTooLong("keywords", keywords, 250);
         this.keywords = keywords;
     }
 
@@ -202,6 +242,12 @@ public final class File extends AbstractVerification {
         return keywords;
     }
 
+    /**
+     * The File Checksum, used for validation of the file, to ensure that the
+     * data is not corrupted. The value is set by the IWS upon saving the File.
+     *
+     * @param checksum File Checksum
+     */
     public void setChecksum(final Long checksum) {
         this.checksum = checksum;
     }

@@ -51,7 +51,11 @@ public enum OfferState {
     /**
      * In IW3, some offers were stored with status 'D' as in deleted.
      */
-    DELETED("Deleted");
+    DELETED("Deleted"),
+
+    //offer status
+    CLOSED("Closed"),
+    COMPLETED("Completed");
 
     // =========================================================================
     // Private Constructor & functionality

@@ -161,7 +161,7 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
-        //TODO - verify that only owner of the application or offer can change the status
+        final StudentApplicationResponse response;
         final ApplicationEntity found = dao.findApplicationByExternalId(request.getApplicationId());
 
         if (found == null) {
@@ -178,28 +178,98 @@ public final class StudentService extends CommonService<StudentDao> {
 
         final StudentApplication studentApplication = transform(found);
 
+        verifyOfferAcceptNewApplicationStatus(foundOfferGroup.getStatus(), request.getStatus());
+        verifyApplicationStatusTransition(studentApplication.getStatus(), request.getStatus());
         //TODO - see #526
         //TODO - when application status affects also offer status, change it accordingly
-        if (studentApplication.getStatus() == ApplicationStatus.APPLIED) {
-            switch (request.getStatus()) {
-                case NOMINATED:
-                    studentApplication.setNominatedAt(new DateTime());
-                    studentApplication.setStatus(request.getStatus());
-                    ApplicationEntity updated = transform(studentApplication);
-                    //using OfferGroup from found entity since this field can't be updated
-                    updated.setOfferGroup(found.getOfferGroup());
-                    dao.persist(authentication, found, updated);
-                    return new StudentApplicationResponse(studentApplication);
-                default:
-                    throw new VerificationException("Unsupported transition from '" + studentApplication.getStatus() + "' to " + request.getStatus());
-            }
-        } else {
-            throw new NotImplementedException("Pending Implementation.");
+        switch (request.getStatus()) {
+            case NOMINATED:
+                final ApplicationEntity updateApplication = nominateApplication(authentication, studentApplication, found);
+                response = new StudentApplicationResponse(transform(updateApplication));
+                break;
+            default:
+                throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
+        }
+        return response;
+    }
+
+    private ApplicationEntity nominateApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity storedApplication) {
+        application.setNominatedAt(new DateTime());
+        application.setStatus(ApplicationStatus.NOMINATED);
+        ApplicationEntity updated = transform(application);
+        //using OfferGroup from found entity since this field can't be updated
+        updated.setOfferGroup(storedApplication.getOfferGroup());
+        dao.persist(authentication, storedApplication, updated);
+        return storedApplication;
+    }
+
+    private void verifyOfferAcceptNewApplicationStatus(final OfferState offerState, final ApplicationStatus applicationStatus) {
+        switch (offerState) {
+            case COMPLETED:
+                switch (applicationStatus) {
+                    case REJECTED_BY_RECEIVING_COUNTRY:
+                    case CANCELED:
+                        break;
+                    default:
+                        throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + "'");
+                }
+                break;
+            case CLOSED:
+                throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + "'");
         }
     }
 
     private void verifyApplicationStatusTransition(final ApplicationStatus oldStatus, final ApplicationStatus newStatus) {
-        //TODO - move switch from processApplicationStatus, check correct order and throw exception if violated
+        switch (oldStatus) {
+            case APPLIED:
+                switch (newStatus) {
+                    case NOMINATED:
+                        break;
+                    default:
+                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
+                }
+                break;
+            case FORWARDED_TO_EMPLOYER:
+                switch (newStatus) {
+                    case ACCEPTED:
+                    case CANCELED:
+                    case REJECTED_BY_EMPLOYER:
+                        break;
+                    default:
+                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
+                }
+                break;
+            case REJECTED_BY_EMPLOYER:
+            case REJECTED_BY_RECEIVING_COUNTRY:
+                switch (newStatus) {
+                    case NOMINATED:
+                    case APPLIED:
+                        break;
+                    default:
+                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
+                }
+                break;
+            case CANCELED:
+                switch (newStatus) {
+                    case NOMINATED:
+                    case APPLIED:
+                        break;
+                    default:
+                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
+                }
+                break;
+            case NOMINATED:
+                switch (newStatus) {
+                    case CANCELED:
+                    case FORWARDED_TO_EMPLOYER:
+                    case REJECTED_BY_EMPLOYER:
+                    case REJECTED_BY_RECEIVING_COUNTRY:
+                        break;
+                    default:
+                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
+                }
+                break;
+        }
     }
 
     private OfferGroupEntity verifyOfferIsSharedToGroup(final GroupEntity group, final String offerExternalId) {

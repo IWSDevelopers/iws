@@ -502,6 +502,39 @@ public final class OfferTest extends AbstractTest {
     }
 
     @Test
+    public void testFetchSharedForeignOffer() {
+        final Date nominationDeadline = new Date().plusDays(20);
+
+        final String refNo = "AT-2013-000002";
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo(refNo);
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse processResponse = exchange.processOffer(austriaToken, offerRequest);
+
+        assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        offersToShare.add(processResponse.getOffer().getOfferId());
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaToken, publishRequest);
+
+        assertThat("verify that there was no error during sharing the offer", publishResponse.getError(), is(IWSErrors.SUCCESS));
+        assertThat("verify that the offer was successfully shared with Croatia", publishResponse.isOk(), is(true));
+
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.SHARED);
+        final FetchOffersResponse fetchResponse = exchange.fetchOffers(croatiaToken, request);
+        final Offer readOffer = findOfferFromResponse(refNo, fetchResponse);
+
+        assertThat("as the Austrian offer was shared with Croatia, it should be loaded", readOffer, is(not(nullValue())));
+        assertThat("status of the shared offer must not be null", readOffer.getStatus(), is(not(nullValue())));
+    }
+
+    @Test
     public void testFetchSharedOfferAfterDeadline() {
         final Date nominationDeadlineInThePast = new Date().plusDays(-20);
 

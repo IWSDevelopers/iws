@@ -69,5 +69,9 @@ public enum ApplicationStatus {
      * <p/>
      * Both countries can see the application.
      */
-    WITHDRAWN
+    WITHDRAWN,
+
+    //TODO - two canceled statuses - by receiving/sending country?
+    CANCELED
+
 }

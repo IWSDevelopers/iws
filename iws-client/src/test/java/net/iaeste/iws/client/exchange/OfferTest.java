@@ -190,6 +190,9 @@ public final class OfferTest extends AbstractTest {
         assertThat(updatedOffer.getCreated().toString(), is(savedOffer.getCreated().toString()));
         assertThat(updatedOffer.getWorkDescription(), is(not(initialOffer.getWorkDescription())));
         assertThat(updatedOffer.getWorkDescription(), is("Whatever"));
+
+        assertThat(updatedOffer.getNsFirstname(), is(not(nullValue())));
+        assertThat(updatedOffer.getNsLastname(), is(not(nullValue())));
     }
 
     @Test
@@ -290,6 +293,9 @@ public final class OfferTest extends AbstractTest {
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
 
         assertThat(saveResponse.isOk(), is(true));
+
+        assertThat(saveResponse.getOffer().getNsFirstname(), is(not(nullValue())));
+        assertThat(saveResponse.getOffer().getNsLastname(), is(not(nullValue())));
 
         final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);

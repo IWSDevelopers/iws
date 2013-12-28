@@ -166,6 +166,8 @@ public interface AccessDao extends BasicDao {
 
     RoleEntity findRoleByUserAndGroup(String externalUserId, GroupEntity group);
 
+    UserEntity findNationalSecretaryByMemberGroup(final GroupEntity memberGroup);
+
     UserEntity findActiveUserByExternalId(String externalUserId);
     UserEntity findUserByExternalId(String externalUserId);
     UserGroupEntity findMemberByGroupAndUser(GroupEntity group, UserEntity user);

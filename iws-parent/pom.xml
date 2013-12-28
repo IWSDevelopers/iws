@@ -71,7 +71,7 @@
                         <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
                         <versionTagPrefix>v</versionTagPrefix>
                     </flowInitContext>
-                    <pushReleases>true</pushReleases>
+                    <pushReleases>false</pushReleases>
                     <noDeploy>true</noDeploy>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <allowUntracked>false</allowUntracked>

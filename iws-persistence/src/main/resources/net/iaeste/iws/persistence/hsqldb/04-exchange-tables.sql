@@ -111,7 +111,7 @@ create table offers (
     nomination_deadline       date,
     number_of_hard_copies     integer,
     additional_information    varchar(3000),
-    status                    varchar(10),
+    status                    varchar(15),
     modified                  timestamp default now(),
     created                   timestamp default now(),
 
@@ -157,7 +157,7 @@ create table offer_to_group (
     comment            varchar(1000)  default '',
     modified_by        integer,
     created_by         integer,
-    status             varchar(10),
+    status             varchar(15),
     modified           timestamp default now(),
     created            timestamp default now(),
 

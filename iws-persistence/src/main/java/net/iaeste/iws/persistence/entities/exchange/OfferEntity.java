@@ -303,7 +303,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
 
     @Monitored(name="Offer status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 10)
+    @Column(name = "status", length = 15)
     private OfferState status = OfferState.NEW;
 
     @Temporal(TemporalType.TIMESTAMP)

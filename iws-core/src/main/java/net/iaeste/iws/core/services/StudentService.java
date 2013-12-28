@@ -249,7 +249,22 @@ public final class StudentService extends CommonService<StudentDao> {
         //using OfferGroup from found entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
         dao.persist(authentication, storedApplication, updated);
+
+        //update status for OfferGroup
+        updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.NOMINATIONS);
+        //update status for Offer
+        updateOfferStatus(storedApplication.getOfferGroup().getOffer(), OfferState.NOMINATIONS);
         return storedApplication;
+    }
+
+    private void updateOfferGroupStatus(final OfferGroupEntity offerGroup, final OfferState state) {
+        offerGroup.setStatus(state);
+        dao.persist(offerGroup);
+    }
+
+    private void updateOfferStatus(final OfferEntity offer, final OfferState state) {
+        offer.setStatus(state);
+        dao.persist(offer);
     }
 
     private void verifyOfferAcceptNewApplicationStatus(final OfferState offerState, final ApplicationStatus applicationStatus) {

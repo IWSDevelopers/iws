@@ -134,8 +134,21 @@ public final class StudentService extends CommonService<StudentDao> {
             dao.persist(authentication, student, applicationEntity.getStudent());
             applicationEntity.setStudent(student);
             dao.persist(authentication, applicationEntity);
+
+            //TODO complete status list from which we should change the status
+            if (OfferState.SHARED.equals(sharedOfferGroup.getStatus())) {
+                sharedOfferGroup.setStatus(OfferState.APPLICATIONS);
+                dao.persist(sharedOfferGroup);
+            }
         } else {
             final ApplicationEntity updated = transform(application);
+            //TODO - allow update application status?
+            if (!applicationEntity.getStatus().equals(updated.getStatus())) {
+                //we are updating application and its status changed -> check if it's allowed
+                verifyOfferAcceptNewApplicationStatus(sharedOfferGroup.getOffer().getStatus(), applicationEntity.getStatus());
+                verifyApplicationStatusTransition(applicationEntity.getStatus(), updated.getStatus());
+            }
+
             //using OfferGroup from found entity since this field can't be updated
             updated.setOfferGroup(applicationEntity.getOfferGroup());
             processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());

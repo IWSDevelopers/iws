@@ -120,7 +120,9 @@ public final class StudentService extends CommonService<StudentDao> {
         final OfferGroupEntity sharedOfferGroup = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
         final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
-        if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup() == null) || (sharedOfferGroup.getOffer().getStatus() != OfferState.SHARED)) {
+        //TODO when is new application allowed to be created/updated?
+        //if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup() == null) || (sharedOfferGroup.getOffer().getStatus() != OfferState.SHARED)) {
+        if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup() == null)) {
             throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
 

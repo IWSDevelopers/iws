@@ -54,6 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -120,13 +121,14 @@ public final class StudentService extends CommonService<StudentDao> {
         final OfferGroupEntity sharedOfferGroup = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
         final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
-        //TODO when is new application allowed to be created/updated?
-        //if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup() == null) || (sharedOfferGroup.getOffer().getStatus() != OfferState.SHARED)) {
-        if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup() == null)) {
-            throw new VerificationException("The offer with id '" + externalId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
+        if (sharedOfferGroup == null) {
+            final String offerId = sharedOfferGroup.getOffer() != null ? sharedOfferGroup.getOffer().getExternalId() : "null";
+            throw new VerificationException("The offer with id '" + offerId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
 
-        //TODO StudentEntity has no externalId and StudentEntity from application has no ID so no change to Student will be reflectec in DB
+        if (EnumSet.of(OfferState.CLOSED, OfferState.COMPLETED, OfferState.NEW).contains(sharedOfferGroup.getOffer().getStatus())) {
+            throw new VerificationException("It is not possible to create/update application for the offer with status '" + sharedOfferGroup.getOffer().getStatus() + "'.");
+        }
 
         if (applicationEntity == null) {
             applicationEntity = transform(application);

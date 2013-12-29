@@ -89,7 +89,7 @@
         <dependency>
             <groupId>net.iaeste.iws</groupId>
             <artifactId>iws-ejb</artifactId>
-	    <version>${version}</version>
+	    <version>${project.version}</version>
             <type>ejb</type>
         </dependency>
         <dependency>

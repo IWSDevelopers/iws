@@ -71,7 +71,7 @@
                         <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
                         <versionTagPrefix>v</versionTagPrefix>
                     </flowInitContext>
-                    <pushReleases>false</pushReleases>
+                    <pushReleases>true</pushReleases>
                     <noDeploy>true</noDeploy>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <allowUntracked>false</allowUntracked>
@@ -244,32 +244,32 @@
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-api</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-common</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-persistence</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-core</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-ejb</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.iaeste.iws</groupId>
                 <artifactId>iws-client</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax</groupId>

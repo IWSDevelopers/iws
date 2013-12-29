@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
 
@@ -56,5 +57,27 @@ public interface MailingListDao extends BasicDao {
      * @param newEmailAddress new user private email address
      * @param oldEmailAddress old user private email address
      */
-    void updateUserSubscriptionEmail(final String newEmailAddress, final String oldEmailAddress);
+    void updateUserSubscriptionEmail(String newEmailAddress, String oldEmailAddress);
+
+    /**
+     * Finds an Mailing Alias based on the given user e-mail
+     *
+     * @param username user e-mail
+     */
+    MailingAliasEntity findMailingAliasByUsername(String username);
+
+    /**
+     * Finds an Mailing Alias based on the given user alias
+     *
+     * @param userAlias user e-mail
+     */
+    MailingAliasEntity findMailingAliasByAlias(String userAlias);
+
+    /**
+     * Update user's address used to subscribed to a mailing alias. This happens when user requested a change of username
+     *
+     * @param newEmailAddress new user private email address
+     * @param oldEmailAddress old user private email address
+     */
+    void updateUsernameInMailingAlias(String newEmailAddress, String oldEmailAddress);
 }

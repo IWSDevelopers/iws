@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.MailingListDao;
+import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
 
@@ -77,6 +78,40 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
     @Override
     public void updateUserSubscriptionEmail(final String newEmailAddress, final String oldEmailAddress) {
         final Query query = entityManager.createNamedQuery("mailing_list.updateUserSubscriptionEmail");
+        query.setParameter("newUserAddress", newEmailAddress);
+        query.setParameter("oldUserAddress", oldEmailAddress);
+
+        query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MailingAliasEntity findMailingAliasByUsername(final String username) {
+        final Query query = entityManager.createNamedQuery("mailing_list.findAliasByUsername");
+        query.setParameter("username", username);
+
+        return findSingleResult(query, "MailingAlias");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MailingAliasEntity findMailingAliasByAlias(final String userAlias) {
+        final Query query = entityManager.createNamedQuery("mailing_list.findAliasByUserAlias");
+        query.setParameter("alias", userAlias);
+
+        return findSingleResult(query, "MailingAlias");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateUsernameInMailingAlias(final String newEmailAddress, final String oldEmailAddress) {
+        final Query query = entityManager.createNamedQuery("mailing_list.updateUsernameinMailingAlias");
         query.setParameter("newUserAddress", newEmailAddress);
         query.setParameter("oldUserAddress", oldEmailAddress);
 

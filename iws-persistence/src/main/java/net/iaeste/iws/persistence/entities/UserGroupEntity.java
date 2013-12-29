@@ -74,6 +74,10 @@ import java.util.Map;
                         "where ug.group.groupType.grouptype = 'NATIONAL'" +
                         "  and ug.role.id = 1" +
                         "  and ug.group.parentId = :mgid"),
+        @NamedQuery(name = "usergroup.findOwnerByGroup",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.externalId = :egid" +
+                        "  and ug.role.id = 1"),
         @NamedQuery(name = "usergroup.findMemberByUserId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.groupType.grouptype = 'MEMBER'" +

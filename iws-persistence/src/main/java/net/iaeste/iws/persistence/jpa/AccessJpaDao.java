@@ -466,6 +466,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public UserEntity findOwnerByGroup(final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("usergroup.findOwnerByGroup");
+        query.setParameter("egid", group.getExternalId());
+
+        UserGroupEntity userGroupEntity = findUniqueResult(query, "UserGroup");
+        return userGroupEntity.getUser();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserGroupEntity findMemberByGroupAndUser(final GroupEntity group, final UserEntity user) {
         final Query query = entityManager.createNamedQuery("usergroup.findByGroupAndUser");
         query.setParameter("gid", group.getId());

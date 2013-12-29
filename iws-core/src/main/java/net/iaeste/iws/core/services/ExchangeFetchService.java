@@ -37,11 +37,14 @@ import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
+import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
+import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.views.EmployerView;
@@ -64,10 +67,12 @@ import java.util.Set;
 public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
     private final ViewsDao viewsDao;
+    private final AccessDao accessDao;
 
-    public ExchangeFetchService(final ExchangeDao dao, final ViewsDao viewsDao) {
+    public ExchangeFetchService(final ExchangeDao dao, final ViewsDao viewsDao, final AccessDao accessDao) {
         super(dao);
         this.viewsDao = viewsDao;
+        this.accessDao = accessDao;
     }
 
     public FetchEmployerResponse fetchEmployers(final Authentication authentication, final FetchEmployerRequest request) {
@@ -176,7 +181,15 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
             }
         }
 
-        return convertEntityList(found);
+        List<Offer> offers = convertEntityList(found);
+
+        for(final Offer offer: offers) {
+            final UserEntity nationalSecretary = accessDao.findOwnerByGroup(CommonTransformer.transform(offer.getEmployer().getGroup()));
+            offer.setNsFirstname(nationalSecretary.getFirstname());
+            offer.setNsLastname(nationalSecretary.getLastname());
+        }
+
+        return offers;
     }
 
     private static List<Offer> convertEntityList(final List<OfferEntity> found) {

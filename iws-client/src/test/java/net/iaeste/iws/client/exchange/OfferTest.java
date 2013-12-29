@@ -523,6 +523,9 @@ public final class OfferTest extends AbstractTest {
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
 
+        String austriaNsFirstName = processResponse.getOffer().getNsFirstname();
+        String austriaNsLastName = processResponse.getOffer().getNsLastname();
+
         final Set<String> offersToShare = new HashSet<>(1);
         offersToShare.add(processResponse.getOffer().getOfferId());
 
@@ -541,6 +544,9 @@ public final class OfferTest extends AbstractTest {
 
         assertThat("as the Austrian offer was shared with Croatia, it should be loaded", readOffer, is(not(nullValue())));
         assertThat("status of the shared offer must not be null", readOffer.getStatus(), is(not(nullValue())));
+
+        assertThat(readOffer.getNsFirstname(), is(austriaNsFirstName));
+        assertThat(readOffer.getNsLastname(), is(austriaNsLastName));
     }
 
     @Test

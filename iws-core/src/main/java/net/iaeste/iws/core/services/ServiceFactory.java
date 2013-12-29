@@ -102,8 +102,9 @@ public final class ServiceFactory {
     public ExchangeFetchService prepareExchangeFetchService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager);
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
+        final AccessDao accessDao = new AccessJpaDao(entityManager);
 
-        return new ExchangeFetchService(dao, viewsDao);
+        return new ExchangeFetchService(dao, viewsDao, accessDao);
     }
 
     public StudentService prepareStudentService() {

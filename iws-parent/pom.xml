@@ -14,7 +14,7 @@
         <module>../iws-persistence</module>
         <module>../iws-core</module>
         <module>../iws-ejb</module>
-        <!--<module>../iws-ear</module>-->
+        <module>../iws-ear</module>
         <module>../iws-client</module>
         <module>../iws-fitnesse</module>
     </modules>

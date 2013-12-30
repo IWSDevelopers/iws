@@ -109,9 +109,10 @@ public final class StudentService extends CommonService<StudentDao> {
 
     public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {
         final ApplicationEntity entity = processStudentApplication(authentication, request.getStudentApplication());
-        final List<AttachmentEntity> attachments = processAttachments(authentication, entity, request.getStudentApplication().getAttachments());
+        final List<AttachmentEntity> attachmentEntities = processAttachments(authentication, entity, request.getStudentApplication().getAttachments());
 
-        return new StudentApplicationResponse(transform(entity));
+        final StudentApplication application = transform(entity, attachmentEntities, false);
+        return new StudentApplicationResponse(application);
     }
 
     private ApplicationEntity processStudentApplication(final Authentication authentication, final StudentApplication application) {

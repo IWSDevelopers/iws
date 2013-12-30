@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
@@ -23,20 +24,24 @@ import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Transformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
  *
- * @author  Michal Knapik / last $Author:$
+ * @author Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
  * @noinspection OverlyLongMethod
+ * @since 1.7
  */
 public final class ExchangeTransformer {
 
@@ -259,6 +264,22 @@ public final class ExchangeTransformer {
         }
 
         return entity;
+    }
+
+    public static StudentApplication transform(final ApplicationEntity entity, final List<AttachmentEntity> attachments, final boolean includeData) {
+        final StudentApplication application = transform(entity);
+
+        final ArrayList<File> files = new ArrayList<>();
+        for (final AttachmentEntity attachment : attachments) {
+            final File file = StorageTransformer.transform(attachment.getFile());
+            if (!includeData) {
+                file.setFiledata(null);
+            }
+            files.add(file);
+        }
+        application.setAttachments(files);
+
+        return application;
     }
 
     public static StudentApplication transform(final ApplicationEntity entity) {

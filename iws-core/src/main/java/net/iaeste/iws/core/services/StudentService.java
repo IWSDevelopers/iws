@@ -109,9 +109,9 @@ public final class StudentService extends CommonService<StudentDao> {
 
     public StudentApplicationResponse processStudentApplication(final Authentication authentication, final ProcessStudentApplicationsRequest request) {
         final ApplicationEntity entity = processStudentApplication(authentication, request.getStudentApplication());
-        final List<AttachmentEntity> attachmentEntities = processAttachments(authentication, entity, request.getStudentApplication().getAttachments());
+        final List<AttachmentEntity> attachments = processAttachments(authentication, entity, request.getStudentApplication().getAttachments());
 
-        final StudentApplication application = transform(entity, attachmentEntities, false);
+        final StudentApplication application = transform(entity, attachments, false);
         return new StudentApplicationResponse(application);
     }
 
@@ -122,6 +122,7 @@ public final class StudentService extends CommonService<StudentDao> {
         final OfferGroupEntity sharedOfferGroup = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
         final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
+        // Todo @Pavel, you check if sharedOfferGroup is null, and then you have a conditional check again! Please fix
         if (sharedOfferGroup == null) {
             final String offerId = sharedOfferGroup.getOffer() != null ? sharedOfferGroup.getOffer().getExternalId() : "null";
             throw new VerificationException("The offer with id '" + offerId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
@@ -236,10 +237,9 @@ public final class StudentService extends CommonService<StudentDao> {
         }
 
         final OfferGroupEntity foundOfferGroup = found.getOfferGroup();
-        if (foundOfferGroup == null ||
-            (!authentication.getGroup().equals(foundOfferGroup.getGroup())
-             && !authentication.getGroup().equals(foundOfferGroup.getOffer().getEmployer().getGroup()))
-           ) {
+        if ((foundOfferGroup == null) ||
+                (!authentication.getGroup().equals(foundOfferGroup.getGroup()) &&
+                 !authentication.getGroup().equals(foundOfferGroup.getOffer().getEmployer().getGroup()))) {
             throw new VerificationException("Only groups related to the application can change its status");
         }
 

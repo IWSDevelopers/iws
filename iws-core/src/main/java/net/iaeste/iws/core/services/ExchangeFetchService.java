@@ -27,12 +27,14 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.core.exceptions.PermissionException;
@@ -60,9 +62,9 @@ import java.util.Set;
 /**
  * This Service Class contains the read-only parts of the Exchange methods.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
@@ -73,6 +75,10 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         super(dao);
         this.viewsDao = viewsDao;
         this.accessDao = accessDao;
+    }
+
+    public OfferStatisticsResponse fetchOfferStatistics(final Authentication authentication, final OfferStatisticsRequest request) {
+        return new OfferStatisticsResponse();
     }
 
     public FetchEmployerResponse fetchEmployers(final Authentication authentication, final FetchEmployerRequest request) {

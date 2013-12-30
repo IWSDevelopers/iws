@@ -38,10 +38,9 @@ import java.util.List;
  * Transformer for the Exchange module, handles transformation of the DTO Objects
  * to and from the Entity data structure.
  *
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection OverlyLongMethod
- * @since 1.7
+ * @since   1.7
  */
 public final class ExchangeTransformer {
 
@@ -258,9 +257,6 @@ public final class ExchangeTransformer {
             entity.setLanguage2Level(student.getLanguage2Level());
             entity.setLanguage3(student.getLanguage3());
             entity.setLanguage3Level(student.getLanguage3Level());
-            //TODO there is no sense to copy modified and created from DTO to entity
-            //entity.setModified(student.getModified().toDate());
-            //entity.setCreated(student.getCreated().toDate());
         }
 
         return entity;
@@ -269,9 +265,10 @@ public final class ExchangeTransformer {
     public static StudentApplication transform(final ApplicationEntity entity, final List<AttachmentEntity> attachments, final boolean includeData) {
         final StudentApplication application = transform(entity);
 
-        final ArrayList<File> files = new ArrayList<>();
+        final List<File> files = new ArrayList<>();
         for (final AttachmentEntity attachment : attachments) {
             final File file = StorageTransformer.transform(attachment.getFile());
+            // TODO see Trac ticket #532
             if (!includeData) {
                 file.setFiledata(null);
             }

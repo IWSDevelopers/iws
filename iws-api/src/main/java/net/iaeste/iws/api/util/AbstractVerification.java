@@ -236,6 +236,24 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * Throws an {@code IllegalArgumentException} if the given value is not
+     * within the given limits.
+     *
+     * @param field   Name of the field
+     * @param value   The value of the field
+     * @param minimum The minimally allowed value for the field
+     * @param maximum The maximally allowed value for the field
+     * @throws IllegalArgumentException if the value is null not of exact length
+     */
+    protected <T extends Number> void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+        if (value != null) {
+            if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
+                throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
+            }
+        }
+    }
+
+    /**
      * Throws an {@code IllegalArgumentException} if the given value is either
      * null or not within the given limits.
      *
@@ -245,7 +263,9 @@ public abstract class AbstractVerification implements Verifiable {
      * @param maximum The maximally allowed value for the field
      * @throws IllegalArgumentException if the value is null not of exact length
      */
-    protected <T extends Number>void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+    protected <T extends Number> void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+
         if (value != null) {
             if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
                 throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));

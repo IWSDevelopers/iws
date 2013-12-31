@@ -317,9 +317,24 @@ public final class StudentService extends CommonService<StudentDao> {
             case REJECTED_BY_RECEIVING_COUNTRY:
                 rejectApplication(authentication, request, applicationEntity);
                 break;
+            case FORWARDED_TO_EMPLOYER:
+                forwardToEmployer(authentication, studentApplication, applicationEntity);
+                break;
             default:
                 throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
         }
+    }
+
+    private void forwardToEmployer(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity) {
+        application.setStatus(ApplicationStatus.FORWARDED_TO_EMPLOYER);
+        ApplicationEntity updated = transform(application);
+        updated.setOfferGroup(applicationEntity.getOfferGroup());
+        dao.persist(authentication, applicationEntity, updated);
+
+        //update status for OfferGroup
+        updateOfferGroupStatus(applicationEntity.getOfferGroup(), OfferState.AT_EMPLOYER);
+        //update status for Offer
+        updateOfferStatus(applicationEntity.getOfferGroup().getOffer(), OfferState.AT_EMPLOYER);
     }
 
     private void nominateApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity storedApplication) {

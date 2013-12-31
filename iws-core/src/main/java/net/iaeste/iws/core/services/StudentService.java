@@ -137,7 +137,7 @@ public final class StudentService extends CommonService<StudentDao> {
             applicationEntity.setOfferGroup(sharedOfferGroup);
             processAddress(authentication, applicationEntity.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms());
-            dao.persist(authentication, student, applicationEntity.getStudent());
+            //dao.persist(authentication, student, applicationEntity.getStudent());
             applicationEntity.setStudent(student);
             dao.persist(authentication, applicationEntity);
 
@@ -159,7 +159,7 @@ public final class StudentService extends CommonService<StudentDao> {
             updated.setOfferGroup(applicationEntity.getOfferGroup());
             processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
-            dao.persist(authentication, student, updated.getStudent());
+            //dao.persist(authentication, student, updated.getStudent());
             dao.persist(authentication, applicationEntity, updated);
         }
 

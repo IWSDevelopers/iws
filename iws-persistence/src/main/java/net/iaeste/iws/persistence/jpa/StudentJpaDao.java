@@ -14,9 +14,11 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.ApplicationView;
 
@@ -115,5 +117,18 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
         query.setParameter("fileid", fileId);
 
         return findSingleResult(query, "Attachment");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Boolean otherNominatedApplications(final Long offerId) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findByOfferAndStatus");
+        query.setParameter("oid", offerId);
+        query.setParameter("status", OfferState.NOMINATIONS);
+
+        List<OfferGroupEntity> list = query.getResultList();
+
+        return list.size() > 0;
     }
 }

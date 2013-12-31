@@ -55,7 +55,8 @@ public enum OfferState {
 
     //offer status
     CLOSED("Closed"),
-    COMPLETED("Completed");
+    COMPLETED("Completed"),
+    APPLICATION_REJECTED("Application rejected");
 
     // =========================================================================
     // Private Constructor & functionality

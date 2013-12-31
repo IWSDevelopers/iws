@@ -305,8 +305,7 @@ public final class ExchangeTransformer {
             result.setLanguage2Level(entity.getLanguage2Level());
             result.setLanguage3(entity.getLanguage3());
             result.setLanguage3Level(entity.getLanguage3Level());
-            result.setInternshipStart(CommonTransformer.convert(entity.getInternshipStart()));
-            result.setInternshipEnd(CommonTransformer.convert(entity.getInternshipEnd()));
+            result.setAvailable(CommonTransformer.transform(entity.getInternshipStart(), entity.getInternshipEnd()));
             result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.explodeStringList(entity.getSpecializations()));
             result.setPassportNumber(entity.getPassportNumber());
@@ -347,8 +346,8 @@ public final class ExchangeTransformer {
             result.setLanguage2Level(application.getLanguage2Level());
             result.setLanguage3(application.getLanguage3());
             result.setLanguage3Level(application.getLanguage3Level());
-            result.setInternshipStart(CommonTransformer.convert(application.getInternshipStart()));
-            result.setInternshipEnd(CommonTransformer.convert(application.getInternshipEnd()));
+            result.setInternshipStart(CommonTransformer.readFromDateFromPeriod(application.getAvailable()));
+            result.setInternshipEnd(CommonTransformer.readToDateFromPeriod(application.getAvailable()));
             result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(application.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.join(application.getSpecializations()));
             result.setPassportNumber(application.getPassportNumber());

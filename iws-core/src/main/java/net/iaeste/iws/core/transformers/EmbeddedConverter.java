@@ -214,8 +214,7 @@ public final class EmbeddedConverter {
         result.setLanguage1Level(embedded.getLanguage2Level());
         result.setLanguage1(embedded.getLanguage3());
         result.setLanguage1Level(embedded.getLanguage3Level());
-        result.setInternshipStart(embedded.getInternshipStart() != null ? new Date(embedded.getInternshipStart()) : null);
-        result.setInternshipEnd(embedded.getInternshipEnd() != null ? new Date(embedded.getInternshipEnd()) : null);
+        result.setAvailable(CommonTransformer.transform(embedded.getInternshipStart(), embedded.getInternshipEnd()));
         result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embedded.getFieldOfStudies()));
         result.setSpecializations(CollectionTransformer.explodeStringList(embedded.getSpecializations()));
         result.setPassportNumber(embedded.getPassportNumber());

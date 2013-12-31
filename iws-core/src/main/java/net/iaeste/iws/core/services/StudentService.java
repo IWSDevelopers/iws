@@ -16,11 +16,13 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
@@ -116,17 +118,41 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     private ApplicationEntity processStudentApplication(final Authentication authentication, final StudentApplication application) {
-        final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
+        final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
         final String externalId = application.getApplicationId();
         ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
-        final OfferGroupEntity sharedOfferGroup = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
-        final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
-        // Todo @Pavel, you check if sharedOfferGroup is null, and then you have a conditional check again! Please fix
-        if (sharedOfferGroup == null) {
-            final String offerId = sharedOfferGroup.getOffer() != null ? sharedOfferGroup.getOffer().getExternalId() : "null";
+        if ((applicationEntity == null) || (applicationEntity.getOfferGroup().getGroup().getId() == nationalGroup.getId())) {
+            //application owner
+            return processStudentApplicationByApplicationOwner(authentication, application, applicationEntity);
+        } else {
+            final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
+            final OfferEntity offer = sharedOfferGroup.getOffer();
+            if (offer.getEmployer().getGroup().getId() == nationalGroup.getId()) {
+                //offer owner
+                return processStudentApplicationByOfferOwner(authentication, application, applicationEntity);
+            }
+        }
+
+        throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Cannot process student application");
+    }
+
+    private ApplicationEntity processStudentApplicationByApplicationOwner(final Authentication authentication, final StudentApplication application, ApplicationEntity applicationEntity) {
+        final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
+        final OfferGroupEntity sharedOfferGroup;
+        if (applicationEntity == null) {
+            sharedOfferGroup = verifyOfferIsSharedToGroup(authentication.getGroup(), application.getOffer().getOfferId());
+        } else {
+            sharedOfferGroup = applicationEntity.getOfferGroup();
+        }
+
+        if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup().getId() != nationalGroup.getId())) {
+            final String offerId = application.getOffer() != null ? application.getOffer().getOfferId() : "null";
             throw new VerificationException("The offer with id '" + offerId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
+
+        final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
+        final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
 
         if (EnumSet.of(OfferState.CLOSED, OfferState.COMPLETED, OfferState.NEW).contains(sharedOfferGroup.getOffer().getStatus())) {
             throw new VerificationException("It is not possible to create/update application for the offer with status '" + sharedOfferGroup.getOffer().getStatus() + "'.");
@@ -163,6 +189,24 @@ public final class StudentService extends CommonService<StudentDao> {
             dao.persist(authentication, applicationEntity, updated);
         }
 
+        return applicationEntity;
+    }
+
+    private ApplicationEntity processStudentApplicationByOfferOwner(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity) {
+        final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
+        final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
+        final OfferEntity offer = sharedOfferGroup.getOffer();
+
+        if (offer.getEmployer().getGroup().getId() != nationalGroup.getId()) {
+            throw new VerificationException("The group with '" + authentication.getGroup().getGroupName() + "' does not own the offer with id '" + offer.getExternalId() + "'.");
+        }
+
+        //Offer owner can change only acceptance
+        final StudentApplication updatedApplication = transform(applicationEntity);
+        updatedApplication.setAcceptance(application.getAcceptance());
+
+        final ApplicationEntity newEntity = transform(updatedApplication);
+        dao.persist(authentication, applicationEntity, newEntity);
         return applicationEntity;
     }
 

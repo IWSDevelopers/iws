@@ -447,7 +447,7 @@ public final class StudentTest extends AbstractTest {
 
         assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
 
-        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app004@university.edu", "password1", "Student1", "Graduate1");
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app006@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
 
         final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);

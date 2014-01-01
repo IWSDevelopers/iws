@@ -63,4 +63,12 @@ public interface StudentDao extends BasicDao {
     List<AttachmentEntity> findAttachments(String table, Long recordId);
 
     AttachmentEntity findAttachment(String table, Long recordId, Long fileId);
+
+    /**
+     * Checks if there is any nominated application for a specific Offer
+     *
+     * @param offerId application id
+     * @return true if there is any other nominated application
+     */
+    Boolean otherNominatedApplications(Long offerId);
 }

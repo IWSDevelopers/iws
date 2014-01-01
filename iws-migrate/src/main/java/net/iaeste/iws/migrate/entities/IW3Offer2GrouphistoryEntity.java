@@ -1,6 +1,6 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.IW3Offer2GrouphistoryEntity
  * -----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.views.IWSView
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development

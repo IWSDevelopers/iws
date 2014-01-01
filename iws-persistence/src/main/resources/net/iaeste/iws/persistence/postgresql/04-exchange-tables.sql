@@ -63,6 +63,7 @@ create table offers (
     id                        integer default nextval('offer_sequence'),
     external_id               varchar(36),
     ref_no                    varchar(16),
+    old_offer_id              integer,
     old_refno                 varchar(36),
     exchange_year             integer,
     -- General Work Description
@@ -119,6 +120,7 @@ create table offers (
     /* Unique Constraints */
     constraint offer_unique_external_id unique (external_id),
     constraint offer_unique_ref_no      unique (ref_no),
+    constraint offer_unique_old_id      unique (old_offer_id),
 
     /* Not Null Constraints */
     constraint offer_notnull_id               check (id is not null),
@@ -167,6 +169,7 @@ create table offer_to_group (
 
     /* Unique Constraints */
     constraint offer_to_group_unique_external_id unique (external_id),
+    constraint offer_to_group_unique_ids         unique (offer_id, group_id),
 
     /* Not Null Constraints */
     constraint offer_to_group_notnull_id          check (id is not null),

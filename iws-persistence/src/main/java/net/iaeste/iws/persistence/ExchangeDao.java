@@ -40,6 +40,8 @@ public interface ExchangeDao extends BasicDao {
     EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer);
     EmployerEntity findUniqueEmployer(GroupEntity group, EmployerEntity employer);
 
+    OfferEntity findOfferByOldOfferId(Integer oldOfferId);
+
     /**
      * Get all offers from the database.
      *

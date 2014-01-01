@@ -16,9 +16,12 @@ package net.iaeste.iws.api.dtos.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.util.AbstractFallible;
+import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.DateTime;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Sharing info for the offer
@@ -27,14 +30,14 @@ import net.iaeste.iws.api.util.DateTime;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class OfferGroup extends AbstractFallible {
+public final class OfferGroup extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private OfferState status = null;
     private String offerRefNo = null;
     private String groupId = null;
+    private OfferState status = OfferState.NEW;
     private DateTime modified = null;
     private DateTime created = null;
 
@@ -68,7 +71,17 @@ public final class OfferGroup extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOfferRefNo(final String offerRefNo) {
+    /**
+     * Sets the Offer Reference Number, for the Offer which the Group is granted
+     * access to.<br />
+     *   If the value is illegal, i.e. null or not a valid Reference Number,
+     * then the method will thrown an {@code IllegalArgumentException}.
+     *
+     * @param offerRefNo Offer Reference Number.
+     * @throws IllegalArgumentException if value is either null or invalid
+     */
+    public void setOfferRefNo(final String offerRefNo) throws IllegalArgumentException {
+        ensureNotNullAndValidRefno("offerRefNo", offerRefNo);
         this.offerRefNo = offerRefNo;
     }
 
@@ -76,7 +89,16 @@ public final class OfferGroup extends AbstractFallible {
         return offerRefNo;
     }
 
-    public void setGroupId(final String groupId) {
+    /**
+     * Sets the Id of the Group that is granted access to an Offer. The GroupId
+     * must be valid, otherwise the method will thrown an
+     * {@code IllegalArgumentException}.
+     *
+     * @param groupId Group Id
+     * @throws IllegalArgumentException if value is null or invalid
+     */
+    public void setGroupId(final String groupId) throws IllegalArgumentException {
+        ensureNotNullAndValidId("groupId", groupId);
         this.groupId = groupId;
     }
 
@@ -84,12 +106,22 @@ public final class OfferGroup extends AbstractFallible {
         return groupId;
     }
 
-    public OfferState getStatus() {
-        return status;
+    /**
+     * Sets the Status for this Offer Group relation. The status must be set,
+     * and will by default be set to New.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the
+     * Offer State is set to null.
+     *
+     * @param status Offer Status
+     * @throws java.lang.IllegalArgumentException if the valus is null
+     */
+    public void setStatus(final OfferState status) throws IllegalArgumentException {
+        ensureNotNull("status", status);
+        this.status = status;
     }
 
-    public void setStatus(final OfferState status) {
-        this.status = status;
+    public OfferState getStatus() {
+        return status;
     }
 
     /**
@@ -121,6 +153,19 @@ public final class OfferGroup extends AbstractFallible {
     // =========================================================================
     // Standard DTO Methods
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> validate() {
+        final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "offerRefNo", offerRefNo);
+        isNotNull(validation, "groupId", groupId);
+
+        return validation;
+    }
 
     /**
      * {@inheritDoc}

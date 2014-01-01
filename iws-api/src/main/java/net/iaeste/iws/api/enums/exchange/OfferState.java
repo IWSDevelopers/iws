@@ -29,6 +29,11 @@ public enum OfferState {
     NEW("New"),
 
     /**
+     * IW3 is referring to Offers as Open, and have been viewed.
+     */
+    OPEN("Open"),
+
+    /**
      * If an offer is shared to multiple countries
      */
     SHARED("Shared"),

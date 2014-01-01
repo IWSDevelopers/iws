@@ -67,6 +67,7 @@ create table offers (
     external_id               varchar(36),
     ref_no                    varchar(16),
     old_refno                 varchar(36),
+    old_offer_id              integer,
     exchange_year             integer,
     -- General Work Description
     employer_id               integer,
@@ -122,6 +123,7 @@ create table offers (
     /* Unique Constraints */
     constraint offer_unique_external_id unique (external_id),
     constraint offer_unique_ref_no      unique (ref_no),
+    constraint offer_unique_old_id      unique (old_offer_id),
 
     /* Not Null Constraints */
     constraint offer_notnull_id               check (id is not null),

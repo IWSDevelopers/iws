@@ -58,6 +58,9 @@ import java.util.Map;
         @NamedQuery(name = "offer.findAllForGroup",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid"),
+        @NamedQuery(name = "offer.findByOldOfferId",
+                query = "select o from OfferEntity o " +
+                        "where o.oldOfferId = :ooid"),
         @NamedQuery(name = "offer.findByGroupAndExternalIdAndRefNo",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid" +
@@ -135,6 +138,13 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
      */
     @Column(name = "old_refno", length = 36)
     private String oldRefno = null;
+
+    /**
+     * To help migrating the Offer information and related data, we store the
+     * old Offer Id as well, this way we can better find the data later on.
+     */
+    @Column(name = "old_offer_id")
+    private Integer oldOfferId = null;
 
     @Column(name = "exchange_year", length = 4)
     private Integer exchangeYear = null;
@@ -364,6 +374,14 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
 
     public String getOldRefno() {
         return oldRefno;
+    }
+
+    public void setOldOfferId(final Integer oldOfferId) {
+        this.oldOfferId = oldOfferId;
+    }
+
+    public Integer getOldOfferId() {
+        return oldOfferId;
     }
 
     public void setExchangeYear(final Integer exchangeYear) {

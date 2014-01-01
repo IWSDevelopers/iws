@@ -116,6 +116,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         final OfferEntity entity = new OfferEntity();
 
         entity.setRefNo(convertRefno(oldOffer.getSystemrefno()));
+        entity.setOldOfferId(oldOffer.getOfferid());
         entity.setOldRefno(convert(oldOffer.getLocalrefno()));
         entity.setEmployer(convertEmployer(oldOffer));
         entity.setWorkDescription(convert(oldOffer.getWorkkind()));

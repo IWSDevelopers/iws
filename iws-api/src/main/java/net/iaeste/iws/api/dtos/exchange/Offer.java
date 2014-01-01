@@ -225,7 +225,7 @@ public final class Offer extends AbstractVerification {
      * @see IWSExchangeConstants#REFNO_FORMAT
      */
     public void setRefNo(final String refNo) throws IllegalArgumentException {
-        ensureNotNullAndValidRefno(refNo);
+        ensureNotNullAndValidRefno("refNo", refNo);
         this.refNo = refNo;
     }
 

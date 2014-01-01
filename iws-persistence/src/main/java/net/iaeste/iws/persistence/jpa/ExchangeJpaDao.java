@@ -97,6 +97,17 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
+    public OfferEntity findOfferByOldOfferId(final Integer oldOfferId) {
+        final Query query = entityManager.createNamedQuery("offer.findByOldOfferId");
+        query.setParameter("ooid", oldOfferId);
+
+        return findSingleResult(query, "Offer");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<OfferEntity> findAllOffers(final Authentication authentication) {
         final Query query = entityManager.createNamedQuery("offer.findAllForGroup");
         query.setParameter("gid", authentication.getGroup().getId());

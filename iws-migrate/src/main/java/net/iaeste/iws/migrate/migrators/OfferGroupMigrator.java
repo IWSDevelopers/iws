@@ -53,8 +53,8 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
 
         for (final IW3Offer2GroupEntity oldEntity : oldEntities) {
             final OfferGroupEntity entity = convert(oldEntity);
-            entity.setOffer(exchangeDao.findOfferByOldOfferId(oldEntity.getId()));
-            entity.setGroup(accessDao.findGroupByIW3Id(oldEntity.getGroupid()));
+            entity.setOffer(exchangeDao.findOfferByOldOfferId(oldEntity.getOffer().getOfferid()));
+            entity.setGroup(accessDao.findGroupByIW3Id(oldEntity.getGroup().getGroupid()));
 
             try {
                 // Need to add support for duplicate entries! However, before

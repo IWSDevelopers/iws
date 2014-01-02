@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.IW3RolesEntity
+ * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.IW3Offer2GroupId
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -16,75 +16,55 @@ package net.iaeste.iws.migrate.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Entity
-@Table(name = "roles")
-public class IW3RolesEntity implements Serializable {
+@Embeddable
+public class IW3Offer2GroupId implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @Id
-    @Column(name = "roleid", nullable = false, length = 10)
-    private Integer roleid = null;
+    @ManyToOne(targetEntity = IW3OffersEntity.class)
+    @JoinColumn(name = "offerid", referencedColumnName = "offerid", nullable = false, updatable = false)
+    private IW3OffersEntity offer = null;
 
-    @Column(name = "rolename", length = 50)
-    private String rolename = null;
+    @ManyToOne(targetEntity = IW3GroupsEntity.class)
+    @JoinColumn(name = "groupid", referencedColumnName = "groupid", nullable = false, updatable = false)
+    private IW3GroupsEntity group = null;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified")
-    private Date modified = null;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created")
-    private Date created = null;
+    /**
+     * Default Empty JPA Constructor.
+     */
+    protected IW3Offer2GroupId() {
+        offer = null;
+        group = null;
+    }
 
     // =========================================================================
     // IW3 Entity Setters & Getters
     // =========================================================================
 
-    public void setRoleid(final Integer roleid) {
-        this.roleid = roleid;
+    public void setOffer(final IW3OffersEntity offer) {
+        this.offer = offer;
     }
 
-    public Integer getRoleid() {
-        return roleid;
+    public IW3OffersEntity getOffer() {
+        return offer;
     }
 
-    public void setRolename(final String rolename) {
-        this.rolename = rolename;
+    public void setGroup(final IW3GroupsEntity group) {
+        this.group = group;
     }
 
-    public String getRolename() {
-        return rolename;
-    }
-
-    public void setModified(final Date modified) {
-        this.modified = modified;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setCreated(final Date created) {
-        this.created = created;
-    }
-
-    public Date getCreated() {
-        return created;
+    public IW3GroupsEntity getGroup() {
+        return group;
     }
 }

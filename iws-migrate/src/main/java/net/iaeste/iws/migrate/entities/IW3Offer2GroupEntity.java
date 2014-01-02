@@ -14,15 +14,16 @@
  */
 package net.iaeste.iws.migrate.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -40,19 +41,14 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "offer2group")
-public class IW3Offer2GroupEntity {
+public class IW3Offer2GroupEntity implements Serializable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
-    @SequenceGenerator(name = "pk_sequence", sequenceName = "offer2group_sequence")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false, updatable = false)
-    private Integer id = null;
-
-    @Column(name = "offerid", nullable = false, length = 10)
-    private Integer offerid;
-
-    @Column(name = "groupid", nullable = false, length = 10)
-    private Integer groupid;
+    @EmbeddedId
+    private IW3Offer2GroupId id = new IW3Offer2GroupId();
 
     @Column(name = "status", length = 1)
     private String status;
@@ -97,28 +93,20 @@ public class IW3Offer2GroupEntity {
     // IW3 Entity Setters & Getters
     // =========================================================================
 
-    public void setId(final Integer id) {
+    public void setId(final IW3Offer2GroupId id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public IW3Offer2GroupId getId() {
         return id;
     }
 
-    public void setOfferid(final Integer offerid) {
-        this.offerid = offerid;
+    public IW3OffersEntity getOffer() {
+        return id.getOffer();
     }
 
-    public Integer getOfferid() {
-        return offerid;
-    }
-
-    public void setGroupid(final Integer groupid) {
-        this.groupid = groupid;
-    }
-
-    public Integer getGroupid() {
-        return groupid;
+    public IW3GroupsEntity getGroup() {
+        return id.getGroup();
     }
 
     public void setStatus(final String status) {

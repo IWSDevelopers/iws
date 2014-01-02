@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.migrate.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,6 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -34,7 +37,10 @@ import java.sql.Date;
                 "order by o.offerid asc"))
 @Entity
 @Table(name = "offers")
-public class IW3OffersEntity {
+public class IW3OffersEntity implements Serializable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @Column(name = "offerid", nullable = false, length = 10)

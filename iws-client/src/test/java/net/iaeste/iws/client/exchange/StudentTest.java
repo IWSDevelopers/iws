@@ -560,7 +560,7 @@ public final class StudentTest extends AbstractTest {
         final Offer readOfferAt = findOfferFromResponse(refNo, fetchResponseAt);
 
         assertThat("Domestic offer was loaded", readOfferAt, is(not(nullValue())));
-        assertThat("Domestic offer has correct state", readOfferAt.getStatus(), is(OfferState.APPLICATIONS)); // TODO: should be shared SHARED
+        assertThat("Domestic offer has correct state", readOfferAt.getStatus(), is(OfferState.SHARED));
     }
 
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {

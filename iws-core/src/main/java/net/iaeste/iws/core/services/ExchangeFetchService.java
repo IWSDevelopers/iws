@@ -173,39 +173,27 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     private List<Offer> findSharedOffers(final Authentication authentication, final Integer exchangeYear) {
-        // Must be extended with Pagination
-        final List<OfferEntity> found = new ArrayList<>(10);
         final java.util.Date now = new Date().toDate();
+        final List<OfferEntity> offerEntities = dao.findSharedOffers(authentication, exchangeYear);
+        final List<Offer> offers = new ArrayList<>(offerEntities.size());
 
-        for (final OfferEntity offer : dao.findSharedOffers(authentication, exchangeYear)) {
-            if (!offer.getNominationDeadline().before(now)) {
-                //TODO - slow? might be better to use offer view?
-                OfferGroupEntity og = dao.findInfoForSharedOfferAndGroup(offer.getId(), authentication.getGroup().getId());
-                //overwrite status for each country - it's independent for each counry in sharing process
+        for (final OfferEntity offerEntity : offerEntities) {
+            if (!offerEntity.getNominationDeadline().before(now)) {
+                OfferGroupEntity og = dao.findInfoForSharedOfferAndGroup(offerEntity.getId(), authentication.getGroup().getId());
+                //overwrite status for each country - it's independent for each country in sharing process
+
+                final Offer offer = ExchangeTransformer.transform(offerEntity);
                 offer.setStatus(og.getStatus());
-                found.add(offer);
+
+                final UserEntity nationalSecretary = accessDao.findOwnerByGroup(CommonTransformer.transform(offer.getEmployer().getGroup()));
+                offer.setNsFirstname(nationalSecretary.getFirstname());
+                offer.setNsLastname(nationalSecretary.getLastname());
+
+                offers.add(offer);
             }
         }
 
-        List<Offer> offers = convertEntityList(found);
-
-        for(final Offer offer: offers) {
-            final UserEntity nationalSecretary = accessDao.findOwnerByGroup(CommonTransformer.transform(offer.getEmployer().getGroup()));
-            offer.setNsFirstname(nationalSecretary.getFirstname());
-            offer.setNsLastname(nationalSecretary.getLastname());
-        }
-
         return offers;
-    }
-
-    private static List<Offer> convertEntityList(final List<OfferEntity> found) {
-        final List<Offer> result = new ArrayList<>(found.size());
-
-        for (final OfferEntity entity : found) {
-            result.add(ExchangeTransformer.transform(entity));
-        }
-
-        return result;
     }
 
     private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {

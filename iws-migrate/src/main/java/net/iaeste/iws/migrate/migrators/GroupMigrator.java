@@ -21,6 +21,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
@@ -38,13 +39,17 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(GroupMigrator.class);
 
+    private MailingListDao mailingListDao;
+
     /**
      * Default Constructor for the Groups Migration.
      *
-     * @param accessDao IWS Dao for persisting the new IWS Entities
+     * @param accessDao      IWS Dao for persisting the new IWS Entities
+     * @param mailingListDao IWS Dao for the mail system
      */
-    public GroupMigrator(final AccessDao accessDao) {
+    public GroupMigrator(final AccessDao accessDao, final MailingListDao mailingListDao) {
         super(accessDao);
+        this.mailingListDao = mailingListDao;
     }
 
     /**

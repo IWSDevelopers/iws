@@ -119,6 +119,26 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
      *     }
      * }
      * </pre>
+     * Following was suggested by Matej, in mail to idt.iws mailinglist on
+     * 2013-01-02:<br />
+     * <pre>
+     * 'code' -> iw3 -> iw4
+     * 'a' - > accepted -> shared
+     * 'c' - > cancelled -> closed
+     * 'e' - > exchanged -> shared
+     * 'n' - > new -> new
+     * 'o' - > nomination rejected -> application rejected
+     * 'p' -> nomination -> nominations
+     * 'q' -> not accepted -> shared
+     * 'r' -> declined -> shared
+     * 's' -> sn complete -> shared
+     * 't' -> taken -> shared
+     * 'u' -> nomination accepted -> nominations
+     * 'v' - > viewed -> shared
+     * 'w' -> waiting sn -> shared
+     * 'x' -> ac exchanged -> shared
+     * 'default' -> new
+     * </pre>
      *
      * @param status Old IW3 Status
      * @return IWS Status
@@ -127,23 +147,28 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
         final OfferState state;
 
         switch (status) {
-            case "e": // Exchanged
-                state = OfferState.EXCHANGED;
-                break;
-            case "n": // New
-                state = OfferState.NEW;
-                break;
-            // Help... :-(
             case "a": // Accepted
-            case "c": // Cancelled
-            case "o": // Nomination Rejected
-            case "p": // Nomination
+            case "e": // Exchanged
             case "q": // Not Accepted
             case "r": // Declined
+            case "s": // SN Complete
             case "t": // Taken
             case "v": // Viewed
             case "w": // Waiting SN
             case "x": // AC Exchanged
+                state = OfferState.SHARED;
+                break;
+            case "c": // Cancelled
+                state = OfferState.CLOSED;
+                break;
+            case "o": // Nomination Rejected
+                state = OfferState.APPLICATION_REJECTED;
+                break;
+            case "p": // Nomination
+            case "u": // Nomination Accepted
+                state = OfferState.NOMINATIONS;
+                break;
+            case "n": // New
             default:
                 state = OfferState.NEW;
         }

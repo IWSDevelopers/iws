@@ -35,8 +35,10 @@ import net.iaeste.iws.migrate.migrators.UserMigrator;
 import net.iaeste.iws.migrate.spring.Config;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
+import net.iaeste.iws.persistence.jpa.MailingListJpaDao;
 import org.joda.time.Period;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -77,6 +79,10 @@ public class MigrateTest {
     @PersistenceContext(unitName = "IWSPersistenceUnit")
     private EntityManager iwsEntityManager;
 
+    @PersistenceContext(unitName = "MailPersistenceUnit")
+    private EntityManager mailEntityManager;
+
+    private MailingListDao mailingListDao = null;
     private ExchangeDao exchangeDao = null;
     private AccessDao accessDao = null;
     private IW3Dao iw3Dao = null;
@@ -98,6 +104,7 @@ public class MigrateTest {
 
     @Before
     public void before() {
+        mailingListDao = new MailingListJpaDao(mailEntityManager);
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
         iw3Dao = new IW3JpaDao(iw3EntityManager);
@@ -126,7 +133,7 @@ public class MigrateTest {
     @Test
     @Transactional("transactionManagerIWS")
     public void test2ReadingWritingGroups() {
-        final GroupMigrator migrator = new GroupMigrator(accessDao);
+        final GroupMigrator migrator = new GroupMigrator(accessDao, mailingListDao);
         final List<IW3GroupsEntity> groups = iw3Dao.findAllGroups();
         log.info("Found {} Groups to migrate.", groups.size());
 
@@ -141,7 +148,7 @@ public class MigrateTest {
     @Test
     @Transactional("transactionManagerIWS")
     public void test3ReadingWritingUsers() {
-        final UserMigrator migrator = new UserMigrator(accessDao);
+        final UserMigrator migrator = new UserMigrator(accessDao, mailingListDao);
         final List<IW3ProfilesEntity> profiles = iw3Dao.findAllProfiles();
         log.info("Found {} Users to migrate.", profiles.size());
 
@@ -155,7 +162,7 @@ public class MigrateTest {
     @Test
     @Transactional("transactionManagerIWS")
     public void test4ReadingWritingUserGroups() {
-        final UserGroupMigrator migrator = new UserGroupMigrator(accessDao);
+        final UserGroupMigrator migrator = new UserGroupMigrator(accessDao, mailingListDao);
         final List<IW3User2GroupEntity> userGroups = iw3Dao.findAllUserGroups();
         log.info("Found {} UserGroups to migrate.", userGroups.size());
 

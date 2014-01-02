@@ -64,7 +64,7 @@ create table offers (
     external_id               varchar(36),
     ref_no                    varchar(16),
     old_offer_id              integer,
-    old_refno                 varchar(36),
+    old_refno                 varchar(50),
     exchange_year             integer,
     -- General Work Description
     employer_id               integer,

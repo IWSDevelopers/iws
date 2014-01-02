@@ -60,6 +60,9 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @PersistenceContext(unitName = "IWSPersistenceUnit")
     private EntityManager iwsEntityManager;
 
+    @PersistenceContext(unitName = "MailPersistenceUnit")
+    private EntityManager mailEntityManager;
+
     private ExchangeDao exchangeDao = null;
     private AccessDao accessDao = null;
     private IW3Dao iw3Dao = null;
@@ -69,6 +72,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
      */
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent event) {
+
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
         iw3Dao = new IW3JpaDao(iw3EntityManager);

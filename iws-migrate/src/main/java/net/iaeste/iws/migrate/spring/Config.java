@@ -67,6 +67,17 @@ public class Config {
         return dataSource;
     }
 
+    @Bean(name = "dataSourceMail")
+    public DataSource dataSourceMail() {
+        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+
+        dataSource.setServerName("localhost");
+        dataSource.setDatabaseName("iws");
+        dataSource.setUser("kim");
+
+        return dataSource;
+    }
+
     @Bean(name = "entityManagerFactoryIW3Bean")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryIW3Bean() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -95,6 +106,20 @@ public class Config {
         return factoryBean;
     }
 
+    @Bean(name = "entityManagerFactoryMailBean")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryMailBean() {
+        final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+
+        factoryBean.setPackagesToScan("net.iaeste.iws.persistence");
+        factoryBean.setDataSource(dataSourceMail());
+        factoryBean.setJpaVendorAdapter(vendorAdapter);
+        factoryBean.setJpaProperties(jpaProperties());
+        factoryBean.setPersistenceUnitName("MailPersistenceUnit");
+
+        return factoryBean;
+    }
+
     @Bean(name = "transactionManagerIW3")
     public PlatformTransactionManager transactionManagerIW3() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -107,6 +132,14 @@ public class Config {
     public PlatformTransactionManager transactionManagerIWS() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactoryIWSBean().getObject());
+
+        return transactionManager;
+    }
+
+    @Bean(name = "transactionManagerMail")
+    public PlatformTransactionManager transactionManagerMail() {
+        final JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactoryMailBean().getObject());
 
         return transactionManager;
     }

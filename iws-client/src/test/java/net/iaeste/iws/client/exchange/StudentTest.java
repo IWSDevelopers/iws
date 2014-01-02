@@ -490,6 +490,71 @@ public final class StudentTest extends AbstractTest {
         assertThat("Student has benn rejected by Poland", rejectStudentResponse.isOk(), is(true));
     }
 
+    @Test
+    public void testFetchSharedDomesticOfferWithApplication() {
+        final Date nominationDeadline = new Date().plusDays(20);
+        final String refNo = "AT-2014-000003";
+        final Offer offer = TestData.prepareMinimalOffer(refNo, "Employer", "PL");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse processResponse = exchange.processOffer(austriaToken, offerRequest);
+
+        assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
+        assertThat(processResponse.getOffer().getStatus(), is(OfferState.NEW));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        offersToShare.add(processResponse.getOffer().getOfferId());
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaToken, publishRequest);
+
+        assertThat("verify that there was no error during sharing the offer", publishResponse.getError(), is(IWSErrors.SUCCESS));
+        assertThat("verify that the offer was successfully shared with Croatia", publishResponse.isOk(), is(true));
+
+        final CreateUserRequest createUserRequest = new CreateUserRequest("student_app007@university.edu", "password1", "Student1", "Graduate1");
+        createUserRequest.setStudentAccount(true);
+
+        final CreateUserResponse createStudentResponse = administration.createUser(croatiaToken, createUserRequest);
+
+        assertThat("Student has been saved", createStudentResponse.isOk(), is(true));
+
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(croatiaToken, fetchStudentsRequest);
+        assertThat("At least one student has been fetched", fetchStudentsResponse.isOk(), is(true));
+        assertThat("At least one student has been fetched", fetchStudentsResponse.getStudents().isEmpty(), is(false));
+
+        final Student student = fetchStudentsResponse.getStudents().get(0);
+        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
+
+        final StudentApplication application = new StudentApplication();
+        application.setOffer(processResponse.getOffer());
+        application.setStudent(student);
+        application.setStatus(ApplicationStatus.APPLIED);
+        application.setHomeAddress(TestData.prepareAddress("DE"));
+        application.setAddressDuringTerms(TestData.prepareAddress("DE"));
+
+        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(croatiaToken, createApplicationsRequest);
+        assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
+
+        final FetchOffersRequest requestHr = new FetchOffersRequest(FetchType.SHARED);
+        final FetchOffersResponse fetchResponseHr = exchange.fetchOffers(croatiaToken, requestHr);
+        final Offer readOfferHr = findOfferFromResponse(refNo, fetchResponseHr);
+
+        assertThat("Foreign offer was loaded", readOfferHr, is(not(nullValue())));
+        assertThat("Foreign offer has correct state", readOfferHr.getStatus(), is(OfferState.APPLICATIONS));
+
+        final FetchOffersRequest requestAt = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersResponse fetchResponseAt = exchange.fetchOffers(austriaToken, requestAt);
+        final Offer readOfferAt = findOfferFromResponse(refNo, fetchResponseAt);
+
+        assertThat("Domestic offer was loaded", readOfferAt, is(not(nullValue())));
+        assertThat("Domestic offer has correct state", readOfferAt.getStatus(), is(OfferState.APPLICATIONS)); // TODO: should be shared SHARED
+    }
+
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {
         // As the IWS is replacing the new Reference Number with the correct
         // year, the only valid information to go on is the running number.

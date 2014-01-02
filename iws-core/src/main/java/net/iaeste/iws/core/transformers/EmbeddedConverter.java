@@ -210,10 +210,10 @@ public final class EmbeddedConverter {
         result.setIsLodgingByIaeste(embedded.isLodgingByIaeste());
         result.setLanguage1(embedded.getLanguage1());
         result.setLanguage1Level(embedded.getLanguage1Level());
-        result.setLanguage1(embedded.getLanguage2());
-        result.setLanguage1Level(embedded.getLanguage2Level());
-        result.setLanguage1(embedded.getLanguage3());
-        result.setLanguage1Level(embedded.getLanguage3Level());
+        result.setLanguage2(embedded.getLanguage2());
+        result.setLanguage2Level(embedded.getLanguage2Level());
+        result.setLanguage3(embedded.getLanguage3());
+        result.setLanguage3Level(embedded.getLanguage3Level());
         result.setAvailable(CommonTransformer.transform(embedded.getInternshipStart(), embedded.getInternshipEnd()));
         result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embedded.getFieldOfStudies()));
         result.setSpecializations(CollectionTransformer.explodeStringList(embedded.getSpecializations()));

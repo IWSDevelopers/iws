@@ -296,8 +296,25 @@ public final class StudentService extends CommonService<StudentDao> {
         return new StudentApplicationResponse(transform(found));
     }
 
-    private void processApplicationStatusByOfferOwner(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity existingEntity) {
+    private void processApplicationStatusByOfferOwner(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity applicationEntity) {
+        final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
 
+        final StudentApplication studentApplication = transform(applicationEntity);
+
+        verifyOfferAcceptNewApplicationStatus(sharedOfferGroup.getStatus(), request.getStatus());
+        verifyApplicationStatusTransition(studentApplication.getStatus(), request.getStatus());
+
+        switch (request.getStatus()) {
+            case REJECTED_BY_EMPLOYER:
+            case REJECTED_BY_RECEIVING_COUNTRY:
+                rejectApplication(authentication, request, applicationEntity);
+                break;
+            case FORWARDED_TO_EMPLOYER:
+                forwardToEmployer(authentication, studentApplication, applicationEntity);
+                break;
+            default:
+                throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
+        }
     }
 
     private void processApplicationStatusByApplicationOwner(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity applicationEntity) {
@@ -312,13 +329,6 @@ public final class StudentService extends CommonService<StudentDao> {
         switch (request.getStatus()) {
             case NOMINATED:
                 nominateApplication(authentication, studentApplication, applicationEntity);
-                break;
-            case REJECTED_BY_EMPLOYER:
-            case REJECTED_BY_RECEIVING_COUNTRY:
-                rejectApplication(authentication, request, applicationEntity);
-                break;
-            case FORWARDED_TO_EMPLOYER:
-                forwardToEmployer(authentication, studentApplication, applicationEntity);
                 break;
             default:
                 throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");

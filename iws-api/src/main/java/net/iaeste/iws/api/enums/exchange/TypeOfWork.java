@@ -25,9 +25,8 @@ package net.iaeste.iws.api.enums.exchange;
 public enum TypeOfWork {
 
     R("Research and Development"),
-    P("Professional"),
-    W("Working Environment"),
-    N("Non Specific");
+    O("Office Work"),
+    F("Field Work");
 
     // =========================================================================
     // Private Constructor & functionality

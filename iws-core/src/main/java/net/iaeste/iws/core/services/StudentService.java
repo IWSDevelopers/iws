@@ -122,13 +122,13 @@ public final class StudentService extends CommonService<StudentDao> {
         final String externalId = application.getApplicationId();
         ApplicationEntity applicationEntity = dao.findApplicationByExternalId(externalId);
 
-        if ((applicationEntity == null) || (applicationEntity.getOfferGroup().getGroup().getId() == nationalGroup.getId())) {
+        if ((applicationEntity == null) || (applicationEntity.getOfferGroup().getGroup().getId().equals(nationalGroup.getId()))) {
             //application owner
             return processStudentApplicationByApplicationOwner(authentication, application, applicationEntity);
         } else {
             final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
             final OfferEntity offer = sharedOfferGroup.getOffer();
-            if (offer.getEmployer().getGroup().getId() == nationalGroup.getId()) {
+            if (offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {
                 //offer owner
                 return processStudentApplicationByOfferOwner(authentication, application, applicationEntity);
             }
@@ -146,7 +146,7 @@ public final class StudentService extends CommonService<StudentDao> {
             sharedOfferGroup = applicationEntity.getOfferGroup();
         }
 
-        if ((sharedOfferGroup == null) || (sharedOfferGroup.getGroup().getId() != nationalGroup.getId())) {
+        if ((sharedOfferGroup == null) || (!sharedOfferGroup.getGroup().getId().equals(nationalGroup.getId()))) {
             final String offerId = application.getOffer() != null ? application.getOffer().getOfferId() : "null";
             throw new VerificationException("The offer with id '" + offerId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
@@ -197,7 +197,7 @@ public final class StudentService extends CommonService<StudentDao> {
         final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
         final OfferEntity offer = sharedOfferGroup.getOffer();
 
-        if (offer.getEmployer().getGroup().getId() != nationalGroup.getId()) {
+        if (!offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {
             throw new VerificationException("The group with '" + authentication.getGroup().getGroupName() + "' does not own the offer with id '" + offer.getExternalId() + "'.");
         }
 
@@ -283,10 +283,10 @@ public final class StudentService extends CommonService<StudentDao> {
         final GroupEntity nationalGroup = accessDao.findNationalGroup(authentication.getUser());
         final OfferEntity offer = found.getOfferGroup().getOffer();
 
-        if (found.getOfferGroup().getGroup().getId() == nationalGroup.getId()) {
+        if (found.getOfferGroup().getGroup().getId().equals(nationalGroup.getId())) {
             //application owner
              processApplicationStatusByApplicationOwner(authentication, request, found);
-        } else if (offer.getEmployer().getGroup().getId() == nationalGroup.getId()) {
+        } else if (offer.getEmployer().getGroup().getId().equals(nationalGroup.getId())) {
             //offer owner
             processApplicationStatusByOfferOwner(authentication, request, found);
         } else {
@@ -296,8 +296,25 @@ public final class StudentService extends CommonService<StudentDao> {
         return new StudentApplicationResponse(transform(found));
     }
 
-    private void processApplicationStatusByOfferOwner(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity existingEntity) {
+    private void processApplicationStatusByOfferOwner(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity applicationEntity) {
+        final OfferGroupEntity sharedOfferGroup = applicationEntity.getOfferGroup();
 
+        final StudentApplication studentApplication = transform(applicationEntity);
+
+        verifyOfferAcceptNewApplicationStatus(sharedOfferGroup.getStatus(), request.getStatus());
+        verifyApplicationStatusTransition(studentApplication.getStatus(), request.getStatus());
+
+        switch (request.getStatus()) {
+            case REJECTED_BY_EMPLOYER:
+            case REJECTED_BY_RECEIVING_COUNTRY:
+                rejectApplication(authentication, request, applicationEntity);
+                break;
+            case FORWARDED_TO_EMPLOYER:
+                forwardToEmployer(authentication, studentApplication, applicationEntity);
+                break;
+            default:
+                throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
+        }
     }
 
     private void processApplicationStatusByApplicationOwner(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity applicationEntity) {
@@ -312,13 +329,6 @@ public final class StudentService extends CommonService<StudentDao> {
         switch (request.getStatus()) {
             case NOMINATED:
                 nominateApplication(authentication, studentApplication, applicationEntity);
-                break;
-            case REJECTED_BY_EMPLOYER:
-            case REJECTED_BY_RECEIVING_COUNTRY:
-                rejectApplication(authentication, request, applicationEntity);
-                break;
-            case FORWARDED_TO_EMPLOYER:
-                forwardToEmployer(authentication, studentApplication, applicationEntity);
                 break;
             default:
                 throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");

@@ -258,11 +258,11 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         if (oldOffer.getWorktypeR()) {
             result = TypeOfWork.R;
         } else if (oldOffer.getWorktypeP()) {
-            result = TypeOfWork.P;
+            result = TypeOfWork.O;
         } else if (oldOffer.getWorktypeW()) {
-            result = TypeOfWork.W;
+            result = TypeOfWork.F;
         } else {
-            result = TypeOfWork.N;
+            result = TypeOfWork.O;
         }
 
         return result;

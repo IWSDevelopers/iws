@@ -41,7 +41,7 @@ import java.util.Date;
  */
 @NamedQueries(
         @NamedQuery(name = "usergroup.findAll",
-        query = "select ug from IW3User2GroupEntity ug")
+                query = "select ug from IW3User2GroupEntity ug")
 )
 @Entity
 @Table(name = "user2group")

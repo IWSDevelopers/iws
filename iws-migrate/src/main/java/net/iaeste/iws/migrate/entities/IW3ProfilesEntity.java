@@ -34,9 +34,11 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(@NamedQuery(name = "profiles.findAll",
-        query = "select c from IW3ProfilesEntity c " +
-                "order by c.profileid asc"))
+@NamedQueries(
+        @NamedQuery(name = "profiles.findAll",
+                query = "select c from IW3ProfilesEntity c " +
+                        "order by c.profileid asc")
+)
 @Entity
 @Table(name = "profiles")
 public class IW3ProfilesEntity implements Serializable {

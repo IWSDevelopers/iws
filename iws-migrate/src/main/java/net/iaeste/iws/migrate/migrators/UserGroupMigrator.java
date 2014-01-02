@@ -26,7 +26,6 @@ import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,44 +62,30 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
     public MigrationResult migrate(final List<IW3User2GroupEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;
-        int updated = 0;
 
         for (final IW3User2GroupEntity oldUserGroupEntity : oldEntities) {
-            final UserGroupEntity userGroup = accessDao.findIw3UserGroup(oldUserGroupEntity.getUser().getUserid(), oldUserGroupEntity.getGroup().getGroupid());
             UserGroupEntity toPersist = null;
 
-            if (userGroup == null) {
-                final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
-                final UserGroupEntity entity = prepareCreateEntity(oldUserGroupEntity, user);
+            final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
+            final UserGroupEntity entity = convertOldEntity(oldUserGroupEntity, user);
 
-                if (user != null) {
-                    toPersist = entity;
-                    persisted++;
-                } else {
-                    skipped++;
-                    log.info("Skipping UserGroup Entity where the user no longer exists (userid={}).", oldUserGroupEntity.getUser().getUserid());
-                }
+            if (user != null) {
+                toPersist = entity;
+                persisted++;
             } else {
-                log.info("Duplicate UserGroup Entity found, ");
-                final Date modified = oldUserGroupEntity.getModified();
-
-                if ((modified != null) && modified.after(userGroup.getModified())) {
-                    log.info("changes are more recent than existing record - Merging.");
-                    toPersist = prepareUpdateEntity(oldUserGroupEntity, userGroup);
-                    updated++;
-                } else {
-                    skipped++;
-                    log.info("Changes are older than the existing record - Skipping.");
-                }
+                log.info("Skipping UserGroup Entity where the user no longer exists (userid={}, groupid={}).",
+                        oldUserGroupEntity.getUser().getUserid(),
+                        oldUserGroupEntity.getGroup().getGroupid());
+                skipped++;
             }
 
             doPersistEntity(toPersist);
         }
 
-        return new MigrationResult(persisted, skipped, updated);
+        return new MigrationResult(persisted, skipped);
     }
 
-    private UserGroupEntity prepareCreateEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserEntity user) {
+    private UserGroupEntity convertOldEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserEntity user) {
         final GroupEntity group = accessDao.findGroupByIW3Id(oldUserGroupEntity.getGroup().getGroupid());
         final RoleEntity role = accessDao.findRoleById(0L + oldUserGroupEntity.getRole().getRoleid());
 
@@ -112,15 +97,6 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
         entity.setCreated(AbstractMigrator.convert(oldUserGroupEntity.getCreated(), oldUserGroupEntity.getModified()));
 
         return entity;
-    }
-
-    private UserGroupEntity prepareUpdateEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserGroupEntity userGroup) {
-        userGroup.setTitle(oldUserGroupEntity.getUsertitle());
-        userGroup.setOnPublicList(oldUserGroupEntity.getOnmailinglist());
-        userGroup.setOnPrivateList(oldUserGroupEntity.getOnmailinglist());
-        userGroup.setModified(AbstractMigrator.convert(oldUserGroupEntity.getModified()));
-
-        return userGroup;
     }
 
     private void doPersistEntity(final UserGroupEntity toPersist) {

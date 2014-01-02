@@ -39,6 +39,10 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+//@NamedQueries(
+//        @NamedQuery(name = "offergroup.findAll",
+//                query = "select og from OfferGroupEntity")
+//)
 @Entity
 @Table(name = "offer2group")
 public class IW3Offer2GroupEntity implements Serializable {

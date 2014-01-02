@@ -18,12 +18,14 @@ import net.iaeste.iws.migrate.daos.IW3Dao;
 import net.iaeste.iws.migrate.daos.IW3JpaDao;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
+import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
 import net.iaeste.iws.migrate.migrators.CountryMigrator;
 import net.iaeste.iws.migrate.migrators.GroupMigrator;
 import net.iaeste.iws.migrate.migrators.MigrationResult;
+import net.iaeste.iws.migrate.migrators.OfferGroupMigrator;
 import net.iaeste.iws.migrate.migrators.OfferMigrator;
 import net.iaeste.iws.migrate.migrators.UserGroupMigrator;
 import net.iaeste.iws.migrate.migrators.UserMigrator;
@@ -145,10 +147,9 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
         final MigrationResult result = migrator.migrate(userGroups);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
-        final int updated = result.getUpdated();
 
         // And log the result
-        log.info("Completed Migrating UserGroups; Persisted {}, Updated {} & Skipped {}.", persisted, updated, skipped);
+        log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", persisted, skipped);
     }
 
     @Transactional("transactionManagerIWS")
@@ -166,6 +167,24 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
         final int skipped = result.getSkipped();
 
         // And log the result
-        log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", persisted, skipped);
+        log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", persisted, skipped);
+    }
+
+    @Transactional("transactionManagerIWS")
+    public void migrateOfferGroups() {
+        // Our Migrator
+        final OfferGroupMigrator migrator = new OfferGroupMigrator(accessDao, exchangeDao);
+
+        // Fetch the List of Offer Entities from IW3 to migrate
+        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups();
+        log.info("Found {} OfferGroups to migrate.", offerGroups.size());
+
+        // Now, run the migration
+        final MigrationResult result = migrator.migrate(offerGroups);
+        final int persisted = result.getPersisted();
+        final int skipped = result.getSkipped();
+
+        // And log the result
+        log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", persisted, skipped);
     }
 }

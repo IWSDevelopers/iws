@@ -17,6 +17,7 @@ package net.iaeste.iws.migrate.daos;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.migrate.entities.IW3FacultiesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
+import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
@@ -103,6 +104,15 @@ public class IW3JpaDao implements IW3Dao {
         query.setFirstResult(page * size);
         query.setMaxResults(size);
 
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<IW3Offer2GroupEntity> findAllOfferGroups() {
+        final Query query = entityManager.createNamedQuery("offergroup.findAll");
         return query.getResultList();
     }
 }

@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(OfferMigrator.class);
+    private static final Logger log = LoggerFactory.getLogger(OfferGroupMigrator.class);
 
     private final ExchangeDao exchangeDao;
 
@@ -95,43 +95,55 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
      *   from offer2group
      *   group by status;
      * </pre>
+     * From the IW3 method "getOfferStatus" (php/exhange/exchange.php), we have
+     * the following:
+     * <pre>
+     * function getOfferStatus ($c)
+     * {
+     *     switch ($c) {
+     *         case 'a' : return "Accepted";
+     *         case 'c' : return "Cancelled";
+     *         case 'e' : return "Exchanged";
+     *         case 'n' : return "New";
+     *         case 'o' : return "Nomination Rejected";
+     *         case 'p' : return "Nomination";
+     *         case 'q' : return "Not Accepted";
+     *         case 'r' : return "Declined";
+     *         case 's' : return "SN Complete";
+     *         case 't' : return "Taken";
+     *         case 'u' : return "Nomination Accepted";
+     *         case 'v' : return "Viewed";
+     *         case 'w' : return "Waiting SN";
+     *         case 'x' : return "AC Exchanged";
+     *         default  : return "Unknown";
+     *     }
+     * }
+     * </pre>
      *
      * @param status Old IW3 Status
      * @return IWS Status
      */
-    private OfferState convertOfferStatus(final String status) {
+    private static OfferState convertOfferStatus(final String status) {
         final OfferState state;
 
         switch (status) {
-            case "w": // ?!?!?
-                state = OfferState.NEW;
-                break;
-            case "a": // Answered ?
-                state = OfferState.NEW;
-                break;
-            case "e": // Request for Exchange ?
-            case "x": // Exchanged ?
+            case "e": // Exchanged
                 state = OfferState.EXCHANGED;
                 break;
-            case "v": // Viewed ?
+            case "n": // New
                 state = OfferState.NEW;
                 break;
-            case "r": // Read ?
-                state = OfferState.NEW;
-                break;
-            case "t": // ?!?!?
-                state = OfferState.NEW;
-                break;
-            case "c": // Canceled
-                state = OfferState.NEW;
-                break;
-            case "p": // ?!?!?
-                state = OfferState.NEW;
-                break;
-            case "q": // ?!?!?
-                state = OfferState.NEW;
-                break;
-            case "n":
+            // Help... :-(
+            case "a": // Accepted
+            case "c": // Cancelled
+            case "o": // Nomination Rejected
+            case "p": // Nomination
+            case "q": // Not Accepted
+            case "r": // Declined
+            case "t": // Taken
+            case "v": // Viewed
+            case "w": // Waiting SN
+            case "x": // AC Exchanged
             default:
                 state = OfferState.NEW;
         }

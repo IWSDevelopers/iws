@@ -36,7 +36,7 @@ import java.util.List;
  */
 public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
 
-    private static final Logger log = LoggerFactory.getLogger(CountryMigrator.class);
+    private static final Logger log = LoggerFactory.getLogger(GroupMigrator.class);
 
     /**
      * Default Constructor for the Groups Migration.

@@ -32,9 +32,11 @@ import java.sql.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(@NamedQuery(name = "offers.findAll",
-        query = "select o from IW3OffersEntity o " +
-                "order by o.offerid asc"))
+@NamedQueries(
+        @NamedQuery(name = "offers.findAll",
+                query = "select o from IW3OffersEntity o " +
+                        "order by o.offerid asc")
+)
 @Entity
 @Table(name = "offers")
 public class IW3OffersEntity implements Serializable {

@@ -34,9 +34,11 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(@NamedQuery(name = "groups.findAll",
-        query = "select g from IW3GroupsEntity g " +
-                "order by g.groupid asc"))
+@NamedQueries(
+        @NamedQuery(name = "groups.findAll",
+                query = "select g from IW3GroupsEntity g " +
+                        "order by g.groupid asc")
+)
 @Entity
 @Table(name = "groups")
 public class IW3GroupsEntity implements Serializable {

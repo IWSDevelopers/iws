@@ -68,19 +68,17 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
                     accessDao.persist(entity);
                     persisted++;
                 } catch (IllegalArgumentException | VerificationException e) {
-                    log.error("Cannot process OfferGroup with refno:{} and Group:{} => {}", entity.getOffer().getRefNo(), entity.getGroup().getId(), e.getMessage());
+                    log.error("Cannot process OfferGroup with refno:{} and Group:{} => {}",
+                            entity.getOffer().getRefNo(),
+                            entity.getGroup().getId(),
+                            e.getMessage());
                     skipped++;
-                } catch (Exception e) {
-                    log.error("Fuck! " + e.getMessage(), e);
                 }
             } else {
-                if ((offer == null) && (group == null)) {
-                    log.info("Offer with Id = {} and Group with Id = {}, could not be found.", oldEntity.getId().getOfferId(), oldEntity.getId().getGroupId());
-                } else if (offer == null) {
-                    log.info("Offer with Id = {} could not be found.", oldEntity.getId().getOfferId());
-                } else {
-                    log.info("Group with Id = {}, could not be found.", oldEntity.getId().getGroupId());
-                }
+                log.info("Failed to migrate OfferGroup for Offer = {} and Group = {}.",
+                        oldEntity.getId().getOfferId(),
+                        oldEntity.getId().getGroupId());
+                skipped++;
             }
         }
 

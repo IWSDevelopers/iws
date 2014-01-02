@@ -20,6 +20,8 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,10 +41,10 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-//@NamedQueries(
-//        @NamedQuery(name = "offergroup.findAll",
-//                query = "select og from OfferGroupEntity")
-//)
+@NamedQueries(
+        @NamedQuery(name = "offergroup.findAll",
+                query = "select og from IW3Offer2GroupEntity og")
+)
 @Entity
 @Table(name = "offer2group")
 public class IW3Offer2GroupEntity implements Serializable {
@@ -103,14 +105,6 @@ public class IW3Offer2GroupEntity implements Serializable {
 
     public IW3Offer2GroupId getId() {
         return id;
-    }
-
-    public IW3OffersEntity getOffer() {
-        return id.getOffer();
-    }
-
-    public IW3GroupsEntity getGroup() {
-        return id.getGroup();
     }
 
     public void setStatus(final String status) {

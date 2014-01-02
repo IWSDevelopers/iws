@@ -16,9 +16,8 @@ package net.iaeste.iws.migrate.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 /**
@@ -32,39 +31,37 @@ public class IW3Offer2GroupId implements Serializable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    @ManyToOne(targetEntity = IW3OffersEntity.class)
-    @JoinColumn(name = "offerid", referencedColumnName = "offerid", nullable = false, updatable = false)
-    private IW3OffersEntity offer = null;
+    @Column(name = "offerid", nullable = false, updatable = false)
+    private Integer offerId = null;
 
-    @ManyToOne(targetEntity = IW3GroupsEntity.class)
-    @JoinColumn(name = "groupid", referencedColumnName = "groupid", nullable = false, updatable = false)
-    private IW3GroupsEntity group = null;
+    @Column(name = "groupid", nullable = false, updatable = false)
+    private Integer groupId = null;
 
     /**
      * Default Empty JPA Constructor.
      */
     protected IW3Offer2GroupId() {
-        offer = null;
-        group = null;
+        offerId = null;
+        groupId = null;
     }
 
     // =========================================================================
     // IW3 Entity Setters & Getters
     // =========================================================================
 
-    public void setOffer(final IW3OffersEntity offer) {
-        this.offer = offer;
+    public void setOfferId(final Integer offerId) {
+        this.offerId = offerId;
     }
 
-    public IW3OffersEntity getOffer() {
-        return offer;
+    public Integer getOfferId() {
+        return offerId;
     }
 
-    public void setGroup(final IW3GroupsEntity group) {
-        this.group = group;
+    public void setGroupId(final Integer groupId) {
+        this.groupId = groupId;
     }
 
-    public IW3GroupsEntity getGroup() {
-        return group;
+    public Integer getGroupId() {
+        return groupId;
     }
 }

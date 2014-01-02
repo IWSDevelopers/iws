@@ -21,6 +21,8 @@ import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,21 +54,33 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
         int skipped = 0;
 
         for (final IW3Offer2GroupEntity oldEntity : oldEntities) {
-            final OfferGroupEntity entity = convert(oldEntity);
-            entity.setOffer(exchangeDao.findOfferByOldOfferId(oldEntity.getOffer().getOfferid()));
-            entity.setGroup(accessDao.findGroupByIW3Id(oldEntity.getGroup().getGroupid()));
+            final OfferEntity offer = exchangeDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
+            final GroupEntity group = accessDao.findGroupByIW3Id(oldEntity.getId().getGroupId());
 
-            try {
-                // Need to add support for duplicate entries! However, before
-                // doing anything in this direction, I need to clarify how
-                // Henrik is going to handle the request for changes...
-                final OfferGroup offerGroup = ExchangeTransformer.transform(entity);
-                offerGroup.verify();
-                accessDao.persist(entity);
-                persisted++;
-            } catch (IllegalArgumentException | VerificationException e) {
-                log.error("Cannot process OfferGroup with refno:{} and Group:{} => {}", entity.getOffer().getRefNo(), entity.getGroup().getId(), e.getMessage());
-                skipped++;
+            if (offer != null && group != null) {
+                final OfferGroupEntity entity = convert(oldEntity);
+                entity.setOffer(offer);
+                entity.setGroup(group);
+
+                try {
+                    final OfferGroup offerGroup = ExchangeTransformer.transform(entity);
+                    offerGroup.verify();
+                    accessDao.persist(entity);
+                    persisted++;
+                } catch (IllegalArgumentException | VerificationException e) {
+                    log.error("Cannot process OfferGroup with refno:{} and Group:{} => {}", entity.getOffer().getRefNo(), entity.getGroup().getId(), e.getMessage());
+                    skipped++;
+                } catch (Exception e) {
+                    log.error("Fuck! " + e.getMessage(), e);
+                }
+            } else {
+                if ((offer == null) && (group == null)) {
+                    log.info("Offer with Id = {} and Group with Id = {}, could not be found.", oldEntity.getId().getOfferId(), oldEntity.getId().getGroupId());
+                } else if (offer == null) {
+                    log.info("Offer with Id = {} could not be found.", oldEntity.getId().getOfferId());
+                } else {
+                    log.info("Group with Id = {}, could not be found.", oldEntity.getId().getGroupId());
+                }
             }
         }
 

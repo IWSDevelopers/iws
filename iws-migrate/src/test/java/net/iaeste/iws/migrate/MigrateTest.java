@@ -193,14 +193,14 @@ public class MigrateTest {
     @Transactional("transactionManagerIWS")
     public void test6ReadingWritingOfferGroups() {
         final OfferGroupMigrator migrator = new OfferGroupMigrator(accessDao, exchangeDao);
-        final List<IW3Offer2GroupEntity> offers = iw3Dao.findAllOfferGroups();
-        log.info("Found {} Offers to migrate.", offers.size());
+        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups();
+        log.info("Found {} Offers to migrate.", offerGroups.size());
 
-        final MigrationResult result = migrator.migrate(offers);
+        final MigrationResult result = migrator.migrate(offerGroups);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
 
-        assertThat(persisted + skipped, is(offers.size()));
+        assertThat(persisted + skipped, is(offerGroups.size()));
         log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", persisted, skipped);
     }
 }

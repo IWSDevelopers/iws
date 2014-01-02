@@ -514,6 +514,14 @@ public final class StudentTest extends AbstractTest {
         assertThat("verify that there was no error during sharing the offer", publishResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat("verify that the offer was successfully shared with Croatia", publishResponse.isOk(), is(true));
 
+        final FetchOffersRequest requestHr1 = new FetchOffersRequest(FetchType.SHARED);
+        final FetchOffersResponse fetchResponseHr1 = exchange.fetchOffers(croatiaToken, requestHr1);
+        final Offer readOfferHr1 = findOfferFromResponse(refNo, fetchResponseHr1);
+
+        assertThat("Foreign offer was loaded", readOfferHr1, is(not(nullValue())));
+        assertThat("Foreign offer has correct state", readOfferHr1.getStatus(), is(OfferState.SHARED));
+
+
         final CreateUserRequest createUserRequest = new CreateUserRequest("student_app007@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest.setStudentAccount(true);
 
@@ -530,7 +538,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(processResponse.getOffer());
+        application.setOffer(readOfferHr1);
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));

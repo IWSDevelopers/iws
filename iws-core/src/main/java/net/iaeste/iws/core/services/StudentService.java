@@ -261,7 +261,7 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     private List<File> findAndTransformAttachments(final ApplicationView view) {
-        final List<AttachmentEntity> attachments = dao.findAttachments("", view.getId());
+        final List<AttachmentEntity> attachments = dao.findAttachments("student_applications", view.getId());
         final List<File> files = new ArrayList<>(attachments.size());
 
         for (final AttachmentEntity entity : attachments) {

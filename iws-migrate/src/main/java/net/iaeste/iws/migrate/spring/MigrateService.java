@@ -31,8 +31,10 @@ import net.iaeste.iws.migrate.migrators.UserGroupMigrator;
 import net.iaeste.iws.migrate.migrators.UserMigrator;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
+import net.iaeste.iws.persistence.jpa.MailingListJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -63,6 +65,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @PersistenceContext(unitName = "MailPersistenceUnit")
     private EntityManager mailEntityManager;
 
+    private MailingListDao mailingListDao = null;
     private ExchangeDao exchangeDao = null;
     private AccessDao accessDao = null;
     private IW3Dao iw3Dao = null;
@@ -72,7 +75,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
      */
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent event) {
-
+        mailingListDao = new MailingListJpaDao(mailEntityManager);
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
         iw3Dao = new IW3JpaDao(iw3EntityManager);
@@ -106,7 +109,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateGroups() {
         // Our Migrator
-        final GroupMigrator migrator = new GroupMigrator(accessDao);
+        final GroupMigrator migrator = new GroupMigrator(accessDao, mailingListDao);
 
         // Fetch the List of Group Entities from IW3 to migrate
         final List<IW3GroupsEntity> groups = iw3Dao.findAllGroups();
@@ -124,7 +127,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateUsers() {
         // Our Migrator
-        final UserMigrator migrator = new UserMigrator(accessDao);
+        final UserMigrator migrator = new UserMigrator(accessDao, mailingListDao);
 
         // Fetch the List of Profile (User) Entities from IW3 to migrate
         final List<IW3ProfilesEntity> profiles = iw3Dao.findAllProfiles();
@@ -141,7 +144,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateUserGroups() {
         // Our Migrator
-        final UserGroupMigrator migrator = new UserGroupMigrator(accessDao);
+        final UserGroupMigrator migrator = new UserGroupMigrator(accessDao, mailingListDao);
 
         // Fetch the List of User2Group Entities from IW3 to migrate
         final List<IW3User2GroupEntity> userGroups = iw3Dao.findAllUserGroups();

@@ -73,7 +73,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     private StudentEntity student = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 25, nullable = false)
+    @Column(name = "status", length = 30, nullable = false)
     private ApplicationStatus status = null;
 
 //    @ManyToOne(targetEntity = UserEntity.class)

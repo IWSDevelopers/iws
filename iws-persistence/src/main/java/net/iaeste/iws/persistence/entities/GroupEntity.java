@@ -51,6 +51,9 @@ import java.util.Map;
 @NamedQueries({
         @NamedQuery(name = "group.findAll",
                 query = "select g from GroupEntity g"),
+        @NamedQuery(name = "group.findAllGroupType",
+                query = "select g from GroupEntity g " +
+                        "where g.groupType.grouptype = :type"),
         @NamedQuery(name = "group.findById",
                 query = "select g from GroupEntity g " +
                         "where g.id = :id"),

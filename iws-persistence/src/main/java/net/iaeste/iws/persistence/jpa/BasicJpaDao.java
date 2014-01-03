@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Field;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
@@ -229,6 +230,17 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("efid", externalId);
 
         return findUniqueResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GroupEntity> findAllGroups(final GroupType type) {
+        final Query query = entityManager.createNamedQuery("group.findAllGroupType");
+        query.setParameter("type", type);
+
+        return query.getResultList();
     }
 
     // =========================================================================

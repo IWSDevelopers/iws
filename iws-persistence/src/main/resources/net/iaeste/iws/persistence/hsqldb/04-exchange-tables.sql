@@ -234,7 +234,7 @@ create table student_applications (
     external_id               varchar(36),
     offer_group_id            integer,
     student_id                integer,
-    status                    varchar(25),
+    status                    varchar(30),
     home_address_id           integer,
     email                     varchar(100),
     phone_number              varchar(25),

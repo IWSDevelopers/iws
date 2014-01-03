@@ -412,8 +412,9 @@ public final class GroupService {
             // method. The role is not something we should allow being handled
             // via a general purpose method, since it critical information.
             existingEntity.setRole(role);
-            existingEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
-            existingEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
+            // Following two lines are set by the merge method, so this us duplication.
+            //existingEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
+            //existingEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
             dao.persist(authentication, existingEntity, given);
 
             notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);

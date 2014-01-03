@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
@@ -141,4 +142,6 @@ public interface BasicDao {
      * @throws net.iaeste.iws.persistence.exceptions.PersistenceException if a single file could not be found
      */
     FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
+
+    List<GroupEntity> findAllGroups(GroupType type);
 }

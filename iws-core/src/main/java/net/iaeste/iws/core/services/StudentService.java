@@ -273,7 +273,6 @@ public final class StudentService extends CommonService<StudentDao> {
     }
 
     public StudentApplicationResponse processApplicationStatus(final Authentication authentication, final StudentApplicationRequest request) {
-        final StudentApplicationResponse response;
         final ApplicationEntity found = dao.findApplicationByExternalId(request.getApplicationId());
 
         if (found == null) {

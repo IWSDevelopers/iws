@@ -112,7 +112,7 @@ create table offers (
     nomination_deadline       date,
     number_of_hard_copies     integer,
     additional_information    varchar(3000),
-    status                    varchar(15),
+    status                    varchar(25),
     modified                  timestamp default now(),
     created                   timestamp default now(),
 
@@ -159,7 +159,7 @@ create table offer_to_group (
     comment            varchar(1000)  default '',
     modified_by        integer,
     created_by         integer,
-    status             varchar(15),
+    status             varchar(25),
     modified           timestamp default now(),
     created            timestamp default now(),
 
@@ -258,6 +258,9 @@ create table student_applications (
     passport_number           varchar(100),
     passport_place_of_issue   varchar(100),
     passport_valid_until      varchar(100),
+    reject_by_employer_reason varchar(100),
+    reject_description        varchar(1000),
+    reject_internal_comment   varchar(1000),
     nominated_at              date,
     modified                  timestamp default now(),
     created                   timestamp default now(),

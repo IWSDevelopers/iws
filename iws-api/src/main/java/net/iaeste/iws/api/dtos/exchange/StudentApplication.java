@@ -109,6 +109,10 @@ public final class StudentApplication extends AbstractVerification {
     private String passportPlaceOfIssue = null;
     private String passportValidUntil = null;
 
+    private String rejectByEmployerReason = null;
+    private String rejectDescription = null;
+    private String rejectInternalComment = null;
+
     private StudentAcceptance acceptance = null;
     private StudentAcceptanceConfirmation travelInformation = null;
 
@@ -167,6 +171,9 @@ public final class StudentApplication extends AbstractVerification {
             passportNumber = studentApplication.passportNumber;
             passportPlaceOfIssue = studentApplication.passportPlaceOfIssue;
             passportValidUntil = studentApplication.passportValidUntil;
+            rejectByEmployerReason = studentApplication.rejectByEmployerReason;
+            rejectDescription = studentApplication.rejectDescription;
+            rejectInternalComment = studentApplication.rejectInternalComment;
             acceptance = new StudentAcceptance(studentApplication.acceptance);
             travelInformation = new StudentAcceptanceConfirmation(studentApplication.travelInformation);
             nominatedAt = studentApplication.nominatedAt;
@@ -405,6 +412,30 @@ public final class StudentApplication extends AbstractVerification {
         return passportValidUntil;
     }
 
+    public void setRejectByEmployerReason(final String rejectByEmployerReason) {
+        this.rejectByEmployerReason = rejectByEmployerReason;
+    }
+
+    public String getRejectByEmployerReason() {
+        return rejectByEmployerReason;
+    }
+
+    public void setRejectDescription(final String rejectDescription) {
+        this.rejectDescription = rejectDescription;
+    }
+
+    public String getRejectDescription() {
+        return rejectDescription;
+    }
+
+    public void setRejectInternalComment(final String rejectInternalComment) {
+        this.rejectInternalComment = rejectInternalComment;
+    }
+
+    public String getRejectInternalComment() {
+        return rejectInternalComment;
+    }
+
     public void setAcceptance(final StudentAcceptance acceptance) {
         this.acceptance = new StudentAcceptance(acceptance);
     }
@@ -599,6 +630,18 @@ public final class StudentApplication extends AbstractVerification {
         }
 
         if (passportValidUntil != null ? !passportValidUntil.equals(studentApplication.passportValidUntil) : studentApplication.passportValidUntil != null) {
+            return false;
+        }
+
+        if (rejectByEmployerReason != null ? !rejectByEmployerReason.equals(studentApplication.rejectByEmployerReason) : studentApplication.rejectByEmployerReason != null) {
+            return false;
+        }
+
+        if (rejectDescription != null ? !rejectDescription.equals(studentApplication.rejectDescription) : studentApplication.rejectDescription != null) {
+            return false;
+        }
+
+        if (rejectInternalComment!= null ? !rejectInternalComment.equals(studentApplication.rejectInternalComment) : studentApplication.rejectInternalComment != null) {
             return false;
         }
 

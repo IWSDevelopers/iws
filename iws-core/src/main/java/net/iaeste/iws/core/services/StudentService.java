@@ -305,8 +305,7 @@ public final class StudentService extends CommonService<StudentDao> {
         verifyApplicationStatusTransition(studentApplication.getStatus(), request.getStatus());
 
         switch (request.getStatus()) {
-            case REJECTED_BY_EMPLOYER:
-            case REJECTED_BY_RECEIVING_COUNTRY:
+            case REJECTED:
                 rejectApplication(authentication, request, applicationEntity);
                 break;
             case FORWARDED_TO_EMPLOYER:
@@ -365,6 +364,9 @@ public final class StudentService extends CommonService<StudentDao> {
         final StudentApplication application = transform(storedApplication);
 
         application.setStatus(request.getStatus());
+        application.setRejectByEmployerReason(request.getRejectByEmployerReason());
+        application.setRejectDescription(request.getRejectDescription());
+        application.setRejectInternalComment(request.getRejectInternalComment());
         ApplicationEntity updated = transform(application);
         //using OfferGroup from stored entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
@@ -393,7 +395,7 @@ public final class StudentService extends CommonService<StudentDao> {
         switch (offerState) {
             case COMPLETED:
                 switch (applicationStatus) {
-                    case REJECTED_BY_RECEIVING_COUNTRY:
+                    case REJECTED:
                     case CANCELED:
                         break;
                     default:
@@ -419,17 +421,15 @@ public final class StudentService extends CommonService<StudentDao> {
                 switch (newStatus) {
                     case ACCEPTED:
                     case CANCELED:
-                    case REJECTED_BY_EMPLOYER:
+                    case REJECTED:
                         break;
                     default:
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
                 }
                 break;
-            case REJECTED_BY_EMPLOYER:
-            case REJECTED_BY_RECEIVING_COUNTRY:
+            case REJECTED:
                 switch (newStatus) {
                     case NOMINATED:
-                    case APPLIED:
                         break;
                     default:
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
@@ -438,7 +438,6 @@ public final class StudentService extends CommonService<StudentDao> {
             case CANCELED:
                 switch (newStatus) {
                     case NOMINATED:
-                    case APPLIED:
                         break;
                     default:
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
@@ -448,8 +447,7 @@ public final class StudentService extends CommonService<StudentDao> {
                 switch (newStatus) {
                     case CANCELED:
                     case FORWARDED_TO_EMPLOYER:
-                    case REJECTED_BY_EMPLOYER:
-                    case REJECTED_BY_RECEIVING_COUNTRY:
+                    case REJECTED:
                         break;
                     default:
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);

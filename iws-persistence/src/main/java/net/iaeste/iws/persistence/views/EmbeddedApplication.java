@@ -112,6 +112,15 @@ public class EmbeddedApplication {
     @Column(name = "application_passport_valid_until", insertable = false, updatable = false)
     private String passportValidUntil = null;
 
+    @Column(name = "application_reject_by_employer_reason", insertable = false, updatable = false)
+    private String rejectByEmployerReason = null;
+
+    @Column(name = "application_reject_description", insertable = false, updatable = false)
+    private String rejectDescription = null;
+
+    @Column(name = "application_reject_internal_comment", insertable = false, updatable = false)
+    private String rejectInternalComment = null;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "application_nominated_at", insertable = false, updatable = false)
     private Date nominatedAt = null;
@@ -310,6 +319,30 @@ public class EmbeddedApplication {
 
     public String getPassportValidUntil() {
         return passportValidUntil;
+    }
+
+    public void setRejectByEmployerReason(final String rejectByEmployerReason) {
+        this.rejectByEmployerReason = rejectByEmployerReason;
+    }
+
+    public String getRejectByEmployerReason() {
+        return rejectByEmployerReason;
+    }
+
+    public void setRejectDescription(final String rejectDescription) {
+        this.rejectDescription = rejectDescription;
+    }
+
+    public String getRejectDescription() {
+        return rejectDescription;
+    }
+
+    public void setRejectInternalComment(final String rejectInternalComment) {
+        this.rejectInternalComment = rejectInternalComment;
+    }
+
+    public String getRejectInternalComment() {
+        return rejectInternalComment;
     }
 
     public void setNominatedAt(final Date nominatedAt) {

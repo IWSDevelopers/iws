@@ -164,6 +164,15 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     @Column(name = "passport_valid_until")
     private String passportValidUntil = null;
 
+    @Column(name = "reject_by_employer_reason", length = 100)
+    private String rejectByEmployerReason = null;
+
+    @Column(name = "reject_description", length = 1000)
+    private String rejectDescription = null;
+
+    @Column(name = "reject_internal_comment", length = 1000)
+    private String rejectInternalComment = null;
+
 //    @OneToOne(targetEntity = StudentAcceptanceEntity.class)
 //    @JoinColumn(name = "acceptance", nullable = true)
 //    private StudentAcceptanceEntity acceptance = null;
@@ -434,6 +443,30 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return passportValidUntil;
     }
 
+    public void setRejectByEmployerReason(final String rejectByEmployerReason) {
+        this.rejectByEmployerReason = rejectByEmployerReason;
+    }
+
+    public String getRejectByEmployerReason() {
+        return rejectByEmployerReason;
+    }
+
+    public void setRejectDescription(final String rejectDescription) {
+        this.rejectDescription = rejectDescription;
+    }
+
+    public String getRejectDescription() {
+        return rejectDescription;
+    }
+
+    public void setRejectInternalComment(final String rejectInternalComment) {
+        this.rejectInternalComment = rejectInternalComment;
+    }
+
+    public String getRejectInternalComment() {
+        return rejectInternalComment;
+    }
+
     public void setNominatedAt(final Date nominatedAt) {
         this.nominatedAt = nominatedAt;
     }
@@ -520,6 +553,9 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
             passportNumber = obj.passportNumber;
             passportPlaceOfIssue = obj.passportPlaceOfIssue;
             passportValidUntil = obj.passportValidUntil;
+            rejectByEmployerReason = obj.rejectByEmployerReason;
+            rejectDescription = obj.rejectDescription;
+            rejectInternalComment = obj.rejectInternalComment;
         }
     }
 }

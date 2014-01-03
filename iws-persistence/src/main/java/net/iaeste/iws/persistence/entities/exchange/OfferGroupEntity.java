@@ -121,7 +121,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
 
     @Monitored(name="Offer2Group status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 15)
+    @Column(name = "status", length = 25)
     private OfferState status = OfferState.SHARED;
 
     @ManyToOne(targetEntity = UserEntity.class)

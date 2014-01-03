@@ -43,7 +43,8 @@ import java.util.Date;
  */
 @NamedQueries(
         @NamedQuery(name = "offergroup.findAll",
-                query = "select og from IW3Offer2GroupEntity og")
+                query = "select og from IW3Offer2GroupEntity og " +
+                        "order by created asc")
 )
 @Entity
 @Table(name = "offer2group")

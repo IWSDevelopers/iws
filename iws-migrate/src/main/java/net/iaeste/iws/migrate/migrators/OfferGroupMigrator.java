@@ -42,7 +42,7 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
     private static final Logger log = LoggerFactory.getLogger(OfferGroupMigrator.class);
 
     private final ExchangeDao exchangeDao;
-    private Map<Integer, GroupEntity> nationalGroups;
+    private final Map<Integer, GroupEntity> nationalGroups;
 
     public OfferGroupMigrator(final AccessDao accessDao, final ExchangeDao exchangeDao) {
         super(accessDao);
@@ -67,10 +67,10 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
         int skipped = 0;
 
         for (final IW3Offer2GroupEntity oldEntity : oldEntities) {
-            final OfferEntity offer = exchangeDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
             final GroupEntity group = findCachedGroup(oldEntity.getId().getGroupId());
 
             if (group != null) {
+                final OfferEntity offer = exchangeDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
                 final OfferGroupEntity entity = convert(oldEntity);
                 entity.setOffer(offer);
                 entity.setGroup(group);

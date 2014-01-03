@@ -15,6 +15,7 @@
 package net.iaeste.iws.migrate.migrators;
 
 import net.iaeste.iws.api.dtos.exchange.Offer;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
@@ -41,7 +42,9 @@ import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -58,6 +61,39 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
     private static final Logger log = LoggerFactory.getLogger(OfferMigrator.class);
     private static final Character REFNO_START_SERIALNUMBER = 'A';
 
+    /**
+     * To try to speed up the migration, and not having to check all refno's,
+     * an extract from the database was made, which can be checked against,
+     * rather than making expensive DB lookups for all offers. Query is belonw:
+     * <pre>
+     *   select systemrefno
+     *   from offers
+     *   group by systemrefno having count(*) > 1
+     *   order by systemrefno;
+     * </pre>
+     */
+    private static final String duplicateRefnos =
+            "BD13-0007,BD13-0008,BR11-0686,BR12-0925,BR13-1007,BY13-0026," +
+            "CA10-0008,CN07-0001,CN08-0001,CN08-0002,CN08-0003,CN08-0004," +
+            "CN08-0005,CN08-0006,CN08-0007,CN10-0001,CN11-0008,CN11-0035," +
+            "CN11-0036,CN11-0037,CN11-0038,CN12-0041,CN12-0042,CN12-0043," +
+            "CN12-0044,CN12-0045,CN12-0046,CN12-0047,CN12-0048,CN12-0049," +
+            "CN12-0050,CN12-0051,CN12-0052,CN12-0053,CN12-0054,CN12-0055," +
+            "CN12-0056,CN12-0057,CN12-0058,CN12-0059,CN12-0060,CN12-0061," +
+            "CN12-0062,CN12-0063,CN12-0064,CN12-0065,CN12-0066,CN12-0067," +
+            "CN12-0068,CN12-0069,CN12-0070,CN12-0071,CN12-0072,CN12-0073," +
+            "CN12-0074,CN12-0075,CN12-0076,CN12-0077,CN12-0078,CN13-0460," +
+            "CO12-0142,CO12-0234,DE12-4224,HR13-0259,IN07-0003,IN07-0004," +
+            "IN10-0001,IN10-0002,IN10-0003,IN10-0004,IN10-0005,IN10-0006," +
+            "IN10-0007,IN10-0008,IT12-0016,JO11-0044,JP13-0231,KR07-0001," +
+            "KR07-0002,KR07-0003,KR08-0001,KR08-0002,KR09-0001,KR10-0001," +
+            "KR10-0002,KR10-0003,KR13-0125,KR13-0128,KR13-0130,KR13-0132," +
+            "KR13-0147,MT13-0050,NG10-0001,NG10-0002,NG10-0003,NG10-0004," +
+            "NG10-0005,NG10-0006,NG10-0007,OM11-0037,PS13-0086,QA12-0010," +
+            "RO13-0093,SE11-0007,TN13-0401,TN13-0404,TR12-0147,TR12-0270," +
+            "TR12-0370,VN13-0066";
+
+    private Map<Integer, GroupEntity> nationalGroups;
     private final ExchangeDao exchangeDao;
     private final EntityManager manager;
 
@@ -65,6 +101,15 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         super(accessDao);
         this.exchangeDao = exchangeDao;
         this.manager = manager;
+
+        // We have 27.000+ records in the database, but less than 100 groups.
+        // We cache all Groups so we can make a direct Id comparison rather than
+        // trusting that the JPA implementation is caching things properly
+        final List<GroupEntity> groups = accessDao.findAllGroups(GroupType.NATIONAL);
+        nationalGroups = new HashMap<>(groups.size());
+        for (final GroupEntity entity : groups) {
+            nationalGroups.put(entity.getOldId(), entity);
+        }
     }
 
     /**
@@ -77,7 +122,8 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
 
         for (final IW3OffersEntity oldEntity : oldEntities) {
             final OfferEntity offerEntity = convertOffer(oldEntity);
-            final GroupEntity groupEntity = accessDao.findGroupByIW3Id(oldEntity.getGroupid());
+            //final GroupEntity groupEntity = accessDao.findGroupByIW3Id(oldEntity.getGroupid());
+            final GroupEntity groupEntity = nationalGroups.get(oldEntity.getGroupid());
             EmployerEntity employerEntity = exchangeDao.findUniqueEmployer(groupEntity, offerEntity.getEmployer());
 
             try {
@@ -176,9 +222,17 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         final String countryCode = systemrefno.substring(0,2);
         final String year = systemrefno.substring(2,4);
         final String serialNumber = systemrefno.substring(5,9);
-        final Query query = manager.createQuery("select count(refNo) from OfferEntity where refNo like '" + countryCode + "-20" + year + '%' + serialNumber + '\'');
-        final Long count = (Long) query.getResultList().get(0);
-        final Character appender = (char) (REFNO_START_SERIALNUMBER + count);
+        final Character appender;
+        if (duplicateRefnos.contains(systemrefno)) {
+            final Query query = manager.createQuery("select count(refNo) from OfferEntity where refNo like '" + countryCode + "-20" + year + '%' + serialNumber + '\'');
+            final Long count = (Long) query.getResultList().get(0);
+            appender = (char) (REFNO_START_SERIALNUMBER + count);
+            if (!appender.equals(REFNO_START_SERIALNUMBER)) {
+                log.info("Duplicate Reference number {} found, will append {} to it.", systemrefno, appender);
+            }
+        } else {
+            appender = REFNO_START_SERIALNUMBER;
+        }
 
         return countryCode + "-20" + year + '-' + appender + '0' + serialNumber;
     }

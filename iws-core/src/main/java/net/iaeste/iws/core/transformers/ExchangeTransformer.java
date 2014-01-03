@@ -208,6 +208,7 @@ public final class ExchangeTransformer {
             result.setOfferRefNo(entity.getOffer().getRefNo());
             result.setGroupId(entity.getGroup().getExternalId());
             result.setStatus(entity.getStatus());
+            result.setComment(entity.getComment());
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
         }

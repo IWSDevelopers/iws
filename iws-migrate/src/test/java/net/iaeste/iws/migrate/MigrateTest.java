@@ -193,7 +193,7 @@ public class MigrateTest {
     @Transactional("transactionManagerIWS")
     public void test6ReadingWritingOfferGroups() {
         final OfferGroupMigrator migrator = new OfferGroupMigrator(accessDao, exchangeDao);
-        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups();
+        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups(0, 1000);
         log.info("Found {} Offers to migrate.", offerGroups.size());
 
         final MigrationResult result = migrator.migrate(offerGroups);

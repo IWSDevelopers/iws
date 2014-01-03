@@ -38,6 +38,7 @@ public final class OfferGroup extends AbstractVerification {
     private String offerRefNo = null;
     private String groupId = null;
     private OfferState status = OfferState.NEW;
+    private String comment = null;
     private DateTime modified = null;
     private DateTime created = null;
 
@@ -122,6 +123,15 @@ public final class OfferGroup extends AbstractVerification {
 
     public OfferState getStatus() {
         return status;
+    }
+
+    public void setComment(final String comment) {
+        ensureNotTooLong("comment", comment, 500);
+        this.comment = comment;
+    }
+
+    public String getComment() {
+        return comment;
     }
 
     /**

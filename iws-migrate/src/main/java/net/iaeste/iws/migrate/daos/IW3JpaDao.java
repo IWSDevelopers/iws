@@ -111,8 +111,11 @@ public class IW3JpaDao implements IW3Dao {
      * {@inheritDoc}
      */
     @Override
-    public List<IW3Offer2GroupEntity> findAllOfferGroups() {
+    public List<IW3Offer2GroupEntity> findAllOfferGroups(final int page, final int size) {
         final Query query = entityManager.createNamedQuery("offergroup.findAll");
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
         return query.getResultList();
     }
 }

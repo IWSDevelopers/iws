@@ -15,6 +15,7 @@
 package net.iaeste.iws.migrate.migrators;
 
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
@@ -27,7 +28,9 @@ import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -39,10 +42,20 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
     private static final Logger log = LoggerFactory.getLogger(OfferGroupMigrator.class);
 
     private final ExchangeDao exchangeDao;
+    private Map<Integer, GroupEntity> nationalGroups;
 
     public OfferGroupMigrator(final AccessDao accessDao, final ExchangeDao exchangeDao) {
         super(accessDao);
         this.exchangeDao = exchangeDao;
+
+        // We have 150.000+ records in the database, but less than 100 groups.
+        // We cache all Groups so we can make a direct Id comparison rather than
+        // trusting that the JPA implementation is caching things properly
+        final List<GroupEntity> groups = accessDao.findAllGroups(GroupType.NATIONAL);
+        nationalGroups = new HashMap<>(groups.size());
+        for (final GroupEntity entity : groups) {
+            nationalGroups.put(entity.getOldId(), entity);
+        }
     }
 
     /**
@@ -55,9 +68,9 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
 
         for (final IW3Offer2GroupEntity oldEntity : oldEntities) {
             final OfferEntity offer = exchangeDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
-            final GroupEntity group = accessDao.findGroupByIW3Id(oldEntity.getId().getGroupId());
+            final GroupEntity group = findCachedGroup(oldEntity.getId().getGroupId());
 
-            if (offer != null && group != null) {
+            if (group != null) {
                 final OfferGroupEntity entity = convert(oldEntity);
                 entity.setOffer(offer);
                 entity.setGroup(group);
@@ -75,7 +88,7 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
                     skipped++;
                 }
             } else {
-                log.info("Failed to migrate OfferGroup for Offer = {} and Group = {}.",
+                log.info("Failed to migrate OfferGroup for Offer = {} and Group = {}, as the Group doesn't exist.",
                         oldEntity.getId().getOfferId(),
                         oldEntity.getId().getGroupId());
                 skipped++;
@@ -83,6 +96,18 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
         }
 
         return new MigrationResult(persisted, skipped);
+    }
+
+    private GroupEntity findCachedGroup(final Integer groupId) {
+        final GroupEntity entity;
+
+        if (nationalGroups.containsKey(groupId)) {
+            entity = nationalGroups.get(groupId);
+        } else {
+            entity = null;
+        }
+
+        return entity;
     }
 
     private OfferGroupEntity convert(final IW3Offer2GroupEntity oldEntity) {

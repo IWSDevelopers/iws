@@ -116,7 +116,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     private GroupEntity group = null;
 
     @Monitored(name="Offer2Group comment", level = MonitoringLevel.DETAILED)
-    @Column(name = "comment", length = 1000)
+    @Column(name = "comment", length = 500)
     private String comment = null;
 
     @Monitored(name="Offer2Group status", level = MonitoringLevel.DETAILED)

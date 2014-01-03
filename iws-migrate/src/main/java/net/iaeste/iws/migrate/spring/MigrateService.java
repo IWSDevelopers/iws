@@ -183,7 +183,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
         final OfferGroupMigrator migrator = new OfferGroupMigrator(accessDao, exchangeDao);
 
         // Fetch the List of Offer Entities from IW3 to migrate
-        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups();
+        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups(0, 250000);
         log.info("Found {} OfferGroups to migrate.", offerGroups.size());
 
         // Now, run the migration

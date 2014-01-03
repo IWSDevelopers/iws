@@ -156,12 +156,12 @@ create table offer_to_group (
     external_id        varchar(36),
     offer_id           integer,
     group_id           integer,
-    comment            varchar(1000)  default '',
+    status             varchar(25),
+    comment            varchar(500) default '',
     modified_by        integer,
     created_by         integer,
-    status             varchar(25),
-    modified           timestamp default now(),
-    created            timestamp default now(),
+    modified           timestamp    default now(),
+    created            timestamp    default now(),
 
     /* Primary & Foreign Keys */
     constraint offer_to_group_pk             primary key (id),

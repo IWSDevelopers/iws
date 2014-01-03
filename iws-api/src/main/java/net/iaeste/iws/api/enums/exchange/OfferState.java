@@ -39,11 +39,6 @@ public enum OfferState {
     SHARED("Shared"),
 
     /**
-     * If an offer is shared to one country only
-     */
-    EXCHANGED("Exchanged"),
-
-    /**
      * If an offer has student applications
      */
     APPLICATIONS("Applications"),

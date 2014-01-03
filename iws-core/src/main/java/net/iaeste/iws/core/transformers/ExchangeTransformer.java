@@ -311,6 +311,9 @@ public final class ExchangeTransformer {
             result.setPassportNumber(entity.getPassportNumber());
             result.setPassportPlaceOfIssue(entity.getPassportPlaceOfIssue());
             result.setPassportValidUntil(entity.getPassportValidUntil());
+            result.setRejectByEmployerReason(entity.getRejectByEmployerReason());
+            result.setRejectDescription(entity.getRejectDescription());
+            result.setRejectInternalComment(entity.getRejectInternalComment());
             result.setNominatedAt(entity.getNominatedAt() != null ? new DateTime(entity.getNominatedAt()) : null);
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
@@ -353,6 +356,9 @@ public final class ExchangeTransformer {
             result.setPassportNumber(application.getPassportNumber());
             result.setPassportPlaceOfIssue(application.getPassportPlaceOfIssue());
             result.setPassportValidUntil(application.getPassportValidUntil());
+            result.setRejectByEmployerReason(application.getRejectByEmployerReason());
+            result.setRejectDescription(application.getRejectDescription());
+            result.setRejectInternalComment(application.getRejectInternalComment());
             result.setNominatedAt(application.getNominatedAt() != null ? application.getNominatedAt().toDate() : null);
         }
 

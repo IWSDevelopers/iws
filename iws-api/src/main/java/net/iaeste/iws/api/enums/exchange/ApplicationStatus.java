@@ -53,25 +53,12 @@ public enum ApplicationStatus {
      * The employer rejected the student.
      * Both countries can see the application.
      */
-    REJECTED_BY_EMPLOYER,
-
-    /**
-     * The receiving country rejected the student
-     * Both countries can see the application.
-     */
-    REJECTED_BY_RECEIVING_COUNTRY,
+    REJECTED,
 
     /**
      * The student does no longer wish to take the internship.
-     * <p/>
-     * A precondition is that the student was already nominated
-     * by the sending country.
-     * <p/>
      * Both countries can see the application.
      */
-    WITHDRAWN,
-
-    //TODO - two canceled statuses - by receiving/sending country?
     CANCELED
 
 }

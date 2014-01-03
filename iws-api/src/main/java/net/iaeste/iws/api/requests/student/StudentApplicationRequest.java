@@ -39,6 +39,10 @@ public final class StudentApplicationRequest extends AbstractVerification {
     // TODO complete implementation, add fields for rejection messages and comments (see exchange mockups)
     private ApplicationStatus status;
 
+    private String rejectByEmployerReason;
+    private String rejectDescription;
+    private String rejectInternalComment;
+
     private String applicationId;
 
     // =========================================================================
@@ -67,6 +71,30 @@ public final class StudentApplicationRequest extends AbstractVerification {
 
     public String getApplicationId() {
         return applicationId;
+    }
+
+    public void setRejectByEmployerReason(final String rejectByEmployerReason) {
+        this.rejectByEmployerReason = rejectByEmployerReason;
+    }
+
+    public String getRejectByEmployerReason() {
+        return rejectByEmployerReason;
+    }
+
+    public void setRejectDescription(final String rejectDescription) {
+        this.rejectDescription = rejectDescription;
+    }
+
+    public String getRejectDescription() {
+        return rejectDescription;
+    }
+
+    public void setRejectInternalComment(final String rejectInternalComment) {
+        this.rejectInternalComment = rejectInternalComment;
+    }
+
+    public String getRejectInternalComment() {
+        return rejectInternalComment;
     }
 
     // =========================================================================

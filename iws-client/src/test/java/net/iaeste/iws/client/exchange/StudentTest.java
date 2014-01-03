@@ -484,10 +484,17 @@ public final class StudentTest extends AbstractTest {
 
         final StudentApplicationRequest rejectStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
-                ApplicationStatus.REJECTED_BY_RECEIVING_COUNTRY);
+                ApplicationStatus.REJECTED);
+        rejectStudentRequest.setRejectInternalComment("reject internal comment");
+        rejectStudentRequest.setRejectDescription("reject description");
+        rejectStudentRequest.setRejectByEmployerReason("reject employer reason");
         final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(token, rejectStudentRequest);
 
         assertThat("Student has benn rejected by Poland", rejectStudentResponse.isOk(), is(true));
+        final StudentApplication rejectedApplication = rejectStudentResponse.getStudentApplication();
+        assertThat(rejectedApplication.getRejectByEmployerReason(), is(rejectStudentRequest.getRejectByEmployerReason()));
+        assertThat(rejectedApplication.getRejectDescription(), is(rejectStudentRequest.getRejectDescription()));
+        assertThat(rejectedApplication.getRejectInternalComment(), is(rejectStudentRequest.getRejectInternalComment()));
     }
 
     @Test

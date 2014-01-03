@@ -220,6 +220,9 @@ public final class EmbeddedConverter {
         result.setPassportNumber(embedded.getPassportNumber());
         result.setPassportPlaceOfIssue(embedded.getPassportPlaceOfIssue());
         result.setPassportValidUntil(embedded.getPassportValidUntil());
+        result.setRejectByEmployerReason(embedded.getRejectByEmployerReason());
+        result.setRejectDescription(embedded.getRejectDescription());
+        result.setRejectInternalComment(embedded.getRejectInternalComment());
         result.setNominatedAt(new DateTime(embedded.getNominatedAt()));
         result.setCreated(new DateTime(embedded.getCreated()));
         result.setModified(new DateTime(embedded.getModified()));

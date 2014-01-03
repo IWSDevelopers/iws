@@ -328,6 +328,9 @@ public final class StudentService extends CommonService<StudentDao> {
             case NOMINATED:
                 nominateApplication(authentication, studentApplication, applicationEntity);
                 break;
+            case CANCELLED:
+                cancelApplication(authentication, studentApplication, applicationEntity);
+                break;
             default:
                 throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
         }
@@ -362,10 +365,26 @@ public final class StudentService extends CommonService<StudentDao> {
     private void rejectApplication(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity storedApplication) {
         final StudentApplication application = transform(storedApplication);
 
-        application.setStatus(request.getStatus());
+        application.setStatus(ApplicationStatus.REJECTED);
         application.setRejectByEmployerReason(request.getRejectByEmployerReason());
         application.setRejectDescription(request.getRejectDescription());
         application.setRejectInternalComment(request.getRejectInternalComment());
+        ApplicationEntity updated = transform(application);
+        //using OfferGroup from stored entity since this field can't be updated
+        updated.setOfferGroup(storedApplication.getOfferGroup());
+
+        dao.persist(authentication, storedApplication, updated);
+
+        //update status for OfferGroup
+        updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.APPLICATION_REJECTED);
+        //update status for Offer
+        if (dao.otherNominatedApplications(storedApplication.getId())) {
+            updateOfferStatus(storedApplication.getOfferGroup().getOffer(), OfferState.SHARED);
+        }
+    }
+
+    private void cancelApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity storedApplication) {
+        application.setStatus(ApplicationStatus.CANCELLED);
         ApplicationEntity updated = transform(application);
         //using OfferGroup from stored entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
@@ -395,7 +414,7 @@ public final class StudentService extends CommonService<StudentDao> {
             case COMPLETED:
                 switch (applicationStatus) {
                     case REJECTED:
-                    case CANCELED:
+                    case CANCELLED:
                         break;
                     default:
                         throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + "'");
@@ -419,7 +438,7 @@ public final class StudentService extends CommonService<StudentDao> {
             case FORWARDED_TO_EMPLOYER:
                 switch (newStatus) {
                     case ACCEPTED:
-                    case CANCELED:
+                    case CANCELLED:
                     case REJECTED:
                         break;
                     default:
@@ -434,7 +453,7 @@ public final class StudentService extends CommonService<StudentDao> {
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
                 }
                 break;
-            case CANCELED:
+            case CANCELLED:
                 switch (newStatus) {
                     case NOMINATED:
                         break;
@@ -444,7 +463,7 @@ public final class StudentService extends CommonService<StudentDao> {
                 break;
             case NOMINATED:
                 switch (newStatus) {
-                    case CANCELED:
+                    case CANCELLED:
                     case FORWARDED_TO_EMPLOYER:
                     case REJECTED:
                         break;

@@ -59,6 +59,6 @@ public enum ApplicationStatus {
      * The student does no longer wish to take the internship.
      * Both countries can see the application.
      */
-    CANCELED
+    CANCELLED
 
 }

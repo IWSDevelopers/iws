@@ -57,6 +57,7 @@ public enum OfferState {
     CLOSED("Closed"),
     COMPLETED("Completed"),
     APPLICATION_REJECTED("Application rejected"),
+    APPLICATION_CANCELED("Application canceled"),
     AT_EMPLOYER("At Employer");
 
     // =========================================================================

@@ -21,10 +21,10 @@ import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -36,7 +36,7 @@ import java.util.List;
 @Transactional("transactionManagerIW3")
 public class IW3JpaDao implements IW3Dao {
 
-    @Autowired(required = true)
+    @PersistenceContext
     private EntityManager entityManager = null;
 
     public IW3JpaDao(final EntityManager entityManager) {

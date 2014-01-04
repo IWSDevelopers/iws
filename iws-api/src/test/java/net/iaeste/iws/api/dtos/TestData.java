@@ -188,7 +188,7 @@ public final class TestData {
 
         address.setStreet1(ADDRESS_STREET1);
         address.setStreet2(ADDRESS_STREET2);
-        address.setZip(ADDRESS_ZIP);
+        address.setPostalCode(ADDRESS_ZIP);
         address.setCity(ADDRESS_CITY);
         address.setState(ADDRESS_STATE);
         address.setCountry(prepareCountry(countryCode));

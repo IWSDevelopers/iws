@@ -55,8 +55,8 @@ public final class ProcessEmployer extends AbstractFixture<EmployerResponse> {
         address.setStreet2(street2);
     }
 
-    public void setZip(final String zip)  {
-        address.setZip(zip);
+    public void setPostalCode(final String postalCode)  {
+        address.setPostalCode(postalCode);
     }
 
     public void setCity(final String city)  {

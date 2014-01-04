@@ -43,8 +43,8 @@ public class EmbeddedAddress2 {
     @Column(name = "address2_street2", insertable = false, updatable = false)
     private String street2 = null;
 
-    @Column(name = "address2_zip", insertable = false, updatable = false)
-    private String zip = null;
+    @Column(name = "address2_postal_code", insertable = false, updatable = false)
+    private String postalCode = null;
 
     @Column(name = "address2_city", insertable = false, updatable = false)
     private String city = null;
@@ -80,12 +80,12 @@ public class EmbeddedAddress2 {
         return street2;
     }
 
-    public void setZip(final String zip) {
-        this.zip = zip;
+    public void setPostalCode(final String postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public String getZip() {
-        return zip;
+    public String getPostalCode() {
+        return postalCode;
     }
 
     public void setCity(final String city) {

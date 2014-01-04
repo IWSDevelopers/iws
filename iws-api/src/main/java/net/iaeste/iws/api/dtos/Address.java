@@ -37,18 +37,18 @@ public final class Address extends AbstractVerification {
     private static final int FIELD_LENGTH = 100;
 
     /**
-     * Zip Codes (Postal Codes) are used by a rather large number of countries,
-     * in fact according to <a href="http://en.wikipedia.org/wiki/Postal_code">wikipedia</a>,
+     * Postal Codes are used by a rather large number of countries, in fact
+     * according to <a href="http://en.wikipedia.org/wiki/Postal_code">wikipedia</a>,
      * most countries are using these as an integral part of an Address. The
      * length of them is between 3 and 10 characters, with an optional Country
-     * Code (two letters) additionally, meaning that the Zip Code can be up to
-     * 12 Characters long.
+     * Code (two letters) additionally, meaning that the Postal Code can be up
+     * to 12 Characters long.
      */
-    private static final int ZIP_LENGTH = 12;
+    private static final int POSTAL_CODE_LENGTH = 12;
 
     private String street1 = null;
     private String street2 = null;
-    private String zip = null;
+    private String postalCode = null;
     private String city = null;
     private String state = null;
     private String pobox = null;
@@ -74,7 +74,7 @@ public final class Address extends AbstractVerification {
         if (address != null) {
             street1 = address.street1;
             street2 = address.street2;
-            zip = address.zip;
+            postalCode = address.postalCode;
             city = address.city;
             state = address.state;
             pobox = address.pobox;
@@ -125,22 +125,22 @@ public final class Address extends AbstractVerification {
     }
 
     /**
-     * Sets the Zip (Postal) Code information for this Address. The value may be
-     * null, but cannot exceed the maximum length.<br />
+     * Sets the Postal Code information for this Address. The value may be null,
+     * but cannot exceed the maximum length.<br />
      *   The method will thrown an {@code IllegalArgumentException} if the given
      * value exceeds the maximum length.
      *
-     * @param zip Zip (Postal) Code
+     * @param postalCode Postal Code
      * @throws IllegalArgumentException if the value exceeds the maximum length
-     * @see #ZIP_LENGTH
+     * @see #POSTAL_CODE_LENGTH
      */
-    public void setZip(final String zip) throws IllegalArgumentException {
-        ensureNotTooLong("zip", zip, ZIP_LENGTH);
-        this.zip = zip;
+    public void setPostalCode(final String postalCode) throws IllegalArgumentException {
+        ensureNotTooLong("postalCode", postalCode, POSTAL_CODE_LENGTH);
+        this.postalCode = postalCode;
     }
 
-    public String getZip() {
-        return zip;
+    public String getPostalCode() {
+        return postalCode;
     }
 
     /**
@@ -252,7 +252,7 @@ public final class Address extends AbstractVerification {
         if (street2 != null ? !street2.equals(address.street2) : address.street2 != null) {
             return false;
         }
-        if (zip != null ? !zip.equals(address.zip) : address.zip != null) {
+        if (postalCode != null ? !postalCode.equals(address.postalCode) : address.postalCode != null) {
             return false;
         }
         if (city != null ? !city.equals(address.city) : address.city != null) {
@@ -274,7 +274,7 @@ public final class Address extends AbstractVerification {
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (street1 != null ? street1.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (street2 != null ? street2.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (zip != null ? zip.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (postalCode != null ? postalCode.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (city != null ? city.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (state != null ? state.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (country != null ? country.hashCode() : 0);
@@ -290,7 +290,7 @@ public final class Address extends AbstractVerification {
         return "Address{" +
                 ", street1='" + street1 + '\'' +
                 ", street2='" + street2 + '\'' +
-                ", zip='" + zip + '\'' +
+                ", postalCode='" + postalCode + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", country=" + country +

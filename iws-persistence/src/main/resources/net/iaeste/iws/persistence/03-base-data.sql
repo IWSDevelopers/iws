@@ -48,6 +48,7 @@ insert into permissions (id, permission) values (151, 'FETCH_FILE');
 --insert into permissions (id, permission) values (122, 'PROCESS_ROLE');
 --insert into permissions (id, permission) values (123, 'FETCH_ROLES');
 -- Exchange: 2xx
+insert into permissions (id, permission) values (200, 'FETCH_OFFER_STATISTICS');
 insert into permissions (id, permission) values (201, 'PROCESS_EMPLOYER');
 insert into permissions (id, permission) values (202, 'FETCH_EMPLOYERS');
 insert into permissions (id, permission) values (203, 'PROCESS_OFFER');
@@ -275,6 +276,16 @@ insert into permission_to_role (role_id, permission_id) values (2, 151);
 insert into permission_to_role (role_id, permission_id) values (3, 151);
 insert into permission_to_role (role_id, permission_id) values (4, 151);
 
+-- Permission: 200 - Fetch Offer Statistics
+--   -> GroupTypes: 5 National
+--                  6 Local
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 200);
+insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 200);
+insert into permission_to_role (role_id, permission_id) values (1, 200);
+insert into permission_to_role (role_id, permission_id) values (2, 200);
+
 -- Permission: 201 - Process Employer
 --   -> GroupTypes: 5 National
 --                  6 Local
@@ -389,16 +400,16 @@ insert into permission_to_role (role_id, permission_id) values (2, 224);
 -- =============================================================================
 -- Default Groups
 -- =============================================================================
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (0, '0bbe7a76-3864-4f8c-934f-2b47907c1daa', 0, 0, 0, 'SysOp', 'System Operators & Administrators', '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (1, '9eb79837-82a1-45eb-8f55-fd89a8592290', 8, 2, 1, 'Global', 'Global Members of IAESTE', '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (2, '1db947ff-7db3-47be-a79c-421f3b3199ed', 1, 3, 1, 'GS', 'IAESTE General Secretary', '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (3, '80962576-3e38-4858-be0d-57252e7316b1', 2, 3, 1, 'Board', 'Board of IAESTE A.s.b.l.', '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (4, 'd8325230-a4b5-4063-b949-3233693c980d', 3, 3, 1, 'SID', 'Seminar on IAESTE Development', '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (5, '2e351535-1609-4867-b713-2f8d6a2aab3f', 4, 3, 1, 'IDT', 'IAESTE Internet Development Team', '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (6, 'ab111bed-d5e8-4e34-877d-1d2bc56fdbf2', 5, 3, 1, 'Alumni', 'Friends of IAESTE Network | IAESTE Alumni',  '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (7, '6885d3f1-ac37-4a2b-9ae0-3cd9b8c7c917', 6, 3, 1, 'JUMP', 'IAESTE Jump Seminar',  '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (8, '16654461-b6e0-46cd-983e-d528e6db081a', 7, 3, 1, 'Ombudsman', 'IAESTE Ombudsman', '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, groupname, full_name, created) VALUES (9, '5b852a84-c557-460e-8c9d-ef098ae26e43', 9, 4, 1, 'CEC', 'CEC', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (0, '0bbe7a76-3864-4f8c-934f-2b47907c1daa', 0, 0, 0, 'SysOp', 'System Operators & Administrators', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (1, '9eb79837-82a1-45eb-8f55-fd89a8592290', 8, 2, 1, 'Global', 'Global Members of IAESTE', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (2, '1db947ff-7db3-47be-a79c-421f3b3199ed', 1, 3, 1, 'GS', 'IAESTE General Secretary', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (3, '80962576-3e38-4858-be0d-57252e7316b1', 2, 3, 1, 'Board', 'Board of IAESTE A.s.b.l.', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (4, 'd8325230-a4b5-4063-b949-3233693c980d', 3, 3, 1, 'SID', 'Seminar on IAESTE Development', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (5, '2e351535-1609-4867-b713-2f8d6a2aab3f', 4, 3, 1, 'IDT', 'IAESTE Internet Development Team', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (6, 'ab111bed-d5e8-4e34-877d-1d2bc56fdbf2', 5, 3, 1, 'Alumni', 'Friends of IAESTE Network | IAESTE Alumni',  '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (7, '6885d3f1-ac37-4a2b-9ae0-3cd9b8c7c917', 6, 3, 1, 'JUMP', 'IAESTE Jump Seminar',  '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (8, '16654461-b6e0-46cd-983e-d528e6db081a', 7, 3, 1, 'Ombudsman', 'IAESTE Ombudsman', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (9, '5b852a84-c557-460e-8c9d-ef098ae26e43', 9, 4, 1, 'CEC', 'CEC', '2003-10-01 00:00:00');
 
 -- -- =============================================================================
 -- -- Default Folders for file handling

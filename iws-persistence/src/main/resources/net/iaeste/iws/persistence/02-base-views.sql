@@ -14,7 +14,7 @@ create view view_user_group as
     u.lastname    as lastname,
     u.username    as username,
     u.status      as user_status,
-    g.groupname   as groupname,
+    g.group_name  as groupname,
     gt.grouptype  as grouptype,
     r.role        as role
   from
@@ -44,7 +44,7 @@ create view user_permissions as
     u2g.external_id      as eugid,
     p.id                 as pid,
     u.username           as username,
-    g.groupName          as groupName,
+    g.group_name         as groupName,
     g.group_description  as group_description,
     c.country_code       as country,
     t.grouptype          as grouptype,

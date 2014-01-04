@@ -78,6 +78,8 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     public OfferStatisticsResponse fetchOfferStatistics(final Authentication authentication, final OfferStatisticsRequest request) {
+        final Integer year = request.getExchangeYear();
+
         return new OfferStatisticsResponse();
     }
 

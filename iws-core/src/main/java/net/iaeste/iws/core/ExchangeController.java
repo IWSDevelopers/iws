@@ -80,7 +80,7 @@ public final class ExchangeController extends CommonController implements Exchan
         OfferStatisticsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_EMPLOYERS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_STATISTICS);
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();

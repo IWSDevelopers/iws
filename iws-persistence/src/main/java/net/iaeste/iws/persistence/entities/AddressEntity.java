@@ -60,9 +60,9 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
     @Column(name = "street2", length = 100)
     private String street2 = null;
 
-    @Monitored(name="Address ZIP (Postal Code)", level = MonitoringLevel.DETAILED)
-    @Column(name = "zip", length = 12)
-    private String zip = null;
+    @Monitored(name="Address Postal Code", level = MonitoringLevel.DETAILED)
+    @Column(name = "postal_code", length = 12)
+    private String postalCode = null;
 
     @Monitored(name="Address City", level = MonitoringLevel.DETAILED)
     @Column(name = "city", length = 100)
@@ -107,16 +107,16 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
     /**
      * Default Constructor, for creating new entity.
      *
-     * @param street1 First Street information
-     * @param street2 Second Street information
-     * @param zip     ZIP code
-     * @param city    City
-     * @param country Country
+     * @param street1    First Street information
+     * @param street2    Second Street information
+     * @param postalCode Postal Code
+     * @param city       City
+     * @param country    Country
      */
-    public AddressEntity(final String street1, final String street2, final String zip, final String city, final CountryEntity country) {
+    public AddressEntity(final String street1, final String street2, final String postalCode, final String city, final CountryEntity country) {
         this.street1 = street1;
         this.street2 = street2;
-        this.zip = zip;
+        this.postalCode = postalCode;
         this.city = city;
         this.country = country;
     }
@@ -173,12 +173,12 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
         return state;
     }
 
-    public void setZip(final String zip) {
-        this.zip = zip;
+    public void setPostalCode(final String postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public String getZip() {
-        return zip;
+    public String getPostalCode() {
+        return postalCode;
     }
 
     public void setPobox(final String pobox) {
@@ -242,7 +242,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
 
         changes += different(street1, obj.street1);
         changes += different(street2, obj.street2);
-        changes += different(zip, obj.zip);
+        changes += different(postalCode, obj.postalCode);
         changes += different(city, obj.city);
         changes += different(state, obj.state);
         changes += different(pobox, obj.pobox);
@@ -258,7 +258,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
         if (obj != null) { // cannot compare external id because the Address DTO does not have an id param
             street1 = obj.street1;
             street2 = obj.street2;
-            zip = obj.zip;
+            postalCode = obj.postalCode;
             city = obj.city;
             state = obj.state;
             pobox = obj.pobox;

@@ -147,6 +147,7 @@ public enum Permission {
     PROCESS_PUBLISH_OFFER,
     FETCH_PUBLISH_OFFER,
     APPLY_FOR_OPEN_OFFER,
+    FETCH_OFFER_STATISTICS,
 
     // Following are unnapped Exchange Permissions
     PROCESS_OFFER_TEMPLATES,

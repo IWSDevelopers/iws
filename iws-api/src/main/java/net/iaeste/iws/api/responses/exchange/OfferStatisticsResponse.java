@@ -29,7 +29,8 @@ public final class OfferStatisticsResponse extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private OfferStatistics statistics = null;
+    private OfferStatistics dommesticStatistics = null;
+    private OfferStatistics foreignStatistics = null;
 
     // =========================================================================
     // Object Constructors
@@ -41,15 +42,6 @@ public final class OfferStatisticsResponse extends AbstractFallible {
      * Constructor is used in {@code OfferResponse} when deleteing an offer.
      */
     public OfferStatisticsResponse() {
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param statistics Offer Statistics
-     */
-    public OfferStatisticsResponse(final OfferStatistics statistics) {
-        this.statistics = statistics;
     }
 
     /**
@@ -66,12 +58,20 @@ public final class OfferStatisticsResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setStatistics(final OfferStatistics statistics) {
-        this.statistics = statistics;
+    public void setDommesticStatistics(final OfferStatistics dommesticStatistics) {
+        this.dommesticStatistics = dommesticStatistics;
     }
 
-    public OfferStatistics getStatistics() {
-        return statistics;
+    public OfferStatistics getDommesticStatistics() {
+        return dommesticStatistics;
+    }
+
+    public void setForeignStatistics(final OfferStatistics foreignStatistics) {
+        this.foreignStatistics = foreignStatistics;
+    }
+
+    public OfferStatistics getForeignStatistics() {
+        return foreignStatistics;
     }
 
     // =========================================================================
@@ -94,7 +94,12 @@ public final class OfferStatisticsResponse extends AbstractFallible {
         }
 
         final OfferStatisticsResponse that = (OfferStatisticsResponse) obj;
-        return !(statistics != null ? !statistics.equals(that.statistics) : that.statistics != null);
+
+        if (dommesticStatistics != null ? !dommesticStatistics.equals(that.dommesticStatistics) : that.dommesticStatistics != null) {
+            return false;
+        }
+
+        return !(foreignStatistics != null ? !foreignStatistics.equals(that.foreignStatistics) : that.foreignStatistics != null);
     }
 
     /**
@@ -104,7 +109,8 @@ public final class OfferStatisticsResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (statistics != null ? statistics.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (dommesticStatistics != null ? dommesticStatistics.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (foreignStatistics != null ? foreignStatistics.hashCode() : 0);
 
         return result;
     }
@@ -115,7 +121,8 @@ public final class OfferStatisticsResponse extends AbstractFallible {
     @Override
     public String toString() {
         return "OfferStatisticsResponse{" +
-                "statistics=" + statistics +
+                "dommesticStatistics=" + dommesticStatistics +
+                ", foreignStatistics=" + foreignStatistics +
                 '}';
     }
 }

@@ -175,7 +175,7 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
 
         entity.setStreet1(convert(profile.getUser().getStreet1()));
         entity.setStreet2(convert(profile.getUser().getStreet2()));
-        entity.setZip(convert(profile.getUser().getZip()));
+        entity.setPostalCode(convert(profile.getUser().getZip()));
         entity.setCity(convert(profile.getUser().getCity()));
         entity.setState(convert(profile.getUser().getRegion()));
         entity.setPobox(convert(profile.getUser().getPobox()));

@@ -16,6 +16,7 @@ package net.iaeste.iws.common.utils;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -79,9 +80,25 @@ public final class HashcodeGenerator {
      * @return MD5 Hashcode value
      * @see <a href="http://en.wikipedia.org/wiki/MD5">Wikipedia MD5</a>
      */
-    static String generateMD5(final String str, final String... userSalt) {
-        final String salt = prepareSalt(userSalt);
-        return generateHashcode(HASHCODE_ALGORITHM_MD5, str, salt);
+    public static String generateMD5(final String str, final String... userSalt) {
+        //final String salt = prepareSalt(userSalt);
+        //return generateHashcode(HASHCODE_ALGORITHM_MD5, str, salt);
+        // The following is an attempt to make the Java MD5 calculation the same
+        // as the PHP variant. See: http://www.sergiy.ca/how-to-make-java-md5-and-sha-1-hashes-compatible-with-php-or-mysql/
+        String result = str;
+
+        if (str != null) {
+            final MessageDigest md = getDigest(HASHCODE_ALGORITHM_MD5);
+            md.update(str.getBytes());
+            final BigInteger hash = new BigInteger(1, md.digest());
+            result = hash.toString(16);
+
+            while (result.length() < 32) {
+                result = '0' + result;
+            }
+        }
+
+        return result;
     }
 
     /**

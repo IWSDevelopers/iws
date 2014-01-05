@@ -360,3 +360,42 @@ create view application_view as
     and sa.offer_group_id = og.id
     and e.id = o.employer_id
     and og.offer_id = o.id;
+
+
+-- =============================================================================
+-- Statistics View for Foreign Offers
+-- =============================================================================
+create view foreign_offer_statistics as
+  select
+    count(o2g.id)   as records,
+    o2g.status      as status,
+    o2g.group_id    as group_id,
+    o.exchange_year as exchange_year
+  from
+    offers o,
+    offer_to_group o2g
+  where o.id = o2g.offer_id
+  group by
+    o2g.status,
+    o2g.group_id,
+    o.exchange_year;
+
+-- =============================================================================
+-- Statistics View for Domestic Offers
+-- =============================================================================
+create view domestic_offer_statistics as
+  select
+    count (o2g.id)  as records,
+    o2g.status      as status,
+    e.group_id      as group_id,
+    o.exchange_year as exchange_year
+  from
+    offers o,
+    employers e,
+    offer_to_group o2g
+  where e.id = o.employer_id
+    and o.id = o2g.offer_id
+  group by
+    o2g.status,
+    e.group_id,
+    o.exchange_year;

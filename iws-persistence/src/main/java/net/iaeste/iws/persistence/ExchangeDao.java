@@ -21,7 +21,9 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
+import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 
 import java.util.Date;
 import java.util.List;
@@ -34,6 +36,9 @@ import java.util.Set;
  * @noinspection BooleanMethodNameMustStartWithQuestion
  */
 public interface ExchangeDao extends BasicDao {
+
+    List<ForeignOfferStatisticsView> findForeignOfferStatistics(GroupEntity group, Integer year);
+    List<DomesticOfferStatisticsView> findDomesticOfferStatistics(GroupEntity group, Integer year);
 
     EmployerEntity findEmployer(String externalId);
 

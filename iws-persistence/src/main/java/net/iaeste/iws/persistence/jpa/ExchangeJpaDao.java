@@ -23,7 +23,9 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -46,6 +48,30 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      */
     public ExchangeJpaDao(final EntityManager entityManager) {
         super(entityManager);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ForeignOfferStatisticsView> findForeignOfferStatistics(final GroupEntity group, final Integer year) {
+        final Query query = entityManager.createNamedQuery("view.findStatisticsForForeignOffersForGroupAndYear");
+        query.setParameter("gid", group.getId());
+        query.setParameter("year", year);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DomesticOfferStatisticsView> findDomesticOfferStatistics(final GroupEntity group, final Integer year) {
+        final Query query = entityManager.createNamedQuery("view.findStatisticsForDomesticOffersForGroupAndYear");
+        query.setParameter("gid", group.getId());
+        query.setParameter("year", year);
+
+        return query.getResultList();
     }
 
     /**

@@ -20,6 +20,9 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
+import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
@@ -49,10 +52,13 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 import net.iaeste.iws.persistence.views.OfferView;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -79,8 +85,47 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
     public OfferStatisticsResponse fetchOfferStatistics(final Authentication authentication, final OfferStatisticsRequest request) {
         final Integer year = request.getExchangeYear();
+        final GroupEntity nationalGroup = findNationalGroup(authentication);
 
-        return new OfferStatisticsResponse();
+        final OfferStatisticsResponse response = new OfferStatisticsResponse();
+        response.setDommesticStatistics(readDomesticStatistics(nationalGroup, year));
+        response.setForeignStatistics(readForeignStatistics(nationalGroup, year));
+
+        return response;
+    }
+
+    private OfferStatistics readDomesticStatistics(final GroupEntity nationalGroup, final Integer year) {
+        final List<DomesticOfferStatisticsView> records = dao.findDomesticOfferStatistics(nationalGroup, year);
+
+        final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
+        for (final DomesticOfferStatisticsView stats : records) {
+            statistics.put(stats.getId().getStatus(), stats.getRecords());
+        }
+
+        return new OfferStatistics(statistics, year);
+    }
+
+    private OfferStatistics readForeignStatistics(final GroupEntity nationalGroup, final Integer year) {
+        final List<ForeignOfferStatisticsView> records = dao.findForeignOfferStatistics(nationalGroup, year);
+
+        final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
+        for (final ForeignOfferStatisticsView stats : records) {
+            statistics.put(stats.getId().getStatus(), stats.getRecords());
+        }
+
+        return new OfferStatistics(statistics, year);
+    }
+
+    private GroupEntity findNationalGroup(final Authentication authentication) {
+        final GroupEntity group;
+
+        if (authentication.getGroup().getGroupType().getGrouptype().equals(GroupType.NATIONAL)) {
+            group = authentication.getGroup();
+        } else {
+            group = accessDao.findNationalGroup(authentication.getUser());
+        }
+
+        return group;
     }
 
     public FetchEmployerResponse fetchEmployers(final Authentication authentication, final FetchEmployerRequest request) {

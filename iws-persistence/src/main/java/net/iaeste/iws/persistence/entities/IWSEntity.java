@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public interface IWSEntity {
+public interface IWSEntity extends Serializable {
 
     void setId(Long id);
 

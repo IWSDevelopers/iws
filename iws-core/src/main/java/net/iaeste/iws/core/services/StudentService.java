@@ -439,6 +439,7 @@ public final class StudentService extends CommonService<StudentDao> {
         switch (oldStatus) {
             case APPLIED:
                 switch (newStatus) {
+                    case CANCELLED:
                     case NOMINATED:
                         break;
                     default:

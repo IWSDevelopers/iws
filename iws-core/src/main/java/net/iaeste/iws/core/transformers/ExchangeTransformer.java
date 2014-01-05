@@ -108,6 +108,7 @@ public final class ExchangeTransformer {
 
             result.setOfferId(entity.getExternalId());
             result.setRefNo(entity.getRefNo());
+            result.setOldRefNo(entity.getOldRefno());
             result.setEmployer(transform(entity.getEmployer()));
             result.setWorkDescription(entity.getWorkDescription());
             result.setTypeOfWork(entity.getTypeOfWork());

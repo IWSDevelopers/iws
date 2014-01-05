@@ -56,6 +56,8 @@ public final class Offer extends AbstractVerification {
     private String offerId = null;
     private String refNo = null;
 
+    private String oldRefNo = null;
+
     // General Work Description
     private Employer employer = null;
     private String workDescription = null;
@@ -231,6 +233,22 @@ public final class Offer extends AbstractVerification {
 
     public String getRefNo() {
         return refNo;
+    }
+
+    /**
+     * Sets the IW3 Offer refNo.
+     * The oldRefNo once set after migration cannot be changed,
+     * any changes of this field made to DTO will be ignored during
+     * persiting the entity.
+     *
+     * @param oldRefNo old Offer Reference Number
+     */
+    public void setOldRefNo(final String oldRefNo) {
+        this.oldRefNo = oldRefNo;
+    }
+
+    public String getOldRefNo() {
+        return oldRefNo;
     }
 
     /**
@@ -758,6 +776,9 @@ public final class Offer extends AbstractVerification {
         if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
             return false;
         }
+        if (oldRefNo != null ? !oldRefNo.equals(offer.oldRefNo) : offer.oldRefNo != null) {
+            return false;
+        }
         if (specializations != null ? !specializations.equals(offer.specializations) : offer.specializations != null) {
             return false;
         }
@@ -788,6 +809,7 @@ public final class Offer extends AbstractVerification {
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (offerId != null ? offerId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (refNo != null ? refNo.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (oldRefNo != null ? oldRefNo.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (workDescription != null ? workDescription.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (typeOfWork != null ? typeOfWork.hashCode() : 0);
@@ -836,6 +858,7 @@ public final class Offer extends AbstractVerification {
         return "Offer{" +
                 "offerId='" + offerId + '\'' +
                 ", refNo='" + refNo + '\'' +
+                ", refNo='" + oldRefNo + '\'' +
                 ", employer=" + employer +
                 ", workDescription='" + workDescription + '\'' +
                 ", typeOfWork=" + typeOfWork +

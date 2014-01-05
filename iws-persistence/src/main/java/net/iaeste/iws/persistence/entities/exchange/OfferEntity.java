@@ -742,6 +742,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             // Note, Id, ExternalId & refno are *not* allowed to be updated!
+            // Also note, oldOfferId and oldRefNo are *not* allowed to be updated!
 
             // General Work Description
             workDescription = obj.workDescription;

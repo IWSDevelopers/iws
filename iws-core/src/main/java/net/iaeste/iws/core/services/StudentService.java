@@ -331,9 +331,19 @@ public final class StudentService extends CommonService<StudentDao> {
             case CANCELLED:
                 cancelApplication(authentication, studentApplication, applicationEntity);
                 break;
+            case APPLIED:
+                applyApplication(authentication, studentApplication, applicationEntity);
+                break;
             default:
                 throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
         }
+    }
+
+    private void applyApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity) {
+        application.setStatus(ApplicationStatus.APPLIED);
+        ApplicationEntity updated = transform(application);
+        updated.setOfferGroup(applicationEntity.getOfferGroup());
+        dao.persist(authentication, applicationEntity, updated);
     }
 
     private void forwardToEmployer(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity) {
@@ -455,6 +465,7 @@ public final class StudentService extends CommonService<StudentDao> {
                 break;
             case CANCELLED:
                 switch (newStatus) {
+                    case APPLIED:
                     case NOMINATED:
                         break;
                     default:

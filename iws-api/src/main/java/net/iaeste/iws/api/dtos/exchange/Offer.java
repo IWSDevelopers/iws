@@ -18,7 +18,6 @@ import static net.iaeste.iws.api.util.Copier.copy;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
-import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -191,36 +190,6 @@ public final class Offer extends AbstractVerification {
 
     public String getOfferId() {
         return offerId;
-    }
-
-    /**
-     * Sets the Offer Group. The Group is automatically set by the IWS upon
-     * initial persisting of the Offer.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Group is not valid, i.e. if the Object is either null or not a valid
-     * Group Object.<br />
-     *   See Trac task #588 for more information.
-     *
-     * @param group National Group, which this Offer belongs to
-     * @throws IllegalArgumentException if not valid
-     * @deprecated Please use the Group in the Employer Object
-     */
-    @Deprecated
-    public void setGroup(final Group group) throws IllegalArgumentException {
-        ensureNotNullAndVerifiable("group", group);
-        //this.group = new Group(group);
-    }
-
-    /**
-     * Method is deprecated, please use the Group from the Employer.<br />
-     *   See Trac task #588 for more information.
-     *
-     * @return Group from Employer
-     * @deprecated Please use the Group in the Employer Object
-     */
-    @Deprecated
-    public Group getGroup() {
-        return employer.getGroup();
     }
 
     /**

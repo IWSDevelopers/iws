@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.migrate.spring;
 
+import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.exceptions.IWSException;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,6 +28,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.beans.Beans;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -40,18 +45,37 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class Config {
 
-    @Bean
-    public MigrateService migrateService() {
-        return new MigrateService();
+    private final Object lock = new Object();
+    private final Properties properties = new Properties();
+
+    private String readProperty(final String key, final String defaultValue) {
+        synchronized (lock) {
+            if (properties.isEmpty()) {
+                try (InputStream inputStream = Beans.class.getResourceAsStream("migration.properties")) {
+                    if (inputStream != null) {
+                        properties.load(inputStream);
+                    }
+                } catch (final IOException e) {
+                    throw new IWSException(IWSErrors.FATAL, "Cannot load the Properties.", e);
+                }
+            }
+
+            return properties.getProperty(key, defaultValue);
+        }
     }
 
     @Bean(name = "dataSourceIW3")
     public DataSource dataSourceIW3() {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setServerName("localhost");
-        dataSource.setDatabaseName("iw3");
-        dataSource.setUser("kim");
+        dataSource.setServerName(readProperty("datasource.iw3.server", "localhost"));
+        dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.iw3.port", "5432")));
+        dataSource.setDatabaseName(readProperty("datasource.iw3.database", "iw3"));
+        dataSource.setUser(readProperty("datasource.iw3.user", "kim"));
+        final String pwd = readProperty("datasource.iw3.password", null);
+        if ((pwd != null) && !pwd.isEmpty()) {
+            dataSource.setPassword(pwd);
+        }
 
         return dataSource;
     }
@@ -60,9 +84,14 @@ public class Config {
     public DataSource dataSourceIWS() {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setServerName("localhost");
-        dataSource.setDatabaseName("iws");
-        dataSource.setUser("kim");
+        dataSource.setServerName(readProperty("datasource.iws.server", "localhost"));
+        dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.iws.port", "5432")));
+        dataSource.setDatabaseName(readProperty("datasource.iws.database", "iws"));
+        dataSource.setUser(readProperty("datasource.iws.user", "kim"));
+        final String pwd = readProperty("datasource.iws.password", null);
+        if ((pwd != null) && !pwd.isEmpty()) {
+            dataSource.setPassword(pwd);
+        }
 
         return dataSource;
     }
@@ -71,9 +100,14 @@ public class Config {
     public DataSource dataSourceMail() {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setServerName("localhost");
-        dataSource.setDatabaseName("iws");
-        dataSource.setUser("kim");
+        dataSource.setServerName(readProperty("datasource.mail.server", "localhost"));
+        dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.mail.port", "5432")));
+        dataSource.setDatabaseName(readProperty("datasource.mail.database", "iws"));
+        dataSource.setUser(readProperty("datasource.mail.user", "kim"));
+        final String pwd = readProperty("datasource.mail.password", null);
+        if ((pwd != null) && !pwd.isEmpty()) {
+            dataSource.setPassword(pwd);
+        }
 
         return dataSource;
     }
@@ -146,16 +180,16 @@ public class Config {
 
     @Bean(name = "jpaProperties")
     public Properties jpaProperties() {
-        final Properties properties = new Properties();
+        final Properties jpaProperties = new Properties();
 
         // For testing the result, it is helpful to be able to see the queries
         // executed against the database, preferably formatted as well :-)
-        properties.setProperty("hibernate.show_sql", "false");
-        properties.setProperty("hibernate.format_sql", "false");
+        jpaProperties.setProperty("hibernate.show_sql", "false");
+        jpaProperties.setProperty("hibernate.format_sql", "false");
         // For some braindead reason - someone thought it was a good idea to
         // have the default behaviour being true for the autocommit setting!
-        properties.setProperty("hibernate.connection.autocommit", "false");
+        jpaProperties.setProperty("hibernate.connection.autocommit", "false");
 
-        return properties;
+        return jpaProperties;
     }
 }

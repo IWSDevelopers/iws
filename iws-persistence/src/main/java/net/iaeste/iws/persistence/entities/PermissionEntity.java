@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -39,6 +41,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "permissions")
 public class PermissionEntity {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @Column(name = "id", unique = true, nullable = false, updatable = false)

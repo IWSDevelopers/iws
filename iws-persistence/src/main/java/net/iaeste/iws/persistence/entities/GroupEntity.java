@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.monitoring.Monitored;
@@ -123,6 +124,9 @@ import java.util.Map;
 @Table(name = "groups")
 @Monitored(name = "Group", level = MonitoringLevel.DETAILED)
 public class GroupEntity implements Externable<GroupEntity>, Notifiable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "group_sequence")

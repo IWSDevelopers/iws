@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
@@ -105,12 +106,20 @@ import java.util.Map;
                         "  and ug.user.status = 'ACTIVE'"),
         @NamedQuery(name = "usergroup.findAllUserGroups",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.user.id = :uid")
+                        "where ug.user.id = :uid"),
+        @NamedQuery(name = "usergroup.findncs",
+                query = "select distinct ug from UserGroupEntity ug " +
+                        "where ug.role.id <= 2" +
+                        "  and (ug.group.groupType.grouptype = 'NATIONAL'" +
+                        "    or ug.group.groupType.grouptype = 'INTERNATIONAL')")
 })
 @Entity
 @Table(name = "user_to_group")
 @Monitored(name = "User2Group", level = MonitoringLevel.DETAILED)
 public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_to_group_sequence")

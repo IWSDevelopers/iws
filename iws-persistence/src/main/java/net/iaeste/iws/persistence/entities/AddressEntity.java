@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 
@@ -45,6 +46,9 @@ import java.util.Date;
 @Table(name = "addresses")
 @Monitored(name = "Address", level = MonitoringLevel.DETAILED)
 public class AddressEntity extends AbstractUpdateable<AddressEntity> {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "address_sequence")

@@ -19,7 +19,6 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
 import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -47,17 +46,13 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
 
     private static final Logger log = LoggerFactory.getLogger(UserGroupMigrator.class);
 
-    private MailingListDao mailingListDao;
-
     /**
      * Default Constructor for the UserGroups Migration.
      *
-     * @param accessDao      IWS Dao for persisting the new IWS Entities
-     * @param mailingListDao IWS Dao for the mail system
+     * @param accessDao IWS Dao for persisting the new IWS Entities
      */
-    public UserGroupMigrator(final AccessDao accessDao, final MailingListDao mailingListDao) {
+    public UserGroupMigrator(final AccessDao accessDao) {
         super(accessDao);
-        this.mailingListDao = mailingListDao;
     }
 
     /**

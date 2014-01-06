@@ -21,10 +21,8 @@ import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -33,10 +31,8 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Transactional("transactionManagerIW3")
 public class IW3JpaDao implements IW3Dao {
 
-    @PersistenceContext
     private EntityManager entityManager = null;
 
     public IW3JpaDao(final EntityManager entityManager) {
@@ -99,10 +95,8 @@ public class IW3JpaDao implements IW3Dao {
      * {@inheritDoc}
      */
     @Override
-    public List<IW3OffersEntity> findAllOffers(final int page, final int size) {
+    public List<IW3OffersEntity> findAllOffers() {
         final Query query = entityManager.createNamedQuery("offers.findAll");
-        query.setFirstResult(page * size);
-        query.setMaxResults(size);
 
         return query.getResultList();
     }
@@ -111,10 +105,8 @@ public class IW3JpaDao implements IW3Dao {
      * {@inheritDoc}
      */
     @Override
-    public List<IW3Offer2GroupEntity> findAllOfferGroups(final int page, final int size) {
+    public List<IW3Offer2GroupEntity> findAllOfferGroups() {
         final Query query = entityManager.createNamedQuery("offergroup.findAll");
-        query.setFirstResult(page * size);
-        query.setMaxResults(size);
 
         return query.getResultList();
     }

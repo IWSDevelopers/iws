@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Gender;
 
 import javax.persistence.Column;
@@ -39,6 +40,9 @@ import java.util.Date;
 @Entity
 @Table(name = "persons")
 public class PersonEntity implements Updateable<PersonEntity> {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "person_sequence")

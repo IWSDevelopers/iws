@@ -45,6 +45,7 @@ public final class Migrate {
         service.migrateGroups();
         service.migrateUsers();
         service.migrateUserGroups();
+        service.migrateMail();
         service.migrateOffers();
         service.migrateOfferGroups();
 

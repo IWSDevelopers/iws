@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.mailing_list;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.persistence.Externable;
 
 import javax.persistence.Column;
@@ -47,6 +48,9 @@ import java.util.Date;
 @Entity
 @Table(name = "mailing_lists")
 public class MailingListEntity implements Externable<MailingListEntity> {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "mailing_list_sequence")

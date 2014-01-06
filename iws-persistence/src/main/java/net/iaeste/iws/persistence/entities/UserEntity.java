@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.enums.UserStatus;
@@ -53,6 +54,8 @@ import java.util.Map;
  * @since   1.7
  */
 @NamedQueries({
+        @NamedQuery(name = "user.findAll",
+                query = "select u from UserEntity u "),
         @NamedQuery(name = "user.findById",
                 query = "select u from UserEntity u " +
                         "where u.id = :id"),
@@ -99,6 +102,9 @@ import java.util.Map;
 @Table(name = "users")
 @Monitored(name = "User", level = MonitoringLevel.DETAILED)
 public class UserEntity implements Externable<UserEntity>, Notifiable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_sequence")

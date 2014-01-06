@@ -25,7 +25,6 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -51,17 +50,13 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(UserMigrator.class);
 
-    private MailingListDao mailingListDao;
-
     /**
      * Default Constructor for the Users Migration.
      *
-     * @param accessDao      IWS Dao for persisting the new IWS Entities
-     * @param mailingListDao IWS Dao for the mail system
+     * @param accessDao IWS Dao for persisting the new IWS Entities
      */
-    public UserMigrator(final AccessDao accessDao, final MailingListDao mailingListDao) {
+    public UserMigrator(final AccessDao accessDao) {
         super(accessDao);
-        this.mailingListDao = mailingListDao;
     }
 
     /**

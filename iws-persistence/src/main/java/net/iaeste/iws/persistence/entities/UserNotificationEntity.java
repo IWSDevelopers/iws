@@ -15,6 +15,7 @@
 
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.common.notification.NotificationType;
 
@@ -49,6 +50,9 @@ import java.util.Date;
 @Entity
 @Table(name = "user_notifications")
 public class UserNotificationEntity implements IWSEntity {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_notification_sequence")

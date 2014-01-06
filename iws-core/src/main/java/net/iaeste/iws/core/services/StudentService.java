@@ -174,15 +174,12 @@ public final class StudentService extends CommonService<StudentDao> {
             }
         } else {
             final ApplicationEntity updated = transform(application);
-            //TODO - allow update application status?
-            if (!applicationEntity.getStatus().equals(updated.getStatus())) {
-                //we are updating application and its status changed -> check if it's allowed
-                verifyOfferAcceptNewApplicationStatus(sharedOfferGroup.getOffer().getStatus(), applicationEntity.getStatus());
-                verifyApplicationStatusTransition(applicationEntity.getStatus(), updated.getStatus());
-            }
 
             //using OfferGroup from found entity since this field can't be updated
             updated.setOfferGroup(applicationEntity.getOfferGroup());
+            //do not allow to change status
+            updated.setStatus(applicationEntity.getStatus());
+
             processAddress(authentication, applicationEntity.getHomeAddress(), application.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms(), application.getAddressDuringTerms());
             //dao.persist(authentication, student, updated.getStudent());

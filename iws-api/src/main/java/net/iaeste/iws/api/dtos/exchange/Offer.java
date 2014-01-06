@@ -100,6 +100,7 @@ public final class Offer extends AbstractVerification {
     private Date nominationDeadline = null;
     private Integer numberOfHardCopies = null;
     private String additionalInformation = null;
+    private String privateComment = null;
     private OfferState status = null;
     private DateTime modified = null;
     private DateTime created = null;
@@ -161,6 +162,7 @@ public final class Offer extends AbstractVerification {
             nominationDeadline = copy(offer.nominationDeadline);
             numberOfHardCopies = offer.numberOfHardCopies;
             additionalInformation = offer.additionalInformation;
+            privateComment = offer.privateComment;
             status = offer.status;
             modified = copy(offer.modified);
             created = copy(offer.created);
@@ -551,6 +553,15 @@ public final class Offer extends AbstractVerification {
         return additionalInformation;
     }
 
+    public void setPrivateComment(final String privateComment) throws IllegalArgumentException {
+        ensureNotTooLong("privateComment", privateComment, 1000);
+        this.privateComment = privateComment;
+    }
+
+    public String getPrivateComment() {
+        return privateComment;
+    }
+
     public void setStatus(final OfferState status) {
         this.status = status;
     }
@@ -774,6 +785,9 @@ public final class Offer extends AbstractVerification {
         if (additionalInformation != null ? !additionalInformation.equals(offer.additionalInformation) : offer.additionalInformation != null) {
             return false;
         }
+        if (privateComment != null ? !privateComment.equals(offer.privateComment) : offer.privateComment != null) {
+            return false;
+        }
         return !(workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null);
     }
 
@@ -820,6 +834,7 @@ public final class Offer extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (nominationDeadline != null ? nominationDeadline.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (numberOfHardCopies != null ? numberOfHardCopies.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (additionalInformation != null ? additionalInformation.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (privateComment != null ? privateComment.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
@@ -869,6 +884,7 @@ public final class Offer extends AbstractVerification {
                 ", nominationDeadline=" + nominationDeadline +
                 ", numberOfHardCopies=" + numberOfHardCopies +
                 ", additionalInformation=" + additionalInformation +
+                ", privateComment=" + privateComment +
                 ", status=" + status +
                 ", modified=" + modified +
                 ", created=" + created +

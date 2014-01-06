@@ -171,6 +171,7 @@ public final class EmbeddedConverter {
         result.setNominationDeadline(CommonTransformer.convert(embedded.getNominationDeadline()));
         result.setNumberOfHardCopies(embedded.getNumberOfHardCopies());
         result.setAdditionalInformation(embedded.getAdditionalInformation());
+        result.setPrivateComment(embedded.getPrivateComment());
         result.setStatus(embedded.getStatus());
         result.setModified(new DateTime(embedded.getModified()));
         result.setCreated(new DateTime(embedded.getCreated()));

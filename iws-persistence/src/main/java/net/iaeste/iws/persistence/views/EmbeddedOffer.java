@@ -170,6 +170,9 @@ public class EmbeddedOffer {
     @Column(name = "offer_additional_information", insertable = false, updatable = false)
     private String additionalInformation = null;
 
+    @Column(name = "offer_private_comment", insertable = false, updatable = false)
+    private String privateComment = null;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "offer_status", insertable = false, updatable = false)
     private OfferState status = OfferState.NEW;
@@ -478,6 +481,14 @@ public class EmbeddedOffer {
 
     public String getAdditionalInformation() {
         return additionalInformation;
+    }
+
+    public void setPrivateComment(final String privateComment) {
+        this.privateComment = privateComment;
+    }
+
+    public String getPrivateComment() {
+        return privateComment;
     }
 
     public void setStatus(final OfferState status) {

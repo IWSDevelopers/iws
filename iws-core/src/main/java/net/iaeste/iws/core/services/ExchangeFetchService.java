@@ -206,14 +206,20 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         // Must be extended with Pagination
         final List<OfferView> found = viewsDao.findAllOffers(authentication, exchangeYear);
 
-        return convertViewList(found);
+        return convertViewList(authentication, found);
     }
 
-    private static List<Offer> convertViewList(final List<OfferView> found) {
+    private List<Offer> convertViewList(final Authentication authentication, final List<OfferView> found) {
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferView view : found) {
-            result.add(transform(view));
+            final Offer offer = transform(view);
+            // do not expose private comment to foreign offers
+            if(!view.getGroupId().equals(authentication.getGroup().getId()))
+            {
+                offer.setPrivateComment(null);
+            }
+            result.add(offer);
         }
 
         return result;
@@ -235,6 +241,12 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
                 final UserEntity nationalSecretary = accessDao.findOwnerByGroup(CommonTransformer.transform(offer.getEmployer().getGroup()));
                 offer.setNsFirstname(nationalSecretary.getFirstname());
                 offer.setNsLastname(nationalSecretary.getLastname());
+
+                // do not expose private comment to foreign offers
+                if(!offerEntity.getEmployer().getGroup().getId().equals(authentication.getGroup().getId()))
+                {
+                    offer.setPrivateComment(null);
+                }
 
                 offers.add(offer);
             }

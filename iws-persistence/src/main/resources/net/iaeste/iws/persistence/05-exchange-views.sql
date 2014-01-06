@@ -106,6 +106,7 @@ create view offer_view as
     o.nomination_deadline      as offer_nomination_deadline,
     o.number_of_hard_copies    as offer_number_of_hard_copies,
     o.additional_information   as offer_additional_information,
+    o.private_comment          as offer_private_comment,
     o.status                   as offer_status,
     o.modified                 as offer_modified,
     o.created                  as offer_created,

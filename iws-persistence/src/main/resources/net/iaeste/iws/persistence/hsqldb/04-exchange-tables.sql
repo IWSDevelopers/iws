@@ -112,6 +112,7 @@ create table offers (
     nomination_deadline       date,
     number_of_hard_copies     integer,
     additional_information    varchar(3000),
+    private_comment           varchar(10000),
     status                    varchar(25),
     modified                  timestamp default now(),
     created                   timestamp default now(),

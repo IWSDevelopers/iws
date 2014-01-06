@@ -311,6 +311,10 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @Column(name = "additional_information", length = 3000)
     private String additionalInformation = null;
 
+    @Monitored(name="Offer Private Comment", level = MonitoringLevel.DETAILED)
+    @Column(name = "private_comment", length = 10000)
+    private String privateComment = null;
+
     @Monitored(name="Offer status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 25)
@@ -680,6 +684,14 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
         return additionalInformation;
     }
 
+    public void setPrivateComment(final String privateComment) {
+        this.privateComment = privateComment;
+    }
+
+    public String getPrivateComment() {
+        return privateComment;
+    }
+
     public void setStatus(final OfferState status) {
         this.status = status;
     }
@@ -788,6 +800,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
             nominationDeadline = obj.nominationDeadline;
             numberOfHardCopies = obj.numberOfHardCopies;
             additionalInformation = obj.additionalInformation;
+            privateComment = obj.privateComment;
             status = obj.status;
         }
     }

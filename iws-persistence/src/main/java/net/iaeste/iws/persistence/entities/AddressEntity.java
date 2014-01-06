@@ -259,7 +259,9 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      */
     @Override
     public void merge(final AddressEntity obj) {
-        if (obj != null) { // cannot compare external id because the Address DTO does not have an id param
+        // cannot compare external id, as the Addresses are embedded and not
+        // independent Objects.
+        if (obj != null) {
             street1 = obj.street1;
             street2 = obj.street2;
             postalCode = obj.postalCode;

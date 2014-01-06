@@ -135,8 +135,6 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroupByUserAndType(UserEntity user, GroupType type);
 
-    GroupEntity findMemberGroup(UserEntity user);
-
     GroupEntity findNationalGroup(UserEntity user);
 
     GroupEntity findPrivateGroup(UserEntity user);

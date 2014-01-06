@@ -143,5 +143,7 @@ public interface BasicDao {
      */
     FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
 
+    GroupEntity findMemberGroup(UserEntity user);
+
     List<GroupEntity> findAllGroups(GroupType type);
 }

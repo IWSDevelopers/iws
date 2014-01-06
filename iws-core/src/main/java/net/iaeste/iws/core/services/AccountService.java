@@ -527,6 +527,8 @@ public final class AccountService extends CommonService<AccessDao> {
         // a few other parameters. First accounts with status Active or Blocked
         if (current != UserStatus.NEW) {
             switch (newStatus) {
+                case NEW:
+                    throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Illegal User state change.");
                 case ACTIVE:
                 case SUSPENDED:
                     if (current != UserStatus.DELETED) {
@@ -540,8 +542,6 @@ public final class AccountService extends CommonService<AccessDao> {
                 case DELETED:
                     deletePrivateData(authentication, user);
                     break;
-                default:
-                    throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Illegal User state change.");
             }
         } else if (newStatus == UserStatus.DELETED) {
             // We have a User Account, that was never activated. This we can

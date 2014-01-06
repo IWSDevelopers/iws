@@ -98,33 +98,6 @@ public final class AdministrationTransformer {
         return roles;
     }
 
-//    public static UserGroup transformUserGroup(final UserGroupEntity entity) {
-//        final User user;
-//
-//        if (entity != null) {
-//            user = new User();
-//
-//            final UserEntity userEntity = transform(entity.getUser());
-//            final GroupEntity groupEntity = entity.getGroup();
-////            user.setUserId(userEntity.getExternalId());
-////            user.setUsername(userEntity.getUserName());
-////            user.setAlias(userEntity.getAlias());
-////            user.setFirstname(userEntity.getFirstname());
-////            user.setLastname(userEntity.getLastname());
-////            user.setStatus(userEntity.getStatus());
-////            user.setPrivacy(userEntity.getPrivateData());
-////            user.setNotifications(userEntity.getNotifications());
-////            user.setMemberCountryId(groupEntity.getCountry().getCountryCode());
-//
-//            // TODO; Implement the Person Object
-//            //user.setPerson(transform(entity.getPerson()));
-//        } else {
-//            user = null;
-//        }
-//
-//        return user;
-//    }
-
     public static User transform(final UserEntity entity) {
         final User user;
 
@@ -139,9 +112,7 @@ public final class AdministrationTransformer {
             user.setStatus(entity.getStatus());
             user.setPrivacy(entity.getPrivateData());
             user.setNotifications(entity.getNotifications());
-
-            // TODO; Implement the Person Object
-            //user.setPerson(transform(entity.getPerson()));
+            user.setPerson(CommonTransformer.transform(entity.getPerson()));
         } else {
             user = null;
         }
@@ -162,9 +133,7 @@ public final class AdministrationTransformer {
             entity.setStatus(user.getStatus());
             entity.setPrivateData(user.getPrivacy());
             entity.setNotifications(user.getNotifications());
-
-            // TODO; Implement the Person Object
-            //entity.setPerson(transform(user.getPerson()));
+            //entity.setPerson(CommonTransformer.transform(user.getPerson()));
         } else {
             entity = null;
         }

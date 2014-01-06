@@ -226,7 +226,7 @@ public class PersonEntity implements Updateable<PersonEntity> {
      */
     @Override
     public void merge(final PersonEntity obj) {
-        if ((obj != null) && id.equals(obj.id)) {
+        if (obj != null) {
             address = obj.address;
             email = obj.email;
             phone = obj.phone;

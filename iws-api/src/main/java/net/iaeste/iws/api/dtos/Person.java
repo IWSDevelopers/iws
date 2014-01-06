@@ -36,6 +36,7 @@ public final class Person extends AbstractVerification {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private Country nationality = null;
     private Address address = null;
     private String alternateEmail = null;
     private String phone = null;
@@ -62,7 +63,8 @@ public final class Person extends AbstractVerification {
      */
     public Person(final Person person) {
         if (person != null) {
-            address = person.address;
+            nationality = new Country(person.nationality);
+            address = new Address(person.address);
             alternateEmail = person.alternateEmail;
             phone = person.phone;
             mobile = person.mobile;
@@ -75,6 +77,24 @@ public final class Person extends AbstractVerification {
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    /**
+     * Sets the Nationality of the user, the Nationality is an optional field,
+     * though for certain internal processes, it is a required field.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the value
+     * is not a verifiable Object.
+     *
+     * @param nationality User Nationality
+     * @throws IllegalArgumentException if not verifiable
+     */
+    public void setNationality(final Country nationality) throws IllegalArgumentException {
+        ensureVerifiable("nationality", nationality);
+        this.nationality = nationality;
+    }
+
+    public Country getNationality() {
+        return nationality;
+    }
 
     /**
      * Sets the Address of a Person. The Address is optional, but if set, then

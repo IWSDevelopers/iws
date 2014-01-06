@@ -43,11 +43,12 @@ public final class CommonTransformer {
     }
 
     public static Person transform(final PersonEntity entity) {
-        Person person = null;
+        final Person person;
 
         if (entity != null) {
             person = new Person();
 
+            person.setNationality(transform(entity.getNationality()));
             person.setAddress(transform(entity.getAddress()));
             person.setAlternateEmail(entity.getEmail());
             person.setPhone(entity.getPhone());
@@ -55,6 +56,8 @@ public final class CommonTransformer {
             person.setFax(entity.getFax());
             person.setBirthday(convert(entity.getBirthday()));
             person.setGender(entity.getGender());
+        } else {
+            person = null;
         }
 
         return person;

@@ -89,7 +89,7 @@ public class BasicJpaDao implements BasicDao {
         entityManager.persist(entityToPersist);
 
         final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
-        if (level != MonitoringLevel.NONE) {
+        if ((level != MonitoringLevel.NONE) && (authentication.getGroup() != null)) {
             final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
@@ -102,7 +102,7 @@ public class BasicJpaDao implements BasicDao {
     @Override
     public <T extends Updateable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
         final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
-        if (level != MonitoringLevel.NONE) {
+        if ((level != MonitoringLevel.NONE) && (authentication.getGroup() != null)) {
             final List<Field> changes = monitoringProcessor.findChanges (level, entityToPersist, changesToBeMerged);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
@@ -230,6 +230,18 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("efid", externalId);
 
         return findUniqueResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findMemberGroup(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
+        query.setParameter("uid", user.getId());
+        query.setParameter("type", GroupType.MEMBER);
+
+        return findSingleResult(query, "User");
     }
 
     /**

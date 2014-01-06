@@ -81,33 +81,33 @@ public class CommonService<T extends BasicDao> {
      * @return The persists {@code PersonEntity}
      */
     protected PersonEntity processPerson(final Authentication authentication, final PersonEntity entity, final Person... persons) {
-        PersonEntity result = null;
+        final Person person = getFirstObject(persons);
+        final PersonEntity newEntity = CommonTransformer.transform(person);
+        final PersonEntity persisted;
 
-        if (entity != null) {
-            final Person person = getFirstObject(persons);
-
-            if (person != null) {
-                // First, deal with the internal Address
-                final AddressEntity address = entity.getAddress();
-                if (address != null) {
-                    processAddress(authentication, entity.getAddress(), person.getAddress());
-                }
-
-                final PersonEntity newEntity = CommonTransformer.transform(person);
-                // Now, we'll persist the Person
-                if (entity.getId() == null) {
-                    dao.persist(authentication, newEntity);
-                    result = newEntity;
-                } else {
-                    dao.persist(authentication, entity, newEntity);
-                    result = entity;
-                }
+        if (entity == null) {
+            if (newEntity != null) {
+                newEntity.setAddress(processAddress(authentication, null, person.getAddress()));
+                dao.persist(authentication, newEntity);
+                persisted = newEntity;
             } else {
-                result = entity;
+                persisted = null;
             }
+        } else {
+            entity.setAddress(processAddress(authentication, entity.getAddress(), person.getAddress()));
+            if (entity.getId() == null) {
+                // We merge outside of the Persistence Scope, since we otherwise
+                // will attempt to add history information, which with a
+                // non-persisted entity will cause problems
+                entity.merge(newEntity);
+                dao.persist(authentication, entity);
+            } else {
+                dao.persist(authentication, entity, newEntity);
+            }
+            persisted = entity;
         }
 
-        return result;
+        return persisted;
     }
 
     /**
@@ -156,32 +156,42 @@ public class CommonService<T extends BasicDao> {
      * @param authentication User & Group information
      * @param entity         Entity to persist
      * @param addresses      Optional Address information, for updates
+     * @return Persisted Address Entity
      */
-    protected void processAddress(final Authentication authentication, final AddressEntity entity, final Address... addresses) {
-        final Address address = getFirstObject(addresses);
+    protected AddressEntity processAddress(final Authentication authentication, final AddressEntity entity, final Address... addresses) {
+        final AddressEntity newEntity = CommonTransformer.transform(getFirstObject(addresses));
+        final AddressEntity persisted;
 
-        if (entity.getId() == null) {
+        if (entity == null) {
+            // Okay, no Address Entity exists - lets simply use the newEntity as
+            // our base, provided that it is valid
+            if (newEntity != null) {
+                final CountryEntity country = findCountry(authentication, null);
+                newEntity.setCountry(country);
+                dao.persist(authentication, newEntity);
+                persisted = newEntity;
+            } else {
+                persisted = null;
+            }
+        } else if (entity.getId() == null) {
+            // The Address Entity was not earlier persisted. We're adding
+            // Country and filling in the Address fields
             final CountryEntity country = findCountry(authentication, entity.getCountry());
             entity.setCountry(country);
+            // We merge outside of the Persistence Scope, since we otherwise
+            // will attempt to add history information, which with a
+            // non-persisted entity will cause problems
+            entity.merge(newEntity);
             dao.persist(authentication, entity);
-        } else if (address != null) {
-            final AddressEntity newEntity = CommonTransformer.transform(address);
-            dao.persist(authentication, entity, newEntity);
-        }
-    }
-
-    private CountryEntity findCountry(final Authentication authentication, final CountryEntity country) {
-        final CountryEntity entity;
-
-        if ((country == null) || (country.getCountryCode() == null)) {
-            entity = authentication.getGroup().getCountry();
-        } else if (country.getId() == null) {
-            entity = dao.findCountry(country.getCountryCode());
+            persisted = entity;
         } else {
-            entity = country;
+            // The Address Entity was earlier persisted, let's just merge the
+            // changes into it
+            dao.persist(authentication, entity, newEntity);
+            persisted = entity;
         }
 
-        return entity;
+        return persisted;
     }
 
     /**
@@ -193,6 +203,24 @@ public class CommonService<T extends BasicDao> {
         if (address != null) {
             dao.delete(address);
         }
+    }
+
+    private CountryEntity findCountry(final Authentication authentication, final CountryEntity country) {
+        final CountryEntity entity;
+
+        if ((country == null) || (country.getCountryCode() == null)) {
+            if (authentication.getGroup() != null) {
+                entity = authentication.getGroup().getCountry();
+            } else {
+                entity = dao.findMemberGroup(authentication.getUser()).getCountry();
+            }
+        } else if (country.getId() == null) {
+            entity = dao.findCountry(country.getCountryCode());
+        } else {
+            entity = country;
+        }
+
+        return entity;
     }
 
     // =========================================================================
@@ -262,6 +290,19 @@ public class CommonService<T extends BasicDao> {
         }
     }
 
+    /**
+     * Java doesn't support default values directly, but with Varargs act as a
+     * default value, hence we use it to determine if an Object is present or
+     * not without needing to write extra methods to deal with the
+     * variations.<br />
+     *   This method is here to retrieve the first Object from a List which can
+     * have the following values, null, empty or one Object on the list. The
+     * method will simply return either null or the first Object found.
+     *
+     * @param objs Object listing to get the first valid Object from
+     * @return First valid Object or null
+     */
+    @SafeVarargs
     private static <T> T getFirstObject(final T... objs) {
         final T result;
 

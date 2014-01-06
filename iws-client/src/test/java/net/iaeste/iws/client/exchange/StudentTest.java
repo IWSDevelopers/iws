@@ -332,11 +332,11 @@ public final class StudentTest extends AbstractTest {
 
         //test updating existing application
         application = Copier.copy(createStudentApplicationResponse.getStudentApplication());
-        application.setStatus(ApplicationStatus.NOMINATED);
+        application.setUniversity("MyUniversity");
         final ProcessStudentApplicationsRequest createStudentApplicationsRequest2 = new ProcessStudentApplicationsRequest(application);
         final StudentApplicationResponse createStudentApplicationResponse2 = students.processStudentApplication(austriaToken, createStudentApplicationsRequest2);
         assertThat(createStudentApplicationResponse2.isOk(), is(true));
-        assertThat(createStudentApplicationResponse2.getStudentApplication().getStatus(), is(application.getStatus()));
+        assertThat(createStudentApplicationResponse2.getStudentApplication().getUniversity(), is(application.getUniversity()));
     }
 
     //TODO Kim, have a look at this test please

@@ -58,7 +58,8 @@ public enum OfferState {
     COMPLETED("Completed"),
     APPLICATION_REJECTED("Application rejected"),
     APPLICATION_CANCELED("Application canceled"),
-    AT_EMPLOYER("At Employer");
+    AT_EMPLOYER("At Employer"),
+    APPLICATION_ACCEPTED("Application accepted");
 
     // =========================================================================
     // Private Constructor & functionality

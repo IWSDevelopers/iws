@@ -382,9 +382,14 @@ public final class StudentService extends CommonService<StudentDao> {
         dao.persist(authentication, storedApplication, updated);
 
         //update status for OfferGroup
-        updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.NOMINATIONS);
+        //it can be done either when there are applications (APPLICATIONS) or the nominated application was rejected or cancelled previously
+        if (EnumSet.of(OfferState.APPLICATIONS, OfferState.SHARED).contains(storedApplication.getOfferGroup().getStatus())) {
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.NOMINATIONS);
+        }
         //update status for Offer
-        updateOfferStatus(storedApplication.getOfferGroup().getOffer(), OfferState.NOMINATIONS);
+        if (OfferState.SHARED.equals(storedApplication.getOfferGroup().getOffer().getStatus())) {
+            updateOfferStatus(storedApplication.getOfferGroup().getOffer(), OfferState.NOMINATIONS);
+        }
     }
 
     private void rejectApplication(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity storedApplication) {

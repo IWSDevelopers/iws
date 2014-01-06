@@ -43,6 +43,7 @@ public class StorageTest extends AbstractTest {
 
     @Override
     public void tearDown() {
+        logout(token);
     }
 
     @Test

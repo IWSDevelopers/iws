@@ -310,6 +310,9 @@ public final class StudentService extends CommonService<StudentDao> {
             case FORWARDED_TO_EMPLOYER:
                 forwardToEmployer(authentication, studentApplication, applicationEntity);
                 break;
+            case ACCEPTED:
+                acceptApplication(authentication, studentApplication, applicationEntity);
+                break;
             default:
                 throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
         }
@@ -356,6 +359,18 @@ public final class StudentService extends CommonService<StudentDao> {
         updateOfferGroupStatus(applicationEntity.getOfferGroup(), OfferState.AT_EMPLOYER);
         //update status for Offer
         updateOfferStatus(applicationEntity.getOfferGroup().getOffer(), OfferState.AT_EMPLOYER);
+    }
+
+    private void acceptApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity applicationEntity) {
+        application.setStatus(ApplicationStatus.ACCEPTED);
+        ApplicationEntity updated = transform(application);
+        updated.setOfferGroup(applicationEntity.getOfferGroup());
+        dao.persist(authentication, applicationEntity, updated);
+
+        //update status for OfferGroup
+        updateOfferGroupStatus(applicationEntity.getOfferGroup(), OfferState.APPLICATION_ACCEPTED);
+        //update status for Offer
+        updateOfferStatus(applicationEntity.getOfferGroup().getOffer(), OfferState.APPLICATION_ACCEPTED);
     }
 
     private void nominateApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity storedApplication) {
@@ -437,6 +452,13 @@ public final class StudentService extends CommonService<StudentDao> {
 
     private void verifyApplicationStatusTransition(final ApplicationStatus oldStatus, final ApplicationStatus newStatus) {
         switch (oldStatus) {
+            case ACCEPTED:
+                switch (newStatus) {
+                    case CANCELLED:
+                        break;
+                    default:
+                        throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);
+                }
             case APPLIED:
                 switch (newStatus) {
                     case CANCELLED:

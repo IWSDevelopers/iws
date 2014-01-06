@@ -609,13 +609,13 @@ public final class StudentTest extends AbstractTest {
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
-        final StudentApplicationRequest cancelStudentRequest = new StudentApplicationRequest(
+        final StudentApplicationRequest cancelStudentApplicationRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.CANCELLED);
-        final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaToken, cancelStudentRequest);
+        final StudentApplicationResponse cancelStudentApplicationResponse = students.processApplicationStatus(austriaToken, cancelStudentApplicationRequest);
 
-        assertThat("Student has been cancelled", nominateStudentResponse.isOk(), is(true));
-        assertThat("Application state is CANCELLED", nominateStudentResponse.getStudentApplication().getStatus(), is(ApplicationStatus.CANCELLED));
+        assertThat("Student has been cancelled", cancelStudentApplicationResponse.isOk(), is(true));
+        assertThat("Application state is CANCELLED", cancelStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.CANCELLED));
 
         final StudentApplicationRequest applyStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
@@ -625,6 +625,158 @@ public final class StudentTest extends AbstractTest {
         assertThat("Student has been canceled by Austria", rejectStudentResponse.isOk(), is(true));
         final StudentApplication rejectedApplication = rejectStudentResponse.getStudentApplication();
         assertThat(rejectedApplication.getStatus(), is(ApplicationStatus.APPLIED));
+    }
+
+    @Test
+    public void testAcceptAtEmployerApplication() {
+        final Date nominationDeadline = new Date().plusDays(20);
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001008", "Employer", "PL");
+
+        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        assertThat("Offer has been saved", saveResponse.isOk(), is(true));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        final String offerId = saveResponse.getOffer().getOfferId();
+        offersToShare.add(offerId);
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offersToShare, groupIds, nominationDeadline));
+
+        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app010@university.edu", "password1", "Student1", "Graduate1");
+        createUserRequest1.setStudentAccount(true);
+
+        final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
+
+        assertThat("Student has been saved", createStudentResponse1.isOk(), is(true));
+
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
+        assertThat("At least one student has been fetched", fetchStudentsResponse.isOk(), is(true));
+        assertThat("At least one student has been fetched", fetchStudentsResponse.getStudents().isEmpty(), is(false));
+
+        final Student student = fetchStudentsResponse.getStudents().get(0);
+        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
+
+        final StudentApplication application = new StudentApplication();
+        application.setOffer(saveResponse.getOffer());
+        application.setStudent(student);
+        application.setStatus(ApplicationStatus.APPLIED);
+        application.setHomeAddress(TestData.prepareAddress("DE"));
+        application.setAddressDuringTerms(TestData.prepareAddress("AT"));
+
+        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
+        assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
+
+        final StudentApplicationRequest nominateStudentApplicationRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.NOMINATED);
+        final StudentApplicationResponse nominateStudentApplicationResponse = students.processApplicationStatus(austriaToken, nominateStudentApplicationRequest);
+
+        assertThat("Student has been nominated by Austria to Poland", nominateStudentApplicationResponse.isOk(), is(true));
+        assertThat("Application state is NOMINATED", nominateStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
+
+        final StudentApplicationRequest forwardStudentApplicationRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.FORWARDED_TO_EMPLOYER);
+        final StudentApplicationResponse forwardStudentApplicationResponse = students.processApplicationStatus(token, forwardStudentApplicationRequest);
+
+        assertThat("Student has been forwarded to employer", forwardStudentApplicationResponse.isOk(), is(true));
+        assertThat("Application state is FORWARDED_TO_EMPLOYER", forwardStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.FORWARDED_TO_EMPLOYER));
+
+        final StudentApplicationRequest acceptStudentApplicationRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.ACCEPTED);
+        final StudentApplicationResponse acceptStudentApplicationResponse = students.processApplicationStatus(token, acceptStudentApplicationRequest);
+
+        assertThat("Student has been accepted", acceptStudentApplicationResponse.isOk(), is(true));
+        assertThat(acceptStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.ACCEPTED));
+    }
+
+    @Test
+    public void testCancelAcceptedApplication() {
+        final Date nominationDeadline = new Date().plusDays(20);
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001009", "Employer", "PL");
+
+        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        assertThat("Offer has been saved", saveResponse.isOk(), is(true));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        final String offerId = saveResponse.getOffer().getOfferId();
+        offersToShare.add(offerId);
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offersToShare, groupIds, nominationDeadline));
+
+        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app011@university.edu", "password1", "Student1", "Graduate1");
+        createUserRequest1.setStudentAccount(true);
+
+        final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
+
+        assertThat("Student has been saved", createStudentResponse1.isOk(), is(true));
+
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
+        assertThat("At least one student has been fetched", fetchStudentsResponse.isOk(), is(true));
+        assertThat("At least one student has been fetched", fetchStudentsResponse.getStudents().isEmpty(), is(false));
+
+        final Student student = fetchStudentsResponse.getStudents().get(0);
+        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
+
+        final StudentApplication application = new StudentApplication();
+        application.setOffer(saveResponse.getOffer());
+        application.setStudent(student);
+        application.setStatus(ApplicationStatus.APPLIED);
+        application.setHomeAddress(TestData.prepareAddress("DE"));
+        application.setAddressDuringTerms(TestData.prepareAddress("AT"));
+
+        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
+        assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
+
+        final StudentApplicationRequest nominateStudentApplicationRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.NOMINATED);
+        final StudentApplicationResponse nominateStudentApplicationResponse = students.processApplicationStatus(austriaToken, nominateStudentApplicationRequest);
+
+        assertThat("Student has been nominated by Austria to Poland", nominateStudentApplicationResponse.isOk(), is(true));
+        assertThat("Application state is NOMINATED", nominateStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
+
+        final StudentApplicationRequest forwardStudentApplicationRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.FORWARDED_TO_EMPLOYER);
+        final StudentApplicationResponse forwardStudentApplicationResponse = students.processApplicationStatus(token, forwardStudentApplicationRequest);
+
+        assertThat("Student has been forwarded to employer", forwardStudentApplicationResponse.isOk(), is(true));
+        assertThat("Application state is FORWARDED_TO_EMPLOYER", forwardStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.FORWARDED_TO_EMPLOYER));
+
+        final StudentApplicationRequest acceptStudentApplicationRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.ACCEPTED);
+        final StudentApplicationResponse acceptStudentApplicationResponse = students.processApplicationStatus(token, acceptStudentApplicationRequest);
+
+        assertThat("Student has been accepted", acceptStudentApplicationResponse.isOk(), is(true));
+        assertThat(acceptStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.ACCEPTED));
+
+        final StudentApplicationRequest cancelStudentApplicationRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.CANCELLED);
+        final StudentApplicationResponse cancelStudentApplicationResponse = students.processApplicationStatus(austriaToken, cancelStudentApplicationRequest);
+
+        assertThat("Student has been cancelled", cancelStudentApplicationResponse.isOk(), is(true));
+        assertThat("Application state is CANCELLED", cancelStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.CANCELLED));
     }
 
     @Test

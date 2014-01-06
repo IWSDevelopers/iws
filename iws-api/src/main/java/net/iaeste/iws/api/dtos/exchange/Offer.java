@@ -198,7 +198,8 @@ public final class Offer extends AbstractVerification {
      * initial persisting of the Offer.<br />
      *   The method will throw an {@code IllegalArgumentException} if the
      * Group is not valid, i.e. if the Object is either null or not a valid
-     * Group Object.
+     * Group Object.<br />
+     *   See Trac task #588 for more information.
      *
      * @param group National Group, which this Offer belongs to
      * @throws IllegalArgumentException if not valid
@@ -210,6 +211,13 @@ public final class Offer extends AbstractVerification {
         //this.group = new Group(group);
     }
 
+    /**
+     * Method is deprecated, please use the Group from the Employer.<br />
+     *   See Trac task #588 for more information.
+     *
+     * @return Group from Employer
+     * @deprecated Please use the Group in the Employer Object
+     */
     @Deprecated
     public Group getGroup() {
         return employer.getGroup();

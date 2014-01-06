@@ -368,9 +368,9 @@ public final class StudentService extends CommonService<StudentDao> {
         dao.persist(authentication, applicationEntity, updated);
 
         //update status for OfferGroup
-        updateOfferGroupStatus(applicationEntity.getOfferGroup(), OfferState.APPLICATION_ACCEPTED);
+        updateOfferGroupStatus(applicationEntity.getOfferGroup(), OfferState.ACCEPTED);
         //update status for Offer
-        updateOfferStatus(applicationEntity.getOfferGroup().getOffer(), OfferState.APPLICATION_ACCEPTED);
+        updateOfferStatus(applicationEntity.getOfferGroup().getOffer(), OfferState.ACCEPTED);
     }
 
     private void nominateApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity storedApplication) {

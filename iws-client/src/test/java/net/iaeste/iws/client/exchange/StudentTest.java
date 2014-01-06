@@ -341,7 +341,6 @@ public final class StudentTest extends AbstractTest {
 
     //TODO Kim, have a look at this test please
     //@Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB")
-    @Ignore("2014-01-06 Martin - user lacks privilege or object not found: APPLICATIO0_.OFFER69_1_")
     @Test
     public void testNominatingApplication() {
         final Date nominationDeadline = new Date().plusDays(20);

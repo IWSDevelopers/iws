@@ -251,6 +251,8 @@ public final class StudentTest extends AbstractTest {
         assertThat(fetchStudentApplicationsResponse.getStudentApplications().size(), is(1));
     }
 
+    //TODO Kim, have a look at this test please
+    //@Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB. See #515")
     @Test
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
@@ -335,6 +337,8 @@ public final class StudentTest extends AbstractTest {
         assertThat(createStudentApplicationResponse2.getStudentApplication().getUniversity(), is(application.getUniversity()));
     }
 
+    //TODO Kim, have a look at this test please
+    //@Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB. See #515")
     @Test
     public void testNominatingApplication() {
         final Date nominationDeadline = new Date().plusDays(20);

@@ -498,7 +498,8 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    public void testRejectNominatedApplicationBySendingCountry() {
+    public void testRejectAppliedApplicationBySendingCountry() {
+        //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001065", "Employer", "PL");
 
@@ -544,25 +545,15 @@ public final class StudentTest extends AbstractTest {
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
-        final StudentApplicationRequest nominateStudentRequest = new StudentApplicationRequest(
-                studentApplication.getApplicationId(),
-                ApplicationStatus.NOMINATED);
-        final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaToken, nominateStudentRequest);
-
-        assertThat("Student has been nominated by Austria to Poland", nominateStudentResponse.isOk(), is(true));
-        assertThat("Application state is NOMINATED", nominateStudentResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
-
         final StudentApplicationRequest rejectStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
-                ApplicationStatus.REJECTED);
+                ApplicationStatus.REJECTED_BY_SENDING_COUNTRY);
         rejectStudentRequest.setRejectInternalComment("reject internal comment");
         rejectStudentRequest.setRejectDescription("reject description");
-        rejectStudentRequest.setRejectByEmployerReason("reject employer reason");
         final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaToken, rejectStudentRequest);
 
-        assertThat("Student has been rejected by Austria", rejectStudentResponse.isOk(), is(true));
+        assertThat("Student has been rejected by Austria (sending country)", rejectStudentResponse.isOk(), is(true));
         final StudentApplication rejectedApplication = rejectStudentResponse.getStudentApplication();
-        assertThat(rejectedApplication.getRejectByEmployerReason(), is(rejectStudentRequest.getRejectByEmployerReason()));
         assertThat(rejectedApplication.getRejectDescription(), is(rejectStudentRequest.getRejectDescription()));
         assertThat(rejectedApplication.getRejectInternalComment(), is(rejectStudentRequest.getRejectInternalComment()));
     }

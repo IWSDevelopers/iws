@@ -117,9 +117,11 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroup(UserEntity user, String externalGroupId);
 
+    UserGroupEntity findIw3UserGroup(Integer iw3UserId, Integer iw3GroupId);
+
     List<UserGroupEntity> findGroupUsers(GroupEntity group);
 
-    UserGroupEntity findIw3UserGroup(Integer iw3UserId, Integer iw3GroupId);
+    List<UserGroupEntity> findStudents(Long memberGroupId);
 
     List<GroupEntity> findSubGroups(Long parentId);
 
@@ -165,10 +167,13 @@ public interface AccessDao extends BasicDao {
     RoleEntity findRoleByUserAndGroup(String externalUserId, GroupEntity group);
 
     UserEntity findNationalSecretaryByMemberGroup(final GroupEntity memberGroup);
+
     UserEntity findOwnerByGroup(final GroupEntity group);
 
     UserEntity findActiveUserByExternalId(String externalUserId);
+
     UserEntity findUserByExternalId(String externalUserId);
+
     UserGroupEntity findMemberByGroupAndUser(GroupEntity group, UserEntity user);
 
     /**

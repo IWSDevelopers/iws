@@ -35,6 +35,7 @@ public final class FetchGroupRequest extends AbstractPaginatable {
     private String groupId = null;
     private GroupType groupType = null;
     private boolean fetchUsers = false;
+    private boolean fetchStudents = false;
     private boolean fetchSubGroups = false;
 
     // =========================================================================
@@ -97,6 +98,14 @@ public final class FetchGroupRequest extends AbstractPaginatable {
         return fetchUsers;
     }
 
+    public void setFetchStudents(final boolean fetchStudents) {
+        this.fetchStudents = fetchStudents;
+    }
+
+    public boolean isFetchStudents() {
+        return fetchStudents;
+    }
+
     public void setFetchSubGroups(final boolean fetchSubGroups) {
         this.fetchSubGroups = fetchSubGroups;
     }
@@ -134,11 +143,10 @@ public final class FetchGroupRequest extends AbstractPaginatable {
         }
 
         switch (sortBy) {
-            //case CREATED:
             case NAME:
                 page.setSortBy(sortBy);
                 break;
-            default:
+            case CREATED:
                 // If unsupported, we're going to revert to the default
                 page.setSortBy(SortingField.CREATED);
         }

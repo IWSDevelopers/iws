@@ -292,6 +292,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public UserGroupEntity findIw3UserGroup(final Integer iw3UserId, final Integer iw3GroupId) {
+        final Query query = entityManager.createNamedQuery("usergroup.findByIw3UserAndGroup");
+        query.setParameter("iw3User", iw3UserId);
+        query.setParameter("iw3Group", iw3GroupId);
+
+        return findSingleResult(query, "UserGroup");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<UserGroupEntity> findGroupUsers(final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("usergroup.findGroupMembers");
         query.setParameter("gid", group.getId());
@@ -303,12 +315,11 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public UserGroupEntity findIw3UserGroup(final Integer iw3UserId, final Integer iw3GroupId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findByIw3UserAndGroup");
-        query.setParameter("iw3User", iw3UserId);
-        query.setParameter("iw3Group", iw3GroupId);
+    public List<UserGroupEntity> findStudents(final Long memberGroupId) {
+        final Query query = entityManager.createNamedQuery("usergroup.findStudents");
+        query.setParameter("pid", memberGroupId);
 
-        return findSingleResult(query, "UserGroup");
+        return query.getResultList();
     }
 
     /**

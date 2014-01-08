@@ -104,7 +104,7 @@ public final class UserGroupTest extends AbstractAdministration {
         groupRequest.setFetchUsers(true);
         final FetchGroupResponse groupResponse = client.fetchGroup(token, groupRequest);
         assertThat(groupResponse.isOk(), is(true));
-        assertThat(groupResponse.getUserGroups().size(), is(2));
+        assertThat(groupResponse.getMembers().size(), is(2));
     }
 
     @Test
@@ -139,7 +139,7 @@ public final class UserGroupTest extends AbstractAdministration {
         groupRequest.setFetchUsers(true);
         final FetchGroupResponse groupResponse = client.fetchGroup(alternativeToken, groupRequest);
         assertThat(groupResponse.isOk(), is(true));
-        assertThat(groupResponse.getUserGroups().size(), is(2));
+        assertThat(groupResponse.getMembers().size(), is(2));
 
         // And just to verify that we're no longer the owner - we're attempting
         // to change the Ownership again, and this time expecting an
@@ -158,7 +158,7 @@ public final class UserGroupTest extends AbstractAdministration {
         groupRequest.setFetchUsers(true);
         final FetchGroupResponse groupResponse = client.fetchGroup(token, groupRequest);
         final Group group = groupResponse.getGroup();
-        final UserGroup user = groupResponse.getUserGroups().get(0);
+        final UserGroup user = groupResponse.getMembers().get(0);
 
         final OwnerRequest request = new OwnerRequest(group, user.getUser());
         final Fallible response = client.changeGroupOwner(token, request);

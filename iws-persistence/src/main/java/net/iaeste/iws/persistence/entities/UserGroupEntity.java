@@ -91,9 +91,18 @@ import java.util.Map;
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group = :group" +
                         "  and ug.user = :user"),
+        // The roles are hardcoded to Owner, Moderator & Member, see
+        // IWSConstants for more information
         @NamedQuery(name = "usergroup.findGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.id = :gid"),
+                        "where ug.group.id = :gid" +
+                        "  and ug.role.id in (1, 2, 3)"),
+        // The roles are hardcoded to Students, see IWSConstants for more
+        // information
+        @NamedQuery(name = "usergroup.findStudents",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.parentId = :pid" +
+                        "  and ug.role.id = 5"),
         @NamedQuery(name = "usergroup.findGroupMembersOnPublicList",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.id = :gid" +

@@ -185,10 +185,12 @@ public final class GroupService {
 
         if (entity != null) {
             final Group group = CommonTransformer.transform(entity);
-            final List<UserGroup> users = findGroupMembers(request.isFetchUsers(), entity);
-            final List<Group> groups = findSubGroups(request.isFetchSubGroups(), entity);
+            final List<UserGroup> users = findGroupMembers(entity, request.isFetchUsers());
+            final List<UserGroup> students = findStudents(entity, request.isFetchStudents());
+            final List<Group> groups = findSubGroups(entity, request.isFetchSubGroups());
 
             response = new FetchGroupResponse(group, users, groups);
+            response.setStudents(students);
         } else {
             response = new FetchGroupResponse(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "No Group was found matching the requested Id.");
         }
@@ -469,7 +471,7 @@ public final class GroupService {
         dao.persist(userGroup);
     }
 
-    private List<UserGroup> findGroupMembers(final boolean fetchUsers, final GroupEntity entity) {
+    private List<UserGroup> findGroupMembers(final GroupEntity entity, final boolean fetchUsers) {
         final List<UserGroup> result;
 
         if (fetchUsers) {
@@ -482,7 +484,20 @@ public final class GroupService {
         return result;
     }
 
-    private List<Group> findSubGroups(final boolean fetchSubGroups, final GroupEntity entity) {
+    private List<UserGroup> findStudents(final GroupEntity entity, final boolean fetchStudents) {
+        final List<UserGroup> result;
+
+        if (fetchStudents && (entity.getGroupType().getGrouptype() == GroupType.NATIONAL)) {
+            final List<UserGroupEntity> members = dao.findStudents(entity.getParentId());
+            result = transformMembers(members);
+        } else {
+            result = new ArrayList<>(0);
+        }
+
+        return result;
+    }
+
+    private List<Group> findSubGroups(final GroupEntity entity, final boolean fetchSubGroups) {
         final List<Group> result;
 
         if (fetchSubGroups) {

@@ -234,10 +234,10 @@ public final class UserAccountTest extends AbstractAdministration {
         groupRequest.setFetchUsers(true);
         final FetchGroupResponse groupResponse1 = administration.fetchGroup(myToken, groupRequest);
         assertThat(groupResponse1.isOk(), is(true));
-        assertThat(groupResponse1.getUserGroups().size(), is(1));
+        assertThat(groupResponse1.getMembers().size(), is(1));
 
         // Now, let's update the Object, and send it into the IWS
-        final User myself = groupResponse1.getUserGroups().get(0).getUser();
+        final User myself = groupResponse1.getMembers().get(0).getUser();
         final Person person = myself.getPerson();
         final Address address = new Address();
         address.setStreet1("Mainstreet 1");

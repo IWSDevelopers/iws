@@ -73,6 +73,13 @@ public class Config {
         dataSource.setDatabaseName(readProperty("datasource.iw3.database", "iw3_test"));
         dataSource.setUser(readProperty("datasource.iw3.user", "readonly"));
         final String pwd = readProperty("datasource.iw3.password", "af9v7aq6");
+
+        // this is the data source for the iw3 dump on the dev server
+//        dataSource.setServerName(readProperty("datasource.iw3.server", "localhost"));
+//        dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.iw3.port", "5432")));
+//        dataSource.setDatabaseName(readProperty("datasource.iw3.database", "iw3_test"));
+//        dataSource.setUser(readProperty("datasource.iw3.user", "iw4_test_user"));
+//        final String pwd = readProperty("datasource.iw3.password", "jIf6rOAX92niHMFsQJjbuyf0");
         if ((pwd != null) && !pwd.isEmpty()) {
             dataSource.setPassword(pwd);
         }

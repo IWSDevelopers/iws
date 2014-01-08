@@ -68,11 +68,11 @@ public class Config {
     public DataSource dataSourceIW3() {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setServerName(readProperty("datasource.iw3.server", "localhost"));
+        dataSource.setServerName(readProperty("datasource.iw3.server", "192.38.77.85"));
         dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.iw3.port", "5432")));
-        dataSource.setDatabaseName(readProperty("datasource.iw3.database", "iw3"));
-        dataSource.setUser(readProperty("datasource.iw3.user", "kim"));
-        final String pwd = readProperty("datasource.iw3.password", null);
+        dataSource.setDatabaseName(readProperty("datasource.iw3.database", "iw3_test"));
+        dataSource.setUser(readProperty("datasource.iw3.user", "readonly"));
+        final String pwd = readProperty("datasource.iw3.password", "af9v7aq6");
         if ((pwd != null) && !pwd.isEmpty()) {
             dataSource.setPassword(pwd);
         }
@@ -86,9 +86,9 @@ public class Config {
 
         dataSource.setServerName(readProperty("datasource.iws.server", "localhost"));
         dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.iws.port", "5432")));
-        dataSource.setDatabaseName(readProperty("datasource.iws.database", "iws"));
-        dataSource.setUser(readProperty("datasource.iws.user", "kim"));
-        final String pwd = readProperty("datasource.iws.password", null);
+        dataSource.setDatabaseName(readProperty("datasource.iws.database", "db_iw4_test"));
+        dataSource.setUser(readProperty("datasource.iws.user", "iw4_test_user"));
+        final String pwd = readProperty("datasource.iws.password", "jIf6rOAX92niHMFsQJjbuyf0");
         if ((pwd != null) && !pwd.isEmpty()) {
             dataSource.setPassword(pwd);
         }
@@ -102,9 +102,9 @@ public class Config {
 
         dataSource.setServerName(readProperty("datasource.mail.server", "localhost"));
         dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.mail.port", "5432")));
-        dataSource.setDatabaseName(readProperty("datasource.mail.database", "iws"));
-        dataSource.setUser(readProperty("datasource.mail.user", "kim"));
-        final String pwd = readProperty("datasource.mail.password", null);
+        dataSource.setDatabaseName(readProperty("datasource.mail.database", "db_iw4_maillists_test"));
+        dataSource.setUser(readProperty("datasource.mail.user", "iw4_test_user"));
+        final String pwd = readProperty("datasource.mail.password", "jIf6rOAX92niHMFsQJjbuyf0");
         if ((pwd != null) && !pwd.isEmpty()) {
             dataSource.setPassword(pwd);
         }

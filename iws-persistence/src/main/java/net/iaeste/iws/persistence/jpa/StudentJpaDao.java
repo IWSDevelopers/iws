@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.AttachmentEntity;
@@ -25,6 +26,7 @@ import net.iaeste.iws.persistence.views.ApplicationView;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -122,10 +124,23 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
     /**
      * {@inheritDoc}
      */
-    public Boolean otherNominatedApplications(final Long offerId) {
-        final Query query = entityManager.createNamedQuery("offerGroup.findByOfferAndStatus");
+    public Boolean otherOfferGroupWithCertainStatus(final Long offerId, Set<OfferState> offerStates) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findByOfferAndStatuses");
         query.setParameter("oid", offerId);
-        query.setParameter("status", OfferState.NOMINATIONS);
+        query.setParameter("statuses", offerStates);
+
+        List<OfferGroupEntity> list = query.getResultList();
+
+        return list.size() > 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Boolean otherDomesticApplicationsWithCertainStatus(final Long offerGroupId, final Set<ApplicationStatus> applicationStates) {
+        final Query query = entityManager.createNamedQuery("application.findByOfferGroupIdAndStatuses");
+        query.setParameter("ogid", offerGroupId);
+        query.setParameter("statuses", applicationStates);
 
         List<OfferGroupEntity> list = query.getResultList();
 

@@ -53,10 +53,10 @@ import java.util.Date;
         @NamedQuery(name = "offerGroup.findByOffer",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
-        @NamedQuery(name = "offerGroup.findByOfferAndStatus",
+        @NamedQuery(name = "offerGroup.findByOfferAndStatuses",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid " +
-                        "  and og.status = :status"),
+                        "  and og.status in :statuses"),
         @NamedQuery(name = "offerGroup.findByOfferAndGroup",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid " +

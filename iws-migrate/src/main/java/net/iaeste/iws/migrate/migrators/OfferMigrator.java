@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +60,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(OfferMigrator.class);
     private static final Character REFNO_START_SERIALNUMBER = 'A';
+    private static final Date SEPTEMBER_1ST_2013 = new Date(1377986400000L);
 
     /**
      * To try to speed up the migration, and not having to check all refno's,
@@ -161,7 +162,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
     private OfferEntity convertOffer(final IW3OffersEntity oldOffer) {
         final OfferEntity entity = new OfferEntity();
 
-        entity.setRefNo(convertRefno(oldOffer.getSystemrefno()));
+        entity.setRefNo(convertRefno(oldOffer.getSystemrefno(), oldOffer.getCreated()));
         entity.setOldOfferId(oldOffer.getOfferid());
         entity.setOldRefno(convert(oldOffer.getLocalrefno()));
         entity.setEmployer(convertEmployer(oldOffer));
@@ -202,9 +203,9 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         entity.setStatus(convertOfferState(oldOffer.getStatus()));
         entity.setNumberOfHardCopies(oldOffer.getNohardcopies());
         entity.setNominationDeadline(oldOffer.getDeadline());
-        entity.setExchangeYear(convertExchangeYear(oldOffer.getExchangeyear()));
+        entity.setExchangeYear(convertExchangeYear(oldOffer.getExchangeyear(), oldOffer.getCreated()));
         entity.setModified(convert(oldOffer.getModified()));
-        entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
+        entity.setCreated(convert(oldOffer.getCreated()));
 
         return entity;
     }
@@ -216,11 +217,11 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
      * @param systemrefno IW3 System Refno
      * @return IWS RefNo
      */
-    private String convertRefno(final String systemrefno) {
+    private String convertRefno(final String systemrefno, final Date created) {
         // IW3 Refno format: CCYY-nnnn
         // IWS Refno format: CC-YYYY-nnnnnn
         final String countryCode = systemrefno.substring(0,2);
-        final String year = systemrefno.substring(2,4);
+        final String year = created.after(SEPTEMBER_1ST_2013) ? "14" : systemrefno.substring(2,4);
         final String serialNumber = systemrefno.substring(5,9);
         final Character appender;
         if (duplicateRefnos.contains(systemrefno)) {
@@ -625,13 +626,15 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         return result;
     }
 
-    private Integer convertExchangeYear(final Integer exchangeyear) {
+    private Integer convertExchangeYear(final Integer exchangeyear, final Date created) {
         final Integer result;
 
         if (exchangeyear == 1970) {
             // Switcherland is having a couple of Offers with Exchange year
             // 1970, although their reference numbers are marked as 2011
             result = 2011;
+        } else if (created.after(SEPTEMBER_1ST_2013)) {
+            result = 2014;
         } else {
             result = exchangeyear;
         }

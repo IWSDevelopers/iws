@@ -43,6 +43,18 @@ public final class OfferStatisticsRequest extends AbstractVerification {
     public OfferStatisticsRequest() {
     }
 
+    /**
+     * Default Constructor, for setting the ExchangeYear where statistics should
+     * be fetched. Note, that the Exchange year starts in September and ends in
+     * August, meaning that all offers created from September will belong to the
+     * following year.
+     *
+     * @param exchangeYear IAESTE Exchange Year (September -> August)
+     */
+    public OfferStatisticsRequest(final Integer exchangeYear) {
+        setExchangeYear(exchangeYear);
+    }
+
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================

@@ -387,17 +387,15 @@ create view foreign_offer_statistics as
 -- =============================================================================
 create view domestic_offer_statistics as
   select
-    count (o2g.id)  as records,
-    o2g.status      as status,
+    count (o.id)    as records,
+    o.status        as status,
     e.group_id      as group_id,
     o.exchange_year as exchange_year
   from
     offers o,
-    employers e,
-    offer_to_group o2g
+    employers e
   where e.id = o.employer_id
-    and o.id = o2g.offer_id
   group by
-    o2g.status,
+    o.status,
     e.group_id,
     o.exchange_year;

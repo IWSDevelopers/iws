@@ -24,6 +24,8 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Transactional
 public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(CountryMigrator.class);
@@ -49,6 +52,7 @@ public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> 
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3CountriesEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;

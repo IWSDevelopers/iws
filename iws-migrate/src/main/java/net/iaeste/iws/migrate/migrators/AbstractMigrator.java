@@ -23,14 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public abstract class AbstractMigrator<T> {
+public abstract class AbstractMigrator<T> implements Migrator<T> {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractMigrator.class);
 
@@ -42,8 +41,6 @@ public abstract class AbstractMigrator<T> {
     protected AbstractMigrator(final AccessDao accessDao) {
         this.accessDao = accessDao;
     }
-
-    abstract MigrationResult migrate(List<T> oldEntities);
 
     // =========================================================================
     // General AbstractMigrator

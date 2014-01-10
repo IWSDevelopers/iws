@@ -36,6 +36,8 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -56,6 +58,7 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Transactional
 public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(OfferMigrator.class);
@@ -117,6 +120,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3OffersEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;

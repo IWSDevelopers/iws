@@ -16,7 +16,7 @@ package net.iaeste.iws.migrate.spring;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import org.postgresql.ds.PGSimpleDataSource;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.beans.Beans;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -48,10 +47,25 @@ public class Config {
     private final Object lock = new Object();
     private final Properties properties = new Properties();
 
+    // Hardcoded values for the Test Server
+    private static final String PORT = "5432";
+    private static final String IW3_SERVER = "192.38.77.85";
+    private static final String IW3_DATABASE = "iw3_test";
+    private static final String IW3_USERNAME = "readonly";
+    private static final String IW3_PASSWORD = "af9v7aq6";
+    private static final String IWS_SERVER = "localhost";
+    private static final String IWS_DATABASE = "db_iw4_test";
+    private static final String IWS_USERNAME = "iw4_test_user";
+    private static final String IWS_PASSWORD = "jIf6rOAX92niHMFsQJjbuyf0";
+    private static final String MAIL_SERVER = "localhost";
+    private static final String MAIL_DATABASE = "db_iw4_maillists_test";
+    private static final String MAIL_USERNAME = "iw4_test_user";
+    private static final String MAIL_PASSWORD = "jIf6rOAX92niHMFsQJjbuyf0";
+
     private String readProperty(final String key, final String defaultValue) {
         synchronized (lock) {
             if (properties.isEmpty()) {
-                try (InputStream inputStream = Beans.class.getResourceAsStream("migration.properties")) {
+                try (InputStream inputStream = Config.class.getResourceAsStream("/migration.properties")) {
                     if (inputStream != null) {
                         properties.load(inputStream);
                     }
@@ -66,57 +80,35 @@ public class Config {
 
     @Bean(name = "dataSourceIW3")
     public DataSource dataSourceIW3() {
-        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        final String server = readProperty("datasource.iw3.server", IW3_SERVER);
+        final String port = readProperty("datasource.iw3.port", PORT);
+        final String database = readProperty("datasource.iw3.database", IW3_DATABASE);
+        final String username = readProperty("datasource.iw3.user", IW3_USERNAME);
+        final String password = readProperty("datasource.iw3.password", IW3_PASSWORD);
 
-        dataSource.setServerName(readProperty("datasource.iw3.server", "192.38.77.85"));
-        dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.iw3.port", "5432")));
-        dataSource.setDatabaseName(readProperty("datasource.iw3.database", "iw3_test"));
-        dataSource.setUser(readProperty("datasource.iw3.user", "readonly"));
-        final String pwd = readProperty("datasource.iw3.password", "af9v7aq6");
-
-        // this is the data source for the iw3 dump on the dev server
-//        dataSource.setServerName(readProperty("datasource.iw3.server", "localhost"));
-//        dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.iw3.port", "5432")));
-//        dataSource.setDatabaseName(readProperty("datasource.iw3.database", "iw3_test"));
-//        dataSource.setUser(readProperty("datasource.iw3.user", "iw4_test_user"));
-//        final String pwd = readProperty("datasource.iw3.password", "jIf6rOAX92niHMFsQJjbuyf0");
-        if ((pwd != null) && !pwd.isEmpty()) {
-            dataSource.setPassword(pwd);
-        }
-
-        return dataSource;
+        return preparePooledDataSource(server, port, database, username, password);
     }
 
     @Bean(name = "dataSourceIWS")
     public DataSource dataSourceIWS() {
-        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        final String server = readProperty("datasource.iws.server", IWS_SERVER);
+        final String port = readProperty("datasource.iws.port", PORT);
+        final String database = readProperty("datasource.iws.database", IWS_DATABASE);
+        final String username = readProperty("datasource.iws.user", IWS_USERNAME);
+        final String password = readProperty("datasource.iws.password", IWS_PASSWORD);
 
-        dataSource.setServerName(readProperty("datasource.iws.server", "localhost"));
-        dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.iws.port", "5432")));
-        dataSource.setDatabaseName(readProperty("datasource.iws.database", "db_iw4_test"));
-        dataSource.setUser(readProperty("datasource.iws.user", "iw4_test_user"));
-        final String pwd = readProperty("datasource.iws.password", "jIf6rOAX92niHMFsQJjbuyf0");
-        if ((pwd != null) && !pwd.isEmpty()) {
-            dataSource.setPassword(pwd);
-        }
-
-        return dataSource;
+        return preparePooledDataSource(server, port, database, username, password);
     }
 
     @Bean(name = "dataSourceMail")
     public DataSource dataSourceMail() {
-        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        final String server = readProperty("datasource.mail.server", MAIL_SERVER);
+        final String port = readProperty("datasource.mail.port", PORT);
+        final String database = readProperty("datasource.mail.database", MAIL_DATABASE);
+        final String username = readProperty("datasource.mail.user", MAIL_USERNAME);
+        final String password = readProperty("datasource.mail.password", MAIL_PASSWORD);
 
-        dataSource.setServerName(readProperty("datasource.mail.server", "localhost"));
-        dataSource.setPortNumber(Integer.valueOf(readProperty("datasource.mail.port", "5432")));
-        dataSource.setDatabaseName(readProperty("datasource.mail.database", "db_iw4_maillists_test"));
-        dataSource.setUser(readProperty("datasource.mail.user", "iw4_test_user"));
-        final String pwd = readProperty("datasource.mail.password", "jIf6rOAX92niHMFsQJjbuyf0");
-        if ((pwd != null) && !pwd.isEmpty()) {
-            dataSource.setPassword(pwd);
-        }
-
-        return dataSource;
+        return preparePooledDataSource(server, port, database, username, password);
     }
 
     @Bean(name = "entityManagerFactoryIW3Bean")
@@ -198,5 +190,48 @@ public class Config {
         jpaProperties.setProperty("hibernate.connection.autocommit", "false");
 
         return jpaProperties;
+    }
+
+    /**
+     * Preparing a Pooled DataSource, which is currently having hardcoded
+     * settings, but this can also be altered with configuration.<br />
+     *   The default DataSouce is not useful for multiple Connections, meaning
+     * that Transactions are handled sequential, rather than concurrently.<br />
+     *   Using a Pooled DataSource, will give us the advantage that migration
+     * can be executed in multiple Threads, each handling a subset of the entire
+     * block, and thus speed up the overall performance.
+     *
+     * @param server   Database Server, eg. localhost
+     * @param port     Default Port for the DataSource, for PostgreSQL its 5432
+     * @param database Name of the Database to connect to
+     * @param username User to connect to the Database as
+     * @param password Password (optional)
+     * @return New Pooled DataSource
+     */
+    private BasicDataSource preparePooledDataSource(final String server, final String port, final String database, final String username, final String password) {
+        // Using a Pooled Database Connection, as I've better experiences with
+        // this than with the Spring default DataSource.
+        final BasicDataSource dataSource = new BasicDataSource();
+
+        // All Databases uses PostgreSQL, so we can just set it here.
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        // The URL have PostgreSQL special settings. So we prepare the
+        // connection URL here
+        dataSource.setUrl("jdbc:postgresql://" + server + ':' + port + '/' + database);
+
+        // Just have to fill in the Username & Optional Password
+        dataSource.setUsername(username);
+        if ((password != null) && !password.isEmpty()) {
+            dataSource.setPassword(password);
+        }
+
+        // DataSource Pool Information
+        dataSource.setMinIdle(10);
+        dataSource.setMaxIdle(10);
+        dataSource.setMaxWait(20);
+        dataSource.setMaxActive(30);
+        dataSource.setValidationQuery("select 1");
+
+        return dataSource;
     }
 }

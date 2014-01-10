@@ -35,6 +35,8 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,6 +48,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Transactional
 public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(UserMigrator.class);
@@ -63,6 +66,7 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3ProfilesEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;

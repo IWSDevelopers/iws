@@ -27,6 +27,8 @@ import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Transactional
 public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(OfferGroupMigrator.class);
@@ -62,6 +65,7 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3Offer2GroupEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;

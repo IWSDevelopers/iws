@@ -334,6 +334,9 @@ public final class StudentService extends CommonService<StudentDao> {
             case APPLIED:
                 applyApplication(authentication, studentApplication, applicationEntity);
                 break;
+            case REJECTED:
+                rejectApplicationByApplicationOwner(authentication, request, applicationEntity);
+                break;
             default:
                 throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
         }
@@ -411,6 +414,24 @@ public final class StudentService extends CommonService<StudentDao> {
         }
     }
 
+    private void rejectApplicationByApplicationOwner(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity storedApplication) {
+        final StudentApplication application = transform(storedApplication);
+
+        application.setStatus(ApplicationStatus.REJECTED_BY_SENDING_COUNTRY);
+        application.setRejectByEmployerReason(request.getRejectByEmployerReason());
+        application.setRejectDescription(request.getRejectDescription());
+        application.setRejectInternalComment(request.getRejectInternalComment());
+        ApplicationEntity updated = transform(application);
+        //using OfferGroup from stored entity since this field can't be updated
+        updated.setOfferGroup(storedApplication.getOfferGroup());
+
+        dao.persist(authentication, storedApplication, updated);
+
+        if (!dao.otherNominatedApplications(storedApplication.getId())) {
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.SHARED);
+        }
+    }
+
     private void cancelApplication(final Authentication authentication, final StudentApplication application, final ApplicationEntity storedApplication) {
         application.setStatus(ApplicationStatus.CANCELLED);
         ApplicationEntity updated = transform(application);
@@ -467,6 +488,7 @@ public final class StudentService extends CommonService<StudentDao> {
                 switch (newStatus) {
                     case CANCELLED:
                     case NOMINATED:
+                    case REJECTED:
                         break;
                     default:
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);

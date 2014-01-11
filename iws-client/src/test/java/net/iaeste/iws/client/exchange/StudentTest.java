@@ -500,7 +500,7 @@ public final class StudentTest extends AbstractTest {
     @Test
     public void testRejectNominatedApplicationBySendingCountry() {
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001005", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001065", "Employer", "PL");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -517,7 +517,7 @@ public final class StudentTest extends AbstractTest {
 
         assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
 
-        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app006@university.edu", "password1", "Student1", "Graduate1");
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app065@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
 
         final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);

@@ -402,11 +402,12 @@ public final class StudentService extends CommonService<StudentDao> {
 
         dao.persist(authentication, storedApplication, updated);
 
-        //update status for OfferGroup
-        updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.APPLICATION_REJECTED);
-        //update status for Offer
         if (dao.otherNominatedApplications(storedApplication.getId())) {
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.APPLICATIONS);
+        }
+        else {
             updateOfferStatus(storedApplication.getOfferGroup().getOffer(), OfferState.SHARED);
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.SHARED);
         }
     }
 
@@ -418,11 +419,12 @@ public final class StudentService extends CommonService<StudentDao> {
 
         dao.persist(authentication, storedApplication, updated);
 
-        //update status for OfferGroup
-        updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.APPLICATION_REJECTED);
-        //update status for Offer
         if (dao.otherNominatedApplications(storedApplication.getId())) {
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.APPLICATIONS);
+        }
+        else {
             updateOfferStatus(storedApplication.getOfferGroup().getOffer(), OfferState.SHARED);
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.SHARED);
         }
     }
 

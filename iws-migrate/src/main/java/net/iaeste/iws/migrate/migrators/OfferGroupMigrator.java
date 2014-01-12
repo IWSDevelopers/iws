@@ -197,13 +197,11 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
             case "v": // Viewed
             case "w": // Waiting SN
             case "x": // AC Exchanged
+            case "o": // Nomination Rejected
                 state = OfferState.SHARED;
                 break;
             case "c": // Cancelled
                 state = OfferState.CLOSED;
-                break;
-            case "o": // Nomination Rejected
-                state = OfferState.APPLICATION_REJECTED;
                 break;
             case "p": // Nomination
             case "u": // Nomination Accepted

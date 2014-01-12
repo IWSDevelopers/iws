@@ -317,6 +317,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 203
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 203);
 insert into permission_to_role (role_id, permission_id) values (1, 203);
 insert into permission_to_role (role_id, permission_id) values (2, 203);
+insert into permission_to_role (role_id, permission_id) values (3, 203);
 
 -- Permission: 204 - Lookup Offers
 --   -> GroupTypes: 5 National
@@ -358,6 +359,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 220
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 220);
 insert into permission_to_role (role_id, permission_id) values (1, 220);
 insert into permission_to_role (role_id, permission_id) values (2, 220);
+insert into permission_to_role (role_id, permission_id) values (3, 220);
 
 -- Permission: 221 - Lookup Publish Offer
 --   -> GroupTypes: 5 National
@@ -386,6 +388,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 223
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 223);
 insert into permission_to_role (role_id, permission_id) values (1, 223);
 insert into permission_to_role (role_id, permission_id) values (2, 223);
+insert into permission_to_role (role_id, permission_id) values (3, 223);
 
 -- Permission: 224 - Fetch Student Application
 --   -> GroupTypes: 5 National
@@ -396,6 +399,7 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 224
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 224);
 insert into permission_to_role (role_id, permission_id) values (1, 224);
 insert into permission_to_role (role_id, permission_id) values (2, 224);
+insert into permission_to_role (role_id, permission_id) values (3, 224);
 
 -- =============================================================================
 -- Default Groups

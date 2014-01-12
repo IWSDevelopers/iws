@@ -334,6 +334,9 @@ public final class StudentService extends CommonService<StudentDao> {
             case APPLIED:
                 applyApplication(authentication, studentApplication, applicationEntity);
                 break;
+            case REJECTED_BY_SENDING_COUNTRY:
+                rejectApplicationByApplicationOwner(authentication, request, applicationEntity);
+                break;
             default:
                 throw new NotImplementedException("Action '" + request.getStatus() + "' pending implementation.");
         }
@@ -402,11 +405,33 @@ public final class StudentService extends CommonService<StudentDao> {
 
         dao.persist(authentication, storedApplication, updated);
 
-        //update status for OfferGroup
-        updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.APPLICATION_REJECTED);
-        //update status for Offer
-        if (dao.otherNominatedApplications(storedApplication.getId())) {
+        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());
+        if (newOfferGroupState != null) {
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), newOfferGroupState);
+        }
+
+        if (doUpdateOfferStatusToShared(storedApplication.getOfferGroup().getOffer().getId())) {
             updateOfferStatus(storedApplication.getOfferGroup().getOffer(), OfferState.SHARED);
+        }
+    }
+
+    private void rejectApplicationByApplicationOwner(final Authentication authentication, final StudentApplicationRequest request, final ApplicationEntity storedApplication) {
+        //Application owner is allowed to reject only application in state Applied so we don't need to care if Offer status should be changed
+
+        final StudentApplication application = transform(storedApplication);
+
+        application.setStatus(ApplicationStatus.REJECTED_BY_SENDING_COUNTRY);
+        application.setRejectDescription(request.getRejectDescription());
+        application.setRejectInternalComment(request.getRejectInternalComment());
+        ApplicationEntity updated = transform(application);
+        //using OfferGroup from stored entity since this field can't be updated
+        updated.setOfferGroup(storedApplication.getOfferGroup());
+
+        dao.persist(authentication, storedApplication, updated);
+
+        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());
+        if (newOfferGroupState != null) {
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), newOfferGroupState);
         }
     }
 
@@ -418,12 +443,36 @@ public final class StudentService extends CommonService<StudentDao> {
 
         dao.persist(authentication, storedApplication, updated);
 
-        //update status for OfferGroup
-        updateOfferGroupStatus(storedApplication.getOfferGroup(), OfferState.APPLICATION_REJECTED);
-        //update status for Offer
-        if (dao.otherNominatedApplications(storedApplication.getId())) {
+        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());
+        if (newOfferGroupState != null) {
+            updateOfferGroupStatus(storedApplication.getOfferGroup(), newOfferGroupState);
+        }
+
+        if (doUpdateOfferStatusToShared(storedApplication.getOfferGroup().getOffer().getId())) {
             updateOfferStatus(storedApplication.getOfferGroup().getOffer(), OfferState.SHARED);
         }
+    }
+
+    private boolean doUpdateOfferStatusToShared(final Long offerId) {
+        return !dao.otherOfferGroupWithCertainStatus(offerId, EnumSet.of(OfferState.NOMINATIONS,
+                                                                         OfferState.AT_EMPLOYER,
+                                                                         OfferState.ACCEPTED));
+    }
+
+    private OfferState doUpdateOfferGroupStatus(final Long offerGroupId) {
+        final OfferState newStatus;
+        if (!dao.otherDomesticApplicationsWithCertainStatus(offerGroupId, EnumSet.of(ApplicationStatus.NOMINATED,
+                                                                                     ApplicationStatus.FORWARDED_TO_EMPLOYER,
+                                                                                     ApplicationStatus.ACCEPTED,
+                                                                                     ApplicationStatus.APPLIED))) {
+            newStatus = OfferState.SHARED;
+        } else if (dao.otherDomesticApplicationsWithCertainStatus(offerGroupId, EnumSet.of(ApplicationStatus.APPLIED))) {
+            newStatus = OfferState.APPLICATIONS;
+        } else {
+            newStatus = null;
+        }
+
+        return newStatus;
     }
 
     private void updateOfferGroupStatus(final OfferGroupEntity offerGroup, final OfferState state) {
@@ -465,6 +514,7 @@ public final class StudentService extends CommonService<StudentDao> {
                 switch (newStatus) {
                     case CANCELLED:
                     case NOMINATED:
+                    case REJECTED_BY_SENDING_COUNTRY:
                         break;
                     default:
                         throw new VerificationException("Unsupported transition from '" + oldStatus + "' to " + newStatus);

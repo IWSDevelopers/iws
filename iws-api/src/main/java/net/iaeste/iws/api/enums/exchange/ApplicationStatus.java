@@ -56,6 +56,11 @@ public enum ApplicationStatus {
     REJECTED,
 
     /**
+     * Sending country rejected the student
+     */
+    REJECTED_BY_SENDING_COUNTRY,
+
+    /**
      * The student does no longer wish to take the internship.
      * Both countries can see the application.
      */

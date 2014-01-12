@@ -17,6 +17,8 @@ package net.iaeste.iws.migrate.spring;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +46,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class Config {
 
+    private static final Logger log = LoggerFactory.getLogger(Config.class);
     private final Object lock = new Object();
     private final Properties properties = new Properties();
 
@@ -217,9 +220,12 @@ public class Config {
         dataSource.setDriverClassName("org.postgresql.Driver");
         // The URL have PostgreSQL special settings. So we prepare the
         // connection URL here
-        dataSource.setUrl("jdbc:postgresql://" + server + ':' + port + '/' + database);
+        final String url = "jdbc:postgresql://" + server + ':' + port + '/' + database;
+        log.info("Preparing DataSource: URL=" + url);
+        dataSource.setUrl(url);
 
         // Just have to fill in the Username & Optional Password
+        log.info("Preparing DataSource: User=" + username);
         dataSource.setUsername(username);
         if ((password != null) && !password.isEmpty()) {
             dataSource.setPassword(password);

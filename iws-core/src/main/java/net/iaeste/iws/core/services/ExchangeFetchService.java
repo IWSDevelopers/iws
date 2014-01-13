@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.services.ExchangeFetchService
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -20,6 +20,9 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
+import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
@@ -27,14 +30,17 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.CommonTransformer;
@@ -47,10 +53,13 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 import net.iaeste.iws.persistence.views.OfferView;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -60,19 +69,64 @@ import java.util.Set;
 /**
  * This Service Class contains the read-only parts of the Exchange methods.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
     private final ViewsDao viewsDao;
     private final AccessDao accessDao;
 
-    public ExchangeFetchService(final ExchangeDao dao, final ViewsDao viewsDao, final AccessDao accessDao) {
-        super(dao);
+    public ExchangeFetchService(final Settings settings, final ExchangeDao dao, final ViewsDao viewsDao, final AccessDao accessDao) {
+        super(settings, dao);
         this.viewsDao = viewsDao;
         this.accessDao = accessDao;
+    }
+
+    public OfferStatisticsResponse fetchOfferStatistics(final Authentication authentication, final OfferStatisticsRequest request) {
+        final Integer year = request.getExchangeYear();
+        final GroupEntity nationalGroup = findNationalGroup(authentication);
+
+        final OfferStatisticsResponse response = new OfferStatisticsResponse();
+        response.setDommesticStatistics(readDomesticStatistics(nationalGroup, year));
+        response.setForeignStatistics(readForeignStatistics(nationalGroup, year));
+
+        return response;
+    }
+
+    private OfferStatistics readDomesticStatistics(final GroupEntity nationalGroup, final Integer year) {
+        final List<DomesticOfferStatisticsView> records = dao.findDomesticOfferStatistics(nationalGroup, year);
+
+        final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
+        for (final DomesticOfferStatisticsView stats : records) {
+            statistics.put(stats.getId().getStatus(), stats.getRecords());
+        }
+
+        return new OfferStatistics(statistics, year);
+    }
+
+    private OfferStatistics readForeignStatistics(final GroupEntity nationalGroup, final Integer year) {
+        final List<ForeignOfferStatisticsView> records = dao.findForeignOfferStatistics(nationalGroup, year);
+
+        final Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
+        for (final ForeignOfferStatisticsView stats : records) {
+            statistics.put(stats.getId().getStatus(), stats.getRecords());
+        }
+
+        return new OfferStatistics(statistics, year);
+    }
+
+    private GroupEntity findNationalGroup(final Authentication authentication) {
+        final GroupEntity group;
+
+        if (authentication.getGroup().getGroupType().getGrouptype().equals(GroupType.NATIONAL)) {
+            group = authentication.getGroup();
+        } else {
+            group = accessDao.findNationalGroup(authentication.getUser());
+        }
+
+        return group;
     }
 
     public FetchEmployerResponse fetchEmployers(final Authentication authentication, final FetchEmployerRequest request) {
@@ -153,53 +207,53 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         // Must be extended with Pagination
         final List<OfferView> found = viewsDao.findAllOffers(authentication, exchangeYear);
 
-        return convertViewList(found);
+        return convertViewList(authentication, found);
     }
 
-    private static List<Offer> convertViewList(final List<OfferView> found) {
+    private List<Offer> convertViewList(final Authentication authentication, final List<OfferView> found) {
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferView view : found) {
-            result.add(transform(view));
+            final Offer offer = transform(view);
+            // do not expose private comment to foreign offers
+            if(!view.getGroupId().equals(authentication.getGroup().getId()))
+            {
+                offer.setPrivateComment(null);
+            }
+            result.add(offer);
         }
 
         return result;
     }
 
     private List<Offer> findSharedOffers(final Authentication authentication, final Integer exchangeYear) {
-        // Must be extended with Pagination
-        final List<OfferEntity> found = new ArrayList<>(10);
         final java.util.Date now = new Date().toDate();
+        final List<OfferEntity> offerEntities = dao.findSharedOffers(authentication, exchangeYear);
+        final List<Offer> offers = new ArrayList<>(offerEntities.size());
 
-        for (final OfferEntity offer : dao.findSharedOffers(authentication, exchangeYear)) {
-            if (!offer.getNominationDeadline().before(now)) {
-                //TODO - slow? might be better to use offer view?
-                OfferGroupEntity og = dao.findInfoForSharedOfferAndGroup(offer.getId(), authentication.getGroup().getId());
-                //overwrite status for each country - it's independent for each counry in sharing process
+        for (final OfferEntity offerEntity : offerEntities) {
+            if (!offerEntity.getNominationDeadline().before(now)) {
+                OfferGroupEntity og = dao.findInfoForSharedOfferAndGroup(offerEntity.getId(), authentication.getGroup().getId());
+                //overwrite status for each country - it's independent for each country in sharing process
+
+                final Offer offer = ExchangeTransformer.transform(offerEntity);
                 offer.setStatus(og.getStatus());
-                found.add(offer);
+
+                final UserEntity nationalSecretary = accessDao.findOwnerByGroup(CommonTransformer.transform(offer.getEmployer().getGroup()));
+                offer.setNsFirstname(nationalSecretary.getFirstname());
+                offer.setNsLastname(nationalSecretary.getLastname());
+
+                // do not expose private comment to foreign offers
+                if(!offerEntity.getEmployer().getGroup().getId().equals(authentication.getGroup().getId()))
+                {
+                    offer.setPrivateComment(null);
+                }
+
+                offers.add(offer);
             }
         }
 
-        List<Offer> offers = convertEntityList(found);
-
-        for(final Offer offer: offers) {
-            final UserEntity nationalSecretary = accessDao.findOwnerByGroup(CommonTransformer.transform(offer.getEmployer().getGroup()));
-            offer.setNsFirstname(nationalSecretary.getFirstname());
-            offer.setNsLastname(nationalSecretary.getLastname());
-        }
-
         return offers;
-    }
-
-    private static List<Offer> convertEntityList(final List<OfferEntity> found) {
-        final List<Offer> result = new ArrayList<>(found.size());
-
-        for (final OfferEntity entity : found) {
-            result.add(ExchangeTransformer.transform(entity));
-        }
-
-        return result;
     }
 
     private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {

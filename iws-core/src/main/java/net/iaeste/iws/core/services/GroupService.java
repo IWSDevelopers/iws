@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.services.GroupService
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -185,10 +185,12 @@ public final class GroupService {
 
         if (entity != null) {
             final Group group = CommonTransformer.transform(entity);
-            final List<UserGroup> users = findGroupMembers(request.isFetchUsers(), entity);
-            final List<Group> groups = findSubGroups(request.isFetchSubGroups(), entity);
+            final List<UserGroup> users = findGroupMembers(entity, request.isFetchUsers());
+            final List<UserGroup> students = findStudents(entity, request.isFetchStudents());
+            final List<Group> groups = findSubGroups(entity, request.isFetchSubGroups());
 
             response = new FetchGroupResponse(group, users, groups);
+            response.setStudents(students);
         } else {
             response = new FetchGroupResponse(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "No Group was found matching the requested Id.");
         }
@@ -412,6 +414,9 @@ public final class GroupService {
             // method. The role is not something we should allow being handled
             // via a general purpose method, since it critical information.
             existingEntity.setRole(role);
+            // Following two lines are set by the merge method, so this us duplication.
+            //existingEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
+            //existingEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
             dao.persist(authentication, existingEntity, given);
 
             notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
@@ -466,7 +471,7 @@ public final class GroupService {
         dao.persist(userGroup);
     }
 
-    private List<UserGroup> findGroupMembers(final boolean fetchUsers, final GroupEntity entity) {
+    private List<UserGroup> findGroupMembers(final GroupEntity entity, final boolean fetchUsers) {
         final List<UserGroup> result;
 
         if (fetchUsers) {
@@ -479,7 +484,20 @@ public final class GroupService {
         return result;
     }
 
-    private List<Group> findSubGroups(final boolean fetchSubGroups, final GroupEntity entity) {
+    private List<UserGroup> findStudents(final GroupEntity entity, final boolean fetchStudents) {
+        final List<UserGroup> result;
+
+        if (fetchStudents && (entity.getGroupType().getGrouptype() == GroupType.NATIONAL)) {
+            final List<UserGroupEntity> members = dao.findStudents(entity.getParentId());
+            result = transformMembers(members);
+        } else {
+            result = new ArrayList<>(0);
+        }
+
+        return result;
+    }
+
+    private List<Group> findSubGroups(final GroupEntity entity, final boolean fetchSubGroups) {
         final List<Group> result;
 
         if (fetchSubGroups) {

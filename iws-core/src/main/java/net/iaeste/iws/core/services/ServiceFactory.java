@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.services.ServiceFactory
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -20,13 +20,11 @@ import net.iaeste.iws.core.singletons.ActiveSessions;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.ExchangeDao;
-import net.iaeste.iws.persistence.StorageDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.CountryJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
-import net.iaeste.iws.persistence.jpa.StorageJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
 import net.iaeste.iws.persistence.jpa.ViewsJpaDao;
 
@@ -68,7 +66,7 @@ public final class ServiceFactory {
     // =========================================================================
 
     public AccountService prepareAccountService() {
-        return new AccountService(accessDao, notifications, settings);
+        return new AccountService(settings, accessDao, notifications);
     }
 
     public GroupService prepareGroupService() {
@@ -84,34 +82,32 @@ public final class ServiceFactory {
     }
 
     public StorageService prepareStorageService() {
-        final StorageDao storageDao = new StorageJpaDao(entityManager);
-        return new StorageService(accessDao, storageDao);
+        return new StorageService(settings, accessDao);
     }
 
     public AccessService prepareAuthenticationService() {
-        return new AccessService(accessDao, notifications, settings);
+        return new AccessService(settings, accessDao, notifications);
     }
 
     public ExchangeService prepareExchangeService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager);
-        final AccessDao accessDao = new AccessJpaDao(entityManager);
 
-        return new ExchangeService(dao, accessDao, notifications);
+        return new ExchangeService(settings, dao, accessDao, notifications);
     }
 
     public ExchangeFetchService prepareExchangeFetchService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager);
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
-        final AccessDao accessDao = new AccessJpaDao(entityManager);
 
-        return new ExchangeFetchService(dao, viewsDao, accessDao);
+        return new ExchangeFetchService(settings, dao, viewsDao, accessDao);
     }
 
     public StudentService prepareStudentService() {
         final ExchangeDao exchangeDao = new ExchangeJpaDao(entityManager);
         final StudentDao studentDao = new StudentJpaDao(entityManager);
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
-        return new StudentService(accessDao, exchangeDao, studentDao, viewsDao);
+
+        return new StudentService(settings, accessDao, exchangeDao, studentDao, viewsDao);
     }
 
     public AccessDao getAccessDao() {

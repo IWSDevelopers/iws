@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.FileEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,14 +14,13 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -63,6 +62,9 @@ import java.util.Date;
 @Monitored(name = "File", level = MonitoringLevel.DETAILED)
 public class FileEntity implements Externable<FileEntity> {
 
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "file_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
@@ -102,10 +104,8 @@ public class FileEntity implements Externable<FileEntity> {
      * this field is likewise not dealt with in details, but rather the changes
      * can only be marked.
      */
-    @Monitored(name="File Date", level = MonitoringLevel.MARKED)
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "filedata")
-    private byte[] filedata = null;
+    @Column(name = "stored_filename", length = 100, updatable = false)
+    private String storedFilename = null;
 
     @Monitored(name="File size", level = MonitoringLevel.DETAILED)
     @Column(name = "filesize")
@@ -195,12 +195,12 @@ public class FileEntity implements Externable<FileEntity> {
         return filename;
     }
 
-    public void setFiledata(final byte[] filedata) {
-        this.filedata = filedata;
+    public void setStoredFilename(final String filedata) {
+        this.storedFilename = filedata;
     }
 
-    public byte[] getFiledata() {
-        return filedata;
+    public String getStoredFilename() {
+        return storedFilename;
     }
 
     public void setFilesize(final Integer filesize) {
@@ -298,9 +298,10 @@ public class FileEntity implements Externable<FileEntity> {
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             // Note; Id & ExternalId are *not* allowed to be updated!
             filename = obj.filename;
-            if (obj.filedata != null) {
-                filedata = obj.filedata;
-            }
+            // The filedata is stored in the filesystem, so the name stored here
+            // is simply just the reference. Hence, we do not allow it to be
+            // updated
+            checksum = obj.checksum;
             filesize = obj.filesize;
             mimetype = obj.mimetype;
             description = obj.description;

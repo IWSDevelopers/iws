@@ -4,7 +4,7 @@
     <parent>
         <artifactId>iws-parent</artifactId>
         <groupId>net.iaeste.iws</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <relativePath>../iws-parent/pom.xml</relativePath>
     </parent>
     <artifactId>iws-ejb</artifactId>
@@ -138,6 +138,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>
@@ -215,7 +221,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>3.2.3.RELEASE</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

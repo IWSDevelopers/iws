@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.jpa.StudentJpaDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,15 +14,19 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
+import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.ApplicationView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -115,5 +119,31 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
         query.setParameter("fileid", fileId);
 
         return findSingleResult(query, "Attachment");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Boolean otherOfferGroupWithCertainStatus(final Long offerId, Set<OfferState> offerStates) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findByOfferAndStatuses");
+        query.setParameter("oid", offerId);
+        query.setParameter("statuses", offerStates);
+
+        List<OfferGroupEntity> list = query.getResultList();
+
+        return list.size() > 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Boolean otherDomesticApplicationsWithCertainStatus(final Long offerGroupId, final Set<ApplicationStatus> applicationStates) {
+        final Query query = entityManager.createNamedQuery("application.findByOfferGroupIdAndStatuses");
+        query.setParameter("ogid", offerGroupId);
+        query.setParameter("statuses", applicationStates);
+
+        List<OfferGroupEntity> list = query.getResultList();
+
+        return list.size() > 0;
     }
 }

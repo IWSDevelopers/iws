@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.StudentDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,12 +14,15 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.ApplicationView;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -63,4 +66,22 @@ public interface StudentDao extends BasicDao {
     List<AttachmentEntity> findAttachments(String table, Long recordId);
 
     AttachmentEntity findAttachment(String table, Long recordId, Long fileId);
+
+    /**
+     * Checks if there is any OfferGroup for a specific Offer with any of specified states
+     *
+     * @param offerId offer id
+     * @param offerStates set of OfferState which should be checked for
+     * @return true if there is any other application with any state from specified set
+     */
+    Boolean otherOfferGroupWithCertainStatus(Long offerId, Set<OfferState> offerStates);
+
+    /**
+     * Checks if there is any domestic application with any of specified states
+     *
+     * @param offerGroupId offer group id
+     * @param applicationStates set of OfferState which should be checked for
+     * @return true if there is any other application with any state from specified set
+     */
+    Boolean otherDomesticApplicationsWithCertainStatus(Long offerGroupId, Set<ApplicationStatus> applicationStates);
 }

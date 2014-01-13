@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-common) - net.iaeste.iws.common.utils.GenerateTestData
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-common) - net.iaeste.iws.common.utils.GenerateDataForTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -55,10 +55,10 @@ public final class GenerateDataForTest {
     private static final String GROUP_INSERT = "insert into Groups (external_id, grouptype_id, parent_id, country_id, groupName) values ('%s', %d, %s, %d, '%s');";
     private static final String USER_INSERT = "insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');";
     private static final String USER_GROUP_INSERT = "insert into user_to_group (external_id, user_id, group_id, role_id) values ('%s', %d, %d, %d);";
-    private static final String ADDRESS_INSERT = "insert into addresses (street1, street2, zip, city, state, pobox, country_id) values ('Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', %d);";
+    private static final String ADDRESS_INSERT = "insert into addresses (street1, street2, postal_code, city, state, pobox, country_id) values ('Karlsplatz 13', '1040 Vienna', 'x', 'x', 'x', 'x', %d);";
     private static final String EMPLOYER_INSERT = "insert into employers (external_id, group_id, name, department, business, working_place, number_of_employees, website, canteen, nearest_airport, nearest_public_transport, weekly_hours, address_id ) values ('%s', %d, 'Vienna University of Technology', 'University', 'University', 'Vienna', 9000, 'www.tuwien.ac.at', FALSE, 'VIE', 'Karlsplatz', 38.5, %d);";
-    private static final String OFFER_INSERT = "insert into offers (ref_no, external_id, employer_id, currency, status, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values\n" +
-            "('%s-2014-000001', '%s', %d, '%s', 'SHARED', '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + INTERVAL '0-3' YEAR TO MONTH, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');";
+    private static final String OFFER_INSERT = "insert into offers (ref_no, external_id, employer_id, currency, status, exchange_year, from_date, to_date, from_date_2, to_date_2, unavailable_from, unavailable_to, language_1, language_1_level, language_1_op, language_2, language_2_level, language_2_op, language_3, language_3_level, living_cost, living_cost_frequency, lodging_by, lodging_cost, lodging_cost_frequency, min_weeks, max_weeks, nomination_deadline, other_requirements, payment, payment_frequency, prev_training_req, work_description, work_type, study_levels, study_fields, specializations, deduction) values\n" +
+            "('%s-2014-000001', '%s', %d, '%s', 'SHARED', 2014, '2014-06-01', '2014-09-30', NULL, NULL, NULL, NULL, 'ENGLISH', 'E', NULL, NULL, NULL, NULL, NULL, NULL, 500, 'MONTHLY', 'IAESTE', 300, 'MONTHLY', 6, 12, CURRENT_DATE + INTERVAL '0-3' YEAR TO MONTH, 'Experience in JAVA', 1250.00, 'MONTHLY', FALSE, 'Working on a project in the field of science to visualize potential threads to economy and counter fight decreasing numbers', 'R', 'B', 'IT|MATHEMATICS', 'BUSINESS_INFORMATICS', 'approx. 30');";
     private static final String SHARE_ALL_OFFER = "insert into offer_to_group (offer_id, group_id, external_id, status) select offers.id, groups.id, offers.id || 'what_ever' || groups.id, 'SHARED' from groups, offers left join employers on offers.employer_id = employers.id where groups.grouptype_id = %d and employers.group_id != groups.id;";
     private static final String MAILING_LIST_INSERT = "insert into mailing_lists (external_id, private, list_address, active) values ('%s', '%b', '%s', '%b');";
     private static final String SUBSCRIBE_USER_TO_LIST = "insert into mailing_list_membership (mailing_list_id, member) values ('%d', '%s');";

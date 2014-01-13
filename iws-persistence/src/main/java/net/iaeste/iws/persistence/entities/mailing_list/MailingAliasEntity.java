@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,7 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.mailing_list;
 
-import net.iaeste.iws.persistence.Externable;
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 
 import javax.persistence.Column;
@@ -22,6 +22,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -33,9 +35,24 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@NamedQueries({
+        @NamedQuery(name = "mailing_list.findAliasByUsername",
+                query = "select ma from MailingAliasEntity ma " +
+                        "where ma.userName = :username "),
+        @NamedQuery(name = "mailing_list.findAliasByUserAlias",
+                query = "select ma from MailingAliasEntity ma " +
+                        "where ma.userAlias = :alias ")      ,
+        @NamedQuery(name = "mailing_list.updateUsernameinMailingAlias",
+                query = "update MailingAliasEntity ma " +
+                        "set ma.userName = :newUserAddress " +
+                        "where ma.userName = :oldUserAddress ")
+})
 @Entity
 @Table(name = "mailing_aliases")
 public class MailingAliasEntity implements IWSEntity {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "mailing_alias_sequence")

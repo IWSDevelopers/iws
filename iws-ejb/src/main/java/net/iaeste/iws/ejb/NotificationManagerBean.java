@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.NotificationManagerBean
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -115,6 +115,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @PostConstruct
     public void postConstruct() {
+        log.info("post construct");
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
 
@@ -122,7 +123,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
             settings.init();
         }
 
-        NotificationMessageGenerator generator = new NotificationMessageGeneratorFreemarker();
+        final NotificationMessageGenerator generator = new NotificationMessageGeneratorFreemarker();
         generator.setSettings(settings);
         final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, settings, generator, true);
         notificationManager.startupConsumers();
@@ -235,7 +236,8 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         notifications.processJobs();
     }
 
-    @Schedule(minute = "*/1", hour = "*", info="Every 60 seconds")
+    @Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds")
+    //@Schedule(minute = "*/1", hour = "*", info="Every 60 seconds")
     private void processJobsScheduled() {
         //TODO remove log messages when the processing works correctly, i.e. there is no need of timer rescheduling.
         //     the problem is that consumers doesn't see their tasks when they are called just after tasks' creation

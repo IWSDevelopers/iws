@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.MigrateTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -19,14 +19,20 @@ import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.migrate.daos.IW3Dao;
 import net.iaeste.iws.migrate.daos.IW3JpaDao;
+import net.iaeste.iws.migrate.daos.MailDao;
+import net.iaeste.iws.migrate.daos.MailJpaDao;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
+import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
 import net.iaeste.iws.migrate.migrators.CountryMigrator;
 import net.iaeste.iws.migrate.migrators.GroupMigrator;
+import net.iaeste.iws.migrate.migrators.MailMigrator;
 import net.iaeste.iws.migrate.migrators.MigrationResult;
+import net.iaeste.iws.migrate.migrators.Migrator;
+import net.iaeste.iws.migrate.migrators.OfferGroupMigrator;
 import net.iaeste.iws.migrate.migrators.OfferMigrator;
 import net.iaeste.iws.migrate.migrators.UserGroupMigrator;
 import net.iaeste.iws.migrate.migrators.UserMigrator;
@@ -35,7 +41,10 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
+import org.joda.time.Period;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +59,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +75,7 @@ import java.util.List;
 public class MigrateTest {
 
     private static final Logger log = LoggerFactory.getLogger(MigrateTest.class);
+    private static final int BLOCK_SIZE = 1000;
 
     @PersistenceContext(unitName = "IW3PersistenceUnit")
     private EntityManager iw3EntityManager;
@@ -71,14 +83,34 @@ public class MigrateTest {
     @PersistenceContext(unitName = "IWSPersistenceUnit")
     private EntityManager iwsEntityManager;
 
+    @PersistenceContext(unitName = "MailPersistenceUnit")
+    private EntityManager mailEntityManager;
+
     private ExchangeDao exchangeDao = null;
     private AccessDao accessDao = null;
+    private MailDao mailDao = null;
     private IW3Dao iw3Dao = null;
+    private static Long start = null;
+
+    @BeforeClass
+    public static void beforeClass() {
+        start = new Date().getTime();
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        final Period duration = new Period(new Date().getTime() - start);
+        log.info("Migration of the IW3 Database to IWS has been completed in {}:{}:{}.",
+                duration.getHours(),
+                duration.getMinutes(),
+                duration.getSeconds());
+    }
 
     @Before
     public void before() {
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
+        mailDao = new MailJpaDao(mailEntityManager);
         iw3Dao = new IW3JpaDao(iw3EntityManager);
     }
 
@@ -93,7 +125,7 @@ public class MigrateTest {
         final List<IW3CountriesEntity> countries = iw3Dao.findAllCountries();
         log.info("Found {} Countries to migrate.", countries.size());
 
-        final MigrationResult result = migrator.migrate(countries);
+        final MigrationResult result = runMigration(migrator, countries);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
 
@@ -109,7 +141,7 @@ public class MigrateTest {
         final List<IW3GroupsEntity> groups = iw3Dao.findAllGroups();
         log.info("Found {} Groups to migrate.", groups.size());
 
-        final MigrationResult result = migrator.migrate(groups);
+        final MigrationResult result = runMigration(migrator, groups);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
 
@@ -124,7 +156,7 @@ public class MigrateTest {
         final List<IW3ProfilesEntity> profiles = iw3Dao.findAllProfiles();
         log.info("Found {} Users to migrate.", profiles.size());
 
-        final MigrationResult result = migrator.migrate(profiles);
+        final MigrationResult result = runMigration(migrator, profiles);
         final int persisted = result.getPersisted();
 
         assertThat(persisted, is(profiles.size()));
@@ -138,27 +170,90 @@ public class MigrateTest {
         final List<IW3User2GroupEntity> userGroups = iw3Dao.findAllUserGroups();
         log.info("Found {} UserGroups to migrate.", userGroups.size());
 
-        final MigrationResult result = migrator.migrate(userGroups);
+        final MigrationResult result = runMigration(migrator, userGroups);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
-        final int updated = result.getUpdated();
 
-        assertThat(persisted + skipped + updated, is(userGroups.size()));
-        log.info("Completed Migrating UserGroups; Persisted {}, Updated {} & Skipped {}.", persisted, updated, skipped);
+        assertThat(persisted + skipped, is(userGroups.size()));
+        log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", persisted, skipped);
+    }
+
+    @Test
+    @Transactional("transactionManagerMail")
+    public void test5ReadingWritingMail() {
+        final MailMigrator migrator = new MailMigrator(iwsEntityManager, mailDao);
+        log.info("Starting migration of Mail settings.");
+
+        final MigrationResult result = migrator.migrate();
+        final int persisted = result.getPersisted();
+
+        assertThat(persisted > 0, is(true));
+        log.info("Completed Migrating Mail.");
     }
 
     @Test
     @Transactional("transactionManagerIWS")
-    public void test5ReadingWritingOffers() {
+    public void test6ReadingWritingOffers() {
         final OfferMigrator migrator = new OfferMigrator(accessDao, exchangeDao, iwsEntityManager);
-        final List<IW3OffersEntity> offers = iw3Dao.findAllOffers(0, 100000);
+        final List<IW3OffersEntity> offers = iw3Dao.findAllOffers();
         log.info("Found {} Offers to migrate.", offers.size());
 
-        final MigrationResult result = migrator.migrate(offers);
+        final MigrationResult result = runMigration(migrator, offers);
         final int persisted = result.getPersisted();
         final int skipped = result.getSkipped();
 
         assertThat(persisted + skipped, is(offers.size()));
-        log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", persisted, skipped);
+        log.info("Completed Migrating Offers; Persisted {} & Skipped {}.", persisted, skipped);
+    }
+
+    @Test
+    @Transactional("transactionManagerIWS")
+    public void test7ReadingWritingOfferGroups() {
+        final OfferGroupMigrator migrator = new OfferGroupMigrator(accessDao, exchangeDao);
+        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups();
+        log.info("Found {} OfferGroups to migrate.", offerGroups.size());
+
+        final MigrationResult result = runMigration(migrator, offerGroups);
+        final int persisted = result.getPersisted();
+        final int skipped = result.getSkipped();
+
+        assertThat(persisted + skipped, is(offerGroups.size()));
+        log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", persisted, skipped);
+    }
+
+    // =========================================================================
+    // Internal Help Classes
+    // =========================================================================
+
+    private <T> MigrationResult runMigration(final Migrator<T> migrator, final List<T> list) {
+        final List<List<T>> blocks = sliceList(list, BLOCK_SIZE);
+        final int totalBlocks = blocks.size();
+        int currentBlock = 1;
+        int persisted = 0;
+        int skipped = 0;
+
+        for (final List<T> block : blocks) {
+            log.debug("Processing block {} of {}", currentBlock, totalBlocks);
+            final MigrationResult intermediate = migrator.migrate(block);
+            persisted += intermediate.getPersisted();
+            skipped += intermediate.getSkipped();
+            currentBlock++;
+        }
+
+        return new MigrationResult(persisted, skipped);
+    }
+
+    private <T> List<List<T>> sliceList(final List<T> list, final int blockSize) {
+        final int size = (list.size() / blockSize) + 1;
+        final List<List<T>> result = new ArrayList<>(size);
+
+        for (int i = 0; i < size - 1; i++) {
+            final List<T> sublist = list.subList(i * blockSize, (i + 1) * blockSize);
+            result.add(sublist);
+        }
+        final List<T> sublist = list.subList((size - 1) * blockSize, list.size());
+        result.add(sublist);
+
+        return result;
     }
 }

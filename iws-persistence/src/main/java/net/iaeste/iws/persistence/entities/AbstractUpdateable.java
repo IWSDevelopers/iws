@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.AbstractUpdateable
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 /**
  * To Implement the diff method required by the Updateable interface, we have
  * this little Abstract class that contains helper methods.
@@ -23,6 +25,9 @@ package net.iaeste.iws.persistence.entities;
  * @since   1.7
  */
 public abstract class AbstractUpdateable<T> implements Updateable<T> {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
      * Returns 1 (one) if the two Objects are different, otherwise a 0 (zero)

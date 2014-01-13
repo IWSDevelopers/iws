@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.administration.AdministrationClientTest
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.administration.UserAccountTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -23,8 +23,13 @@ import static org.junit.Assert.assertThat;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.Person;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.exchange.Student;
+import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
@@ -40,6 +45,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
+import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.AdministrationClient;
@@ -148,7 +154,7 @@ public final class UserAccountTest extends AbstractAdministration {
      * Test for the Trac Bug report #442.
      */
     @Test
-    public void testCreateUserWithExitingUsername() {
+    public void testCreateUserWithExistingUsername() {
         final String username = "michael.pickelbauer@iaeste.at";
         final CreateUserRequest request1 = new CreateUserRequest(username, "Michael", "Pickelbauer");
         final CreateUserRequest request2 = new CreateUserRequest(username, "Hugo", "Mayer");
@@ -215,6 +221,63 @@ public final class UserAccountTest extends AbstractAdministration {
         final FetchGroupRequest groupRequest = new FetchGroupRequest(memberGroupId);
         final FetchGroupResponse groupResponse = administration.fetchGroup(token, groupRequest);
         assertThat(groupResponse, is(not(nullValue())));
+    }
+
+    /**
+     * Testing updating user actually updates the fields. See Trac #438, #524.
+     */
+    @Test
+    public void testUpdatePerson() {
+        final AuthenticationToken myToken = login("finland@iaeste.fi", "finland");
+        final Group memberGroup = findMemberGroup(myToken);
+        final FetchGroupRequest groupRequest = new FetchGroupRequest(memberGroup.getGroupId());
+        groupRequest.setFetchUsers(true);
+        final FetchGroupResponse groupResponse1 = administration.fetchGroup(myToken, groupRequest);
+        assertThat(groupResponse1.isOk(), is(true));
+        assertThat(groupResponse1.getMembers().size(), is(1));
+
+        // Now, let's update the Object, and send it into the IWS
+        final User myself = groupResponse1.getMembers().get(0).getUser();
+        final Person person = myself.getPerson();
+        final Address address = new Address();
+        address.setStreet1("Mainstreet 1");
+        address.setPostalCode("12345");
+        address.setCity("Cooltown");
+        address.setState("Coolstate");
+        person.setAddress(address);
+        person.setFax("My fax");
+        person.setBirthday(new Date("01-JAN-1980"));
+        person.setMobile("+1 1234567890");
+        person.setGender(Gender.UNKNOWN);
+        person.setPhone("+1 0987654321");
+        myself.setPerson(person);
+        final UserRequest updateRequest = new UserRequest();
+        updateRequest.setUser(myself);
+        final Fallible updateResult = administration.controlUserAccount(myToken, updateRequest);
+        assertThat(updateResult.isOk(), is(true));
+
+        // Let's find the account again, and verify that the updates were applied
+        final FetchUserRequest userRequest = new FetchUserRequest(myself.getUserId());
+        final FetchUserResponse userResponse = administration.fetchUser(myToken, userRequest);
+        assertThat(userResponse.isOk(), is(true));
+        final User myUpdate = userResponse.getUser();
+        final Person updatedPerson = myUpdate.getPerson();
+        assertThat(updatedPerson.getAlternateEmail(), is(person.getAlternateEmail()));
+        assertThat(updatedPerson.getBirthday(), is(person.getBirthday()));
+        assertThat(updatedPerson.getFax(), is(person.getFax()));
+        assertThat(updatedPerson.getGender(), is(person.getGender()));
+        assertThat(updatedPerson.getMobile(), is(person.getMobile()));
+        assertThat(updatedPerson.getPhone(), is(person.getPhone()));
+
+        final Address updatedAddress = updatedPerson.getAddress();
+        assertThat(updatedAddress.getStreet1(), is(address.getStreet1()));
+        assertThat(updatedAddress.getStreet2(), is(address.getStreet2()));
+        assertThat(updatedAddress.getPostalCode(), is(address.getPostalCode()));
+        assertThat(updatedAddress.getCity(), is(address.getCity()));
+        assertThat(updatedAddress.getState(), is(address.getState()));
+
+        // Wrapup... logout
+        logout(myToken);
     }
 
     /**

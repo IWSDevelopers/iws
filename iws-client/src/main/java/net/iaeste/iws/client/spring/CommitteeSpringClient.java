@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.CommitteeSpringClient
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -21,10 +21,9 @@ import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
-import net.iaeste.iws.common.configuration.Settings;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.CommitteeBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
-import net.iaeste.iws.core.notifications.Notifications;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,13 +40,6 @@ import javax.persistence.PersistenceContext;
 public class CommitteeSpringClient implements Committees {
 
     private Committees client = null;
-
-    public Settings initSettings() {
-        final Settings settings = new Settings();
-        settings.setDoJndiLookup(false);
-
-        return settings;
-    }
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
@@ -68,7 +60,7 @@ public class CommitteeSpringClient implements Committees {
         final CommitteeBean committeeBean = new CommitteeBean();
         committeeBean.setEntityManager(entityManager);
         committeeBean.setNotificationManager(notificationBean);
-        committeeBean.setSettings(initSettings());
+        committeeBean.setSettings(Beans.settings());
         committeeBean.postConstruct();
 
         // Set our Committees implementation to the Committees EJB,

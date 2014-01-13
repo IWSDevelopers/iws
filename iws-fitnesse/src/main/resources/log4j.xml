@@ -11,17 +11,14 @@
 
     <logger name="net.iaeste.iws">
         <level value="warn" />
-        <appender-ref ref="console" />
     </logger>
 
     <logger name="org.springframework">
         <level value="error" />
-        <appender-ref ref="console" />
     </logger>
 
     <logger name="org.hibernate">
         <level value="error" />
-        <appender-ref ref="console" />
     </logger>
 
     <root>

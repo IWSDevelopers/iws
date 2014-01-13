@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.daos.IW3JpaDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -17,11 +17,10 @@ package net.iaeste.iws.migrate.daos;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.migrate.entities.IW3FacultiesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
+import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -32,10 +31,8 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Transactional("transactionManagerIW3")
 public class IW3JpaDao implements IW3Dao {
 
-    @Autowired(required = true)
     private EntityManager entityManager = null;
 
     public IW3JpaDao(final EntityManager entityManager) {
@@ -98,10 +95,18 @@ public class IW3JpaDao implements IW3Dao {
      * {@inheritDoc}
      */
     @Override
-    public List<IW3OffersEntity> findAllOffers(final int page, final int size) {
+    public List<IW3OffersEntity> findAllOffers() {
         final Query query = entityManager.createNamedQuery("offers.findAll");
-        query.setFirstResult(page * size);
-        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<IW3Offer2GroupEntity> findAllOfferGroups() {
+        final Query query = entityManager.createNamedQuery("offergroup.findAll");
 
         return query.getResultList();
     }

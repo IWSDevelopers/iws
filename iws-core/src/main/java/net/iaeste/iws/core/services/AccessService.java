@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.services.AccessService
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -36,6 +36,7 @@ import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.SessionException;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.singletons.ActiveSessions;
@@ -74,11 +75,12 @@ public final class AccessService extends CommonService<AccessDao> {
      * Default Constructor. This Service only requires an AccessDao instance,
      * which is used for all database operations.
      *
+     * @param settings      IWS Settings
      * @param dao           AccessDAO instance
      * @param notifications Notification Object
      */
-    public AccessService(final AccessDao dao, final Notifications notifications, final Settings settings) {
-        super(dao);
+    public AccessService(final Settings settings, final AccessDao dao, final Notifications notifications) {
+        super(settings, dao);
 
         this.notifications = notifications;
         activeSessions = ActiveSessions.getInstance(settings);
@@ -381,11 +383,34 @@ public final class AccessService extends CommonService<AccessDao> {
                 // cryptographical hashvalue for it, which we can then match
                 // directly with the stored value from the UserEntity
                 final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
-                final String hashcode = generateHash(password, user.getSalt());
+                final String hashcode;
 
-                if (!hashcode.equals(user.getPassword())) {
-                    // Password mismatch, throw generic error
-                    throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
+                // Hack for migrated users, so they can reuse their old
+                // passwords initially. See trac task #534
+                if ("undefined".equals(user.getSalt())) {
+                    // From IW3: php/lib/sessions.php:338 if (strcmp(md5(strtolower($password)),$pwd) != 0)
+                    hashcode = HashcodeGenerator.generateMD5(password);
+
+                    if (!hashcode.equals(user.getPassword())) {
+                        // Password mismatch, throw generic error
+                        throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
+                    } else {
+                        // Let's just update the Password, so this terrible hack
+                        // hopefully becomes obsolete without users being forced
+                        // to update their passwords
+                        final String newSalt = UUID.randomUUID().toString();
+                        final String newPassword = generateHash(password, newSalt);
+                        user.setSalt(newSalt);
+                        user.setPassword(newPassword);
+                        user.setModified(new Date());
+                        dao.persist(user);
+                    }
+                } else {
+                    hashcode = generateHash(password, user.getSalt());
+                    if (!hashcode.equals(user.getPassword())) {
+                        // Password mismatch, throw generic error
+                        throw new IWSException(IWSErrors.AUTHENTICATION_ERROR, "No account for the user '" + username + "' was found.");
+                    }
                 }
 
                 // All good, return found UserEntity

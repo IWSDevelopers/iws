@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.exchange.StudentAcceptance
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -17,6 +17,7 @@ package net.iaeste.iws.api.dtos.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DatePeriod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,8 @@ public final class StudentAcceptance extends AbstractVerification {
     private String workingPlace = null;
     private String contactPerson = null;
     private String contactPersonEmail = null;
+    private String contactPersonPhone = null;
+    private DatePeriod confirmedPeriod = null;
     // allow up to 5000 characters
     private String additionalInformation = null;
 
@@ -66,6 +69,8 @@ public final class StudentAcceptance extends AbstractVerification {
             workingPlace = studentAcceptance.workingPlace;
             contactPerson = studentAcceptance.contactPerson;
             contactPersonEmail = studentAcceptance.contactPersonEmail;
+            contactPersonPhone = studentAcceptance.contactPersonPhone;
+            confirmedPeriod = studentAcceptance.confirmedPeriod;
             additionalInformation = studentAcceptance.additionalInformation;
         }
     }
@@ -126,6 +131,22 @@ public final class StudentAcceptance extends AbstractVerification {
         return contactPersonEmail;
     }
 
+    public void setContactPersonPhone(final String contactPersonPhone) {
+        this.contactPersonPhone = contactPersonPhone;
+    }
+
+    public String getContactPersonPhone() {
+        return contactPersonPhone;
+    }
+
+    public void setConfirmedPeriod(final DatePeriod confirmedPeriod) {
+        this.confirmedPeriod = new DatePeriod(confirmedPeriod);
+    }
+
+    public DatePeriod getConfirmedPeriod() {
+        return new DatePeriod(confirmedPeriod);
+    }
+
     public void setAdditionalInformation(final String additionalInformation) {
         this.additionalInformation = additionalInformation;
     }
@@ -175,6 +196,12 @@ public final class StudentAcceptance extends AbstractVerification {
         if (contactPersonEmail != null ? !contactPersonEmail.equals(that.contactPersonEmail) : that.contactPersonEmail != null) {
             return false;
         }
+        if (contactPersonPhone != null ? !contactPersonPhone.equals(that.contactPersonPhone) : that.contactPersonPhone != null) {
+            return false;
+        }
+        if (confirmedPeriod != null ? !confirmedPeriod.equals(that.confirmedPeriod) : that.confirmedPeriod != null) {
+            return false;
+        }
         if (firstWorkingDay != null ? !firstWorkingDay.equals(that.firstWorkingDay) : that.firstWorkingDay != null) {
             return false;
         }
@@ -194,6 +221,8 @@ public final class StudentAcceptance extends AbstractVerification {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (workingPlace != null ? workingPlace.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (contactPerson != null ? contactPerson.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (contactPersonEmail != null ? contactPersonEmail.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (contactPersonPhone != null ? contactPersonPhone.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (confirmedPeriod != null ? confirmedPeriod.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (additionalInformation != null ? additionalInformation.hashCode() : 0);
 
         return hash;
@@ -207,6 +236,8 @@ public final class StudentAcceptance extends AbstractVerification {
                 ", workingPlace='" + workingPlace + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
                 ", contactPersonEmail='" + contactPersonEmail + '\'' +
+                ", contactPersonPhone='" + contactPersonPhone + '\'' +
+                ", confirmedPeriod='" + confirmedPeriod + '\'' +
                 ", additionalInformation='" + additionalInformation + '\'' +
                 '}';
     }

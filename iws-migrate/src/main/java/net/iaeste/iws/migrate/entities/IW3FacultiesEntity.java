@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.IW3FacultiesEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.migrate.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,6 +24,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -39,7 +42,10 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "faculties")
-public class IW3FacultiesEntity {
+public class IW3FacultiesEntity implements Serializable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @Column(name = "facultyid", nullable = false, length = 10)

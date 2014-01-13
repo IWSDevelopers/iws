@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.migrators.UserMigrator
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -35,6 +35,8 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,6 +48,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Transactional
 public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(UserMigrator.class);
@@ -63,6 +66,7 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3ProfilesEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;
@@ -170,7 +174,7 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
 
         entity.setStreet1(convert(profile.getUser().getStreet1()));
         entity.setStreet2(convert(profile.getUser().getStreet2()));
-        entity.setZip(convert(profile.getUser().getZip()));
+        entity.setPostalCode(convert(profile.getUser().getZip()));
         entity.setCity(convert(profile.getUser().getCity()));
         entity.setState(convert(profile.getUser().getRegion()));
         entity.setPobox(convert(profile.getUser().getPobox()));

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.jpa.ExchangeJpaDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -23,7 +23,9 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -46,6 +48,30 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      */
     public ExchangeJpaDao(final EntityManager entityManager) {
         super(entityManager);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ForeignOfferStatisticsView> findForeignOfferStatistics(final GroupEntity group, final Integer year) {
+        final Query query = entityManager.createNamedQuery("view.findStatisticsForForeignOffersForGroupAndYear");
+        query.setParameter("gid", group.getId());
+        query.setParameter("year", year);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DomesticOfferStatisticsView> findDomesticOfferStatistics(final GroupEntity group, final Integer year) {
+        final Query query = entityManager.createNamedQuery("view.findStatisticsForDomesticOffersForGroupAndYear");
+        query.setParameter("gid", group.getId());
+        query.setParameter("year", year);
+
+        return query.getResultList();
     }
 
     /**
@@ -91,6 +117,17 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("workingPlace", employer.getWorkingPlace());
 
         return findSingleResult(query, "Employer");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OfferEntity findOfferByOldOfferId(final Integer oldOfferId) {
+        final Query query = entityManager.createNamedQuery("offer.findByOldOfferId");
+        query.setParameter("ooid", oldOfferId);
+
+        return findSingleResult(query, "Offer");
     }
 
     /**

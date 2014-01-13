@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.migrators.AbstractMigrator
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -23,14 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public abstract class AbstractMigrator<T> {
+public abstract class AbstractMigrator<T> implements Migrator<T> {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractMigrator.class);
 
@@ -42,8 +41,6 @@ public abstract class AbstractMigrator<T> {
     protected AbstractMigrator(final AccessDao accessDao) {
         this.accessDao = accessDao;
     }
-
-    abstract MigrationResult migrate(List<T> oldEntities);
 
     // =========================================================================
     // General AbstractMigrator

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.FetchGroupResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -35,7 +35,8 @@ public final class FetchGroupResponse extends AbstractFallible {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private Group group = null;
-    private List<UserGroup> userGroups = null;
+    private List<UserGroup> members = null;
+    private List<UserGroup> students = null;
     private List<Group> subGroups = null;
 
     // =========================================================================
@@ -54,12 +55,12 @@ public final class FetchGroupResponse extends AbstractFallible {
      * Users and Subgroups.
      *
      * @param group      Requested Group
-     * @param userGroups List of Users belonging to the Group, with relation details
+     * @param members List of Users belonging to the Group, with relation details
      * @param subGroups  List of SubGroups belonging to the Group
      */
-    public FetchGroupResponse(final Group group, final List<UserGroup> userGroups, final List<Group> subGroups) {
+    public FetchGroupResponse(final Group group, final List<UserGroup> members, final List<Group> subGroups) {
         setGroup(group);
-        setUserGroups(userGroups);
+        setMembers(members);
         setSubGroups(subGroups);
     }
 
@@ -85,12 +86,20 @@ public final class FetchGroupResponse extends AbstractFallible {
         return new Group(group);
     }
 
-    public void setUserGroups(final List<UserGroup> userGroups) {
-        this.userGroups = copy(userGroups);
+    public void setMembers(final List<UserGroup> members) {
+        this.members = copy(members);
     }
 
-    public List<UserGroup> getUserGroups() {
-        return copy(userGroups);
+    public List<UserGroup> getMembers() {
+        return copy(members);
+    }
+
+    public void setStudents(final List<UserGroup> students) {
+        this.students = copy(students);
+    }
+
+    public List<UserGroup> getStudents() {
+        return copy(students);
     }
 
     public void setSubGroups(final List<Group> subGroups) {
@@ -125,11 +134,13 @@ public final class FetchGroupResponse extends AbstractFallible {
         if (group != null ? !group.equals(that.group) : that.group != null) {
             return false;
         }
-        if (subGroups != null ? !subGroups.equals(that.subGroups) : that.subGroups != null) {
+        if (members != null ? !members.equals(that.members) : that.members != null) {
             return false;
         }
-
-        return !(userGroups != null ? !userGroups.equals(that.userGroups) : that.userGroups != null);
+        if (students != null ? !students.equals(that.students) : that.students != null) {
+            return false;
+        }
+        return !(subGroups != null ? !subGroups.equals(that.subGroups) : that.subGroups != null);
     }
 
     /**
@@ -140,7 +151,8 @@ public final class FetchGroupResponse extends AbstractFallible {
         int result = super.hashCode();
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (userGroups != null ? userGroups.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (members != null ? members.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (students != null ? students.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (subGroups != null ? subGroups.hashCode() : 0);
 
         return result;
@@ -153,7 +165,8 @@ public final class FetchGroupResponse extends AbstractFallible {
     public String toString() {
         return "FetchGroupResponse{" +
                 "group=" + group +
-                ", userGroups=" + userGroups +
+                ", members=" + members +
+                ", students=" + students +
                 ", subGroups=" + subGroups +
                 '}';
     }

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.Migrate
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -16,8 +16,11 @@ package net.iaeste.iws.migrate;
 
 import net.iaeste.iws.migrate.spring.ContextProvider;
 import net.iaeste.iws.migrate.spring.MigrateService;
+import org.joda.time.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -34,6 +37,7 @@ public final class Migrate {
 
     public static void main(final String [] args) {
         log.info("Starting Migration of the IW3 Database to IWS.");
+        final Long start = new Date().getTime();
         final MigrateService service = context.getMigrateService();
 
         // Now run the migrations
@@ -41,8 +45,14 @@ public final class Migrate {
         service.migrateGroups();
         service.migrateUsers();
         service.migrateUserGroups();
+        service.migrateMail();
         service.migrateOffers();
+        service.migrateOfferGroups();
 
-        log.info("Migration of the IW3 Database to IWS has been completed.");
+        final Period duration = new Period(new Date().getTime() - start);
+        log.info("Migration of the IW3 Database to IWS has been completed in {}:{}:{}.",
+                duration.getHours(),
+                duration.getMinutes(),
+                duration.getSeconds());
     }
 }

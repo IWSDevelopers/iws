@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.exchange.ApplicationEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -49,7 +49,11 @@ import java.util.Date;
                         "where a.externalId = :eid"),
         @NamedQuery(name = "application.findByOfferId",
                 query = "select a from ApplicationEntity a " +
-                        "where a.offerGroup.offer.id = :oid")
+                        "where a.offerGroup.offer.id = :oid"),
+        @NamedQuery(name = "application.findByOfferGroupIdAndStatuses",
+                query = "select a from ApplicationEntity a " +
+                        "where a.offerGroup.id = :ogid " +
+                        "  and a.status in :statuses")
 })
 @Entity
 @Table(name = "student_applications")
@@ -73,7 +77,7 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
     private StudentEntity student = null;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 25, nullable = false)
+    @Column(name = "status", length = 30, nullable = false)
     private ApplicationStatus status = null;
 
 //    @ManyToOne(targetEntity = UserEntity.class)
@@ -163,6 +167,15 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 
     @Column(name = "passport_valid_until")
     private String passportValidUntil = null;
+
+    @Column(name = "reject_by_employer_reason", length = 100)
+    private String rejectByEmployerReason = null;
+
+    @Column(name = "reject_description", length = 1000)
+    private String rejectDescription = null;
+
+    @Column(name = "reject_internal_comment", length = 1000)
+    private String rejectInternalComment = null;
 
 //    @OneToOne(targetEntity = StudentAcceptanceEntity.class)
 //    @JoinColumn(name = "acceptance", nullable = true)
@@ -434,6 +447,30 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
         return passportValidUntil;
     }
 
+    public void setRejectByEmployerReason(final String rejectByEmployerReason) {
+        this.rejectByEmployerReason = rejectByEmployerReason;
+    }
+
+    public String getRejectByEmployerReason() {
+        return rejectByEmployerReason;
+    }
+
+    public void setRejectDescription(final String rejectDescription) {
+        this.rejectDescription = rejectDescription;
+    }
+
+    public String getRejectDescription() {
+        return rejectDescription;
+    }
+
+    public void setRejectInternalComment(final String rejectInternalComment) {
+        this.rejectInternalComment = rejectInternalComment;
+    }
+
+    public String getRejectInternalComment() {
+        return rejectInternalComment;
+    }
+
     public void setNominatedAt(final Date nominatedAt) {
         this.nominatedAt = nominatedAt;
     }
@@ -520,6 +557,9 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
             passportNumber = obj.passportNumber;
             passportPlaceOfIssue = obj.passportPlaceOfIssue;
             passportValidUntil = obj.passportValidUntil;
+            rejectByEmployerReason = obj.rejectByEmployerReason;
+            rejectDescription = obj.rejectDescription;
+            rejectInternalComment = obj.rejectInternalComment;
         }
     }
 }

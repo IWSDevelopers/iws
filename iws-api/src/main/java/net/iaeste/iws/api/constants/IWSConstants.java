@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.constants.IWSConstants
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -189,6 +189,4 @@ public interface IWSConstants {
     Long ROLE_MODERATOR = 2L;
     Long ROLE_MEMBER = 3L;
     Long ROLE_STUDENT = 5L;
-
-    String ROOT_FILE_PATH = System.getProperty("java.io.tmpdir");
 }

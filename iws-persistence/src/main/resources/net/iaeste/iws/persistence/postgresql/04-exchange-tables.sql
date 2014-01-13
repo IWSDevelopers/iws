@@ -63,7 +63,8 @@ create table offers (
     id                        integer default nextval('offer_sequence'),
     external_id               varchar(36),
     ref_no                    varchar(16),
-    old_refno                 varchar(36),
+    old_offer_id              integer,
+    old_refno                 varchar(50),
     exchange_year             integer,
     -- General Work Description
     employer_id               integer,
@@ -108,7 +109,8 @@ create table offers (
     nomination_deadline       date,
     number_of_hard_copies     integer,
     additional_information    varchar(3000),
-    status                    varchar(15),
+    private_comment           varchar(10000),
+    status                    varchar(25),
     modified                  timestamp default now(),
     created                   timestamp default now(),
 
@@ -119,6 +121,7 @@ create table offers (
     /* Unique Constraints */
     constraint offer_unique_external_id unique (external_id),
     constraint offer_unique_ref_no      unique (ref_no),
+    constraint offer_unique_old_id      unique (old_offer_id),
 
     /* Not Null Constraints */
     constraint offer_notnull_id               check (id is not null),
@@ -151,12 +154,12 @@ create table offer_to_group (
     external_id        varchar(36),
     offer_id           integer,
     group_id           integer,
-    comment            varchar(100)  default '',
-    status             varchar(15),
-    modified           timestamp default now(),
+    status             varchar(25),
+    comment            varchar(500) default '',
     modified_by        integer,
-    created            timestamp default now(),
     created_by         integer,
+    modified           timestamp    default now(),
+    created            timestamp    default now(),
 
     /* Primary & Foreign Keys */
     constraint offer_to_group_pk              primary key (id),
@@ -167,6 +170,7 @@ create table offer_to_group (
 
     /* Unique Constraints */
     constraint offer_to_group_unique_external_id unique (external_id),
+    constraint offer_to_group_unique_ids         unique (offer_id, group_id),
 
     /* Not Null Constraints */
     constraint offer_to_group_notnull_id          check (id is not null),
@@ -229,7 +233,7 @@ create table student_applications (
     external_id               varchar(36),
     offer_group_id            integer,
     student_id                integer,
-    status                    varchar(25),
+    status                    varchar(30),
     home_address_id           integer,
     email                     varchar(100),
     phone_number              varchar(25),
@@ -253,6 +257,9 @@ create table student_applications (
     passport_number           varchar(100),
     passport_place_of_issue   varchar(100),
     passport_valid_until      varchar(100),
+    reject_by_employer_reason varchar(100),
+    reject_description        varchar(1000),
+    reject_internal_comment   varchar(1000),
     nominated_at              date,
     modified                  timestamp default now(),
     created                   timestamp default now(),

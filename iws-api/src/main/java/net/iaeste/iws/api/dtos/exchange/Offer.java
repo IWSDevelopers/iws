@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.exchange.Offer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -18,7 +18,6 @@ import static net.iaeste.iws.api.util.Copier.copy;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
-import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -55,6 +54,8 @@ public final class Offer extends AbstractVerification {
 
     private String offerId = null;
     private String refNo = null;
+
+    private String oldRefNo = null;
 
     // General Work Description
     private Employer employer = null;
@@ -99,6 +100,7 @@ public final class Offer extends AbstractVerification {
     private Date nominationDeadline = null;
     private Integer numberOfHardCopies = null;
     private String additionalInformation = null;
+    private String privateComment = null;
     private OfferState status = null;
     private DateTime modified = null;
     private DateTime created = null;
@@ -160,6 +162,7 @@ public final class Offer extends AbstractVerification {
             nominationDeadline = copy(offer.nominationDeadline);
             numberOfHardCopies = offer.numberOfHardCopies;
             additionalInformation = offer.additionalInformation;
+            privateComment = offer.privateComment;
             status = offer.status;
             modified = copy(offer.modified);
             created = copy(offer.created);
@@ -192,28 +195,6 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
-     * Sets the Offer Group. The Group is automatically set by the IWS upon
-     * initial persisting of the Offer.<br />
-     *   The method will throw an {@code IllegalArgumentException} if the
-     * Group is not valid, i.e. if the Object is either null or not a valid
-     * Group Object.
-     *
-     * @param group National Group, which this Offer belongs to
-     * @throws IllegalArgumentException if not valid
-     * @deprecated Please use the Group in the Employer Object
-     */
-    @Deprecated
-    public void setGroup(final Group group) throws IllegalArgumentException {
-        ensureNotNullAndVerifiable("group", group);
-        //this.group = new Group(group);
-    }
-
-    @Deprecated
-    public Group getGroup() {
-        return employer.getGroup();
-    }
-
-    /**
      * Sets the Offer reference number. The number must be unique, and follow
      * a certain format.<br />
      *   The method will throw an {@code IllegalArgumentException} if the
@@ -225,12 +206,28 @@ public final class Offer extends AbstractVerification {
      * @see IWSExchangeConstants#REFNO_FORMAT
      */
     public void setRefNo(final String refNo) throws IllegalArgumentException {
-        ensureNotNullAndValidRefno(refNo);
+        ensureNotNullAndValidRefno("refNo", refNo);
         this.refNo = refNo;
     }
 
     public String getRefNo() {
         return refNo;
+    }
+
+    /**
+     * Sets the IW3 Offer refNo.
+     * The oldRefNo once set after migration cannot be changed,
+     * any changes of this field made to DTO will be ignored during
+     * persiting the entity.
+     *
+     * @param oldRefNo old Offer Reference Number
+     */
+    public void setOldRefNo(final String oldRefNo) {
+        this.oldRefNo = oldRefNo;
+    }
+
+    public String getOldRefNo() {
+        return oldRefNo;
     }
 
     /**
@@ -556,6 +553,15 @@ public final class Offer extends AbstractVerification {
         return additionalInformation;
     }
 
+    public void setPrivateComment(final String privateComment) throws IllegalArgumentException {
+        ensureNotTooLong("privateComment", privateComment, 1000);
+        this.privateComment = privateComment;
+    }
+
+    public String getPrivateComment() {
+        return privateComment;
+    }
+
     public void setStatus(final OfferState status) {
         this.status = status;
     }
@@ -758,6 +764,9 @@ public final class Offer extends AbstractVerification {
         if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
             return false;
         }
+        if (oldRefNo != null ? !oldRefNo.equals(offer.oldRefNo) : offer.oldRefNo != null) {
+            return false;
+        }
         if (specializations != null ? !specializations.equals(offer.specializations) : offer.specializations != null) {
             return false;
         }
@@ -776,6 +785,9 @@ public final class Offer extends AbstractVerification {
         if (additionalInformation != null ? !additionalInformation.equals(offer.additionalInformation) : offer.additionalInformation != null) {
             return false;
         }
+        if (privateComment != null ? !privateComment.equals(offer.privateComment) : offer.privateComment != null) {
+            return false;
+        }
         return !(workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null);
     }
 
@@ -788,6 +800,7 @@ public final class Offer extends AbstractVerification {
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (offerId != null ? offerId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (refNo != null ? refNo.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (oldRefNo != null ? oldRefNo.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (workDescription != null ? workDescription.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (typeOfWork != null ? typeOfWork.hashCode() : 0);
@@ -821,6 +834,7 @@ public final class Offer extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (nominationDeadline != null ? nominationDeadline.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (numberOfHardCopies != null ? numberOfHardCopies.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (additionalInformation != null ? additionalInformation.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (privateComment != null ? privateComment.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
@@ -836,6 +850,7 @@ public final class Offer extends AbstractVerification {
         return "Offer{" +
                 "offerId='" + offerId + '\'' +
                 ", refNo='" + refNo + '\'' +
+                ", refNo='" + oldRefNo + '\'' +
                 ", employer=" + employer +
                 ", workDescription='" + workDescription + '\'' +
                 ", typeOfWork=" + typeOfWork +
@@ -869,6 +884,7 @@ public final class Offer extends AbstractVerification {
                 ", nominationDeadline=" + nominationDeadline +
                 ", numberOfHardCopies=" + numberOfHardCopies +
                 ", additionalInformation=" + additionalInformation +
+                ", privateComment=" + privateComment +
                 ", status=" + status +
                 ", modified=" + modified +
                 ", created=" + created +

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-common) - net.iaeste.iws.common.utils.HashcodeGeneratorTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -17,6 +17,7 @@ package net.iaeste.iws.common.utils;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +25,7 @@ import org.junit.Test;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class    HashcodeGeneratorTest {
+public class HashcodeGeneratorTest {
 
     private static final String USER_SALT = "";
 
@@ -36,6 +37,7 @@ public class    HashcodeGeneratorTest {
      * @see <a href="http://en.wikipedia.org/wiki/MD5">MD5</a>
      */
     @Test
+    @Ignore("Ignored 2013-01-04 by Kim - Reason: Trac task #534 states that for a limited period we have to support the old Passwords. However, this requires that the Salting is skipped")
     public void testGenerateMD5() {
         // Preconditions for the test
         final String textWithoutDot = "The quick brown fox jumps over the lazy dog";

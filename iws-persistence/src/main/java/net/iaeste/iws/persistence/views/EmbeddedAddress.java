@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.views.AddressView
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.views.EmbeddedAddress
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -41,8 +41,8 @@ public class EmbeddedAddress {
     @Column(name = "address_street2", insertable = false, updatable = false)
     private String street2 = null;
 
-    @Column(name = "address_zip", insertable = false, updatable = false)
-    private String zip = null;
+    @Column(name = "address_postal_code", insertable = false, updatable = false)
+    private String postalCode = null;
 
     @Column(name = "address_city", insertable = false, updatable = false)
     private String city = null;
@@ -78,12 +78,12 @@ public class EmbeddedAddress {
         return street2;
     }
 
-    public void setZip(final String zip) {
-        this.zip = zip;
+    public void setPostalCode(final String postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public String getZip() {
-        return zip;
+    public String getPostalCode() {
+        return postalCode;
     }
 
     public void setCity(final String city) {

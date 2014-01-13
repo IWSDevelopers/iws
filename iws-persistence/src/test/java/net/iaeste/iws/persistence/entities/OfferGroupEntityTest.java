@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.OfferGroupEntityTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -113,7 +113,7 @@ public class OfferGroupEntityTest {
         offerDao.persist(authentication, offer);
 
         assertThat(offerDao.findAllOffers(authentication).size(), is(1));
-        final List<String> externalIds = new ArrayList(1);
+        final List<String> externalIds = new ArrayList<>(1);
         externalIds.add(GROUP_EXTERNAL_ID);
         externalIds.add(GROUP_EXTERNAL_ID_2);
 

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.FetchGroup
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -43,7 +43,7 @@ public final class FetchGroup extends AbstractFixture<FetchGroupResponse> {
     }
 
     public int numberOfUsersInGroup() {
-        return getResponse() == null ? -1 : getResponse().getUserGroups().size();
+        return getResponse() == null ? -1 : getResponse().getMembers().size();
     }
 
     public String printGroup() {
@@ -66,7 +66,7 @@ public final class FetchGroup extends AbstractFixture<FetchGroupResponse> {
         } else if ((userIndex < 1) || (userIndex > numberOfUsersInGroup())) {
             retVal = "no user for given index";
         } else {
-            retVal = getResponse().getUserGroups().get(userIndex - 1).toString();
+            retVal = getResponse().getMembers().get(userIndex - 1).toString();
         }
 
         return retVal;

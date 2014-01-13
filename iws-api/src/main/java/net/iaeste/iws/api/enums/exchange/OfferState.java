@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.exchange.OfferState
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -29,14 +29,14 @@ public enum OfferState {
     NEW("New"),
 
     /**
+     * IW3 is referring to Offers as Open, and have been viewed.
+     */
+    OPEN("Open"),
+
+    /**
      * If an offer is shared to multiple countries
      */
     SHARED("Shared"),
-
-    /**
-     * If an offer is shared to one country only
-     */
-    EXCHANGED("Exchanged"),
 
     /**
      * If an offer has student applications
@@ -55,7 +55,9 @@ public enum OfferState {
 
     //offer status
     CLOSED("Closed"),
-    COMPLETED("Completed");
+    COMPLETED("Completed"),
+    AT_EMPLOYER("At Employer"),
+    ACCEPTED("Application accepted");
 
     // =========================================================================
     // Private Constructor & functionality

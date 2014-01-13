@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.ViewsDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.StudentView;
@@ -41,4 +42,6 @@ public interface ViewsDao {
     List<OfferView> findAllOffers(Authentication authentication, Integer exchangeYear);
 
     List<StudentView> findStudentsForMemberGroup(Long groupId, Paginatable page);
+
+    List<AttachedFileView> findAttachments(String table, Long id);
 }

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.AccessDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -117,9 +117,11 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findGroup(UserEntity user, String externalGroupId);
 
+    UserGroupEntity findIw3UserGroup(Integer iw3UserId, Integer iw3GroupId);
+
     List<UserGroupEntity> findGroupUsers(GroupEntity group);
 
-    UserGroupEntity findIw3UserGroup(Integer iw3UserId, Integer iw3GroupId);
+    List<UserGroupEntity> findStudents(Long memberGroupId);
 
     List<GroupEntity> findSubGroups(Long parentId);
 
@@ -134,8 +136,6 @@ public interface AccessDao extends BasicDao {
     Boolean hasGroupsWithSimilarName(GroupEntity group, String name);
 
     GroupEntity findGroupByUserAndType(UserEntity user, GroupType type);
-
-    GroupEntity findMemberGroup(UserEntity user);
 
     GroupEntity findNationalGroup(UserEntity user);
 
@@ -167,10 +167,13 @@ public interface AccessDao extends BasicDao {
     RoleEntity findRoleByUserAndGroup(String externalUserId, GroupEntity group);
 
     UserEntity findNationalSecretaryByMemberGroup(final GroupEntity memberGroup);
+
     UserEntity findOwnerByGroup(final GroupEntity group);
 
     UserEntity findActiveUserByExternalId(String externalUserId);
+
     UserEntity findUserByExternalId(String externalUserId);
+
     UserGroupEntity findMemberByGroupAndUser(GroupEntity group, UserEntity user);
 
     /**

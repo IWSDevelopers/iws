@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.Beans
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.client.spring;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.common.configuration.Settings;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,6 +40,12 @@ import javax.sql.DataSource;
 @ComponentScan("net.iaeste.iws.client.spring")
 @EnableTransactionManagement
 public class Beans {
+
+    // Following is used to configure the Settings
+    private static final Integer MAX_ACTIVE_TOKENS = IWSConstants.MAX_ACTIVE_TOKENS;
+    private static final Long MAX_IDLE_TIME_FOR_SESSIONS = IWSConstants.MAX_SESSION_IDLE_PERIOD;
+    private static final Integer MAX_LOGIN_RETRIES = IWSConstants.MAX_LOGIN_RETRIES;
+    private static final long LOGIN_BLOCKED_TIME = IWSConstants.LOGIN_BLOCKING_PERIOD;
 
     private static final Boolean USE_INMEMORY_DATABASE = true;
 
@@ -88,5 +96,20 @@ public class Beans {
         transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
 
         return transactionManager;
+    }
+
+    public static Settings settings() {
+        final Settings settings = new Settings();
+        settings.setDoJndiLookup(false);
+
+        settings.setMaxActiveTokens(MAX_ACTIVE_TOKENS);
+        settings.setMaxIdleTimeForSessions(MAX_IDLE_TIME_FOR_SESSIONS);
+        settings.setMaxLoginRetries(MAX_LOGIN_RETRIES);
+        settings.setLoginBlockedTime(LOGIN_BLOCKED_TIME);
+
+        // For our tests, we're just setting this to the TEMP dir.
+        settings.setRootFilePath(System.getProperty("java.io.tmpdir"));
+
+        return settings;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.PersonEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Gender;
 
 import javax.persistence.Column;
@@ -39,6 +40,9 @@ import java.util.Date;
 @Entity
 @Table(name = "persons")
 public class PersonEntity implements Updateable<PersonEntity> {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "person_sequence")
@@ -222,7 +226,7 @@ public class PersonEntity implements Updateable<PersonEntity> {
      */
     @Override
     public void merge(final PersonEntity obj) {
-        if ((obj != null) && id.equals(obj.id)) {
+        if (obj != null) {
             address = obj.address;
             email = obj.email;
             phone = obj.phone;

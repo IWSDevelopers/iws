@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.spring.StudentSpringClient
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -16,9 +16,9 @@ package net.iaeste.iws.client.spring;
 
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
@@ -26,7 +26,6 @@ import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
-import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.NotificationManagerBean;
 import net.iaeste.iws.ejb.StudentBean;
@@ -51,13 +50,6 @@ public final class StudentSpringClient implements Students {
 
     private Students client = null;
 
-    public Settings initSettings() {
-        final Settings settings = new Settings();
-        settings.setDoJndiLookup(false);
-
-        return settings;
-    }
-
     /**
      * Injects the {@code EntityManager} instance required to invoke our
      * transactional daos. The EntityManager instance can only be injected into
@@ -77,7 +69,7 @@ public final class StudentSpringClient implements Students {
         final StudentBean studentBean = new StudentBean();
         studentBean.setEntityManager(entityManager);
         studentBean.setNotificationManager(notificationBean);
-        studentBean.setSettings(initSettings());
+        studentBean.setSettings(Beans.settings());
         studentBean.postConstruct();
 
         // Set our Exchange implementation to the Exchange EJB, running withing

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.exchange.ApplicationStatus
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -53,25 +53,17 @@ public enum ApplicationStatus {
      * The employer rejected the student.
      * Both countries can see the application.
      */
-    REJECTED_BY_EMPLOYER,
+    REJECTED,
 
     /**
-     * The receiving country rejected the student
-     * Both countries can see the application.
+     * Sending country rejected the student
      */
-    REJECTED_BY_RECEIVING_COUNTRY,
+    REJECTED_BY_SENDING_COUNTRY,
 
     /**
      * The student does no longer wish to take the internship.
-     * <p/>
-     * A precondition is that the student was already nominated
-     * by the sending country.
-     * <p/>
      * Both countries can see the application.
      */
-    WITHDRAWN,
-
-    //TODO - two canceled statuses - by receiving/sending country?
-    CANCELED
+    CANCELLED
 
 }

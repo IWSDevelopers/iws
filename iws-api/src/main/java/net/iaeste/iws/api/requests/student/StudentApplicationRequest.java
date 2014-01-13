@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.student.StudentApplicationRequest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -37,9 +37,11 @@ public final class StudentApplicationRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     // TODO complete implementation, add fields for rejection messages and comments (see exchange mockups)
-    private ApplicationStatus status;
-
-    private String applicationId;
+    private String applicationId = null;
+    private ApplicationStatus status = null;
+    private String rejectByEmployerReason = null;
+    private String rejectDescription = null;
+    private String rejectInternalComment = null;
 
     // =========================================================================
     // Object Constructors
@@ -53,20 +55,69 @@ public final class StudentApplicationRequest extends AbstractVerification {
     }
 
     public StudentApplicationRequest(final String applicationId, final ApplicationStatus status) {
-        this.status = status;
         this.applicationId = applicationId;
+        this.status = status;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public ApplicationStatus getStatus() {
-        return status;
+    /**
+     * Sets the Student Application Id. The Id must be valid, if not then the
+     * method will throw an {@code IllegalArgumentException}.
+     *
+     * @param applicationId Student Application Id
+     * @throws IllegalArgumentException if not a valid Id
+     */
+    public void setApplicationId(final String applicationId) throws IllegalArgumentException {
+        ensureNotNullAndValidId("applicationId", applicationId);
+        this.applicationId = applicationId;
     }
 
     public String getApplicationId() {
         return applicationId;
+    }
+
+    /**
+     * Sets the new Status for the Student Application. The Status may not be
+     * null. If invalid, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param status Student Application Status
+     * @throws IllegalArgumentException if set to null
+     */
+    public void setStatus(final ApplicationStatus status) throws IllegalArgumentException {
+        ensureNotNull("status", status);
+        this.status = status;
+    }
+
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setRejectByEmployerReason(final String rejectByEmployerReason) {
+        this.rejectByEmployerReason = rejectByEmployerReason;
+    }
+
+    public String getRejectByEmployerReason() {
+        return rejectByEmployerReason;
+    }
+
+    public void setRejectDescription(final String rejectDescription) {
+        this.rejectDescription = rejectDescription;
+    }
+
+    public String getRejectDescription() {
+        return rejectDescription;
+    }
+
+    public void setRejectInternalComment(final String rejectInternalComment) {
+        this.rejectInternalComment = rejectInternalComment;
+    }
+
+    public String getRejectInternalComment() {
+        return rejectInternalComment;
     }
 
     // =========================================================================

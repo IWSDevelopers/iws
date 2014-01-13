@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>iws-parent</artifactId>
         <groupId>net.iaeste.iws</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <relativePath>../iws-parent/pom.xml</relativePath>
     </parent>
     <artifactId>iws-ear</artifactId>
@@ -14,7 +13,6 @@
     <description>IntraWeb Services - EAR Module</description>
 
     <build>
-        <finalName>iws</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-ear-plugin</artifactId>
@@ -64,7 +62,7 @@
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <configuration>
                             <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
-                            <check/>
+                            <check />
                         </configuration>
                         <executions>
                             <execution>
@@ -89,7 +87,7 @@
         <dependency>
             <groupId>net.iaeste.iws</groupId>
             <artifactId>iws-ejb</artifactId>
-	    <version>${version}</version>
+	        <version>${project.version}</version>
             <type>ejb</type>
         </dependency>
         <dependency>
@@ -98,7 +96,15 @@
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
         </dependency>
     </dependencies>
 

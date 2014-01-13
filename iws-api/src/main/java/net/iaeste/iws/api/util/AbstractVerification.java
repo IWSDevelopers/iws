@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.util.AbstractVerification
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -236,6 +236,24 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * Throws an {@code IllegalArgumentException} if the given value is not
+     * within the given limits.
+     *
+     * @param field   Name of the field
+     * @param value   The value of the field
+     * @param minimum The minimally allowed value for the field
+     * @param maximum The maximally allowed value for the field
+     * @throws IllegalArgumentException if the value is null not of exact length
+     */
+    protected <T extends Number> void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+        if (value != null) {
+            if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
+                throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
+            }
+        }
+    }
+
+    /**
      * Throws an {@code IllegalArgumentException} if the given value is either
      * null or not within the given limits.
      *
@@ -245,7 +263,9 @@ public abstract class AbstractVerification implements Verifiable {
      * @param maximum The maximally allowed value for the field
      * @throws IllegalArgumentException if the value is null not of exact length
      */
-    protected <T extends Number>void ensureWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+    protected <T extends Number> void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+
         if (value != null) {
             if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
                 throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
@@ -337,7 +357,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @throws IllegalArgumentException if the e-mail address is invalid
      */
     protected static void ensureValidEmail(final String field, final String value) throws IllegalArgumentException {
-        if (!IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
+        if (value != null && !IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
             throw new IllegalArgumentException(format(ERROR_INVALID_EMAIL, value, field));
         }
     }
@@ -362,8 +382,8 @@ public abstract class AbstractVerification implements Verifiable {
         }
     }
 
-    protected static void ensureNotNullAndValidRefno(final String refno) {
-        ensureNotNull("refno",  refno);
+    protected static void ensureNotNullAndValidRefno(final String field, final String refno) {
+        ensureNotNull(field,  refno);
         ensureValidRefno(refno);
     }
 

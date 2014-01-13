@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.GroupEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.monitoring.Monitored;
@@ -51,6 +52,9 @@ import java.util.Map;
 @NamedQueries({
         @NamedQuery(name = "group.findAll",
                 query = "select g from GroupEntity g"),
+        @NamedQuery(name = "group.findAllGroupType",
+                query = "select g from GroupEntity g " +
+                        "where g.groupType.grouptype = :type"),
         @NamedQuery(name = "group.findById",
                 query = "select g from GroupEntity g " +
                         "where g.id = :id"),
@@ -121,6 +125,9 @@ import java.util.Map;
 @Monitored(name = "Group", level = MonitoringLevel.DETAILED)
 public class GroupEntity implements Externable<GroupEntity>, Notifiable {
 
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "group_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
@@ -154,7 +161,7 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     private GroupTypeEntity groupType = null;
 
     @Monitored(name="Group Name", level = MonitoringLevel.DETAILED)
-    @Column(name = "groupname", length = 50)
+    @Column(name = "group_name", length = 50)
     private String groupName;
 
     @Monitored(name="Group Full Name", level = MonitoringLevel.DETAILED)

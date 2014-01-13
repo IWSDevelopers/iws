@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-ejb) - net.iaeste.iws.ejb.notifications.consumers.NotificationSystemAdministration
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -29,6 +29,7 @@ import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
+import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
@@ -139,7 +140,7 @@ public class NotificationSystemAdministration implements Observer {
                 status = prepareNewUserNotificationSetting(fields.get(NotificationField.EMAIL));
                 break;
             case USER_ACTIVATED:
-                status = prepareActivatedUserNotificationSetting(fields.get(NotificationField.EMAIL));
+                status = prepareActivatedUser(fields.get(NotificationField.EMAIL));
                 break;
             case NEW_GROUP:
                 createGroupMailinglist(fields.get(NotificationField.GROUP_NAME), fields.get(NotificationField.COUNTRY_NAME), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID));
@@ -154,7 +155,7 @@ public class NotificationSystemAdministration implements Observer {
                 status = NotificationProcessTaskStatus.OK;
                 break;
             case USERNAME_UPDATED:
-                updateUserSubscriptionEmail(fields.get(NotificationField.EMAIL), fields.get(NotificationField.NEW_USERNAME));
+                processUpdatedUsername(fields.get(NotificationField.EMAIL), fields.get(NotificationField.NEW_USERNAME));
                 status = NotificationProcessTaskStatus.OK;
                 break;
             default:
@@ -179,9 +180,45 @@ public class NotificationSystemAdministration implements Observer {
         return status;
     }
 
-    private NotificationProcessTaskStatus prepareActivatedUserNotificationSetting(final String username) {
-        final NotificationProcessTaskStatus status;
+    private void processUpdatedUsername(final String oldAddress, final String newAddress) {
+        updateUserSubscriptionEmail(oldAddress, newAddress);
+        updateUsernameInMailingAlias(oldAddress, newAddress);
+    }
+
+    private NotificationProcessTaskStatus prepareActivatedUser(final String username) {
+        NotificationProcessTaskStatus status;
         final UserEntity user = accessDao.findActiveUserByUsername(username);
+
+        if (user != null) {
+            createUserMailingAlias(user);
+            status = prepareActivatedUserNotificationSetting(user);
+        }
+        else {
+            status = NotificationProcessTaskStatus.ERROR;
+        }
+
+        return status;
+    }
+
+    private void createUserMailingAlias(final UserEntity user) {
+        MailingAliasEntity alias = mailingListDao.findMailingAliasByUsername(user.getUsername());
+        if (alias == null) {
+            alias = new MailingAliasEntity();
+            alias.setUserName(user.getUsername());
+        }
+        alias.setUserAlias(user.getAlias());
+
+        mailingListEntityManager.persist(alias);
+    }
+
+    private void updateUsernameInMailingAlias(final String oldAddress, final String newAddress) {
+        if (newAddress != null && newAddress.length() > 0) {
+            mailingListDao.updateUsernameInMailingAlias(oldAddress, newAddress);
+        }
+    }
+
+    private NotificationProcessTaskStatus prepareActivatedUserNotificationSetting(final UserEntity user) {
+        final NotificationProcessTaskStatus status;
         final Set<NotificationType> notificationTypes = new HashSet<>(16);
         notificationTypes.add(NotificationType.UPDATE_USERNAME);
         notificationTypes.add(NotificationType.RESET_PASSWORD);
@@ -315,10 +352,7 @@ public class NotificationSystemAdministration implements Observer {
 
         switch (type) {
             //TODO general secretary
-            case PRIVATE:
-                result = false;
-                //TODO this public list is alias for users
-                break;
+
             case INTERNATIONAL:
             case NATIONAL:
             case REGIONAL:
@@ -357,10 +391,7 @@ public class NotificationSystemAdministration implements Observer {
 
         switch (type) {
             //TODO general secretary
-            case PRIVATE:
-                //TODO this public list is alias for users
-                name = "";
-                break;
+
             case NATIONAL:
                 name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + settings.getPublicMailAddress();
                 break;

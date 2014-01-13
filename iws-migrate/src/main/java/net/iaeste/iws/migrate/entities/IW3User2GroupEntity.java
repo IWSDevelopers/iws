@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.IW3User2GroupEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,33 +14,26 @@
  */
 package net.iaeste.iws.migrate.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * The IW3 User2Group is having a problem - we don't have any Id value for it,
- * and given the duplicate entries, we cannot just add a composite Id! Hence,
- * the trick is to update the table with the following queries before the
- * migration is performed:
- * <pre>
- *   begin;
- *   create sequence user2group_sequence start with 1 increment by 1;
- *   alter table user2group add id integer not null primary key;
- *   update user2group set id = nextval('user2group_sequence');
- *   commit;
- * </pre>
+ * The IW3 User2Group table. Henrik made a correction following the problems
+ * discovered with lack of uniqueness for the Id's. The Primary Key is now an
+ * Embedded Id.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -48,25 +41,18 @@ import java.util.Date;
  */
 @NamedQueries(
         @NamedQuery(name = "usergroup.findAll",
-        query = "select ug from IW3User2GroupEntity ug")
+                query = "select ug from IW3User2GroupEntity ug")
 )
 @Entity
 @Table(name = "user2group")
-public class IW3User2GroupEntity {
+public class IW3User2GroupEntity implements Serializable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
-    @SequenceGenerator(name = "pk_sequence", sequenceName = "user2group_sequence")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
-    @Column(name = "id", unique = true, nullable = false, updatable = false)
-    private Integer id = null;
-
-    @ManyToOne(targetEntity = IW3UsersEntity.class)
-    @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false, updatable = false)
-    private IW3UsersEntity user = null;
-
-    @ManyToOne(targetEntity = IW3GroupsEntity.class)
-    @JoinColumn(name = "groupid", referencedColumnName = "groupid", nullable = false, updatable = false)
-    private IW3GroupsEntity group = null;
+    @EmbeddedId
+    private IW3User2GroupId id = new IW3User2GroupId();
 
     @ManyToOne(targetEntity = IW3RolesEntity.class)
     @JoinColumn(name = "roleid", referencedColumnName = "roleid", nullable = false, updatable = false)
@@ -93,28 +79,20 @@ public class IW3User2GroupEntity {
     // IW3 Entity Setters & Getters
     // =========================================================================
 
-    public void setId(final Integer id) {
+    public void setId(final IW3User2GroupId id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public IW3User2GroupId getId() {
         return id;
     }
 
-    public void setUser(final IW3UsersEntity userid) {
-        this.user = userid;
-    }
-
     public IW3UsersEntity getUser() {
-        return user;
-    }
-
-    public void setGroup(final IW3GroupsEntity groupid) {
-        this.group = groupid;
+        return id.getUserId();
     }
 
     public IW3GroupsEntity getGroup() {
-        return group;
+        return id.getGroupId();
     }
 
     public void setRole(final IW3RolesEntity roleid) {
@@ -164,4 +142,5 @@ public class IW3User2GroupEntity {
     public Date getCreated() {
         return created;
     }
+
 }

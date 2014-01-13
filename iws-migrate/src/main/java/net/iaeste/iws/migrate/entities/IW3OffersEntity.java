@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.IW3OffersEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.migrate.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,6 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -29,12 +32,17 @@ import java.sql.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(@NamedQuery(name = "offers.findAll",
-        query = "select o from IW3OffersEntity o " +
-                "order by o.offerid asc"))
+@NamedQueries(
+        @NamedQuery(name = "offers.findAll",
+                query = "select o from IW3OffersEntity o " +
+                        "order by o.offerid asc")
+)
 @Entity
 @Table(name = "offers")
-public class IW3OffersEntity {
+public class IW3OffersEntity implements Serializable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @Column(name = "offerid", nullable = false, length = 10)

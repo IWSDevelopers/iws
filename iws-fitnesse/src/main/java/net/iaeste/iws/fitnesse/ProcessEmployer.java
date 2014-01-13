@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-fitnesse) - net.iaeste.iws.fitnesse.ProcessEmployer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -55,8 +55,8 @@ public final class ProcessEmployer extends AbstractFixture<EmployerResponse> {
         address.setStreet2(street2);
     }
 
-    public void setZip(final String zip)  {
-        address.setZip(zip);
+    public void setPostalCode(final String postalCode)  {
+        address.setPostalCode(postalCode);
     }
 
     public void setCity(final String city)  {

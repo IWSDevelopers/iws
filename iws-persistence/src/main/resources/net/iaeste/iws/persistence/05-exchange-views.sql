@@ -2,6 +2,7 @@
 -- Please add all Exchange related views here
 -- =============================================================================
 
+
 -- =============================================================================
 -- The Employer View, which embeds Address & Group
 -- =============================================================================
@@ -26,13 +27,13 @@ create view employer_view as
     g.external_id              as group_external_id,
     g.parent_id                as group_parent_id,
     g.grouptype_id             as group_grouptype,
-    g.groupname                as group_groupname,
+    g.group_name               as group_groupname,
     g.status                   as group_status,
     g.modified                 as group_modified,
     g.created                  as group_created,
     a.street1                  as address_street1,
     a.street2                  as address_street2,
-    a.zip                      as address_zip,
+    a.postal_code              as address_postal_code,
     a.city                     as address_city,
     a.state                    as address_state,
     a.modified                 as address_modified,
@@ -59,6 +60,7 @@ create view employer_view as
     and e.address_id = a.id
     and a.country_id = c.id;
 
+
 -- =============================================================================
 -- The Offer View, which embeds ???
 -- =============================================================================
@@ -70,6 +72,7 @@ create view offer_view as
     u.lastname                 as ns_lastname,
     o.external_id              as offer_external_id,
     o.ref_no                   as offer_ref_no,
+    o.old_refno                as offer_old_ref_no,
     o.exchange_year            as offer_exchange_year,
     o.work_description         as offer_work_description,
     o.work_type                as offer_work_type,
@@ -106,6 +109,7 @@ create view offer_view as
     o.nomination_deadline      as offer_nomination_deadline,
     o.number_of_hard_copies    as offer_number_of_hard_copies,
     o.additional_information   as offer_additional_information,
+    o.private_comment          as offer_private_comment,
     o.status                   as offer_status,
     o.modified                 as offer_modified,
     o.created                  as offer_created,
@@ -126,13 +130,13 @@ create view offer_view as
     g.external_id              as group_external_id,
     g.parent_id                as group_parent_id,
     g.grouptype_id             as group_grouptype,
-    g.groupname                as group_groupname,
+    g.group_name               as group_groupname,
     g.status                   as group_status,
     g.modified                 as group_modified,
     g.created                  as group_created,
     a.street1                  as address_street1,
     a.street2                  as address_street2,
-    a.zip                      as address_zip,
+    a.postal_code              as address_postal_code,
     a.city                     as address_city,
     a.state                    as address_state,
     a.modified                 as address_modified,
@@ -198,7 +202,7 @@ create view student_view as
     g.external_id              as group_external_id,
     g.grouptype_id             as group_grouptype,
     g.parent_id                as group_parent_id,
-    g.groupname                as group_groupname,
+    g.group_name               as group_groupname,
     g.status                   as group_status,
     g.modified                 as group_modified,
     g.created                  as group_created,
@@ -233,6 +237,7 @@ create view student_view as
     and g.grouptype_id = gt.id
     and gt.grouptype = 'STUDENT';
 
+
 -- =============================================================================
 -- The Application View, which embeds Offer, Student, User, Roles & Countries
 -- =============================================================================
@@ -262,19 +267,22 @@ create view application_view as
     sa.passport_number           as application_passport_number,
     sa.passport_place_of_issue   as application_passport_place_of_issue,
     sa.passport_valid_until      as application_passport_valid_until,
+    sa.reject_by_employer_reason as application_reject_by_employer_reason,
+    sa.reject_description        as application_reject_description,
+    sa.reject_internal_comment   as application_reject_internal_comment,
     sa.nominated_at              as application_nominated_at,
     sa.modified                  as application_modified,
     sa.created                   as application_created,
     a_h.street1                  as address_street1,
     a_h.street2                  as address_street2,
-    a_h.zip                      as address_zip,
+    a_h.postal_code              as address_postal_code,
     a_h.city                     as address_city,
     a_h.state                    as address_state,
     a_h.modified                 as address_modified,
     a_h.created                  as address_created,
     a_t.street1                  as address2_street1,
     a_t.street2                  as address2_street2,
-    a_t.zip                      as address2_zip,
+    a_t.postal_code              as address2_postal_code,
     a_t.city                     as address2_city,
     a_t.state                    as address2_state,
     a_t.modified                 as address2_modified,
@@ -303,6 +311,7 @@ create view application_view as
     u.created                    as user_created,
     o.external_id                as offer_external_id,
     o.ref_no                     as offer_ref_no,
+    o.old_refno                  as offer_old_ref_no,
     o.work_description           as offer_work_description,
     o.work_type                  as offer_work_type,
     o.study_levels               as offer_study_levels,
@@ -338,6 +347,7 @@ create view application_view as
     o.nomination_deadline        as offer_nomination_deadline,
     o.number_of_hard_copies      as offer_number_of_hard_copies,
     o.additional_information     as offer_additional_information,
+    o.private_comment            as offer_private_comment,
     o.status                     as offer_status,
     o.modified                   as offer_modified,
     o.created                    as offer_created,
@@ -357,3 +367,41 @@ create view application_view as
     and sa.offer_group_id = og.id
     and e.id = o.employer_id
     and og.offer_id = o.id;
+
+
+-- =============================================================================
+-- Statistics View for Foreign Offers
+-- =============================================================================
+create view foreign_offer_statistics as
+  select
+    count(o2g.id)   as records,
+    o2g.status      as status,
+    o2g.group_id    as group_id,
+    o.exchange_year as exchange_year
+  from
+    offers o,
+    offer_to_group o2g
+  where o.id = o2g.offer_id
+  group by
+    o2g.status,
+    o2g.group_id,
+    o.exchange_year;
+
+
+-- =============================================================================
+-- Statistics View for Domestic Offers
+-- =============================================================================
+create view domestic_offer_statistics as
+  select
+    count (o.id)    as records,
+    o.status        as status,
+    e.group_id      as group_id,
+    o.exchange_year as exchange_year
+  from
+    offers o,
+    employers e
+  where e.id = o.employer_id
+  group by
+    o.status,
+    e.group_id,
+    o.exchange_year;

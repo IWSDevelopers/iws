@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.Permission
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -147,6 +147,7 @@ public enum Permission {
     PROCESS_PUBLISH_OFFER,
     FETCH_PUBLISH_OFFER,
     APPLY_FOR_OPEN_OFFER,
+    FETCH_OFFER_STATISTICS,
 
     // Following are unnapped Exchange Permissions
     PROCESS_OFFER_TEMPLATES,

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.AddressEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 
@@ -46,6 +47,9 @@ import java.util.Date;
 @Monitored(name = "Address", level = MonitoringLevel.DETAILED)
 public class AddressEntity extends AbstractUpdateable<AddressEntity> {
 
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "address_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
@@ -60,9 +64,9 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
     @Column(name = "street2", length = 100)
     private String street2 = null;
 
-    @Monitored(name="Address ZIP (Postal Code)", level = MonitoringLevel.DETAILED)
-    @Column(name = "zip", length = 12)
-    private String zip = null;
+    @Monitored(name="Address Postal Code", level = MonitoringLevel.DETAILED)
+    @Column(name = "postal_code", length = 12)
+    private String postalCode = null;
 
     @Monitored(name="Address City", level = MonitoringLevel.DETAILED)
     @Column(name = "city", length = 100)
@@ -107,16 +111,16 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
     /**
      * Default Constructor, for creating new entity.
      *
-     * @param street1 First Street information
-     * @param street2 Second Street information
-     * @param zip     ZIP code
-     * @param city    City
-     * @param country Country
+     * @param street1    First Street information
+     * @param street2    Second Street information
+     * @param postalCode Postal Code
+     * @param city       City
+     * @param country    Country
      */
-    public AddressEntity(final String street1, final String street2, final String zip, final String city, final CountryEntity country) {
+    public AddressEntity(final String street1, final String street2, final String postalCode, final String city, final CountryEntity country) {
         this.street1 = street1;
         this.street2 = street2;
-        this.zip = zip;
+        this.postalCode = postalCode;
         this.city = city;
         this.country = country;
     }
@@ -173,12 +177,12 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
         return state;
     }
 
-    public void setZip(final String zip) {
-        this.zip = zip;
+    public void setPostalCode(final String postalCode) {
+        this.postalCode = postalCode;
     }
 
-    public String getZip() {
-        return zip;
+    public String getPostalCode() {
+        return postalCode;
     }
 
     public void setPobox(final String pobox) {
@@ -242,7 +246,7 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
 
         changes += different(street1, obj.street1);
         changes += different(street2, obj.street2);
-        changes += different(zip, obj.zip);
+        changes += different(postalCode, obj.postalCode);
         changes += different(city, obj.city);
         changes += different(state, obj.state);
         changes += different(pobox, obj.pobox);
@@ -255,10 +259,12 @@ public class AddressEntity extends AbstractUpdateable<AddressEntity> {
      */
     @Override
     public void merge(final AddressEntity obj) {
-        if (obj != null) { // cannot compare external id because the Address DTO does not have an id param
+        // cannot compare external id, as the Addresses are embedded and not
+        // independent Objects.
+        if (obj != null) {
             street1 = obj.street1;
             street2 = obj.street2;
-            zip = obj.zip;
+            postalCode = obj.postalCode;
             city = obj.city;
             state = obj.state;
             pobox = obj.pobox;

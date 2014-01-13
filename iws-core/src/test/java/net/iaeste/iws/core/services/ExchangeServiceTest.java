@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.services.ExchangeServiceTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -21,6 +21,7 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.OfferRequestTestUtility;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
@@ -46,7 +47,8 @@ public class ExchangeServiceTest {
     private final ExchangeDao dao = mock(ExchangeDao.class);
     private final AccessDao accessDao = mock(AccessDao.class);
     private final Notifications notifications = mock(Notifications.class);
-    private final ExchangeService client = new ExchangeService(dao, accessDao, notifications);
+    private final Settings settings = new Settings();
+    private final ExchangeService client = new ExchangeService(settings, dao, accessDao, notifications);
     private final List<Offer> offers = OfferRequestTestUtility.getValidOffersList();
     private Authentication auth = null;
 

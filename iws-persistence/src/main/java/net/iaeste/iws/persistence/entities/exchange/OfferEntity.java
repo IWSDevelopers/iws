@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.exchange.OfferEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -58,6 +58,9 @@ import java.util.Map;
         @NamedQuery(name = "offer.findAllForGroup",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid"),
+        @NamedQuery(name = "offer.findByOldOfferId",
+                query = "select o from OfferEntity o " +
+                        "where o.oldOfferId = :ooid"),
         @NamedQuery(name = "offer.findByGroupAndExternalIdAndRefNo",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid" +
@@ -135,6 +138,13 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
      */
     @Column(name = "old_refno", length = 36)
     private String oldRefno = null;
+
+    /**
+     * To help migrating the Offer information and related data, we store the
+     * old Offer Id as well, this way we can better find the data later on.
+     */
+    @Column(name = "old_offer_id")
+    private Integer oldOfferId = null;
 
     @Column(name = "exchange_year", length = 4)
     private Integer exchangeYear = null;
@@ -301,9 +311,13 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @Column(name = "additional_information", length = 3000)
     private String additionalInformation = null;
 
+    @Monitored(name="Offer Private Comment", level = MonitoringLevel.DETAILED)
+    @Column(name = "private_comment", length = 10000)
+    private String privateComment = null;
+
     @Monitored(name="Offer status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 15)
+    @Column(name = "status", length = 25)
     private OfferState status = OfferState.NEW;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -364,6 +378,14 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
 
     public String getOldRefno() {
         return oldRefno;
+    }
+
+    public void setOldOfferId(final Integer oldOfferId) {
+        this.oldOfferId = oldOfferId;
+    }
+
+    public Integer getOldOfferId() {
+        return oldOfferId;
     }
 
     public void setExchangeYear(final Integer exchangeYear) {
@@ -662,6 +684,14 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
         return additionalInformation;
     }
 
+    public void setPrivateComment(final String privateComment) {
+        this.privateComment = privateComment;
+    }
+
+    public String getPrivateComment() {
+        return privateComment;
+    }
+
     public void setStatus(final OfferState status) {
         this.status = status;
     }
@@ -724,6 +754,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             // Note, Id, ExternalId & refno are *not* allowed to be updated!
+            // Also note, oldOfferId and oldRefNo are *not* allowed to be updated!
 
             // General Work Description
             workDescription = obj.workDescription;
@@ -769,6 +800,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
             nominationDeadline = obj.nominationDeadline;
             numberOfHardCopies = obj.numberOfHardCopies;
             additionalInformation = obj.additionalInformation;
+            privateComment = obj.privateComment;
             status = obj.status;
         }
     }

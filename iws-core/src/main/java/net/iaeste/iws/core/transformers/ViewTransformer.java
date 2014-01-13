@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.transformers.ViewTransformer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -18,6 +18,7 @@ import static net.iaeste.iws.core.transformers.EmbeddedConverter.convert;
 
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.exchange.Employer;
@@ -25,6 +26,7 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.persistence.views.ApplicationView;
+import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.StudentView;
@@ -139,5 +141,31 @@ public final class ViewTransformer {
         application.setOffer(offer);
 
         return application;
+    }
+
+    /**
+     * Transforms the File from the Attached File View to a File DTO Object.
+     * Note, that the File Data is omitted, since it is stored in the file
+     * system, and should only be fetched if explicitly requested.
+     *
+     * @param view AttachedFileView to transform
+     * @return File DTO
+     */
+    public static File transform(final AttachedFileView view) {
+        final File file = new File();
+
+        file.setFileId(view.getFile().getExternalId());
+        file.setGroup(convert(view.getGroup()));
+        file.setUser(convert(view.getUser()));
+        file.setFilename(view.getFile().getFileName());
+        file.setFilesize(view.getFile().getSize());
+        file.setMimetype(view.getFile().getMimeType());
+        file.setDescription(view.getFile().getDescription());
+        file.setKeywords(view.getFile().getKeywords());
+        file.setChecksum(view.getFile().getChecksum());
+        file.setModified(CommonTransformer.convert(view.getFile().getModified()));
+        file.setCreated(CommonTransformer.convert(view.getFile().getCreated()));
+
+        return file;
     }
 }

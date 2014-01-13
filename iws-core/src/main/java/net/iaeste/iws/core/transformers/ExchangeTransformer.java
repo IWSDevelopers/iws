@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.transformers.OfferTransformer
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.transformers.ExchangeTransformer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
@@ -23,11 +24,15 @@ import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Transformer for the Exchange module, handles transformation of the DTO Objects
@@ -36,7 +41,6 @@ import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
  * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyLongMethod
  */
 public final class ExchangeTransformer {
 
@@ -88,6 +92,7 @@ public final class ExchangeTransformer {
             result.setLodgingCost(offer.getLodgingCost());
             result.setLodgingCostFrequency(offer.getLodgingCostFrequency());
             result.setAdditionalInformation(offer.getAdditionalInformation());
+            result.setPrivateComment(offer.getPrivateComment());
             result.setStatus(offer.getStatus());
             result.setNumberOfHardCopies(offer.getNumberOfHardCopies());
             result.setNominationDeadline(CommonTransformer.convert(offer.getNominationDeadline()));
@@ -104,6 +109,7 @@ public final class ExchangeTransformer {
 
             result.setOfferId(entity.getExternalId());
             result.setRefNo(entity.getRefNo());
+            result.setOldRefNo(entity.getOldRefno());
             result.setEmployer(transform(entity.getEmployer()));
             result.setWorkDescription(entity.getWorkDescription());
             result.setTypeOfWork(entity.getTypeOfWork());
@@ -137,6 +143,7 @@ public final class ExchangeTransformer {
             result.setNominationDeadline(CommonTransformer.convert(entity.getNominationDeadline()));
             result.setNumberOfHardCopies(entity.getNumberOfHardCopies());
             result.setAdditionalInformation(entity.getAdditionalInformation());
+            result.setPrivateComment(entity.getPrivateComment());
             result.setStatus(entity.getStatus());
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
@@ -204,6 +211,7 @@ public final class ExchangeTransformer {
             result.setOfferRefNo(entity.getOffer().getRefNo());
             result.setGroupId(entity.getGroup().getExternalId());
             result.setStatus(entity.getStatus());
+            result.setComment(entity.getComment());
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
         }
@@ -253,12 +261,22 @@ public final class ExchangeTransformer {
             entity.setLanguage2Level(student.getLanguage2Level());
             entity.setLanguage3(student.getLanguage3());
             entity.setLanguage3Level(student.getLanguage3Level());
-            //TODO there is no sense to copy modified and created from DTO to entity
-            //entity.setModified(student.getModified().toDate());
-            //entity.setCreated(student.getCreated().toDate());
         }
 
         return entity;
+    }
+
+    public static StudentApplication transform(final ApplicationEntity entity, final List<AttachmentEntity> attachments) {
+        final StudentApplication application = transform(entity);
+
+        final List<File> files = new ArrayList<>(attachments.size());
+        for (final AttachmentEntity attachment : attachments) {
+            final File file = StorageTransformer.transform(attachment.getFile());
+            files.add(file);
+        }
+        application.setAttachments(files);
+
+        return application;
     }
 
     public static StudentApplication transform(final ApplicationEntity entity) {
@@ -287,13 +305,15 @@ public final class ExchangeTransformer {
             result.setLanguage2Level(entity.getLanguage2Level());
             result.setLanguage3(entity.getLanguage3());
             result.setLanguage3Level(entity.getLanguage3Level());
-            result.setInternshipStart(CommonTransformer.convert(entity.getInternshipStart()));
-            result.setInternshipEnd(CommonTransformer.convert(entity.getInternshipEnd()));
+            result.setAvailable(CommonTransformer.transform(entity.getInternshipStart(), entity.getInternshipEnd()));
             result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.explodeStringList(entity.getSpecializations()));
             result.setPassportNumber(entity.getPassportNumber());
             result.setPassportPlaceOfIssue(entity.getPassportPlaceOfIssue());
             result.setPassportValidUntil(entity.getPassportValidUntil());
+            result.setRejectByEmployerReason(entity.getRejectByEmployerReason());
+            result.setRejectDescription(entity.getRejectDescription());
+            result.setRejectInternalComment(entity.getRejectInternalComment());
             result.setNominatedAt(entity.getNominatedAt() != null ? new DateTime(entity.getNominatedAt()) : null);
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
@@ -329,13 +349,16 @@ public final class ExchangeTransformer {
             result.setLanguage2Level(application.getLanguage2Level());
             result.setLanguage3(application.getLanguage3());
             result.setLanguage3Level(application.getLanguage3Level());
-            result.setInternshipStart(CommonTransformer.convert(application.getInternshipStart()));
-            result.setInternshipEnd(CommonTransformer.convert(application.getInternshipEnd()));
+            result.setInternshipStart(CommonTransformer.readFromDateFromPeriod(application.getAvailable()));
+            result.setInternshipEnd(CommonTransformer.readToDateFromPeriod(application.getAvailable()));
             result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(application.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.join(application.getSpecializations()));
             result.setPassportNumber(application.getPassportNumber());
             result.setPassportPlaceOfIssue(application.getPassportPlaceOfIssue());
             result.setPassportValidUntil(application.getPassportValidUntil());
+            result.setRejectByEmployerReason(application.getRejectByEmployerReason());
+            result.setRejectDescription(application.getRejectDescription());
+            result.setRejectInternalComment(application.getRejectInternalComment());
             result.setNominatedAt(application.getNominatedAt() != null ? application.getNominatedAt().toDate() : null);
         }
 

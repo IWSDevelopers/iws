@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.jpa.ViewsJpaDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -19,6 +19,7 @@ import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
+import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.StudentView;
@@ -105,5 +106,17 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("parentId", groupId);
 
         return fetchList(query, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<AttachedFileView> findAttachments(final String table, final Long id) {
+        final Query query = entityManager.createNamedQuery("view.findAttachments");
+        query.setParameter("table", table);
+        query.setParameter("recordId", id);
+
+        return query.getResultList();
     }
 }

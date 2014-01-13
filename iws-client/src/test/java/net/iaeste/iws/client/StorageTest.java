@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.StorageTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -43,9 +43,11 @@ public class StorageTest extends AbstractTest {
 
     @Override
     public void tearDown() {
+        logout(token);
     }
 
     @Test
+    //@Ignore("2014-01-12 by Kim - Reason: Storage is being restructured since the data is stored in the filesystem rather than the database.")
     public void testStoreFindDeleteFile() {
         // First generate a primitive file to store.
         final byte[] testdata = { (byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5,
@@ -63,6 +65,7 @@ public class StorageTest extends AbstractTest {
         final FileResponse response = storage.processFile(token, request);
         assertThat(response.isOk(), is(true));
         final FetchFileRequest fetchRequest = new FetchFileRequest(response.getFile().getFileId());
+        fetchRequest.setReadFileData(true);
         final FetchFileResponse fetchResponseForGroup = storage.fetchFile(token, fetchRequest);
         token.setGroupId(null);
         final FetchFileResponse fetchResponseForUser = storage.fetchFile(token, fetchRequest);
@@ -80,7 +83,7 @@ public class StorageTest extends AbstractTest {
         token.setGroupId(null);
         final FetchFileResponse findDeletedFileResponse = storage.fetchFile(token, fetchRequest);
         assertThat(findDeletedFileResponse.isOk(), is(false));
-        assertThat(findDeletedFileResponse.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
+        assertThat(findDeletedFileResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
         assertThat(findDeletedFileResponse.getMessage(), is("No File was found."));
     }
 }

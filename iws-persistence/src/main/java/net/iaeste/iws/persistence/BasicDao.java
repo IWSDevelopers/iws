@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.BasicDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence;
 
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
@@ -141,4 +142,28 @@ public interface BasicDao {
      * @throws net.iaeste.iws.persistence.exceptions.PersistenceException if a single file could not be found
      */
     FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
+
+    GroupEntity findMemberGroup(UserEntity user);
+
+    List<GroupEntity> findAllGroups(GroupType type);
+
+    /**
+     * Finds a file based on the internal Id.
+     *
+     * @param id File Id
+     * @return Found File or null if no such file exists
+     */
+    FileEntity findFileById(Long id);
+
+    /**
+     * Finds a file for a given Group with the given External File Id, which the
+     * user is associated with.
+     *
+     * @param user       The User
+     * @param group      The Group that the file belongs to
+     * @param externalId External File Id
+     * @return File
+     * @throws PersistenceException if a single file could not be found
+     */
+    FileEntity findFileByUserGroupAndExternalId(UserEntity user, GroupEntity group, String externalId);
 }

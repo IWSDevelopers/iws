@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.ExchangeDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -21,7 +21,9 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
+import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 
 import java.util.Date;
 import java.util.List;
@@ -35,10 +37,15 @@ import java.util.Set;
  */
 public interface ExchangeDao extends BasicDao {
 
+    List<ForeignOfferStatisticsView> findForeignOfferStatistics(GroupEntity group, Integer year);
+    List<DomesticOfferStatisticsView> findDomesticOfferStatistics(GroupEntity group, Integer year);
+
     EmployerEntity findEmployer(String externalId);
 
     EmployerEntity findUniqueEmployer(Authentication authentication, Employer employer);
     EmployerEntity findUniqueEmployer(GroupEntity group, EmployerEntity employer);
+
+    OfferEntity findOfferByOldOfferId(Integer oldOfferId);
 
     /**
      * Get all offers from the database.

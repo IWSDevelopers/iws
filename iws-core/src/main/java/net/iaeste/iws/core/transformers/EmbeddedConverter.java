@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.transformers.EmbeddedTransformer
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.transformers.EmbeddedConverter
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -71,7 +71,7 @@ public final class EmbeddedConverter {
 
         result.setStreet1(embedded.getStreet1());
         result.setStreet2(embedded.getStreet2());
-        result.setZip(embedded.getZip());
+        result.setPostalCode(embedded.getPostalCode());
         result.setCity(embedded.getCity());
         result.setState(embedded.getState());
 
@@ -83,7 +83,7 @@ public final class EmbeddedConverter {
 
         result.setStreet1(embedded.getStreet1());
         result.setStreet2(embedded.getStreet2());
-        result.setZip(embedded.getZip());
+        result.setPostalCode(embedded.getPostalCode());
         result.setCity(embedded.getCity());
         result.setState(embedded.getState());
 
@@ -139,6 +139,7 @@ public final class EmbeddedConverter {
 
         result.setOfferId(embedded.getExternalId());
         result.setRefNo(embedded.getRefNo());
+        result.setOldRefNo(embedded.getOldRefNo());
         result.setWorkDescription(embedded.getWorkDescription());
         result.setTypeOfWork(embedded.getTypeOfWork());
         result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, embedded.getStudyLevels()));
@@ -171,6 +172,7 @@ public final class EmbeddedConverter {
         result.setNominationDeadline(CommonTransformer.convert(embedded.getNominationDeadline()));
         result.setNumberOfHardCopies(embedded.getNumberOfHardCopies());
         result.setAdditionalInformation(embedded.getAdditionalInformation());
+        result.setPrivateComment(embedded.getPrivateComment());
         result.setStatus(embedded.getStatus());
         result.setModified(new DateTime(embedded.getModified()));
         result.setCreated(new DateTime(embedded.getCreated()));
@@ -210,17 +212,19 @@ public final class EmbeddedConverter {
         result.setIsLodgingByIaeste(embedded.isLodgingByIaeste());
         result.setLanguage1(embedded.getLanguage1());
         result.setLanguage1Level(embedded.getLanguage1Level());
-        result.setLanguage1(embedded.getLanguage2());
-        result.setLanguage1Level(embedded.getLanguage2Level());
-        result.setLanguage1(embedded.getLanguage3());
-        result.setLanguage1Level(embedded.getLanguage3Level());
-        result.setInternshipStart(embedded.getInternshipStart() != null ? new Date(embedded.getInternshipStart()) : null);
-        result.setInternshipEnd(embedded.getInternshipEnd() != null ? new Date(embedded.getInternshipEnd()) : null);
+        result.setLanguage2(embedded.getLanguage2());
+        result.setLanguage2Level(embedded.getLanguage2Level());
+        result.setLanguage3(embedded.getLanguage3());
+        result.setLanguage3Level(embedded.getLanguage3Level());
+        result.setAvailable(CommonTransformer.transform(embedded.getInternshipStart(), embedded.getInternshipEnd()));
         result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embedded.getFieldOfStudies()));
         result.setSpecializations(CollectionTransformer.explodeStringList(embedded.getSpecializations()));
         result.setPassportNumber(embedded.getPassportNumber());
         result.setPassportPlaceOfIssue(embedded.getPassportPlaceOfIssue());
         result.setPassportValidUntil(embedded.getPassportValidUntil());
+        result.setRejectByEmployerReason(embedded.getRejectByEmployerReason());
+        result.setRejectDescription(embedded.getRejectDescription());
+        result.setRejectInternalComment(embedded.getRejectInternalComment());
         result.setNominatedAt(new DateTime(embedded.getNominatedAt()));
         result.setCreated(new DateTime(embedded.getCreated()));
         result.setModified(new DateTime(embedded.getModified()));

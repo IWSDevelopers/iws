@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.views.EmbeddedOffer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -44,6 +44,9 @@ public class EmbeddedOffer {
 
     @Column(name = "offer_ref_no", insertable = false, updatable = false)
     private String refNo = null;
+
+    @Column(name = "offer_old_ref_no", insertable = false, updatable = false)
+    private String oldRefNo = null;
 
     @Column(name = "offer_work_description", insertable = false, updatable = false)
     private String workDescription = null;
@@ -170,6 +173,9 @@ public class EmbeddedOffer {
     @Column(name = "offer_additional_information", insertable = false, updatable = false)
     private String additionalInformation = null;
 
+    @Column(name = "offer_private_comment", insertable = false, updatable = false)
+    private String privateComment = null;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "offer_status", insertable = false, updatable = false)
     private OfferState status = OfferState.NEW;
@@ -198,6 +204,14 @@ public class EmbeddedOffer {
 
     public String getRefNo() {
         return refNo;
+    }
+
+    public void setOldRefNo(final String oldRefNo) {
+        this.oldRefNo = oldRefNo;
+    }
+
+    public String getOldRefNo() {
+        return oldRefNo;
     }
 
     public void setWorkDescription(final String workDescription) {
@@ -478,6 +492,14 @@ public class EmbeddedOffer {
 
     public String getAdditionalInformation() {
         return additionalInformation;
+    }
+
+    public void setPrivateComment(final String privateComment) {
+        this.privateComment = privateComment;
+    }
+
+    public String getPrivateComment() {
+        return privateComment;
     }
 
     public void setStatus(final OfferState status) {

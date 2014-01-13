@@ -1,8 +1,8 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.exchange.ExchangeClientTest
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
+ * Project: IntraWeb Services (iws-client) - net.iaeste.iws.client.exchange.OfferTest
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -41,12 +41,14 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
+import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.client.AbstractTest;
@@ -86,6 +88,22 @@ public final class OfferTest extends AbstractTest {
         logout(token);
         logout(austriaToken);
         logout(croatiaToken);
+    }
+
+    /**
+     * Preliminary test to verify that the new method is not causing a meltdown.
+     * The Statistics View in the Database needs refinement, once we have a
+     * clarification of the Statistics data, considering the current
+     * (2014-01-05) mail discussion on how to deal with IW3 offers.
+     *
+     * Resolution is part of Trac task #547.
+     */
+    @Test
+    public void testGettingStatistics() {
+        final OfferStatisticsRequest request = new OfferStatisticsRequest();
+        final OfferStatisticsResponse response = exchange.fetchOfferStatistics(token, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(true));
     }
 
     /**

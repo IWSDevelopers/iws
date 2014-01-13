@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.migrators.UserGroupMigrator
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -25,8 +25,9 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +44,7 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Transactional
 public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(UserGroupMigrator.class);
@@ -60,47 +62,34 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3User2GroupEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;
-        int updated = 0;
 
         for (final IW3User2GroupEntity oldUserGroupEntity : oldEntities) {
-            final UserGroupEntity userGroup = accessDao.findIw3UserGroup(oldUserGroupEntity.getUser().getUserid(), oldUserGroupEntity.getGroup().getGroupid());
             UserGroupEntity toPersist = null;
 
-            if (userGroup == null) {
-                final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
-                final UserGroupEntity entity = prepareCreateEntity(oldUserGroupEntity, user);
+            final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
+            final UserGroupEntity entity = convertOldEntity(oldUserGroupEntity, user);
 
-                if (user != null) {
-                    toPersist = entity;
-                    persisted++;
-                } else {
-                    skipped++;
-                    log.info("Skipping UserGroup Entity where the user no longer exists (userid={}).", oldUserGroupEntity.getUser().getUserid());
-                }
+            if (user != null) {
+                toPersist = entity;
+                persisted++;
             } else {
-                log.info("Duplicate UserGroup Entity found, ");
-                final Date modified = oldUserGroupEntity.getModified();
-
-                if ((modified != null) && modified.after(userGroup.getModified())) {
-                    log.info("changes are more recent than existing record - Merging.");
-                    toPersist = prepareUpdateEntity(oldUserGroupEntity, userGroup);
-                    updated++;
-                } else {
-                    skipped++;
-                    log.info("Changes are older than the existing record - Skipping.");
-                }
+                log.info("Skipping UserGroup Entity where the user no longer exists (userid={}, groupid={}).",
+                        oldUserGroupEntity.getUser().getUserid(),
+                        oldUserGroupEntity.getGroup().getGroupid());
+                skipped++;
             }
 
             doPersistEntity(toPersist);
         }
 
-        return new MigrationResult(persisted, skipped, updated);
+        return new MigrationResult(persisted, skipped);
     }
 
-    private UserGroupEntity prepareCreateEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserEntity user) {
+    private UserGroupEntity convertOldEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserEntity user) {
         final GroupEntity group = accessDao.findGroupByIW3Id(oldUserGroupEntity.getGroup().getGroupid());
         final RoleEntity role = accessDao.findRoleById(0L + oldUserGroupEntity.getRole().getRoleid());
 
@@ -112,15 +101,6 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
         entity.setCreated(AbstractMigrator.convert(oldUserGroupEntity.getCreated(), oldUserGroupEntity.getModified()));
 
         return entity;
-    }
-
-    private UserGroupEntity prepareUpdateEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserGroupEntity userGroup) {
-        userGroup.setTitle(oldUserGroupEntity.getUsertitle());
-        userGroup.setOnPublicList(oldUserGroupEntity.getOnmailinglist());
-        userGroup.setOnPrivateList(oldUserGroupEntity.getOnmailinglist());
-        userGroup.setModified(AbstractMigrator.convert(oldUserGroupEntity.getModified()));
-
-        return userGroup;
     }
 
     private void doPersistEntity(final UserGroupEntity toPersist) {

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -53,6 +53,10 @@ import java.util.Date;
         @NamedQuery(name = "offerGroup.findByOffer",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
+        @NamedQuery(name = "offerGroup.findByOfferAndStatuses",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.id = :oid " +
+                        "  and og.status in :statuses"),
         @NamedQuery(name = "offerGroup.findByOfferAndGroup",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid " +
@@ -112,12 +116,12 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     private GroupEntity group = null;
 
     @Monitored(name="Offer2Group comment", level = MonitoringLevel.DETAILED)
-    @Column(name = "comment", length = 1000)
+    @Column(name = "comment", length = 500)
     private String comment = null;
 
     @Monitored(name="Offer2Group status", level = MonitoringLevel.DETAILED)
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 15)
+    @Column(name = "status", length = 25)
     private OfferState status = OfferState.SHARED;
 
     @ManyToOne(targetEntity = UserEntity.class)

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.services.AccountService
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -64,13 +64,11 @@ public final class AccountService extends CommonService<AccessDao> {
 
     private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     private final Notifications notifications;
-    private final Settings settings;
 
-    public AccountService(final AccessDao dao, final Notifications notifications, final Settings settings) {
-        super(dao);
+    public AccountService(final Settings settings, final AccessDao dao, final Notifications notifications) {
+        super(settings, dao);
 
         this.notifications = notifications;
-        this.settings = settings;
     }
 
     /**
@@ -527,6 +525,8 @@ public final class AccountService extends CommonService<AccessDao> {
         // a few other parameters. First accounts with status Active or Blocked
         if (current != UserStatus.NEW) {
             switch (newStatus) {
+                case NEW:
+                    throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Illegal User state change.");
                 case ACTIVE:
                 case SUSPENDED:
                     if (current != UserStatus.DELETED) {
@@ -540,8 +540,6 @@ public final class AccountService extends CommonService<AccessDao> {
                 case DELETED:
                     deletePrivateData(authentication, user);
                     break;
-                default:
-                    throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Illegal User state change.");
             }
         } else if (newStatus == UserStatus.DELETED) {
             // We have a User Account, that was never activated. This we can

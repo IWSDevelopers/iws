@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.dtos.exchange.StudentApplication
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -26,6 +26,7 @@ import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
 
 import java.util.ArrayList;
@@ -85,8 +86,7 @@ public final class StudentApplication extends AbstractVerification {
     private LanguageLevel language3Level = null;
 
     // The internshop period is added as an "availability period" in the Student Object
-    private Date internshipStart = null;
-    private Date internshipEnd = null;
+    private DatePeriod available = null;
 
     // Field of Studies & Specializations are part of the Student Object
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
@@ -108,6 +108,10 @@ public final class StudentApplication extends AbstractVerification {
     private String passportNumber = null;
     private String passportPlaceOfIssue = null;
     private String passportValidUntil = null;
+
+    private String rejectByEmployerReason = null;
+    private String rejectDescription = null;
+    private String rejectInternalComment = null;
 
     private StudentAcceptance acceptance = null;
     private StudentAcceptanceConfirmation travelInformation = null;
@@ -161,13 +165,15 @@ public final class StudentApplication extends AbstractVerification {
             language2Level = studentApplication.language2Level;
             language3 = studentApplication.language3;
             language3Level = studentApplication.language3Level;
-            internshipStart = copy(studentApplication.internshipStart);
-            internshipEnd = copy(studentApplication.internshipEnd);
+            available = copy(studentApplication.available);
             fieldOfStudies = copy(studentApplication.fieldOfStudies);
             specializations = copy(studentApplication.specializations);
             passportNumber = studentApplication.passportNumber;
             passportPlaceOfIssue = studentApplication.passportPlaceOfIssue;
             passportValidUntil = studentApplication.passportValidUntil;
+            rejectByEmployerReason = studentApplication.rejectByEmployerReason;
+            rejectDescription = studentApplication.rejectDescription;
+            rejectInternalComment = studentApplication.rejectInternalComment;
             acceptance = new StudentAcceptance(studentApplication.acceptance);
             travelInformation = new StudentAcceptanceConfirmation(studentApplication.travelInformation);
             nominatedAt = studentApplication.nominatedAt;
@@ -353,20 +359,12 @@ public final class StudentApplication extends AbstractVerification {
         return language3Level;
     }
 
-    public void setInternshipStart(final Date internshipStart) {
-        this.internshipStart = copy(internshipStart);
+    public void setAvailable(final DatePeriod available) {
+        this.available = copy(available);
     }
 
-    public Date getInternshipStart() {
-        return copy(internshipStart);
-    }
-
-    public void setInternshipEnd(final Date internshipEnd) {
-        this.internshipEnd = copy(internshipEnd);
-    }
-
-    public Date getInternshipEnd() {
-        return copy(internshipEnd);
+    public DatePeriod getAvailable() {
+        return copy(available);
     }
 
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
@@ -412,6 +410,30 @@ public final class StudentApplication extends AbstractVerification {
 
     public String getPassportValidUntil() {
         return passportValidUntil;
+    }
+
+    public void setRejectByEmployerReason(final String rejectByEmployerReason) {
+        this.rejectByEmployerReason = rejectByEmployerReason;
+    }
+
+    public String getRejectByEmployerReason() {
+        return rejectByEmployerReason;
+    }
+
+    public void setRejectDescription(final String rejectDescription) {
+        this.rejectDescription = rejectDescription;
+    }
+
+    public String getRejectDescription() {
+        return rejectDescription;
+    }
+
+    public void setRejectInternalComment(final String rejectInternalComment) {
+        this.rejectInternalComment = rejectInternalComment;
+    }
+
+    public String getRejectInternalComment() {
+        return rejectInternalComment;
     }
 
     public void setAcceptance(final StudentAcceptance acceptance) {
@@ -587,11 +609,7 @@ public final class StudentApplication extends AbstractVerification {
             return false;
         }
 
-        if (internshipStart != null ? !internshipStart.equals(studentApplication.internshipStart) : studentApplication.internshipStart != null) {
-            return false;
-        }
-
-        if (internshipEnd != null ? !internshipEnd.equals(studentApplication.internshipEnd) : studentApplication.internshipEnd != null) {
+        if (available != null ? !available.equals(studentApplication.available) : studentApplication.available != null) {
             return false;
         }
 
@@ -612,6 +630,18 @@ public final class StudentApplication extends AbstractVerification {
         }
 
         if (passportValidUntil != null ? !passportValidUntil.equals(studentApplication.passportValidUntil) : studentApplication.passportValidUntil != null) {
+            return false;
+        }
+
+        if (rejectByEmployerReason != null ? !rejectByEmployerReason.equals(studentApplication.rejectByEmployerReason) : studentApplication.rejectByEmployerReason != null) {
+            return false;
+        }
+
+        if (rejectDescription != null ? !rejectDescription.equals(studentApplication.rejectDescription) : studentApplication.rejectDescription != null) {
+            return false;
+        }
+
+        if (rejectInternalComment!= null ? !rejectInternalComment.equals(studentApplication.rejectInternalComment) : studentApplication.rejectInternalComment != null) {
             return false;
         }
 
@@ -661,8 +691,7 @@ public final class StudentApplication extends AbstractVerification {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language2Level != null ? language2Level.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language3 != null ? language3.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language3Level != null ? language3Level.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (internshipStart != null ? internshipStart.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (internshipEnd != null ? internshipEnd.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (available != null ? available.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (fieldOfStudies != null ? fieldOfStudies.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (specializations != null ? specializations.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (passportNumber != null ? passportNumber.hashCode() : 0);
@@ -703,8 +732,7 @@ public final class StudentApplication extends AbstractVerification {
                 ", language2Level='" + language2Level + '\'' +
                 ", language3='" + language3 + '\'' +
                 ", language3Level='" + language3Level + '\'' +
-                ", internshipStart='" + internshipStart + '\'' +
-                ", internshipEnd='" + internshipEnd + '\'' +
+                ", available='" + available + '\'' +
                 ", fieldOfStudies='" + fieldOfStudies + '\'' +
                 ", specializations='" + specializations + '\'' +
                 ", passportNumber='" + passportNumber + '\'' +

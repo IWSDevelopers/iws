@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.entities.UserGroupEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
@@ -90,9 +91,18 @@ import java.util.Map;
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group = :group" +
                         "  and ug.user = :user"),
+        // The roles are hardcoded to Owner, Moderator & Member, see
+        // IWSConstants for more information
         @NamedQuery(name = "usergroup.findGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.id = :gid"),
+                        "where ug.group.id = :gid" +
+                        "  and ug.role.id in (1, 2, 3)"),
+        // The roles are hardcoded to Students, see IWSConstants for more
+        // information
+        @NamedQuery(name = "usergroup.findStudents",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.parentId = :pid" +
+                        "  and ug.role.id = 5"),
         @NamedQuery(name = "usergroup.findGroupMembersOnPublicList",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.id = :gid" +
@@ -105,12 +115,20 @@ import java.util.Map;
                         "  and ug.user.status = 'ACTIVE'"),
         @NamedQuery(name = "usergroup.findAllUserGroups",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.user.id = :uid")
+                        "where ug.user.id = :uid"),
+        @NamedQuery(name = "usergroup.findncs",
+                query = "select distinct ug from UserGroupEntity ug " +
+                        "where ug.role.id <= 2" +
+                        "  and (ug.group.groupType.grouptype = 'NATIONAL'" +
+                        "    or ug.group.groupType.grouptype = 'INTERNATIONAL')")
 })
 @Entity
 @Table(name = "user_to_group")
 @Monitored(name = "User2Group", level = MonitoringLevel.DETAILED)
 public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_to_group_sequence")

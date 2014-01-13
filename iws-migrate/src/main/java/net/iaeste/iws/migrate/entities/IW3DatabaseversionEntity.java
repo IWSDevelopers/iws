@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.entities.IW3DatabaseversionEntity
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -14,10 +14,13 @@
  */
 package net.iaeste.iws.migrate.entities;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -26,7 +29,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "databaseversion")
-public class IW3DatabaseversionEntity {
+public class IW3DatabaseversionEntity implements Serializable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @Column(name = "version_116", length = 10)

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.migrators.MigrationResult
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -23,18 +23,10 @@ public final class MigrationResult {
 
     private final int persisted;
     private final int skipped;
-    private final int updated;
 
     public MigrationResult(final int persisted, final int skipped) {
         this.persisted = persisted;
         this.skipped = skipped;
-        this.updated = 0;
-    }
-
-    public MigrationResult(final int persisted, final int skipped, final int updated) {
-        this.persisted = persisted;
-        this.skipped = skipped;
-        this.updated = updated;
     }
 
     public int getPersisted() {
@@ -43,9 +35,5 @@ public final class MigrationResult {
 
     public int getSkipped() {
         return skipped;
-    }
-
-    public int getUpdated() {
-        return updated;
     }
 }

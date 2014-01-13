@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-core) - net.iaeste.iws.core.transformers.CommonTransformer
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -43,11 +43,12 @@ public final class CommonTransformer {
     }
 
     public static Person transform(final PersonEntity entity) {
-        Person person = null;
+        final Person person;
 
         if (entity != null) {
             person = new Person();
 
+            person.setNationality(transform(entity.getNationality()));
             person.setAddress(transform(entity.getAddress()));
             person.setAlternateEmail(entity.getEmail());
             person.setPhone(entity.getPhone());
@@ -55,6 +56,8 @@ public final class CommonTransformer {
             person.setFax(entity.getFax());
             person.setBirthday(convert(entity.getBirthday()));
             person.setGender(entity.getGender());
+        } else {
+            person = null;
         }
 
         return person;
@@ -139,7 +142,7 @@ public final class CommonTransformer {
 
             address.setStreet1(entity.getStreet1());
             address.setStreet2(entity.getStreet2());
-            address.setZip(entity.getZip());
+            address.setPostalCode(entity.getPostalCode());
             address.setCity(entity.getCity());
             address.setState(entity.getState());
             address.setPobox(entity.getPobox());
@@ -157,7 +160,7 @@ public final class CommonTransformer {
 
             entity.setStreet1(address.getStreet1());
             entity.setStreet2(address.getStreet2());
-            entity.setZip(address.getZip());
+            entity.setPostalCode(address.getPostalCode());
             entity.setCity(address.getCity());
             entity.setState(address.getState());
             entity.setPobox(address.getPobox());

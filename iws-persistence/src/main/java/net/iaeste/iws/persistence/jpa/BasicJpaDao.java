@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-persistence) - net.iaeste.iws.persistence.jpa.BasicJpaDao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -17,6 +17,7 @@ package net.iaeste.iws.persistence.jpa;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Field;
+import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
@@ -88,7 +89,7 @@ public class BasicJpaDao implements BasicDao {
         entityManager.persist(entityToPersist);
 
         final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
-        if (level != MonitoringLevel.NONE) {
+        if ((level != MonitoringLevel.NONE) && (authentication.getGroup() != null)) {
             final List<Field> changes = monitoringProcessor.findChanges(level, entityToPersist);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
@@ -101,7 +102,7 @@ public class BasicJpaDao implements BasicDao {
     @Override
     public <T extends Updateable<T>> void persist(final Authentication authentication, final T entityToPersist, final T changesToBeMerged) {
         final MonitoringLevel level = monitoringProcessor.findClassMonitoringLevel(entityToPersist);
-        if (level != MonitoringLevel.NONE) {
+        if ((level != MonitoringLevel.NONE) && (authentication.getGroup() != null)) {
             final List<Field> changes = monitoringProcessor.findChanges (level, entityToPersist, changesToBeMerged);
             final String className = monitoringProcessor.findClassMonitoringName(entityToPersist);
             persistMonitoredData(authentication, className, entityToPersist.getId(), changes);
@@ -229,6 +230,53 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("efid", externalId);
 
         return findUniqueResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findMemberGroup(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
+        query.setParameter("uid", user.getId());
+        query.setParameter("type", GroupType.MEMBER);
+
+        return findSingleResult(query, "User");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GroupEntity> findAllGroups(final GroupType type) {
+        final Query query = entityManager.createNamedQuery("group.findAllGroupType");
+        query.setParameter("type", type);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileEntity findFileById(final Long id) {
+        final Query query = entityManager.createNamedQuery("file.findById");
+        query.setParameter("id", id);
+
+        return findSingleResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileEntity findFileByUserGroupAndExternalId(final UserEntity user, final GroupEntity group, final String externalId) {
+        final Query query = entityManager.createNamedQuery("file.findByUserGroupAndExternalId");
+        query.setParameter("uid", user.getId());
+        query.setParameter("gid", group.getId());
+        query.setParameter("efid", externalId);
+
+        return findUniqueResult(query, "file");
     }
 
     // =========================================================================

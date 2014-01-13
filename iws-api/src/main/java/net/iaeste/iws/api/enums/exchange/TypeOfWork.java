@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.enums.exchange.TypeOfWork
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -25,9 +25,8 @@ package net.iaeste.iws.api.enums.exchange;
 public enum TypeOfWork {
 
     R("Research and Development"),
-    P("Professional"),
-    W("Working Environment"),
-    N("Non Specific");
+    O("Office Work"),
+    F("Field Work");
 
     // =========================================================================
     // Private Constructor & functionality

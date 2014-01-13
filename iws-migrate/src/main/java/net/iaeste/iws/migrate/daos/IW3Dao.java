@@ -1,7 +1,7 @@
 /*
  * =============================================================================
- * Copyright 1998-2013, IAESTE Internet Development Team. All rights reserved.
- * -----------------------------------------------------------------------------
+ * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
+ * ----------------------------------------------------------------------------
  * Project: IntraWeb Services (iws-migrate) - net.iaeste.iws.migrate.daos.IW3Dao
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
@@ -17,6 +17,7 @@ package net.iaeste.iws.migrate.daos;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.migrate.entities.IW3FacultiesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
+import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
@@ -40,5 +41,7 @@ public interface IW3Dao {
 
     List<IW3User2GroupEntity> findAllUserGroups();
 
-    List<IW3OffersEntity> findAllOffers(int page, int size);
+    List<IW3OffersEntity> findAllOffers();
+
+    List<IW3Offer2GroupEntity> findAllOfferGroups();
 }

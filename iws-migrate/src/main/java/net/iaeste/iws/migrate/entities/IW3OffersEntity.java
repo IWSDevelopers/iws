@@ -32,11 +32,16 @@ import java.sql.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(
+@NamedQueries({
         @NamedQuery(name = "offers.findAll",
                 query = "select o from IW3OffersEntity o " +
+                        "order by o.offerid asc"),
+        @NamedQuery(name = "offers.findRecent",
+                query = "select o from IW3OffersEntity o " +
+                        "where o.exchangeyear >= 2014" +
+                        "   or o.created >= '2013-09-01' " +
                         "order by o.offerid asc")
-)
+})
 @Entity
 @Table(name = "offers")
 public class IW3OffersEntity implements Serializable {

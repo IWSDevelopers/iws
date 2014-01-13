@@ -51,6 +51,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -76,6 +77,9 @@ public class MigrateTest {
 
     private static final Logger log = LoggerFactory.getLogger(MigrateTest.class);
     private static final int BLOCK_SIZE = 1000;
+
+    @Autowired
+    private Boolean migrateRecentOffersOnly;
 
     @PersistenceContext(unitName = "IW3PersistenceUnit")
     private EntityManager iw3EntityManager;
@@ -111,7 +115,7 @@ public class MigrateTest {
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
         mailDao = new MailJpaDao(mailEntityManager);
-        iw3Dao = new IW3JpaDao(iw3EntityManager);
+        iw3Dao = new IW3JpaDao(iw3EntityManager, migrateRecentOffersOnly);
     }
 
     // =========================================================================
@@ -131,7 +135,7 @@ public class MigrateTest {
 
         // We should have all minus the invalid Chile & Training Session Country
         assertThat(persisted + skipped, is(countries.size()));
-        log.info("Completed Migratring Countries; Persisted {} & Skipped {}.", persisted, skipped);
+        log.info("Completed Migrating Countries; Persisted {} & Skipped {}.", persisted, skipped);
     }
 
     @Test

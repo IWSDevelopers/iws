@@ -38,6 +38,7 @@ import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,9 @@ import java.util.List;
 public class MigrateService implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger log = LoggerFactory.getLogger(MigrateService.class);
+
+    @Autowired
+    private Boolean migrateRecentOffersOnly;
 
     @PersistenceContext(unitName = "IW3PersistenceUnit")
     private EntityManager iw3EntityManager;
@@ -79,7 +83,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
         mailDao = new MailJpaDao(mailEntityManager);
-        iw3Dao = new IW3JpaDao(iw3EntityManager);
+        iw3Dao = new IW3JpaDao(iw3EntityManager, migrateRecentOffersOnly);
     }
 
     // =========================================================================

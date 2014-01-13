@@ -33,10 +33,12 @@ import java.util.List;
  */
 public class IW3JpaDao implements IW3Dao {
 
-    private EntityManager entityManager = null;
+    private final EntityManager entityManager;
+    private final boolean migrateRecentOffersOnly;
 
-    public IW3JpaDao(final EntityManager entityManager) {
+    public IW3JpaDao(final EntityManager entityManager, final boolean migrateRecentOffersOnly) {
         this.entityManager = entityManager;
+        this.migrateRecentOffersOnly = migrateRecentOffersOnly;
     }
 
     // =========================================================================
@@ -96,7 +98,13 @@ public class IW3JpaDao implements IW3Dao {
      */
     @Override
     public List<IW3OffersEntity> findAllOffers() {
-        final Query query = entityManager.createNamedQuery("offers.findAll");
+        final Query query;
+
+        if (migrateRecentOffersOnly) {
+            query = entityManager.createNamedQuery("offers.findRecent");
+        } else {
+            query = entityManager.createNamedQuery("offers.findAll");
+        }
 
         return query.getResultList();
     }
@@ -106,7 +114,13 @@ public class IW3JpaDao implements IW3Dao {
      */
     @Override
     public List<IW3Offer2GroupEntity> findAllOfferGroups() {
-        final Query query = entityManager.createNamedQuery("offergroup.findAll");
+        final Query query;
+
+        if (migrateRecentOffersOnly) {
+            query = entityManager.createNamedQuery("offergroup.findRecent");
+        } else {
+            query = entityManager.createNamedQuery("offergroup.findAll");
+        }
 
         return query.getResultList();
     }

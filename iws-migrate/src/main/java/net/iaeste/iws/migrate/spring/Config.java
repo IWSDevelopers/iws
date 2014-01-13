@@ -81,6 +81,11 @@ public class Config {
         }
     }
 
+    @Bean(name = "migrateRecentOffersOnly")
+    public Boolean migrateRecentOffersOnly() {
+        return Boolean.valueOf(readProperty("migrate.recent.offers.only", "false"));
+    }
+
     @Bean(name = "dataSourceIW3")
     public DataSource dataSourceIW3() {
         final String server = readProperty("datasource.iw3.server", IW3_SERVER);

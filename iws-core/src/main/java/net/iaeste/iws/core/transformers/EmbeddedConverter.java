@@ -139,6 +139,7 @@ public final class EmbeddedConverter {
 
         result.setOfferId(embedded.getExternalId());
         result.setRefNo(embedded.getRefNo());
+        result.setOldRefNo(embedded.getOldRefNo());
         result.setWorkDescription(embedded.getWorkDescription());
         result.setTypeOfWork(embedded.getTypeOfWork());
         result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, embedded.getStudyLevels()));

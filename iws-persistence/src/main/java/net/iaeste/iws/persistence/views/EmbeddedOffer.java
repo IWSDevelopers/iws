@@ -45,6 +45,9 @@ public class EmbeddedOffer {
     @Column(name = "offer_ref_no", insertable = false, updatable = false)
     private String refNo = null;
 
+    @Column(name = "offer_old_ref_no", insertable = false, updatable = false)
+    private String oldRefNo = null;
+
     @Column(name = "offer_work_description", insertable = false, updatable = false)
     private String workDescription = null;
 
@@ -201,6 +204,14 @@ public class EmbeddedOffer {
 
     public String getRefNo() {
         return refNo;
+    }
+
+    public void setOldRefNo(final String oldRefNo) {
+        this.oldRefNo = oldRefNo;
+    }
+
+    public String getOldRefNo() {
+        return oldRefNo;
     }
 
     public void setWorkDescription(final String workDescription) {

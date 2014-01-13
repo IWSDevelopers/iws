@@ -2,6 +2,7 @@
 -- Please add all Exchange related views here
 -- =============================================================================
 
+
 -- =============================================================================
 -- The Employer View, which embeds Address & Group
 -- =============================================================================
@@ -58,6 +59,7 @@ create view employer_view as
   where e.group_id = g.id
     and e.address_id = a.id
     and a.country_id = c.id;
+
 
 -- =============================================================================
 -- The Offer View, which embeds ???
@@ -234,6 +236,7 @@ create view student_view as
     and g.grouptype_id = gt.id
     and gt.grouptype = 'STUDENT';
 
+
 -- =============================================================================
 -- The Application View, which embeds Offer, Student, User, Roles & Countries
 -- =============================================================================
@@ -381,6 +384,7 @@ create view foreign_offer_statistics as
     o2g.status,
     o2g.group_id,
     o.exchange_year;
+
 
 -- =============================================================================
 -- Statistics View for Domestic Offers

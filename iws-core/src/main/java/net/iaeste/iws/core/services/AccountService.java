@@ -64,13 +64,11 @@ public final class AccountService extends CommonService<AccessDao> {
 
     private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     private final Notifications notifications;
-    private final Settings settings;
 
-    public AccountService(final AccessDao dao, final Notifications notifications, final Settings settings) {
-        super(dao);
+    public AccountService(final Settings settings, final AccessDao dao, final Notifications notifications) {
+        super(settings, dao);
 
         this.notifications = notifications;
-        this.settings = settings;
     }
 
     /**

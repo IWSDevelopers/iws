@@ -15,12 +15,14 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
-import static net.iaeste.iws.core.util.StorageUtil.calculateChecksum;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Person;
+import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
@@ -31,6 +33,19 @@ import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 /**
  * All Common Service funtionality is collected here. Although the Class ought
@@ -43,9 +58,13 @@ import net.iaeste.iws.persistence.entities.PersonEntity;
  */
 public class CommonService<T extends BasicDao> {
 
+    private static final Logger log = LoggerFactory.getLogger(CommonService.class);
+
+    protected final Settings settings;
     protected final T dao;
 
-    protected CommonService(final T dao) {
+    protected CommonService(final Settings settings, final T dao) {
+        this.settings = settings;
         this.dao = dao;
     }
 
@@ -229,20 +248,33 @@ public class CommonService<T extends BasicDao> {
 
     protected FileEntity processFile(final Authentication authentication, final File file) {
         final String externalId = file.getFileId();
+        final byte[] data = file.getFiledata();
         final FileEntity entity;
 
         if (externalId == null) {
+            final String newId = UUID.randomUUID().toString();
+            final String storedNamed = authentication.getGroup().getExternalId() + '/' + newId;
+
             entity = transform(file);
-            entity.setChecksum(calculateChecksum(entity.getFiledata()));
-            final byte[] data = entity.getFiledata();
+            entity.setExternalId(newId);
+            entity.setChecksum(calculateChecksum(data));
+            entity.setStoredFilename(storedNamed);
             entity.setFilesize(data != null ? data.length : 0);
             entity.setUser(authentication.getUser());
             entity.setGroup(authentication.getGroup());
+
+            writeFileToSystem(storedNamed, data);
             dao.persist(authentication, entity);
         } else {
             entity = dao.findFileByUserAndExternalId(authentication.getUser(), externalId);
             if (entity != null) {
                 final FileEntity changes = transform(file);
+                final Long checksum = calculateChecksum(data);
+                if (!entity.getChecksum().equals(checksum)) {
+                    writeFileToSystem(entity.getStoredFilename(), data);
+                    changes.setChecksum(checksum);
+                    changes.setFilesize(data != null ? data.length : 0);
+                }
                 dao.persist(authentication, entity, changes);
             } else {
                 throw new AuthorizationException("The user is not authorized to process this file.");
@@ -252,13 +284,104 @@ public class CommonService<T extends BasicDao> {
         return entity;
     }
 
-//    protected processAttachedFiles(final Authentication authentication, final String table, final Long record, final List<FileEntity> files) {
-//
-//    }
-//
-//    protected List<FileEntity> fetchAttachedFiles(final Authentication authentication, final String table, final Long record) {
-//
-//    }
+    protected byte[] readFile(final FileEntity entity) {
+        final byte[] bytes = readFileFromSystem(entity.getStoredFilename());
+
+        if (calculateChecksum(bytes) != entity.getChecksum()) {
+            throw new IWSException(IWSErrors.ERROR, "The file checksum ia incorrect, most likely the file has been corrupted.");
+        }
+
+        return bytes;
+    }
+
+    protected void deleteFile(final Authentication authentication, final File file) {
+        final FileEntity entity = dao.findFileByUserAndExternalId(authentication.getUser(), file.getFileId());
+
+        if (entity != null) {
+            final String filename = entity.getFilename();
+            deleteFileFromSystem(entity.getStoredFilename());
+            dao.delete(entity);
+
+            log.info("File %s has been successfully deleted from the IWS.", filename);
+        } else {
+            throw new AuthorizationException("The user is not authorized to process this file.");
+        }
+    }
+
+    /**
+     * Calculates the Checksum for a given Byte array. The checksum is a simple
+     * value that helps determine if the data has been updated or not. If they
+     * have been updated, it must be from a user action, otherwise it is cause
+     * for verifying the underlying system to see if data corruption has taken
+     * place.
+     *
+     * @param array Byte array to check
+     * @return checksum value
+     */
+    private static long calculateChecksum(final byte[] array) {
+        final long crc;
+
+        if (array != null && array.length > 0) {
+            final Checksum checksum = new CRC32();
+            checksum.update(array, 0, array.length);
+
+            crc = checksum.getValue();
+        } else {
+            crc = 0;
+        }
+
+        return crc;
+    }
+
+    private void writeFileToSystem(final String file, final byte[] bytes) {
+        if ((bytes != null) && (bytes.length > 0)) {
+            checkDirectoryExistsOrCreate(file);
+            final String path = settings.getRootFilePath() + '/' + file;
+
+            try (final OutputStream outputStream = new FileOutputStream(path)) {
+                // Write files to file system
+                outputStream.write(bytes);
+                outputStream.flush();
+            } catch (FileNotFoundException e) {
+                throw new IWSException(IWSErrors.FATAL, "Not able to write file to system; " + e.getMessage(), e);
+            } catch (IOException e) {
+                throw new IWSException(IWSErrors.FATAL, "Cannot Close file stream; " + e.getMessage(), e);
+            }
+        }
+    }
+
+    private byte[] readFileFromSystem(final String name) {
+        final Path path = Paths.get(settings.getRootFilePath() + '/' + name);
+
+        try {
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            throw new IWSException(IWSErrors.ERROR, "I/O Error while attempting to read file: " + e.getMessage(), e);
+        }
+    }
+
+    private void deleteFileFromSystem(final String file) {
+        final String path = settings.getRootFilePath() + '/' + file;
+        final java.io.File toDelete = new java.io.File(path);
+
+        if (!toDelete.delete()) {
+            throw new IWSException(IWSErrors.ERROR, "The File could not be deleted.");
+        }
+    }
+
+    private void checkDirectoryExistsOrCreate(final String fileWithPartialPath) {
+        final String dir = fileWithPartialPath.substring(0, fileWithPartialPath.indexOf('/'));
+        final String systemPath = settings.getRootFilePath() + '/' + dir + '/';//"/name";
+        final java.io.File file = new java.io.File(systemPath);
+
+        if (!file.exists()) {
+            // It can be that none of the directories exists, so let's just let
+            // Java crawl through them all and create them for us
+            if (!file.mkdirs()) {
+                throw new IWSException(IWSErrors.ERROR, "Cannot create the directory to store the Group files.");
+            }
+        }
+    }
 
     // =========================================================================
     // Other Common Methods

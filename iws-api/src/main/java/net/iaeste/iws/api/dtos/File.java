@@ -20,7 +20,6 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +27,6 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyComplexMethod
  */
 public final class File extends AbstractVerification {
 
@@ -39,6 +37,8 @@ public final class File extends AbstractVerification {
     private Group group = null;
     private User user = null;
     private String filename = null;
+    // Filedata is omitted for equals, hashCode and toString, since the data
+    // can be rather large
     private byte[] filedata = null;
     private Integer filesize = null;
     private String mimetype = null;
@@ -326,9 +326,6 @@ public final class File extends AbstractVerification {
         if (fileId != null ? !fileId.equals(file.fileId) : file.fileId != null) {
             return false;
         }
-        if (!Arrays.equals(filedata, file.filedata)) {
-            return false;
-        }
         if (filename != null ? !filename.equals(file.filename) : file.filename != null) {
             return false;
         }
@@ -362,7 +359,6 @@ public final class File extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (filename != null ? filename.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (filedata != null ? Arrays.hashCode(filedata) : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (filesize != null ? filesize.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (mimetype != null ? mimetype.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (description != null ? description.hashCode() : 0);
@@ -384,7 +380,6 @@ public final class File extends AbstractVerification {
                 ", group=" + group +
                 ", user=" + user +
                 ", filename='" + filename + '\'' +
-                ", filedata=" + Arrays.toString(filedata) +
                 ", filesize=" + filesize +
                 ", mimetype='" + mimetype + '\'' +
                 ", description='" + description + '\'' +

@@ -113,7 +113,7 @@ public class OfferGroupEntityTest {
         offerDao.persist(authentication, offer);
 
         assertThat(offerDao.findAllOffers(authentication).size(), is(1));
-        final List<String> externalIds = new ArrayList(1);
+        final List<String> externalIds = new ArrayList<>(1);
         externalIds.add(GROUP_EXTERNAL_ID);
         externalIds.add(GROUP_EXTERNAL_ID_2);
 

@@ -40,6 +40,7 @@ import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.CommonTransformer;
@@ -77,8 +78,8 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     private final ViewsDao viewsDao;
     private final AccessDao accessDao;
 
-    public ExchangeFetchService(final ExchangeDao dao, final ViewsDao viewsDao, final AccessDao accessDao) {
-        super(dao);
+    public ExchangeFetchService(final Settings settings, final ExchangeDao dao, final ViewsDao viewsDao, final AccessDao accessDao) {
+        super(settings, dao);
         this.viewsDao = viewsDao;
         this.accessDao = accessDao;
     }

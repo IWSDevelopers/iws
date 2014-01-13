@@ -33,6 +33,7 @@ import java.util.Properties;
  * @since   1.7
  */
 public final class Settings {
+
     private static final String SETTING_JNDI = "iws-setting";
 
     private boolean doJndiLookup = true;
@@ -40,7 +41,11 @@ public final class Settings {
 
     private Properties setting;
 
-    private String rootFilePath = IWSConstants.ROOT_FILE_PATH;
+    /**
+     * The File Root Path is not set via the Constants Class, since this is an
+     * internal information that we do not wish to disclose.
+     */
+    private String rootFilePath = "/var/lib/files";
     private int maxActiveTokens = IWSConstants.MAX_ACTIVE_TOKENS;
     private int maxLoginRetries = IWSConstants.MAX_LOGIN_RETRIES;
     private long maxIdleTimeForSessions = IWSConstants.MAX_SESSION_IDLE_PERIOD;

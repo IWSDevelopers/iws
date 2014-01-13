@@ -266,16 +266,12 @@ public final class ExchangeTransformer {
         return entity;
     }
 
-    public static StudentApplication transform(final ApplicationEntity entity, final List<AttachmentEntity> attachments, final boolean includeData) {
+    public static StudentApplication transform(final ApplicationEntity entity, final List<AttachmentEntity> attachments) {
         final StudentApplication application = transform(entity);
 
-        final List<File> files = new ArrayList<>();
+        final List<File> files = new ArrayList<>(attachments.size());
         for (final AttachmentEntity attachment : attachments) {
             final File file = StorageTransformer.transform(attachment.getFile());
-            // TODO see Trac ticket #532
-            if (!includeData) {
-                file.setFiledata(null);
-            }
             files.add(file);
         }
         application.setAttachments(files);

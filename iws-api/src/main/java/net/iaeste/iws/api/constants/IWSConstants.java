@@ -189,6 +189,4 @@ public interface IWSConstants {
     Long ROLE_MODERATOR = 2L;
     Long ROLE_MEMBER = 3L;
     Long ROLE_STUDENT = 5L;
-
-    String ROOT_FILE_PATH = System.getProperty("java.io.tmpdir");
 }

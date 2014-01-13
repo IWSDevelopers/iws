@@ -35,6 +35,7 @@ import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.transformers.StorageTransformer;
 import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
@@ -71,8 +72,8 @@ public final class StudentService extends CommonService<StudentDao> {
     private final ExchangeDao exchangeDao;
     private final ViewsDao viewsDao;
 
-    public StudentService(final AccessDao accessDao, final ExchangeDao exchangeDao, final StudentDao studentDao, final ViewsDao viewsDao) {
-        super(studentDao);
+    public StudentService(final Settings settings, final AccessDao accessDao, final ExchangeDao exchangeDao, final StudentDao studentDao, final ViewsDao viewsDao) {
+        super(settings, studentDao);
         this.accessDao = accessDao;
         this.exchangeDao = exchangeDao;
         this.viewsDao = viewsDao;
@@ -113,7 +114,7 @@ public final class StudentService extends CommonService<StudentDao> {
         final ApplicationEntity entity = processStudentApplication(authentication, request.getStudentApplication());
         final List<AttachmentEntity> attachments = processAttachments(authentication, entity, request.getStudentApplication().getAttachments());
 
-        final StudentApplication application = transform(entity, attachments, false);
+        final StudentApplication application = transform(entity, attachments);
         return new StudentApplicationResponse(application);
     }
 

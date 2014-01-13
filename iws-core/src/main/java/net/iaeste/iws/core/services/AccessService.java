@@ -75,11 +75,12 @@ public final class AccessService extends CommonService<AccessDao> {
      * Default Constructor. This Service only requires an AccessDao instance,
      * which is used for all database operations.
      *
+     * @param settings      IWS Settings
      * @param dao           AccessDAO instance
      * @param notifications Notification Object
      */
-    public AccessService(final AccessDao dao, final Notifications notifications, final Settings settings) {
-        super(dao);
+    public AccessService(final Settings settings, final AccessDao dao, final Notifications notifications) {
+        super(settings, dao);
 
         this.notifications = notifications;
         activeSessions = ActiveSessions.getInstance(settings);

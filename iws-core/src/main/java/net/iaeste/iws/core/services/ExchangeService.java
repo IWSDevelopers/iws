@@ -41,10 +41,10 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
-import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -76,8 +76,8 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
     private final AccessDao accessDao;
 
-    public ExchangeService(final ExchangeDao dao, final AccessDao accessDao, final Notifications notifications) {
-        super(dao);
+    public ExchangeService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final Notifications notifications) {
+        super(settings, dao);
 
         this.notifications = notifications;
         this.accessDao = accessDao;

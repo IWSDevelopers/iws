@@ -42,7 +42,6 @@ public final class StorageTransformer {
             result.setGroup(CommonTransformer.transform(entity.getGroup()));
             result.setUser(AdministrationTransformer.transform(entity.getUser()));
             result.setFilename(entity.getFilename());
-            result.setFiledata(entity.getFiledata());
             result.setFilesize(entity.getFilesize());
             result.setMimetype(entity.getMimetype());
             result.setDescription(entity.getDescription());
@@ -64,7 +63,6 @@ public final class StorageTransformer {
             entity.setGroup(CommonTransformer.transform(file.getGroup()));
             entity.setUser(AdministrationTransformer.transform(file.getUser()));
             entity.setFilename(file.getFilename());
-            entity.setFiledata(file.getFiledata());
             entity.setFilesize(file.getFilesize());
             entity.setMimetype(file.getMimetype());
             entity.setDescription(file.getDescription());

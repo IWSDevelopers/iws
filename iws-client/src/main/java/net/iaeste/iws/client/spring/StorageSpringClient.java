@@ -21,7 +21,6 @@ import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.client.notifications.NotificationSpy;
-import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.NotificationManagerBean;
 import net.iaeste.iws.ejb.StorageBean;
@@ -42,13 +41,6 @@ public class StorageSpringClient implements Storage {
 
     private Storage client = null;
 
-    public Settings initSettings() {
-        final Settings settings = new Settings();
-        settings.setDoJndiLookup(false);
-
-        return settings;
-    }
-
     /**
      * Injects the {@code EntityManager} instance required to invoke our
      * transactional daos. The EntityManager instance can only be injected into
@@ -68,7 +60,7 @@ public class StorageSpringClient implements Storage {
         final StorageBean storageBean = new StorageBean();
         storageBean.setEntityManager(entityManager);
         storageBean.setNotificationManager(notificationBean);
-        storageBean.setSettings(initSettings());
+        storageBean.setSettings(Beans.settings());
         storageBean.postConstruct();
 
         // Set our Committees implementation to the Committees EJB,

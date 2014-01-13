@@ -15,7 +15,6 @@
 package net.iaeste.iws.client.spring;
 
 import net.iaeste.iws.api.Access;
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
@@ -29,6 +28,8 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.AccessBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,24 +49,7 @@ import java.io.Serializable;
 @Repository("accessSpringClient")
 public final class AccessSpringClient implements Access {
 
-    private static final Integer MAX_ACTIVE_TOKENS = IWSConstants.MAX_ACTIVE_TOKENS;
-    private static final Long MAX_IDLE_TIME_FOR_SESSIONS = IWSConstants.MAX_SESSION_IDLE_PERIOD;
-    private static final Integer MAX_LOGIN_RETRIES = IWSConstants.MAX_LOGIN_RETRIES;
-    private static final long LOGIN_BLOCKED_TIME = IWSConstants.LOGIN_BLOCKING_PERIOD;
-
     private Access client = null;
-
-    public Settings initSettings() {
-        final Settings settings = new Settings();
-        settings.setDoJndiLookup(false);
-
-        settings.setMaxActiveTokens(MAX_ACTIVE_TOKENS);
-        settings.setMaxIdleTimeForSessions(MAX_IDLE_TIME_FOR_SESSIONS);
-        settings.setMaxLoginRetries(MAX_LOGIN_RETRIES);
-        settings.setLoginBlockedTime(LOGIN_BLOCKED_TIME);
-
-        return settings;
-    }
 
     /**
      * Injects the {@code EntityManager} instance required to invoke our
@@ -86,7 +70,7 @@ public final class AccessSpringClient implements Access {
         final AccessBean accessBean = new AccessBean();
         accessBean.setEntityManager(entityManager);
         accessBean.setNotificationManager(notificationBean);
-        accessBean.setSettings(initSettings());
+        accessBean.setSettings(Beans.settings());
         accessBean.postConstruct();
 
         // Set our Access implementation to the Access EJB, running withing a

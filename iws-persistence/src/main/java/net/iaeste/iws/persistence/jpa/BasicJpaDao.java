@@ -255,6 +255,30 @@ public class BasicJpaDao implements BasicDao {
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileEntity findFileById(final Long id) {
+        final Query query = entityManager.createNamedQuery("file.findById");
+        query.setParameter("id", id);
+
+        return findSingleResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileEntity findFileByUserGroupAndExternalId(final UserEntity user, final GroupEntity group, final String externalId) {
+        final Query query = entityManager.createNamedQuery("file.findByUserGroupAndExternalId");
+        query.setParameter("uid", user.getId());
+        query.setParameter("gid", group.getId());
+        query.setParameter("efid", externalId);
+
+        return findUniqueResult(query, "file");
+    }
+
     // =========================================================================
     // Internal Methods
     // =========================================================================

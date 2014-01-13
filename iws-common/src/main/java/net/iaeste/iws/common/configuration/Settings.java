@@ -39,13 +39,11 @@ public final class Settings {
     private boolean doJndiLookup = true;
     private boolean lookupDone = false;
 
-    private Properties setting;
-
     /**
      * The File Root Path is not set via the Constants Class, since this is an
      * internal information that we do not wish to disclose.
      */
-    private String rootFilePath = "/var/lib/files";
+    private String rootFilePath = "/data/iws";
     private int maxActiveTokens = IWSConstants.MAX_ACTIVE_TOKENS;
     private int maxLoginRetries = IWSConstants.MAX_LOGIN_RETRIES;
     private long maxIdleTimeForSessions = IWSConstants.MAX_SESSION_IDLE_PERIOD;
@@ -57,22 +55,19 @@ public final class Settings {
     private String baseUrl = IWSConstants.BASE_URL;
     private String sendingEmailAddress = IWSConstants.IWS_EMAIL_SENDER;
 
-    public Settings() {
-    }
-
     public void init() {
         if (!lookupDone) {
             try {
                 final Context context = new InitialContext();
-                setting = (Properties)context.lookup(SETTING_JNDI);
+                final Properties properties = (Properties) context.lookup(SETTING_JNDI);
                 context.close();
 
-                smtpAddress = setting.getProperty("smtpAddress");
-                smtpPort = setting.getProperty("smtpPort");
-                baseUrl = setting.getProperty("iw4BaseUrl");
-                sendingEmailAddress = setting.getProperty("sendingEmailAddress");
-                publicMailAddress = setting.getProperty("publicMailAddress");
-                privateMailAddress = setting.getProperty("privateMailAddress");
+                smtpAddress = properties.getProperty("smtpAddress");
+                smtpPort = properties.getProperty("smtpPort");
+                baseUrl = properties.getProperty("iw4BaseUrl");
+                sendingEmailAddress = properties.getProperty("sendingEmailAddress");
+                publicMailAddress = properties.getProperty("publicMailAddress");
+                privateMailAddress = properties.getProperty("privateMailAddress");
 
                 lookupDone = true;
             } catch (NamingException e) {

@@ -60,7 +60,6 @@ import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
 import net.iaeste.iws.client.StudentClient;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -172,7 +171,6 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    @Ignore("Ignoring while trying to tame the beast following a hard crash that left the system in an inconsistent state. However, as I had loads of changes that I don't wish to loose, I'm tring to resolve this differently.")
     public void testFetchStudentApplications() {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001003", "Employer", "PL");
@@ -253,8 +251,6 @@ public final class StudentTest extends AbstractTest {
         assertThat(fetchStudentApplicationsResponse.getStudentApplications().size(), is(1));
     }
 
-    //TODO Kim, have a look at this test please
-    //@Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB")
     @Test
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
@@ -339,8 +335,6 @@ public final class StudentTest extends AbstractTest {
         assertThat(createStudentApplicationResponse2.getStudentApplication().getUniversity(), is(application.getUniversity()));
     }
 
-    //TODO Kim, have a look at this test please
-    //@Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB")
     @Test
     public void testNominatingApplication() {
         final Date nominationDeadline = new Date().plusDays(20);

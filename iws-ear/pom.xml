@@ -14,7 +14,6 @@
     <description>IntraWeb Services - EAR Module</description>
 
     <build>
-        <finalName>iws</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-ear-plugin</artifactId>

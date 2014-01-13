@@ -121,6 +121,53 @@ create view country_details as
   where g.grouptype_id = 5
     and u2g.role_id = 1;
 
+
+-- =============================================================================
+-- View to list file attachments to a document
+-- =============================================================================
+create view file_attachments as
+  select
+    a.id                 as attachment_id,
+    a.attached_to_record as attachment_record_id,
+    a.attached_to_table  as attachment_record_table,
+    a.created            as attachment_created,
+    f.id                 as file_id,
+    f.external_id        as file_external_id,
+    f.filename           as file_name,
+    f.stored_filename    as file_stored_name,
+    f.filesize           as file_size,
+    f.mimetype           as file_mimetype,
+    f.description        as file_description,
+    f.keywords           as file_keywords,
+    f.checksum           as file_checksum,
+    f.modified           as file_modified,
+    f.created            as file_created,
+    g.id                 as group_id,
+    g.external_id        as group_external_id,
+    g.grouptype_id       as group_grouptype,
+    g.parent_id          as group_parent_id,
+    g.group_name         as group_groupname,
+    g.status             as group_status,
+    g.modified           as group_modified,
+    g.created            as group_created,
+    u.id                 as user_id,
+    u.external_id        as user_external_id,
+    u.username           as user_username,
+    u.firstname          as user_firstname,
+    u.lastname           as user_lastname,
+    u.status             as user_status,
+    u.modified           as user_modified,
+    u.created            as user_created
+  from
+    attachments a,
+    files f,
+    groups g,
+    users u
+  where f.id = a.attached_file_id
+    and g.id = f.group_id
+    and u.id = f.user_id;
+
+
 -- =============================================================================
 -- List the Notification job tasks with their Notfication type
 -- and Notifiable object

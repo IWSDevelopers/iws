@@ -19,6 +19,7 @@ import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
+import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.StudentView;
@@ -105,5 +106,17 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("parentId", groupId);
 
         return fetchList(query, page);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<AttachedFileView> findAttachments(final String table, final Long id) {
+        final Query query = entityManager.createNamedQuery("view.findAttachments");
+        query.setParameter("table", table);
+        query.setParameter("recordId", id);
+
+        return query.getResultList();
     }
 }

@@ -58,7 +58,7 @@ public enum GroupType {
      * IDT members, etc.<br />
      *   Note; users can only be member of 1 Members Group!
      */
-    MEMBER("Member"),
+    MEMBER("Members"),
 
     /**
      * A number of Groups exists, which are truly "International", meaning that
@@ -112,7 +112,7 @@ public enum GroupType {
      * be allowed to join the NC's Mailinglist.<br />
      *   Note; users can only be member of 1 National Group!
      */
-    NATIONAL("National Committee"),
+    NATIONAL("Staff"),
 
     /**
      * Local Groups are for Local Committees around the Country. Local Groups
@@ -140,7 +140,7 @@ public enum GroupType {
      * group (with role Student). Normal members who wishes to apply for Offers,
      * must also be added to the Student Group.
      */
-    STUDENT("Student");
+    STUDENT("Students");
 
     // =========================================================================
     // Private Constructor & functionality

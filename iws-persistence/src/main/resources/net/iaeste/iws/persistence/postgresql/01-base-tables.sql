@@ -225,7 +225,7 @@ create table groups (
     full_name           varchar(100),
     group_description   varchar(250),
     country_id          integer,
-    list_name           varchar(75),
+    list_name           varchar(100),
     status              varchar(10) default 'ACTIVE',
     old_iw3_id          integer,
     modified            timestamp default now(),
@@ -240,6 +240,8 @@ create table groups (
     /* Unique Constraints */
     constraint group_unique_external_id unique (external_id),
     constraint group_unique_old_iw3_id  unique (old_iw3_id),
+    constraint group_unique_full_name   unique (full_name),
+    constraint group_unique_list_name   unique (list_name),
 
     /* Not Null & Other Constraints */
     constraint group_notnull_id           check (id is not null),

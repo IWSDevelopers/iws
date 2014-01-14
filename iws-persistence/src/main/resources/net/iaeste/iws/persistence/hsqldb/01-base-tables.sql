@@ -220,7 +220,6 @@ create table groups (
     constraint group_unique_external_id unique (external_id),
     constraint group_unique_old_iw3_id  unique (old_iw3_id),
     constraint group_unique_full_name   unique (full_name),
-    constraint group_unique_list_name   unique (list_name),
 
     /* Not Null & Other Constraints */
     constraint group_notnull_id           check (id is not null),

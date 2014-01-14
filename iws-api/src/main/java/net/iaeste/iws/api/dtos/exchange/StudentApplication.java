@@ -189,7 +189,8 @@ public final class StudentApplication extends AbstractVerification {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setApplicationId(final String applicationId) {
+    public void setApplicationId(final String applicationId) throws IllegalArgumentException {
+        ensureValidId("applicationId", applicationId);
         this.applicationId = applicationId;
     }
 
@@ -197,7 +198,8 @@ public final class StudentApplication extends AbstractVerification {
         return applicationId;
     }
 
-    public void setOffer(final Offer offer) {
+    public void setOffer(final Offer offer) throws IllegalArgumentException {
+        //ensureNotNullAndVerifiable("offer", offer);
         this.offer = new Offer(offer);
     }
 
@@ -205,7 +207,8 @@ public final class StudentApplication extends AbstractVerification {
         return new Offer(offer);
     }
 
-    public void setStudent(final Student student) {
+    public void setStudent(final Student student) throws IllegalArgumentException {
+        ensureNotNullAndVerifiable("student", student);
         this.student = new Student(student);
     }
 
@@ -213,7 +216,8 @@ public final class StudentApplication extends AbstractVerification {
         return new Student(student);
     }
 
-    public void setStatus(final ApplicationStatus status) {
+    public void setStatus(final ApplicationStatus status) throws IllegalArgumentException {
+        ensureNotNull("status", status);
         this.status = status;
     }
 
@@ -221,9 +225,7 @@ public final class StudentApplication extends AbstractVerification {
         return status;
     }
 
-    public void setHomeAddress(final Address homeAddress) {
-        //ensureNotNullAndVerifiable("homeAddress", homeAddress);
-        // Optional, please see Trac Ticket #512
+    public void setHomeAddress(final Address homeAddress) throws IllegalArgumentException {
         ensureVerifiable("homeAddress", homeAddress);
         this.homeAddress = new Address(homeAddress);
     }
@@ -232,16 +234,16 @@ public final class StudentApplication extends AbstractVerification {
         return new Address(homeAddress);
     }
 
-    public void setEmail(final String email) {
+    public void setEmail(final String email) throws IllegalArgumentException {
+        ensureNotTooLong("email", email, FIELD_LENGTH);
         this.email = email;
     }
 
     public String getEmail() {
-        ensureNotTooLong("email", email, FIELD_LENGTH);
         return email;
     }
 
-    public void setPhoneNumber(final String phoneNumber) {
+    public void setPhoneNumber(final String phoneNumber) throws IllegalArgumentException {
         ensureNotTooLong("phoneNumber", phoneNumber, 25);
         this.phoneNumber = phoneNumber;
     }
@@ -250,7 +252,7 @@ public final class StudentApplication extends AbstractVerification {
         return phoneNumber;
     }
 
-    public void setAddressDuringTerms(final Address addressDuringTerms) {
+    public void setAddressDuringTerms(final Address addressDuringTerms) throws IllegalArgumentException {
         // The Address during term should not be mandatory, since there are
         // people who stay "at home" during term.
         ensureVerifiable("addressDuringTerms", addressDuringTerms);
@@ -269,7 +271,7 @@ public final class StudentApplication extends AbstractVerification {
         return copy(dateOfBirth);
     }
 
-    public void setUniversity(final String university) {
+    public void setUniversity(final String university) throws IllegalArgumentException {
         ensureNotTooLong("university", university, FIELD_LENGTH);
         this.university = university;
     }
@@ -278,7 +280,7 @@ public final class StudentApplication extends AbstractVerification {
         return university;
     }
 
-    public void setPlaceOfBirth(final String placeOfBirth) {
+    public void setPlaceOfBirth(final String placeOfBirth) throws IllegalArgumentException {
         ensureNotTooLong("placeOfBirth", placeOfBirth, FIELD_LENGTH);
         this.placeOfBirth = placeOfBirth;
     }
@@ -367,7 +369,7 @@ public final class StudentApplication extends AbstractVerification {
         return copy(available);
     }
 
-    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) {
+    public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
         ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
         this.fieldOfStudies = copy(fieldOfStudies);
     }
@@ -385,7 +387,7 @@ public final class StudentApplication extends AbstractVerification {
         return copy(specializations);
     }
 
-    public void setPassportNumber(final String passportNumber) {
+    public void setPassportNumber(final String passportNumber) throws IllegalArgumentException {
         ensureNotTooLong("passportNumber", passportNumber, FIELD_LENGTH);
         this.passportNumber = passportNumber;
     }
@@ -394,7 +396,7 @@ public final class StudentApplication extends AbstractVerification {
         return passportNumber;
     }
 
-    public void setPassportPlaceOfIssue(final String passportPlaceOfIssue) {
+    public void setPassportPlaceOfIssue(final String passportPlaceOfIssue) throws IllegalArgumentException {
         ensureNotTooLong("passportPlaceOfIssue", passportPlaceOfIssue, FIELD_LENGTH);
         this.passportPlaceOfIssue = passportPlaceOfIssue;
     }
@@ -403,7 +405,7 @@ public final class StudentApplication extends AbstractVerification {
         return passportPlaceOfIssue;
     }
 
-    public void setPassportValidUntil(final String passportValidUntil) {
+    public void setPassportValidUntil(final String passportValidUntil) throws IllegalArgumentException {
         ensureNotTooLong("passportValidUntil", passportValidUntil, FIELD_LENGTH);
         this.passportValidUntil = passportValidUntil;
     }
@@ -467,7 +469,7 @@ public final class StudentApplication extends AbstractVerification {
      * @param attachments Attachments
      * @throws IllegalArgumentException if the attachments are null
      */
-    public void setAttachments(final List<File> attachments) throws  IllegalArgumentException {
+    public void setAttachments(final List<File> attachments) throws IllegalArgumentException {
         ensureNotNull("attachments", attachments);
         this.attachments = copy(attachments);
     }

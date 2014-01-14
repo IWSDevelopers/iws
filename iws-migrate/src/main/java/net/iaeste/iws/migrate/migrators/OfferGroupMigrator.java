@@ -209,7 +209,8 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
                 break;
             case "n": // New
             default:
-                state = OfferState.NEW;
+                // Trac task #615, Offers will start in state Shared
+                state = OfferState.SHARED;
         }
 
         return state;

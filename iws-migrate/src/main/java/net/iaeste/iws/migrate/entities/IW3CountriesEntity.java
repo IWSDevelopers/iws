@@ -49,25 +49,25 @@ public class IW3CountriesEntity implements Serializable {
     private String countryid = null;
 
     @Column(name = "countryname", nullable = false, length = 100)
-    private String countryname = null;
+    private byte[] countryname = null;
 
     @Column(name = "countrynamefull", length = 100)
-    private String countrynamefull = null;
+    private byte[] countrynamefull = null;
 
     @Column(name = "countrynamenative", length = 100)
-    private String countrynamenative = null;
+    private byte[] countrynamenative = null;
 
     @Column(name = "nationality", nullable = false, length = 100)
-    private String nationality = null;
+    private byte[] nationality = null;
 
     @Column(name = "phonecode", length = 5)
-    private String phonecode = null;
+    private byte[] phonecode = null;
 
     @Column(name = "currency", length = 3)
-    private String currency = null;
+    private byte[] currency = null;
 
     @Column(name = "languages", length = 100)
-    private String languages = null;
+    private byte[] languages = null;
 
     @Column(name = "membership", length = 10)
     private Integer membership = null;
@@ -76,7 +76,7 @@ public class IW3CountriesEntity implements Serializable {
     private Integer membershipyear = null;
 
     @Column(name = "citizens", length = 100)
-    private String citizens = null;
+    private byte[] citizens = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified")
@@ -98,59 +98,59 @@ public class IW3CountriesEntity implements Serializable {
         return countryid;
     }
 
-    public void setCountryname(final String countryname) {
+    public void setCountryname(final byte[] countryname) {
         this.countryname = countryname;
     }
 
-    public String getCountryname() {
+    public byte[] getCountryname() {
         return countryname;
     }
 
-    public void setCountrynamefull(final String countrynamefull) {
+    public void setCountrynamefull(final byte[] countrynamefull) {
         this.countrynamefull = countrynamefull;
     }
 
-    public String getCountrynamefull() {
+    public byte[] getCountrynamefull() {
         return countrynamefull;
     }
 
-    public void setCountrynamenative(final String countrynamenative) {
+    public void setCountrynamenative(final byte[] countrynamenative) {
         this.countrynamenative = countrynamenative;
     }
 
-    public String getCountrynamenative() {
+    public byte[] getCountrynamenative() {
         return countrynamenative;
     }
 
-    public void setNationality(final String nationality) {
+    public void setNationality(final byte[] nationality) {
         this.nationality = nationality;
     }
 
-    public String getNationality() {
+    public byte[] getNationality() {
         return nationality;
     }
 
-    public void setPhonecode(final String phonecode) {
+    public void setPhonecode(final byte[] phonecode) {
         this.phonecode = phonecode;
     }
 
-    public String getPhonecode() {
+    public byte[] getPhonecode() {
         return phonecode;
     }
 
-    public void setCurrency(final String currency) {
+    public void setCurrency(final byte[] currency) {
         this.currency = currency;
     }
 
-    public String getCurrency() {
+    public byte[] getCurrency() {
         return currency;
     }
 
-    public void setLanguages(final String languages) {
+    public void setLanguages(final byte[] languages) {
         this.languages = languages;
     }
 
-    public String getLanguages() {
+    public byte[] getLanguages() {
         return languages;
     }
 
@@ -170,11 +170,11 @@ public class IW3CountriesEntity implements Serializable {
         return membershipyear;
     }
 
-    public void setCitizens(final String citizens) {
+    public void setCitizens(final byte[] citizens) {
         this.citizens = citizens;
     }
 
-    public String getCitizens() {
+    public byte[] getCitizens() {
         return citizens;
     }
 

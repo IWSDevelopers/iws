@@ -59,7 +59,7 @@ public class IW3User2GroupEntity implements Serializable {
     private IW3RolesEntity role = null;
 
     @Column(name = "usertitle", length = 50)
-    private String usertitle = null;
+    private byte[] usertitle = null;
 
     @Column(name = "onmailinglist")
     private Boolean onmailinglist = null;
@@ -103,11 +103,11 @@ public class IW3User2GroupEntity implements Serializable {
         return role;
     }
 
-    public void setUsertitle(final String usertitle) {
+    public void setUsertitle(final byte[] usertitle) {
         this.usertitle = usertitle;
     }
 
-    public String getUsertitle() {
+    public byte[] getUsertitle() {
         return usertitle;
     }
 

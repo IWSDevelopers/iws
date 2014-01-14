@@ -72,7 +72,7 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
         int skipped = 0;
 
         for (final IW3ProfilesEntity profile : oldEntities) {
-            final CountryEntity country = findExistingCountry(profile.getUser().getCountry());
+            final CountryEntity country = findExistingCountry(convert(profile.getUser().getCountry()));
             final CountryEntity nationality = findExistingCountry(profile.getUser().getNationality());
             final GroupTypeEntity groupType = accessDao.findGroupType(GroupType.PRIVATE);
             final RoleEntity role = accessDao.findRoleById(IWSConstants.ROLE_OWNER);
@@ -130,7 +130,7 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
 
     private static UserGroupEntity preparePrivateGroup(final UserEntity user, final GroupTypeEntity groupType, final RoleEntity role) {
         final GroupEntity group = new GroupEntity();
-        group.setGroupName(convert(user.getFirstname() + ' ' + user.getLastname()));
+        group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
         group.setGroupType(groupType);
         group.setModified(convert(user.getModified()));
         group.setCreated(convert(user.getCreated(), user.getModified()));

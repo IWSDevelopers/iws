@@ -15,6 +15,7 @@
 package net.iaeste.iws.migrate.migrators;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
@@ -22,6 +23,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 /**
@@ -83,8 +85,12 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
         return result;
     }
 
-    protected static String convert(final String str) {
-        return StringEscapeUtils.unescapeHtml4(str);
+    protected static String convert(final byte[] bytes) {
+        try {
+            return StringEscapeUtils.unescapeHtml4(new String(bytes, "ISO-8859-1"));
+        } catch (UnsupportedEncodingException e) {
+            throw new IWSException(IWSErrors.ERROR, "Unresolvable encoding problem: " + e.getMessage(), e);
+        }
     }
 
     protected static String upper(final String str) {

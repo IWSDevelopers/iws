@@ -226,11 +226,11 @@ public class Config {
         // The URL have PostgreSQL special settings. So we prepare the
         // connection URL here
         final String url = "jdbc:postgresql://" + server + ':' + port + '/' + database;
-        log.info("Preparing DataSource: URL=" + url);
+        log.debug("Preparing DataSource: URL=" + url);
         dataSource.setUrl(url);
 
         // Just have to fill in the Username & Optional Password
-        log.info("Preparing DataSource: User=" + username);
+        log.debug("Preparing DataSource: User=" + username);
         dataSource.setUsername(username);
         if ((password != null) && !password.isEmpty()) {
             dataSource.setPassword(password);

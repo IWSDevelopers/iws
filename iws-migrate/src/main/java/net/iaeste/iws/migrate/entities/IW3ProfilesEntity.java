@@ -34,11 +34,15 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(
+@NamedQueries({
         @NamedQuery(name = "profiles.findAll",
-                query = "select c from IW3ProfilesEntity c " +
-                        "order by c.profileid asc")
-)
+                query = "select p from IW3ProfilesEntity p " +
+                        "order by p.profileid asc"),
+        @NamedQuery(name = "profiles.findById",
+                query = "select p from IW3ProfilesEntity p " +
+                        "where p.profileid = :id " +
+                        "order by p.profileid asc")
+})
 @Entity
 @Table(name = "profiles")
 public class IW3ProfilesEntity implements Serializable {
@@ -89,7 +93,7 @@ public class IW3ProfilesEntity implements Serializable {
     private Date onlinetime = null;
 
     @Column(name = "mailalias", length = 100)
-    private String mailalias = null;
+    private byte[] mailalias = null;
 
     @Column(name = "privateaddress", length = 1)
     private Boolean privateaddress = null;
@@ -243,11 +247,11 @@ public class IW3ProfilesEntity implements Serializable {
         return onlinetime;
     }
 
-    public void setMailalias(final String mailalias) {
+    public void setMailalias(final byte[] mailalias) {
         this.mailalias = mailalias;
     }
 
-    public String getMailalias() {
+    public byte[] getMailalias() {
         return mailalias;
     }
 

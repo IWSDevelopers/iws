@@ -70,7 +70,7 @@ public class IW3Offer2GroupEntity implements Serializable {
     private Integer visible;
 
     @Column(name = "comment", length = 2147483647)
-    private String comment;
+    private byte[] comment;
 
     @Column(name = "studentid", length = 10)
     private Integer studentid;
@@ -130,11 +130,11 @@ public class IW3Offer2GroupEntity implements Serializable {
         return visible;
     }
 
-    public void setComment(final String comment) {
+    public void setComment(final byte[] comment) {
         this.comment = comment;
     }
 
-    public String getComment() {
+    public byte[] getComment() {
         return comment;
     }
 

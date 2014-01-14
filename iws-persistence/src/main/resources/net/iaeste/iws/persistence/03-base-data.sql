@@ -2,6 +2,10 @@
 -- Default Data for the IWS
 -- =============================================================================
 
+-- =============================================================================
+-- Initial Version information, required to verify against
+-- =============================================================================
+insert into versions (db_version, iws_version) values (1, '1.0.2');
 
 -- =============================================================================
 -- Standard GroupTypes from net.iaeste.iws.api.enums.GroupType

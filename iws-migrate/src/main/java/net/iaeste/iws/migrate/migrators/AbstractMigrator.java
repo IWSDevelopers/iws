@@ -86,11 +86,19 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
     }
 
     protected static String convert(final byte[] bytes) {
-        try {
-            return StringEscapeUtils.unescapeHtml4(new String(bytes, "ISO-8859-1"));
-        } catch (UnsupportedEncodingException e) {
-            throw new IWSException(IWSErrors.ERROR, "Unresolvable encoding problem: " + e.getMessage(), e);
+        final String result;
+
+        if (bytes != null) {
+            try {
+                result = StringEscapeUtils.unescapeHtml4(new String(bytes, "ISO-8859-1"));
+            } catch (UnsupportedEncodingException e) {
+                throw new IWSException(IWSErrors.ERROR, "Unresolvable encoding problem: " + e.getMessage(), e);
+            }
+        } else {
+            result = null;
         }
+
+        return result;
     }
 
     protected static String upper(final String str) {

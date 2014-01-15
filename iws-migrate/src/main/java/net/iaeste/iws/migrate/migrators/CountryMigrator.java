@@ -71,7 +71,7 @@ public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> 
                     skipped++;
                 }
             } else {
-                log.info("Skipping {}, the CountryCode is invalid '{}'.", oldCountry.getCountryname(), oldCountry.getCountryid());
+                log.info("Skipping {}, the CountryCode is invalid '{}'.", convert(oldCountry.getCountryname()), oldCountry.getCountryid());
                 skipped++;
             }
         }

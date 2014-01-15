@@ -77,6 +77,9 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                     log.info("The standard group {} (id {}), is dropped.", converted.getGroupName(), converted.getOldId());
                     skipped++;
                 }
+            } else if ((converted.getOldId() == 749) || (converted.getOldId() == 839)) {
+                log.info("The Group {} (id {}), is dropped, since it's an unused duplicate.", converted.getGroupName(), converted.getOldId());
+                skipped++;
             } else {
                 final CountryEntity country = findExistingCountry(findCorrectCountry(oldGroup.getCountryid(), oldGroup.getRealcountryid()));
                 if (parent == null) {
@@ -183,8 +186,10 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                 result = parent.getGroupName() + ' ' + type.getDescription();
                 break;
             case LOCAL:
-            case WORKGROUP:
                 result = parent.getGroupName() + ' ' + committee;
+                break;
+            case WORKGROUP:
+                result = parent.getFullName() + ' ' + committee;
                 break;
             case ADMINISTRATION:
             case INTERNATIONAL:

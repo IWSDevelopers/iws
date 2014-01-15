@@ -240,6 +240,7 @@ create table groups (
     /* Unique Constraints */
     constraint group_unique_external_id unique (external_id),
     constraint group_unique_old_iw3_id  unique (old_iw3_id),
+    -- Required, since we otherwise cannot guarantee that mailinglists are unique
     constraint group_unique_full_name   unique (full_name),
 
     /* Not Null & Other Constraints */

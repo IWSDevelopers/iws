@@ -71,7 +71,7 @@ public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> 
                     skipped++;
                 }
             } else {
-                log.info("Skipping {}, the CountryCode is invalid '{}'.", oldCountry.getCountryname(), oldCountry.getCountryid());
+                log.info("Skipping {}, the CountryCode is invalid '{}'.", convert(oldCountry.getCountryname()), oldCountry.getCountryid());
                 skipped++;
             }
         }
@@ -86,7 +86,7 @@ public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> 
     private static CountryEntity convertEntity(final IW3CountriesEntity oldCountry) {
         final CountryEntity result = new CountryEntity();
 
-        result.setCountryCode(upper(convert(oldCountry.getCountryid())));
+        result.setCountryCode(upper(oldCountry.getCountryid()));
         result.setCountryName(convert(oldCountry.getCountryname()));
         result.setCountryNameFull(convert(oldCountry.getCountrynamefull()));
         result.setCountryNameNative(convert(oldCountry.getCountrynamenative()));
@@ -104,7 +104,9 @@ public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> 
         return result;
     }
 
-    private static Currency convertCurrency(final String currency, final String countryname) {
+    private static Currency convertCurrency(final byte[] currencyBytes, final byte[] countrynameBytes) {
+        final String currency = convert(currencyBytes);
+        final String countryname = convert(countrynameBytes);
         Currency converted = null;
         final String value = upper(currency);
 

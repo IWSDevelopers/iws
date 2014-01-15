@@ -2,6 +2,10 @@
 -- Default Data for the IWS
 -- =============================================================================
 
+-- =============================================================================
+-- Initial Version information, required to verify against
+-- =============================================================================
+insert into versions (db_version, iws_version) values (1, '1.0.2');
 
 -- =============================================================================
 -- Standard GroupTypes from net.iaeste.iws.api.enums.GroupType
@@ -281,20 +285,24 @@ insert into permission_to_role (role_id, permission_id) values (4, 151);
 --                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
+--                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 200);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 200);
 insert into permission_to_role (role_id, permission_id) values (1, 200);
 insert into permission_to_role (role_id, permission_id) values (2, 200);
+insert into permission_to_role (role_id, permission_id) values (3, 200);
 
 -- Permission: 201 - Process Employer
 --   -> GroupTypes: 5 National
 --                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
+--                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 201);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 201);
 insert into permission_to_role (role_id, permission_id) values (1, 201);
 insert into permission_to_role (role_id, permission_id) values (2, 201);
+insert into permission_to_role (role_id, permission_id) values (3, 201);
 
 -- Permission: 202 - Lookup Employers
 --   -> GroupTypes: 5 National
@@ -313,6 +321,7 @@ insert into permission_to_role (role_id, permission_id) values (3, 202);
 --                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
+--                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 203);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 203);
 insert into permission_to_role (role_id, permission_id) values (1, 203);
@@ -335,6 +344,7 @@ insert into permission_to_role (role_id, permission_id) values (3, 204);
 --   -> GroupTypes: 5 National
 --   -> Roles:      1 Owner
 --                  2 Moderator
+--                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 210);
 insert into permission_to_role (role_id, permission_id) values (1, 210);
 insert into permission_to_role (role_id, permission_id) values (2, 210);
@@ -355,6 +365,7 @@ insert into permission_to_role (role_id, permission_id) values (3, 211);
 --                  6 Local
 --   -> Roles:      1 Owner
 --                  2 Moderator
+--                  3 Member
 insert into permission_to_grouptype (grouptype_id, permission_id) values (5, 220);
 insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 220);
 insert into permission_to_role (role_id, permission_id) values (1, 220);

@@ -393,7 +393,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         return convert(oldOffer.getFaculty().getFaculty());
     }
 
-    private static String convertSpecializations(final String specialization) {
+    private static String convertSpecializations(final byte[] specialization) {
         return convert(specialization);
     }
 

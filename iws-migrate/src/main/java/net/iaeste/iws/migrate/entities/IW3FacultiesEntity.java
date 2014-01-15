@@ -52,7 +52,7 @@ public class IW3FacultiesEntity implements Serializable {
     private Integer facultyid = null;
 
     @Column(name = "faculty", nullable = false, length = 2147483647)
-    private String faculty = null;
+    private byte[] faculty = null;
 
     @Column(name = "facultyxml", nullable = false, length = 2147483647)
     private String facultyxml = null;
@@ -89,11 +89,11 @@ public class IW3FacultiesEntity implements Serializable {
         return facultyid;
     }
 
-    public void setFaculty(final String faculty) {
+    public void setFaculty(final byte[] faculty) {
         this.faculty = faculty;
     }
 
-    public String getFaculty() {
+    public byte[] getFaculty() {
         return faculty;
     }
 

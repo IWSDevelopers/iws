@@ -55,19 +55,19 @@ public class IW3GroupsEntity implements Serializable {
     private IW3GrouptypesEntity grouptype = null;
 
     @Column(name = "groupname", length = 50)
-    private String groupname = null;
+    private byte[] groupname = null;
 
     @Column(name = "fullname", length = 100)
-    private String fullname = null;
+    private byte[] fullname = null;
 
     @Column(name = "grouptitle", length = 100)
     private String grouptitle = null;
 
     @Column(name = "groupdescription", length = 250)
-    private String groupdescription = null;
+    private byte[] groupdescription = null;
 
     @Column(name = "mailinglistname", length = 75)
-    private String mailinglistname = null;
+    private byte[] mailinglistname = null;
 
     @Column(name = "mailinglistlimit", length = 10)
     private Integer mailinglistlimit = null;
@@ -124,19 +124,19 @@ public class IW3GroupsEntity implements Serializable {
         return grouptype;
     }
 
-    public void setGroupname(final String groupname) {
+    public void setGroupname(final byte[] groupname) {
         this.groupname = groupname;
     }
 
-    public String getGroupname() {
+    public byte[] getGroupname() {
         return groupname;
     }
 
-    public void setFullname(final String fullname) {
+    public void setFullname(final byte[] fullname) {
         this.fullname = fullname;
     }
 
-    public String getFullname() {
+    public byte[] getFullname() {
         return fullname;
     }
 
@@ -148,19 +148,19 @@ public class IW3GroupsEntity implements Serializable {
         return grouptitle;
     }
 
-    public void setGroupdescription(final String groupdescription) {
+    public void setGroupdescription(final byte[] groupdescription) {
         this.groupdescription = groupdescription;
     }
 
-    public String getGroupdescription() {
+    public byte[] getGroupdescription() {
         return groupdescription;
     }
 
-    public void setMailinglistname(final String mailinglistname) {
+    public void setMailinglistname(final byte[] mailinglistname) {
         this.mailinglistname = mailinglistname;
     }
 
-    public String getMailinglistname() {
+    public byte[] getMailinglistname() {
         return mailinglistname;
     }
 

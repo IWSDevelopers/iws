@@ -32,6 +32,7 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.common.notification.NotificationType;
+import net.iaeste.iws.core.util.GroupUtil;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.CommonTransformer;
@@ -434,16 +435,21 @@ public final class GroupService {
         // Find pre-requisites
         final CountryEntity country = dao.findCountryByCode(parent.getCountry().getCountryCode());
         final GroupTypeEntity groupType = dao.findGroupTypeByType(type);
+        final String basename = GroupUtil.prepareBaseGroupName(
+                parent.getGroupType().getGrouptype(),
+                parent.getCountry().getCountryName(),
+                parent.getGroupName(),
+                parent.getFullName());
 
         // Create the new Entity
         final GroupEntity groupEntity = new GroupEntity();
-        groupEntity.setGroupName(group.getGroupName());
+        groupEntity.setGroupName(GroupUtil.prepareGroupName(type, group));
         groupEntity.setGroupType(groupType);
         groupEntity.setCountry(country);
         groupEntity.setDescription(group.getDescription());
-        groupEntity.setFullName(parent.getFullName() + '.' + group.getGroupName());
+        groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
         groupEntity.setParentId(parent.getId());
-        groupEntity.setListName(groupEntity.getFullName());
+        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), country.getCountryName()));
 
         // Save the new Group in the database
         dao.persist(authentication, groupEntity);

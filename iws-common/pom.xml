@@ -3,7 +3,7 @@
     <parent>
         <artifactId>iws-parent</artifactId>
         <groupId>net.iaeste.iws</groupId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <relativePath>../iws-parent/pom.xml</relativePath>
     </parent>
     <artifactId>iws-common</artifactId>

@@ -32,11 +32,16 @@ import java.sql.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(
+@NamedQueries({
         @NamedQuery(name = "offers.findAll",
                 query = "select o from IW3OffersEntity o " +
+                        "order by o.offerid asc"),
+        @NamedQuery(name = "offers.findRecent",
+                query = "select o from IW3OffersEntity o " +
+                        "where o.exchangeyear >= 2014" +
+                        "   or o.created >= '2013-09-01' " +
                         "order by o.offerid asc")
-)
+})
 @Entity
 @Table(name = "offers")
 public class IW3OffersEntity implements Serializable {
@@ -61,7 +66,7 @@ public class IW3OffersEntity implements Serializable {
     private String systemrefno = null;
 
     @Column(name = "localrefno", length = 2147483647)
-    private String localrefno = null;
+    private byte[] localrefno = null;
 
     @Column(name = "exchangeyear", length = 10)
     private Integer exchangeyear = null;
@@ -75,25 +80,25 @@ public class IW3OffersEntity implements Serializable {
     private Date expire = null;
 
     @Column(name = "employername", length = 2147483647)
-    private String employername = null;
+    private byte[] employername = null;
 
     @Column(name = "employeraddress1", length = 2147483647)
-    private String employeraddress1 = null;
+    private byte[] employeraddress1 = null;
 
     @Column(name = "employeraddress2", length = 2147483647)
-    private String employeraddress2 = null;
+    private byte[] employeraddress2 = null;
 
     @Column(name = "workplace", length = 2147483647)
-    private String workplace = null;
+    private byte[] workplace = null;
 
     @Column(name = "business", length = 2147483647)
-    private String business = null;
+    private byte[] business = null;
 
     @Column(name = "responsible", length = 2147483647)
     private String responsible = null;
 
     @Column(name = "airport", length = 2147483647)
-    private String airport = null;
+    private byte[] airport = null;
 
     @Column(name = "transport", length = 2147483647)
     private String transport = null;
@@ -115,7 +120,7 @@ public class IW3OffersEntity implements Serializable {
     private String facultyother = null;
 
     @Column(name = "specialization", length = 2147483647)
-    private String specialization = null;
+    private byte[] specialization = null;
 
     @Column(name = "language1", length = 2147483647)
     private String language1 = null;
@@ -151,7 +156,7 @@ public class IW3OffersEntity implements Serializable {
     private String gender = null;
 
     @Column(name = "workkind", length = 2147483647)
-    private String workkind = null;
+    private byte[] workkind = null;
 
     @Column(name = "worktype", length = 1)
     private String worktype = null;
@@ -183,10 +188,10 @@ public class IW3OffersEntity implements Serializable {
     private String paymentfrequency = null;
 
     @Column(name = "deduction", length = 2147483647)
-    private String deduction = null;
+    private byte[] deduction = null;
 
     @Column(name = "lodging", length = 2147483647)
-    private String lodging = null;
+    private byte[] lodging = null;
 
     @Column(name = "canteen", length = 1)
     private Boolean canteen = null;
@@ -204,7 +209,7 @@ public class IW3OffersEntity implements Serializable {
     private String livingcostfrequency = null;
 
     @Column(name = "comment", length = 2147483647)
-    private String comment = null;
+    private byte[] comment = null;
 
     @Column(name = "worktype_p", length = 1)
     private Boolean worktypeP = null;
@@ -227,7 +232,7 @@ public class IW3OffersEntity implements Serializable {
     private Integer publishedby = null;
 
     @Column(name = "employees", length = 2147483647)
-    private String employees = null;
+    private byte[] employees = null;
 
     @Column(name = "nomination", length = 1)
     private Boolean nomination = null;
@@ -236,7 +241,7 @@ public class IW3OffersEntity implements Serializable {
     private Boolean requirestudent = null;
 
     @Column(name = "website", length = 2147483647)
-    private String website = null;
+    private byte[] website = null;
 
     @Column(name = "worktype_n", length = 1)
     private Boolean worktypeN = null;
@@ -345,11 +350,11 @@ public class IW3OffersEntity implements Serializable {
         return systemrefno;
     }
 
-    public void setLocalrefno(final String localrefno) {
+    public void setLocalrefno(final byte[] localrefno) {
         this.localrefno = localrefno;
     }
 
-    public String getLocalrefno() {
+    public byte[] getLocalrefno() {
         return localrefno;
     }
 
@@ -377,43 +382,43 @@ public class IW3OffersEntity implements Serializable {
         return expire;
     }
 
-    public void setEmployername(final String employername) {
+    public void setEmployername(final byte[] employername) {
         this.employername = employername;
     }
 
-    public String getEmployername() {
+    public byte[] getEmployername() {
         return employername;
     }
 
-    public void setEmployeraddress1(final String employeraddress1) {
+    public void setEmployeraddress1(final byte[] employeraddress1) {
         this.employeraddress1 = employeraddress1;
     }
 
-    public String getEmployeraddress1() {
+    public byte[] getEmployeraddress1() {
         return employeraddress1;
     }
 
-    public void setEmployeraddress2(final String employeraddress2) {
+    public void setEmployeraddress2(final byte[] employeraddress2) {
         this.employeraddress2 = employeraddress2;
     }
 
-    public String getEmployeraddress2() {
+    public byte[] getEmployeraddress2() {
         return employeraddress2;
     }
 
-    public void setWorkplace(final String workplace) {
+    public void setWorkplace(final byte[] workplace) {
         this.workplace = workplace;
     }
 
-    public String getWorkplace() {
+    public byte[] getWorkplace() {
         return workplace;
     }
 
-    public void setBusiness(final String business) {
+    public void setBusiness(final byte[] business) {
         this.business = business;
     }
 
-    public String getBusiness() {
+    public byte[] getBusiness() {
         return business;
     }
 
@@ -425,11 +430,11 @@ public class IW3OffersEntity implements Serializable {
         return responsible;
     }
 
-    public void setAirport(final String airport) {
+    public void setAirport(final byte[] airport) {
         this.airport = airport;
     }
 
-    public String getAirport() {
+    public byte[] getAirport() {
         return airport;
     }
 
@@ -481,11 +486,11 @@ public class IW3OffersEntity implements Serializable {
         return facultyother;
     }
 
-    public void setSpecialization(final String specialization) {
+    public void setSpecialization(final byte[] specialization) {
         this.specialization = specialization;
     }
 
-    public String getSpecialization() {
+    public byte[] getSpecialization() {
         return specialization;
     }
 
@@ -577,11 +582,11 @@ public class IW3OffersEntity implements Serializable {
         return gender;
     }
 
-    public void setWorkkind(final String workkind) {
+    public void setWorkkind(final byte[] workkind) {
         this.workkind = workkind;
     }
 
-    public String getWorkkind() {
+    public byte[] getWorkkind() {
         return workkind;
     }
 
@@ -657,19 +662,19 @@ public class IW3OffersEntity implements Serializable {
         return paymentfrequency;
     }
 
-    public void setDeduction(final String deduction) {
+    public void setDeduction(final byte[] deduction) {
         this.deduction = deduction;
     }
 
-    public String getDeduction() {
+    public byte[] getDeduction() {
         return deduction;
     }
 
-    public void setLodging(final String lodging) {
+    public void setLodging(final byte[] lodging) {
         this.lodging = lodging;
     }
 
-    public String getLodging() {
+    public byte[] getLodging() {
         return lodging;
     }
 
@@ -713,11 +718,11 @@ public class IW3OffersEntity implements Serializable {
         return livingcostfrequency;
     }
 
-    public void setComment(final String comment) {
+    public void setComment(final byte[] comment) {
         this.comment = comment;
     }
 
-    public String getComment() {
+    public byte[] getComment() {
         return comment;
     }
 
@@ -769,11 +774,11 @@ public class IW3OffersEntity implements Serializable {
         return publishedby;
     }
 
-    public void setEmployees(final String employees) {
+    public void setEmployees(final byte[] employees) {
         this.employees = employees;
     }
 
-    public String getEmployees() {
+    public byte[] getEmployees() {
         return employees;
     }
 
@@ -793,11 +798,11 @@ public class IW3OffersEntity implements Serializable {
         return requirestudent;
     }
 
-    public void setWebsite(final String website) {
+    public void setWebsite(final byte[] website) {
         this.website = website;
     }
 
-    public String getWebsite() {
+    public byte[] getWebsite() {
         return website;
     }
 

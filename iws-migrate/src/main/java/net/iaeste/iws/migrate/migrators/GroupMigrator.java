@@ -60,7 +60,9 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         int skipped = 0;
 
         for (final IW3GroupsEntity oldGroup : oldEntities) {
-            final GroupEntity converted = convertGroup(oldGroup);
+            final GroupTypeEntity groupType = accessDao.findGroupType(convertGroupType(oldGroup.getGrouptype().getGrouptype()));
+            final GroupEntity parent = accessDao.findGroupByIW3Id(oldGroup.getParentid());
+            final GroupEntity converted = convertGroup(oldGroup, groupType, parent);
             GroupEntity toPersist = null;
 
             // Handling standard Groups, these already exists, so we need to
@@ -75,17 +77,18 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                     log.info("The standard group {} (id {}), is dropped.", converted.getGroupName(), converted.getOldId());
                     skipped++;
                 }
+            } else if ((converted.getOldId() == 749) || (converted.getOldId() == 839)) {
+                log.info("The Group {} (id {}), is dropped, since it's an unused duplicate.", converted.getGroupName(), converted.getOldId());
+                skipped++;
             } else {
                 final CountryEntity country = findExistingCountry(findCorrectCountry(oldGroup.getCountryid(), oldGroup.getRealcountryid()));
-                final GroupEntity parent = accessDao.findGroupByIW3Id(oldGroup.getParentid());
                 if (parent == null) {
                     // For Holland, we have the problem that Group 629 exists, but 628 (the parent) doesn't.
-                    log.info("Couldn't find a parent for {} with id {}", oldGroup.getGroupname(), oldGroup.getGroupid());
+                    log.info("Couldn't find a parent for {} with id {}", convert(oldGroup.getGroupname()), oldGroup.getGroupid());
                     converted.setParentId(0L);
                 } else {
                     converted.setParentId(parent.getId());
                 }
-                final GroupTypeEntity groupType = accessDao.findGroupType(convertGroupType(oldGroup.getGrouptype().getGrouptype()));
                 converted.setCountry(country);
                 converted.setGroupType(groupType);
                 toPersist = converted;
@@ -112,20 +115,127 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         return new MigrationResult(persisted, skipped);
     }
 
-    public GroupEntity convertGroup(final IW3GroupsEntity entity) {
+    public GroupEntity convertGroup(final IW3GroupsEntity entity, final GroupTypeEntity groupTypeEntity, final GroupEntity parent) {
         final GroupEntity group = new GroupEntity();
+        final GroupType type = groupTypeEntity.getGrouptype();
 
         group.setOldId(entity.getGroupid());
-        group.setGroupName(convert(entity.getGroupname()));
+        group.setGroupName(convertGroupName(type, convert(entity.getGroupname()), parent));
         group.setDescription(convert(entity.getGroupdescription()));
-        group.setFullName(convert(entity.getFullname()));
-        group.setListName(convert(entity.getMailinglistname()));
+        group.setFullName(convertFullName(type, convert(entity.getGroupname()), parent));
+        group.setListName(convertListName(type, convert(entity.getGroupname()), parent));
         group.setParentId(0L + entity.getParentid());
         group.setStatus(convertGroupStatus(entity.getStatus()));
         group.setModified(convert(entity.getModified()));
         group.setCreated(convert(entity.getCreated(), entity.getModified()));
 
         return group;
+    }
+
+    private String convertGroupName(final GroupType type, final String committee, final GroupEntity parent) {
+        final String result;
+
+        switch (type) {
+            case NATIONAL:
+                if (parent == null) {
+                    // Special case for IWS Group 629, Holland Staff, where
+                    // Members are missing. We need it migrated, since it is
+                    // needed for Exchanged Offers
+                    result = "Holland " + type.getDescription();
+                } else {
+                    result = parent.getGroupName() + ' ' + type.getDescription();
+                }
+                break;
+            case STUDENT:
+                result = parent.getGroupName() + ' ' + type.getDescription();
+                break;
+            case LOCAL:
+            case WORKGROUP:
+                result = parent.getGroupName() + ' ' + committee;
+                break;
+            case ADMINISTRATION:
+            case INTERNATIONAL:
+            case MEMBER:
+            case PRIVATE:
+            case REGIONAL:
+            default:
+                result = committee;
+        }
+
+        return result;
+    }
+
+    private String convertFullName(final GroupType type, final String committee, final GroupEntity parent) {
+        final String result;
+
+        switch (type) {
+            case MEMBER:
+                result = committee + ' ' + type.getDescription();
+                break;
+            case NATIONAL:
+                if (parent == null) {
+                    // Special case for IWS Group 629, Holland Staff, where
+                    // Members are missing. We need it migrated, since it is
+                    // needed for Exchanged Offers
+                    result = "Holland " + type.getDescription();
+                } else {
+                    result = parent.getGroupName() + ' ' + type.getDescription();
+                }
+                break;
+            case STUDENT:
+                result = parent.getGroupName() + ' ' + type.getDescription();
+                break;
+            case LOCAL:
+                result = parent.getGroupName() + ' ' + committee;
+                break;
+            case WORKGROUP:
+                result = parent.getFullName() + ' ' + committee;
+                break;
+            case ADMINISTRATION:
+            case INTERNATIONAL:
+            case PRIVATE:
+            case REGIONAL:
+            default:
+                result = committee;
+        }
+
+        return result;
+    }
+
+    private String convertListName(final GroupType type, final String committee, final GroupEntity parent) {
+        final String result;
+
+        switch (type) {
+            case MEMBER:
+                result = committee;
+                break;
+            case NATIONAL:
+                if (parent == null) {
+                    // Special case for IWS Group 629, Holland Staff, where
+                    // Members are missing. We need it migrated, since it is
+                    // needed for Exchanged Offers. Since the Group is obviously
+                    // no longer active, we're setting the list to null (none)
+                    result = null;
+                } else {
+                    result = parent.getGroupName();
+                }
+                break;
+            case STUDENT:
+                result = parent.getGroupName() + '.' + type.getDescription();
+                break;
+            case LOCAL:
+            case WORKGROUP:
+                result = parent.getGroupName() + '.' + committee;
+                break;
+            case ADMINISTRATION:
+            case INTERNATIONAL:
+            case PRIVATE:
+            case REGIONAL:
+            default:
+                result = committee;
+        }
+
+        return result != null ? result.replace(", ", "_").replace(' ', '_') : null;
     }
 
     public static GroupType convertGroupType(final String type) {

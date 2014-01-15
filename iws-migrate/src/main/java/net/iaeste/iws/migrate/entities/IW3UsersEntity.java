@@ -42,16 +42,16 @@ public class IW3UsersEntity implements Serializable {
     private Integer userid = null;
 
     @Column(name = "username", nullable = false, length = 2147483647)
-    private String username = null;
+    private byte[] username = null;
 
     @Column(name = "password", nullable = false, length = 32)
     private String password = null;
 
     @Column(name = "firstname", nullable = false, length = 2147483647)
-    private String firstname = null;
+    private byte[] firstname = null;
 
     @Column(name = "lastname", nullable = false, length = 2147483647)
-    private String lastname = null;
+    private byte[] lastname = null;
 
     @Column(name = "middlename", length = 2147483647)
     private String middlename = null;
@@ -66,25 +66,25 @@ public class IW3UsersEntity implements Serializable {
     private String title = null;
 
     @Column(name = "pobox", length = 2147483647)
-    private String pobox = null;
+    private byte[] pobox = null;
 
     @Column(name = "street1", length = 2147483647)
-    private String street1 = null;
+    private byte[] street1 = null;
 
     @Column(name = "street2", length = 2147483647)
-    private String street2 = null;
+    private byte[] street2 = null;
 
     @Column(name = "zip", length = 10)
-    private String zip = null;
+    private byte[] zip = null;
 
     @Column(name = "city", length = 2147483647)
-    private String city = null;
+    private byte[] city = null;
 
     @Column(name = "country", nullable = false, length = 2)
-    private String country = null;
+    private byte[] country = null;
 
     @Column(name = "region", length = 2147483647)
-    private String region = null;
+    private byte[] region = null;
 
     @Column(name = "university", length = 2147483647)
     private String university = null;
@@ -99,13 +99,13 @@ public class IW3UsersEntity implements Serializable {
     private String nationality = null;
 
     @Column(name = "phone", length = 25)
-    private String phone = null;
+    private byte[] phone = null;
 
     @Column(name = "fax", length = 2147483647)
-    private String fax = null;
+    private byte[] fax = null;
 
     @Column(name = "mobile", length = 25)
-    private String mobile = null;
+    private byte[] mobile = null;
 
     @Column(name = "homepage", length = 2147483647)
     private String homepage = null;
@@ -214,11 +214,11 @@ public class IW3UsersEntity implements Serializable {
         return userid;
     }
 
-    public void setUsername(final String username) {
+    public void setUsername(final byte[] username) {
         this.username = username;
     }
 
-    public String getUsername() {
+    public byte[] getUsername() {
         return username;
     }
 
@@ -230,19 +230,19 @@ public class IW3UsersEntity implements Serializable {
         return password;
     }
 
-    public void setFirstname(final String firstname) {
+    public void setFirstname(final byte[] firstname) {
         this.firstname = firstname;
     }
 
-    public String getFirstname() {
+    public byte[] getFirstname() {
         return firstname;
     }
 
-    public void setLastname(final String lastname) {
+    public void setLastname(final byte[] lastname) {
         this.lastname = lastname;
     }
 
-    public String getLastname() {
+    public byte[] getLastname() {
         return lastname;
     }
 
@@ -278,59 +278,59 @@ public class IW3UsersEntity implements Serializable {
         return title;
     }
 
-    public void setPobox(final String pobox) {
+    public void setPobox(final byte[] pobox) {
         this.pobox = pobox;
     }
 
-    public String getPobox() {
+    public byte[] getPobox() {
         return pobox;
     }
 
-    public void setStreet1(final String street1) {
+    public void setStreet1(final byte[] street1) {
         this.street1 = street1;
     }
 
-    public String getStreet1() {
+    public byte[] getStreet1() {
         return street1;
     }
 
-    public void setStreet2(final String street2) {
+    public void setStreet2(final byte[] street2) {
         this.street2 = street2;
     }
 
-    public String getStreet2() {
+    public byte[] getStreet2() {
         return street2;
     }
 
-    public void setZip(final String zip) {
+    public void setZip(final byte[] zip) {
         this.zip = zip;
     }
 
-    public String getZip() {
+    public byte[] getZip() {
         return zip;
     }
 
-    public void setCity(final String city) {
+    public void setCity(final byte[] city) {
         this.city = city;
     }
 
-    public String getCity() {
+    public byte[] getCity() {
         return city;
     }
 
-    public void setCountry(final String country) {
+    public void setCountry(final byte[] country) {
         this.country = country;
     }
 
-    public String getCountry() {
+    public byte[] getCountry() {
         return country;
     }
 
-    public void setRegion(final String region) {
+    public void setRegion(final byte[] region) {
         this.region = region;
     }
 
-    public String getRegion() {
+    public byte[] getRegion() {
         return region;
     }
 
@@ -366,27 +366,27 @@ public class IW3UsersEntity implements Serializable {
         return nationality;
     }
 
-    public void setPhone(final String phone) {
+    public void setPhone(final byte[] phone) {
         this.phone = phone;
     }
 
-    public String getPhone() {
+    public byte[] getPhone() {
         return phone;
     }
 
-    public void setFax(final String fax) {
+    public void setFax(final byte[] fax) {
         this.fax = fax;
     }
 
-    public String getFax() {
+    public byte[] getFax() {
         return fax;
     }
 
-    public void setMobile(final String mobile) {
+    public void setMobile(final byte[] mobile) {
         this.mobile = mobile;
     }
 
-    public String getMobile() {
+    public byte[] getMobile() {
         return mobile;
     }
 

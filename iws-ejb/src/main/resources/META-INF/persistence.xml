@@ -6,18 +6,21 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <jta-data-source>iws</jta-data-source>
 
+        <!-- Entities -->
         <class>net.iaeste.iws.persistence.entities.AddressEntity</class>
-        <class>net.iaeste.iws.persistence.entities.PersonEntity</class>
+        <class>net.iaeste.iws.persistence.entities.AttachmentEntity</class>
         <class>net.iaeste.iws.persistence.entities.CountryEntity</class>
         <class>net.iaeste.iws.persistence.entities.FileEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.GroupTypeEntity</class>
         <class>net.iaeste.iws.persistence.entities.MonitoringEntity</class>
+        <class>net.iaeste.iws.persistence.entities.PersonEntity</class>
         <class>net.iaeste.iws.persistence.entities.RoleEntity</class>
         <class>net.iaeste.iws.persistence.entities.SessionEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserGroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.UserNotificationEntity</class>
+        <class>net.iaeste.iws.persistence.entities.VersionEntity</class>
         <class>net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity</class>
         <class>net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity</class>
         <class>net.iaeste.iws.persistence.entities.notifications.NotificationJobTaskEntity</class>
@@ -26,7 +29,6 @@
         <class>net.iaeste.iws.persistence.entities.exchange.OfferEntity</class>
         <class>net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.exchange.StudentEntity</class>
-        <class>net.iaeste.iws.persistence.entities.AttachmentEntity</class>
 
         <!-- Views -->
         <class>net.iaeste.iws.persistence.views.ApplicationView</class>

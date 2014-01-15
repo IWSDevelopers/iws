@@ -41,11 +41,17 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(
+@NamedQueries({
         @NamedQuery(name = "offergroup.findAll",
                 query = "select og from IW3Offer2GroupEntity og " +
-                        "order by created asc")
-)
+                        "order by created asc"),
+        @NamedQuery(name = "offergroup.findRecent",
+                query = "select og from IW3Offer2GroupEntity og, IW3OffersEntity o " +
+                        "where o.offerid = og.id.offerId" +
+                        "  and (o.exchangeyear >= 2014" +
+                        "   or o.created >= '2013-09-01') " +
+                        "order by og.created asc")
+})
 @Entity
 @Table(name = "offer2group")
 public class IW3Offer2GroupEntity implements Serializable {
@@ -64,7 +70,7 @@ public class IW3Offer2GroupEntity implements Serializable {
     private Integer visible;
 
     @Column(name = "comment", length = 2147483647)
-    private String comment;
+    private byte[] comment;
 
     @Column(name = "studentid", length = 10)
     private Integer studentid;
@@ -124,11 +130,11 @@ public class IW3Offer2GroupEntity implements Serializable {
         return visible;
     }
 
-    public void setComment(final String comment) {
+    public void setComment(final byte[] comment) {
         this.comment = comment;
     }
 
-    public String getComment() {
+    public byte[] getComment() {
         return comment;
     }
 

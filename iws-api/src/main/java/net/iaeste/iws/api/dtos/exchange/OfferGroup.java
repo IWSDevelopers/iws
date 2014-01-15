@@ -37,7 +37,7 @@ public final class OfferGroup extends AbstractVerification {
 
     private String offerRefNo = null;
     private String groupId = null;
-    private OfferState status = OfferState.NEW;
+    private OfferState status = OfferState.SHARED;
     private String comment = null;
     private DateTime modified = null;
     private DateTime created = null;

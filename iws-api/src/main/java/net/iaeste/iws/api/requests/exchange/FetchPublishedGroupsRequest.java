@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Request Object for fetching sharing info for posted list of offers' Id.
+ * Request Object for fetching sharing info for posted list of offer Id's.
  * The offers have to be owned by the group to which the user is
  * currently logged in otherwise the exception is thrown.
  *
@@ -38,6 +38,7 @@ public final class FetchPublishedGroupsRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private List<String> offerIds = null;
+    private Integer exchangeYear;
 
     // =========================================================================
     // Object Constructors
@@ -48,6 +49,7 @@ public final class FetchPublishedGroupsRequest extends AbstractVerification {
      * for WebServices to work properly.
      */
     public FetchPublishedGroupsRequest() {
+        this.exchangeYear = calculateExchangeYear();
     }
 
     /**
@@ -57,6 +59,7 @@ public final class FetchPublishedGroupsRequest extends AbstractVerification {
      */
     public FetchPublishedGroupsRequest(final List<String> offerIds) {
         setOfferIds(offerIds);
+        this.exchangeYear = calculateExchangeYear();
     }
 
     // =========================================================================
@@ -64,20 +67,42 @@ public final class FetchPublishedGroupsRequest extends AbstractVerification {
     // =========================================================================
 
     /**
+     * Sets the list of OfferIds to read the sharing information for. The list
+     * must be valid, i.e. not null or empty and the values must all be valid
+     * OfferIds.<br />
+     *   If attempted to set invalid ids, then the method will throw an
+     * {@code IllegalArgumentException}.
      *
      * @param offerIds List of Offer Ids
      * @throws IllegalArgumentException if the given argument is invalid
      */
-    public void setOfferIds(final List<String> offerIds) {
-        for (final String offerId : offerIds) {
-            ensureValidId("Offer Id", offerId);
-        }
-
+    public void setOfferIds(final List<String> offerIds) throws IllegalArgumentException {
+        ensureNotNullOrEmptyAndValidIds("offerIds", offerIds);
         this.offerIds = copy(offerIds);
     }
 
     public List<String> getOfferIds() {
-        return offerIds;
+        return copy(offerIds);
+    }
+
+    /**
+     * Sets the ExchangeYear to read which Groups the provided Offers were
+     * shared with, by default, it is the current Exchange Year. The value must
+     * be defined, i.e. no null and also within the IAESTE Years, i.e. founding
+     * year to the current Exchange Year.<br />
+     *   If attempted to set to an invalid year, then the method will throw an
+     * {@code IllegalArgumentException}.
+     *
+     * @param exchangeYear Exchange YeAr
+     * @throws IllegalArgumentException if the given argument is invalid
+     */
+    public void setExchangeYear(final Integer exchangeYear) throws IllegalArgumentException {
+        ensureNotNullAndWithinLimits("exchangeYear", exchangeYear, IWSConstants.FOUNDING_YEAR, calculateExchangeYear());
+        this.exchangeYear = exchangeYear;
+    }
+
+    public Integer getExchangeYear() {
+        return exchangeYear;
     }
 
     // =========================================================================
@@ -91,9 +116,8 @@ public final class FetchPublishedGroupsRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        for (final String offerId : offerIds) {
-            isNotNull(validation, "Offer Id", offerId);
-        }
+        isNotNull(validation, "OfferIds", offerIds);
+        isNotNull(validation, "exchangeYear", exchangeYear);
 
         return validation;
     }

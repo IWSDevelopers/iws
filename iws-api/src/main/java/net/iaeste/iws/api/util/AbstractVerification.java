@@ -93,10 +93,23 @@ public abstract class AbstractVerification implements Verifiable {
      * Throws an {@code IllegalArgumentException} if the given value is empty.
      *
      * @param field Name of the field
-     * @param value The value for the fieldERROR_TOO_SHORT
+     * @param value The value for the field
      * @throws IllegalArgumentException if the value is empty
      */
     protected static void ensureNotEmpty(final String field, final String value) throws IllegalArgumentException {
+        if (value != null && value.isEmpty()) {
+            throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is empty.
+     *
+     * @param field Name of the field
+     * @param value The value for the field
+     * @throws IllegalArgumentException if the value is empty
+     */
+    protected static void ensureNotEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
         if (value != null && value.isEmpty()) {
             throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
         }
@@ -115,6 +128,19 @@ public abstract class AbstractVerification implements Verifiable {
         ensureNotEmpty(field, value);
     }
 
+    ///**
+    // * Throws an {@code IllegalArgumentException} if the given value is null or
+    // * empty.
+    // *
+    // * @param field Name of the field
+    // * @param value The value of the field
+    // * @throws IllegalArgumentException if the value is null or empty
+    // */
+    //protected static void ensureNotNullOrEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
+    //    ensureNotNull(field, value);
+    //    ensureNotEmpty(field, value);
+    //}
+
     /**
      * Throws an {@code IllegalArgumentException} if the given value is either
      * null or too short.
@@ -130,6 +156,20 @@ public abstract class AbstractVerification implements Verifiable {
         if (value.length() < length) {
             throw new IllegalArgumentException(format(ERROR_TOO_SHORT, field, length));
         }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if he given values are either
+     * null or invalid Ids.
+     *
+     * @param field Name of field
+     * @param value The value of the field
+     * @throws IllegalArgumentException if thte value is null, empty or invalid
+     */
+    protected static void ensureNotNullOrEmptyAndValidIds(final String field, final Collection<String> value) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureNotEmpty(field, value);
+        ensureValidIds(field, value);
     }
 
     /**
@@ -331,6 +371,22 @@ public abstract class AbstractVerification implements Verifiable {
             // type - no need to grant hackers too much information, since all
             // legal requests should not have a problem obtaining legal Id's
             throw new IllegalArgumentException(format(ERROR_INVALID, field));
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given Id is invalid,
+     * i.e. if it not null and the format doesn't match the required format.
+     *
+     * @param field Name of the Id
+     * @param value The value for the Id
+     * @throws IllegalArgumentException if the Id doesn't follow the correct format
+     */
+    protected static void ensureValidIds(final String field, final Collection<String> value) throws IllegalArgumentException {
+        if (value != null) {
+            for (final String id : value) {
+                ensureValidId(field, id);
+            }
         }
     }
 

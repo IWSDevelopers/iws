@@ -38,6 +38,7 @@
         <class>net.iaeste.iws.persistence.views.EmployerView</class>
         <class>net.iaeste.iws.persistence.views.ForeignOfferStatisticsView</class>
         <class>net.iaeste.iws.persistence.views.NotificationJobTasksView</class>
+        <class>net.iaeste.iws.persistence.views.OfferSharedToGroupView</class>
         <class>net.iaeste.iws.persistence.views.OfferView</class>
         <class>net.iaeste.iws.persistence.views.UserPermissionView</class>
         <class>net.iaeste.iws.persistence.views.StudentView</class>

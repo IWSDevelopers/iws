@@ -24,7 +24,6 @@ import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
-import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -45,6 +44,7 @@ import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
+import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -56,15 +56,14 @@ import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
+import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This Service Class contains the read-only parts of the Exchange methods.
@@ -281,36 +280,86 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return new FetchGroupsForSharingResponse(groupList);
     }
 
-    private void verifyOffersOwnership(final Authentication authentication, final Set<String> offerExternalIds) {
-        final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, offerExternalIds);
-        final Set<String> fetchedOffersExtId = new HashSet<>(offers.size());
-        for (final OfferEntity offer : offers) {
-            fetchedOffersExtId.add(offer.getExternalId());
-        }
-
-        for (final String externalId : offerExternalIds) {
-            if (!fetchedOffersExtId.contains(externalId)) {
-                throw new VerificationException("The offer with id '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
-            }
-        }
-    }
-
+    /**
+     * Retrieves a map with a list of Groups an Offer was shared to. The lookup
+     * is made using a View, where the keys are the Parent Group Id (the request
+     * is allowed for both National & Local Committees, where the only shared
+     * information is the parent Id), and with the provided Exchange Year. The
+     * result is then processed and a Map with each OfferId and a list of
+     * matching Groups is then returned in the Response Object.<br />
+     *   Note, that the Database is entrusted with only reading out the relevant
+     * information, i.e. only information about Offers which the user is allowed
+     * to work with.
+     *
+     * @param authentication User Authentication Object
+     * @param request        Request Object
+     * @return Response Object
+     */
     public FetchPublishedGroupsResponse fetchPublishedOfferInfo(final Authentication authentication, final FetchPublishedGroupsRequest request) {
-        //TODO distinguish somehow a request for info about offers shared 'to me' and 'by me', now it's 'by me'
-        final java.util.Date now = new Date().toDate();
-        final FetchPublishedGroupsResponse response;
+        // Extract required information and fetch the ... LONG ... list of results
+        final Long parentId = authentication.getGroup().getParentId();
+        final Integer exchangeYear = request.getExchangeYear();
+        final List<String> externalOfferIds = request.getOfferIds();
+        final List<OfferSharedToGroupView> shared = viewsDao.findSharedToGroup(parentId, exchangeYear, externalOfferIds);
 
-        verifyOffersOwnership(authentication, new HashSet<>(request.getOfferIds()));
-
-        final List<String> externalIds = request.getOfferIds();
-        final Map<String, List<OfferGroup>> result = new HashMap<>(externalIds.size()); //@Kim: is it better to use the size as parameter for Map constructor?
-
-        for (final String externalId : externalIds) {
-            result.put(externalId, convertOfferGroupEntityList(dao.findInfoForUnexpiredSharedOffer(externalId, now)));
+        // Prepare resulting map, and iterate over the list and fill in the details
+        final Map<String, List<Group>> result = prepareResultingMap(externalOfferIds);
+        for (final OfferSharedToGroupView view : shared) {
+            final String offerId = view.getOfferExternalId();
+            final Group group = ViewTransformer.transform(view);
+            result.get(offerId).add(group);
         }
 
-        response = new FetchPublishedGroupsResponse(result);
+        // Done, return result
+        return new FetchPublishedGroupsResponse(result);
 
-        return response;
+        // Note, according to Trac ticket #635, the old method was way slow,
+        // looking at the code, it is understandably, since we're running n + 1
+        // queries, where n is the number of OfferIds.
+        //verifyOffersOwnership(authentication, new HashSet<>(request.getOfferIds()));
+        //
+        //final List<String> externalIds = request.getOfferIds();
+        //final Map<String, List<Group>> result = new HashMap<>(externalIds.size());
+        //
+        //for (final String externalId : externalIds) {
+        //    result.put(externalId, convertOfferGroupEntityList(dao.findInfoForUnexpiredSharedOffer(externalId, now)));
+        //}
+        //
+        //response = new FetchPublishedGroupsResponse(result);
+        //
+        //return response;
     }
+
+    /**
+     * Prerating the Resulting map for the #fetchPublishedOfferInfo method. The
+     * result is a Map with a List of of Groups for each key. The default size
+     * of the lists is set to 80, since this is the assumed number of Groups
+     * that an Offer is shared too.
+     *
+     * @param externalOfferIds List of ExternalOfferIds to find results for
+     * @return Result Map with empty data structure
+     */
+    private Map<String, List<Group>> prepareResultingMap(final List<String> externalOfferIds) {
+        final Map<String, List<Group>> result = new HashMap<>(externalOfferIds.size());
+
+        for (final String externalOfferId : externalOfferIds) {
+            final List<Group> groups = new ArrayList<>(80);
+            result.put(externalOfferId, groups);
+        }
+
+        return result;
+    }
+    //private void verifyOffersOwnership(final Authentication authentication, final Set<String> offerExternalIds) {
+    //    final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, offerExternalIds);
+    //    final Set<String> fetchedOffersExtId = new HashSet<>(offers.size());
+    //    for (final OfferEntity offer : offers) {
+    //        fetchedOffersExtId.add(offer.getExternalId());
+    //    }
+    //
+    //    for (final String externalId : offerExternalIds) {
+    //        if (!fetchedOffersExtId.contains(externalId)) {
+    //            throw new VerificationException("The offer with id '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
+    //        }
+    //    }
+    //}
 }

@@ -28,6 +28,7 @@ import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.StudentView;
 
@@ -141,6 +142,14 @@ public final class ViewTransformer {
         application.setOffer(offer);
 
         return application;
+    }
+
+    public static Group transform(final OfferSharedToGroupView view) {
+        final Country country = convert(view.getCountry());
+        final Group group = convert(view.getGroup());
+        group.setCountry(country);
+
+        return group;
     }
 
     /**

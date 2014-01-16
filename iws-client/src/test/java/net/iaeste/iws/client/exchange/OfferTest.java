@@ -34,7 +34,6 @@ import net.iaeste.iws.api.dtos.OfferTestUtility;
 import net.iaeste.iws.api.dtos.TestData;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
-import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
@@ -348,7 +347,7 @@ public final class OfferTest extends AbstractTest {
 
         //is it shared to two groups?
         assertThat(fetchPublishResponse1.isOk(), is(true));
-        List<OfferGroup> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
 
         allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
@@ -676,7 +675,7 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testFetchPublishedGroupsDeadlineToday() {
-        final Date nominationDeadlineToday = new Date();
+        final Date nominationDeadlineToday = new Date().plusDays(1);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo(PL_YEAR + "-000012");

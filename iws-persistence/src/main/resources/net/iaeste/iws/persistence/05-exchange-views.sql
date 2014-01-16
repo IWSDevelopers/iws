@@ -370,6 +370,53 @@ create view application_view as
 
 
 -- =============================================================================
+-- View to Find Groups, which Offers are shared too
+-- =============================================================================
+create view find_shared_to_groups as
+  select
+    o2g.id                 as id,
+    p.parent_id            as offer_owner,
+    o.id                   as offer_id,
+    o.external_id          as offer_external_id,
+    o.ref_no               as offer_ref_no,
+    o.exchange_year        as exchange_year,
+    o.nomination_deadline  as offer_nomination_deadline,
+    g.id                   as group_id,
+    g.external_id          as group_external_id,
+    g.grouptype_id         as group_grouptype,
+    g.parent_id            as group_parent_id,
+    g.group_name           as group_groupname,
+    g.status               as group_status,
+    g.modified             as group_modified,
+    g.created              as group_created,
+    c.country_code         as country_code,
+    c.country_name         as country_name,
+    c.country_name_full    as country_name_full,
+    c.country_name_native  as country_name_native,
+    c.nationality          as country_nationality,
+    c.citizens             as country_citizens,
+    c.phonecode            as country_phonecode,
+    c.currency             as country_currency,
+    c.languages            as country_languages,
+    c.membership           as country_membership,
+    c.member_since         as country_member_since,
+    c.modified             as country_modified,
+    c.created              as country_created
+  from
+    offer_to_group o2g,
+    offers o,
+    employers e,
+    groups p,
+    groups g,
+    countries c
+  where o.id = o2g.offer_id
+    and e.id = o.employer_id
+    and p.id = e.group_id
+    and g.id = o2g.group_id
+    and c.id = g.country_id;
+
+
+-- =============================================================================
 -- Statistics View for Foreign Offers
 -- =============================================================================
 create view foreign_offer_statistics as

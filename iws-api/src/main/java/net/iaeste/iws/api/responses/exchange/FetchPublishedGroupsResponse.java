@@ -18,7 +18,7 @@ import static net.iaeste.iws.api.util.Copier.copyMapWithList;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractFallible;
 
 import java.util.List;
@@ -32,14 +32,13 @@ import java.util.Map;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
  */
 public final class FetchPublishedGroupsResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private Map<String, List<OfferGroup>> offersGroups = null;
+    private Map<String, List<Group>> offersGroups = null;
 
     // =========================================================================
     // Object Constructors
@@ -57,7 +56,7 @@ public final class FetchPublishedGroupsResponse extends AbstractFallible {
      *
      * @param offersGroups List of Offers found
      */
-    public FetchPublishedGroupsResponse(final Map<String, List<OfferGroup>> offersGroups) {
+    public FetchPublishedGroupsResponse(final Map<String, List<Group>> offersGroups) {
         setOffersGroups(offersGroups);
     }
 
@@ -75,11 +74,11 @@ public final class FetchPublishedGroupsResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setOffersGroups(final Map<String, List<OfferGroup>> offersGroups) {
+    public void setOffersGroups(final Map<String, List<Group>> offersGroups) {
         this.offersGroups = copyMapWithList(offersGroups);
     }
 
-    public Map<String, List<OfferGroup>> getOffersGroups() {
+    public Map<String, List<Group>> getOffersGroups() {
         return copyMapWithList(offersGroups);
     }
 

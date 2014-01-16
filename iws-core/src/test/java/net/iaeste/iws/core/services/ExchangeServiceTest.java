@@ -26,6 +26,7 @@ import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import org.junit.Before;
@@ -46,9 +47,10 @@ public class ExchangeServiceTest {
 
     private final ExchangeDao dao = mock(ExchangeDao.class);
     private final AccessDao accessDao = mock(AccessDao.class);
+    private final StudentDao studentDao = mock(StudentDao.class);
     private final Notifications notifications = mock(Notifications.class);
     private final Settings settings = new Settings();
-    private final ExchangeService client = new ExchangeService(settings, dao, accessDao, notifications);
+    private final ExchangeService client = new ExchangeService(settings, dao, accessDao, studentDao, notifications);
     private final List<Offer> offers = OfferRequestTestUtility.getValidOffersList();
     private Authentication auth = null;
 

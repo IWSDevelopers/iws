@@ -61,6 +61,10 @@ import java.util.Date;
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid " +
                         "  and og.group.id = :gid"),
+        @NamedQuery(name = "offerGroup.findByOfferAndGroupList",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.id = :oid " +
+                        "  and og.group.id in :gids"),
         @NamedQuery(name = "offerGroup.findByExternalOfferId",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.externalId = :eoid"),

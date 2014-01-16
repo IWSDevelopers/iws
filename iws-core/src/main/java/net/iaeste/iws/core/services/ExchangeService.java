@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.core.services;
 
+import static net.iaeste.iws.api.util.Copier.copy;
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
@@ -23,6 +24,7 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
@@ -48,6 +50,7 @@ import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
@@ -59,6 +62,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -75,12 +79,14 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     private final Notifications notifications;
 
     private final AccessDao accessDao;
+    private final StudentDao studentDao;
 
-    public ExchangeService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final Notifications notifications) {
+    public ExchangeService(final Settings settings, final ExchangeDao dao, final AccessDao accessDao, final StudentDao studentDao, final Notifications notifications) {
         super(settings, dao);
 
         this.notifications = notifications;
         this.accessDao = accessDao;
+        this.studentDao = studentDao;
     }
 
     public EmployerResponse processEmployer(final Authentication authentication, final ProcessEmployerRequest request) {
@@ -273,8 +279,9 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     }
 
     /**
-     * Method for proccesing publishing (sharing) of offer. Passing empty list of groups means complete unsharing
-     * of the offer. Otherwise the offer is share to those groups in the list.
+     * Method for processing publishing (sharing) of offer. Passing empty list of groups means complete unsharing
+     * of the offer. Otherwise the offer is unshared for groups that are not present in the request and shared to
+     * such new groups in request for which there is no OfferGroupEntity.
      *
      * @param authentication
      * @param request
@@ -287,12 +294,134 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
 
         for (final OfferEntity offer : offers) {
-            offer.setStatus(OfferState.NEW);
-            dao.persist(authentication, offer);
-            dao.unshareFromAllGroups(offer.getExternalId());
-        }
+            final List<OfferGroupEntity> allOfferGroups = dao.findInfoForSharedOffer(offer.getId());
 
-        publishOffer(authentication, offers, groups, request.getNominationDeadline());
+            final List<OfferGroupEntity> unshareOfferGroups = new ArrayList<>();
+            final List<GroupEntity> keepSharing = new ArrayList<>();
+            final List<OfferGroupEntity> keepOfferGroups = new ArrayList<>();
+
+            for(final OfferGroupEntity offerGroup : allOfferGroups) {
+                if (groups.contains(offerGroup.getGroup())) {
+                    keepSharing.add(offerGroup.getGroup());
+                    keepOfferGroups.add(offerGroup);
+                } else {
+                    unshareOfferGroups.add(offerGroup);
+                }
+            }
+
+            boolean updateOfferState = false;
+
+            final List<GroupEntity> newSharing = copy(groups);
+            newSharing.removeAll(keepSharing);
+
+            if (!newSharing.isEmpty()) {
+                updateOfferState = keepOfferGroups.isEmpty() ? true : updateOfferState;
+                keepOfferGroups.addAll(publishOffer(authentication, offer, newSharing));
+            }
+
+            if (!unshareOfferGroups.isEmpty()) {
+                final OfferState removedState = unshareOfferFromGroups(offer, unshareOfferGroups);
+                if (offer.getStatus().equals(removedState)) {
+                    updateOfferState = true;
+                }
+            }
+
+            if (updateOfferState) {
+                final OfferState oldOfferState = offer.getStatus();
+                OfferState newOfferState = isOtherCurrentOfferGroupStateHigher(oldOfferState, OfferState.SHARED) ? OfferState.SHARED : oldOfferState;
+
+                if (!keepOfferGroups.isEmpty()) {
+                    for (final OfferGroupEntity offerGroup : keepOfferGroups) {
+                        if (!offerGroup.getStatus().equals(oldOfferState) && isOtherCurrentOfferGroupStateHigher(newOfferState, offerGroup.getStatus())) {
+                            newOfferState = offerGroup.getStatus();
+                        }
+                    }
+                } else if (newSharing.isEmpty()) {
+                    newOfferState = OfferState.OPEN;
+                }
+
+
+                if (!oldOfferState.equals(newOfferState)) {
+                    offer.setStatus(newOfferState);
+                }
+            }
+
+            if (request.getNominationDeadline() != null) {
+                offer.setNominationDeadline(request.getNominationDeadline().toDate());
+            }
+            dao.persist(authentication, offer);
+        }
+    }
+
+    /**
+     * Returns highest OfferGroup state from all unshared OfferGroups
+     * @param offer
+     * @param offerGroups
+     * @return OfferState
+     */
+    private OfferState unshareOfferFromGroups(final OfferEntity offer, final List<OfferGroupEntity> offerGroups) {
+        OfferState result = OfferState.NEW; //first possible state for offer
+
+        for(final OfferGroupEntity offerGroup : offerGroups) {
+            if (!offerGroup.getStatus().equals(result) && (offer.getStatus().equals(offerGroup.getStatus()) || isOtherCurrentOfferGroupStateHigher(offer.getStatus(), offerGroup.getStatus()))) {
+                result = offerGroup.getStatus();
+            }
+
+            final Boolean keepOfferGroup = studentDao.otherDomesticApplicationsWithCertainStatus(offerGroup.getId(), EnumSet.allOf(ApplicationStatus.class));
+            if (keepOfferGroup) {
+                offerGroup.setStatus(OfferState.CLOSED);
+                dao.persist(offerGroup);
+            } else {
+                dao.delete(offerGroup);
+            }
+        }
+        return result;
+    }
+
+    private Boolean isOtherCurrentOfferGroupStateHigher(final OfferState oldState, final OfferState otherState) {
+        Boolean result = false;
+        switch (oldState) {
+            case NEW:
+                result = true;
+                break;
+            case SHARED:
+                switch (otherState) {
+                    case NOMINATIONS:
+                    case AT_EMPLOYER:
+                    case ACCEPTED:
+                    case COMPLETED:
+                        result = true;
+                        break;
+                }
+                break;
+            case NOMINATIONS:
+                switch (otherState) {
+                    case AT_EMPLOYER:
+                    case ACCEPTED:
+                    case COMPLETED:
+                        result = true;
+                        break;
+                }
+                break;
+            case AT_EMPLOYER:
+                switch (otherState) {
+                    case ACCEPTED:
+                    case COMPLETED:
+                        result = true;
+                        break;
+                }
+                break;
+            case ACCEPTED:
+                switch (otherState) {
+                    case COMPLETED:
+                        result = true;
+                        break;
+                }
+                break;
+            case COMPLETED:
+                break;
+        }
+        return result;
     }
 
     private void verifyPublishRequest(final Authentication authentication, final PublishOfferRequest request, final List<GroupEntity> groupEntities) {
@@ -356,27 +485,20 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         }
     }
 
-    private void publishOffer(final Authentication authentication, final List<OfferEntity> offers, final List<GroupEntity> groups, final Date nominationDeadline) {
-        for (final OfferEntity offer : offers) {
-            if (!groups.isEmpty()) {
-                offer.setStatus(OfferState.SHARED);
-                if (nominationDeadline != null) {
-                    offer.setNominationDeadline(nominationDeadline.toDate());
-                }
-
-                dao.persist(authentication, offer);
-            }
-            for (final GroupEntity group : groups) {
-                persistPublisingGroup(authentication, offer, group);
-            }
+    private List<OfferGroupEntity> publishOffer(final Authentication authentication, final OfferEntity offer, final List<GroupEntity> groups) {
+        final List<OfferGroupEntity> result = new ArrayList<>(groups.size());
+        for (final GroupEntity group : groups) {
+            result.add(persistPublishingGroup(authentication, offer, group));
         }
+        return result;
     }
 
-    private void persistPublisingGroup(final Authentication authentication, final OfferEntity offer, final GroupEntity group) {
+    private OfferGroupEntity persistPublishingGroup(final Authentication authentication, final OfferEntity offer, final GroupEntity group) {
         final OfferGroupEntity offerGroupEntity = new OfferGroupEntity(offer, group);
         offerGroupEntity.setCreatedBy(authentication.getUser());
 
         dao.persist(authentication, offerGroupEntity);
+        return offerGroupEntity;
     }
 
 }

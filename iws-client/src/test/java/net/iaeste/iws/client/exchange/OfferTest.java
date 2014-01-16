@@ -374,7 +374,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
         sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
         assertThat(sharedOffer, is(not(nullValue())));
-        assertThat("The offer is shared to nobody, the status has to be NEW", sharedOffer.getStatus(), is(OfferState.NEW));
+        assertThat("The offer is shared to nobody, the status has to be OPEN", sharedOffer.getStatus(), is(OfferState.OPEN));
     }
 
     @Test

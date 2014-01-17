@@ -323,7 +323,7 @@ public final class AccountService extends CommonService<AccessDao> {
             // First, we make an Authorization Check. If it fails, an
             // AuthorizationException is thrown
             final UserEntity administrator = authentication.getUser();
-            dao.findGroupByPermission(administrator, authentication.getToken().getGroupId(), Permission.FETCH_USERS);
+            dao.findGroupByPermission(administrator, authentication.getToken().getGroupId(), Permission.FETCH_USER);
 
             // Find the administrators MemberGroup, we need it for the lookup
             final GroupEntity member = dao.findMemberGroup(administrator);

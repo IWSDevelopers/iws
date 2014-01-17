@@ -148,7 +148,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @Interceptors(Profiler.class)
-    @WebMethod
+    //@WebMethod
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
         OfferStatisticsResponse response;
 
@@ -270,6 +270,26 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
+        FetchGroupsForSharingResponse response;
+
+        try {
+            response = controller.fetchGroupsForSharing(token);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
     public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         Fallible response;
 
@@ -339,26 +359,6 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new FetchPublishGroupResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    @WebMethod(exclude = true)
-    public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
-        FetchGroupsForSharingResponse response;
-
-        try {
-            response = controller.fetchGroupsForSharing(token);
-            log.info(generateResponseLog(response, token));
-        } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
-            response = new FetchGroupsForSharingResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

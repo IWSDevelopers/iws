@@ -14,6 +14,13 @@
  */
 package net.iaeste.iws.api.enums;
 
+import net.iaeste.iws.api.Administration;
+import net.iaeste.iws.api.Committees;
+import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.Storage;
+import net.iaeste.iws.api.Students;
+import net.iaeste.iws.api.util.Copier;
+
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -21,85 +28,12 @@ package net.iaeste.iws.api.enums;
  */
 public enum Permission {
 
-    // Note, most of the permissions are currently not mapped. Rather than
-    // adding loads of permissions, we're instead only adding the mapped ones
-
-    // =========================================================================
-    // System Control, i.e. permissions on the System or International Scale
-    // =========================================================================
-
-    /**
-     * Read the list of Countries, including searching using pagination and
-     * sorting.
-     */
-    FETCH_COUNTRIES,
-
-    /**
-     *
-     */
-    PROCESS_COUNTRY,
-
-    /**
-    * Reading a list of all committees, with some flags for pagination,
-    * sorting, limiting, etc.
-    */
-    // UNMAPPED!
-    FETCH_COMMITTEES,
-
-    /**
-    * When creating a new Committee (Co-operating Institution). This
-    * include creating a untested account for the Committee Owner.
-    */
-    // UNMAPPED!
-    CREATE_COMMITTEE,
-
-    /**
-    * When altering information related to the Co-operating Institution. This
-    * includes such things as changing the name of the Committee, suspending
-    * the Committee and Activating Committee, etc.
-    */
-    // UNMAPPED!
-    PROCESS_COMMITTEE,
-
-    /**
-    * When upgrading membership, i.e. Co-Operating Institution -> Associate
-    * Member.
-    */
-    // UNMAPPED!
-    UPGRADE_COMMITTEE,
-
-    /**
-    *
-    */
-    // UNMAPPED!
-    FETCH_REGIONALS_GROUP,
-
-    /**
-    *
-    */
-    // UNMAPPED!
-    CREATE_REGIONAL_GROUP,
-
-    /**
-    *
-    */
-    // UNMAPPED!
-    PROCESS_REGIONAL_GROUP,
-
-    // UNMAPPED
-    PROCESS_INTERNATIONAL_GROUP,
-
     // =========================================================================
     // Administration Permissions
     // =========================================================================
 
-    /**
-     * To view user accounts, you must be allowed to fetch them first. The
-     * viewing is limitted to the account information, and only of the user has
-     * allowed that private information is also revealed (opt-in), then more
-     * details will be fetched.
-     */
-    FETCH_USERS,
+    FETCH_COUNTRIES("Fetch Countries", Administration.class, "fetchCountries"),
+    PROCESS_COUNTRY("Process Country", Administration.class, "processCountry"),
 
     /**
      * The Controlling User Account permission is required, to perform
@@ -108,7 +42,15 @@ public enum Permission {
      *   The permission allow for creating new user accounts and also to change
      * the accounts, i.e. change status and delete them.
      */
-    CONTROL_USER_ACCOUNT,
+    CONTROL_USER_ACCOUNT("createUser", Administration.class, "createUser", "controlUserAccount"),
+
+    /**
+     * To view user accounts, you must be allowed to fetch them first. The
+     * viewing is limitted to the account information, and only of the user has
+     * allowed that private information is also revealed (opt-in), then more
+     * details will be fetched.
+     */
+    FETCH_USER("Fetch User", Administration.class, "fetchUser"),
 
     /**
      * If the name (firstname or lastname) is incorrect, then it requires this
@@ -117,51 +59,98 @@ public enum Permission {
      * rather than create and delete accounts, which will safeguard the user
      * history in the system.
      */
-    CHANGE_ACCOUNT_NAME,
-
-    FETCH_GROUPS,
+    CHANGE_ACCOUNT_NAME("Change Account Name", Administration.class, "changeAccountName"),
 
     /**
-     * Process SubGroups, includes the following: Create, Update, Delete & Assign Ownership
+     * Process SubGroups, includes the following: Create, Update, Delete &
+     * Assign Ownership.
      */
-    PROCESS_GROUP,
-    DELETE_GROUP,
-    PROCESS_COUNTRIES,
-    PROCESS_USER_GROUP_ASSIGNMENT,
-    FETCH_GROUP_MEMBERS,
-    CHANGE_GROUP_OWNER,
+    PROCESS_GROUP("Process Group", Administration.class, "processGroup"),
+    CHANGE_GROUP_OWNER("Change Group Owner", Administration.class, "changeGroupOwner"),
+    DELETE_GROUP("Selete Group", Administration.class, "deleteSubGroup"),
+    PROCESS_USER_GROUP_ASSIGNMENT("Process UserGroup Assignment", Administration.class, "processUserGroupAssignment", "fetchRoles"),
+
+    // =========================================================================
+    // Committee related Permissions
+    // =========================================================================
+
+    PROCESS_COMMITTEE("Process Committee", Committees.class, "createCommittee", "manageCommittee"),
+    UPGRADE_COMMITTEE("Upgrade Committee", Committees.class, "upgradeCommittee"),
+    PROCESS_INTERNATIONAL_GROUP("Process International Group", Committees.class, "manageInternationalGroup"),
+    CREATE_REGIONAL_GROUP("Create Regional Group", Committees.class, "createRegionalGroup"),
+    PROCESS_REGIONAL_GROUP("Process Regional Group", Committees.class, "manageRegionalGroup"),
 
     // =========================================================================
     // File related Permissions
     // =========================================================================
-    PROCESS_FILE,
-    FETCH_FILE,
+
+    PROCESS_FILE("Process File", Storage.class, "processFile"),
+    FETCH_FILE("Fetch File", Storage.class, "fetchFile"),
 
     // =========================================================================
     // Exchange related Permissions
     // =========================================================================
-    FETCH_EMPLOYERS,
-    PROCESS_EMPLOYER,
-    FETCH_OFFERS,
-    PROCESS_OFFER,
-    PROCESS_PUBLISH_OFFER,
-    FETCH_PUBLISH_OFFER,
-    APPLY_FOR_OPEN_OFFER,
-    FETCH_OFFER_STATISTICS,
 
-    // Following are unnapped Exchange Permissions
-    PROCESS_OFFER_TEMPLATES,
-    FETCH_OFFER_TEMPLATES,
-    PROCESS_OFFER_PUBLISH_GROUPS,
-    FETCH_OFFER_PUBLISH_GROUPS,
+    FETCH_OFFER_STATISTICS("Fetch Offer Statistics", Exchange.class, "fetchOfferStatistics"),
+    PROCESS_EMPLOYER("Process Employer", Exchange.class, "processEmployer"),
+    FETCH_EMPLOYERS("Fetch Employers", Exchange.class, "fetchEmployers"),
+    PROCESS_OFFER("Process Offer", Exchange.class, "processOffer", "deleteOffer"),
+    FETCH_OFFERS("Fetch Offers", Exchange.class, "fetchOffers", "fetchGroupsForSharing"),
+    FETCH_GROUPS_FOR_SHARING("Fetch Groups for Sharing", Exchange.class, "fetchGroupsForSharing"),
+    PROCESS_OFFER_TEMPLATES("processOfferTemplate", Exchange.class, "processOfferTemplate"),
+    FETCH_OFFER_TEMPLATES("fetchOfferTemplates", Exchange.class, "fetchOfferTemplates"),
+    PROCESS_PUBLISH_OFFER("Process Publish Offer", Exchange.class, "processPublishOffer", "processPublishGroup"),
+    FETCH_PUBLISH_GROUPS("Fetch Published Groups", Exchange.class, "fetchPublishedGroups", "fetchPublishGroups"),
+    APPLY_FOR_OPEN_OFFER("Apply for Open Offer", Exchange.class),
 
     // =========================================================================
-    // Exchange related Permissions
+    // Student Related Permissions
     // =========================================================================
-    PROCESS_STUDENT,
-    FETCH_STUDENTS,
 
-    // Following are unmapped Student Permissions
-    FETCH_STUDENT_APPLICATION,
-    PROCESS_STUDENT_APPLICATION
+    PROCESS_STUDENT("Process Student", Students.class, "processStudent"),
+    FETCH_STUDENTS("Fetch Students", Students.class, "fetchStudents"),
+    FETCH_STUDENT_APPLICATION("Fetch Student Application", Students.class, "fetchStudentApplications"),
+    PROCESS_STUDENT_APPLICATION("Process Student Application", Students.class, "processStudentApplication", "processApplicationStatus");
+
+    // =========================================================================
+    // Private Constructor & functionality
+    // =========================================================================
+
+    private final String name;
+    private final Class<?> module;
+    private final String[] requests;
+
+    Permission(final String name, final Class<?> module, final String... requests) {
+        this.name = name;
+        this.module = module;
+        this.requests = requests;
+    }
+
+    /**
+     * Returns the name of the permission in a printable / showable way.
+     *
+     * @return Printable version of the Permission
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returns the actual Module, which the current Permission is associated
+     * with.
+     *
+     * @return Module which the Permission is associated with
+     */
+    public Class<?> getModule() {
+        return module;
+    }
+
+    /**
+     * Returns the list of requests, which this Permission is associated with.
+     *
+     * @return List of requests for this Permission
+     */
+    public String[] getRequests() {
+        return Copier.copy(requests);
+    }
 }

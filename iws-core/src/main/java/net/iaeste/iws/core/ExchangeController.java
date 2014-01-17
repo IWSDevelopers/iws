@@ -290,7 +290,7 @@ public final class ExchangeController extends CommonController implements Exchan
         Fallible response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER_PUBLISH_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
             verify(request);
 
             final ExchangeService service = factory.prepareExchangeService();
@@ -317,7 +317,7 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchPublishGroupResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFER_PUBLISH_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_GROUPS);
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
@@ -343,7 +343,7 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchGroupsForSharingResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_GROUPS_FOR_SHARING);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchGroupsForSharing(authentication);
@@ -395,7 +395,7 @@ public final class ExchangeController extends CommonController implements Exchan
         FetchPublishedGroupsResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_OFFER);
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_GROUPS);
             verify(request);
 
             final ExchangeFetchService service = factory.prepareExchangeFetchService();

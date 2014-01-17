@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
 import net.iaeste.iws.persistence.Externable;
@@ -64,6 +65,9 @@ import java.util.Date;
 @Monitored(name = "Employer", level = MonitoringLevel.DETAILED)
 public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implements Externable<EmployerEntity> {
 
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
+
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "employer_sequence")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pk_sequence")
@@ -98,7 +102,7 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     private String business = null;
 
     @Monitored(name="Employer working place", level = MonitoringLevel.DETAILED)
-    @Column(name = "working_place")
+    @Column(name = "working_place", length = 255)
     private String workingPlace = null;
 
     @ManyToOne(targetEntity = AddressEntity.class)

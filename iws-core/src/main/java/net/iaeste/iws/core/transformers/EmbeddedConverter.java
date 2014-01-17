@@ -91,15 +91,18 @@ public final class EmbeddedConverter {
     }
 
     public static Country convert(final EmbeddedCountry embedded) {
-        final Country result = new Country();
+        Country result = null;
 
-        result.setCountryCode(embedded.getCountryCode());
-        result.setCountryName(embedded.getCountryName());
-        result.setNationality(embedded.getNationality());
-        result.setPhonecode(embedded.getPhonecode());
-        result.setCurrency(embedded.getCurrency());
-        result.setMembership(embedded.getMembership());
-        result.setMemberSince(embedded.getMemberSince());
+        if (embedded != null) {
+            result = new Country();
+            result.setCountryCode(embedded.getCountryCode());
+            result.setCountryName(embedded.getCountryName());
+            result.setNationality(embedded.getNationality());
+            result.setPhonecode(embedded.getPhonecode());
+            result.setCurrency(embedded.getCurrency());
+            result.setMembership(embedded.getMembership());
+            result.setMemberSince(embedded.getMemberSince());
+        }
 
         return result;
     }
@@ -207,6 +210,7 @@ public final class EmbeddedConverter {
         result.setDateOfBirth(embedded.getDateOfBirth() != null ? new Date(embedded.getDateOfBirth()) : null);
         result.setUniversity(embedded.getUniversity());
         result.setPlaceOfBirth(embedded.getPlaceOfBirth());
+        result.setGender(embedded.getGender());
         result.setCompletedYearsOfStudy(embedded.getCompletedYearsOfStudy());
         result.setTotalYearsOfStudy(embedded.getTotalYearsOfStudy());
         result.setIsLodgingByIaeste(embedded.isLodgingByIaeste());

@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
@@ -21,6 +22,7 @@ import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.persistence.Externable;
 import net.iaeste.iws.persistence.entities.AbstractUpdateable;
 import net.iaeste.iws.persistence.entities.AddressEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -115,6 +117,14 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 
     @Column(name = "place_of_birth")
     private String placeOfBirth = null;
+
+    @ManyToOne(targetEntity = CountryEntity.class)
+    @JoinColumn(name = "nationality", referencedColumnName = "id")
+    private CountryEntity nationality = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", length = 10)
+    private Gender gender = null;
 
     @Column(name = "completed_years_of_study")
     private Integer completedYearsOfStudy = null;
@@ -321,6 +331,22 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
 
     public String getPlaceOfBirth() {
         return placeOfBirth;
+    }
+
+    public void setNationality(final CountryEntity nationality) {
+        this.nationality = nationality;
+    }
+
+    public CountryEntity getNationality() {
+        return nationality;
+    }
+
+    public void setGender(final Gender gender) {
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 
     public void setCompletedYearsOfStudy(final Integer completedYearsOfStudy) {
@@ -547,6 +573,8 @@ public class ApplicationEntity extends AbstractUpdateable<ApplicationEntity> imp
             dateOfBirth = obj.dateOfBirth;
             university = obj.university;
             placeOfBirth = obj.placeOfBirth;
+            nationality = obj.nationality;
+            gender = obj.gender;
             completedYearsOfStudy = obj.completedYearsOfStudy;
             totalYearsOfStudy = obj.totalYearsOfStudy;
             lodgingByIaeste = obj.lodgingByIaeste;

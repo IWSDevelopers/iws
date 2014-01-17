@@ -243,6 +243,8 @@ create table student_applications (
     date_of_birth             date,
     university                varchar(100),
     place_of_birth            varchar(100),
+    nationality               integer,
+    gender                    varchar(10),
     completed_years_of_study  integer,
     total_years_of_study      integer,
     lodging_by_iaeste         boolean,
@@ -272,6 +274,7 @@ create table student_applications (
     constraint student_application_fk_student_id              foreign key (student_id) references students (id),
     constraint student_application_fk_home_address_id         foreign key (home_address_id) references addresses (id),
     constraint student_application_fk_address_during_terms_id foreign key (address_during_terms_id) references addresses (id),
+    constraint student_application_fk_nationality             foreign key (nationality) references countries (id),
 
     /* Unique Constraints */
     constraint student_application_unique_external_id unique (external_id),

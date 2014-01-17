@@ -133,6 +133,11 @@ public final class ViewTransformer {
         final Address termsAddress = convert(view.getTermsAddress());
         application.setAddressDuringTerms(termsAddress);
 
+        final Country nationality = convert(view.getNationality());
+        if (nationality != null) {
+            application.setNationality(nationality);
+        }
+
         final Student student = convert(view.getStudent());
         final User user = convert(view.getUser());
         student.setUser(user);

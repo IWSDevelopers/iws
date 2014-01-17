@@ -19,7 +19,9 @@ import static net.iaeste.iws.api.util.Copier.copy;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.Address;
+import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.File;
+import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -73,6 +75,8 @@ public final class StudentApplication extends AbstractVerification {
     private Date dateOfBirth = null;
     private String university = null;
     private String placeOfBirth = null;
+    private Country nationality = null;
+    private Gender gender = null;
     private Integer completedYearsOfStudy = null;
     private Integer totalYearsOfStudy = null;
     private Boolean lodgingByIaeste = false;
@@ -156,6 +160,8 @@ public final class StudentApplication extends AbstractVerification {
             dateOfBirth = studentApplication.dateOfBirth;
             university = studentApplication.university;
             placeOfBirth = studentApplication.placeOfBirth;
+            nationality = studentApplication.nationality != null ? new Country(studentApplication.nationality) : null;
+            gender = studentApplication.gender;
             completedYearsOfStudy = studentApplication.completedYearsOfStudy;
             totalYearsOfStudy = studentApplication.totalYearsOfStudy;
             lodgingByIaeste = studentApplication.lodgingByIaeste;
@@ -287,6 +293,31 @@ public final class StudentApplication extends AbstractVerification {
 
     public String getPlaceOfBirth() {
         return placeOfBirth;
+    }
+
+    /**
+     * Sets the Nationality of the student,<br />
+     *   The method will throw an {@code IllegalArgumentException} if the value
+     * is not a verifiable Object.
+     *
+     * @param nationality Student Nationality
+     * @throws IllegalArgumentException if not verifiable
+     */
+    public void setNationality(final Country nationality) throws IllegalArgumentException {
+        ensureVerifiable("nationality", nationality);
+        this.nationality = nationality;
+    }
+
+    public Country getNationality() {
+        return nationality;
+    }
+
+    public void setGender(final Gender gender) {
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 
     public void setCompletedYearsOfStudy(final Integer completedYearsOfStudy) {
@@ -575,6 +606,14 @@ public final class StudentApplication extends AbstractVerification {
             return false;
         }
 
+        if (nationality != null ? !nationality.equals(studentApplication.nationality) : studentApplication.nationality != null) {
+            return false;
+        }
+
+        if (gender != null ? !gender.equals(studentApplication.gender) : studentApplication.gender != null) {
+            return false;
+        }
+
         if (completedYearsOfStudy != null ? !completedYearsOfStudy.equals(studentApplication.completedYearsOfStudy) : studentApplication.completedYearsOfStudy != null) {
             return false;
         }
@@ -684,6 +723,8 @@ public final class StudentApplication extends AbstractVerification {
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (university != null ? university.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (placeOfBirth != null ? placeOfBirth.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nationality != null ? nationality.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (gender != null ? gender.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (completedYearsOfStudy != null ? completedYearsOfStudy.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (totalYearsOfStudy != null ? totalYearsOfStudy.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (lodgingByIaeste ? 1 : 0);
@@ -725,6 +766,8 @@ public final class StudentApplication extends AbstractVerification {
                 ", dateOfBirth='" + dateOfBirth + '\'' +
                 ", university='" + university + '\'' +
                 ", placeOfBirth='" + placeOfBirth + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", gender='" + gender + '\'' +
                 ", completedYearsOfStudy='" + completedYearsOfStudy + '\'' +
                 ", totalYearsOfStudy='" + totalYearsOfStudy + '\'' +
                 ", lodgingByIaeste='" + lodgingByIaeste + '\'' +

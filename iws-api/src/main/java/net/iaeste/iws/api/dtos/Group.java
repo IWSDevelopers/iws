@@ -111,6 +111,20 @@ public final class Group extends AbstractVerification {
     }
 
     /**
+     * Retrieve committee name of this group, if it is of type {@link GroupType#NATIONAL} or {@link GroupType#MEMBER}
+     * Otherwise return the name itself
+     *
+     * @return committee name of this group
+     */
+    public String getCommitteeName() {
+        if (this.groupType == GroupType.NATIONAL || this.groupType == GroupType.MEMBER) {
+            return groupName.replace("Staff", "").replace("Members", "").trim();
+        } else {
+            return groupName;
+        }
+    }
+
+    /**
      * Sets the type of Group. The type is used to determine its internal set
      * of permissions. Hence, the type may not be null.<br />
      *   The method will throw an {@code IllegalArgumentException} if the given

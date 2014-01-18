@@ -61,13 +61,9 @@ public enum GroupType {
     MEMBER("Members"),
 
     /**
-     * A number of Groups exists, which are truly "International", meaning that
-     * members of these groups may come from anywhere and there are no
-     * restrictions to this.<br />
-     *   International Groups serve very specific needs, which means that only
-     * the International Groups can post information in the system of general
-     * nature, i.e. accessible to all.<br />
-     *   The list of pre-defined International Groups include the following:
+     * International Groups, are Groups which share members across Country
+     * Borders. There's two types of International Groups, the first is the
+     * default added, which includes those from the list below:<br />
      * <ul>
      *   <li><b>GS</b><br />
      *   General Secretary, and assigned assistents.
@@ -89,18 +85,21 @@ public enum GroupType {
      *   The IAESTE Ombudsmand.
      *   </li>
      * </ul>
+     *   The second type of International Groups, was the "Regional" Groups,
+     * from IW3. These Groups were not truely international, as their purpose
+     * were handled by a smaller collectin of countries, examples thereof:<br />
+     * <ul>
+     *   <li><b>CEC</b><br />
+     *   Central European Countries
+     *   </li>
+     *   <li><b>Nordic</b><br />
+     *   Membes from the Nordic, i.e. Scandinavian and Baltic Countries
+     *   </li>
+     * </ul>
+     *   Regardless of the purpose, any group which purpose is not bound to a
+     * Single country, is an International Group.
      */
     INTERNATIONAL("International"),
-
-    /**
-     * Regional Groups are for a collection of Countries creating a region of
-     * the world. This can be anything like the Americas, Asia, Nordic
-     * Countries, Central European Countries, EU, etc. These types of groups
-     * have some similarities with International Groups, with some important
-     * difference. Members can only come from the region itself, and Regional
-     * Groups cannot share information for all to review.
-     */
-    REGIONAL("Regional"),
 
     /**
      * All Countries have both a Members group, where all the people who are a

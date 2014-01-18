@@ -60,7 +60,6 @@ public final class GroupUtil {
                 }
                 break;
             case INTERNATIONAL:
-            case REGIONAL:
                 basename = parentGroupName + '.';
                 break;
             case LOCAL:
@@ -101,7 +100,6 @@ public final class GroupUtil {
                 }
                 break;
             case INTERNATIONAL:
-            case REGIONAL:
             case LOCAL:
             case WORKGROUP:
                 listname = fullname.replace(' ', '_');
@@ -140,7 +138,6 @@ public final class GroupUtil {
             case ADMINISTRATION:
             case INTERNATIONAL:
             case PRIVATE:
-            case REGIONAL:
             default:
                 groupName = group.getGroupName();
         }
@@ -179,7 +176,6 @@ public final class GroupUtil {
             case ADMINISTRATION:
             case INTERNATIONAL:
             case PRIVATE:
-            case REGIONAL:
             default:
                 fullGroupName = group.getGroupName();
         }

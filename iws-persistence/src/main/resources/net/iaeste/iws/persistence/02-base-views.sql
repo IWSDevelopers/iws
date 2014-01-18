@@ -118,7 +118,7 @@ create view country_details as
     left join groups g          on c.id = g.country_id
     left join user_to_group u2g on g.id = u2g.group_id
     left join users u           on u.id = u2g.user_id
-  where g.grouptype_id = 5
+  where g.grouptype_id = 4
     and u2g.role_id = 1;
 
 

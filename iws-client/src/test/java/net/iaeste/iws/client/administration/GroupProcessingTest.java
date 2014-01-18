@@ -196,14 +196,6 @@ public final class GroupProcessingTest extends AbstractAdministration {
     }
 
     @Test
-    public void testCreatingRegionalAsSubGroupToMembers() {
-        final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.REGIONAL, "My Group");
-        assertThat(result.isOk(), is(false));
-        assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
-        assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.REGIONAL.getDescription() + "'."));
-    }
-
-    @Test
     public void testCreatingNationalAsSubGroupToMembers() {
         final Fallible result = createGroup(token, GroupType.MEMBER, GroupType.NATIONAL, "My Group");
         assertThat(result.isOk(), is(false));
@@ -249,14 +241,6 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(result.isOk(), is(false));
         assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
         assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.INTERNATIONAL.getDescription() + "'."));
-    }
-
-    @Test
-    public void testCreatingRegionalAsSubGroupToNational() {
-        final Fallible result = createGroup(token, GroupType.NATIONAL, GroupType.REGIONAL, "My Group");
-        assertThat(result.isOk(), is(false));
-        assertThat(result.getError(), is(IWSErrors.NOT_PERMITTED));
-        assertThat(result.getMessage(), is("Not allowed to create a sub-group of type '" + GroupType.REGIONAL.getDescription() + "'."));
     }
 
     @Test

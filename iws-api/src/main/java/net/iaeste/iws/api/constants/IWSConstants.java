@@ -114,7 +114,6 @@ public interface IWSConstants {
      */
     String PRIVATE_EMAIL_ADDRESS = "iaeste.net";
 
-    //TODO review default values
     String BASE_URL = "https://www.iaeste.net/intraweb";
     String IWS_EMAIL_SENDER = "intraweb@iaeste.net";
 

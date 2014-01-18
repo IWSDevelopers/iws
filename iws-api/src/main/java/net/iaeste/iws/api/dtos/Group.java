@@ -33,6 +33,8 @@ public final class Group extends AbstractVerification {
 
     private String groupId = null;
     private String groupName = null;
+    private String fullName = null;
+    private String listName = null;
     private GroupType groupType = null;
     private String description = null;
     private Country country = null;
@@ -57,6 +59,8 @@ public final class Group extends AbstractVerification {
         if (group != null) {
             groupId = group.groupId;
             groupName = group.groupName;
+            fullName = group.fullName;
+            listName = group.listName;
             groupType = group.groupType;
             description = group.description;
             country = group.country;
@@ -111,17 +115,78 @@ public final class Group extends AbstractVerification {
     }
 
     /**
+     * This method is setting the Fullname of the Group. The fullname is
+     * depending on the Group hierarchy. Note, this value is controlled
+     * internally, so any changes will be ignored.
+     *
+     * @param fullName Group Fullname
+     */
+    public void setFullName(final String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    /**
+     * This method is setting the Group mailinglist name, meaning the e-mail
+     * address which is associated with the Group. Note, this value is
+     * controlled internally, so any changes will be ignored.
+     *
+     * @param listName Group Mailinglist name
+     */
+    public void setListName(final String listName) {
+        this.listName = listName;
+    }
+
+    public String getListName() {
+        final String list;
+
+        if ((groupType != null) && (listName != null)) {
+            switch (groupType) {
+                case INTERNATIONAL:
+                case LOCAL:
+                case MEMBER:
+                case WORKGROUP:
+                    list = listName + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS;
+                    break;
+                case NATIONAL:
+                    list = listName + '@' + IWSConstants.PUBLIC_EMAIL_ADDRESS;
+                    break;
+                case ADMINISTRATION:
+                case PRIVATE:
+                case STUDENT:
+                default:
+                    list = null;
+            }
+        } else {
+            list = null;
+        }
+
+        return list;
+    }
+
+    /**
      * Retrieve committee name of this group, if it is of type {@link GroupType#NATIONAL} or {@link GroupType#MEMBER}
      * Otherwise return the name itself
      *
      * @return committee name of this group
      */
     public String getCommitteeName() {
-        if (this.groupType == GroupType.NATIONAL || this.groupType == GroupType.MEMBER) {
-            return groupName.replace("Staff", "").replace("Members", "").trim();
+        final String committeeName;
+
+        if (groupType == GroupType.NATIONAL) {
+            committeeName = groupName.replace("Staff", "").trim();
+        } else if (groupType == GroupType.MEMBER) {
+            committeeName = groupName;
+        } else if (groupType == GroupType.LOCAL) {
+            committeeName = fullName.replace(groupName, "").trim();
         } else {
-            return groupName;
+            committeeName = "";
         }
+
+        return committeeName;
     }
 
     /**
@@ -194,20 +259,26 @@ public final class Group extends AbstractVerification {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(final Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(obj instanceof Group)) {
+        if (!(o instanceof Group)) {
             return false;
         }
 
-        final Group group = (Group) obj;
+        final Group group = (Group) o;
 
         if (groupId != null ? !groupId.equals(group.groupId) : group.groupId != null) {
             return false;
         }
         if (groupName != null ? !groupName.equals(group.groupName) : group.groupName != null) {
+            return false;
+        }
+        if (fullName != null ? !fullName.equals(group.fullName) : group.fullName != null) {
+            return false;
+        }
+        if (listName != null ? !listName.equals(group.listName) : group.listName != null) {
             return false;
         }
         if (groupType != group.groupType) {
@@ -216,7 +287,6 @@ public final class Group extends AbstractVerification {
         if (description != null ? !description.equals(group.description) : group.description != null) {
             return false;
         }
-
         return !(country != null ? !country.equals(group.country) : group.country != null);
     }
 
@@ -229,6 +299,8 @@ public final class Group extends AbstractVerification {
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupId != null ? groupId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupName != null ? groupName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fullName != null ? fullName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (listName != null ? listName.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupType != null ? groupType.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (description != null ? description.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (country != null ? country.hashCode() : 0);
@@ -244,6 +316,8 @@ public final class Group extends AbstractVerification {
         return "Group{" +
                 "groupId='" + groupId + '\'' +
                 ", groupName='" + groupName + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", listName='" + getListName() + '\'' +
                 ", groupType=" + groupType +
                 ", description='" + description + '\'' +
                 ", country=" + country +

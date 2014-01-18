@@ -89,6 +89,8 @@ public final class CommonTransformer {
 
             group.setGroupId(entity.getExternalId());
             group.setGroupName(entity.getGroupName());
+            group.setFullName(entity.getFullName());
+            group.setListName(entity.getListName());
             group.setGroupType(transform(entity.getGroupType()));
             group.setDescription(entity.getDescription());
             group.setCountry(transform(entity.getCountry()));

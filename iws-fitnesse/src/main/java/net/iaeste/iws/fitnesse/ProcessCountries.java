@@ -98,7 +98,7 @@ public final class ProcessCountries extends AbstractFixture<Fallible> {
     public void execute() throws StopTestException {
         createSession();
         request.setCountry(country);
-        setResponse(administration.processCountries(getToken(), request));
+        setResponse(administration.processCountry(getToken(), request));
     }
 
     @Override

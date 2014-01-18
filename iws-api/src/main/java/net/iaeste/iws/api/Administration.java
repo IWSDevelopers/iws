@@ -47,6 +47,33 @@ import javax.ejb.Remote;
 public interface Administration {
 
     /**
+     * The IWS uses an internal listing of Countries, that are based on the UN
+     * list. This method will allow to correct mistakes in existing records or
+     * add new Countries to the list of existing.<br />
+     *   The IWS will not allow that Country records are deleted, nor that the
+     * names of Countries will conflict, i.e. multiple Countries having the same
+     * names.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request data, must contain the Country Record
+     * @return Standard Error Object
+     */
+    Fallible processCountry(AuthenticationToken token, CountryRequest request);
+
+    /**
+     * Retrieves a list of Countries from the internal UN listing of Countries,
+     * together with some limited information about the Staff and National
+     * Secretary for this Country.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Fetch Country Request Object
+     * @return Response Object with the found countries and error information
+     */
+    FetchCountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
+
+    /**
      * Creates a new User Account, with the data from the Request Object. The
      * will have Status {@link net.iaeste.iws.api.enums.UserStatus#NEW}, and an
      * e-mail is send to the user via the provided username. The e-mail will
@@ -72,35 +99,6 @@ public interface Administration {
      * @return Standard Error Object
      */
     CreateUserResponse createUser(AuthenticationToken token, CreateUserRequest request);
-
-    /**
-     * Users cannot access the IWS, until their account has been activated, this
-     * happens via an e-mail that is sent to their e-mail address (username),
-     * with an activation link.<br />
-     *   Once activation link is activated, this method should be invoked, which
-     * will handle the actual activation process. Meaning, that if an account is
-     * found in status "new", and with the given activation code, then it is
-     * being updated to status "active", the code is removed and the updates are
-     * saved.
-     *
-     * @param activationString Code used to activate the Account with
-     * @return Standard Error Object
-     */
-    Fallible activateUser(String activationString);
-
-    /**
-     * Users who have changed their username, can invoke the controlUserAccount
-     * method with a request for a username update. The system will then
-     * generate a notification with a code that is then used to update the
-     * username.<br />
-     *   Only users who have an active account can update their usernames.<br />
-     *   Once updated, the user can then use the new username to log into the
-     * system with.
-     *
-     * @param updateCode Code used for updating the username for the account
-     * @return Standard Error Object
-     */
-    Fallible updateUsername(String updateCode);
 
     /**
      * With this request, it is possible to alter the User Account specified in
@@ -130,6 +128,35 @@ public interface Administration {
      * @return Standard Error Object
      */
     Fallible controlUserAccount(AuthenticationToken token, UserRequest request);
+
+    /**
+     * Users cannot access the IWS, until their account has been activated, this
+     * happens via an e-mail that is sent to their e-mail address (username),
+     * with an activation link.<br />
+     *   Once activation link is activated, this method should be invoked, which
+     * will handle the actual activation process. Meaning, that if an account is
+     * found in status "new", and with the given activation code, then it is
+     * being updated to status "active", the code is removed and the updates are
+     * saved.
+     *
+     * @param activationString Code used to activate the Account with
+     * @return Standard Error Object
+     */
+    Fallible activateUser(String activationString);
+
+    /**
+     * Users who have changed their username, can invoke the controlUserAccount
+     * method with a request for a username update. The system will then
+     * generate a notification with a code that is then used to update the
+     * username.<br />
+     *   Only users who have an active account can update their usernames.<br />
+     *   Once updated, the user can then use the new username to log into the
+     * system with.
+     *
+     * @param updateCode Code used for updating the username for the account
+     * @return Standard Error Object
+     */
+    Fallible updateUsername(String updateCode);
 
     /**
      * The request will allow an update of the name of an Account, i.e. updating
@@ -231,31 +258,4 @@ public interface Administration {
      * @return Standard Error Object
      */
     Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
-
-    /**
-     * The IWS uses an internal listing of Countries, that are based on the UN
-     * list. This method will allow to correct mistakes in existing records or
-     * add new Countries to the list of existing.<br />
-     *   The IWS will not allow that Country records are deleted, nor that the
-     * names of Countries will conflict, i.e. multiple Countries having the same
-     * names.
-     *
-     * @param token   Authentication information about the user invoking the
-     *                request
-     * @param request Request data, must contain the Country Record
-     * @return Standard Error Object
-     */
-    Fallible processCountries(AuthenticationToken token, CountryRequest request);
-
-    /**
-     * Retrieves a list of Countries from the internal UN listing of Countries,
-     * together with some limited information about the Staff and National
-     * Secretary for this Country.
-     *
-     * @param token   Authentication information about the user invoking the
-     *                request
-     * @param request Fetch Country Request Object
-     * @return Response Object with the found countries and error information
-     */
-    FetchCountryResponse fetchCountries(AuthenticationToken token, FetchCountryRequest request);
 }

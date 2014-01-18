@@ -21,11 +21,13 @@ import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
+import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.StudentView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -93,6 +95,20 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         final Query query = entityManager.createNamedQuery("view.findOfferByGroup");
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("year", exchangeYear);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<OfferSharedToGroupView> findSharedToGroup(final Long parentId, final Integer exchangeYear, final List<String> externalOfferIds) {
+        final Query query = entityManager.createNamedQuery("view.findSharedToForOwnerYearAndOffers");
+        query.setParameter("pid", parentId);
+        query.setParameter("year", exchangeYear);
+        query.setParameter("date", new Date());
+        query.setParameter("externalOfferIds", externalOfferIds);
 
         return query.getResultList();
     }

@@ -54,6 +54,59 @@ import org.slf4j.LoggerFactory;
  */
 public final class AdministrationController extends CommonController implements Administration {
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchCountries()"));
+        }
+        FetchCountryResponse response;
+
+        try {
+            verifyAccess(token, Permission.FETCH_COUNTRIES);
+            verify(request);
+
+            final CountryService service = factory.prepareCountryService();
+            response = service.fetchCountries(request);
+        } catch (IWSException e) {
+            response = new FetchCountryResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchCountries()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processCountry()"));
+        }
+        Fallible response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COUNTRY);
+            verify(request);
+
+            final CountryService service = factory.prepareCountryService();
+            service.processCountries(authentication, request);
+            response = new FetchCountryResponse();
+        } catch (IWSException e) {
+            response = new FetchCountryResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processCountry()"));
+        }
+        return response;
+    }
+
     private static final Logger log = LoggerFactory.getLogger(AdministrationController.class);
 
     /**
@@ -396,59 +449,6 @@ public final class AdministrationController extends CommonController implements 
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished processUserGroupAssignment()"));
-        }
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting processCountries()"));
-        }
-        Fallible response;
-
-        try {
-            final Authentication authentication = verifyAccess(token, Permission.PROCESS_COUNTRIES);
-            verify(request);
-
-            final CountryService service = factory.prepareCountryService();
-            service.processCountries(authentication, request);
-            response = new FetchCountryResponse();
-        } catch (IWSException e) {
-            response = new FetchCountryResponse(e.getError(), e.getMessage());
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished processCountries()"));
-        }
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchCountries()"));
-        }
-        FetchCountryResponse response;
-
-        try {
-            verifyAccess(token, Permission.FETCH_COUNTRIES);
-            verify(request);
-
-            final CountryService service = factory.prepareCountryService();
-            response = service.fetchCountries(request);
-        } catch (IWSException e) {
-            response = new FetchCountryResponse(e.getError(), e.getMessage());
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchCountries()"));
         }
         return response;
     }

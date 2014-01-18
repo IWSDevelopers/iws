@@ -147,6 +147,15 @@ public interface ExchangeDao extends BasicDao {
     OfferGroupEntity findInfoForSharedOfferAndGroup(Long offerId, Long groupId);
 
     /**
+     * Finds information about sharing of the offer for specified list of groups
+     *
+     * @param  offerId id of the offer to get sharing info for
+     * @param  groupIds list of id of the groups to get sharing info for
+     * @return list of {@link OfferGroupEntity} which are shared
+     */
+    List<OfferGroupEntity> findInfoForSharedOfferAndGroup(Long offerId, List<Long> groupIds);
+
+    /**
      * Finds information about sharing of the offer
      *
      * @param  externalOfferId reference number of the offer to get sharing info for

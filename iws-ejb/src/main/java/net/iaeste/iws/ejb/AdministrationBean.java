@@ -17,7 +17,6 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AccountNameRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
@@ -364,11 +363,11 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
+    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
         Fallible response;
 
         try {
-            response = controller.processCountries(token, request);
+            response = controller.processCountry(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));

@@ -251,6 +251,7 @@ create view application_view as
     sa.date_of_birth             as application_date_of_birth,
     sa.university                as application_university,
     sa.place_of_birth            as application_place_of_birth,
+    sa.gender                    as application_gender,
     sa.completed_years_of_study  as application_completed_years_of_study,
     sa.total_years_of_study      as application_total_years_of_study,
     sa.lodging_by_iaeste         as application_lodging_by_iaeste,
@@ -287,6 +288,15 @@ create view application_view as
     a_t.state                    as address2_state,
     a_t.modified                 as address2_modified,
     a_t.created                  as address2_created,
+    c.country_code               as country_code,
+    c.country_name               as country_name,
+    c.nationality                as country_nationality,
+    c.phonecode                  as country_phonecode,
+    c.currency                   as country_currency,
+    c.membership                 as country_membership,
+    c.member_since               as country_member_since,
+    c.modified                   as country_modified,
+    c.created                    as country_created,
     s.id                         as student_id,
     s.study_level                as student_study_level,
     s.study_fields               as student_study_fields,
@@ -356,7 +366,8 @@ create view application_view as
   from
     student_applications sa
     left join addresses a_h on sa.home_address_id = a_h.id
-    left join addresses a_t on sa.address_during_terms_id = a_t.id,
+    left join addresses a_t on sa.address_during_terms_id = a_t.id
+    left join countries c   on sa.nationality = c.id,
     students s,
     users u,
     offer_to_group og,
@@ -367,6 +378,53 @@ create view application_view as
     and sa.offer_group_id = og.id
     and e.id = o.employer_id
     and og.offer_id = o.id;
+
+
+-- =============================================================================
+-- View to Find Groups, which Offers are shared too
+-- =============================================================================
+create view find_shared_to_groups as
+  select
+    o2g.id                 as id,
+    p.parent_id            as offer_owner,
+    o.id                   as offer_id,
+    o.external_id          as offer_external_id,
+    o.ref_no               as offer_ref_no,
+    o.exchange_year        as exchange_year,
+    o.nomination_deadline  as offer_nomination_deadline,
+    g.id                   as group_id,
+    g.external_id          as group_external_id,
+    g.grouptype_id         as group_grouptype,
+    g.parent_id            as group_parent_id,
+    g.group_name           as group_groupname,
+    g.status               as group_status,
+    g.modified             as group_modified,
+    g.created              as group_created,
+    c.country_code         as country_code,
+    c.country_name         as country_name,
+    c.country_name_full    as country_name_full,
+    c.country_name_native  as country_name_native,
+    c.nationality          as country_nationality,
+    c.citizens             as country_citizens,
+    c.phonecode            as country_phonecode,
+    c.currency             as country_currency,
+    c.languages            as country_languages,
+    c.membership           as country_membership,
+    c.member_since         as country_member_since,
+    c.modified             as country_modified,
+    c.created              as country_created
+  from
+    offer_to_group o2g,
+    offers o,
+    employers e,
+    groups p,
+    groups g,
+    countries c
+  where o.id = o2g.offer_id
+    and e.id = o.employer_id
+    and p.id = e.group_id
+    and g.id = o2g.group_id
+    and c.id = g.country_id;
 
 
 -- =============================================================================

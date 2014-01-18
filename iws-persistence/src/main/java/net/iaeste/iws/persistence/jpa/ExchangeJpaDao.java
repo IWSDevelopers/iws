@@ -303,6 +303,18 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
+    public List<OfferGroupEntity> findInfoForSharedOfferAndGroup(final Long offerId, final List<Long> groupIds) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findByOfferAndGroupList");
+        query.setParameter("oid", offerId);
+        query.setParameter("gids", groupIds);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<OfferGroupEntity> findInfoForSharedOffer(final String externalOfferId) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByExternalOfferId");
         query.setParameter("eoid", externalOfferId);

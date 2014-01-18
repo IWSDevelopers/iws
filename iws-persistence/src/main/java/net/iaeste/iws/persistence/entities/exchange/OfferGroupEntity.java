@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.common.monitoring.Monitored;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
@@ -61,6 +62,10 @@ import java.util.Date;
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid " +
                         "  and og.group.id = :gid"),
+        @NamedQuery(name = "offerGroup.findByOfferAndGroupList",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.id = :oid " +
+                        "  and og.group.id in :gids"),
         @NamedQuery(name = "offerGroup.findByExternalOfferId",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.externalId = :eoid"),
@@ -89,6 +94,9 @@ import java.util.Date;
 @Table(name = "offer_to_group")
 @Monitored(name = "Offer2Group", level = MonitoringLevel.DETAILED)
 public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> implements Externable<OfferGroupEntity> {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_to_group_sequence")

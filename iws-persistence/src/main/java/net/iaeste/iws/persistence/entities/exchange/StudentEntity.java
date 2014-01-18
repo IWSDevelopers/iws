@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
@@ -58,6 +59,9 @@ import java.util.Date;
 @Table(name = "students")
 @Monitored(name = "Student", level = MonitoringLevel.DETAILED)
 public class StudentEntity implements Updateable<StudentEntity> {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "student_sequence")

@@ -128,6 +128,20 @@ public interface Exchange {
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
 
     /**
+     * Retrieves a list of all groups to which an offer can be shared to. The group types of the groups are:
+     * <ul>
+     *     <li>{@link net.iaeste.iws.api.enums.GroupType#NATIONAL}</li>
+     * </ul>
+     *
+     * This is mainly needed in the front-end to display a list of groups (members) to which a offer can be shared to.
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @return Response Object with the current national groups ordered by name
+     *                  and error information
+     */
+    FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token);
+
+    /**
      * Not implemented
      *
      * @param token   User Authentication Token
@@ -144,21 +158,6 @@ public interface Exchange {
      * @return Response Object
      */
     FetchOfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
-
-    /**
-     * Retrieves a list of all groups to which an offer can be shared to. The group types of the groups are:
-     * <ul>
-     *     <li>{@link net.iaeste.iws.api.enums.GroupType#NATIONAL}</li>
-     *     <li>{@link net.iaeste.iws.api.enums.GroupType#SAR}</li>
-     * </ul>
-     *
-     * This is mainly needed in the front-end to display a list of groups (members) to which a offer can be shared to.
-     *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @return Response Object with the current national groups ordered by name
-     *                  and error information
-     */
-    FetchGroupsForSharingResponse fetchGroupsForSharing(AuthenticationToken token);
 
     /**
      * Not implemented
@@ -179,6 +178,17 @@ public interface Exchange {
     FetchPublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
     /**
+     * Retrieves the list of groups to which offers are shared to. A list of offers is
+     * submitted and for each offer the groups are returned, to which the offer is shared to.
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer#offerId}s
+     * @return contains a map for each requested offer and the list of {@link net.iaeste.iws.api.dtos.exchange.OfferGroup}
+     *  to which the offer is shared to
+     */
+    FetchPublishedGroupsResponse fetchPublishedGroups(AuthenticationToken token, FetchPublishedGroupsRequest request);
+
+    /**
      * Shares a list of offers to a list of members and defines the nomination deadline for
      * the specified offers. From this very moment he offers are visible to the list of
      * members until the {@code PublishOfferRequest#nominationDeadline} is reached. The
@@ -193,15 +203,4 @@ public interface Exchange {
      * @return contains no data
      */
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
-
-    /**
-     * Retrieves the list of groups to which offers are shared to. A list of offers is
-     * submitted and for each offer the groups are returned, to which the offer is shared to.
-     *
-     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
-     * @param request contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer#offerId}s
-     * @return contains a map for each requested offer and the list of {@link net.iaeste.iws.api.dtos.exchange.OfferGroup}
-     *  to which the offer is shared to
-     */
-    FetchPublishedGroupsResponse fetchPublishedGroups(AuthenticationToken token, FetchPublishedGroupsRequest request);
 }

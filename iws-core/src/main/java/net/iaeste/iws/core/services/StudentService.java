@@ -44,6 +44,7 @@ import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.AttachmentEntity;
+import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -152,18 +153,24 @@ public final class StudentService extends CommonService<StudentDao> {
             throw new VerificationException("The offer with id '" + offerId + "' is not shared to the group '" + authentication.getGroup().getGroupName() + "'.");
         }
 
-        final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
-        final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
-
         if (EnumSet.of(OfferState.CLOSED, OfferState.COMPLETED, OfferState.NEW).contains(sharedOfferGroup.getOffer().getStatus())) {
             throw new VerificationException("It is not possible to create/update application for the offer with status '" + sharedOfferGroup.getOffer().getStatus() + "'.");
         }
+
+        final GroupEntity memberGroup = accessDao.findMemberGroup(authentication.getUser());
+        final StudentEntity student = dao.findStudentByExternal(memberGroup.getId(), application.getStudent().getUser().getUserId());
+        CountryEntity nationality = null;
+        if (application.getNationality() != null) {
+            nationality = dao.findCountry(application.getNationality().getCountryCode());
+        }
+
 
         if (applicationEntity == null) {
             applicationEntity = transform(application);
             applicationEntity.setOfferGroup(sharedOfferGroup);
             processAddress(authentication, applicationEntity.getHomeAddress());
             processAddress(authentication, applicationEntity.getAddressDuringTerms());
+            applicationEntity.setNationality(nationality);
             //dao.persist(authentication, student, applicationEntity.getStudent());
             applicationEntity.setStudent(student);
             dao.persist(authentication, applicationEntity);
@@ -175,6 +182,7 @@ public final class StudentService extends CommonService<StudentDao> {
             }
         } else {
             final ApplicationEntity updated = transform(application);
+            updated.setNationality(nationality);
 
             //using OfferGroup from found entity since this field can't be updated
             updated.setOfferGroup(applicationEntity.getOfferGroup());
@@ -347,6 +355,7 @@ public final class StudentService extends CommonService<StudentDao> {
         application.setStatus(ApplicationStatus.APPLIED);
         ApplicationEntity updated = transform(application);
         updated.setOfferGroup(applicationEntity.getOfferGroup());
+        updated.setNationality(applicationEntity.getNationality());
         dao.persist(authentication, applicationEntity, updated);
     }
 
@@ -354,6 +363,7 @@ public final class StudentService extends CommonService<StudentDao> {
         application.setStatus(ApplicationStatus.FORWARDED_TO_EMPLOYER);
         ApplicationEntity updated = transform(application);
         updated.setOfferGroup(applicationEntity.getOfferGroup());
+        updated.setNationality(applicationEntity.getNationality());
         dao.persist(authentication, applicationEntity, updated);
 
         //update status for OfferGroup
@@ -366,6 +376,7 @@ public final class StudentService extends CommonService<StudentDao> {
         application.setStatus(ApplicationStatus.ACCEPTED);
         ApplicationEntity updated = transform(application);
         updated.setOfferGroup(applicationEntity.getOfferGroup());
+        updated.setNationality(applicationEntity.getNationality());
         dao.persist(authentication, applicationEntity, updated);
 
         //update status for OfferGroup
@@ -380,6 +391,7 @@ public final class StudentService extends CommonService<StudentDao> {
         ApplicationEntity updated = transform(application);
         //using OfferGroup from found entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
+        updated.setNationality(storedApplication.getNationality());
         dao.persist(authentication, storedApplication, updated);
 
         //update status for OfferGroup
@@ -403,7 +415,7 @@ public final class StudentService extends CommonService<StudentDao> {
         ApplicationEntity updated = transform(application);
         //using OfferGroup from stored entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
-
+        updated.setNationality(storedApplication.getNationality());
         dao.persist(authentication, storedApplication, updated);
 
         final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());
@@ -427,7 +439,7 @@ public final class StudentService extends CommonService<StudentDao> {
         ApplicationEntity updated = transform(application);
         //using OfferGroup from stored entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
-
+        updated.setNationality(storedApplication.getNationality());
         dao.persist(authentication, storedApplication, updated);
 
         final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());
@@ -441,7 +453,7 @@ public final class StudentService extends CommonService<StudentDao> {
         ApplicationEntity updated = transform(application);
         //using OfferGroup from stored entity since this field can't be updated
         updated.setOfferGroup(storedApplication.getOfferGroup());
-
+        updated.setNationality(storedApplication.getNationality());
         dao.persist(authentication, storedApplication, updated);
 
         final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());

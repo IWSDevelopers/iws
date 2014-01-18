@@ -189,8 +189,8 @@ public final class AdministrationSpringClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
-        return client.processCountries(token, request);
+    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
+        return client.processCountry(token, request);
     }
 
     /**

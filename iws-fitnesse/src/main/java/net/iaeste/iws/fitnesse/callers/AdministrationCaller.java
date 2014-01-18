@@ -204,9 +204,9 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processCountries(final AuthenticationToken token, final CountryRequest request) {
+    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
         try {
-            return caller.processCountries(token, request);
+            return caller.processCountry(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

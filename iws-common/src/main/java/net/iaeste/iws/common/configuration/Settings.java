@@ -68,6 +68,7 @@ public final class Settings {
                 sendingEmailAddress = properties.getProperty("sendingEmailAddress");
                 publicMailAddress = properties.getProperty("publicMailAddress");
                 privateMailAddress = properties.getProperty("privateMailAddress");
+                rootFilePath = properties.getProperty("rootFilePath");
 
                 lookupDone = true;
             } catch (NamingException e) {

@@ -61,6 +61,9 @@ public class ApplicationView extends AbstractView<ApplicationView> {
     private EmbeddedAddress2 termsAddress = null;
 
     @Embedded
+    private EmbeddedCountry nationality = null;
+
+    @Embedded
     private EmbeddedOffer offer = null;
 
     @Embedded
@@ -119,6 +122,14 @@ public class ApplicationView extends AbstractView<ApplicationView> {
 
     public EmbeddedAddress2 getTermsAddress() {
         return termsAddress;
+    }
+
+    public void setNationality(final EmbeddedCountry nationality) {
+        this.nationality = nationality;
+    }
+
+    public EmbeddedCountry getNationality() {
+        return nationality;
     }
 
     public void setOffer(final EmbeddedOffer offer) {

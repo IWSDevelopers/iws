@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.views;
 
+import net.iaeste.iws.api.enums.Gender;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
@@ -55,6 +56,10 @@ public class EmbeddedApplication {
 
     @Column(name = "application_place_of_birth", insertable = false, updatable = false)
     private String placeOfBirth = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "application_gender", insertable = false, updatable = false)
+    private Gender gender = null;
 
     @Column(name = "application_completed_years_of_study", insertable = false, updatable = false)
     private Integer completedYearsOfStudy = null;
@@ -191,6 +196,14 @@ public class EmbeddedApplication {
 
     public String getPlaceOfBirth() {
         return placeOfBirth;
+    }
+
+    public void setGender(final Gender gender) {
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 
     public void setCompletedYearsOfStudy(final Integer completedYearsOfStudy) {

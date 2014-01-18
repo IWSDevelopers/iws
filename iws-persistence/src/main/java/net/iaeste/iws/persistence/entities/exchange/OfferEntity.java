@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.entities.exchange;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
@@ -55,12 +56,13 @@ import java.util.Map;
  * @noinspection OverlyComplexClass, OverlyLongMethod
  */
 @NamedQueries({
-        @NamedQuery(name = "offer.findAllForGroup",
-                query = "select o from OfferEntity o " +
-                        "where o.employer.group.id = :gid"),
+        // Query is used by the Migration Tool
         @NamedQuery(name = "offer.findByOldOfferId",
                 query = "select o from OfferEntity o " +
                         "where o.oldOfferId = :ooid"),
+        @NamedQuery(name = "offer.findAllForGroup",
+                query = "select o from OfferEntity o " +
+                        "where o.employer.group.id = :gid"),
         @NamedQuery(name = "offer.findByGroupAndExternalIdAndRefNo",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid" +
@@ -98,6 +100,9 @@ import java.util.Map;
 @Table(name = "offers")
 @Monitored(name = "Offer", level = MonitoringLevel.DETAILED)
 public class OfferEntity implements Externable<OfferEntity>, Notifiable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "offer_sequence")

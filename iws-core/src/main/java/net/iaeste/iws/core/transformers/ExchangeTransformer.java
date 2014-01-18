@@ -296,6 +296,8 @@ public final class ExchangeTransformer {
             result.setDateOfBirth(CommonTransformer.convert(entity.getDateOfBirth()));
             result.setUniversity(entity.getUniversity());
             result.setPlaceOfBirth(entity.getPlaceOfBirth());
+            result.setNationality(CommonTransformer.transform(entity.getNationality()));
+            result.setGender(entity.getGender());
             result.setCompletedYearsOfStudy(entity.getCompletedYearsOfStudy());
             result.setTotalYearsOfStudy(entity.getTotalYearsOfStudy());
             result.setIsLodgingByIaeste(entity.getIsLodgingByIaeste());
@@ -340,6 +342,8 @@ public final class ExchangeTransformer {
             result.setDateOfBirth(CommonTransformer.convert(application.getDateOfBirth()));
             result.setUniversity(application.getUniversity());
             result.setPlaceOfBirth(application.getPlaceOfBirth());
+            result.setNationality(CommonTransformer.transform(application.getNationality()));
+            result.setGender(application.getGender());
             result.setCompletedYearsOfStudy(application.getCompletedYearsOfStudy());
             result.setTotalYearsOfStudy(application.getTotalYearsOfStudy());
             result.setIsLodgingByIaeste(application.getIsLodgingByIaeste());

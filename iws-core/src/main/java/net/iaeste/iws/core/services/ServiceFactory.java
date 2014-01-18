@@ -50,6 +50,7 @@ public final class ServiceFactory {
     private final Notifications notifications;
     private final CountryDao countryDao;
     private final AccessDao accessDao;
+    private final StudentDao studentDao;
     private final Settings settings;
 
     public ServiceFactory(final EntityManager entityManager, final Notifications notifications, final Settings settings) {
@@ -59,6 +60,7 @@ public final class ServiceFactory {
 
         accessDao = new AccessJpaDao(entityManager);
         countryDao = new CountryJpaDao(entityManager);
+        studentDao = new StudentJpaDao(entityManager);
     }
 
     // =========================================================================
@@ -92,7 +94,7 @@ public final class ServiceFactory {
     public ExchangeService prepareExchangeService() {
         final ExchangeDao dao = new ExchangeJpaDao(entityManager);
 
-        return new ExchangeService(settings, dao, accessDao, notifications);
+        return new ExchangeService(settings, dao, accessDao, studentDao, notifications);
     }
 
     public ExchangeFetchService prepareExchangeFetchService() {

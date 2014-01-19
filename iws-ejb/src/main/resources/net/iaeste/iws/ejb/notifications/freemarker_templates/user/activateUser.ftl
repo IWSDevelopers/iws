@@ -1,4 +1,4 @@
-*Congratulations! An user account for the IAESTE IntraWeb was created for you!*
+*Congratulations! A user account for the IAESTE IntraWeb was created for you!*
 
 NOTE: If you do not want an IAESTE IntraWeb account, simply ignore this email.
 

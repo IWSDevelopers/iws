@@ -300,13 +300,22 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             final List<OfferGroupEntity> unshareOfferGroups = new ArrayList<>();
             final List<GroupEntity> keepSharing = new ArrayList<>();
             final List<OfferGroupEntity> keepOfferGroups = new ArrayList<>();
+            final List<GroupEntity> resharing = new ArrayList<>();
+            final List<OfferGroupEntity> reshareGroups = new ArrayList<>();
 
             for(final OfferGroupEntity offerGroup : allOfferGroups) {
                 if (groups.contains(offerGroup.getGroup())) {
-                    keepSharing.add(offerGroup.getGroup());
-                    keepOfferGroups.add(offerGroup);
+                    if (OfferState.CLOSED.equals(offerGroup.getStatus())) {
+                        resharing.add(offerGroup.getGroup());
+                        reshareGroups.add(offerGroup);
+                    } else {
+                        keepSharing.add(offerGroup.getGroup());
+                        keepOfferGroups.add(offerGroup);
+                    }
                 } else {
-                    unshareOfferGroups.add(offerGroup);
+                    if (!OfferState.CLOSED.equals(offerGroup.getStatus())) {
+                        unshareOfferGroups.add(offerGroup);
+                    }
                 }
             }
 
@@ -314,10 +323,16 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             final List<GroupEntity> newSharing = new ArrayList<>(groups);
             newSharing.removeAll(keepSharing);
+            newSharing.removeAll(resharing);
 
             if (!newSharing.isEmpty()) {
                 updateOfferState = keepOfferGroups.isEmpty() ? true : updateOfferState;
                 keepOfferGroups.addAll(publishOffer(authentication, offer, newSharing));
+            }
+
+            if (!resharing.isEmpty()) {
+                updateOfferState = keepOfferGroups.isEmpty() ? true : updateOfferState;
+                keepOfferGroups.addAll(republishOffer(authentication, offer, reshareGroups));
             }
 
             if (!unshareOfferGroups.isEmpty()) {
@@ -384,6 +399,17 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         switch (oldState) {
             case NEW:
                 result = true;
+                break;
+            case OPEN:
+                switch (otherState) {
+                    case SHARED:
+                    case NOMINATIONS:
+                    case AT_EMPLOYER:
+                    case ACCEPTED:
+                    case COMPLETED:
+                        result = true;
+                        break;
+                }
                 break;
             case SHARED:
                 switch (otherState) {
@@ -490,6 +516,17 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final List<OfferGroupEntity> result = new ArrayList<>(groups.size());
         for (final GroupEntity group : groups) {
             result.add(persistPublishingGroup(authentication, offer, group));
+        }
+        return result;
+    }
+
+    private List<OfferGroupEntity> republishOffer(final Authentication authentication, final OfferEntity offer, final List<OfferGroupEntity> offerGroups) {
+        final List<OfferGroupEntity> result = new ArrayList<>(offerGroups.size());
+        for (final OfferGroupEntity offerGroup : offerGroups) {
+            //TODO reset application states?
+            offerGroup.setStatus(OfferState.SHARED);
+            dao.persist(authentication, offerGroup);
+            result.add(offerGroup);
         }
         return result;
     }

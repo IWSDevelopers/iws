@@ -173,7 +173,6 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    @Ignore("2014-01-17 Pavel - test fails due to wrong data gets from TestData, see #646")
     public void testFetchStudentApplications() {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001003", "Employer", "PL");

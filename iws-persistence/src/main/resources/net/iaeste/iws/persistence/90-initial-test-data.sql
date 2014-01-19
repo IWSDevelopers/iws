@@ -239,7 +239,7 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('2d4
 -- Completed generating test data for Gambia
 
 -- Generating Test data for Germany
-insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('DE', 'Germany', 'Germany', 'EUR', 1960, 'FULL_MEMBER');
+insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('DE', 'Germany', 'Germany', 'EUR', 1950, 'FULL_MEMBER');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('8771e306-0e5e-4eb8-bad1-7f7837b97762', 2, null, 26, 'Germany');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('9d10455b-834a-4570-89ca-c7ce4c68eb3a', 4, 60, 26, 'Germany');
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('c5f036b7-67a5-4ef8-a778-be1e3f51bca5', 'ACTIVE', 'germany@iaeste.de', 'NS.Germany@iaeste.org', '3131ac34e8830ac4efe3603c7b060f211e3b7dd518ea8bdadc72a3f07553e68a', '1daf2a2f-1067-46d6-a4f0-78c0d5dcbe15', 'NS', 'Germany');

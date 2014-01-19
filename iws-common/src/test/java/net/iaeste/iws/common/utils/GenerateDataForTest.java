@@ -105,7 +105,7 @@ public final class GenerateDataForTest {
                 { "FI", "Finland",              Currency.EUR, 1960, Membership.FULL_MEMBER },
                 { "FR", "France",               Currency.EUR, 1948, Membership.FULL_MEMBER },
                 { "GM", "Gambia",               Currency.GMD, 2009, Membership.COOPERATING_INSTITUTION },
-                { "DE", "Germany",              Currency.EUR, 1960, Membership.FULL_MEMBER },
+                { "DE", "Germany",              Currency.EUR, 1950, Membership.FULL_MEMBER },
                 { "GH", "Ghana",                Currency.GHS, 1970, Membership.FULL_MEMBER },
                 { "GR", "Greece",               Currency.EUR, 1958, Membership.FULL_MEMBER },
                 { "HK", "HongKong",             Currency.HKD, 1997, Membership.ASSOCIATE_MEMBER },

@@ -42,12 +42,17 @@ import java.util.Date;
  * @since   1.7
  */
 @NamedQueries({
+        // IW4 does not implement the request/answer functionality of iw3, thus following rules for migration apply:
+        // an offer is shared, if the an Offer2Group entity exists AND the nomination deadline is not passed
+        // Info: If an offer gets unshared in IW4, the offer_to_group entry will be removed.
         @NamedQuery(name = "offergroup.findAll",
-                query = "select og from IW3Offer2GroupEntity og " +
+                query = "select og from IW3Offer2GroupEntity og, IW3OffersEntity o " +
+                        "where o.deadline >= '2014-01-26'" +
                         "order by created asc"),
         @NamedQuery(name = "offergroup.findRecent",
                 query = "select og from IW3Offer2GroupEntity og, IW3OffersEntity o " +
                         "where o.offerid = og.id.offerId" +
+                        "  and o.deadline >= '2014-01-26'" +
                         "  and (o.exchangeyear >= 2014" +
                         "   or o.created >= '2013-09-01') " +
                         "order by og.created asc")

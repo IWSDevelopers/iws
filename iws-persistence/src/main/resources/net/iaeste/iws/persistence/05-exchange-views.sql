@@ -386,6 +386,7 @@ create view application_view as
 create view find_shared_to_groups as
   select
     o2g.id                 as id,
+    o2g.status             as status,
     p.parent_id            as offer_owner,
     o.id                   as offer_id,
     o.external_id          as offer_external_id,

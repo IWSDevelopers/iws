@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.views;
 
+import net.iaeste.iws.api.enums.exchange.OfferState;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -37,7 +39,8 @@ import java.util.Date;
                         "where s.offerOwner = :pid" +
                         "  and s.exchangeYear = :year" +
                         "  and nominationDeadline >= :date" +
-                        "  and offerExternalId in (:externalOfferIds)")
+                        "  and offerExternalId in (:externalOfferIds)" +
+                        "  and s.status <> 'CLOSED'")
 })
 @Table(name = "find_shared_to_groups")
 public class OfferSharedToGroupView {
@@ -45,6 +48,9 @@ public class OfferSharedToGroupView {
     @Id
     @Column(name = "id", insertable = false, updatable = false)
     private Long id = null;
+
+    @Column(name = "status", insertable = false, updatable = false)
+    private OfferState status = null;
 
     @Column(name = "offer_owner", insertable = false, updatable = false)
     private Long offerOwner = null;
@@ -84,6 +90,14 @@ public class OfferSharedToGroupView {
 
     public Long getId() {
         return id;
+    }
+
+    public void setStatus(final OfferState status) {
+        this.status = status;
+    }
+
+    public OfferState getStatus() {
+        return status;
     }
 
     public void setOfferOwner(final Long offerOwner) {

@@ -418,7 +418,7 @@ public final class StudentService extends CommonService<StudentDao> {
         updated.setNationality(storedApplication.getNationality());
         dao.persist(authentication, storedApplication, updated);
 
-        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());
+        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId(), storedApplication.getOfferGroup().getStatus());
         if (newOfferGroupState != null) {
             updateOfferGroupStatus(storedApplication.getOfferGroup(), newOfferGroupState);
         }
@@ -442,7 +442,7 @@ public final class StudentService extends CommonService<StudentDao> {
         updated.setNationality(storedApplication.getNationality());
         dao.persist(authentication, storedApplication, updated);
 
-        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());
+        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId(), storedApplication.getOfferGroup().getStatus());
         if (newOfferGroupState != null) {
             updateOfferGroupStatus(storedApplication.getOfferGroup(), newOfferGroupState);
         }
@@ -456,7 +456,7 @@ public final class StudentService extends CommonService<StudentDao> {
         updated.setNationality(storedApplication.getNationality());
         dao.persist(authentication, storedApplication, updated);
 
-        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId());
+        final OfferState newOfferGroupState = doUpdateOfferGroupStatus(storedApplication.getOfferGroup().getId(), storedApplication.getOfferGroup().getStatus());
         if (newOfferGroupState != null) {
             updateOfferGroupStatus(storedApplication.getOfferGroup(), newOfferGroupState);
         }
@@ -472,17 +472,21 @@ public final class StudentService extends CommonService<StudentDao> {
                                                                          OfferState.ACCEPTED));
     }
 
-    private OfferState doUpdateOfferGroupStatus(final Long offerGroupId) {
+    private OfferState doUpdateOfferGroupStatus(final Long offerGroupId, final OfferState offerGroupState) {
         final OfferState newStatus;
-        if (!dao.otherDomesticApplicationsWithCertainStatus(offerGroupId, EnumSet.of(ApplicationStatus.NOMINATED,
-                                                                                     ApplicationStatus.FORWARDED_TO_EMPLOYER,
-                                                                                     ApplicationStatus.ACCEPTED,
-                                                                                     ApplicationStatus.APPLIED))) {
-            newStatus = OfferState.SHARED;
-        } else if (dao.otherDomesticApplicationsWithCertainStatus(offerGroupId, EnumSet.of(ApplicationStatus.APPLIED))) {
-            newStatus = OfferState.APPLICATIONS;
-        } else {
+        if (OfferState.CLOSED.equals(offerGroupState)) {
             newStatus = null;
+        } else {
+            if (!dao.otherDomesticApplicationsWithCertainStatus(offerGroupId, EnumSet.of(ApplicationStatus.NOMINATED,
+                                                                                         ApplicationStatus.FORWARDED_TO_EMPLOYER,
+                                                                                         ApplicationStatus.ACCEPTED,
+                                                                                         ApplicationStatus.APPLIED))) {
+                newStatus = OfferState.SHARED;
+            } else if (dao.otherDomesticApplicationsWithCertainStatus(offerGroupId, EnumSet.of(ApplicationStatus.APPLIED))) {
+                newStatus = OfferState.APPLICATIONS;
+            } else {
+                newStatus = null;
+            }
         }
 
         return newStatus;
@@ -510,7 +514,12 @@ public final class StudentService extends CommonService<StudentDao> {
                 }
                 break;
             case CLOSED:
-                throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + "'");
+                switch (applicationStatus) {
+                    case REJECTED_BY_SENDING_COUNTRY:
+                        break;
+                    default:
+                        throw new VerificationException("Offer with status '" + offerState + "' does not accept new application status '" + applicationStatus + "'");
+                }
         }
     }
 

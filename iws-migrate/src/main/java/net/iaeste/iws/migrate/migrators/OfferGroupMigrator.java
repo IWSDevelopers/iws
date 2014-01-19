@@ -78,6 +78,8 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
                 final OfferGroupEntity entity = convert(oldEntity);
                 entity.setOffer(offer);
                 entity.setGroup(group);
+                // Those offer which are shared, need to change the state to SHARED
+                offer.setStatus(OfferState.SHARED);
 
                 try {
                     final OfferGroup offerGroup = ExchangeTransformer.transform(entity);
@@ -200,12 +202,15 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
             case "o": // Nomination Rejected
                 state = OfferState.SHARED;
                 break;
+            // can only happen, if the offer gets unshared after the the status APPLIED" passed
+            // as the IW3 did never used the nomination functionality, this can never be a valid state
             case "c": // Cancelled
-                state = OfferState.CLOSED;
+                state = OfferState.SHARED;
                 break;
+            // See above explanation
             case "p": // Nomination
             case "u": // Nomination Accepted
-                state = OfferState.NOMINATIONS;
+                state = OfferState.SHARED;
                 break;
             case "n": // New
             default:

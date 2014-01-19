@@ -29,6 +29,7 @@ import net.iaeste.iws.api.enums.exchange.Specialization;
 import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 
@@ -116,6 +117,14 @@ public final class TestData {
     // Public methods to fill in test data Object
     // =========================================================================
 
+    /**
+     * @see AbstractVerification#calculateExchangeYear()
+     * @return Current Exchange Year
+     */
+    public static Integer calculateExchangeYear() {
+        return AbstractVerification.calculateExchangeYear();
+    }
+
     public static Offer prepareMinimalOffer(final String refNo, final String employerName, final String countryCode) {
         final Offer offer = new Offer();
 
@@ -197,30 +206,30 @@ public final class TestData {
     }
 
     public static Country prepareCountry(final String countryCode) {
-        final String countryId = countryCode.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        final String countryId = countryCode.toUpperCase(IWSConstants.DEFAULT_LOCALE);
         final Country country = new Country();
         country.setCountryCode(countryId);
 
         switch (countryId) {
-            case "at":
+            case "AT":
                 country.setMembership(Membership.FULL_MEMBER);
                 country.setCountryName("Austria");
                 country.setCurrency(Currency.EUR);
                 country.setMemberSince(1949);
                 break;
-            case "de":
+            case "DE":
                 country.setMembership(Membership.FULL_MEMBER);
                 country.setCountryName("Germany");
                 country.setCurrency(Currency.EUR);
                 country.setMemberSince(1950);
                 break;
-            case "dk":
+            case "DK":
                 country.setMembership(Membership.FULL_MEMBER);
                 country.setCountryName("Denmark");
                 country.setCurrency(Currency.DKK);
                 country.setMemberSince(1948);
                 break;
-            case "pl":
+            case "PL":
                 country.setMembership(Membership.FULL_MEMBER);
                 country.setCountryName("Poland");
                 country.setCurrency(Currency.PLN);

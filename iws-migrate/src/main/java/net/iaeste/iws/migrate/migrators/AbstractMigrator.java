@@ -53,7 +53,7 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
 
         try {
             if ((countrycode != null) && (countrycode.length() == 2) && !"$$".equals(countrycode)) {
-                entity = accessDao.findCountry(countrycode.toUpperCase(IWSConstants.DEFAULT_LOCALE));
+                entity = accessDao.findCountry(upper(countrycode));
             }
         } catch (IWSException e) {
             log.warn("Couldn't find Entity for country {} => {}.", countrycode, e.getMessage());

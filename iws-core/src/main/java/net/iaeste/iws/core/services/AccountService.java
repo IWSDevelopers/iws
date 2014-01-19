@@ -639,7 +639,6 @@ public final class AccountService extends CommonService<AccessDao> {
                     break;
                 case ADMINISTRATION:
                 case INTERNATIONAL:
-                case REGIONAL:
                 case NATIONAL:
                 case MEMBER:
                     if (IWSConstants.ROLE_OWNER.equals(entity.getRole().getId())) {

@@ -355,7 +355,6 @@ public class NotificationSystemAdministration implements Observer {
 
             case INTERNATIONAL:
             case NATIONAL:
-            case REGIONAL:
                 result = true;
                 break;
             default:
@@ -375,7 +374,6 @@ public class NotificationSystemAdministration implements Observer {
             case LOCAL:
             case MEMBER:
             case NATIONAL:
-            case REGIONAL:
             case WORKGROUP:
                 result = true;
                 break;
@@ -396,7 +394,6 @@ public class NotificationSystemAdministration implements Observer {
                 name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + settings.getPublicMailAddress();
                 break;
             case INTERNATIONAL:
-            case REGIONAL:
                 name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + settings.getPublicMailAddress();
                 break;
             default:
@@ -415,7 +412,6 @@ public class NotificationSystemAdministration implements Observer {
                 name = StringUtils.convertToAsciiMailAlias(countryName) + '@' + settings.getPrivateMailAddress();
                 break;
             case INTERNATIONAL:
-            case REGIONAL:
                 name = StringUtils.convertToAsciiMailAlias(groupName) + '@' + settings.getPrivateMailAddress();
                 break;
             case NATIONAL:

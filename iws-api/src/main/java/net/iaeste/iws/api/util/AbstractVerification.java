@@ -462,7 +462,7 @@ public abstract class AbstractVerification implements Verifiable {
      *
      * @return Current Exchange Year
      */
-    protected Integer calculateExchangeYear() {
+    public static Integer calculateExchangeYear() {
         final Date date = new Date();
 
         return date.getCurrentYear() + (date.getCurrentMonth() >= Calendar.SEPTEMBER ? 1 : 0);

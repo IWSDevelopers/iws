@@ -153,7 +153,7 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     /**
      * The content of this Entity is exposed externally, however to avoid that
      * someone tries to spoof the system by second guessing our Sequence values,
-     * An External Id is used, the External Id is a Uniqie UUID value, which in
+     * An External Id is used, the External Id is a Unique UUID value, which in
      * all external references is referred to as the "Id". Although this can be
      * classified as StO (Security through Obscrutity), there is no need to
      * expose more information than necessary.

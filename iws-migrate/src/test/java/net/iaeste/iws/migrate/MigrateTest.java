@@ -46,7 +46,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -184,7 +183,6 @@ public class MigrateTest {
     }
 
     @Test
-    @Ignore("Ignored for now, causing Unique Violation Exceptions.")
     @Transactional("transactionManagerMail")
     public void test5ReadingWritingMail() {
         final MailMigrator migrator = new MailMigrator(iwsEntityManager, mailDao);

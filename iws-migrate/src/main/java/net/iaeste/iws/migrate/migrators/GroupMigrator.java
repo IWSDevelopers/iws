@@ -80,8 +80,10 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
             } else if ((converted.getOldId() == 749) || (converted.getOldId() == 839)) {
                 log.info("The Group {} (id {}), is dropped, since it's an unused duplicate.", converted.getGroupName(), converted.getOldId());
                 skipped++;
+            } else if (converted.getOldId() == 672) {
+                log.info("The Group {} (id 672), is dropped - there is a name clash, and it is unused.", converted.getGroupName());
+                skipped++;
             } else {
-                final CountryEntity country = findExistingCountry(findCorrectCountry(oldGroup.getCountryid(), oldGroup.getRealcountryid()));
                 if (parent == null) {
                     // For Holland, we have the problem that Group 629 exists, but 628 (the parent) doesn't.
                     log.info("Couldn't find a parent for {} with id {}", convert(oldGroup.getGroupname()), oldGroup.getGroupid());
@@ -89,7 +91,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                 } else {
                     converted.setParentId(parent.getId());
                 }
-                converted.setCountry(country);
+                converted.setCountry(convertCountry(parent, oldGroup));
                 converted.setGroupType(groupType);
                 toPersist = converted;
             }
@@ -113,6 +115,17 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         }
 
         return new MigrationResult(persisted, skipped);
+    }
+
+    private CountryEntity convertCountry(final GroupEntity parent, final IW3GroupsEntity oldGroup) {
+        final CountryEntity entity;
+
+        if ((parent != null) && (parent.getCountry() != null)) {
+            entity = parent.getCountry();
+        } else {
+            entity = findExistingCountry(findCorrectCountry(oldGroup.getCountryid(), oldGroup.getRealcountryid()));
+        }
+        return entity;
     }
 
     public GroupEntity convertGroup(final IW3GroupsEntity entity, final GroupTypeEntity groupTypeEntity, final GroupEntity parent) {
@@ -151,13 +164,12 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                 break;
             case LOCAL:
             case WORKGROUP:
-                result = parent.getGroupName() + ' ' + committee;
+                result = committee;
                 break;
             case ADMINISTRATION:
             case INTERNATIONAL:
             case MEMBER:
             case PRIVATE:
-            case REGIONAL:
             default:
                 result = committee;
         }
@@ -189,12 +201,20 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                 result = parent.getGroupName() + ' ' + committee;
                 break;
             case WORKGROUP:
-                result = parent.getFullName() + ' ' + committee;
+                // Work Groups can be subgrouped by Local Committees & Staff
+                // Groups alike, However, we would like the full name to display
+                // the correct hierarchy. Members are special here, since they
+                // are the Base for all other groups, but have a different
+                // fullname. For the rest we're just using the fullname.
+                if (parent.getGroupType().getGrouptype() == GroupType.MEMBER) {
+                    result = parent.getGroupName() + ' ' + committee;
+                } else {
+                    result = parent.getFullName() + ' ' + committee;
+                }
                 break;
             case ADMINISTRATION:
             case INTERNATIONAL:
             case PRIVATE:
-            case REGIONAL:
             default:
                 result = committee;
         }
@@ -224,13 +244,23 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                 result = parent.getGroupName() + '.' + type.getDescription();
                 break;
             case LOCAL:
+                result = parent.getListName() + '.' + committee;
+                break;
             case WORKGROUP:
-                result = parent.getGroupName() + '.' + committee;
+                // Work Groups can be subgrouped by Local Committees & Staff
+                // Groups alike, However, we would like the full name to display
+                // the correct hierarchy. Members are special here, since they
+                // are the Base for all other groups, but have a different
+                // fullname. For the rest we're just using the fullname.
+                if (parent.getGroupType().getGrouptype() == GroupType.NATIONAL) {
+                    result = parent.getListName() + ".NC." + committee;
+                } else {
+                    result = parent.getListName() + '.' + committee;
+                }
                 break;
             case ADMINISTRATION:
             case INTERNATIONAL:
             case PRIVATE:
-            case REGIONAL:
             default:
                 result = committee;
         }
@@ -256,6 +286,9 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                 // SAR's have been discontinued, instead we're only refering to
                 // National Groups.
                 groupType = GroupType.NATIONAL;
+                break;
+            case "LOCAL" :
+                groupType = GroupType.LOCAL;
                 break;
             case "WORKGROUP" :
             default:

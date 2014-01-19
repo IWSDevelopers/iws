@@ -67,28 +67,31 @@ public final class MailMigrator {
         int skipped = 0;
 
         for (final GroupEntity group : groups) {
-            switch (group.getGroupType().getGrouptype()) {
-                case ADMINISTRATION: // Doesn't need a mailinglist
-                case PRIVATE: // Covered by aliases
-                case STUDENT: // Schema for Students is unclear
-                    skipped++;
-                    break;
-                case MEMBER:
-                case LOCAL:
-                case REGIONAL:
-                case WORKGROUP:
-                    createMailinglist(group, true, false);
-                    persisted++;
-                    break;
-                case INTERNATIONAL:
-                    createMailinglist(group, false, true);
-                    createMailinglist(group, true, false);
-                    persisted += 2;
-                    break;
-                case NATIONAL:
-                    createMailinglist(group, false, false);
-                    persisted++;
-                    break;
+            if (group.getStatus() != GroupStatus.ACTIVE) {
+                log.info("Skipping Mailinglist for {} (id: {}), as their status is {}", group.getGroupName(), group.getId(), group.getStatus());
+            } else {
+                switch (group.getGroupType().getGrouptype()) {
+                    case ADMINISTRATION: // Doesn't need a mailinglist
+                    case PRIVATE: // Covered by aliases
+                    case STUDENT: // Schema for Students is unclear
+                        skipped++;
+                        break;
+                    case MEMBER:
+                    case LOCAL:
+                    case WORKGROUP:
+                        createMailinglist(group, true, false);
+                        persisted++;
+                        break;
+                    case INTERNATIONAL:
+                        createMailinglist(group, false, true);
+                        createMailinglist(group, true, false);
+                        persisted += 2;
+                        break;
+                    case NATIONAL:
+                        createMailinglist(group, false, false);
+                        persisted++;
+                        break;
+                }
             }
         }
 

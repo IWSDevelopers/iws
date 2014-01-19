@@ -294,6 +294,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, request.getOfferIds());
 
         for (final OfferEntity offer : offers) {
+            //TODO tune the number of DB queries, get everything at once
             final List<OfferGroupEntity> allOfferGroups = dao.findInfoForSharedOffer(offer.getId());
 
             final List<OfferGroupEntity> unshareOfferGroups = new ArrayList<>();
@@ -311,7 +312,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             boolean updateOfferState = false;
 
-            final List<GroupEntity> newSharing = copy(groups);
+            final List<GroupEntity> newSharing = new ArrayList<>(groups);
             newSharing.removeAll(keepSharing);
 
             if (!newSharing.isEmpty()) {

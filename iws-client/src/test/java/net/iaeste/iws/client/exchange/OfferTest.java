@@ -377,6 +377,77 @@ public final class OfferTest extends AbstractTest {
     }
 
     @Test
+    public void testExtendSharingOffer() {
+        final Date nominationDeadline = new Date().plusDays(20);
+
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo(PL_YEAR + "-BUG669-R");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+
+        assertThat(saveResponse.isOk(), is(true));
+
+        assertThat(saveResponse.getOffer().getNsFirstname(), is(not(nullValue())));
+        assertThat(saveResponse.getOffer().getNsLastname(), is(not(nullValue())));
+
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat(sharedOffer.getStatus(), is(OfferState.NEW));
+        assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        offersToShare.add(sharedOffer.getOfferId());
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
+
+        assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
+        assertThat(publishResponse1.isOk(), is(true));
+
+        final List<String> offersExternalId = new ArrayList<>(1);
+        offersExternalId.add(sharedOffer.getOfferId());
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
+        final FetchPublishedGroupsResponse fetchPublishResponse1 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
+
+        //is it shared to one groups?
+        assertThat(fetchPublishResponse1.isOk(), is(true));
+        List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        assertThat(offerGroupsSharedTo.size(), is(1));
+
+        allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat(sharedOffer.getRefNo(), is(saveResponse.getOffer().getRefNo()));
+        assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
+        assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
+
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+        final PublishOfferRequest publishRequest2 = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse2 = exchange.processPublishOffer(token, publishRequest2);
+
+        assertThat(publishResponse2.isOk(), is(true));
+        final FetchPublishedGroupsResponse fetchPublishResponse2 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
+        assertThat(fetchPublishResponse2.isOk(), is(true));
+        offerGroupsSharedTo = fetchPublishResponse2.getOffersGroups().get(offersExternalId.get(0));
+
+        //is it shared to two groups?
+        assertThat(offerGroupsSharedTo.size(), is(2));
+        allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
+    }
+
+    @Test
     public void testFailShareNonOwnedOffer() {
         final Date nominationDeadline = new Date().plusDays(20);
 

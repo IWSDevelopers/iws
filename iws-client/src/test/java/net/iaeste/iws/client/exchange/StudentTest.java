@@ -566,6 +566,72 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
+    public void testRejectApplicationBySendingCountryForClosedOffer() {
+        //Sending country is only allowed to reject applied application
+        final Date nominationDeadline = new Date().plusDays(20);
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001065", "Employer", "PL");
+
+        final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
+        assertThat("Offer has been saved", saveResponse.isOk(), is(true));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        final String offerId = saveResponse.getOffer().getOfferId();
+        offersToShare.add(offerId);
+
+        List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, new PublishOfferRequest(offersToShare, groupIds, nominationDeadline));
+
+        assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
+
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app065@university.edu", "password1", "Student1", "Graduate1");
+        createUserRequest1.setStudentAccount(true);
+
+        final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
+
+        assertThat("Student has been saved", createStudentResponse1.isOk(), is(true));
+
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse fetchStudentsResponse = students.fetchStudents(austriaToken, fetchStudentsRequest);
+        assertThat("At least one student has been fetched", fetchStudentsResponse.isOk(), is(true));
+        assertThat("At least one student has been fetched", fetchStudentsResponse.getStudents().isEmpty(), is(false));
+
+        final Student student = fetchStudentsResponse.getStudents().get(0);
+        student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
+
+        final StudentApplication application = new StudentApplication();
+        application.setOffer(saveResponse.getOffer());
+        application.setStudent(student);
+        application.setStatus(ApplicationStatus.APPLIED);
+        application.setHomeAddress(TestData.prepareAddress("DE"));
+        application.setAddressDuringTerms(TestData.prepareAddress("AT"));
+
+        final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
+        assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
+
+        //usnhare offer
+        groupIds.clear();
+        final PublishOfferResponse unshareResponse = exchange.processPublishOffer(token, new PublishOfferRequest(offersToShare, groupIds, nominationDeadline));
+        assertThat("Offer has been unshared", unshareResponse.isOk(), is(true));
+
+        final StudentApplicationRequest rejectStudentRequest = new StudentApplicationRequest(
+                studentApplication.getApplicationId(),
+                ApplicationStatus.REJECTED_BY_SENDING_COUNTRY);
+        rejectStudentRequest.setRejectInternalComment("reject internal comment");
+        rejectStudentRequest.setRejectDescription("reject description");
+        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaToken, rejectStudentRequest);
+
+        assertThat("Student has been rejected by Austria (sending country)", rejectStudentResponse.isOk(), is(true));
+        final StudentApplication rejectedApplication = rejectStudentResponse.getStudentApplication();
+        assertThat(rejectedApplication.getRejectDescription(), is(rejectStudentRequest.getRejectDescription()));
+        assertThat(rejectedApplication.getRejectInternalComment(), is(rejectStudentRequest.getRejectInternalComment()));
+    }
+
+    @Test
     public void testCancelNominatedApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001006", "Employer", "PL");

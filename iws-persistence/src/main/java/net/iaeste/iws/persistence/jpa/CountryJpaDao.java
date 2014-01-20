@@ -79,4 +79,14 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
 
         return fetchList(query, page);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<CountryView> getAllCountries(final Paginatable page) {
+        final Query query = entityManager.createNamedQuery("view.findAllCountries");
+
+        return fetchList(query, page);
+    }
 }

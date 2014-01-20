@@ -14,18 +14,17 @@
  */
 package net.iaeste.iws.api.requests;
 
-import net.iaeste.iws.api.enums.Membership;
-import net.iaeste.iws.api.exceptions.VerificationException;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
+
+import net.iaeste.iws.api.enums.Membership;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -40,12 +39,6 @@ public final class FetchCountryRequestTest {
      * returns empty lists, rather than null values.
      */
     private static final List<String> EMPTY_LIST = new ArrayList<>(0);
-
-    @Test(expected = VerificationException.class)
-    public void testEmptyRequest() {
-        final FetchCountryRequest request = new FetchCountryRequest();
-        request.verify();
-    }
 
     @Test
     public void testMembershipConstructor() {

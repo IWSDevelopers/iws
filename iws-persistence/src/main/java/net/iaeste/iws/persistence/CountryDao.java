@@ -40,4 +40,6 @@ public interface CountryDao extends BasicDao {
     List<CountryView> getCountries(List<String> countryCodes, Paginatable page);
 
     List<CountryView> getCountries(Membership membership, Paginatable page);
+
+    List<CountryView> getAllCountries(Paginatable page);
 }

@@ -20,6 +20,7 @@ import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
+import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.CountryDao;
@@ -83,12 +84,16 @@ public final class CountryService {
         final FetchCountryResponse response;
         final List<CountryView> entities;
 
-        if (request.getMembership() != null) {
-            final Membership membership = request.getMembership();
-            entities = dao.getCountries(membership, request.getPagingInformation());
+        final Paginatable page = request.getPagingInformation();
+        final List<String> countryCodes = request.getCountryIds();
+        final Membership membership = request.getMembership();
+
+        if (membership != null) {
+            entities = dao.getCountries(membership, page);
+        } else if ((countryCodes != null) && !countryCodes.isEmpty()) {
+            entities = dao.getCountries(countryCodes, page);
         } else {
-            final List<String> countryCodes = request.getCountryIds();
-            entities = dao.getCountries(countryCodes, request.getPagingInformation());
+            entities = dao.getAllCountries(page);
         }
 
         final List<Country> countries = transform(entities);

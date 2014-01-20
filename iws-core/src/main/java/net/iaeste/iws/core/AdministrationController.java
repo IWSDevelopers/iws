@@ -77,7 +77,10 @@ public final class AdministrationController extends CommonController implements 
         FetchCountryResponse response;
 
         try {
-            verifyAccess(token, Permission.FETCH_COUNTRIES);
+            //verifyAccess(token, Permission.FETCH_COUNTRIES);
+            // This request is "for free", there's no need for permission
+            // checks, since all it does is read from a non-protected table
+            verifyPrivateAccess(token);
             verify(request);
 
             final CountryService service = factory.prepareCountryService();

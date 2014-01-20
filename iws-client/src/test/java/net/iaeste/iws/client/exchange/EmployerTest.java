@@ -30,6 +30,7 @@ import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
+import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.client.AbstractTest;
@@ -53,8 +54,8 @@ import java.util.List;
  */
 public final class EmployerTest extends AbstractTest {
 
-    private static final String USERNAME = "germany@iaeste.de";
-    private static final String PASSWORD = "germany";
+    private static final String USERNAME = "albania@iaeste.al";
+    private static final String PASSWORD = "albania";
     private final Access access = new AccessClient();
 
     @Before
@@ -155,6 +156,8 @@ public final class EmployerTest extends AbstractTest {
         countryIds.add(countryCode);
         request.setCountryIds(countryIds);
 
+        final Access access = new AccessClient();
+        final FetchPermissionResponse result = access.fetchPermissions(token);
         final Administration administration = new AdministrationClient();
         final FetchCountryResponse response = administration.fetchCountries(token, request);
         return response.getCountries().get(0);

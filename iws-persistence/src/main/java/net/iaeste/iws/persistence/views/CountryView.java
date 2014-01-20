@@ -33,6 +33,8 @@ import javax.persistence.Table;
  */
 @Entity
 @NamedQueries({
+        @NamedQuery(name = "view.findAllCountries",
+                query = "select v from CountryView v"),
         @NamedQuery(name = "view.findCountriesByMembership",
                 query = "select v from CountryView v " +
                         "where v.country.membership = :type "),

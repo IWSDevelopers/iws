@@ -63,33 +63,29 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     }
 
     /**
-     * Default Constructor, for the case where a list of countries, with a
-     * specific membership type, should be fetched.
-     *
-     * @param membership Membership Type
-     */
-    public FetchCountryRequest(final Membership membership) {
-        if (membership == null) {
-            throw new IllegalArgumentException("Null value for Membership is not allowed.");
-        }
-
-        this.membership = membership;
-        countryIds = null;
-    }
-
-    /**
      * Default Constructor, for the case where a list of countries, matching the
      * given Ids, should be fetched.
      *
      * @param countryIds List of Countries to fetch
      */
     public FetchCountryRequest(final List<String> countryIds) {
-        if (countryIds == null || countryIds.isEmpty()) {
-            throw new IllegalArgumentException("Null value or empty list of CountryIds is not allowed.");
-        }
+        ensureNotNullOrEmpty("countryIds", countryIds);
 
         this.countryIds = Copier.copy(countryIds);
-        membership = null;
+        this.membership = null;
+    }
+
+    /**
+     * Default Constructor, for the case where a list of countries, with a
+     * specific membership type, should be fetched.
+     *
+     * @param membership Membership Type
+     */
+    public FetchCountryRequest(final Membership membership) {
+        ensureNotNull("membership", membership);
+
+        this.membership = membership;
+        this.countryIds = null;
     }
 
     // =========================================================================
@@ -105,9 +101,7 @@ public final class FetchCountryRequest extends AbstractPaginatable {
      * @throws IllegalArgumentException if the CountryIds is null or empty
      */
     public void setCountryIds(final List<String> countryIds) throws IllegalArgumentException {
-        if (countryIds == null || countryIds.isEmpty()) {
-            throw new IllegalArgumentException("Null value or empty list of CountryIds is not allowed.");
-        }
+        ensureNotNullOrEmpty("countryIds", countryIds);
 
         this.countryIds = Copier.copy(countryIds);
         membership = null;
@@ -131,9 +125,7 @@ public final class FetchCountryRequest extends AbstractPaginatable {
      * @throws IllegalArgumentException if the membership value is null
      */
     public void setMembership(final Membership membership) throws IllegalArgumentException {
-        if (membership == null) {
-            throw new IllegalArgumentException("Null value for Membership is not allowed.");
-        }
+        ensureNotNull("membership", membership);
 
         this.membership = membership;
         countryIds = null;
@@ -157,14 +149,9 @@ public final class FetchCountryRequest extends AbstractPaginatable {
      */
     @Override
     public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(0);
-
-        if (countryIds == null && membership == null) {
-            validation.put("countryIds", "Either the CountryIds or the Membership must be defined.");
-            validation.put("membership", "Either the CountryIds or the Membership must be defined.");
-        }
-
-        return validation;
+        // As we're defaulting to retrieving all Countries, there's no need for
+        // a validation
+        return new HashMap<>(0);
     }
 
     /**

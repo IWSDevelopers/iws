@@ -54,6 +54,18 @@ import org.slf4j.LoggerFactory;
  */
 public final class AdministrationController extends CommonController implements Administration {
 
+    private static final Logger log = LoggerFactory.getLogger(AdministrationController.class);
+
+    /**
+     * Default Constructor, takes a ServiceFactory as input parameter, and uses
+     * this in all the request methods, to get a new Service instance.
+     *
+     * @param factory  The ServiceFactory
+     */
+    public AdministrationController(final ServiceFactory factory) {
+        super(factory);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -105,18 +117,6 @@ public final class AdministrationController extends CommonController implements 
             log.trace(formatLogMessage(token, "Finished processCountry()"));
         }
         return response;
-    }
-
-    private static final Logger log = LoggerFactory.getLogger(AdministrationController.class);
-
-    /**
-     * Default Constructor, takes a ServiceFactory as input parameter, and uses
-     * this in all the request methods, to get a new Service instance.
-     *
-     * @param factory  The ServiceFactory
-     */
-    public AdministrationController(final ServiceFactory factory) {
-        super(factory);
     }
 
     /**

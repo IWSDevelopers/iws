@@ -24,7 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -113,18 +112,23 @@ public final class Copier {
      * @return Copy of the given Map, or an empty Map
      */
     public static <T extends Serializable, V extends Serializable> Map<T, List<V>> copyMapWithList(final Map<T, List<V>> original) {
-        final Map<T, List<V>> copy;
-
-        if (original != null) {
-            copy = new HashMap<>(original.size());
-            for (final Map.Entry<T, List<V>> entry : original.entrySet()) {
-                copy.put(copy(entry.getKey()), copy(entry.getValue()));
-            }
-        } else {
-            copy = new HashMap<>(0);
-        }
-
-        return copy;
+        // Note; Trac task #648, is quite rightly blaming the Defensive Copying
+        // for being a performance hog. The original testing indicates that this
+        // copying maps is very resourcedemanding. Which means, that for now -
+        // this method has been benched until a proper solution can be found.
+        return original;
+        //final Map<T, List<V>> copy;
+        //
+        //if (original != null) {
+        //    copy = new HashMap<>(original.size());
+        //    for (final Map.Entry<T, List<V>> entry : original.entrySet()) {
+        //        copy.put(copy(entry.getKey()), copy(entry.getValue()));
+        //    }
+        //} else {
+        //    copy = new HashMap<>(0);
+        //}
+        //
+        //return copy;
     }
 
     /**
@@ -136,18 +140,23 @@ public final class Copier {
      * @return Copy of the given Map, or an empty Map
      */
     public static <T extends Serializable, V extends Serializable> Map<T, V> copy(final Map<T, V> original) {
-        final Map<T, V> copy;
-
-        if (original != null) {
-            copy = new HashMap<>(original.size());
-            for (final Map.Entry<T, V> entry : original.entrySet()) {
-                copy.put(copy(entry.getKey()), copy(entry.getValue()));
-            }
-        } else {
-            copy = new HashMap<>(0);
-        }
-
-        return copy;
+        // Note; Trac task #648, is quite rightly blaming the Defensive Copying
+        // for being a performance hog. The original testing indicates that this
+        // copying maps is very resourcedemanding. Which means, that for now -
+        // this method has been benched until a proper solution can be found.
+        return original;
+        //final Map<T, V> copy;
+        //
+        //if (original != null) {
+        //    copy = new HashMap<>(original.size());
+        //    for (final Map.Entry<T, V> entry : original.entrySet()) {
+        //        copy.put(copy(entry.getKey()), copy(entry.getValue()));
+        //    }
+        //} else {
+        //    copy = new HashMap<>(0);
+        //}
+        //
+        //return copy;
     }
 
     /**

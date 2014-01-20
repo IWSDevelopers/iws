@@ -17,6 +17,7 @@ package net.iaeste.iws.migrate.migrators;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Language;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
 import net.iaeste.iws.api.enums.exchange.LanguageOperator;
 import net.iaeste.iws.api.enums.exchange.OfferState;
@@ -95,9 +96,9 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
             "KR13-0147,MT13-0050,NG10-0001,NG10-0002,NG10-0003,NG10-0004," +
             "NG10-0005,NG10-0006,NG10-0007,OM11-0037,PS13-0086,QA12-0010," +
             "RO13-0093,SE11-0007,TN13-0401,TN13-0404,TR12-0147,TR12-0270," +
-            "TR12-0370,VN13-0066";
+            "TR12-0370,VN13-0066,JO14-0159";
 
-    private Map<Integer, GroupEntity> nationalGroups;
+    private final Map<Integer, GroupEntity> nationalGroups;
     private final ExchangeDao exchangeDao;
     private final EntityManager manager;
 
@@ -174,7 +175,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         entity.setTypeOfWork(convertTypeOfWork(oldOffer));
         entity.setStudyLevels(convertStudyLevels(oldOffer));
         entity.setFieldOfStudies(convertFieldOfStudies(oldOffer));
-        entity.setSpecializations(convertSpecializations(oldOffer.getSpecialization()));
+        entity.setSpecializations(convertSpecializations(oldOffer));
         entity.setPrevTrainingRequired(convertTrainingRequired(oldOffer.getTrainingrequired()));
         entity.setOtherRequirements(oldOffer.getOtherrequirements());
         entity.setMinimumWeeks(oldOffer.getWeeksmin());
@@ -389,16 +390,167 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         return CollectionTransformer.concatEnumCollection(result);
     }
 
+    /**
+     * The entire list of Faculties (Fields of Study in IWS), has been mapped
+     * over. The setup is based on the following SQL:
+     * <pre>
+     *   select
+     *     count(f.facultyid) as records,
+     *     upper(f.faculty)
+     *   from
+     *     faculties f,
+     *     offers o
+     *   where f.facultyid = o.facultyid
+     *   group by f.faculty
+     *   order by records desc;
+     * </pre>
+     *
+     * @param oldOffer Old Offer
+     * @return String value for the Fields of Study in IWS
+     */
     private static String convertFieldOfStudies(final IW3OffersEntity oldOffer) {
-        return convert(oldOffer.getFaculty().getFaculty());
+        final String faculty = convert(oldOffer.getFaculty().getFaculty());
+        final FieldOfStudy field;
+
+        if ((faculty != null) && !faculty.isEmpty()) {
+            final String toCheck = upper(faculty.replace(' ', '_').trim());
+
+            switch (toCheck) {
+                case "AERONAUTICAL_ENGINEERING":
+                    field = FieldOfStudy.AERONAUTIC_ENGINEERING;
+                    break;
+                case "AGRONOMY":
+                case "DAIRYING":
+                case "FORESTRY":
+                case "HORTICULTURE":
+                    field = FieldOfStudy.AGRICULTURE;
+                    break;
+                case "DRAWING":
+                case "GRAPHICS_&_PRINTING":
+                    field = FieldOfStudy.APPLIED_ARTS;
+                    break;
+                case "AQUATIC_&_ENVIRONMENTAL_ENGINEERING":
+                case "MARINE_BIOLOGY":
+                    field = FieldOfStudy.AQUA_CULTURE;
+                    break;
+                case "LANDSCAPE_PLANNING":
+                    field = FieldOfStudy.ARCHITECTURE;
+                    break;
+                case "ECOLOGY":
+                case "MOLECULAR_BIOLOGY":
+                case "ZOOLOGY":
+                    field = FieldOfStudy.BIOLOGY;
+                    break;
+                case "BIOMEDICAL":
+                    field = FieldOfStudy.BIOMEDICAL_SCIENCE;
+                    break;
+                case "BIOCHEMISTRY":
+                case "BIOENGINEERING":
+                case "MICROBIOLOGY":
+                case "PHARMACY":
+                    field = FieldOfStudy.BIOTECHNOLOGY;
+                    break;
+                case "CHEMICAL_ENGINEERING":
+                case "PHARMACEUTICAL_STUDIES":
+                case "SANITARY_ENGINEERING":
+                    field = FieldOfStudy.CHEMISTRY;
+                    break;
+                case "CONSTRUCTION":
+                case "MINING":
+                case "TRAFFIC_ENGINEERING":
+                    field = FieldOfStudy.CIVIL_ENGINEERING;
+                    break;
+                case "BUSINESS_STUDIES":
+                case "COMMERCE":
+                case "ECONOMICS":
+                case "HOTEL_MANAGEMENT":
+                case "MANAGEMENT":
+                    field = FieldOfStudy.ECONOMY_AND_MANAGEMENT;
+                    break;
+                case "LANGUAGES":
+                    field = FieldOfStudy.EDUCATION;
+                    break;
+                case "POWER_ENGINEERING":
+                    field = FieldOfStudy.ENERGY_ENGINEERING;
+                    break;
+                case "ENVIRONMENTAL_PLANNING_AND_DESIGN":
+                case "ENVIRONMENTAL_SCIENCE":
+                case "WASTE_WATER_TREATMENT":
+                    field = FieldOfStudy.ENVIRONMENTAL_ENGINEERING;
+                    break;
+                case "AUTOMATION":
+                case "ELECTRONICS":
+                case "ELECTROTECHNICAL_ENGINEERING":
+                case "MECHATRONICS":
+                    field = FieldOfStudy.ELECTRICAL_ENGINEERING;
+                    break;
+                case "FOOD_TECHNOLOGY":
+                    field = FieldOfStudy.FOOD_SCIENCE;
+                    break;
+                case "GEODESY":
+                case "GEOGRAPHY":
+                case "GEOLOGY":
+                case "METALLURGY":
+                    field = FieldOfStudy.GEOSCIENCE;
+                    break;
+                case "COMPUTER_ENGINEERING":
+                case "COMPUTER_SCIENCE":
+                case "COMPUTER_SCIENCE_AND_ECONOMICS":
+                case "INFORMATION_TECHNOLOGY":
+                case "PROGRAMMING":
+                case "SOFTWARE":
+                case "TELECOMMUNICATIONS":
+                    field = FieldOfStudy.IT;
+                    break;
+                case "MINERAL_PROCESSING":
+                case "TEXTILE_TECHNOLOGY":
+                    field = FieldOfStudy.MATERIAL_SCIENCE;
+                    break;
+                case "STATISTICS":
+                    field = FieldOfStudy.MATHEMATICS;
+                    break;
+                case "BIOMECHANICAL":
+                case "MANUFACTURING_ENGINEERING":
+                case "NAVAL_ARCHITECTURE":
+                case "NAVAL_ENGINEERING":
+                case "OFFSHORE":
+                case "OIL_TECHNOLOGY":
+                case "PETROLEUM_ENGINEERING":
+                case "PROCESS_ENGINEERING":
+                case "SHIP_BUILDING":
+                case "SYSTEMS_ENGINEERING":
+                case "WOOD_AND_PAPER_TECHNOLOGY":
+                    field = FieldOfStudy.MECHANICAL_ENGINEERING;
+                    break;
+                case "BIOPHYSICS":
+                case "ENGINEERING_PHYSICS":
+                case "OPTICS":
+                    field = FieldOfStudy.PHYSICS;
+                    break;
+                case "OTHER_ENGINEERING_&AMP;_TECHNO":
+                    field = FieldOfStudy.OTHER;
+                    break;
+                default:
+                    field = FieldOfStudy.valueOf(toCheck);
+            }
+        } else {
+            field = FieldOfStudy.OTHER;
+        }
+
+        return field.name();
     }
 
-    private static String convertSpecializations(final byte[] specialization) {
-        return convert(specialization);
+    private static String convertSpecializations(final IW3OffersEntity oldOffer) {
+        final String specialization = convert(oldOffer.getSpecialization());
+        final String other = convert(oldOffer.getFacultyother());
+
+        return  specialization + (((other != null) && !other.isEmpty()) ? '|' + other : "");
     }
 
     /**
-     * In IW3, the Trainingrequired fiels was a String, in IWS it is a Boolean. Converting means that we have to cover crawl through the long and boring list of crapola that people can add...<br />
+     * In IW3, the Trainingrequired fiels was a String, in IWS it is a Boolean.
+     * Converting means that we have to cover crawl through the long and boring
+     * list of crapola that people can add...<br />
      *   The following query gives a hint has to what have to deal with:<br />
      * <pre>
      *   select

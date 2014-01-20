@@ -54,7 +54,7 @@ public enum FieldOfStudy {
             Specialization.ANIMAL_HUSBANDRY,
             Specialization.ANIMAL_SCIENCE,
             Specialization.BREWING,
-            Specialization.DIARY_FARMING,
+            Specialization.DAIRY_FARMING,
             Specialization.EARTH_SCIENCE,
             Specialization.FISHERIES,
             Specialization.FOREST_ENGINEERING,
@@ -224,7 +224,7 @@ public enum FieldOfStudy {
 
     FOOD_SCIENCE("Food Science", Arrays.asList(
             Specialization.BREWING,
-            Specialization.DIARY_FARMING,
+            Specialization.DAIRY_FARMING,
             Specialization.FOOD_CHEMISTRY,
             Specialization.FOOD_TECHNOLOGY,
             Specialization.FOOD_QUALITY_AND_SAFETY,

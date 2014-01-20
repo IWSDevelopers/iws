@@ -85,8 +85,6 @@ public enum Specialization {
     DATABASE_ADMINISTRATION("Database Administration"),
     DESIGN("Design"),
     DEVELOPMENT_STUDIES("Development studies"),
-    // Added as it was in the FieldOfStudy, but not in the Excel sheet
-    DIARY_FARMING("Diary Farming"),
     DIGITAL_MEDIA("Digital Media"),
     DISCRETE_MATHEMATICS("Discrete Mathematics"),
     DRAWING("Drawing"),

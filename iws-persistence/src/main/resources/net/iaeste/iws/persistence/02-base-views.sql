@@ -53,10 +53,10 @@ create view user_permissions as
     p.permission         as permission
   from
     users u,
-    groups g,
+    groups g
+    left join countries c on c.id = g.country_id,
     grouptypes t,
     roles r,
-    countries c,
     permissions p,
     user_to_group u2g,
     permission_to_role p2r,
@@ -64,7 +64,6 @@ create view user_permissions as
   where t.id = g.grouptype_id
     and u.id = u2g.user_id
     and g.id = u2g.group_id
-    and c.id = g.country_id
     and r.id = u2g.role_id
     and p.id = p2r.permission_id
     and r.id = p2r.role_id

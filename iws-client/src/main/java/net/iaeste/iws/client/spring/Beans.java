@@ -51,10 +51,10 @@ public class Beans {
 
     @Bean
     protected DataSource dataSource() {
-        return USE_INMEMORY_DATABASE ? hsqldbDataSource() : postgreDataSource();
+        return USE_INMEMORY_DATABASE ? hsqldbDataSource() : postgresDataSource();
     }
 
-    private static DataSource postgreDataSource() {
+    private static DataSource postgresDataSource() {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
         dataSource.setServerName("localhost");

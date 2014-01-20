@@ -26,9 +26,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -91,58 +89,58 @@ public class CopierTest {
         assertThat(copy.isEmpty(), is(true));
     }
 
-    @Test
-    public void testCopyDateMap() {
-        final Date key = new Date(1);
-        final Date val = new Date(3);
+    //@Test
+    //public void testCopyDateMap() {
+    //    final Date key = new Date(1);
+    //    final Date val = new Date(3);
+    //
+    //    final Map<Date, Date> map = new HashMap<>(1);
+    //    map.put(key, val);
+    //
+    //    final Map<Date, Date> copy = Copier.copy(map);
+    //
+    //    assertThat(copy, is(map));
+    //    assertThat(copy, is(not(sameInstance(map))));
+    //    assertThat(copy.containsKey(key), is(true));
+    //    assertThat(copy.get(key), is(val));
+    //    assertThat(copy.get(key), is(not(sameInstance(val))));
+    //}
 
-        final Map<Date, Date> map = new HashMap<>(1);
-        map.put(key, val);
+    //@Test
+    //public void testCopyStringMap() {
+    //    final String key = "key";
+    //    final String val = "value";
+    //
+    //    final Map<String, String> map = new HashMap<>(1);
+    //    map.put(key, val);
+    //
+    //    final Map<String, String> copy = Copier.copy(map);
+    //
+    //    assertThat(copy, is(map));
+    //    assertThat(copy, is(not(sameInstance(map))));
+    //    assertThat(copy.containsKey(key), is(true));
+    //    assertThat(copy.get(key), is(val));
+    //    assertThat(copy.get(key), is(not(sameInstance(val))));
+    //}
 
-        final Map<Date, Date> copy = Copier.copy(map);
+    //@Test
+    //public void testCopyEmptyMap() {
+    //    final Map<String, String> map = new HashMap<>(0);
+    //
+    //    final Map<String, String> copy = Copier.copy(map);
+    //
+    //    assertThat(copy, is(map));
+    //    assertThat(copy, is(not(sameInstance(map))));
+    //    assertThat(copy.isEmpty(), is(true));
+    //}
 
-        assertThat(copy, is(map));
-        assertThat(copy, is(not(sameInstance(map))));
-        assertThat(copy.containsKey(key), is(true));
-        assertThat(copy.get(key), is(val));
-        assertThat(copy.get(key), is(not(sameInstance(val))));
-    }
-
-    @Test
-    public void testCopyStringMap() {
-        final String key = "key";
-        final String val = "value";
-
-        final Map<String, String> map = new HashMap<>(1);
-        map.put(key, val);
-
-        final Map<String, String> copy = Copier.copy(map);
-
-        assertThat(copy, is(map));
-        assertThat(copy, is(not(sameInstance(map))));
-        assertThat(copy.containsKey(key), is(true));
-        assertThat(copy.get(key), is(val));
-        assertThat(copy.get(key), is(not(sameInstance(val))));
-    }
-
-    @Test
-    public void testCopyEmptyMap() {
-        final Map<String, String> map = new HashMap<>(0);
-
-        final Map<String, String> copy = Copier.copy(map);
-
-        assertThat(copy, is(map));
-        assertThat(copy, is(not(sameInstance(map))));
-        assertThat(copy.isEmpty(), is(true));
-    }
-
-    @Test
-    public void testCopyNullMap() {
-        final Map<String, String> map = null;
-
-        final Map<String, String> copy = Copier.copy(map);
-
-        assertThat(copy, is(not(nullValue())));
-        assertThat(copy.isEmpty(), is(true));
-    }
+    //@Test
+    //public void testCopyNullMap() {
+    //    final Map<String, String> map = null;
+    //
+    //    final Map<String, String> copy = Copier.copy(map);
+    //
+    //    assertThat(copy, is(not(nullValue())));
+    //    assertThat(copy.isEmpty(), is(true));
+    //}
 }

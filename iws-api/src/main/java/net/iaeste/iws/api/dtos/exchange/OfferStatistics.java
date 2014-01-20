@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 
@@ -63,11 +61,15 @@ public final class OfferStatistics implements Serializable {
     // =========================================================================
 
     public void setStatistics(final Map<OfferState, Integer> statistics) {
-        this.statistics = copy(statistics);
+        // Since the result is a pure read-only from the IWS, it is safe to
+        // return it without a defensive copying first
+        this.statistics = statistics;
     }
 
     public Map<OfferState, Integer> getStatistics() {
-        return copy(statistics);
+        // Since the result is a pure read-only from the IWS, it is safe to
+        // return it without a defensive copying first
+        return statistics;
     }
 
     public void setExchangeYear(final Integer exchangeYear) {

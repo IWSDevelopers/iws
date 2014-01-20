@@ -57,6 +57,11 @@ public final class HeavyLoadTest {
 
     private static final Logger log = LoggerFactory.getLogger(HeavyLoadTest.class);
     private static final Access access = new AccessClient();
+    private static final Object lock = new Object();
+    private static long userTotalNanos = 0;
+    private static long statTotalNanos = 0;
+    private static long allOfferTotalNanos = 0;
+    private static long sharedOfferTotalNanos = 0;
 
     /**
      * Just ran a couple of Queries against the Migrated PostgreSQL database for
@@ -94,7 +99,7 @@ public final class HeavyLoadTest {
     public void testHeavyLoad() throws InterruptedException {
         final List<AuthenticationToken> tokens = prepareTokenPool();
         final int threads = tokens.size();
-        final int loops = 50;
+        final int loops = 10;
         log.info("Starting the test with {} threads and {} loops in each thread.", threads, loops);
 
         final ExecutorService executor = Executors.newFixedThreadPool(threads);
@@ -107,8 +112,15 @@ public final class HeavyLoadTest {
         }
         final List<Future<Object>> result = executor.invokeAll(jobs);
         assertThat(result.size(), is(threads));
-        cleanupTokenPool(tokens);
+
         log.info("Finishing the test.");
+        log.info("Fetching MemberGroup with all users {} times, took {} ms", tokens.size() * loops, userTotalNanos / 1000000);
+        log.info("Fetching OfferStatistics {} times, took {} ms", tokens.size() * loops, statTotalNanos / 1000000);
+        log.info("Fetching All Offers {} times, took {} ms", tokens.size() * loops, allOfferTotalNanos / 1000000);
+        log.info("Fetching Shared Offers {} times, took {} ms", tokens.size() * loops, sharedOfferTotalNanos / 1000000);
+
+        // Now we can clean up the tokens
+        cleanupTokenPool(tokens);
     }
 
     // =========================================================================
@@ -135,6 +147,30 @@ public final class HeavyLoadTest {
     private void cleanupTokenPool(final List<AuthenticationToken> pool) {
         for (final AuthenticationToken token : pool) {
             access.deprecateSession(token).isOk();
+        }
+    }
+
+    private static void recordUserNanos(final long userNanos) {
+        synchronized (lock) {
+            userTotalNanos += userNanos;
+        }
+    }
+
+    private static void recordStatNanos(final long statNanos) {
+        synchronized (lock) {
+            statTotalNanos += statNanos;
+        }
+    }
+
+    private static void recordAllOfferNanos(final long allOfferNanos) {
+        synchronized (lock) {
+            allOfferTotalNanos += allOfferNanos;
+        }
+    }
+
+    private static void recordSharedOfferNanos(final long sharedOfferNanos) {
+        synchronized (lock) {
+            sharedOfferTotalNanos += sharedOfferNanos;
         }
     }
 
@@ -170,15 +206,40 @@ public final class HeavyLoadTest {
         @Override
         public void run() {
             log.info("Thread {} starting.", thread);
+            long userNanos = 0;
+            long statNanos = 0;
+            long allOfferNanos = 0;
+            long sharedOfferNanos = 0;
+
             for (int i = 0; i <= loops; i++) {
                 final FetchGroupRequest request = new FetchGroupRequest(GroupType.MEMBER);
                 request.setFetchUsers(true);
+
+                final long tmp1 = System.nanoTime();
                 assertThat(administration.fetchGroup(token, request).isOk(), is(true));
+                final long tmp2 = System.nanoTime();
                 assertThat(exchange.fetchOfferStatistics(token, new OfferStatisticsRequest()).isOk(), is(true));
+                final long tmp3 = System.nanoTime();
                 assertThat(exchange.fetchOffers(token, new FetchOffersRequest(FetchType.ALL)).isOk(), is(true));
+                final long tmp4 = System.nanoTime();
                 assertThat(exchange.fetchOffers(token, new FetchOffersRequest(FetchType.SHARED)).isOk(), is(true));
+                final long tmp5 = System.nanoTime();
+                userNanos += tmp2 - tmp1;
+                statNanos += tmp3 - tmp2;
+                allOfferNanos += tmp4 - tmp3;
+                sharedOfferNanos += tmp5 - tmp4;
             }
-            log.info("Thread {} finishing.", thread);
+
+            // Massive logging, to get all the results out
+            recordUserNanos(userNanos);
+            recordStatNanos(statNanos);
+            recordAllOfferNanos(allOfferNanos);
+            recordSharedOfferNanos(sharedOfferNanos);
+            log.debug("Thread {} :: Fetching MemberGroup with all users {} times, took {} ns", thread, loops, userNanos);
+            log.debug("Thread {} :: Fetching OfferStatistics {} times, took {} ns", thread, loops, statNanos);
+            log.debug("Thread {} :: Fetching All Offers {} times, took {} ns", thread, loops, allOfferNanos);
+            log.debug("Thread {} :: Fetching Shared Offers {} times, took {} ns", thread, loops, sharedOfferNanos);
+            log.debug("Thread {} finishing.", thread);
         }
     }
 }

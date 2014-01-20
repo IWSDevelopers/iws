@@ -13,6 +13,10 @@
         <level value="warn" />
     </logger>
 
+    <logger name="net.iaeste.iws.client.HeavyLoadTest">
+        <level value="info" />
+    </logger>
+
     <logger name="org.springframework">
         <level value="error" />
     </logger>

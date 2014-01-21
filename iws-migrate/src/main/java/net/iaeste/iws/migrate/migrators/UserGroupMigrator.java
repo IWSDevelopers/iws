@@ -70,20 +70,27 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
         for (final IW3User2GroupEntity oldUserGroupEntity : oldEntities) {
             UserGroupEntity toPersist = null;
 
-            final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
-            final UserGroupEntity entity = convertOldEntity(oldUserGroupEntity, user);
-
-            if (user != null) {
-                toPersist = entity;
-                persisted++;
-            } else {
-                log.info("Skipping UserGroup Entity where the user no longer exists (userid={}, groupid={}).",
-                        oldUserGroupEntity.getUser().getUserid(),
-                        oldUserGroupEntity.getGroup().getGroupid());
+            if ((oldUserGroupEntity.getUser().getUserid() == 3005) && (oldUserGroupEntity.getGroup().getGroupid() == 30)) {
+                log.info("Skipping the relation between {} and {}, it is an error.",
+                        convert(oldUserGroupEntity.getUser().getUsername()),
+                        convert(oldUserGroupEntity.getGroup().getFullname()));
                 skipped++;
-            }
+            } else {
+                final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
+                final UserGroupEntity entity = convertOldEntity(oldUserGroupEntity, user);
 
-            doPersistEntity(toPersist);
+                if (user != null) {
+                    toPersist = entity;
+                    persisted++;
+                } else {
+                    log.info("Skipping UserGroup Entity where the user no longer exists (userid={}, groupid={}).",
+                            oldUserGroupEntity.getUser().getUserid(),
+                            oldUserGroupEntity.getGroup().getGroupid());
+                    skipped++;
+                }
+
+                doPersistEntity(toPersist);
+            }
         }
 
         return new MigrationResult(persisted, skipped);

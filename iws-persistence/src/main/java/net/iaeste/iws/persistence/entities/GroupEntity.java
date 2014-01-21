@@ -181,7 +181,7 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
     private String groupName;
 
     @Monitored(name="Group Full Name", level = MonitoringLevel.DETAILED)
-    @Column(name = "full_name", length = 100)
+    @Column(name = "full_name", length = 125)
     private String fullName = null;
 
     @Monitored(name="Group Description", level = MonitoringLevel.DETAILED)

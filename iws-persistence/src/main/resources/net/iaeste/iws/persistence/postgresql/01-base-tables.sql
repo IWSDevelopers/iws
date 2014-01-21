@@ -222,7 +222,7 @@ create table groups (
     parent_id           integer,
     grouptype_id        integer,
     group_name          varchar(50),
-    full_name           varchar(100),
+    full_name           varchar(125),
     group_description   varchar(250),
     country_id          integer,
     list_name           varchar(100),

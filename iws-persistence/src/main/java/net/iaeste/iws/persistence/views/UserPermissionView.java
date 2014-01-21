@@ -67,7 +67,10 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
     private String userName = null;
 
     @Column(name = "groupname")
-    private String groupName = null;
+    private String groupname = null;
+
+    @Column(name = "group_fullname")
+    private String groupFullname = null;
 
     @Column(name = "grouptype")
     @Enumerated(EnumType.STRING)
@@ -165,12 +168,20 @@ public class UserPermissionView extends AbstractView<UserPermissionView> {
         return userName;
     }
 
-    public void setGroupName(final String groupName) {
-        this.groupName = groupName;
+    public void setGroupname(final String groupname) {
+        this.groupname = groupname;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getGroupname() {
+        return groupname;
+    }
+
+    public void setGroupFullname(final String groupFullname) {
+        this.groupFullname = groupFullname;
+    }
+
+    public String getGroupFullname() {
+        return groupFullname;
     }
 
     public void setGroupType(final GroupType groupType) {

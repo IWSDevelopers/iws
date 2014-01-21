@@ -455,7 +455,8 @@ public final class AccessService extends CommonService<AccessDao> {
 
         group.setGroupId(view.getExternalGroupId());
         group.setGroupType(view.getGroupType());
-        group.setGroupName(view.getGroupName());
+        group.setGroupName(view.getGroupname());
+        group.setFullName(view.getGroupFullname());
         group.setCountry(readCountry(view));
         group.setDescription(view.getGroupDescription());
 

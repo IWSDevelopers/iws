@@ -307,6 +307,7 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
         FetchPermissionResponse response;
 

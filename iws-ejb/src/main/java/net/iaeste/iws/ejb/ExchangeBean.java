@@ -149,6 +149,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     //@WebMethod
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
         OfferStatisticsResponse response;
 
@@ -189,6 +190,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
         FetchEmployerResponse response;
 
@@ -250,6 +252,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         FetchOffersResponse response;
 
@@ -270,6 +273,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
         FetchGroupsForSharingResponse response;
 
@@ -310,6 +314,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         FetchOfferTemplateResponse response;
 
@@ -350,6 +355,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchPublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         FetchPublishGroupResponse response;
 
@@ -390,6 +396,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         FetchPublishedGroupsResponse response;
 

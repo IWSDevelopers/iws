@@ -39,6 +39,7 @@ import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.AdministrationBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -88,6 +89,23 @@ public final class AdministrationSpringClient implements Administration {
     // =========================================================================
     // Implementation of methods from Administration in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
+        return client.processCountry(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
+        return client.fetchCountries(token, request);
+    }
 
     /**
      * {@inheritDoc}
@@ -183,21 +201,5 @@ public final class AdministrationSpringClient implements Administration {
     @Override
     public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         return client.processUserGroupAssignment(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
-        return client.processCountry(token, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        return client.fetchCountries(token, request);
     }
 }

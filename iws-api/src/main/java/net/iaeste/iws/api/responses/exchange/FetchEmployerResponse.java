@@ -54,7 +54,7 @@ public final class FetchEmployerResponse extends AbstractFallible {
      * @param employers List of Employers found
      */
     public FetchEmployerResponse(final List<Employer> employers) {
-        setEmployers(employers);
+        this.employers = employers;
     }
 
     /**
@@ -72,7 +72,7 @@ public final class FetchEmployerResponse extends AbstractFallible {
     // =========================================================================
 
     public void setEmployers(final List<Employer> employers) {
-        this.employers = copy(employers);
+        this.employers = employers;
     }
 
     public List<Employer> getEmployers() {

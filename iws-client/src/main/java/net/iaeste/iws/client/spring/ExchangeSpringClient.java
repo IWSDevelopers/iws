@@ -44,6 +44,7 @@ import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.ExchangeBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -99,6 +100,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
         return client.fetchOfferStatistics(token, request);
     }
@@ -115,6 +117,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
         return client.fetchEmployers(token, request);
     }
@@ -139,6 +142,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         return client.fetchOffers(token, request);
     }
@@ -155,6 +159,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         return client.fetchOfferTemplates(token, request);
     }
@@ -171,6 +176,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchPublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         return client.fetchPublishGroups(token, request);
     }
@@ -179,6 +185,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
         return client.fetchGroupsForSharing(token);
     }
@@ -195,6 +202,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         return client.fetchPublishedGroups(token, request);
     }

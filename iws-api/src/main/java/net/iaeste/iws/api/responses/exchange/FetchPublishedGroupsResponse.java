@@ -57,7 +57,7 @@ public final class FetchPublishedGroupsResponse extends AbstractFallible {
      * @param offersGroups List of Offers found
      */
     public FetchPublishedGroupsResponse(final Map<String, List<Group>> offersGroups) {
-        setOffersGroups(offersGroups);
+        this.offersGroups = offersGroups;
     }
 
     /**
@@ -75,7 +75,7 @@ public final class FetchPublishedGroupsResponse extends AbstractFallible {
     // =========================================================================
 
     public void setOffersGroups(final Map<String, List<Group>> offersGroups) {
-        this.offersGroups = copyMapWithList(offersGroups);
+        this.offersGroups = offersGroups;
     }
 
     public Map<String, List<Group>> getOffersGroups() {

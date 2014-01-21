@@ -87,7 +87,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     }
 
     public void setMembers(final List<UserGroup> members) {
-        this.members = copy(members);
+        this.members = members;
     }
 
     public List<UserGroup> getMembers() {
@@ -95,7 +95,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     }
 
     public void setStudents(final List<UserGroup> students) {
-        this.students = copy(students);
+        this.students = students;
     }
 
     public List<UserGroup> getStudents() {
@@ -103,7 +103,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     }
 
     public void setSubGroups(final List<Group> subGroups) {
-        this.subGroups = copy(subGroups);
+        this.subGroups = subGroups;
     }
 
     public List<Group> getSubGroups() {

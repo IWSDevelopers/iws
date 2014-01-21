@@ -55,7 +55,7 @@ public final class FetchStudentApplicationsResponse extends AbstractFallible {
      * @param studentApplications List of Applications found
      */
     public FetchStudentApplicationsResponse(final List<StudentApplication> studentApplications) {
-        this.studentApplications = copy(studentApplications);
+        this.studentApplications = studentApplications;
     }
 
     /**
@@ -75,11 +75,11 @@ public final class FetchStudentApplicationsResponse extends AbstractFallible {
     // =========================================================================
 
     public void setStudentApplications(final List<StudentApplication> studentApplications) {
-        this.studentApplications = copy(studentApplications);
+        this.studentApplications = studentApplications;
     }
 
     public List<StudentApplication> getStudentApplications() {
-        return studentApplications;
+        return copy(studentApplications);
     }
 
     // =========================================================================

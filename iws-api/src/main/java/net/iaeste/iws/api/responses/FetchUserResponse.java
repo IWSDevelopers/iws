@@ -75,7 +75,7 @@ public final class FetchUserResponse extends AbstractFallible {
     }
 
     public User getUser() {
-        return user;
+        return new User(user);
     }
 
     // =========================================================================

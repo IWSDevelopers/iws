@@ -14,11 +14,12 @@
  */
 package net.iaeste.iws.api.responses;
 
+import static net.iaeste.iws.api.util.Copier.copy;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Authorization;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public final class FetchPermissionResponse extends AbstractFallible {
      */
     public FetchPermissionResponse(final String userId, final List<Authorization> authorizations) {
         this.userId = userId;
-        this.authorizations = Copier.copy(authorizations);
+        this.authorizations = copy(authorizations);
     }
 
     /**
@@ -87,11 +88,11 @@ public final class FetchPermissionResponse extends AbstractFallible {
     }
 
     public void setAuthorizations(final List<Authorization> authorizations) {
-        this.authorizations = Copier.copy(authorizations);
+        this.authorizations = authorizations;
     }
 
     public List<Authorization> getAuthorizations() {
-        return Copier.copy(authorizations);
+        return copy(authorizations);
     }
 
     // =========================================================================

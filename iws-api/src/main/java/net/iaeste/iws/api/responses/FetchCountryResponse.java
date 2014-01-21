@@ -65,7 +65,7 @@ public final class FetchCountryResponse extends AbstractFallible {
     // =========================================================================
 
     public void setCountries(final List<Country> countries) {
-        this.countries = copy(countries);
+        this.countries = countries;
     }
 
     public List<Country> getCountries() {

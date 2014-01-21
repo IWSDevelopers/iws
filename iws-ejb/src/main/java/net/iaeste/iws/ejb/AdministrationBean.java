@@ -137,6 +137,45 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
+    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
+        Fallible response;
+
+        try {
+            response = controller.processCountry(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
+        FetchCountryResponse response;
+
+        try {
+            response = controller.fetchCountries(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FetchCountryResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
     public CreateUserResponse createUser(final AuthenticationToken token, final CreateUserRequest request) {
         CreateUserResponse response;
 
@@ -231,6 +270,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchUserResponse fetchUser(final AuthenticationToken token, final FetchUserRequest request) {
         FetchUserResponse response;
 
@@ -249,6 +289,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchRoleResponse fetchRoles(final AuthenticationToken token, final FetchRoleRequest request) {
         FetchRoleResponse response;
 
@@ -306,6 +347,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchGroupResponse fetchGroup(final AuthenticationToken token, final FetchGroupRequest request) {
         FetchGroupResponse response;
 
@@ -353,44 +395,6 @@ public class AdministrationBean extends AbstractBean implements Administration {
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public Fallible processCountry(final AuthenticationToken token, final CountryRequest request) {
-        Fallible response;
-
-        try {
-            response = controller.processCountry(token, request);
-            log.info(generateResponseLog(response, token));
-        } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
-            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
-        }
-
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Interceptors(Profiler.class)
-    public FetchCountryResponse fetchCountries(final AuthenticationToken token, final FetchCountryRequest request) {
-        FetchCountryResponse response;
-
-        try {
-            response = controller.fetchCountries(token, request);
-            log.info(generateResponseLog(response, token));
-        } catch (RuntimeException e) {
-            log.error(generateErrorLog(e, token));
-            response = new FetchCountryResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

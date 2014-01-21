@@ -53,7 +53,7 @@ public final class FetchOffersResponse extends AbstractFallible {
      * @param offers List of Offers found
      */
     public FetchOffersResponse(final List<Offer> offers) {
-        setOffers(offers);
+        this.offers = offers;
     }
 
     /**
@@ -71,7 +71,7 @@ public final class FetchOffersResponse extends AbstractFallible {
     // =========================================================================
 
     public void setOffers(final List<Offer> offers) {
-        this.offers = copy(offers);
+        this.offers = offers;
     }
 
     public List<Offer> getOffers() {

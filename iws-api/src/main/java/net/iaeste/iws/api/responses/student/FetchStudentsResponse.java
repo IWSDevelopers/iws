@@ -53,7 +53,7 @@ public final class FetchStudentsResponse extends AbstractFallible {
      * @param students List of found Students
      */
     public FetchStudentsResponse(final List<Student> students) {
-        setStudents(students);
+        this.students = students;
     }
 
     /**
@@ -71,7 +71,7 @@ public final class FetchStudentsResponse extends AbstractFallible {
     // =========================================================================
 
     public void setStudents(final List<Student> students) {
-        this.students = copy(students);
+        this.students = students;
     }
 
     public List<Student> getStudents() {

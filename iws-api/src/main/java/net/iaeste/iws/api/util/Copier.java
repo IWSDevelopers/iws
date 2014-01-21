@@ -24,6 +24,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +34,11 @@ import java.util.Set;
  * Utility Class, containing a single method called "copy". This method is
  * written in different versions, depending on the given input data. The main
  * reason for using this, is to ensure that object, which is not immutable is
- * properly copied - to avoid leaking internal data references.
+ * properly copied - to avoid leaking internal data references.<br />
+ *   Copying is needed to ensure that all data we start processing is 100% under
+ * the control of the IWS. Read-only request, such as all the fetch* requests
+ * are invoking the system with read-only access. So they do not need to use
+ * the copying.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -85,19 +91,18 @@ public final class Copier {
      * @return Copy of the given Set, or an empty Set
      */
     public static <T extends Serializable> Set<T> copy(final Set<T> original) {
-        return original;
-        //final Set<T> copy;
-        //
-        //if (original != null) {
-        //    copy = new HashSet<>(original.size());
-        //    for (final T t : original) {
-        //        copy.add(copy(t));
-        //    }
-        //} else {
-        //    copy = new HashSet<>(0);
-        //}
-        //
-        //return copy;
+        final Set<T> copy;
+
+        if (original != null) {
+            copy = new HashSet<>(original.size());
+            for (final T t : original) {
+                copy.add(copy(t));
+            }
+        } else {
+            copy = new HashSet<>(0);
+        }
+
+        return copy;
     }
 
     /**
@@ -112,52 +117,19 @@ public final class Copier {
      * @return Copy of the given Map, or an empty Map
      */
     public static <T extends Serializable, V extends Serializable> Map<T, List<V>> copyMapWithList(final Map<T, List<V>> original) {
-        // Note; Trac task #648, is quite rightly blaming the Defensive Copying
-        // for being a performance hog. The original testing indicates that this
-        // copying maps is very resourcedemanding. Which means, that for now -
-        // this method has been benched until a proper solution can be found.
-        return original;
-        //final Map<T, List<V>> copy;
-        //
-        //if (original != null) {
-        //    copy = new HashMap<>(original.size());
-        //    for (final Map.Entry<T, List<V>> entry : original.entrySet()) {
-        //        copy.put(copy(entry.getKey()), copy(entry.getValue()));
-        //    }
-        //} else {
-        //    copy = new HashMap<>(0);
-        //}
-        //
-        //return copy;
-    }
+        final Map<T, List<V>> copy;
 
-    ///**
-    // * Copies the given Map, to ensure that the new Map is not exposing any
-    // * references. If the given Map is null, then a new empty Map is returned,
-    // * to avoid a potential {@code NullPointerException}.
-    // *
-    // * @param original The Map to copy
-    // * @return Copy of the given Map, or an empty Map
-    // */
-    //public static <T extends Serializable, V extends Serializable> Map<T, V> copy(final Map<T, V> original) {
-    //    // Note; Trac task #648, is quite rightly blaming the Defensive Copying
-    //    // for being a performance hog. The original testing indicates that this
-    //    // copying maps is very resourcedemanding. Which means, that for now -
-    //    // this method has been benched until a proper solution can be found.
-    //    return original;
-    //    //final Map<T, V> copy;
-    //    //
-    //    //if (original != null) {
-    //    //    copy = new HashMap<>(original.size());
-    //    //    for (final Map.Entry<T, V> entry : original.entrySet()) {
-    //    //        copy.put(copy(entry.getKey()), copy(entry.getValue()));
-    //    //    }
-    //    //} else {
-    //    //    copy = new HashMap<>(0);
-    //    //}
-    //    //
-    //    //return copy;
-    //}
+        if (original != null) {
+            copy = new HashMap<>(original.size());
+            for (final Map.Entry<T, List<V>> entry : original.entrySet()) {
+                copy.put(copy(entry.getKey()), copy(entry.getValue()));
+            }
+        } else {
+            copy = new HashMap<>(0);
+        }
+
+        return copy;
+    }
 
     /**
      * Copies the given Array, to ensure that the new Array is not exposing any

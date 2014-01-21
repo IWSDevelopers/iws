@@ -63,7 +63,7 @@ public final class Group extends AbstractVerification {
             listName = group.listName;
             groupType = group.groupType;
             description = group.description;
-            country = group.country;
+            country = new Country(group.country);
         }
     }
 
@@ -231,11 +231,11 @@ public final class Group extends AbstractVerification {
      * @param country The Country for this Group
      */
     public void setCountry(final Country country) {
-        this.country = country;
+        this.country = new Country(country);
     }
 
     public Country getCountry() {
-        return country;
+        return new Country(country);
     }
 
     // =========================================================================

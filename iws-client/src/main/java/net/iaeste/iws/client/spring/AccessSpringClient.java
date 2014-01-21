@@ -24,13 +24,11 @@ import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
-import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.ejb.AccessBean;
 import net.iaeste.iws.ejb.NotificationManagerBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -158,6 +156,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
         return client.fetchPermissions(token);
     }

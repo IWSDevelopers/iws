@@ -71,7 +71,7 @@ public final class FetchRoleResponse extends AbstractFallible {
     // =========================================================================
 
     public void setRoles(final List<Role> roles) {
-        this.roles = copy(roles);
+        this.roles = roles;
     }
 
     public List<Role> getRoles() {

@@ -75,10 +75,10 @@ insert into mailing_lists (external_id, private, list_address, active) values ('
 insert into mailing_lists (external_id, private, list_address, active) values ('92219b23-3bc2-4593-928c-92aee1d8dc44', 'false', 'china@test4.iaeste.org', 'true');
 insert into mailing_lists (external_id, private, list_address, active) values ('92219b23-3bc2-4593-928c-92aee1d8dc44', 'true', 'china.staff@test4.iaeste.net', 'true');
 
--- Generating Mailing Test data for Columbia, move to Mailing SQL file
-insert into mailing_lists (external_id, private, list_address, active) values ('e4012e2b-b444-4ead-9223-4efabbeaac68', 'true', 'columbia@test4.iaeste.net', 'true');
-insert into mailing_lists (external_id, private, list_address, active) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 'false', 'columbia@test4.iaeste.org', 'true');
-insert into mailing_lists (external_id, private, list_address, active) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 'true', 'columbia.staff@test4.iaeste.net', 'true');
+-- Generating Mailing Test data for Colombia, move to Mailing SQL file
+insert into mailing_lists (external_id, private, list_address, active) values ('e4012e2b-b444-4ead-9223-4efabbeaac68', 'true', 'colombia@test4.iaeste.net', 'true');
+insert into mailing_lists (external_id, private, list_address, active) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 'false', 'colombia@test4.iaeste.org', 'true');
+insert into mailing_lists (external_id, private, list_address, active) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 'true', 'colombia.staff@test4.iaeste.net', 'true');
 
 -- Generating Mailing Test data for Croatia, move to Mailing SQL file
 insert into mailing_lists (external_id, private, list_address, active) values ('aa681bc9-0707-4e3c-9cd1-d33c4af13f00', 'true', 'croatia@test4.iaeste.net', 'true');

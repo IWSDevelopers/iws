@@ -94,7 +94,7 @@ public final class GenerateDataForTest {
                 { "CA", "Canada",               Currency.CAD, 1953, Membership.FULL_MEMBER },
                 { "CL", "Chile",                Currency.CLP, 2013, Membership.COOPERATING_INSTITUTION },
                 { "CN", "China",                Currency.CNY, 2000, Membership.ASSOCIATE_MEMBER },
-                { "CO", "Columbia",             Currency.COP, 1960, Membership.FULL_MEMBER },
+                { "CO", "Colombia",             Currency.COP, 1960, Membership.FULL_MEMBER },
                 { "HR", "Croatia",              Currency.HRK, 1960, Membership.FULL_MEMBER },
                 { "CY", "Cyprus",               Currency.EUR, 1980, Membership.FULL_MEMBER },
                 { "CZ", "CzechRepublic",        Currency.CZK, 1965, Membership.FULL_MEMBER },

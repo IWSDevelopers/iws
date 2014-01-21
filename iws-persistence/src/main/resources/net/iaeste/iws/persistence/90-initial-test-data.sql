@@ -139,14 +139,14 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('b98
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('29be4afe-a489-4df3-a58e-5c4e8619af63', 14, 37, 1);
 -- Completed generating test data for China
 
--- Generating Test data for Columbia
-insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CO', 'Columbia', 'Columbia', 'COP', 1960, 'FULL_MEMBER');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('e4012e2b-b444-4ead-9223-4efabbeaac68', 2, null, 15, 'Columbia');
-insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 4, 38, 15, 'Columbia');
-insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('2119acdb-e595-444a-81e7-3cbbe6d867dd', 'ACTIVE', 'columbia@iaeste.co', 'NS.Columbia@iaeste.org', '3791e172b4de4e935da7dda50528d679e1a2ffc44d8d1e6bb1d435d0e102a12c', 'f39bd566-d279-4efd-992f-30426f8a9f85', 'NS', 'Columbia');
+-- Generating Test data for Colombia
+insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('CO', 'Colombia', 'Colombia', 'COP', 1960, 'FULL_MEMBER');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('e4012e2b-b444-4ead-9223-4efabbeaac68', 2, null, 15, 'Colombia');
+insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('34823d36-9b1d-4058-88f2-deaeb95f11ab', 4, 38, 15, 'Colombia');
+insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('2119acdb-e595-444a-81e7-3cbbe6d867dd', 'ACTIVE', 'colombia@iaeste.co', 'NS.Colombia@iaeste.org', '3791e172b4de4e935da7dda50528d679e1a2ffc44d8d1e6bb1d435d0e102a12c', 'f39bd566-d279-4efd-992f-30426f8a9f85', 'NS', 'Colombia');
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('f2e5369b-9d0f-4132-ae04-ed0876071636', 15, 38, 1);
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('138b754c-9bbe-4e8c-9257-4e7e6ceef5b5', 15, 39, 1);
--- Completed generating test data for Columbia
+-- Completed generating test data for Colombia
 
 -- Generating Test data for Croatia
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('HR', 'Croatia', 'Croatia', 'HRK', 1960, 'FULL_MEMBER');

@@ -131,6 +131,18 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
     private static UserGroupEntity preparePrivateGroup(final UserEntity user, final GroupTypeEntity groupType, final RoleEntity role) {
         final GroupEntity group = new GroupEntity();
         group.setGroupName(user.getFirstname() + ' ' + user.getLastname());
+
+        // There's a problem with a couple of accounts where there exists
+        // duplicates. Run the following against the IW3 database to see:
+        // select
+        //   count(userid) as records,
+        //   firstname,
+        //   lastname
+        // from users
+        // group by firstname, lastname
+        // having count(userid) > 1
+        // order by records desc;
+        //group.setFullName("Private Group for " + group.getGroupName());
         group.setGroupType(groupType);
         group.setModified(convert(user.getModified()));
         group.setCreated(convert(user.getCreated(), user.getModified()));

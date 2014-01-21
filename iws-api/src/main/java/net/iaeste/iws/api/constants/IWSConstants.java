@@ -69,9 +69,11 @@ public interface IWSConstants {
 
     /**
      * Sessions will time-out after a number of minutes being idle. Meaning that
-     * no activity took place using the account.
+     * no activity took place using the account. The value is set to 8 hours per
+     * default, so inactivity during a normal Office workday shouldn't cause any
+     * problems.
      */
-    long MAX_SESSION_IDLE_PERIOD = 1800000L;
+    long MAX_SESSION_IDLE_PERIOD = 28800000L;
 
     /**
      * The maximum number of times a user may attempt to login with incorrect

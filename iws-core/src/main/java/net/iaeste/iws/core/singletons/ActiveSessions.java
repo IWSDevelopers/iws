@@ -141,10 +141,11 @@ public final class ActiveSessions {
     }
 
     /**
-     * Reads when a given Token last were accessing the system.
+     * Reads when a given Token last were accessing the system. If no active
+     * Session exists, then a null is returned.
      *
      * @param token Session Token
-     * @return Last Access
+     * @return Last Access or null if no active session exists
      */
     public Date getLastAccess(final String token) {
         final Date lastAccess;

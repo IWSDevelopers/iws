@@ -124,7 +124,7 @@ public final class GenerateDataForTest {
                 { "KZ", "Kazakhstan",           Currency.KZT, 1995, Membership.FULL_MEMBER },
                 { "KE", "Kenya",                Currency.KES, 2004, Membership.COOPERATING_INSTITUTION },
                 { "KR", "Korea",                Currency.KRW, 2007, Membership.COOPERATING_INSTITUTION },
-                { "LV", "Latvia",               Currency.LVL, 2002, Membership.FULL_MEMBER },
+                { "LV", "Latvia",               Currency.EUR, 2002, Membership.FULL_MEMBER },
                 { "LB", "Lebanon",              Currency.LBP, 1966, Membership.FULL_MEMBER },
                 { "LR", "Liberia",              Currency.LRD, 2012, Membership.COOPERATING_INSTITUTION },
                 { "LT", "Lithuania",            Currency.LTL, 1990, Membership.FULL_MEMBER },

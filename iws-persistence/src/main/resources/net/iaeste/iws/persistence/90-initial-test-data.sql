@@ -392,7 +392,7 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('036
 -- Completed generating test data for Korea
 
 -- Generating Test data for Latvia
-insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LV', 'Latvia', 'Latvia', 'LVL', 2002, 'FULL_MEMBER');
+insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('LV', 'Latvia', 'Latvia', 'EUR', 2002, 'FULL_MEMBER');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('a657b0ce-b120-4bcf-824c-ac9739ebfb37', 2, null, 43, 'Latvia');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('377ab884-b042-4ffd-9041-5455bc79baf4', 4, 94, 43, 'Latvia');
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('1ac0b03e-3c2d-4d72-9610-2593aeac90b4', 'ACTIVE', 'latvia@iaeste.lv', 'NS.Latvia@iaeste.org', '31cd082f37c1ed15b81796e6b505ce3debdda271a1c9a56c35adf7e636bd4a68', '8644e27f-c771-4902-bfc4-ca205feb7f9f', 'NS', 'Latvia');

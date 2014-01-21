@@ -433,9 +433,11 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                 case "MARINE_BIOLOGY":
                     field = FieldOfStudy.AQUA_CULTURE;
                     break;
+                case "ARCHITECTURE":
                 case "LANDSCAPE_PLANNING":
                     field = FieldOfStudy.ARCHITECTURE;
                     break;
+                case "BIOLOGY":
                 case "ECOLOGY":
                 case "MOLECULAR_BIOLOGY":
                 case "ZOOLOGY":
@@ -446,16 +448,20 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                     break;
                 case "BIOCHEMISTRY":
                 case "BIOENGINEERING":
+                case "BIOTECHNOLOGY":
                 case "MICROBIOLOGY":
                 case "PHARMACY":
                     field = FieldOfStudy.BIOTECHNOLOGY;
                     break;
                 case "CHEMICAL_ENGINEERING":
+                case "CHEMISTRY":
                 case "PHARMACEUTICAL_STUDIES":
                 case "SANITARY_ENGINEERING":
                     field = FieldOfStudy.CHEMISTRY;
                     break;
+                case "CIVIL_ENGINEERING":
                 case "CONSTRUCTION":
+                case "CULTURE_TECHNICS-RURAL":
                 case "MINING":
                 case "TRAFFIC_ENGINEERING":
                     field = FieldOfStudy.CIVIL_ENGINEERING;
@@ -473,12 +479,14 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                 case "POWER_ENGINEERING":
                     field = FieldOfStudy.ENERGY_ENGINEERING;
                     break;
+                case "ENVIRONMENTAL_ENGINEERING":
                 case "ENVIRONMENTAL_PLANNING_AND_DESIGN":
                 case "ENVIRONMENTAL_SCIENCE":
                 case "WASTE_WATER_TREATMENT":
                     field = FieldOfStudy.ENVIRONMENTAL_ENGINEERING;
                     break;
                 case "AUTOMATION":
+                case "ELECTRICAL_ENGINEERING":
                 case "ELECTRONICS":
                 case "ELECTROTECHNICAL_ENGINEERING":
                 case "MECHATRONICS":
@@ -490,8 +498,12 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                 case "GEODESY":
                 case "GEOGRAPHY":
                 case "GEOLOGY":
+                case "GEOSCIENCE":
                 case "METALLURGY":
                     field = FieldOfStudy.GEOSCIENCE;
+                    break;
+                case "INDUSTRIAL_ENGINEERING":
+                    field = FieldOfStudy.INDUSTRIAL_ENGINEERING;
                     break;
                 case "COMPUTER_ENGINEERING":
                 case "COMPUTER_SCIENCE":
@@ -502,15 +514,18 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                 case "TELECOMMUNICATIONS":
                     field = FieldOfStudy.IT;
                     break;
+                case "MATERIAL_SCIENCE":
                 case "MINERAL_PROCESSING":
                 case "TEXTILE_TECHNOLOGY":
                     field = FieldOfStudy.MATERIAL_SCIENCE;
                     break;
+                case "MATHEMATICS":
                 case "STATISTICS":
                     field = FieldOfStudy.MATHEMATICS;
                     break;
                 case "BIOMECHANICAL":
                 case "MANUFACTURING_ENGINEERING":
+                case "MECHANICAL_ENGINEERING":
                 case "NAVAL_ARCHITECTURE":
                 case "NAVAL_ENGINEERING":
                 case "OFFSHORE":
@@ -525,14 +540,17 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                 case "BIOPHYSICS":
                 case "ENGINEERING_PHYSICS":
                 case "OPTICS":
+                case "PHYSICS":
                     field = FieldOfStudy.PHYSICS;
+                    break;
+                case "VETERINARY_SCIENCE":
+                    field = FieldOfStudy.VETERINARY_SCIENCE;
                     break;
                 case "OTHER_ENGINEERING_&AMP;_TECHNO":
                     field = FieldOfStudy.OTHER;
                     break;
                 default:
-                    // michl: deactivatd this one to be able to run a complete migration
-                    //field = FieldOfStudy.valueOf(toCheck);
+                    log.info("The Field of Study (Faculty) {} is not mapped over.", toCheck);
                     field = FieldOfStudy.OTHER;
             }
         } else {

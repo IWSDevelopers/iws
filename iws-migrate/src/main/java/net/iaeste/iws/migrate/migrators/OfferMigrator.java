@@ -531,7 +531,9 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                     field = FieldOfStudy.OTHER;
                     break;
                 default:
-                    field = FieldOfStudy.valueOf(toCheck);
+                    // michl: deactivatd this one to be able to run a complete migration
+                    //field = FieldOfStudy.valueOf(toCheck);
+                    field = FieldOfStudy.OTHER;
             }
         } else {
             field = FieldOfStudy.OTHER;

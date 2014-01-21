@@ -150,7 +150,7 @@ public final class GenerateDataForTest {
                 { "RU", "Russia",               Currency.RUB, 1991, Membership.FULL_MEMBER },
                 { "RS", "Serbia",               Currency.RSD, 1952, Membership.FULL_MEMBER },
                 { "SK", "Slovakia",             Currency.EUR, 1965, Membership.FULL_MEMBER },
-                { "SL", "Slovenia",             Currency.EUR, 1993, Membership.FULL_MEMBER },
+                { "SI", "Slovenia",             Currency.EUR, 1993, Membership.FULL_MEMBER },
                 { "ES", "Spain",                Currency.EUR, 1951, Membership.FULL_MEMBER },
                 { "LK", "SriLanka",             Currency.LKR, 2000, Membership.COOPERATING_INSTITUTION },
                 { "SE", "Sweden",               Currency.SEK, 1948, Membership.FULL_MEMBER },

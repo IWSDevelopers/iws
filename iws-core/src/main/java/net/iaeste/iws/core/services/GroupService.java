@@ -295,6 +295,7 @@ public final class GroupService {
         dao.persist(authentication, newOwner);
         dao.persist(authentication, oldOwner);
 
+        //TODO notify obout OLD_GROUP_OWNER ? Is there anything to be changed?
         notifications.notify(authentication, newOwner, NotificationType.NEW_GROUP_OWNER);
         notifications.notify(authentication, newOwner, NotificationType.CHANGE_IN_GROUP_MEMBERS);
     }
@@ -416,8 +417,9 @@ public final class GroupService {
             // via a general purpose method, since it critical information.
             existingEntity.setRole(role);
             // Following two lines are set by the merge method, so this us duplication.
-            //existingEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
-            //existingEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
+            // TODO @Kim - This would be true IF given entity HAS id but there is NO id in given entity so it's not merged'
+            existingEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
+            existingEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
             dao.persist(authentication, existingEntity, given);
 
             notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);

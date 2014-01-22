@@ -116,6 +116,8 @@ public interface IWSConstants {
      */
     String PRIVATE_EMAIL_ADDRESS = "iaeste.net";
 
+    String NCS_LIST_NAME = "ncs";
+
     String BASE_URL = "https://www.iaeste.net/intraweb";
     String IWS_EMAIL_SENDER = "intraweb@iaeste.net";
 

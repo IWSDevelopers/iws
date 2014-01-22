@@ -78,6 +78,11 @@ public enum NotificationField {
     GROUP_TYPE,
 
     /**
+     * The mailing alias of the Group that
+     */
+    GROUP_LIST_NAME,
+
+    /**
      * The name of the Role, that a user has been assigned in a Group.
      */
     ROLE,

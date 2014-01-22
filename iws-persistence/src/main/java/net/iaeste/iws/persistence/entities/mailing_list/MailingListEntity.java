@@ -43,7 +43,10 @@ import java.util.Date;
         @NamedQuery(name = "mailing_list.findPrivateListByExternalId",
                 query = "select ml from MailingListEntity ml " +
                         "where ml.externalId = :eid " +
-                        "  and ml.privateList = true ")
+                        "  and ml.privateList = true "),
+        @NamedQuery(name = "mailing_list.findByMailingListAddress",
+                query = "select ml from MailingListEntity ml " +
+                        "where ml.listAddress = :address ")
 })
 @Entity
 @Table(name = "mailing_lists")

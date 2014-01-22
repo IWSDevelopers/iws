@@ -240,4 +240,9 @@ public interface AccessDao extends BasicDao {
      * @return List of GroupEntity
      */
     List<UserGroupEntity> findAllUserGroups(UserEntity user);
+
+    /**
+     * Finds all users for NCS mailing list
+     */
+    List<UserGroupEntity> findNcs();
 }

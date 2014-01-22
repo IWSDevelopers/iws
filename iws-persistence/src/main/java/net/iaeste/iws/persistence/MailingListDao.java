@@ -80,4 +80,15 @@ public interface MailingListDao extends BasicDao {
      * @param oldEmailAddress old user private email address
      */
     void updateUsernameInMailingAlias(String newEmailAddress, String oldEmailAddress);
+
+    /**
+     * Deletes all subscriptions for given mailing list ID
+     * @param id Mailing list ID to be cleared
+     */
+    void wipeOutMailingListMembers(Long id);
+
+    /**
+     * Finds ncs mailing list
+     */
+    MailingListEntity findNcsList(String ncsList);
 }

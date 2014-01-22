@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.ejb.notifications.consumers;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.NotificationFrequency;
 import net.iaeste.iws.api.enums.UserStatus;
@@ -28,6 +29,7 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
@@ -44,6 +46,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -151,19 +154,64 @@ public class NotificationSystemAdministration implements Observer {
                 status = NotificationProcessTaskStatus.OK;
                 break;
             case CHANGE_IN_GROUP_MEMBERS:
-                updateMailingListSubscription(fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID), fields.get(NotificationField.EMAIL), fields.get(NotificationField.USER_STATUS), fields.get(NotificationField.ON_PRIVATE_LIST), fields.get(NotificationField.ON_PUBLIC_LIST));
+                updateMailingListSubscription(fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.GROUP_EXTERNAL_ID), fields.get(NotificationField.ROLE), fields.get(NotificationField.EMAIL), fields.get(NotificationField.USER_STATUS), fields.get(NotificationField.ON_PRIVATE_LIST), fields.get(NotificationField.ON_PUBLIC_LIST));
                 status = NotificationProcessTaskStatus.OK;
                 break;
             case USERNAME_UPDATED:
                 processUpdatedUsername(fields.get(NotificationField.EMAIL), fields.get(NotificationField.NEW_USERNAME));
                 status = NotificationProcessTaskStatus.OK;
                 break;
+            case NEW_GROUP_OWNER:
+                processNewGroupOwner(fields.get(NotificationField.GROUP_EXTERNAL_ID), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.EMAIL));
             default:
                 // For all other cases
                 status = NotificationProcessTaskStatus.NOT_FOR_ME;
         }
 
         return status;
+    }
+
+    private void processNewGroupOwner(final String groupExternalId, final String groupTypeName, final String username) {
+        try {
+            final GroupType groupType = GroupType.valueOf(groupTypeName);
+
+            if (GroupType.NATIONAL.equals(groupType)) {
+                addToNcsList(username);
+            }
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    private void addToNcsList(final String username) {
+        MailingListEntity ncsList = mailingListDao.findNcsList(settings.getNcsList());
+
+        if (ncsList != null) {
+            MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(ncsList.getId(), username);
+
+            if (subscription == null) {
+                subscription = new MailingListMembershipEntity();
+                subscription.setMailingList(ncsList);
+                subscription.setMember(username);
+                mailingListEntityManager.persist(subscription);
+            }
+        } else {
+            log.error("NCs mailing list lookup failed using '" + settings.getNcsList() + "' address");
+        }
+    }
+
+    private void removeFromNcsList(final String username) {
+        MailingListEntity ncsList = mailingListDao.findNcsList(settings.getNcsList());
+
+        if (ncsList != null) {
+            MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(ncsList.getId(), username);
+
+            if (subscription != null) {
+                mailingListEntityManager.remove(subscription);
+            }
+        } else {
+            log.error("NCs mailing list lookup failed using '" + settings.getNcsList() + "' address");
+        }
     }
 
     private NotificationProcessTaskStatus prepareNewUserNotificationSetting(final String username) {
@@ -299,9 +347,17 @@ public class NotificationSystemAdministration implements Observer {
         mailingListEntityManager.persist(list);
     }
 
-    private void updateMailingListSubscription(final String type, final String groupExternalId, final String emailAddress, final String userStatus, final String onPrivateList, final String onPublicList) {
+    private void updateMailingListSubscription(final String type, final String groupExternalId, final String role, final String emailAddress, final String userStatus, final String onPrivateList, final String onPublicList) {
         try {
             final GroupType groupType = GroupType.valueOf(type);
+
+            if (GroupType.NATIONAL.equals(groupType)) {
+                if (isRoleForNcsList(role) && UserStatus.ACTIVE.name().equals(userStatus)) {
+                    addToNcsList(emailAddress);
+                } else {
+                    removeFromNcsList(emailAddress);
+                }
+            }
 
             //only active users can be subscribed to mailing lists
             final boolean subscribedToPublicList = "true".equals(onPublicList) && UserStatus.ACTIVE.name().equals(userStatus);
@@ -319,6 +375,13 @@ public class NotificationSystemAdministration implements Observer {
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage(), e);
         }
+    }
+
+    private boolean isRoleForNcsList(final String role) {
+        final Set<String> rolesForNcsList = new HashSet<>(2);
+        rolesForNcsList.add("owner");
+        rolesForNcsList.add("moderator");
+        return rolesForNcsList.contains(role.toLowerCase(IWSConstants.DEFAULT_LOCALE));
     }
 
     private void updateListSubscription(final MailingListEntity mailingList, final String emailAddress, final boolean onList) {

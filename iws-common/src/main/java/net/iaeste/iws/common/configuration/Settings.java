@@ -54,6 +54,7 @@ public final class Settings {
     private String smtpPort = "";
     private String baseUrl = IWSConstants.BASE_URL;
     private String sendingEmailAddress = IWSConstants.IWS_EMAIL_SENDER;
+    private String ncsList = "";
 
     public void init() {
         if (!lookupDone) {
@@ -69,6 +70,8 @@ public final class Settings {
                 publicMailAddress = properties.getProperty("publicMailAddress");
                 privateMailAddress = properties.getProperty("privateMailAddress");
                 rootFilePath = properties.getProperty("rootFilePath");
+
+                ncsList = IWSConstants.NCS_LIST_NAME + '@' + privateMailAddress;
 
                 lookupDone = true;
             } catch (NamingException e) {
@@ -185,6 +188,14 @@ public final class Settings {
 
     public String getSendingEmailAddress() {
         return sendingEmailAddress;
+    }
+
+    public void setNcsList(final String ncsList) {
+        this.ncsList = ncsList;
+    }
+
+    public String getNcsList() {
+        return ncsList;
     }
 
     private static void throwIfNull(final String name, final Object obj) {

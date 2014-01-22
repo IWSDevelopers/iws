@@ -644,6 +644,16 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findNcs() {
+        final Query query = entityManager.createNamedQuery("usergroup.findncs");
+
+        return query.getResultList();
+    }
+
     // =========================================================================
     // Internal Methods
     // =========================================================================

@@ -45,7 +45,11 @@ import java.util.Date;
         @NamedQuery(name = "mailing_list.updateUserSubscriptionEmail",
                 query = "update MailingListMembershipEntity mlm " +
                         "set mlm.member = :newUserAddress " +
-                        "where mlm.member = :oldUserAddress ")
+                        "where mlm.member = :oldUserAddress "),
+        @NamedQuery(name = "mailing_list.deleteAllSubscriptions",
+                query = "delete from MailingListMembershipEntity mlm " +
+                        "where mlm.mailingList.id = :id ")
+
 })
 @Entity
 @Table(name = "mailing_list_membership")

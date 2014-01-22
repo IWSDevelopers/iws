@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
@@ -116,5 +118,27 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
         query.setParameter("oldUserAddress", oldEmailAddress);
 
         query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void wipeOutMailingListMembers(final Long id) {
+        final Query query = entityManager.createNamedQuery("mailing_list.deleteAllSubscriptions");
+        query.setParameter("id", id);
+
+        query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MailingListEntity findNcsList(final String ncsList) {
+        final Query query = entityManager.createNamedQuery("mailing_list.findByMailingListAddress");
+        query.setParameter("address", ncsList);
+
+        return findSingleResult(query, "NCs List");
     }
 }

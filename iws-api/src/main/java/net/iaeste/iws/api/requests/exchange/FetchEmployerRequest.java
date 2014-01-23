@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class FetchEmployerRequest extends AbstractPaginatable {
 
@@ -79,9 +79,7 @@ public final class FetchEmployerRequest extends AbstractPaginatable {
      */
     @Override
     public void setSortBy(final SortingField sortBy) {
-        if (sortBy == null) {
-            throw new IllegalArgumentException("The SortingField cannot be null.");
-        }
+        ensureNotNull("sortBy", sortBy);
 
         switch (sortBy) {
             case NAME:

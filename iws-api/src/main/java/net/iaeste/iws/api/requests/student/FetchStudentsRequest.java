@@ -64,9 +64,7 @@ public final class FetchStudentsRequest extends AbstractPaginatable {
      */
     @Override
     public void setSortBy(final SortingField sortBy) {
-        if (sortBy == null) {
-            throw new IllegalArgumentException("The SortingField cannot be null.");
-        }
+        ensureNotNull("sortBy", sortBy);
 
         switch (sortBy) {
             //case CREATED:

@@ -16,7 +16,8 @@ package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.FetchType;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.enums.SortingField;
+import net.iaeste.iws.api.util.AbstractPaginatable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchOffersRequest extends AbstractVerification {
+public final class FetchOffersRequest extends AbstractPaginatable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -90,5 +91,22 @@ public final class FetchOffersRequest extends AbstractVerification {
         isNotNull(validation, "exchangeYear", exchangeYear);
 
         return validation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSortBy(final SortingField sortBy) {
+        ensureNotNull("sortBy", sortBy);
+
+        switch (sortBy) {
+            case NAME:
+                page.setSortBy(sortBy);
+                break;
+            default:
+                // If unsupported, we're going to revert to the default
+                page.setSortBy(SortingField.CREATED);
+        }
     }
 }

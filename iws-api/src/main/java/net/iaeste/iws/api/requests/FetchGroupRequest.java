@@ -16,8 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.enums.SortingField;
-import net.iaeste.iws.api.util.AbstractPaginatable;
+import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +26,7 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class FetchGroupRequest extends AbstractPaginatable {
+public final class FetchGroupRequest extends AbstractVerification {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -131,24 +130,5 @@ public final class FetchGroupRequest extends AbstractPaginatable {
         }
 
         return validation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSortBy(final SortingField sortBy) {
-        if (sortBy == null) {
-            throw new IllegalArgumentException("The SortingField cannot be null.");
-        }
-
-        switch (sortBy) {
-            case NAME:
-                page.setSortBy(sortBy);
-                break;
-            case CREATED:
-                // If unsupported, we're going to revert to the default
-                page.setSortBy(SortingField.CREATED);
-        }
     }
 }

@@ -32,7 +32,7 @@ public final class OfferStatistics implements Serializable {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private Map<OfferState, Integer> statistics = new EnumMap<>(OfferState.class);
-    private Integer exchangeYear;
+    private Integer exchangeYear = null;
 
     // =========================================================================
     // Object Constructors
@@ -52,8 +52,8 @@ public final class OfferStatistics implements Serializable {
      * @param exchangeYear Exchange Year
      */
     public OfferStatistics(final Map<OfferState, Integer> statistics, final Integer exchangeYear) {
-        setStatistics(statistics);
-        setExchangeYear(exchangeYear);
+        this.statistics = statistics;
+        this.exchangeYear = exchangeYear;
     }
 
     // =========================================================================
@@ -98,11 +98,11 @@ public final class OfferStatistics implements Serializable {
 
         final OfferStatistics that = (OfferStatistics) obj;
 
-        if (statistics != null ? !statistics.equals(that.statistics) : that.statistics != null) {
+        if ((statistics != null) ? !statistics.equals(that.statistics) : (that.statistics != null)) {
             return false;
         }
 
-        return !(exchangeYear != null ? !exchangeYear.equals(that.exchangeYear) : that.exchangeYear != null);
+        return !((exchangeYear != null) ? !exchangeYear.equals(that.exchangeYear) : (that.exchangeYear != null));
     }
 
     /**
@@ -112,8 +112,8 @@ public final class OfferStatistics implements Serializable {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (statistics != null ? statistics.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (exchangeYear != null ? exchangeYear.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((statistics != null) ? statistics.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((exchangeYear != null) ? exchangeYear.hashCode() : 0);
 
         return result;
     }

@@ -253,19 +253,19 @@ public final class UserGroup extends AbstractVerification {
 
         final UserGroup userGroup = (UserGroup) obj;
 
-        if (userGroupId != null ? !userGroupId.equals(userGroup.userGroupId) : userGroup.userGroupId != null) {
+        if ((userGroupId != null) ? !userGroupId.equals(userGroup.userGroupId) : (userGroup.userGroupId != null)) {
             return false;
         }
-        if (user != null ? !user.equals(userGroup.user) : userGroup.user != null) {
+        if ((user != null) ? !user.equals(userGroup.user) : (userGroup.user != null)) {
             return false;
         }
-        if (group != null ? !group.equals(userGroup.group) : userGroup.group != null) {
+        if ((group != null) ? !group.equals(userGroup.group) : (userGroup.group != null)) {
             return false;
         }
-        if (role != null ? !role.equals(userGroup.role) : userGroup.role != null) {
+        if ((role != null) ? !role.equals(userGroup.role) : (userGroup.role != null)) {
             return false;
         }
-        if (title != null ? !title.equals(userGroup.title) : userGroup.title != null) {
+        if ((title != null) ? !title.equals(userGroup.title) : (userGroup.title != null)) {
             return false;
         }
         if (onPublicList != userGroup.onPublicList) {
@@ -275,7 +275,7 @@ public final class UserGroup extends AbstractVerification {
             return false;
         }
 
-        return !(memberSince != null ? !memberSince.equals(userGroup.memberSince) : userGroup.memberSince != null);
+        return !((memberSince != null) ? !memberSince.equals(userGroup.memberSince) : (userGroup.memberSince != null));
     }
 
     /**
@@ -285,14 +285,14 @@ public final class UserGroup extends AbstractVerification {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (userGroupId != null ? userGroupId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (role != null ? role.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (title != null ? title.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((userGroupId != null) ? userGroupId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((role != null) ? role.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((title != null) ? title.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (onPublicList ? 1 : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (onPrivateList ? 1 : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (memberSince != null ? memberSince.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((memberSince != null) ? memberSince.hashCode() : 0);
 
         return result;
     }

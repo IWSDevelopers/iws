@@ -93,11 +93,11 @@ public abstract class AbstractFallible implements Fallible {
 
         final AbstractFallible that = (AbstractFallible) obj;
 
-        if (error != null ? !error.equals(that.error) : that.error != null) {
+        if ((error != null) ? !error.equals(that.error) : (that.error != null)) {
             return false;
         }
 
-        return !(message != null ? !message.equals(that.message) : that.message != null);
+        return !((message != null) ? !message.equals(that.message) : (that.message != null));
     }
 
     /**
@@ -107,8 +107,8 @@ public abstract class AbstractFallible implements Fallible {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (error != null ? error.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (message != null ? message.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((error != null) ? error.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((message != null) ? message.hashCode() : 0);
 
         return hash;
     }

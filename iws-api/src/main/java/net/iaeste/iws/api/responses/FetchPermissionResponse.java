@@ -30,7 +30,6 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection SuppressionAnnotation, CastToConcreteClass
  */
 public final class FetchPermissionResponse extends AbstractFallible {
 
@@ -92,7 +91,7 @@ public final class FetchPermissionResponse extends AbstractFallible {
     }
 
     public List<Authorization> getAuthorizations() {
-        return copy(authorizations);
+        return authorizations;
     }
 
     // =========================================================================
@@ -113,7 +112,7 @@ public final class FetchPermissionResponse extends AbstractFallible {
         }
 
         final FetchPermissionResponse that = (FetchPermissionResponse) obj;
-        return !(authorizations != null ? !authorizations.equals(that.authorizations) : that.authorizations != null);
+        return !((authorizations != null) ? !authorizations.equals(that.authorizations) : (that.authorizations != null));
     }
 
     /**
@@ -123,8 +122,8 @@ public final class FetchPermissionResponse extends AbstractFallible {
     public int hashCode() {
         int hash = super.hashCode();
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (userId != null ? userId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (authorizations != null ? authorizations.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((userId != null) ? userId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((authorizations != null) ? authorizations.hashCode() : 0);
 
         return hash;
     }

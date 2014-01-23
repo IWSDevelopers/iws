@@ -380,47 +380,47 @@ public final class Employer extends AbstractVerification {
 
         final Employer employer = (Employer) obj;
 
-        if (employerId != null ? !employerId.equals(employer.employerId) : employer.employerId != null) {
+        if ((employerId != null) ? !employerId.equals(employer.employerId) : (employer.employerId != null)) {
             return false;
         }
-        if (group != null ? !group.equals(employer.group) : employer.group != null) {
+        if ((group != null) ? !group.equals(employer.group) : (employer.group != null)) {
             return false;
         }
-        if (name != null ? !name.equals(employer.name) : employer.name != null) {
+        if ((name != null) ? !name.equals(employer.name) : (employer.name != null)) {
             return false;
         }
-        if (department != null ? !department.equals(employer.department) : employer.department != null) {
+        if ((department != null) ? !department.equals(employer.department) : (employer.department != null)) {
             return false;
         }
-        if (business != null ? !business.equals(employer.business) : employer.business != null) {
+        if ((business != null) ? !business.equals(employer.business) : (employer.business != null)) {
             return false;
         }
-        if (address != null ? !address.equals(employer.address) : employer.address != null) {
+        if ((address != null) ? !address.equals(employer.address) : (employer.address != null)) {
             return false;
         }
-        if (employeesCount != null ? !employeesCount.equals(employer.employeesCount) : employer.employeesCount != null) {
+        if ((employeesCount != null) ? !employeesCount.equals(employer.employeesCount) : (employer.employeesCount != null)) {
             return false;
         }
-        if (website != null ? !website.equals(employer.website) : employer.website != null) {
+        if ((website != null) ? !website.equals(employer.website) : (employer.website != null)) {
             return false;
         }
-        if (workingPlace != null ? !workingPlace.equals(employer.workingPlace) : employer.workingPlace != null) {
+        if ((workingPlace != null) ? !workingPlace.equals(employer.workingPlace) : (employer.workingPlace != null)) {
             return false;
         }
-        if (canteen != null ? !canteen.equals(employer.canteen) : employer.canteen != null) {
+        if ((canteen != null) ? !canteen.equals(employer.canteen) : (employer.canteen != null)) {
             return false;
         }
-        if (nearestAirport != null ? !nearestAirport.equals(employer.nearestAirport) : employer.nearestAirport != null) {
+        if ((nearestAirport != null) ? !nearestAirport.equals(employer.nearestAirport) : (employer.nearestAirport != null)) {
             return false;
         }
-        if (nearestPublicTransport != null ? !nearestPublicTransport.equals(employer.nearestPublicTransport) : employer.nearestPublicTransport != null) {
+        if ((nearestPublicTransport != null) ? !nearestPublicTransport.equals(employer.nearestPublicTransport) : (employer.nearestPublicTransport != null)) {
             return false;
         }
-        if (weeklyHours != null ? !weeklyHours.equals(employer.weeklyHours) : employer.weeklyHours != null) {
+        if ((weeklyHours != null) ? !weeklyHours.equals(employer.weeklyHours) : (employer.weeklyHours != null)) {
             return false;
         }
 
-        return !(dailyHours != null ? !dailyHours.equals(employer.dailyHours) : employer.dailyHours != null);
+        return !((dailyHours != null) ? !dailyHours.equals(employer.dailyHours) : (employer.dailyHours != null));
     }
 
     /**
@@ -430,20 +430,20 @@ public final class Employer extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employerId != null ? employerId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (name != null ? name.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (department != null ? department.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (business != null ? business.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (address != null ? address.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employeesCount != null ? employeesCount.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (website != null ? website.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (workingPlace != null ? workingPlace.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (canteen != null ? canteen.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nearestAirport != null ? nearestAirport.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nearestPublicTransport != null ? nearestPublicTransport.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (weeklyHours != null ? weeklyHours.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (dailyHours != null ? dailyHours.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employerId != null) ? employerId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((name != null) ? name.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((department != null) ? department.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((business != null) ? business.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((address != null) ? address.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employeesCount != null) ? employeesCount.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((website != null) ? website.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((workingPlace != null) ? workingPlace.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((canteen != null) ? canteen.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nearestAirport != null) ? nearestAirport.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nearestPublicTransport != null) ? nearestPublicTransport.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((weeklyHours != null) ? weeklyHours.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((dailyHours != null) ? dailyHours.hashCode() : 0);
 
         return result;
     }

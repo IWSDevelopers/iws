@@ -562,63 +562,63 @@ public final class StudentApplication extends AbstractVerification {
 
         final StudentApplication studentApplication = (StudentApplication) obj;
 
-        if (applicationId != null ? !applicationId.equals(studentApplication.applicationId) : studentApplication.applicationId != null) {
+        if ((applicationId != null) ? !applicationId.equals(studentApplication.applicationId) : (studentApplication.applicationId != null)) {
             return false;
         }
 
-        if (offer != null ? !offer.equals(studentApplication.offer) : studentApplication.offer != null) {
+        if ((offer != null) ? !offer.equals(studentApplication.offer) : (studentApplication.offer != null)) {
             return false;
         }
 
-        if (student != null ? !student.equals(studentApplication.student) : studentApplication.student != null) {
+        if ((student != null) ? !student.equals(studentApplication.student) : (studentApplication.student != null)) {
             return false;
         }
 
-        if (status != null ? status != studentApplication.status : studentApplication.status != null) {
+        if ((status != null) ? (status != studentApplication.status) : (studentApplication.status != null)) {
             return false;
         }
 
-        if (homeAddress != null ? !homeAddress.equals(studentApplication.homeAddress) : studentApplication.homeAddress != null) {
+        if ((homeAddress != null) ? !homeAddress.equals(studentApplication.homeAddress) : (studentApplication.homeAddress != null)) {
             return false;
         }
 
-        if (email != null ? !email.equals(studentApplication.email) : studentApplication.email != null) {
+        if ((email != null) ? !email.equals(studentApplication.email) : (studentApplication.email != null)) {
             return false;
         }
 
-        if (phoneNumber != null ? !phoneNumber.equals(studentApplication.phoneNumber) : studentApplication.phoneNumber != null) {
+        if ((phoneNumber != null) ? !phoneNumber.equals(studentApplication.phoneNumber) : (studentApplication.phoneNumber != null)) {
             return false;
         }
 
-        if (addressDuringTerms != null ? !addressDuringTerms.equals(studentApplication.addressDuringTerms) : studentApplication.addressDuringTerms != null) {
+        if ((addressDuringTerms != null) ? !addressDuringTerms.equals(studentApplication.addressDuringTerms) : (studentApplication.addressDuringTerms != null)) {
             return false;
         }
 
-        if (dateOfBirth != null ? !dateOfBirth.equals(studentApplication.dateOfBirth) : studentApplication.dateOfBirth != null) {
+        if ((dateOfBirth != null) ? !dateOfBirth.equals(studentApplication.dateOfBirth) : (studentApplication.dateOfBirth != null)) {
             return false;
         }
 
-        if (university != null ? !university.equals(studentApplication.university) : studentApplication.university != null) {
+        if ((university != null) ? !university.equals(studentApplication.university) : (studentApplication.university != null)) {
             return false;
         }
 
-        if (placeOfBirth != null ? !placeOfBirth.equals(studentApplication.placeOfBirth) : studentApplication.placeOfBirth != null) {
+        if ((placeOfBirth != null) ? !placeOfBirth.equals(studentApplication.placeOfBirth) : (studentApplication.placeOfBirth != null)) {
             return false;
         }
 
-        if (nationality != null ? !nationality.equals(studentApplication.nationality) : studentApplication.nationality != null) {
+        if ((nationality != null) ? !nationality.equals(studentApplication.nationality) : (studentApplication.nationality != null)) {
             return false;
         }
 
-        if (gender != null ? !gender.equals(studentApplication.gender) : studentApplication.gender != null) {
+        if ((gender != null) ? (gender != studentApplication.gender) : (studentApplication.gender != null)) {
             return false;
         }
 
-        if (completedYearsOfStudy != null ? !completedYearsOfStudy.equals(studentApplication.completedYearsOfStudy) : studentApplication.completedYearsOfStudy != null) {
+        if ((completedYearsOfStudy != null) ? !completedYearsOfStudy.equals(studentApplication.completedYearsOfStudy) : (studentApplication.completedYearsOfStudy != null)) {
             return false;
         }
 
-        if (totalYearsOfStudy != null ? !totalYearsOfStudy.equals(studentApplication.totalYearsOfStudy) : studentApplication.totalYearsOfStudy != null) {
+        if ((totalYearsOfStudy != null) ? !totalYearsOfStudy.equals(studentApplication.totalYearsOfStudy) : (studentApplication.totalYearsOfStudy != null)) {
             return false;
         }
 
@@ -626,83 +626,83 @@ public final class StudentApplication extends AbstractVerification {
             return false;
         }
 
-        if (language1 != null ? language1 != studentApplication.language1 : studentApplication.language1 != null) {
+        if ((language1 != null) ? (language1 != studentApplication.language1) : (studentApplication.language1 != null)) {
             return false;
         }
 
-        if (language1Level != null ? language1Level != studentApplication.language1Level : studentApplication.language1Level != null) {
+        if ((language1Level != null) ? (language1Level != studentApplication.language1Level) : (studentApplication.language1Level != null)) {
             return false;
         }
 
-        if (language2 != null ? language2 != studentApplication.language2 : studentApplication.language2 != null) {
+        if ((language2 != null) ? (language2 != studentApplication.language2) : (studentApplication.language2 != null)) {
             return false;
         }
 
-        if (language2Level != null ? language2Level != studentApplication.language2Level : studentApplication.language2Level != null) {
+        if ((language2Level != null) ? (language2Level != studentApplication.language2Level) : (studentApplication.language2Level != null)) {
             return false;
         }
 
-        if (language3 != null ? language3 != studentApplication.language3 : studentApplication.language3 != null) {
+        if ((language3 != null) ? (language3 != studentApplication.language3) : (studentApplication.language3 != null)) {
             return false;
         }
 
-        if (language3Level != null ? language3Level != studentApplication.language3Level : studentApplication.language3Level != null) {
+        if ((language3Level != null) ? (language3Level != studentApplication.language3Level) : (studentApplication.language3Level != null)) {
             return false;
         }
 
-        if (available != null ? !available.equals(studentApplication.available) : studentApplication.available != null) {
+        if ((available != null) ? !available.equals(studentApplication.available) : (studentApplication.available != null)) {
             return false;
         }
 
-        if (fieldOfStudies != null ? !fieldOfStudies.equals(studentApplication.fieldOfStudies) : studentApplication.fieldOfStudies != null) {
+        if ((fieldOfStudies != null) ? !fieldOfStudies.equals(studentApplication.fieldOfStudies) : (studentApplication.fieldOfStudies != null)) {
             return false;
         }
 
-        if (specializations != null ? !specializations.equals(studentApplication.specializations) : studentApplication.specializations != null) {
+        if ((specializations != null) ? !specializations.equals(studentApplication.specializations) : (studentApplication.specializations != null)) {
             return false;
         }
 
-        if (passportNumber != null ? !passportNumber.equals(studentApplication.passportNumber) : studentApplication.passportNumber != null) {
+        if ((passportNumber != null) ? !passportNumber.equals(studentApplication.passportNumber) : (studentApplication.passportNumber != null)) {
             return false;
         }
 
-        if (passportPlaceOfIssue != null ? !passportPlaceOfIssue.equals(studentApplication.passportPlaceOfIssue) : studentApplication.passportPlaceOfIssue != null) {
+        if ((passportPlaceOfIssue != null) ? !passportPlaceOfIssue.equals(studentApplication.passportPlaceOfIssue) : (studentApplication.passportPlaceOfIssue != null)) {
             return false;
         }
 
-        if (passportValidUntil != null ? !passportValidUntil.equals(studentApplication.passportValidUntil) : studentApplication.passportValidUntil != null) {
+        if ((passportValidUntil != null) ? !passportValidUntil.equals(studentApplication.passportValidUntil) : (studentApplication.passportValidUntil != null)) {
             return false;
         }
 
-        if (rejectByEmployerReason != null ? !rejectByEmployerReason.equals(studentApplication.rejectByEmployerReason) : studentApplication.rejectByEmployerReason != null) {
+        if ((rejectByEmployerReason != null) ? !rejectByEmployerReason.equals(studentApplication.rejectByEmployerReason) : (studentApplication.rejectByEmployerReason != null)) {
             return false;
         }
 
-        if (rejectDescription != null ? !rejectDescription.equals(studentApplication.rejectDescription) : studentApplication.rejectDescription != null) {
+        if ((rejectDescription != null) ? !rejectDescription.equals(studentApplication.rejectDescription) : (studentApplication.rejectDescription != null)) {
             return false;
         }
 
-        if (rejectInternalComment!= null ? !rejectInternalComment.equals(studentApplication.rejectInternalComment) : studentApplication.rejectInternalComment != null) {
+        if ((rejectInternalComment != null) ? !rejectInternalComment.equals(studentApplication.rejectInternalComment) : (studentApplication.rejectInternalComment != null)) {
             return false;
         }
 
-        if (acceptance != null ? !acceptance.equals(studentApplication.acceptance) : studentApplication.acceptance != null) {
+        if ((acceptance != null) ? !acceptance.equals(studentApplication.acceptance) : (studentApplication.acceptance != null)) {
             return false;
         }
 
-        if (travelInformation != null ? !travelInformation.equals(studentApplication.travelInformation) : studentApplication.travelInformation != null) {
+        if ((travelInformation != null) ? !travelInformation.equals(studentApplication.travelInformation) : (studentApplication.travelInformation != null)) {
             return false;
         }
 
-        if (modified != null ? !modified.equals(studentApplication.modified) : studentApplication.modified != null) {
+        if ((modified != null) ? !modified.equals(studentApplication.modified) : (studentApplication.modified != null)) {
             return false;
         }
 
-        if (created != null ? !created.equals(studentApplication.created) : studentApplication.created != null) {
+        if ((created != null) ? !created.equals(studentApplication.created) : (studentApplication.created != null)) {
             return false;
         }
 
-        return !(nominatedAt != null ? !nominatedAt.equals(studentApplication.nominatedAt) : studentApplication.nominatedAt != null);
+        return !((nominatedAt != null) ? !nominatedAt.equals(studentApplication.nominatedAt) : (studentApplication.nominatedAt != null));
     }
 
     /**
@@ -712,39 +712,39 @@ public final class StudentApplication extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (applicationId != null ? applicationId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offer != null ? offer.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (student != null ? student.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (homeAddress != null ? homeAddress.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (email != null ? email.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (addressDuringTerms != null ? addressDuringTerms.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (university != null ? university.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (placeOfBirth != null ? placeOfBirth.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nationality != null ? nationality.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (gender != null ? gender.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (completedYearsOfStudy != null ? completedYearsOfStudy.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (totalYearsOfStudy != null ? totalYearsOfStudy.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((applicationId != null) ? applicationId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((offer != null) ? offer.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((student != null) ? student.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((status != null) ? status.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((homeAddress != null) ? homeAddress.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((email != null) ? email.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((phoneNumber != null) ? phoneNumber.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((addressDuringTerms != null) ? addressDuringTerms.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((dateOfBirth != null) ? dateOfBirth.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((university != null) ? university.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((placeOfBirth != null) ? placeOfBirth.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((nationality != null) ? nationality.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((gender != null) ? gender.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((completedYearsOfStudy != null) ? completedYearsOfStudy.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((totalYearsOfStudy != null) ? totalYearsOfStudy.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (lodgingByIaeste ? 1 : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language1 != null ? language1.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language1Level != null ? language1Level.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language2 != null ? language2.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language2Level != null ? language2Level.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language3 != null ? language3.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (language3Level != null ? language3Level.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (available != null ? available.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (fieldOfStudies != null ? fieldOfStudies.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (specializations != null ? specializations.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (passportNumber != null ? passportNumber.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (passportPlaceOfIssue != null ?  passportPlaceOfIssue.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (passportValidUntil != null ? passportValidUntil.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (acceptance != null ? acceptance.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (travelInformation != null ? travelInformation.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (nominatedAt != null ? nominatedAt.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (modified != null ? modified.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (created != null ? created.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language1 != null) ? language1.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language1Level != null) ? language1Level.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language2 != null) ? language2.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language2Level != null) ? language2Level.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language3 != null) ? language3.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language3Level != null) ? language3Level.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((available != null) ? available.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((fieldOfStudies != null) ? fieldOfStudies.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((specializations != null) ? specializations.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((passportNumber != null) ? passportNumber.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((passportPlaceOfIssue != null) ? passportPlaceOfIssue.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((passportValidUntil != null) ? passportValidUntil.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((acceptance != null) ? acceptance.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((travelInformation != null) ? travelInformation.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((nominatedAt != null) ? nominatedAt.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((modified != null) ? modified.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((created != null) ? created.hashCode() : 0);
 
         return hash;
     }

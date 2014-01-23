@@ -27,7 +27,6 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
  */
 public final class FetchOffersResponse extends AbstractFallible {
 
@@ -96,7 +95,7 @@ public final class FetchOffersResponse extends AbstractFallible {
         }
 
         final FetchOffersResponse that = (FetchOffersResponse) obj;
-        return !(offers != null ? !offers.equals(that.offers) : that.offers != null);
+        return !((offers != null) ? !offers.equals(that.offers) : (that.offers != null));
     }
 
     /**
@@ -106,7 +105,7 @@ public final class FetchOffersResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offers != null ? offers.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offers != null) ? offers.hashCode() : 0);
 
         return result;
     }

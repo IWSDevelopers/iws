@@ -246,23 +246,23 @@ public final class Address extends AbstractVerification {
 
         final Address address = (Address) obj;
 
-        if (street1 != null ? !street1.equals(address.street1) : address.street1 != null) {
+        if ((street1 != null) ? !street1.equals(address.street1) : (address.street1 != null)) {
             return false;
         }
-        if (street2 != null ? !street2.equals(address.street2) : address.street2 != null) {
+        if ((street2 != null) ? !street2.equals(address.street2) : (address.street2 != null)) {
             return false;
         }
-        if (postalCode != null ? !postalCode.equals(address.postalCode) : address.postalCode != null) {
+        if ((postalCode != null) ? !postalCode.equals(address.postalCode) : (address.postalCode != null)) {
             return false;
         }
-        if (city != null ? !city.equals(address.city) : address.city != null) {
+        if ((city != null) ? !city.equals(address.city) : (address.city != null)) {
             return false;
         }
-        if (state != null ? !state.equals(address.state) : address.state != null) {
+        if ((state != null) ? !state.equals(address.state) : (address.state != null)) {
             return false;
         }
 
-        return !(country != null ? !country.equals(address.country) : address.country != null);
+        return !((country != null) ? !country.equals(address.country) : (address.country != null));
     }
 
     /**
@@ -272,12 +272,12 @@ public final class Address extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (street1 != null ? street1.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (street2 != null ? street2.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (postalCode != null ? postalCode.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (city != null ? city.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (state != null ? state.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (country != null ? country.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((street1 != null) ? street1.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((street2 != null) ? street2.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((postalCode != null) ? postalCode.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((city != null) ? city.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((state != null) ? state.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((country != null) ? country.hashCode() : 0);
 
         return result;
     }

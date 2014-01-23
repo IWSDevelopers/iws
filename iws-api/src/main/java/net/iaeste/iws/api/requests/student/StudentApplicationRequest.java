@@ -129,7 +129,7 @@ public final class StudentApplicationRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        final HashMap<String, String> validation = new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(0);
 
         isNotNull(validation, "applicationId", applicationId);
         isNotNull(validation, "status", status);

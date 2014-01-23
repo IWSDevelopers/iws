@@ -187,15 +187,15 @@ public final class Role extends AbstractVerification {
 
         final Role role = (Role) obj;
 
-        if (permissions != null ? !permissions.equals(role.permissions) : role.permissions != null) {
+        if ((permissions != null) ? !permissions.equals(role.permissions) : (role.permissions != null)) {
             return false;
         }
 
-        if (roleId != null ? !roleId.equals(role.roleId) : role.roleId != null) {
+        if ((roleId != null) ? !roleId.equals(role.roleId) : (role.roleId != null)) {
             return false;
         }
 
-        return !(roleName != null ? !roleName.equals(role.roleName) : role.roleName != null);
+        return !((roleName != null) ? !roleName.equals(role.roleName) : (role.roleName != null));
     }
 
     /**
@@ -205,9 +205,9 @@ public final class Role extends AbstractVerification {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (roleId != null ? roleId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (roleName != null ? roleName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (permissions != null ? permissions.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((roleId != null) ? roleId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((roleName != null) ? roleName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((permissions != null) ? permissions.hashCode() : 0);
 
         return result;
     }

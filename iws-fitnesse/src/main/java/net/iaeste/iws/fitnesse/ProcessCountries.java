@@ -78,18 +78,6 @@ public final class ProcessCountries extends AbstractFixture<Fallible> {
         country.setMemberSince(memberSince);
     }
 
-    public void setListName(final String listName) {
-        country.setListName(listName);
-    }
-
-    public void setNsFirstname(final String nsFirstname) {
-        country.setNsFirstname(nsFirstname);
-    }
-
-    public void setNsLastname(final String nsLastname) {
-        country.setNsLastname(nsLastname);
-    }
-
     public void processCountries() {
         execute();
     }

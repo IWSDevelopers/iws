@@ -98,7 +98,7 @@ public final class FetchStudentsResponse extends AbstractFallible {
         }
 
         final FetchStudentsResponse that = (FetchStudentsResponse) obj;
-        return !(students != null ? !students.equals(that.students) : that.students != null);
+        return !((students != null) ? !students.equals(that.students) : (that.students != null));
     }
 
     /**
@@ -108,7 +108,7 @@ public final class FetchStudentsResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (students != null ? students.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((students != null) ? students.hashCode() : 0);
 
         return result;
     }

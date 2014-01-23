@@ -314,38 +314,38 @@ public final class File extends AbstractVerification {
 
         final File file = (File) obj;
 
-        if (checksum != null ? !checksum.equals(file.checksum) : file.checksum != null) {
+        if ((checksum != null) ? !checksum.equals(file.checksum) : (file.checksum != null)) {
             return false;
         }
-        if (created != null ? !created.equals(file.created) : file.created != null) {
+        if ((created != null) ? !created.equals(file.created) : (file.created != null)) {
             return false;
         }
-        if (description != null ? !description.equals(file.description) : file.description != null) {
+        if ((description != null) ? !description.equals(file.description) : (file.description != null)) {
             return false;
         }
-        if (fileId != null ? !fileId.equals(file.fileId) : file.fileId != null) {
+        if ((fileId != null) ? !fileId.equals(file.fileId) : (file.fileId != null)) {
             return false;
         }
-        if (filename != null ? !filename.equals(file.filename) : file.filename != null) {
+        if ((filename != null) ? !filename.equals(file.filename) : (file.filename != null)) {
             return false;
         }
-        if (filesize != null ? !filesize.equals(file.filesize) : file.filesize != null) {
+        if ((filesize != null) ? !filesize.equals(file.filesize) : (file.filesize != null)) {
             return false;
         }
-        if (group != null ? !group.equals(file.group) : file.group != null) {
+        if ((group != null) ? !group.equals(file.group) : (file.group != null)) {
             return false;
         }
-        if (keywords != null ? !keywords.equals(file.keywords) : file.keywords != null) {
+        if ((keywords != null) ? !keywords.equals(file.keywords) : (file.keywords != null)) {
             return false;
         }
-        if (mimetype != null ? !mimetype.equals(file.mimetype) : file.mimetype != null) {
+        if ((mimetype != null) ? !mimetype.equals(file.mimetype) : (file.mimetype != null)) {
             return false;
         }
-        if (modified != null ? !modified.equals(file.modified) : file.modified != null) {
+        if ((modified != null) ? !modified.equals(file.modified) : (file.modified != null)) {
             return false;
         }
 
-        return !(user != null ? !user.equals(file.user) : file.user != null);
+        return !((user != null) ? !user.equals(file.user) : (file.user != null));
     }
 
     /**
@@ -355,17 +355,17 @@ public final class File extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fileId != null ? fileId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (filename != null ? filename.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (filesize != null ? filesize.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (mimetype != null ? mimetype.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (description != null ? description.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (keywords != null ? keywords.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (checksum != null ? checksum.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fileId != null) ? fileId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((filename != null) ? filename.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((filesize != null) ? filesize.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((mimetype != null) ? mimetype.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((description != null) ? description.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((keywords != null) ? keywords.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((checksum != null) ? checksum.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((modified != null) ? modified.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
 
         return result;
     }

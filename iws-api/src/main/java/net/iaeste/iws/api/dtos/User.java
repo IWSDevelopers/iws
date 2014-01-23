@@ -324,19 +324,19 @@ public final class User extends AbstractDto {
         // Note, the Notifications & Person Objects are omitted, since they are
         // not set for all views of this Object, and we need to verify that two
         // instances are identical, regardless of who is viewing them
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) {
+        if ((userId != null) ? !userId.equals(user.userId) : (user.userId != null)) {
             return false;
         }
-        if (username != null ? !username.equals(user.username) : user.username != null) {
+        if ((username != null) ? !username.equals(user.username) : (user.username != null)) {
             return false;
         }
-        if (alias != null ? !alias.equals(user.alias) : user.alias != null) {
+        if ((alias != null) ? !alias.equals(user.alias) : (user.alias != null)) {
             return false;
         }
-        if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null) {
+        if ((firstname != null) ? !firstname.equals(user.firstname) : (user.firstname != null)) {
             return false;
         }
-        if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null) {
+        if ((lastname != null) ? !lastname.equals(user.lastname) : (user.lastname != null)) {
             return false;
         }
         if (status != user.status) {
@@ -356,13 +356,13 @@ public final class User extends AbstractDto {
         // Note, the Notifications & Person Objects are omitted, since they are
         // not set for all views of this Object, and we need to verify that two
         // instances are identical, regardless of who is viewing them
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (userId != null ? userId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (username != null ? username.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (alias != null ? alias.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (firstname != null ? firstname.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lastname != null ? lastname.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (privacy != null ? privacy.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((userId != null) ? userId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((username != null) ? username.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((alias != null) ? alias.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((firstname != null) ? firstname.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((lastname != null) ? lastname.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((status != null) ? status.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privacy != null) ? privacy.hashCode() : 0);
 
         return result;
     }

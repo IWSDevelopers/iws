@@ -51,12 +51,6 @@ public final class Country extends AbstractVerification {
     private String languages = null;
     private Membership membership = null;
     private Integer memberSince = null;
-    @Deprecated
-    private String listName = null;
-    @Deprecated
-    private String nsFirstname = null;
-    @Deprecated
-    private String nsLastname = null;
 
     // =========================================================================
     // Object Constructors
@@ -87,9 +81,6 @@ public final class Country extends AbstractVerification {
             languages = country.languages;
             membership = country.membership;
             memberSince = country.memberSince;
-            listName = country.listName;
-            nsFirstname = country.nsFirstname;
-            nsLastname = country.nsLastname;
         }
     }
 
@@ -308,82 +299,6 @@ public final class Country extends AbstractVerification {
         return memberSince;
     }
 
-    /**
-     * The name of the mailing list for this Country, the public variant
-     * (@iaeste.org) and the private variant (@iaeste.net). The mailinglist is
-     * not updatable via the Country Object.
-     *
-     * @param listName Mailinglist name
-     * @deprecated please use the Group instead.
-     */
-    @Deprecated
-    public void setListName(final String listName) {
-        this.listName = listName;
-    }
-
-    /**
-     * Retrieves the National mailinglist, however as it is not unique
-     * (Cooperating Institutions share the same Country, but have individual NS
-     * & Mailinglists), it has been deprecated.
-     *
-     * @return Listname
-     * @deprecated please use the Group instead.
-     */
-    @Deprecated
-    public String getListName() {
-        return listName;
-    }
-
-    /**
-     * The name of the National Secretary is set by the System, and cannot be
-     * updated via the Country Object.
-     *
-     * @param nsFirstname Firstname of the National Secretary
-     * @deprecated please use the Group instead.
-     */
-    @Deprecated
-    public void setNsFirstname(final String nsFirstname) {
-        this.nsFirstname = nsFirstname;
-    }
-
-    /**
-     * Retrieves the NS Firstname, however as it is not unique (Cooperating
-     * Institutions share the same Country, but have individual NS &
-     * Mailinglists), it has been deprecated.
-     *
-     * @return NS Firstname
-     * @deprecated please use the Group instead.
-     */
-    @Deprecated
-    public String getNsFirstname() {
-        return nsFirstname;
-    }
-
-    /**
-     * The name of the National Secretary is set by the System, and cannot be
-     * updated via the Country Object.
-     *
-     * @param nsLastname Lastname of the National Secretary
-     * @deprecated please use the Group instead
-     */
-    @Deprecated
-    public void setNsLastname(final String nsLastname) {
-        this.nsLastname = nsLastname;
-    }
-
-    /**
-     * Retrieves the NS Lastname, however as it is not unique (Cooperating
-     * Institutions share the same Country, but have individual NS &
-     * Mailinglists), it has been deprecated.
-     *
-     * @return NS Lastname
-     * @deprecated please use the Group instead.
-     */
-    @Deprecated
-    public String getNsLastname() {
-        return nsLastname;
-    }
-
     // =========================================================================
     // Standard DTO Methods
     // =========================================================================
@@ -416,37 +331,37 @@ public final class Country extends AbstractVerification {
 
         final Country country = (Country) obj;
 
-        if (countryCode != null ? !countryCode.equals(country.countryCode) : country.countryCode != null) {
+        if ((countryCode != null) ? !countryCode.equals(country.countryCode) : (country.countryCode != null)) {
             return false;
         }
-        if (countryName != null ? !countryName.equals(country.countryName) : country.countryName != null) {
+        if ((countryName != null) ? !countryName.equals(country.countryName) : (country.countryName != null)) {
             return false;
         }
-        if (countryNameFull != null ? !countryNameFull.equals(country.countryNameFull) : country.countryNameFull != null) {
+        if ((countryNameFull != null) ? !countryNameFull.equals(country.countryNameFull) : (country.countryNameFull != null)) {
             return false;
         }
-        if (countryNameNative != null ? !countryNameNative.equals(country.countryNameNative) : country.countryNameNative != null) {
+        if ((countryNameNative != null) ? !countryNameNative.equals(country.countryNameNative) : (country.countryNameNative != null)) {
             return false;
         }
-        if (nationality != null ? !nationality.equals(country.nationality) : country.nationality != null) {
+        if ((nationality != null) ? !nationality.equals(country.nationality) : (country.nationality != null)) {
             return false;
         }
-        if (citizens != null ? !citizens.equals(country.citizens) : country.citizens != null) {
+        if ((citizens != null) ? !citizens.equals(country.citizens) : (country.citizens != null)) {
             return false;
         }
-        if (phonecode != null ? !phonecode.equals(country.phonecode) : country.phonecode != null) {
+        if ((phonecode != null) ? !phonecode.equals(country.phonecode) : (country.phonecode != null)) {
             return false;
         }
-        if (currency != null ? currency != country.currency : country.currency != null) {
+        if ((currency != null) ? (currency != country.currency) : (country.currency != null)) {
             return false;
         }
-        if (languages != null ? !languages.equals(country.languages) : country.languages != null) {
+        if ((languages != null) ? !languages.equals(country.languages) : (country.languages != null)) {
             return false;
         }
         if (membership != country.membership) {
             return false;
         }
-        return !(memberSince != null ? !memberSince.equals(country.memberSince) : country.memberSince != null);
+        return !((memberSince != null) ? !memberSince.equals(country.memberSince) : (country.memberSince != null));
     }
 
     /**
@@ -456,17 +371,17 @@ public final class Country extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryCode != null ? countryCode.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryName != null ? countryName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryNameFull != null ? countryNameFull.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countryNameNative != null ? countryNameNative.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nationality != null ? nationality.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (citizens != null ? citizens.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (phonecode != null ? phonecode.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (currency != null ? currency.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (languages != null ? languages.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (membership != null ? membership.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (memberSince != null ? memberSince.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countryCode != null) ? countryCode.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countryName != null) ? countryName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countryNameFull != null) ? countryNameFull.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countryNameNative != null) ? countryNameNative.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nationality != null) ? nationality.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((citizens != null) ? citizens.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((phonecode != null) ? phonecode.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((currency != null) ? currency.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((languages != null) ? languages.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((membership != null) ? membership.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((memberSince != null) ? memberSince.hashCode() : 0);
 
         return result;
     }

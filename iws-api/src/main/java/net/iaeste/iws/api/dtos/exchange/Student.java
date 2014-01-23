@@ -269,19 +269,19 @@ public final class Student extends AbstractVerification {
 
         final Student student = (Student) obj;
 
-        if (user != null ? !user.equals(student.user) : student.user != null) {
+        if ((user != null) ? !user.equals(student.user) : (student.user != null)) {
             return false;
         }
-        if (studyLevel != null ? studyLevel != student.studyLevel : student.studyLevel != null) {
+        if ((studyLevel != null) ? (studyLevel != student.studyLevel) : (student.studyLevel != null)) {
             return false;
         }
-        if (fieldOfStudies != null ? !fieldOfStudies.equals(student.fieldOfStudies) : student.fieldOfStudies != null) {
+        if ((fieldOfStudies != null) ? !fieldOfStudies.equals(student.fieldOfStudies) : (student.fieldOfStudies != null)) {
             return false;
         }
-        if (specializations != null ? !specializations.equals(student.specializations) : student.specializations != null) {
+        if ((specializations != null) ? !specializations.equals(student.specializations) : (student.specializations != null)) {
             return false;
         }
-        if (available != null ? !available.equals(student.available) : student.available != null) {
+        if ((available != null) ? !available.equals(student.available) : (student.available != null)) {
             return false;
         }
         if (language1 != student.language1) {
@@ -302,10 +302,10 @@ public final class Student extends AbstractVerification {
         if (language3Level != student.language3Level) {
             return false;
         }
-        if (modified != null ? !modified.equals(student.modified) : student.modified != null) {
+        if ((modified != null) ? !modified.equals(student.modified) : (student.modified != null)) {
             return false;
         }
-        return !(created != null ? !created.equals(student.created) : student.created != null);
+        return !((created != null) ? !created.equals(student.created) : (student.created != null));
     }
 
     /**
@@ -315,19 +315,19 @@ public final class Student extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (studyLevel != null ? studyLevel.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fieldOfStudies != null ? fieldOfStudies.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (specializations != null ? specializations.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (available != null ? available.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language1 != null ? language1.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language1Level != null ? language1Level.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language2 != null ? language2.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language2Level != null ? language2Level.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language3 != null ? language3.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language3Level != null ? language3Level.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((studyLevel != null) ? studyLevel.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fieldOfStudies != null) ? fieldOfStudies.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((specializations != null) ? specializations.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((available != null) ? available.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language1 != null) ? language1.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language1Level != null) ? language1Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language2 != null) ? language2.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language2Level != null) ? language2Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language3 != null) ? language3.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language3Level != null) ? language3Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((modified != null) ? modified.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
 
         return result;
     }

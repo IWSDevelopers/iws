@@ -259,35 +259,35 @@ public final class Group extends AbstractVerification {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (!(o instanceof Group)) {
+        if (!(obj instanceof Group)) {
             return false;
         }
 
-        final Group group = (Group) o;
+        final Group group = (Group) obj;
 
-        if (groupId != null ? !groupId.equals(group.groupId) : group.groupId != null) {
+        if ((groupId != null) ? !groupId.equals(group.groupId) : (group.groupId != null)) {
             return false;
         }
-        if (groupName != null ? !groupName.equals(group.groupName) : group.groupName != null) {
+        if ((groupName != null) ? !groupName.equals(group.groupName) : (group.groupName != null)) {
             return false;
         }
-        if (fullName != null ? !fullName.equals(group.fullName) : group.fullName != null) {
+        if ((fullName != null) ? !fullName.equals(group.fullName) : (group.fullName != null)) {
             return false;
         }
-        if (listName != null ? !listName.equals(group.listName) : group.listName != null) {
+        if ((listName != null) ? !listName.equals(group.listName) : (group.listName != null)) {
             return false;
         }
         if (groupType != group.groupType) {
             return false;
         }
-        if (description != null ? !description.equals(group.description) : group.description != null) {
+        if ((description != null) ? !description.equals(group.description) : (group.description != null)) {
             return false;
         }
-        return !(country != null ? !country.equals(group.country) : group.country != null);
+        return !((country != null) ? !country.equals(group.country) : (group.country != null));
     }
 
     /**
@@ -297,13 +297,13 @@ public final class Group extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupId != null ? groupId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupName != null ? groupName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fullName != null ? fullName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (listName != null ? listName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupType != null ? groupType.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (description != null ? description.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (country != null ? country.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupId != null) ? groupId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupName != null) ? groupName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fullName != null) ? fullName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((listName != null) ? listName.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groupType != null) ? groupType.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((description != null) ? description.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((country != null) ? country.hashCode() : 0);
 
         return result;
     }

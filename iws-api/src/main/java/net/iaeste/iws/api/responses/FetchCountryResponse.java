@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Country;
@@ -47,7 +45,7 @@ public final class FetchCountryResponse extends AbstractFallible {
     }
 
     public FetchCountryResponse(final List<Country> countries) {
-        setCountries(countries);
+        this.countries = countries;
     }
 
     /**
@@ -69,7 +67,7 @@ public final class FetchCountryResponse extends AbstractFallible {
     }
 
     public List<Country> getCountries() {
-        return copy(countries);
+        return countries;
     }
 
     // =========================================================================
@@ -92,7 +90,7 @@ public final class FetchCountryResponse extends AbstractFallible {
         }
 
         final FetchCountryResponse that = (FetchCountryResponse) obj;
-        return !(countries != null ? !countries.equals(that.countries) : that.countries != null);
+        return !((countries != null) ? !countries.equals(that.countries) : (that.countries != null));
     }
 
     /**
@@ -102,7 +100,7 @@ public final class FetchCountryResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (countries != null ? countries.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((countries != null) ? countries.hashCode() : 0);
 
         return result;
     }

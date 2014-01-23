@@ -108,7 +108,7 @@ public final class AuthenticationResponse extends AbstractFallible {
         }
 
         final AuthenticationResponse that = (AuthenticationResponse) obj;
-        return !(token != null ? !token.equals(that.token) : that.token != null);
+        return !((token != null) ? !token.equals(that.token) : (that.token != null));
     }
 
     /**
@@ -118,7 +118,7 @@ public final class AuthenticationResponse extends AbstractFallible {
     public int hashCode() {
         int hash = super.hashCode();
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (token != null ? token.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((token != null) ? token.hashCode() : 0);
 
         return hash;
     }

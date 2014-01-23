@@ -32,7 +32,7 @@ import java.util.List;
  */
 public final class FetchGroupsForSharingResponse extends AbstractFallible {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private List<Group> groups = null;
@@ -94,14 +94,14 @@ public final class FetchGroupsForSharingResponse extends AbstractFallible {
         }
 
         final FetchGroupsForSharingResponse that = (FetchGroupsForSharingResponse) obj;
-        return !(groups != null ? !groups.equals(that.groups) : that.groups != null);
+        return !((groups != null) ? !groups.equals(that.groups) : (that.groups != null));
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
 
-        result = 31 * result + (groups != null ? groups.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groups != null) ? groups.hashCode() : 0);
 
         return result;
     }

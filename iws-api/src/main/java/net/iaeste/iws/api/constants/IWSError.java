@@ -69,7 +69,7 @@ public final class IWSError implements Serializable {
 
         if (this == obj) {
             result = true;
-        } else if (obj != null && getClass() == obj.getClass()) {
+        } else if ((obj != null) && (getClass() == obj.getClass())) {
             result = error == ((IWSError) obj).error;
         }
 
@@ -84,7 +84,7 @@ public final class IWSError implements Serializable {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + error;
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (description != null ? description.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((description != null) ? description.hashCode() : 0);
 
         return hash;
     }

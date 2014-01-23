@@ -28,7 +28,6 @@ import java.util.Map;
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyComplexMethod
  */
 public final class StudentAcceptance extends AbstractVerification {
 
@@ -184,29 +183,29 @@ public final class StudentAcceptance extends AbstractVerification {
 
         final StudentAcceptance that = (StudentAcceptance) obj;
 
-        if (additionalInformation != null ? !additionalInformation.equals(that.additionalInformation) : that.additionalInformation != null) {
+        if ((additionalInformation != null) ? !additionalInformation.equals(that.additionalInformation) : (that.additionalInformation != null)) {
             return false;
         }
-        if (applicationId != null ? !applicationId.equals(that.applicationId) : that.applicationId != null) {
+        if ((applicationId != null) ? !applicationId.equals(that.applicationId) : (that.applicationId != null)) {
             return false;
         }
-        if (contactPerson != null ? !contactPerson.equals(that.contactPerson) : that.contactPerson != null) {
+        if ((contactPerson != null) ? !contactPerson.equals(that.contactPerson) : (that.contactPerson != null)) {
             return false;
         }
-        if (contactPersonEmail != null ? !contactPersonEmail.equals(that.contactPersonEmail) : that.contactPersonEmail != null) {
+        if ((contactPersonEmail != null) ? !contactPersonEmail.equals(that.contactPersonEmail) : (that.contactPersonEmail != null)) {
             return false;
         }
-        if (contactPersonPhone != null ? !contactPersonPhone.equals(that.contactPersonPhone) : that.contactPersonPhone != null) {
+        if ((contactPersonPhone != null) ? !contactPersonPhone.equals(that.contactPersonPhone) : (that.contactPersonPhone != null)) {
             return false;
         }
-        if (confirmedPeriod != null ? !confirmedPeriod.equals(that.confirmedPeriod) : that.confirmedPeriod != null) {
+        if ((confirmedPeriod != null) ? !confirmedPeriod.equals(that.confirmedPeriod) : (that.confirmedPeriod != null)) {
             return false;
         }
-        if (firstWorkingDay != null ? !firstWorkingDay.equals(that.firstWorkingDay) : that.firstWorkingDay != null) {
+        if ((firstWorkingDay != null) ? !firstWorkingDay.equals(that.firstWorkingDay) : (that.firstWorkingDay != null)) {
             return false;
         }
 
-        return !(workingPlace != null ? !workingPlace.equals(that.workingPlace) : that.workingPlace != null);
+        return !((workingPlace != null) ? !workingPlace.equals(that.workingPlace) : (that.workingPlace != null));
     }
 
     /**
@@ -216,14 +215,14 @@ public final class StudentAcceptance extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (applicationId != null ? applicationId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (firstWorkingDay != null ? firstWorkingDay.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (workingPlace != null ? workingPlace.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (contactPerson != null ? contactPerson.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (contactPersonEmail != null ? contactPersonEmail.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (contactPersonPhone != null ? contactPersonPhone.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (confirmedPeriod != null ? confirmedPeriod.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (additionalInformation != null ? additionalInformation.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((applicationId != null) ? applicationId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((firstWorkingDay != null) ? firstWorkingDay.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((workingPlace != null) ? workingPlace.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((contactPerson != null) ? contactPerson.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((contactPersonEmail != null) ? contactPersonEmail.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((contactPersonPhone != null) ? contactPersonPhone.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((confirmedPeriod != null) ? confirmedPeriod.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((additionalInformation != null) ? additionalInformation.hashCode() : 0);
 
         return hash;
     }

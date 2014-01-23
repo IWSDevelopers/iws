@@ -94,7 +94,7 @@ public final class FetchFileResponse extends AbstractFallible {
         }
 
         final FetchFileResponse that = (FetchFileResponse) obj;
-        return !(file != null ? !file.equals(that.file) : that.file != null);
+        return !((file != null) ? !file.equals(that.file) : (that.file != null));
     }
 
     /**
@@ -104,7 +104,7 @@ public final class FetchFileResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (file != null ? file.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((file != null) ? file.hashCode() : 0);
 
         return result;
     }

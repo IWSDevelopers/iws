@@ -119,11 +119,11 @@ public final class AuthenticationRequest extends AbstractVerification {
         }
 
         final AuthenticationRequest that = (AuthenticationRequest) obj;
-        if (password != null ? !password.equals(that.password) : that.password != null) {
+        if ((password != null) ? !password.equals(that.password) : (that.password != null)) {
             return false;
         }
 
-        return !(username != null ? !username.equals(that.username) : that.username != null);
+        return !((username != null) ? !username.equals(that.username) : (that.username != null));
     }
 
     /**
@@ -133,8 +133,8 @@ public final class AuthenticationRequest extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (username != null ? username.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (password != null ? password.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((username != null) ? username.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((password != null) ? password.hashCode() : 0);
 
         return hash;
     }

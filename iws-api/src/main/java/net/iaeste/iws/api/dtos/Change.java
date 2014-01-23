@@ -162,19 +162,19 @@ public final class Change implements Serializable {
 
         final Change change = (Change) obj;
 
-        if (changed != null ? !changed.equals(change.changed) : change.changed != null) {
+        if ((changed != null) ? !changed.equals(change.changed) : (change.changed != null)) {
             return false;
         }
 
-        if (fields != null ? !fields.equals(change.fields) : change.fields != null) {
+        if ((fields != null) ? !fields.equals(change.fields) : (change.fields != null)) {
             return false;
         }
 
-        if (group != null ? !group.equals(change.group) : change.group != null) {
+        if ((group != null) ? !group.equals(change.group) : (change.group != null)) {
             return false;
         }
 
-        return !(user != null ? !user.equals(change.user) : change.user != null);
+        return !((user != null) ? !user.equals(change.user) : (change.user != null));
     }
 
     /**
@@ -184,10 +184,10 @@ public final class Change implements Serializable {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fields != null ? fields.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (changed != null ? changed.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fields != null) ? fields.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((changed != null) ? changed.hashCode() : 0);
 
         return result;
     }

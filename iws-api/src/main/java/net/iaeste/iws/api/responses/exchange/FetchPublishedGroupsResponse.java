@@ -100,7 +100,7 @@ public final class FetchPublishedGroupsResponse extends AbstractFallible {
         }
 
         final FetchPublishedGroupsResponse that = (FetchPublishedGroupsResponse) obj;
-        return !(offersGroups != null ? !offersGroups.equals(that.offersGroups) : that.offersGroups != null);
+        return !((offersGroups != null) ? !offersGroups.equals(that.offersGroups) : (that.offersGroups != null));
     }
 
     /**
@@ -110,7 +110,7 @@ public final class FetchPublishedGroupsResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offersGroups != null ? offersGroups.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offersGroups != null) ? offersGroups.hashCode() : 0);
 
         return result;
     }

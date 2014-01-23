@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Role;
@@ -53,7 +51,7 @@ public final class FetchRoleResponse extends AbstractFallible {
      * @param roles List of Roles
      */
     public FetchRoleResponse(final List<Role> roles) {
-        setRoles(roles);
+        this.roles = roles;
     }
 
     /**
@@ -75,7 +73,7 @@ public final class FetchRoleResponse extends AbstractFallible {
     }
 
     public List<Role> getRoles() {
-        return copy(roles);
+        return roles;
     }
 
     // =========================================================================
@@ -95,7 +93,7 @@ public final class FetchRoleResponse extends AbstractFallible {
         }
 
         final FetchRoleResponse that = (FetchRoleResponse) obj;
-        return !(roles != null ? !roles.equals(that.roles) : that.roles != null);
+        return !((roles != null) ? !roles.equals(that.roles) : (that.roles != null));
     }
 
     /**
@@ -105,7 +103,7 @@ public final class FetchRoleResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (roles != null ? roles.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((roles != null) ? roles.hashCode() : 0);
 
         return result;
     }

@@ -99,7 +99,7 @@ public final class FetchEmployerResponse extends AbstractFallible {
         }
 
         final FetchEmployerResponse that = (FetchEmployerResponse) obj;
-        return !(employers != null ? !employers.equals(that.employers) : that.employers != null);
+        return !((employers != null) ? !employers.equals(that.employers) : (that.employers != null));
     }
 
     /**
@@ -109,7 +109,7 @@ public final class FetchEmployerResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employers != null ? employers.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employers != null) ? employers.hashCode() : 0);
 
         return result;
     }

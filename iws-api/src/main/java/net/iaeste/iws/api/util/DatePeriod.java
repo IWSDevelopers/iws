@@ -168,10 +168,10 @@ public final class DatePeriod extends AbstractVerification {
         }
 
         final DatePeriod datePeriod = (DatePeriod) obj;
-        if (fromDate != null ? !fromDate.equals(datePeriod.fromDate) : datePeriod.fromDate != null) {
+        if ((fromDate != null) ? !fromDate.equals(datePeriod.fromDate) : (datePeriod.fromDate != null)) {
             return false;
         }
-        return !(toDate != null ? !toDate.equals(datePeriod.toDate) : datePeriod.toDate != null);
+        return !((toDate != null) ? !toDate.equals(datePeriod.toDate) : (datePeriod.toDate != null));
     }
 
     /**
@@ -181,8 +181,8 @@ public final class DatePeriod extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fromDate != null ? fromDate.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (toDate != null ? toDate.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fromDate != null) ? fromDate.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((toDate != null) ? toDate.hashCode() : 0);
 
         return result;
     }

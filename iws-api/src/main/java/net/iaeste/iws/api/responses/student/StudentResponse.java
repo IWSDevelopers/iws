@@ -18,7 +18,6 @@ import static net.iaeste.iws.api.util.Copier.copy;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
-import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.util.AbstractFallible;
 
@@ -27,9 +26,9 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class StudentResponse extends AbstractFallible {
+public final class StudentResponse extends AbstractFallible {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
@@ -51,7 +50,7 @@ public class StudentResponse extends AbstractFallible {
     /**
      * Default Constructor.
      *
-     * @param student
+     * @param student Student
      */
     public StudentResponse(final Student student) {
         setStudent(student);

@@ -26,7 +26,7 @@ import net.iaeste.iws.api.util.AbstractFallible;
  */
 public final class FileResponse extends AbstractFallible {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     /**
@@ -97,7 +97,7 @@ public final class FileResponse extends AbstractFallible {
         }
 
         final FileResponse that = (FileResponse) obj;
-        return !(file != null ? !file.equals(that.file) : that.file != null);
+        return !((file != null) ? !file.equals(that.file) : (that.file != null));
     }
 
     /**
@@ -107,7 +107,7 @@ public final class FileResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (file != null ? file.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((file != null) ? file.hashCode() : 0);
 
         return result;
     }

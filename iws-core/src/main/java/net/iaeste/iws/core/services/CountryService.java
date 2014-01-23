@@ -150,9 +150,6 @@ public final class CountryService {
         //country.setLanguages(view.getCountry().getLanguages());
         country.setMembership(view.getCountry().getMembership());
         country.setMemberSince(view.getCountry().getMemberSince());
-        country.setListName(view.getListname());
-        country.setNsFirstname(view.getNsFirstname());
-        country.setNsLastname(view.getNsLastname());
 
         return country;
     }

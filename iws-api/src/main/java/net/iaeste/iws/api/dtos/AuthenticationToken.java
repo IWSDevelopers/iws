@@ -222,11 +222,11 @@ public final class AuthenticationToken extends AbstractVerification {
 
         final AuthenticationToken that = (AuthenticationToken) obj;
 
-        if (groupId != null ? !groupId.equals(that.groupId) : that.groupId != null) {
+        if ((groupId != null) ? !groupId.equals(that.groupId) : (that.groupId != null)) {
             return false;
         }
 
-        return !(token != null ? !token.equals(that.token) : that.token != null);
+        return !((token != null) ? !token.equals(that.token) : (that.token != null));
     }
 
     /**
@@ -236,8 +236,8 @@ public final class AuthenticationToken extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (token != null ? token.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupId != null ? groupId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((token != null) ? token.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((groupId != null) ? groupId.hashCode() : 0);
 
         return hash;
     }

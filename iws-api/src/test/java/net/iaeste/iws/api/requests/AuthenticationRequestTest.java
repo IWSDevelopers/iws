@@ -56,7 +56,7 @@ public class AuthenticationRequestTest {
         assertThat(result.hashCode(), is(1569819734));
         assertThat(result.hashCode(), is(same.hashCode()));
         assertThat(result.hashCode(), is(not(diff.hashCode())));
-        //noinspection ResultOfObjectAllocationIgnored
+
         new EqualsTester(result, same, diff, null);
     }
 

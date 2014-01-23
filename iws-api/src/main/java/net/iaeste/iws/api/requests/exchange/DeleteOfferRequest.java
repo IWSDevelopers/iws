@@ -95,7 +95,7 @@ public final class DeleteOfferRequest extends AbstractVerification {
         }
 
         final DeleteOfferRequest that = (DeleteOfferRequest) obj;
-        return !(offerId != null ? !offerId.equals(that.offerId) : that.offerId != null);
+        return !((offerId != null) ? !offerId.equals(that.offerId) : (that.offerId != null));
     }
 
     /**
@@ -103,7 +103,7 @@ public final class DeleteOfferRequest extends AbstractVerification {
      */
     @Override
     public int hashCode() {
-        return offerId != null ? offerId.hashCode() : 0;
+        return (offerId != null) ? offerId.hashCode() : 0;
     }
 
     /**

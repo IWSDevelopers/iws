@@ -95,11 +95,11 @@ public final class OfferStatisticsResponse extends AbstractFallible {
 
         final OfferStatisticsResponse that = (OfferStatisticsResponse) obj;
 
-        if (dommesticStatistics != null ? !dommesticStatistics.equals(that.dommesticStatistics) : that.dommesticStatistics != null) {
+        if ((dommesticStatistics != null) ? !dommesticStatistics.equals(that.dommesticStatistics) : (that.dommesticStatistics != null)) {
             return false;
         }
 
-        return !(foreignStatistics != null ? !foreignStatistics.equals(that.foreignStatistics) : that.foreignStatistics != null);
+        return !((foreignStatistics != null) ? !foreignStatistics.equals(that.foreignStatistics) : (that.foreignStatistics != null));
     }
 
     /**
@@ -109,8 +109,8 @@ public final class OfferStatisticsResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (dommesticStatistics != null ? dommesticStatistics.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (foreignStatistics != null ? foreignStatistics.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((dommesticStatistics != null) ? dommesticStatistics.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((foreignStatistics != null) ? foreignStatistics.hashCode() : 0);
 
         return result;
     }

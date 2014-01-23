@@ -68,7 +68,7 @@ public abstract class AbstractVerification implements Verifiable {
         final Map<String, String> validationResult = validate();
 
         if (!validationResult.isEmpty()) {
-            throw new VerificationException("Validation failed: " + validationResult.toString());
+            throw new VerificationException("Validation failed: " + validationResult);
         }
     }
 
@@ -97,7 +97,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @throws IllegalArgumentException if the value is empty
      */
     protected static void ensureNotEmpty(final String field, final String value) throws IllegalArgumentException {
-        if (value != null && value.isEmpty()) {
+        if ((value != null) && value.isEmpty()) {
             throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
         }
     }
@@ -110,7 +110,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @throws IllegalArgumentException if the value is empty
      */
     protected static void ensureNotEmpty(final String field, final Collection<?> value) throws IllegalArgumentException {
-        if (value != null && value.isEmpty()) {
+        if ((value != null) && value.isEmpty()) {
             throw new IllegalArgumentException(format(ERROR_NOT_EMPTY, field));
         }
     }
@@ -413,7 +413,7 @@ public abstract class AbstractVerification implements Verifiable {
      * @throws IllegalArgumentException if the e-mail address is invalid
      */
     protected static void ensureValidEmail(final String field, final String value) throws IllegalArgumentException {
-        if (value != null && !IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
+        if ((value != null) && !IWSConstants.EMAIL_PATTERN.matcher(value).matches()) {
             throw new IllegalArgumentException(format(ERROR_INVALID_EMAIL, value, field));
         }
     }
@@ -465,7 +465,7 @@ public abstract class AbstractVerification implements Verifiable {
     public static Integer calculateExchangeYear() {
         final Date date = new Date();
 
-        return date.getCurrentYear() + (date.getCurrentMonth() >= Calendar.SEPTEMBER ? 1 : 0);
+        return date.getCurrentYear() + ((date.getCurrentMonth() >= Calendar.SEPTEMBER) ? 1 : 0);
     }
 
     /**

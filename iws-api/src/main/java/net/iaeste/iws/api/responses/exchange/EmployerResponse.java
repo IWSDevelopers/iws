@@ -23,7 +23,6 @@ import net.iaeste.iws.api.util.AbstractFallible;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
  */
 public final class EmployerResponse extends AbstractFallible {
 
@@ -87,12 +86,12 @@ public final class EmployerResponse extends AbstractFallible {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if ((obj == null) || (getClass() != obj.getClass())) {
             return false;
         }
 
         final EmployerResponse that = (EmployerResponse) obj;
-        return !(employer != null ? !employer.equals(that.employer) : that.employer != null);
+        return !((employer != null) ? !employer.equals(that.employer) : (that.employer != null));
     }
 
     /**
@@ -102,7 +101,7 @@ public final class EmployerResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employer != null) ? employer.hashCode() : 0);
 
         return result;
     }

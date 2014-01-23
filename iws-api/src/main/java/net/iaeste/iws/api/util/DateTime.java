@@ -109,7 +109,7 @@ public class DateTime implements Serializable {
         }
 
         final DateTime other = (DateTime) obj;
-        return !(dateTime != null ? !dateTime.equals(other.dateTime) : other.dateTime != null);
+        return !((dateTime != null) ? !dateTime.equals(other.dateTime) : (other.dateTime != null));
     }
 
     /**
@@ -117,7 +117,7 @@ public class DateTime implements Serializable {
      */
     @Override
     public int hashCode() {
-        return dateTime != null ? dateTime.hashCode() : 0;
+        return (dateTime != null) ? dateTime.hashCode() : 0;
     }
 
     /**

@@ -71,7 +71,7 @@ public final class ProcessGroupResponse extends AbstractFallible {
     }
 
     public Group getGroup() {
-        return group;
+        return new Group(group);
     }
 
     // =========================================================================

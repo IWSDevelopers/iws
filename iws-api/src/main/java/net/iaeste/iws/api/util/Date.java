@@ -32,20 +32,16 @@ import java.util.Calendar;
  * This class is a Date only class. Meaning that there is no time information
  * present.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class Date implements Serializable, Comparable<Date> {
 
-    /**
-     * {@link IWSConstants#SERIAL_VERSION_UID}.
-     */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /**
-     * The internal Date, implementation uses the JodaTime Classes.
-     */
+    /** The internal Date, implementation uses the JodaTime Classes. */
     private final DateMidnight date;
 
     /**
@@ -171,7 +167,7 @@ public final class Date implements Serializable, Comparable<Date> {
         }
 
         final Date other = (Date) obj;
-        return !(date != null ? !date.equals(other.date) : other.date != null);
+        return !((date != null) ? !date.equals(other.date) : (other.date != null));
     }
 
     /**
@@ -179,7 +175,7 @@ public final class Date implements Serializable, Comparable<Date> {
      */
     @Override
     public int hashCode() {
-        return date != null ? date.hashCode() : 0;
+        return (date != null) ? date.hashCode() : 0;
     }
 
     /**
@@ -195,9 +191,9 @@ public final class Date implements Serializable, Comparable<Date> {
      */
     @Override
     public int compareTo(Date o) {
-        if (this.equals(o)) {
+        if (equals(o)) {
             return 0;
-        } else if (this.isBefore(o)) {
+        } else if (isBefore(o)) {
             return -1;
         } else {
             return 1;

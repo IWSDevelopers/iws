@@ -28,7 +28,6 @@ import java.util.Map;
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection OverlyComplexMethod
  */
 public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
@@ -219,41 +218,41 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
 
         final StudentAcceptanceConfirmation that = (StudentAcceptanceConfirmation) obj;
 
-        if (applicationId != null ? !applicationId.equals(that.applicationId) : that.applicationId != null) {
+        if ((applicationId != null) ? !applicationId.equals(that.applicationId) : (that.applicationId != null)) {
             return false;
         }
-        if (departure != null ? !departure.equals(that.departure) : that.departure != null) {
+        if ((departure != null) ? !departure.equals(that.departure) : (that.departure != null)) {
             return false;
         }
         if (transportationType != that.transportationType) {
             return false;
         }
-        if (departureFrom != null ? !departureFrom.equals(that.departureFrom) : that.departureFrom != null) {
+        if ((departureFrom != null) ? !departureFrom.equals(that.departureFrom) : (that.departureFrom != null)) {
             return false;
         }
-        if (transportNumber != null ? !transportNumber.equals(that.transportNumber) : that.transportNumber != null) {
+        if ((transportNumber != null) ? !transportNumber.equals(that.transportNumber) : (that.transportNumber != null)) {
             return false;
         }
-        if (arrivalDateTime != null ? !arrivalDateTime.equals(that.arrivalDateTime) : that.arrivalDateTime != null) {
+        if ((arrivalDateTime != null) ? !arrivalDateTime.equals(that.arrivalDateTime) : (that.arrivalDateTime != null)) {
             return false;
         }
-        if (phoneNumberDuringTravel != null ? !phoneNumberDuringTravel.equals(that.phoneNumberDuringTravel) : that.phoneNumberDuringTravel != null) {
+        if ((phoneNumberDuringTravel != null) ? !phoneNumberDuringTravel.equals(that.phoneNumberDuringTravel) : (that.phoneNumberDuringTravel != null)) {
             return false;
         }
-        if (lodgingRequiredFrom != null ? !lodgingRequiredFrom.equals(that.lodgingRequiredFrom) : that.lodgingRequiredFrom != null) {
+        if ((lodgingRequiredFrom != null) ? !lodgingRequiredFrom.equals(that.lodgingRequiredFrom) : (that.lodgingRequiredFrom != null)) {
             return false;
         }
-        if (lodgingRequiredTo != null ? !lodgingRequiredTo.equals(that.lodgingRequiredTo) : that.lodgingRequiredTo != null) {
+        if ((lodgingRequiredTo != null) ? !lodgingRequiredTo.equals(that.lodgingRequiredTo) : (that.lodgingRequiredTo != null)) {
             return false;
         }
-        if (otherInformation != null ? !otherInformation.equals(that.otherInformation) : that.otherInformation != null) {
+        if ((otherInformation != null) ? !otherInformation.equals(that.otherInformation) : (that.otherInformation != null)) {
             return false;
         }
-        if (insuranceCompany != null ? !insuranceCompany.equals(that.insuranceCompany) : that.insuranceCompany != null) {
+        if ((insuranceCompany != null) ? !insuranceCompany.equals(that.insuranceCompany) : (that.insuranceCompany != null)) {
             return false;
         }
 
-        return !(insuranceReceiptNumber != null ? !insuranceReceiptNumber.equals(that.insuranceReceiptNumber) : that.insuranceReceiptNumber != null);
+        return !((insuranceReceiptNumber != null) ? !insuranceReceiptNumber.equals(that.insuranceReceiptNumber) : (that.insuranceReceiptNumber != null));
     }
 
     /**
@@ -263,18 +262,18 @@ public final class StudentAcceptanceConfirmation extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (applicationId != null ? applicationId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (departure != null ? departure.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (transportationType != null ? transportationType.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (departureFrom != null ? departureFrom.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (transportNumber != null ? transportNumber.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (arrivalDateTime != null ? arrivalDateTime.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (phoneNumberDuringTravel != null ? phoneNumberDuringTravel.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lodgingRequiredFrom != null ? lodgingRequiredFrom.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lodgingRequiredTo != null ? lodgingRequiredTo.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (otherInformation != null ? otherInformation.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (insuranceCompany != null ? insuranceCompany.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (insuranceReceiptNumber != null ? insuranceReceiptNumber.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((applicationId != null) ? applicationId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((departure != null) ? departure.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((transportationType != null) ? transportationType.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((departureFrom != null) ? departureFrom.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((transportNumber != null) ? transportNumber.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((arrivalDateTime != null) ? arrivalDateTime.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((phoneNumberDuringTravel != null) ? phoneNumberDuringTravel.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((lodgingRequiredFrom != null) ? lodgingRequiredFrom.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((lodgingRequiredTo != null) ? lodgingRequiredTo.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((otherInformation != null) ? otherInformation.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((insuranceCompany != null) ? insuranceCompany.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((insuranceReceiptNumber != null) ? insuranceReceiptNumber.hashCode() : 0);
 
         return result;
     }

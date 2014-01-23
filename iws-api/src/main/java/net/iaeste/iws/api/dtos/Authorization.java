@@ -111,7 +111,7 @@ public final class Authorization implements Serializable {
         }
 
         final Authorization that = (Authorization) obj;
-        return !(userGroup != null ? !userGroup.equals(that.userGroup) : that.userGroup != null);
+        return !((userGroup != null) ? !userGroup.equals(that.userGroup) : (that.userGroup != null));
     }
 
     /**
@@ -121,7 +121,7 @@ public final class Authorization implements Serializable {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (userGroup != null ? userGroup.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((userGroup != null) ? userGroup.hashCode() : 0);
 
         return hash;
     }

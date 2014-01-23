@@ -49,6 +49,6 @@ public enum TypeOfWork {
      * @return null or enum value
      */
     public static TypeOfWork toValue(final String typeOfWork) {
-        return typeOfWork == null ? null : valueOf(typeOfWork);
+        return (typeOfWork == null) ? null : valueOf(typeOfWork);
     }
 }

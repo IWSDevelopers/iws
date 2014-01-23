@@ -91,7 +91,7 @@ public final class CreateUserResponse extends AbstractFallible {
         }
 
         final CreateUserResponse that = (CreateUserResponse) obj;
-        return !(user != null ? !user.equals(that.user) : that.user != null);
+        return !((user != null) ? !user.equals(that.user) : (that.user != null));
     }
 
     /**
@@ -101,7 +101,7 @@ public final class CreateUserResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
 
         return result;
     }

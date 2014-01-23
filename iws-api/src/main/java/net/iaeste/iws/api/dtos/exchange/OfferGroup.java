@@ -212,9 +212,9 @@ public final class OfferGroup extends AbstractVerification {
     public int hashCode() {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (offerRefNo != null ? offerRefNo.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (groupId != null ? groupId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (status != null ? status.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((offerRefNo != null) ? offerRefNo.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((groupId != null) ? groupId.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((status != null) ? status.hashCode() : 0);
 
         return hash;
     }

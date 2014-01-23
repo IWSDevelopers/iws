@@ -198,15 +198,15 @@ public final class PublishingGroup extends AbstractVerification {
 
         final PublishingGroup that = (PublishingGroup) obj;
 
-        if (groups != null ? !groups.equals(that.groups) : that.groups != null) {
+        if ((groups != null) ? !groups.equals(that.groups) : (that.groups != null)) {
             return false;
         }
 
-        if (publishingGroupId != null ? !publishingGroupId.equals(that.publishingGroupId) : that.publishingGroupId != null) {
+        if ((publishingGroupId != null) ? !publishingGroupId.equals(that.publishingGroupId) : (that.publishingGroupId != null)) {
             return false;
         }
 
-        return !(name != null ? !name.equals(that.name) : that.name != null);
+        return !((name != null) ? !name.equals(that.name) : (that.name != null));
     }
 
     /**
@@ -216,9 +216,9 @@ public final class PublishingGroup extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (publishingGroupId != null ? publishingGroupId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (name != null ? name.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groups != null ? groups.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((publishingGroupId != null) ? publishingGroupId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((name != null) ? name.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((groups != null) ? groups.hashCode() : 0);
 
         return result;
     }

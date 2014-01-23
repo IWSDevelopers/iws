@@ -75,7 +75,7 @@ public final class FetchUserResponse extends AbstractFallible {
     }
 
     public User getUser() {
-        return new User(user);
+        return user;
     }
 
     // =========================================================================
@@ -95,7 +95,7 @@ public final class FetchUserResponse extends AbstractFallible {
         }
 
         final FetchUserResponse that = (FetchUserResponse) obj;
-        return !(user != null ? !user.equals(that.user) : that.user != null);
+        return !((user != null) ? !user.equals(that.user) : (that.user != null));
     }
 
     /**
@@ -105,7 +105,7 @@ public final class FetchUserResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (user != null ? user.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((user != null) ? user.hashCode() : 0);
 
         return result;
     }

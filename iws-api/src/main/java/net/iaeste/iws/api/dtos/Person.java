@@ -242,22 +242,22 @@ public final class Person extends AbstractVerification {
 
         final Person person = (Person) obj;
 
-        if (address != null ? !address.equals(person.address) : person.address != null) {
+        if ((address != null) ? !address.equals(person.address) : (person.address != null)) {
             return false;
         }
-        if (alternateEmail != null ? !alternateEmail.equals(person.alternateEmail) : person.alternateEmail != null) {
+        if ((alternateEmail != null) ? !alternateEmail.equals(person.alternateEmail) : (person.alternateEmail != null)) {
             return false;
         }
-        if (fax != null ? !fax.equals(person.fax) : person.fax != null) {
+        if ((fax != null) ? !fax.equals(person.fax) : (person.fax != null)) {
             return false;
         }
-        if (mobile != null ? !mobile.equals(person.mobile) : person.mobile != null) {
+        if ((mobile != null) ? !mobile.equals(person.mobile) : (person.mobile != null)) {
             return false;
         }
-        if (phone != null ? !phone.equals(person.phone) : person.phone != null) {
+        if ((phone != null) ? !phone.equals(person.phone) : (person.phone != null)) {
             return false;
         }
-        if (birthday != null ? !birthday.equals(person.birthday) : person.birthday != null) {
+        if ((birthday != null) ? !birthday.equals(person.birthday) : (person.birthday != null)) {
             return false;
         }
 
@@ -271,13 +271,13 @@ public final class Person extends AbstractVerification {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (address != null ? address.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (alternateEmail != null ? alternateEmail.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (phone != null ? phone.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (mobile != null ? mobile.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fax != null ? fax.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (birthday != null ? birthday.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (gender != null ? gender.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((address != null) ? address.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((alternateEmail != null) ? alternateEmail.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((phone != null) ? phone.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((mobile != null) ? mobile.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fax != null) ? fax.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((birthday != null) ? birthday.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((gender != null) ? gender.hashCode() : 0);
 
         return result;
     }

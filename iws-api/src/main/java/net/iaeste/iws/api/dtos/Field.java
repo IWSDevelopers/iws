@@ -163,15 +163,15 @@ public final class Field implements Serializable {
 
         final Field other = (Field) obj;
 
-        if (field != null ? !field.equals(other.field) : other.field != null) {
+        if ((field != null) ? !field.equals(other.field) : (other.field != null)) {
             return false;
         }
 
-        if (newValue != null ? !newValue.equals(other.newValue) : other.newValue != null) {
+        if ((newValue != null) ? !newValue.equals(other.newValue) : (other.newValue != null)) {
             return false;
         }
 
-        return !(oldValue != null ? !oldValue.equals(other.oldValue) : other.oldValue != null);
+        return !((oldValue != null) ? !oldValue.equals(other.oldValue) : (other.oldValue != null));
     }
 
     /**
@@ -181,9 +181,9 @@ public final class Field implements Serializable {
     public int hashCode() {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (field != null ? field.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (oldValue != null ? oldValue.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (newValue != null ? newValue.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((field != null) ? field.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((oldValue != null) ? oldValue.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((newValue != null) ? newValue.hashCode() : 0);
 
         return result;
     }

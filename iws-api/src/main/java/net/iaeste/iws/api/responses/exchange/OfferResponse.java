@@ -22,10 +22,9 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.util.AbstractFallible;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
- * @noinspection CastToConcreteClass
+ * @since   1.7
  */
 public final class OfferResponse extends AbstractFallible {
 
@@ -89,13 +88,13 @@ public final class OfferResponse extends AbstractFallible {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if ((obj == null) || (getClass() != obj.getClass())) {
             return false;
         }
 
         final OfferResponse that = (OfferResponse) obj;
 
-        return !(offer != null ? !offer.equals(that.offer) : that.offer != null);
+        return !((offer != null) ? !offer.equals(that.offer) : (that.offer != null));
     }
 
     /**
@@ -105,7 +104,7 @@ public final class OfferResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offer != null ? offer.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offer != null) ? offer.hashCode() : 0);
 
         return result;
     }

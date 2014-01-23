@@ -59,9 +59,9 @@ public final class FetchGroupResponse extends AbstractFallible {
      * @param subGroups  List of SubGroups belonging to the Group
      */
     public FetchGroupResponse(final Group group, final List<UserGroup> members, final List<Group> subGroups) {
-        setGroup(group);
-        setMembers(members);
-        setSubGroups(subGroups);
+        this.group = group;
+        this.members = members;
+        this.subGroups = subGroups;
     }
 
     /**
@@ -79,7 +79,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     // =========================================================================
 
     public void setGroup(final Group group) {
-        this.group = new Group(group);
+        this.group = group;
     }
 
     public Group getGroup() {
@@ -91,7 +91,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     }
 
     public List<UserGroup> getMembers() {
-        return copy(members);
+        return members;
     }
 
     public void setStudents(final List<UserGroup> students) {
@@ -99,7 +99,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     }
 
     public List<UserGroup> getStudents() {
-        return copy(students);
+        return students;
     }
 
     public void setSubGroups(final List<Group> subGroups) {
@@ -131,16 +131,16 @@ public final class FetchGroupResponse extends AbstractFallible {
 
         final FetchGroupResponse that = (FetchGroupResponse) obj;
 
-        if (group != null ? !group.equals(that.group) : that.group != null) {
+        if ((group != null) ? !group.equals(that.group) : (that.group != null)) {
             return false;
         }
-        if (members != null ? !members.equals(that.members) : that.members != null) {
+        if ((members != null) ? !members.equals(that.members) : (that.members != null)) {
             return false;
         }
-        if (students != null ? !students.equals(that.students) : that.students != null) {
+        if ((students != null) ? !students.equals(that.students) : (that.students != null)) {
             return false;
         }
-        return !(subGroups != null ? !subGroups.equals(that.subGroups) : that.subGroups != null);
+        return !((subGroups != null) ? !subGroups.equals(that.subGroups) : (that.subGroups != null));
     }
 
     /**
@@ -150,10 +150,10 @@ public final class FetchGroupResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (group != null ? group.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (members != null ? members.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (students != null ? students.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (subGroups != null ? subGroups.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((group != null) ? group.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((members != null) ? members.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((students != null) ? students.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((subGroups != null) ? subGroups.hashCode() : 0);
 
         return result;
     }

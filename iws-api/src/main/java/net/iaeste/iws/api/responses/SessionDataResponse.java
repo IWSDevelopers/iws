@@ -18,7 +18,6 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.util.AbstractFallible;
-import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.DateTime;
 
 import java.io.ByteArrayInputStream;
@@ -39,7 +38,6 @@ import java.util.zip.GZIPInputStream;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CastToConcreteClass
  */
 public final class SessionDataResponse<T extends Serializable> extends AbstractFallible {
 
@@ -69,7 +67,7 @@ public final class SessionDataResponse<T extends Serializable> extends AbstractF
      * @param modified    Last update of the Session
      */
     public SessionDataResponse(final byte[] sessionData, final DateTime created, final DateTime modified) {
-        this.sessionData = Copier.copy(sessionData);
+        this.sessionData = sessionData;
         this.created = created;
         this.modified = modified;
     }
@@ -89,7 +87,7 @@ public final class SessionDataResponse<T extends Serializable> extends AbstractF
     // =========================================================================
 
     public void setSessionData(final byte[] sessionData) {
-        this.sessionData = Copier.copy(sessionData);
+        this.sessionData = sessionData;
     }
 
     public T getSessionData() {
@@ -131,15 +129,15 @@ public final class SessionDataResponse<T extends Serializable> extends AbstractF
 
         final SessionDataResponse<?> that = (SessionDataResponse<?>) obj;
 
-        if (created != null ? !created.equals(that.created) : that.created != null) {
+        if ((created != null) ? !created.equals(that.created) : (that.created != null)) {
             return false;
         }
 
-        if (modified != null ? !modified.equals(that.modified) : that.modified != null) {
+        if ((modified != null) ? !modified.equals(that.modified) : (that.modified != null)) {
             return false;
         }
 
-        return !(sessionData != null ? !Arrays.equals(sessionData, that.sessionData) : that.sessionData != null);
+        return !((sessionData != null) ? !Arrays.equals(sessionData, that.sessionData) : (that.sessionData != null));
     }
 
     /**
@@ -149,9 +147,9 @@ public final class SessionDataResponse<T extends Serializable> extends AbstractF
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (sessionData != null ? Arrays.hashCode(sessionData) : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((sessionData != null) ? Arrays.hashCode(sessionData) : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((modified != null) ? modified.hashCode() : 0);
 
         return result;
     }

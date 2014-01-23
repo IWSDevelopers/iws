@@ -29,19 +29,23 @@ import java.util.Calendar;
  * reason for encapsulating the Date functionality here, is to ensure that the
  * formats are also consisting with our needs. Which follows the
  * <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO</a> standard.<br />
- *   This class is a Date only class. Meaning that there is no time information
+ * This class is a Date only class. Meaning that there is no time information
  * present.
  *
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since 1.7
  */
-public final class Date implements Serializable {
+public final class Date implements Serializable, Comparable<Date> {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** The internal Date, implementation uses the JodaTime Classes. */
+    /**
+     * The internal Date, implementation uses the JodaTime Classes.
+     */
     private final DateMidnight date;
 
     /**
@@ -90,7 +94,7 @@ public final class Date implements Serializable {
      * Checks if the given Date is after the current. If so, then a true is
      * returned, otherwise a false.
      *
-     * @param date  Date to check if it comes after this
+     * @param date Date to check if it comes after this
      * @return True if the given Date is after the current, otherwise false
      */
     public Boolean isAfter(final Date date) {
@@ -101,7 +105,7 @@ public final class Date implements Serializable {
      * Checks if the given Date is before the current. If so, then a true is
      * returned, otherwise a false.
      *
-     * @param date  Date to check if it comes before this
+     * @param date Date to check if it comes before this
      * @return True if the given Date is after the current, otherwise false
      */
     public Boolean isBefore(final Date date) {
@@ -184,5 +188,19 @@ public final class Date implements Serializable {
     @Override
     public String toString() {
         return IWSConstants.FORMATTER.format(date.toDate()).toUpperCase(IWSConstants.DEFAULT_LOCALE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(Date o) {
+        if (this.equals(o)) {
+            return 0;
+        } else if (this.isBefore(o)) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

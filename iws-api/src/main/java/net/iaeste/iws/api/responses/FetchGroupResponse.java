@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
@@ -107,7 +105,7 @@ public final class FetchGroupResponse extends AbstractFallible {
     }
 
     public List<Group> getSubGroups() {
-        return copy(subGroups);
+        return subGroups;
     }
 
     // =========================================================================

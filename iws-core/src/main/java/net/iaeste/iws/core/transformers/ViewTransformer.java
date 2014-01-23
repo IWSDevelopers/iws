@@ -30,6 +30,7 @@ import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
+import net.iaeste.iws.persistence.views.SharedOfferView;
 import net.iaeste.iws.persistence.views.StudentView;
 
 /**
@@ -94,6 +95,42 @@ public final class ViewTransformer {
         offer.setNsFirstname(view.getNsFirstname());
         offer.setNsLastname(view.getNsLastname());
         offer.setEmployer(employer);
+
+        return offer;
+    }
+
+    /**
+     * Transforms the {@link OfferView} to an {@link Offer} DTO Object. As the
+     * DTO contains several sub-objects, which again may contain certain other
+     * objects, the transformer is building the entire Object Structure.
+     *
+     * @param view OfferView to transform
+     * @return Offer DTO Object to display externally
+     */
+    public static Offer transform(final SharedOfferView view) {
+        final Country country = convert(view.getCountry());
+
+        final Group group = convert(view.getGroup());
+        group.setCountry(country);
+
+        final Address address = convert(view.getAddress());
+        address.setCountry(country);
+
+        final Employer employer = convert(view.getEmployer());
+        employer.setAddress(address);
+        employer.setGroup(group);
+
+        final Offer offer = convert(view.getOffer());
+        offer.setNsFirstname(view.getNsFirstname());
+        offer.setNsLastname(view.getNsLastname());
+        offer.setEmployer(employer);
+
+        // Shared offers are per definition never from yourself, so this value
+        // is *always* set to null, to avoid exposure
+        offer.setPrivateComment(null);
+
+        // Showing the OfferGroup status rather than the real Offer Status
+        offer.setStatus(view.getOfferGroup().getStatus());
 
         return offer;
     }

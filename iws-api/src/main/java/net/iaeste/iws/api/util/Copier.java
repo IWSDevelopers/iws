@@ -14,14 +14,8 @@
  */
 package net.iaeste.iws.api.util;
 
-import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +32,12 @@ import java.util.Set;
  *   Copying is needed to ensure that all data we start processing is 100% under
  * the control of the IWS. Read-only request, such as all the fetch* requests
  * are invoking the system with read-only access. So they do not need to use
- * the copying.
+ * the copying.<br />
+ *   Note; The IWS is having some heavy performance issues, some of the requests
+ * have had almost abysmally poor performance. The Defensive Copying have not
+ * been helpful here, and as long as we're only allowing a trusted client to
+ * interact locally with the IWS, we're simply just omitting the defensive
+ * copying.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -71,10 +70,11 @@ public final class Copier {
         final List<T> copy;
 
         if (original != null) {
-            copy = new ArrayList<>(original.size());
-            for (final T t : original) {
-                copy.add(copy(t));
-            }
+            copy = original;
+            //copy = new ArrayList<>(original.size());
+            //for (final T t : original) {
+            //    copy.add(copy(t));
+            //}
         } else {
             copy = new ArrayList<>(0);
         }
@@ -94,10 +94,11 @@ public final class Copier {
         final Set<T> copy;
 
         if (original != null) {
-            copy = new HashSet<>(original.size());
-            for (final T t : original) {
-                copy.add(copy(t));
-            }
+            copy = original;
+            //copy = new HashSet<>(original.size());
+            //for (final T t : original) {
+            //    copy.add(copy(t));
+            //}
         } else {
             copy = new HashSet<>(0);
         }
@@ -120,10 +121,11 @@ public final class Copier {
         final Map<T, List<V>> copy;
 
         if (original != null) {
-            copy = new HashMap<>(original.size());
-            for (final Map.Entry<T, List<V>> entry : original.entrySet()) {
-                copy.put(copy(entry.getKey()), copy(entry.getValue()));
-            }
+            copy = original;
+            //copy = new HashMap<>(original.size());
+            //for (final Map.Entry<T, List<V>> entry : original.entrySet()) {
+            //    copy.put(copy(entry.getKey()), copy(entry.getValue()));
+            //}
         } else {
             copy = new HashMap<>(0);
         }
@@ -143,8 +145,9 @@ public final class Copier {
         final String[] copy;
 
         if (original != null) {
-            copy = new String[original.length];
-            System.arraycopy(original, 0, copy, 0, original.length);
+            copy = original;
+            //copy = new String[original.length];
+            //System.arraycopy(original, 0, copy, 0, original.length);
         } else {
             copy = EMPTY_STRING_ARRAY;
         }
@@ -164,8 +167,9 @@ public final class Copier {
         final byte[] copy;
 
         if (original != null) {
-            copy = new byte[original.length];
-            System.arraycopy(original, 0, copy, 0, original.length);
+            copy = original;
+            //copy = new byte[original.length];
+            //System.arraycopy(original, 0, copy, 0, original.length);
         } else {
             copy = EMPTY_BYTE_ARRAY;
         }
@@ -181,45 +185,46 @@ public final class Copier {
      * @throws IWSException if a problem occurs with the copying
      */
     public static <T extends Serializable> T copy(final T obj) {
-        final T result;
-
-        if (obj != null) {
-            // We have to run the copy in two blocks, since the Streams will
-            // otherwise not be able to use the Java7 autoclosing feature. So,
-            // we need a placeholder for the result from the first block, that
-            // performs the serialization - which can then be given to the
-            // second block that performs a deserialization
-            final byte[] bytes;
-
-            // First block, performs the serialization
-            try (ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
-                 ObjectOutputStream objectOutStream = new ObjectOutputStream(byteOutStream)) {
-
-                // First, we write the given Object to the Object stream
-                objectOutStream.writeObject(obj);
-
-                // Before we can convert the content of the Object stream, we
-                // have to close it, to force a flushing of unwritten data
-                objectOutStream.close();
-                bytes = byteOutStream.toByteArray();
-            } catch (IOException e) {
-                throw new IWSException(IWSErrors.ERROR, e);
-            }
-
-            // Second block, performs the deserialization
-            try (ByteArrayInputStream byteInStream = new ByteArrayInputStream(bytes);
-                 ObjectInputStream objectInStream = new ObjectInputStream(byteInStream)) {
-
-                // As the streams handle the magic, all we have to worry about
-                // is reading the Object out, and return it :-)
-                result = (T) objectInStream.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                throw new IWSException(IWSErrors.ERROR, e);
-            }
-        } else {
-            result = null;
-        }
-
-        return result;
+        return obj;
+        //final T result;
+        //
+        //if (obj != null) {
+        //    // We have to run the copy in two blocks, since the Streams will
+        //    // otherwise not be able to use the Java7 autoclosing feature. So,
+        //    // we need a placeholder for the result from the first block, that
+        //    // performs the serialization - which can then be given to the
+        //    // second block that performs a deserialization
+        //    final byte[] bytes;
+        //
+        //    // First block, performs the serialization
+        //    try (ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
+        //         ObjectOutputStream objectOutStream = new ObjectOutputStream(byteOutStream)) {
+        //
+        //        // First, we write the given Object to the Object stream
+        //        objectOutStream.writeObject(obj);
+        //
+        //        // Before we can convert the content of the Object stream, we
+        //        // have to close it, to force a flushing of unwritten data
+        //        objectOutStream.close();
+        //        bytes = byteOutStream.toByteArray();
+        //    } catch (IOException e) {
+        //        throw new IWSException(IWSErrors.ERROR, e);
+        //    }
+        //
+        //    // Second block, performs the deserialization
+        //    try (ByteArrayInputStream byteInStream = new ByteArrayInputStream(bytes);
+        //         ObjectInputStream objectInStream = new ObjectInputStream(byteInStream)) {
+        //
+        //        // As the streams handle the magic, all we have to worry about
+        //        // is reading the Object out, and return it :-)
+        //        result = (T) objectInStream.readObject();
+        //    } catch (IOException | ClassNotFoundException e) {
+        //        throw new IWSException(IWSErrors.ERROR, e);
+        //    }
+        //} else {
+        //    result = null;
+        //}
+        //
+        //return result;
     }
 }

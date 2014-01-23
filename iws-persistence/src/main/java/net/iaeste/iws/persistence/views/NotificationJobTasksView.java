@@ -32,7 +32,6 @@ import javax.persistence.Table;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection CompareToUsesNonFinalVariable
  */
 @Entity
 @NamedQueries(@NamedQuery(name = "view.NotificationJobTasksByConsumerId",

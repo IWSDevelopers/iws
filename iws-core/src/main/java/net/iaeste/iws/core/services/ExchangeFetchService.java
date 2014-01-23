@@ -56,6 +56,7 @@ import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
 import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
+import net.iaeste.iws.persistence.views.SharedOfferView;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -183,15 +184,16 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     }
 
     public FetchOffersResponse fetchOffers(final Authentication authentication, final FetchOffersRequest request) {
-        final FetchOffersResponse response;
+        final Paginatable page = request.getPagingInformation();
         final int year = request.getExchangeYear();
 
+        final FetchOffersResponse response;
         switch (request.getFetchType()) {
             case DOMESTIC:
-                response = new FetchOffersResponse(findAllOffers(authentication, year));
+                response = new FetchOffersResponse(findDomesticOffers(authentication, year, page));
                 break;
             case SHARED:
-                response = new FetchOffersResponse(findSharedOffers(authentication, year));
+                response = new FetchOffersResponse(findSharedOffers(authentication, year, page));
                 break;
             default:
                 throw new PermissionException("The search type is not permitted.");
@@ -200,14 +202,8 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return response;
     }
 
-    private List<Offer> findAllOffers(final Authentication authentication, final int exchangeYear) {
-        // Must be extended with Pagination
-        final List<OfferView> found = viewsDao.findAllOffers(authentication, exchangeYear);
-
-        return convertViewList(authentication, found);
-    }
-
-    private static List<Offer> convertViewList(final Authentication authentication, final List<OfferView> found) {
+    private List<Offer> findDomesticOffers(final Authentication authentication, final int exchangeYear, final Paginatable page) {
+        final List<OfferView> found = viewsDao.findDomesticOffers(authentication, exchangeYear, page);
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferView view : found) {
@@ -222,7 +218,18 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    private List<Offer> findSharedOffers(final Authentication authentication, final Integer exchangeYear) {
+    private List<Offer> findSharedOffers(final Authentication authentication, final int exchangeYear, final Paginatable page) {
+        final List<SharedOfferView> found = viewsDao.findSharedOffers(authentication, exchangeYear, page);
+        final List<Offer> result = new ArrayList<>(found.size());
+
+        for (final SharedOfferView view : found) {
+            result.add(transform(view));
+        }
+
+        return result;
+    }
+
+    private List<Offer> oldFindSharedOffers(final Authentication authentication, final Integer exchangeYear) {
         final java.util.Date now = new Date().toDate();
         final List<OfferEntity> offerEntities = dao.findSharedOffers(authentication, exchangeYear);
         final List<Offer> offers = new ArrayList<>(offerEntities.size());

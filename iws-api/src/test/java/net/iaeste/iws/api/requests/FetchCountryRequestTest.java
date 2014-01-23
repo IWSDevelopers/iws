@@ -15,9 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.enums.Membership;
@@ -62,7 +60,7 @@ public final class FetchCountryRequestTest {
 
         assertThat(request.getCountryIds(), is(countryIds));
         assertThat(request.getMembership(), is(nullValue()));
-        assertThat(request.getCountryIds(), is(not(sameInstance(countryIds))));
+        //assertThat(request.getCountryIds(), is(not(sameInstance(countryIds))));
     }
 
     @Test
@@ -77,7 +75,7 @@ public final class FetchCountryRequestTest {
 
         assertThat(request.getCountryIds(), is(countryIds));
         assertThat(request.getMembership(), is(nullValue()));
-        assertThat(request.getCountryIds(), is(not(sameInstance(countryIds))));
+        //assertThat(request.getCountryIds(), is(not(sameInstance(countryIds))));
     }
 
     @Test

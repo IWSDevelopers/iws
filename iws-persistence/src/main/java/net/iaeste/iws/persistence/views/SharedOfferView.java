@@ -28,21 +28,22 @@ import javax.persistence.Table;
  * @since   1.7
  */
 @Entity
-@NamedQueries(@NamedQuery(name = "view.findDomesticOffersByGroupAndYear",
-        query = "select o from OfferView o " +
+@NamedQueries(@NamedQuery(name = "view.findSharedOffersByGroupAndYear",
+        query = "select o from SharedOfferView o " +
                 "where o.groupId = :gid" +
-                "  and o.exchangeYear = :year"))
-@Table(name = "offer_view")
-public class OfferView extends AbstractView<OfferView> {
+                "  and o.exchangeYear = :year" +
+                "  and o.offer.nominationDeadline >= :date"))
+@Table(name = "shared_offer_view")
+public class SharedOfferView extends AbstractView<SharedOfferView> {
 
     @Id
-    @Column(name = "offer_id", insertable = false, updatable = false)
+    @Column(name = "shared_id", insertable = false, updatable = false)
     private Long id = null;
 
     @Column(name = "offer_exchange_year", insertable = false, updatable = false)
     private Integer exchangeYear = null;
 
-    @Column(name = "group_id", insertable = false, updatable = false)
+    @Column(name = "shared_group_id", insertable = false, updatable = false)
     private Long groupId = null;
 
     @Column(name = "ns_firstname", insertable = false, updatable = false)
@@ -50,6 +51,9 @@ public class OfferView extends AbstractView<OfferView> {
 
     @Column(name = "ns_lastname", insertable = false, updatable = false)
     private String nsLastname = null;
+
+    @Embedded
+    private EmbeddedOfferGroup offerGroup = null;
 
     @Embedded
     private EmbeddedOffer offer = null;
@@ -108,6 +112,14 @@ public class OfferView extends AbstractView<OfferView> {
 
     public String getNsLastname() {
         return nsLastname;
+    }
+
+    public void setOfferGroup(final EmbeddedOfferGroup offerGroup) {
+        this.offerGroup = offerGroup;
+    }
+
+    public EmbeddedOfferGroup getOfferGroup() {
+        return offerGroup;
     }
 
     public void setOffer(final EmbeddedOffer offer) {
@@ -169,8 +181,8 @@ public class OfferView extends AbstractView<OfferView> {
 
         // As the view is reading from the current data model, and the Id is
         // always unique. It is sufficient to compare against this field.
-        final OfferView that = (OfferView) obj;
-        return !(id != null ? !id.equals(that.id) : that.id != null);
+        final SharedOfferView that = (SharedOfferView) obj;
+        return !((id != null) ? !id.equals(that.id) : (that.id != null));
     }
 
     /**
@@ -178,14 +190,14 @@ public class OfferView extends AbstractView<OfferView> {
      */
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return (id != null) ? id.hashCode() : 0;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(final OfferView o) {
+    public int compareTo(final SharedOfferView o) {
         final int result = id.compareTo(o.id);
 
         return sortAscending ? result : -result;

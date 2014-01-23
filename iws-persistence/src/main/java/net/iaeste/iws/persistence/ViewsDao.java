@@ -19,6 +19,7 @@ import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
+import net.iaeste.iws.persistence.views.SharedOfferView;
 import net.iaeste.iws.persistence.views.StudentView;
 
 import java.util.List;
@@ -40,7 +41,9 @@ public interface ViewsDao {
 
     List<EmployerView> findEmployers(Long groupId, Paginatable page, String partialName);
 
-    List<OfferView> findAllOffers(Authentication authentication, Integer exchangeYear);
+    List<OfferView> findDomesticOffers(Authentication authentication, Integer exchangeYear, Paginatable page);
+
+    List<SharedOfferView> findSharedOffers(Authentication authentication, Integer exchangeYear, Paginatable page);
 
     List<OfferSharedToGroupView> findSharedToGroup(Long parentId, Integer exchangeYear, List<String> externalOfferIds);
 

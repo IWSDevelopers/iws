@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Offer;
@@ -74,7 +72,7 @@ public final class FetchOffersResponse extends AbstractFallible {
     }
 
     public List<Offer> getOffers() {
-        return copy(offers);
+        return offers;
     }
 
     // =========================================================================

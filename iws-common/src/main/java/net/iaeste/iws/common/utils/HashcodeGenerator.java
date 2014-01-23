@@ -221,7 +221,7 @@ public final class HashcodeGenerator {
      * @return The HEX value of the Byte Array
      */
     private static String convertBytesToHex(final byte[] bytes) {
-        final StringBuilder builder = new StringBuilder(bytes.length * 2);
+        final StringBuilder builder = new StringBuilder(bytes.length << 1);
 
         for (final byte b : bytes) {
             builder.append(Integer.toHexString((b & 0xFF) | 0x100).substring(1, 3));

@@ -38,7 +38,6 @@ import java.util.UUID;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
- * @noinspection StaticNonFinalField, NonFinalStaticVariableUsedInClassInitialization, ConstructorWithTooManyParameters, AssignmentToStaticFieldFromInstanceMethod, UseOfSystemOutOrSystemErr
  */
 @Ignore("Ignored, while we only need this to generate test data, otherwise it simply just dump garbage out.")
 @RunWith(Parameterized.class)
@@ -225,9 +224,9 @@ public final class GenerateDataForTest {
         }
     }
 
-    // Write everything to the buffer and then print it at once. With dual core PCUs and threads
-    // the output gets messed up
-    private static StringBuffer sb = new StringBuffer();
+    // Write everything to the buffer and then print it at once. With dual core
+    // CPUs and threads, the output will otherwise get messed up
+    private static final StringBuffer sb = new StringBuffer();
 
     /**
      * Default Constructor for the Parameterized Test, it will take a series of
@@ -324,7 +323,7 @@ public final class GenerateDataForTest {
         print(sb, "-- Now share all offers with all national groups");
         print(sb, SHARE_ALL_OFFER, GroupType.NATIONAL.ordinal());
 
-        System.out.print(sb.toString());
+        System.out.print(sb);
     }
 
     // =========================================================================

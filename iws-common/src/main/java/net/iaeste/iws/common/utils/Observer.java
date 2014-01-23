@@ -40,16 +40,15 @@ public interface Observer {
      */
     void update(Observable subject);
 
-    //TODO better identifier, UUID?
     Long getId();
     void setId(Long id);
 
     /**
      * Method to initialize Observer
      *
-     * @param iwsEntityManager
-     * @param mailingEntityManager
-     * @param settings
+     * @param iwsEntityManager     IWS Entity Manager
+     * @param mailingEntityManager Mailinglist Entity Manager
+     * @param settings             IWS Settings
      */
     void init(EntityManager iwsEntityManager, EntityManager mailingEntityManager, Settings settings);
 }

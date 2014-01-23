@@ -175,7 +175,7 @@ public class SharedOfferView extends AbstractView<SharedOfferView> {
             return true;
         }
 
-        if (!(obj instanceof EmployerView)) {
+        if (!(obj instanceof SharedOfferView)) {
             return false;
         }
 

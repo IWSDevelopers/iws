@@ -24,7 +24,7 @@ public enum FetchType {
     /**
      * Fetch all Objects belonging to the current Group.
      */
-    ALL,
+    DOMESTIC,
 
     /**
      * Fetch all Objects shared to the current Group,

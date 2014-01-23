@@ -67,7 +67,6 @@ public final class StudentApplication extends AbstractVerification {
     /** Status of the {@link StudentApplication} */
     private ApplicationStatus status = null;
 
-    // TODO Move to Student
     private Address homeAddress = null;
     private String email = null; // should be copied for an application if a student wants to use a different address for login
     private String phoneNumber = null;

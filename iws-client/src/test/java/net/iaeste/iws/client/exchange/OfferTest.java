@@ -129,7 +129,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(response.getOffer().getEmployer().getAddress().getCountry().getCountryCode(), is("PL"));
 
         // Find All offers, should review this one.
-        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
         assertThat(fetchResponse.getOffers().isEmpty(), is(false));
         final Offer offerWithNS = fetchResponse.getOffers().get(0);
@@ -243,7 +243,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(processResponse.isOk(), is(true));
 
         // check if minimalOffer is persisted
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, request);
         final Offer readOffer = findOfferFromResponse(refNo, fetchResponse);
 
@@ -263,7 +263,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(processResponse.isOk(), is(true));
 
         // check if fullOffer is persisted
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, request);
         final Offer readOffer = findOfferFromResponse(refNo, fetchResponse);
 
@@ -280,7 +280,7 @@ public final class OfferTest extends AbstractTest {
 
         assertThat(saveResponse.isOk(), is(true));
 
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse response = exchange.fetchOffers(token, request);
         assertThat(response.getOffers().isEmpty(), is(false));
         final int size = response.getOffers().size();
@@ -291,7 +291,7 @@ public final class OfferTest extends AbstractTest {
         final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);
 
         assertThat(deleteResponse.isOk(), is(true));
-        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest fetchRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(token, fetchRequest);
         assertThat(fetchResponse.getOffers().size(), is(size - 1));
 
@@ -317,7 +317,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(saveResponse.getOffer().getNsFirstname(), is(not(nullValue())));
         assertThat(saveResponse.getOffer().getNsLastname(), is(not(nullValue())));
 
-        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
         Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
@@ -391,7 +391,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(saveResponse.getOffer().getNsFirstname(), is(not(nullValue())));
         assertThat(saveResponse.getOffer().getNsLastname(), is(not(nullValue())));
 
-        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
         Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
@@ -458,7 +458,7 @@ public final class OfferTest extends AbstractTest {
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         assertThat(saveResponse.isOk(), is(true));
 
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse response = exchange.fetchOffers(token, request);
         assertThat(response.getOffers().isEmpty(), is(false));
 
@@ -491,7 +491,7 @@ public final class OfferTest extends AbstractTest {
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         assertThat(saveResponse.isOk(), is(true));
 
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse response = exchange.fetchOffers(token, request);
         assertThat(response.getOffers().isEmpty(), is(false));
 
@@ -525,7 +525,7 @@ public final class OfferTest extends AbstractTest {
         final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
         assertThat(saveResponse.isOk(), is(true));
 
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse response = exchange.fetchOffers(token, request);
         assertThat(response.getOffers().isEmpty(), is(false));
 
@@ -560,7 +560,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(saveResponse.isOk(), is(true));
 
         // Read Offer, and verify that the NumberOfHardCopies is present
-        final FetchOffersRequest findSavedRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest findSavedRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse findSavedResponse = exchange.fetchOffers(token, findSavedRequest);
         final Offer readOffer = findOfferFromResponse(refNo, findSavedResponse);
         assertThat(readOffer, is(not(nullValue())));
@@ -573,7 +573,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(exchange.processOffer(token, updateOfferRequest).isOk(), is(true));
 
         // Update the Offer, and verify that the changes are saved.
-        final FetchOffersRequest findupdatedRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest findupdatedRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse findUpdatedResponse = exchange.fetchOffers(token, findupdatedRequest);
         final Offer updatedOffer = findOfferFromResponse(refNo, findUpdatedResponse);
         assertThat(updatedOffer, is(not(nullValue())));
@@ -591,7 +591,7 @@ public final class OfferTest extends AbstractTest {
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
 
-        final FetchOffersRequest request = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest request = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse fetchResponse = exchange.fetchOffers(croatiaToken, request);
         final Offer readOffer = findOfferFromResponse(refNo, fetchResponse);
 

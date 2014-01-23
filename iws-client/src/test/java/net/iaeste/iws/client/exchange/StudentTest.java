@@ -108,7 +108,7 @@ public final class StudentTest extends AbstractTest {
         // verify processResponse
         assertThat(saveResponse.isOk(), is(true));
 
-        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
 
@@ -184,7 +184,7 @@ public final class StudentTest extends AbstractTest {
         // verify processResponse
         assertThat(saveResponse.isOk(), is(true));
 
-        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
 
@@ -273,7 +273,7 @@ public final class StudentTest extends AbstractTest {
         // verify processResponse
         assertThat(saveResponse.isOk(), is(true));
 
-        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.DOMESTIC);
         FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
         assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
 
@@ -980,7 +980,7 @@ public final class StudentTest extends AbstractTest {
         assertThat("Foreign offer has correct state", readOfferHr.getStatus(), is(OfferState.APPLICATIONS));
         assertThat("Foreign offer should not see private comment", readOfferHr.getPrivateComment(), is(nullValue()));
 
-        final FetchOffersRequest requestAt = new FetchOffersRequest(FetchType.ALL);
+        final FetchOffersRequest requestAt = new FetchOffersRequest(FetchType.DOMESTIC);
         final FetchOffersResponse fetchResponseAt = exchange.fetchOffers(austriaToken, requestAt);
         final Offer readOfferAt = findOfferFromResponse(refNo, fetchResponseAt);
 

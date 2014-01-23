@@ -19,7 +19,6 @@ import static net.iaeste.iws.core.transformers.ViewTransformer.transform;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
-import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
@@ -44,7 +43,6 @@ import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
-import net.iaeste.iws.core.transformers.ViewTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -119,7 +117,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
     private GroupEntity findNationalGroup(final Authentication authentication) {
         final GroupEntity group;
 
-        if (authentication.getGroup().getGroupType().getGrouptype().equals(GroupType.NATIONAL)) {
+        if (authentication.getGroup().getGroupType().getGrouptype() == GroupType.NATIONAL) {
             group = authentication.getGroup();
         } else {
             group = accessDao.findNationalGroup(authentication.getUser());
@@ -189,7 +187,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final int year = request.getExchangeYear();
 
         switch (request.getFetchType()) {
-            case ALL:
+            case DOMESTIC:
                 response = new FetchOffersResponse(findAllOffers(authentication, year));
                 break;
             case SHARED:
@@ -209,14 +207,13 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return convertViewList(authentication, found);
     }
 
-    private List<Offer> convertViewList(final Authentication authentication, final List<OfferView> found) {
+    private static List<Offer> convertViewList(final Authentication authentication, final List<OfferView> found) {
         final List<Offer> result = new ArrayList<>(found.size());
 
         for (final OfferView view : found) {
             final Offer offer = transform(view);
             // do not expose private comment to foreign offers
-            if(!view.getGroupId().equals(authentication.getGroup().getId()))
-            {
+            if (!view.getGroupId().equals(authentication.getGroup().getId())) {
                 offer.setPrivateComment(null);
             }
             result.add(offer);
@@ -243,8 +240,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
                 offer.setNsLastname(nationalSecretary.getLastname());
 
                 // do not expose private comment to foreign offers
-                if(!offerEntity.getEmployer().getGroup().getId().equals(authentication.getGroup().getId()))
-                {
+                if (!offerEntity.getEmployer().getGroup().getId().equals(authentication.getGroup().getId())) {
                     offer.setPrivateComment(null);
                 }
 
@@ -255,15 +251,15 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return offers;
     }
 
-    private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
-        final List<OfferGroup> result = new ArrayList<>(found.size());
-
-        for (final OfferGroupEntity entity : found) {
-            result.add(ExchangeTransformer.transform(entity));
-        }
-
-        return result;
-    }
+    //private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
+    //    final List<OfferGroup> result = new ArrayList<>(found.size());
+    //
+    //    for (final OfferGroupEntity entity : found) {
+    //        result.add(ExchangeTransformer.transform(entity));
+    //    }
+    //
+    //    return result;
+    //}
 
     public FetchOfferTemplateResponse fetchOfferTemplates(final Authentication authentication, final FetchOfferTemplatesRequest request) {
         throw new NotImplementedException("Method pending implementation.");
@@ -306,7 +302,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         final Map<String, List<Group>> result = prepareResultingMap(externalOfferIds);
         for (final OfferSharedToGroupView view : shared) {
             final String offerId = view.getOfferExternalId();
-            final Group group = ViewTransformer.transform(view);
+            final Group group = transform(view);
             result.get(offerId).add(group);
         }
 
@@ -339,7 +335,7 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
      * @param externalOfferIds List of ExternalOfferIds to find results for
      * @return Result Map with empty data structure
      */
-    private Map<String, List<Group>> prepareResultingMap(final List<String> externalOfferIds) {
+    private static Map<String, List<Group>> prepareResultingMap(final List<String> externalOfferIds) {
         final Map<String, List<Group>> result = new HashMap<>(externalOfferIds.size());
 
         for (final String externalOfferId : externalOfferIds) {
@@ -349,17 +345,4 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         return result;
     }
-    //private void verifyOffersOwnership(final Authentication authentication, final Set<String> offerExternalIds) {
-    //    final List<OfferEntity> offers = dao.findOffersByExternalId(authentication, offerExternalIds);
-    //    final Set<String> fetchedOffersExtId = new HashSet<>(offers.size());
-    //    for (final OfferEntity offer : offers) {
-    //        fetchedOffersExtId.add(offer.getExternalId());
-    //    }
-    //
-    //    for (final String externalId : offerExternalIds) {
-    //        if (!fetchedOffersExtId.contains(externalId)) {
-    //            throw new VerificationException("The offer with id '" + externalId + "' is not owned by the group '" + authentication.getGroup().getGroupName() + "'.");
-    //        }
-    //    }
-    //}
 }

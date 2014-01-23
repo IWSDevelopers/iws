@@ -96,10 +96,10 @@ public interface Exchange {
     OfferResponse processOffer(AuthenticationToken token, ProcessOfferRequest request);
 
     /**
-     * Performs a deletion of the offer.
-     *
-     * TODO: this should only be under certain circumstances: only if the offer is in state new. Doesn't matter if it
-     * was once shared. But it should never be able to be deleted once a student was nominated.
+     * Performs a deletion of the offer.<br />
+     *   Note; This should only be under certain circumstances: only if the
+     * offer is in state new. Doesn't matter if it was once shared. But it
+     * should never be able to be deleted once a student was nominated.
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a field with the RefNo (will be changed to id #359)
@@ -112,13 +112,11 @@ public interface Exchange {
      * country.
      *
      * <dl>
-     *   <dt>{@link net.iaeste.iws.api.enums.FetchType#ALL}</dt>
+     *   <dt>{@link net.iaeste.iws.api.enums.FetchType#DOMESTIC}</dt>
      *     <dd>Requests all own/domestic offers.</dd>
      *   <dt>{@link net.iaeste.iws.api.enums.FetchType#SHARED}</dt>
      *     <dd>Means that all shared offers are requested.</dd>
      * </dl>
-     *
-     * TODO: Rename FetchType.ALL to FetchType.DOMESTIC for classifications
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a {@link net.iaeste.iws.api.enums.FetchType} which indicates which type of offers

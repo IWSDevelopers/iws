@@ -220,7 +220,7 @@ public final class HeavyLoadTest {
                 final long tmp2 = System.nanoTime();
                 assertThat(exchange.fetchOfferStatistics(token, new OfferStatisticsRequest()).isOk(), is(true));
                 final long tmp3 = System.nanoTime();
-                assertThat(exchange.fetchOffers(token, new FetchOffersRequest(FetchType.ALL)).isOk(), is(true));
+                assertThat(exchange.fetchOffers(token, new FetchOffersRequest(FetchType.DOMESTIC)).isOk(), is(true));
                 final long tmp4 = System.nanoTime();
                 assertThat(exchange.fetchOffers(token, new FetchOffersRequest(FetchType.SHARED)).isOk(), is(true));
                 final long tmp5 = System.nanoTime();

@@ -23,7 +23,6 @@ import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.common.configuration.Settings;
-import net.iaeste.iws.core.transformers.StorageTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.FileEntity;
@@ -52,7 +51,7 @@ public final class StorageService extends CommonService<AccessDao> {
             response = new FileResponse();
         } else {
             final FileEntity entity = processFile(authentication, request.getFile());
-            final File file = StorageTransformer.transform(entity);
+            final File file = transform(entity);
             response = new FileResponse(file);
         }
 

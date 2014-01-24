@@ -36,10 +36,7 @@ import net.iaeste.iws.persistence.entities.PersonEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -259,7 +256,7 @@ public class CommonService<T extends BasicDao> {
             entity.setExternalId(newId);
             entity.setChecksum(calculateChecksum(data));
             entity.setStoredFilename(storedNamed);
-            entity.setFilesize(data != null ? data.length : 0);
+            entity.setFilesize((data != null) ? data.length : 0);
             entity.setUser(authentication.getUser());
             entity.setGroup(authentication.getGroup());
 
@@ -273,7 +270,7 @@ public class CommonService<T extends BasicDao> {
                 if (!entity.getChecksum().equals(checksum)) {
                     writeFileToSystem(entity.getStoredFilename(), data);
                     changes.setChecksum(checksum);
-                    changes.setFilesize(data != null ? data.length : 0);
+                    changes.setFilesize((data != null) ? data.length : 0);
                 }
                 dao.persist(authentication, entity, changes);
             } else {
@@ -302,7 +299,7 @@ public class CommonService<T extends BasicDao> {
             deleteFileFromSystem(entity.getStoredFilename());
             dao.delete(entity);
 
-            log.info("File %s has been successfully deleted from the IWS.", filename);
+            log.info("File {} has been successfully deleted from the IWS.", filename);
         } else {
             throw new AuthorizationException("The user is not authorized to process this file.");
         }
@@ -321,7 +318,7 @@ public class CommonService<T extends BasicDao> {
     private static long calculateChecksum(final byte[] array) {
         final long crc;
 
-        if (array != null && array.length > 0) {
+        if ((array != null) && (array.length > 0)) {
             final Checksum checksum = new CRC32();
             checksum.update(array, 0, array.length);
 
@@ -333,40 +330,36 @@ public class CommonService<T extends BasicDao> {
         return crc;
     }
 
-    private void writeFileToSystem(final String file, final byte[] bytes) {
+    private void writeFileToSystem(final String name, final byte[] bytes) {
         if ((bytes != null) && (bytes.length > 0)) {
-            checkDirectoryExistsOrCreate(file);
-            final String path = settings.getRootFilePath() + '/' + file;
+            checkDirectoryExistsOrCreate(name);
 
-            try (final OutputStream outputStream = new FileOutputStream(path)) {
-                // Write files to file system
-                outputStream.write(bytes);
-                outputStream.flush();
-            } catch (FileNotFoundException e) {
-                throw new IWSException(IWSErrors.FATAL, "Not able to write file to system; " + e.getMessage(), e);
+            try {
+                Files.write(getPath(name), bytes);
             } catch (IOException e) {
-                throw new IWSException(IWSErrors.FATAL, "Cannot Close file stream; " + e.getMessage(), e);
+                throw new IWSException(IWSErrors.FATAL, "I/O Error while attempting to write file: " + e.getMessage(), e);
             }
         }
     }
 
     private byte[] readFileFromSystem(final String name) {
-        final Path path = Paths.get(settings.getRootFilePath() + '/' + name);
-
         try {
-            return Files.readAllBytes(path);
+            return Files.readAllBytes(getPath(name));
         } catch (IOException e) {
             throw new IWSException(IWSErrors.ERROR, "I/O Error while attempting to read file: " + e.getMessage(), e);
         }
     }
 
-    private void deleteFileFromSystem(final String file) {
-        final String path = settings.getRootFilePath() + '/' + file;
-        final java.io.File toDelete = new java.io.File(path);
-
-        if (!toDelete.delete()) {
-            throw new IWSException(IWSErrors.ERROR, "The File could not be deleted.");
+    private void deleteFileFromSystem(final String name) {
+        try {
+            Files.delete(getPath(name));
+        } catch (IOException e) {
+            throw new IWSException(IWSErrors.ERROR, "The File could not be deleted: " + e.getMessage(), e);
         }
+    }
+
+    private Path getPath(final String name) {
+        return Paths.get(settings.getRootFilePath() + '/' + name);
     }
 
     private void checkDirectoryExistsOrCreate(final String fileWithPartialPath) {

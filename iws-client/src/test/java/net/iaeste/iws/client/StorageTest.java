@@ -47,39 +47,60 @@ public class StorageTest extends AbstractTest {
     }
 
     @Test
-    //@Ignore("2014-01-12 by Kim - Reason: Storage is being restructured since the data is stored in the filesystem rather than the database.")
-    public void testStoreFindDeleteFile() {
+    public void testStoreFetchUpdateDeleteFile() {
         // First generate a primitive file to store.
-        final byte[] testdata = { (byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5,
-                                  (byte) 6, (byte) 7, (byte) 8, (byte) 9, (byte) 0 };
+        final byte[] testdata1 = { (byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5,
+                                   (byte) 6, (byte) 7, (byte) 8, (byte) 9, (byte) 0 };
+        final byte[] testdata2 = "My Test data".getBytes();
         final File file = new File();
         file.setFilename("testFile");
-        file.setFiledata(testdata);
+        file.setFiledata(testdata1);
         file.setKeywords("Test, File, Finland");
         file.setDescription("Finish Testfile");
         file.setMimetype("text/plain");
 
-        final FileRequest request = new FileRequest(file);
+        // Create new file
+        final FileRequest createRequest = new FileRequest(file);
         final Group nationalGroup = findNationalGroup(token);
         token.setGroupId(nationalGroup.getGroupId());
-        final FileResponse response = storage.processFile(token, request);
+        final FileResponse response = storage.processFile(token, createRequest);
         assertThat(response.isOk(), is(true));
+
+        // Fetch the File
         final FetchFileRequest fetchRequest = new FetchFileRequest(response.getFile().getFileId());
         fetchRequest.setReadFileData(true);
         final FetchFileResponse fetchResponseForGroup = storage.fetchFile(token, fetchRequest);
         token.setGroupId(null);
         final FetchFileResponse fetchResponseForUser = storage.fetchFile(token, fetchRequest);
         assertThat(fetchResponseForGroup.isOk(), is(true));
-        assertThat(fetchResponseForGroup.getFile().getFiledata(), is(testdata));
+        assertThat(fetchResponseForGroup.getFile().getFiledata(), is(testdata1));
         assertThat(fetchResponseForGroup.getFile().getChecksum(), is(response.getFile().getChecksum()));
         assertThat(fetchResponseForUser.isOk(), is(true));
-        assertThat(fetchResponseForUser.getFile().getFiledata(), is(testdata));
+        assertThat(fetchResponseForUser.getFile().getFiledata(), is(testdata1));
         assertThat(fetchResponseForUser.getFile().getChecksum(), is(response.getFile().getChecksum()));
+
+        // Update the file
+        final FileRequest updateRequest = new FileRequest(file);
+        file.setFileId(fetchResponseForGroup.getFile().getFileId());
+        file.setFiledata(testdata2);
+        updateRequest.setFile(file);
+        token.setGroupId(nationalGroup.getGroupId());
+        final FileResponse updateResponse = storage.processFile(token, updateRequest);
+        assertThat(updateResponse.isOk(), is(true));
+
+        // Fetch Updated file
+        final FetchFileResponse fetchUpdatedFile = storage.fetchFile(token, fetchRequest);
+        assertThat(fetchUpdatedFile.isOk(), is(true));
+        assertThat(fetchUpdatedFile.getFile().getFiledata(), is(testdata2));
+
+        // Delete the File
         final FileRequest deleteRequest = new FileRequest(response.getFile());
         deleteRequest.setDeleteFile(true);
         token.setGroupId(nationalGroup.getGroupId());
         final FileResponse deleteResponse = storage.processFile(token, deleteRequest);
         assertThat(deleteResponse.isOk(), is(true));
+
+        // Finally, verify that the file was deleted
         token.setGroupId(null);
         final FetchFileResponse findDeletedFileResponse = storage.fetchFile(token, fetchRequest);
         assertThat(findDeletedFileResponse.isOk(), is(false));

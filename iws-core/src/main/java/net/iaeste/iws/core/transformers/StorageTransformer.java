@@ -60,6 +60,7 @@ public final class StorageTransformer {
         if (file != null) {
             entity = new FileEntity();
 
+            entity.setExternalId(file.getFileId());
             entity.setGroup(CommonTransformer.transform(file.getGroup()));
             entity.setUser(AdministrationTransformer.transform(file.getUser()));
             entity.setFilename(file.getFilename());

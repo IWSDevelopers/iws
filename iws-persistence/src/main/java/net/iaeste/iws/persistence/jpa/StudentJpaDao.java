@@ -76,10 +76,10 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * {@inheritDoc}
      */
     @Override
-    public List<ApplicationView> findForeignApplicationsForOffer(final String offerExternalId, final Long offerOwnerId) {
-        final Query query = entityManager.createNamedQuery("view.findForeignApplicationsByOfferExternalId");
-        query.setParameter("oeid", offerExternalId);
-        query.setParameter("offerOwnerId", offerOwnerId);
+    public List<ApplicationView> findForeignApplicationsForOffer(final String externalOfferId, final Long offerOwnerId) {
+        final Query query = entityManager.createNamedQuery("view.findForeignApplicationsByGroupAndExternalId");
+        query.setParameter("eoid", externalOfferId);
+        query.setParameter("gid", offerOwnerId);
 
         return query.getResultList();
     }
@@ -88,10 +88,10 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
      * {@inheritDoc}
      */
     @Override
-    public List<ApplicationView> findDomesticApplicationsForOffer(final String offerExternalId, final Long applicationOwnerId) {
-        final Query query = entityManager.createNamedQuery("view.findDomesticApplicationsByOfferExternalId");
-        query.setParameter("oeid", offerExternalId);
-        query.setParameter("applicationOwnerId", applicationOwnerId);
+    public List<ApplicationView> findDomesticApplicationsForOffer(final String externalOfferId, final Long applicationGroupId) {
+        final Query query = entityManager.createNamedQuery("view.findDomesticApplicationByGroupAndExternalId");
+        query.setParameter("eoid", externalOfferId);
+        query.setParameter("gid", applicationGroupId);
 
         return query.getResultList();
     }

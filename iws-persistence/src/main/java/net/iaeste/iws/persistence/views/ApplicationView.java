@@ -14,9 +14,13 @@
  */
 package net.iaeste.iws.persistence.views;
 
+import net.iaeste.iws.api.enums.exchange.OfferState;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -29,14 +33,14 @@ import javax.persistence.Table;
  */
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "view.findForeignApplicationsByOfferExternalId",
+        @NamedQuery(name = "view.findForeignApplicationsByGroupAndExternalId",
                 query = "select v from ApplicationView v " +
-                        "where v.offerOwnerGroupId = :offerOwnerId " +
-                        "  and v.offer.externalId = :oeid "),
-        @NamedQuery(name = "view.findDomesticApplicationsByOfferExternalId",
+                        "where v.offerGroupId = :gid" +
+                        "  and v.offerExternalId = :eoid"),
+        @NamedQuery(name = "view.findDomesticApplicationByGroupAndExternalId",
                 query = "select v from ApplicationView v " +
-                        "where v.applicationOwnerGroupId = :applicationOwnerId " +
-                        "  and v.offer.externalId = :oeid "),
+                        "where v.applicationGroupId = :gid" +
+                        "  and v.offerExternalId = :eoid"),
 })
 @Table(name = "application_view")
 public class ApplicationView extends AbstractView<ApplicationView> {
@@ -45,26 +49,33 @@ public class ApplicationView extends AbstractView<ApplicationView> {
     @Column(name = "application_id", insertable = false, updatable = false)
     private Long id = null;
 
-    @Column(name = "application_owner_group_id", insertable = false, updatable = false)
-    private Long applicationOwnerGroupId = null;
+    @Column(name = "application_group_id", insertable = false, updatable = false)
+    private Long applicationGroupId = null;
 
-    @Column(name = "offer_owner_group_id", insertable = false, updatable = false)
-    private Long offerOwnerGroupId = null;
+    @Column(name = "offer_group_id", insertable = false, updatable = false)
+    private Long offerGroupId = null;
+
+    @Column(name = "offer_external_id", insertable = false, updatable = false)
+    private String offerExternalId = null;
+
+    @Column(name = "offer_ref_no", insertable = false, updatable = false)
+    private String offerRefNo = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "offer_status", insertable = false, updatable = false)
+    private OfferState offerState = null;
 
     @Embedded
     private EmbeddedApplication application = null;
 
     @Embedded
-    private EmbeddedAddress homeAddress = null;
+    private EmbeddedHomeAddress homeAddress = null;
 
     @Embedded
-    private EmbeddedAddress2 termsAddress = null;
+    private EmbeddedTermAddress termsAddress = null;
 
     @Embedded
     private EmbeddedCountry nationality = null;
-
-    @Embedded
-    private EmbeddedOffer offer = null;
 
     @Embedded
     private EmbeddedStudent student = null;
@@ -84,20 +95,44 @@ public class ApplicationView extends AbstractView<ApplicationView> {
         return id;
     }
 
-    public void setApplicationOwnerGroupId(final Long applicationOwnerGroupId) {
-        this.applicationOwnerGroupId = applicationOwnerGroupId;
+    public void setApplicationGroupId(final Long applicationGroupId) {
+        this.applicationGroupId = applicationGroupId;
     }
 
-    public Long getApplicationOwnerGroupId() {
-        return applicationOwnerGroupId;
+    public Long getApplicationGroupId() {
+        return applicationGroupId;
     }
 
-    public void setOfferOwnerGroupId(final Long offerOwnerGroupId) {
-        this.offerOwnerGroupId = offerOwnerGroupId;
+    public void setOfferGroupId(final Long offerGroupId) {
+        this.offerGroupId = offerGroupId;
     }
 
-    public Long getOfferOwnerGroupId() {
-        return offerOwnerGroupId;
+    public Long getOfferGroupId() {
+        return offerGroupId;
+    }
+
+    public void setOfferExternalId(final String offerExternalId) {
+        this.offerExternalId = offerExternalId;
+    }
+
+    public String getOfferExternalId() {
+        return offerExternalId;
+    }
+
+    public void setOfferRefNo(final String offerRefNo) {
+        this.offerRefNo = offerRefNo;
+    }
+
+    public String getOfferRefNo() {
+        return offerRefNo;
+    }
+
+    public void setOfferState(final OfferState offerState) {
+        this.offerState = offerState;
+    }
+
+    public OfferState getOfferState() {
+        return offerState;
     }
 
     public void setApplication(final EmbeddedApplication application) {
@@ -108,19 +143,19 @@ public class ApplicationView extends AbstractView<ApplicationView> {
         return application;
     }
 
-    public void setHomeAddress(final EmbeddedAddress homeAddress) {
+    public void setHomeAddress(final EmbeddedHomeAddress homeAddress) {
         this.homeAddress = homeAddress;
     }
 
-    public EmbeddedAddress getHomeAddress() {
+    public EmbeddedHomeAddress getHomeAddress() {
         return homeAddress;
     }
 
-    public void setTermsAddress(final EmbeddedAddress2 termsAddress) {
+    public void setTermsAddress(final EmbeddedTermAddress termsAddress) {
         this.termsAddress = termsAddress;
     }
 
-    public EmbeddedAddress2 getTermsAddress() {
+    public EmbeddedTermAddress getTermsAddress() {
         return termsAddress;
     }
 
@@ -130,14 +165,6 @@ public class ApplicationView extends AbstractView<ApplicationView> {
 
     public EmbeddedCountry getNationality() {
         return nationality;
-    }
-
-    public void setOffer(final EmbeddedOffer offer) {
-        this.offer = offer;
-    }
-
-    public EmbeddedOffer getOffer() {
-        return offer;
     }
 
     public void setStudent(final EmbeddedStudent student) {
@@ -191,8 +218,8 @@ public class ApplicationView extends AbstractView<ApplicationView> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(final ApplicationView a) {
-        final int result = id.compareTo(a.id);
+    public int compareTo(final ApplicationView o) {
+        final int result = id.compareTo(o.id);
 
         return sortAscending ? result : -result;
     }

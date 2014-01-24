@@ -14,8 +14,13 @@
  */
 package net.iaeste.iws.persistence.views;
 
+import net.iaeste.iws.api.enums.Currency;
+import net.iaeste.iws.api.enums.Membership;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -35,29 +40,55 @@ import java.util.Date;
  * @since   1.7
  */
 @Embeddable
-public class EmbeddedAddress2 {
+public class EmbeddedTermAddress {
 
-    @Column(name = "address2_street1", insertable = false, updatable = false)
+    @Column(name = "term_address_street1", insertable = false, updatable = false)
     private String street1 = null;
 
-    @Column(name = "address2_street2", insertable = false, updatable = false)
+    @Column(name = "term_address_street2", insertable = false, updatable = false)
     private String street2 = null;
 
-    @Column(name = "address2_postal_code", insertable = false, updatable = false)
+    @Column(name = "term_address_postal_code", insertable = false, updatable = false)
     private String postalCode = null;
 
-    @Column(name = "address2_city", insertable = false, updatable = false)
+    @Column(name = "term_address_city", insertable = false, updatable = false)
     private String city = null;
 
-    @Column(name = "address2_state", insertable = false, updatable = false)
+    @Column(name = "term_address_state", insertable = false, updatable = false)
     private String state = null;
 
+    @Column(name = "term_country_id", insertable = false, updatable = false)
+    private Long countryId = null;
+
+    @Column(name = "term_country_code", insertable = false, updatable = false)
+    private String countryCode = null;
+
+    @Column(name = "term_country_name", insertable = false, updatable = false)
+    private String countryName = null;
+
+    @Column(name = "term_country_nationality", insertable = false, updatable = false)
+    private String nationality = null;
+
+    @Column(name = "term_country_phonecode", insertable = false, updatable = false)
+    private String phonecode = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "term_country_currency", insertable = false, updatable = false)
+    private Currency currency = null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "term_country_membership", insertable = false, updatable = false)
+    private Membership membership = null;
+
+    @Column(name = "term_country_member_since", insertable = false, updatable = false)
+    private Integer memberSince = null;
+
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "address2_modified", insertable = false, updatable = false)
+    @Column(name = "term_address_modified", insertable = false, updatable = false)
     private Date modified = null;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "address2_created", insertable = false, updatable = false)
+    @Column(name = "term_address_created", insertable = false, updatable = false)
     private Date created = null;
 
     // =========================================================================
@@ -102,6 +133,70 @@ public class EmbeddedAddress2 {
 
     public String getState() {
         return state;
+    }
+
+    public void setCountryId(final Long countryId) {
+        this.countryId = countryId;
+    }
+
+    public Long getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryCode(final String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryName(final String countryName) {
+        this.countryName = countryName;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setNationality(final String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setPhonecode(final String phonecode) {
+        this.phonecode = phonecode;
+    }
+
+    public String getPhonecode() {
+        return phonecode;
+    }
+
+    public void setCurrency(final Currency currency) {
+        this.currency = currency;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setMembership(final Membership membership) {
+        this.membership = membership;
+    }
+
+    public Membership getMembership() {
+        return membership;
+    }
+
+    public void setMemberSince(final Integer memberSince) {
+        this.memberSince = memberSince;
+    }
+
+    public Integer getMemberSince() {
+        return memberSince;
     }
 
     public void setModified(final Date modified) {

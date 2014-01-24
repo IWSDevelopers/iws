@@ -163,6 +163,8 @@ public final class ViewTransformer {
      */
     public static StudentApplication transform(final ApplicationView view) {
         final StudentApplication application = convert(view.getApplication());
+        application.setOfferId(view.getOfferExternalId());
+        application.setOfferState(view.getOfferState());
 
         final Address homeAddress = convert(view.getHomeAddress());
         application.setHomeAddress(homeAddress);
@@ -179,9 +181,6 @@ public final class ViewTransformer {
         final User user = convert(view.getUser());
         student.setUser(user);
         application.setStudent(student);
-
-        final Offer offer = convert(view.getOffer());
-        application.setOffer(offer);
 
         return application;
     }

@@ -164,6 +164,14 @@ public interface ExchangeDao extends BasicDao {
     List<OfferGroupEntity> findInfoForSharedOffer(String externalOfferId);
 
     /**
+     * Finds information about sharing of the offer
+     *
+     * @param  offerId reference number of the offer to get sharing info for
+     * @return list of {@link OfferGroupEntity} which are shared
+     */
+    OfferGroupEntity findInfoForSharedOffer(GroupEntity group, String offerId);
+
+    /**
      * Finds information about sharing of the offer only if offer did not expire because of deadline
      *
      * @param  externalOfferId reference number of the offer to get sharing info for

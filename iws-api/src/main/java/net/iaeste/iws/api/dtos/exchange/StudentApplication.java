@@ -26,6 +26,7 @@ import net.iaeste.iws.api.enums.Language;
 import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
 import net.iaeste.iws.api.enums.exchange.LanguageLevel;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
@@ -58,8 +59,13 @@ public final class StudentApplication extends AbstractVerification {
 
     private String applicationId = null;
 
-    /** {@link Offer} that the {@link Student} is applying for */
-    private Offer offer = null;
+    /**
+     * Offer Id for the {@link Offer} that the {@link Student} is
+     * applying for.
+     */
+    private String offerId = null;
+
+    private OfferState offerState = null;
 
     /** {@link Student} as User */
     private Student student = null;
@@ -149,7 +155,7 @@ public final class StudentApplication extends AbstractVerification {
     public StudentApplication(final StudentApplication studentApplication) {
         if (studentApplication != null) {
             applicationId = studentApplication.applicationId;
-            offer = new Offer(studentApplication.offer);
+            offerId = studentApplication.offerId;
             student = new Student(studentApplication.student);
             status = studentApplication.status;
             homeAddress = new Address(studentApplication.homeAddress);
@@ -203,13 +209,21 @@ public final class StudentApplication extends AbstractVerification {
         return applicationId;
     }
 
-    public void setOffer(final Offer offer) throws IllegalArgumentException {
-        //ensureNotNullAndVerifiable("offer", offer);
-        this.offer = new Offer(offer);
+    public void setOfferId(final String offerId) throws IllegalArgumentException {
+        ensureNotNullAndValidId("offerId", offerId);
+        this.offerId = offerId;
     }
 
-    public Offer getOffer() {
-        return new Offer(offer);
+    public String getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferState(final OfferState offerState) {
+        this.offerState = offerState;
+    }
+
+    public OfferState getOfferState() {
+        return offerState;
     }
 
     public void setStudent(final Student student) throws IllegalArgumentException {
@@ -538,7 +552,7 @@ public final class StudentApplication extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
 
-        isNotNull(validation, "offer", offer);
+        isNotNull(validation, "offerId", offerId);
         isNotNull(validation, "student", student);
         // Made optional, please see Trac ticket #512
         //isNotNull(validation, "homeAddress", homeAddress);
@@ -565,7 +579,7 @@ public final class StudentApplication extends AbstractVerification {
             return false;
         }
 
-        if ((offer != null) ? !offer.equals(studentApplication.offer) : (studentApplication.offer != null)) {
+        if ((offerId != null) ? !offerId.equals(studentApplication.offerId) : (studentApplication.offerId != null)) {
             return false;
         }
 
@@ -712,7 +726,7 @@ public final class StudentApplication extends AbstractVerification {
         int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((applicationId != null) ? applicationId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((offer != null) ? offer.hashCode() : 0);
+        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((offerId != null) ? offerId.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((student != null) ? student.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((status != null) ? status.hashCode() : 0);
         hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((homeAddress != null) ? homeAddress.hashCode() : 0);
@@ -755,7 +769,7 @@ public final class StudentApplication extends AbstractVerification {
     public String toString() {
         return "StudentApplication{" +
                 "applicationId='" + applicationId + '\'' +
-                ", offer='" + offer + '\'' +
+                ", offerId='" + offerId + '\'' +
                 ", student='" + student + '\'' +
                 ", status ='" + status + '\'' +
                 ", homeAddress='" + homeAddress + '\'' +

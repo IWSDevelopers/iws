@@ -69,9 +69,14 @@ import java.util.Date;
         @NamedQuery(name = "offerGroup.findByExternalOfferId",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.externalId = :eoid"),
+        @NamedQuery(name = "offerGroup.findByGroupAndExternalId",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.externalId = :eoid" +
+                        "  and og.group.id = :gid"),
         @NamedQuery(name = "offerGroup.findUnexpiredByExternalOfferId",
                 query = "select og from OfferGroupEntity og " +
-                        "where og.offer.externalId = :eoid and og.offer.nominationDeadline >= :date"),
+                        "where og.offer.externalId = :eoid" +
+                        "  and og.offer.nominationDeadline >= :date"),
         @NamedQuery(name = "offerGroup.deleteByOffer",
                 query = "delete from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),

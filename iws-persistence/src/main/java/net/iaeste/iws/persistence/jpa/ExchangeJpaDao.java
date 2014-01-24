@@ -322,6 +322,21 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OfferGroupEntity findInfoForSharedOffer(final GroupEntity group, final String offerId) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findByGroupAndExternalId");
+        query.setParameter("eoid", offerId);
+        query.setParameter("gid", group.getId());
+
+        return findSingleResult(query, "OfferGroup");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<OfferGroupEntity> findInfoForUnexpiredSharedOffer(final String externalOfferId, final Date currentDate) {
         final Query query = entityManager.createNamedQuery("offerGroup.findUnexpiredByExternalOfferId");
@@ -426,7 +441,7 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
     public List<AttachmentEntity> findAttachments(final String table, final Long id) {
         final Query query = entityManager.createNamedQuery("attachments.findForRecord");
         query.setParameter("table", table);
-        query.setParameter("record", id);
+        query.setParameter("recordid", id);
 
         return query.getResultList();
     }

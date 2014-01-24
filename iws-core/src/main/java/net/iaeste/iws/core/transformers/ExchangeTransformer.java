@@ -286,7 +286,7 @@ public final class ExchangeTransformer {
             result = new StudentApplication();
 
             result.setApplicationId(entity.getExternalId());
-            result.setOffer(transform(entity.getOfferGroup().getOffer()));
+            result.setOfferId(entity.getOfferGroup().getOffer().getExternalId());
             result.setStudent(transform(entity.getStudent()));
             result.setStatus(entity.getStatus());
             result.setHomeAddress(CommonTransformer.transform(entity.getHomeAddress()));
@@ -316,7 +316,7 @@ public final class ExchangeTransformer {
             result.setRejectByEmployerReason(entity.getRejectByEmployerReason());
             result.setRejectDescription(entity.getRejectDescription());
             result.setRejectInternalComment(entity.getRejectInternalComment());
-            result.setNominatedAt(entity.getNominatedAt() != null ? new DateTime(entity.getNominatedAt()) : null);
+            result.setNominatedAt((entity.getNominatedAt() != null) ? new DateTime(entity.getNominatedAt()) : null);
             result.setModified(new DateTime(entity.getModified()));
             result.setCreated(new DateTime(entity.getCreated()));
         }
@@ -363,7 +363,7 @@ public final class ExchangeTransformer {
             result.setRejectByEmployerReason(application.getRejectByEmployerReason());
             result.setRejectDescription(application.getRejectDescription());
             result.setRejectInternalComment(application.getRejectInternalComment());
-            result.setNominatedAt(application.getNominatedAt() != null ? application.getNominatedAt().toDate() : null);
+            result.setNominatedAt((application.getNominatedAt() != null) ? application.getNominatedAt().toDate() : null);
         }
 
         return result;

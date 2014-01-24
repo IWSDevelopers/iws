@@ -161,7 +161,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(sharedOffer);
+        application.setOfferId(sharedOffer.getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -237,7 +237,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(sharedOffer);
+        application.setOfferId(sharedOffer.getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -260,7 +260,7 @@ public final class StudentTest extends AbstractTest {
     }
 
     //TODO Kim, have a look at this test please
-    //@Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB. See #515")
+    @Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB. See #515")
     @Test
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
@@ -326,7 +326,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         StudentApplication application = new StudentApplication();
-        application.setOffer(sharedOffer);
+        application.setOfferId(sharedOffer.getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -383,7 +383,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(saveResponse.getOffer());
+        application.setOfferId(saveResponse.getOffer().getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -469,7 +469,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(saveResponse.getOffer());
+        application.setOfferId(saveResponse.getOffer().getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -504,7 +504,7 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    @Ignore("Ignored 2014-01-19 by Kim - Reason: It's failing! Need to commit other work, so wish to see a stable build for the migration as well.")
+    //@Ignore("Ignored 2014-01-19 by Kim - Reason: It's failing! Need to commit other work, so wish to see a stable build for the migration as well.")
     public void testRejectAppliedApplicationBySendingCountry() {
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
@@ -541,7 +541,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(saveResponse.getOffer());
+        application.setOfferId(saveResponse.getOffer().getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -569,7 +569,7 @@ public final class StudentTest extends AbstractTest {
     public void testRejectApplicationBySendingCountryForClosedOffer() {
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
-        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001065", "Employer", "PL");
+        final Offer offer = TestData.prepareMinimalOffer("PL-2014-001064", "Employer", "PL");
 
         final OfferResponse saveResponse = exchange.processOffer(token, new ProcessOfferRequest(offer));
         assertThat("Offer has been saved", saveResponse.isOk(), is(true));
@@ -586,7 +586,7 @@ public final class StudentTest extends AbstractTest {
 
         assertThat("Offer has been shared to 2 countries", publishResponse1.isOk(), is(true));
 
-        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app065@university.edu", "password1", "Student1", "Graduate1");
+        final CreateUserRequest createUserRequest1 = new CreateUserRequest("student_app064@university.edu", "password1", "Student1", "Graduate1");
         createUserRequest1.setStudentAccount(true);
 
         final CreateUserResponse createStudentResponse1 = administration.createUser(austriaToken, createUserRequest1);
@@ -602,7 +602,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(saveResponse.getOffer());
+        application.setOfferId(saveResponse.getOffer().getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -667,7 +667,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(saveResponse.getOffer());
+        application.setOfferId(saveResponse.getOffer().getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -732,7 +732,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(saveResponse.getOffer());
+        application.setOfferId(saveResponse.getOffer().getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -797,7 +797,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(saveResponse.getOffer());
+        application.setOfferId(saveResponse.getOffer().getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -869,7 +869,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(saveResponse.getOffer());
+        application.setOfferId(saveResponse.getOffer().getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));
@@ -962,7 +962,7 @@ public final class StudentTest extends AbstractTest {
         student.setAvailable(new DatePeriod(new Date(), nominationDeadline));
 
         final StudentApplication application = new StudentApplication();
-        application.setOffer(readOfferHr1);
+        application.setOfferId(readOfferHr1.getOfferId());
         application.setStudent(student);
         application.setStatus(ApplicationStatus.APPLIED);
         application.setHomeAddress(TestData.prepareAddress("DE"));

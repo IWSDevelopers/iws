@@ -28,13 +28,14 @@ import net.iaeste.iws.api.enums.exchange.StudyLevel;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.persistence.views.EmbeddedAddress;
-import net.iaeste.iws.persistence.views.EmbeddedAddress2;
 import net.iaeste.iws.persistence.views.EmbeddedApplication;
 import net.iaeste.iws.persistence.views.EmbeddedCountry;
 import net.iaeste.iws.persistence.views.EmbeddedEmployer;
 import net.iaeste.iws.persistence.views.EmbeddedGroup;
+import net.iaeste.iws.persistence.views.EmbeddedHomeAddress;
 import net.iaeste.iws.persistence.views.EmbeddedOffer;
 import net.iaeste.iws.persistence.views.EmbeddedStudent;
+import net.iaeste.iws.persistence.views.EmbeddedTermAddress;
 import net.iaeste.iws.persistence.views.EmbeddedUser;
 
 /**
@@ -78,14 +79,50 @@ public final class EmbeddedConverter {
         return result;
     }
 
-    public static Address convert(final EmbeddedAddress2 embedded) {
+    public static Address convert(final EmbeddedHomeAddress embedded) {
+        final Country country = new Country();
         final Address result = new Address();
+
+        if (embedded.getCountryId() != null) {
+            country.setCountryCode(embedded.getCountryCode());
+            country.setCountryName(embedded.getCountryName());
+            country.setNationality(embedded.getNationality());
+            country.setPhonecode(embedded.getPhonecode());
+            country.setCurrency(embedded.getCurrency());
+            country.setMembership(embedded.getMembership());
+            country.setMemberSince(embedded.getMemberSince());
+        }
 
         result.setStreet1(embedded.getStreet1());
         result.setStreet2(embedded.getStreet2());
         result.setPostalCode(embedded.getPostalCode());
         result.setCity(embedded.getCity());
         result.setState(embedded.getState());
+        result.setCountry(country);
+
+        return result;
+    }
+
+    public static Address convert(final EmbeddedTermAddress embedded) {
+        final Country country = new Country();
+        final Address result = new Address();
+
+        if (embedded.getCountryId() != null) {
+            country.setCountryCode(embedded.getCountryCode());
+            country.setCountryName(embedded.getCountryName());
+            country.setNationality(embedded.getNationality());
+            country.setPhonecode(embedded.getPhonecode());
+            country.setCurrency(embedded.getCurrency());
+            country.setMembership(embedded.getMembership());
+            country.setMemberSince(embedded.getMemberSince());
+        }
+
+        result.setStreet1(embedded.getStreet1());
+        result.setStreet2(embedded.getStreet2());
+        result.setPostalCode(embedded.getPostalCode());
+        result.setCity(embedded.getCity());
+        result.setState(embedded.getState());
+        result.setCountry(country);
 
         return result;
     }
@@ -207,7 +244,7 @@ public final class EmbeddedConverter {
         result.setStatus(embedded.getStatus());
         result.setEmail(embedded.getEmail());
         result.setPhoneNumber(embedded.getPhoneNumber());
-        result.setDateOfBirth(embedded.getDateOfBirth() != null ? new Date(embedded.getDateOfBirth()) : null);
+        result.setDateOfBirth((embedded.getDateOfBirth() != null) ? new Date(embedded.getDateOfBirth()) : null);
         result.setUniversity(embedded.getUniversity());
         result.setPlaceOfBirth(embedded.getPlaceOfBirth());
         result.setGender(embedded.getGender());

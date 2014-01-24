@@ -32,43 +32,48 @@ import java.util.Set;
 public interface StudentDao extends BasicDao {
 
     /**
-     * Find the application by its external ID
+     * Find the application by its external Id.
      *
-     * @param externalId application external ID
+     * @param externalId application external Id
      * @return {@code ApplicationEntity} if exists, otherwise null
      */
     ApplicationEntity findApplicationByExternalId(String externalId);
 
     /**
-     * Finds a student in the database by given external id and owning group
-     * @param parentGroupId owning group ID
-     * @param externalId student external ID
+     * Finds a student in the database by given external id and owning group.
+     *
+     * @param parentGroupId owning group Id
+     * @param externalId student external Id
      * @return {@code StudentEntity} if student exists withing given group, otherwise null
      */
     StudentEntity findStudentByExternal(Long parentGroupId, String externalId);
 
     /**
-     * Finds all applications for a specific Offer owned by specified group
-     * @param offerExternalId Offer ID
-     * @param offerOwnerId Offer Owner Group ID
+     * Finds all applications for a specific Offer owned by specified group.
+     *
+     * @param externalOfferId External Offer Id
+     * @param offerOwnerId    Group Id of the Group who owns the Offer
      * @return list of {@code ApplicationView}
      */
-    List<ApplicationView> findForeignApplicationsForOffer(String offerExternalId, Long offerOwnerId);
+    List<ApplicationView> findForeignApplicationsForOffer(String externalOfferId, Long offerOwnerId);
 
     /**
-     * Finds all applications owned by specified group for a specific Offer
-     * @param offerExternalId Offer ID
-     * @param applicationOwnerId Offer Owner Group ID
+     * Finds all applications owned by specified group for a specific Offer.
+     *
+     *
+     * @param externalOfferId    External Offer Id
+     * @param applicationGroupId Group Id of the Group it is shared to
      * @return list of {@code ApplicationView}
      */
-    List<ApplicationView> findDomesticApplicationsForOffer(String offerExternalId, Long applicationOwnerId);
+    List<ApplicationView> findDomesticApplicationsForOffer(String externalOfferId, Long applicationGroupId);
 
     List<AttachmentEntity> findAttachments(String table, Long recordId);
 
     AttachmentEntity findAttachment(String table, Long recordId, Long fileId);
 
     /**
-     * Checks if there is any OfferGroup for a specific Offer with any of specified states
+     * Checks if there is any OfferGroup for a specific Offer with any of
+     * specified states.
      *
      * @param offerId offer id
      * @param offerStates set of OfferState which should be checked for
@@ -77,7 +82,7 @@ public interface StudentDao extends BasicDao {
     Boolean otherOfferGroupWithCertainStatus(Long offerId, Set<OfferState> offerStates);
 
     /**
-     * Checks if there is any domestic application with any of specified states
+     * Checks if there is any domestic application with any of specified states.
      *
      * @param offerGroupId offer group id
      * @param applicationStates set of OfferState which should be checked for

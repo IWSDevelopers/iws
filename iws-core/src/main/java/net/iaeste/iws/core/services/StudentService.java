@@ -175,9 +175,17 @@ public final class StudentService extends CommonService<StudentDao> {
             applicationEntity.setStudent(student);
             dao.persist(authentication, applicationEntity);
 
+            boolean updateOfferGroup = false;
             //TODO complete status list from which we should change the status
             if (sharedOfferGroup.getStatus() == OfferState.SHARED) {
                 sharedOfferGroup.setStatus(OfferState.APPLICATIONS);
+                updateOfferGroup = true;
+            }
+            if (!sharedOfferGroup.getHasApplication()) {
+                sharedOfferGroup.setHasApplication(true);
+                updateOfferGroup = true;
+            }
+            if (updateOfferGroup) {
                 dao.persist(sharedOfferGroup);
             }
         } else {

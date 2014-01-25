@@ -54,6 +54,9 @@ import java.util.Date;
         @NamedQuery(name = "offerGroup.findByOffer",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
+        @NamedQuery(name = "offerGroup.findByOffers",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.id in (:oids)"),
         @NamedQuery(name = "offerGroup.findByOfferAndStatuses",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.id = :oid " +
@@ -136,6 +139,9 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 25)
     private OfferState status = OfferState.SHARED;
+
+    @Column(name = "has_application")
+    private Boolean hasApplication = false;
 
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "modified_by", referencedColumnName = "id", nullable = false)
@@ -262,6 +268,14 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
 
     public UserEntity getCreatedBy() {
         return createdBy;
+    }
+
+    public void setHasApplication(final Boolean hasApplication) {
+        this.hasApplication = hasApplication;
+    }
+
+    public Boolean getHasApplication() {
+        return hasApplication;
     }
 
     /**

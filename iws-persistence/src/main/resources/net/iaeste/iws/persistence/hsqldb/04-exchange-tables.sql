@@ -159,6 +159,7 @@ create table offer_to_group (
     group_id           integer,
     status             varchar(25),
     comment            varchar(500) default '',
+    has_application    boolean,
     modified_by        integer,
     created_by         integer,
     modified           timestamp    default now(),

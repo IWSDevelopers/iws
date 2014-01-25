@@ -138,6 +138,14 @@ public interface ExchangeDao extends BasicDao {
     List<OfferGroupEntity> findInfoForSharedOffer(Long offerId);
 
     /**
+     * Finds information about sharing of the offers
+     *
+     * @param  offerIds list of ids of the offers to get sharing info for
+     * @return list of {@link OfferGroupEntity} which are shared
+     */
+    List<OfferGroupEntity> findInfoForSharedOffers(List<Long> offerIds);
+
+    /**
      * Finds information about sharing of the offer for specified group
      *
      * @param  offerId id of the offer to get sharing info for
@@ -233,4 +241,6 @@ public interface ExchangeDao extends BasicDao {
     List<GroupEntity> findGroupsForSharing(GroupEntity group);
 
     List<AttachmentEntity> findAttachments(String table, Long id);
+
+    List<OfferEntity> findExpiredOffers(Date currentDate);
 }

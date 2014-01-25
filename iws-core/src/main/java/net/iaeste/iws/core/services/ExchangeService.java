@@ -400,6 +400,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             case NEW:
                 result = true;
                 break;
+            case EXPIRED:
             case OPEN:
                 switch (otherState) {
                     case SHARED:

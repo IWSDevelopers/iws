@@ -95,7 +95,12 @@ import java.util.Map;
         @NamedQuery(name = "offer.findByGroupAndEmployerName",
                 query = "select o from OfferEntity o " +
                         "where o.employer.group.id = :gid" +
-                        "  and o.employer.name = :employer")})
+                        "  and o.employer.name = :employer"),
+        @NamedQuery(name = "offer.findExpired",
+                query = "select o from OfferEntity o " +
+                        "where o.nominationDeadline <= :date" +
+                        "  and o.status = 'SHARED'")})
+
 @Entity
 @Table(name = "offers")
 @Monitored(name = "Offer", level = MonitoringLevel.DETAILED)

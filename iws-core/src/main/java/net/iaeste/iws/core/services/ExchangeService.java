@@ -383,8 +383,8 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 result = offerGroup.getStatus();
             }
 
-            final Boolean keepOfferGroup = studentDao.otherDomesticApplicationsWithCertainStatus(offerGroup.getId(), EnumSet.allOf(ApplicationStatus.class));
-            if (keepOfferGroup) {
+            //final Boolean keepOfferGroup = studentDao.otherDomesticApplicationsWithCertainStatus(offerGroup.getId(), EnumSet.allOf(ApplicationStatus.class));
+            if (offerGroup.getHasApplication()) {
                 offerGroup.setStatus(OfferState.CLOSED);
                 dao.persist(offerGroup);
             } else {

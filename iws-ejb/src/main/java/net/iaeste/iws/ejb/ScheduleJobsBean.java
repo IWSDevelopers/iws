@@ -85,14 +85,9 @@ public class ScheduleJobsBean {
     //for server
     @Schedule(second = "0", minute = "1", hour = "0", info = "Every day at 0:01 AM (server time)")
     private void processExpiredOffers() {
-        // Leaving the log, it is generally useful to have this information
         log.info("processExpiredOffers started at " + new DateTime());
         final boolean run;
 
-        // Construct is not thread-safe. You're testing and setting the key in
-        // two different sync blocks, meaning that it is possible for different
-        // threads to invoke the same logid You should only have 2 sync blocks,
-        // one before the running and one after, like so:
         synchronized (lock) {
             if (!processExpiredOfferIsRunning) {
                 run = true;
@@ -109,7 +104,7 @@ public class ScheduleJobsBean {
             try {
                 // Now we invoke the actual logic, outside of the sync block,
                 // as to not block anything
-                runProcessing();
+                runExpiredOfferProcessing();
             } finally {
                 // Now the worker has completed the job, we can set the
                 // processing flag back to false, so another instance can start
@@ -118,27 +113,11 @@ public class ScheduleJobsBean {
                 }
             }
         }
-        //// Following is the incorrect sync construct
-        //synchronized (lock) {
-        //    run = !processExpiredOfferIsRunning;
-        //}
-        //
-        //if (run) {
-        //    synchronized (lock) {
-        //        processExpiredOfferIsRunning = true;
-        //    }
-        //
-        //    runProcessing();
-        //
-        //    synchronized (lock) {
-        //        processExpiredOfferIsRunning = false;
-        //    }
-        //}
 
         log.info("processExpiredOffers ended at " + new DateTime());
     }
 
-    private void runProcessing() {
+    private void runExpiredOfferProcessing() {
         try {
             final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date());
             final List<Long> ids = new ArrayList<>(offers.size());

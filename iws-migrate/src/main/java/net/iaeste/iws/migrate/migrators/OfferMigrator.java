@@ -546,6 +546,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                 case "VETERINARY_SCIENCE":
                     field = FieldOfStudy.VETERINARY_SCIENCE;
                     break;
+                case "OTHER_ENGINEERING_&_TECHNO":
                 case "OTHER_ENGINEERING_&AMP;_TECHNO":
                     field = FieldOfStudy.OTHER;
                     break;
@@ -564,7 +565,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         final String specialization = convert(oldOffer.getSpecialization());
         final String other = convert(oldOffer.getFacultyother());
 
-        return  specialization + (((other != null) && !other.isEmpty()) ? '|' + other : "");
+        return  specialization + (((other != null) && !other.isEmpty()) ? ('|' + other) : "");
     }
 
     /**
@@ -650,7 +651,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         final String toCheck = upper(language);
         final Language result;
 
-        if (toCheck != null && !toCheck.isEmpty()) {
+        if ((toCheck != null) && !toCheck.isEmpty()) {
             // Seriously, we have so many language requirements... For
             // simplicity, we're defaulting to English, and just adding a large
             // enough base for the remainder to hopefully not offend too many.
@@ -802,7 +803,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         return result;
     }
 
-    private Integer convertExchangeYear(final Integer exchangeyear, final Date created) {
+    private static Integer convertExchangeYear(final Integer exchangeyear, final Date created) {
         final Integer result;
 
         if (exchangeyear == 1970) {
@@ -834,7 +835,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         entity.setWeeklyHours(round(oldOffer.getHoursweekly()));
         entity.setDailyHours(round(oldOffer.getHoursdaily()));
         entity.setModified(convert(oldOffer.getModified()));
-        log.debug("Workhours: weekly = %, daily = %", entity.getWeeklyHours(), entity.getDailyHours());
+        log.debug("Workhours: weekly = {}, daily = {}", entity.getWeeklyHours(), entity.getDailyHours());
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
         return entity;

@@ -116,7 +116,7 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
         return entity;
     }
 
-    private OfferGroupEntity convert(final IW3Offer2GroupEntity oldEntity) {
+    private static OfferGroupEntity convert(final IW3Offer2GroupEntity oldEntity) {
         final OfferGroupEntity entity = new OfferGroupEntity();
 
         entity.setStatus(convertOfferStatus(oldEntity.getStatus()));

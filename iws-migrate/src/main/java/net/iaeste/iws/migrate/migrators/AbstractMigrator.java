@@ -68,7 +68,7 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
     }
 
     protected static Date convert(final Date date) {
-        return date == null ? new Date() : date;
+        return (date == null) ? new Date() : date;
     }
 
     protected static Date convert(final Date original, final Date alternate) {
@@ -102,13 +102,13 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
     }
 
     protected static String upper(final String str) {
-        return str != null ? str.toUpperCase(IWSConstants.DEFAULT_LOCALE) : null;
+        return (str != null) ? str.toUpperCase(IWSConstants.DEFAULT_LOCALE) : null;
     }
 
     protected static String lowerAndShorten(final String str, final int maxLength) {
         final String result;
 
-        if (str != null && str.length() > maxLength) {
+        if ((str != null) && (str.length() > maxLength)) {
             result = str.substring(0,maxLength).toLowerCase(IWSConstants.DEFAULT_LOCALE);
         } else {
             result = str;

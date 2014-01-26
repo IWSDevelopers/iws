@@ -68,7 +68,6 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
         int skipped = 0;
 
         for (final IW3User2GroupEntity oldUserGroupEntity : oldEntities) {
-            UserGroupEntity toPersist = null;
 
             if ((oldUserGroupEntity.getUser().getUserid() == 3005) && (oldUserGroupEntity.getGroup().getGroupid() == 30)) {
                 log.info("Skipping the relation between {} and {}, it is an error.",
@@ -78,6 +77,7 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
             } else {
                 final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
                 final UserGroupEntity entity = convertOldEntity(oldUserGroupEntity, user);
+                UserGroupEntity toPersist = null;
 
                 if (user != null) {
                     toPersist = entity;

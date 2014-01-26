@@ -103,7 +103,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity activeSession = dao.findActiveSession(user);
 
         if ((activeSession == null) && !activeSessions.hasMaximumRegisteredSessions()) {
-            log.info("Creating a new Session for the user " + user.toString());
+            log.info("Creating a new Session for the user " + user);
             final String key = generateAndPersistSessionKey(user);
             activeSessions.registerToken(key);
             loginRetries.removeAuthenticatedUser(request.getUsername());
@@ -417,7 +417,7 @@ public final class AccessService extends CommonService<AccessDao> {
                 return user;
             } else {
                 // No active account exist! Error condition
-                throw new IWSException(IWSErrors.NO_USER_ACCOUNT_FOUND, "The account is not active, and can therfore not be used.");
+                throw new IWSException(IWSErrors.NO_USER_ACCOUNT_FOUND, "The account is not active, and can therefore not be used.");
             }
         } else {
             // No account for this User, throw generic error

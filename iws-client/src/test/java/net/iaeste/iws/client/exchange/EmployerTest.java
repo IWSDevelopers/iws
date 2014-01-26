@@ -54,8 +54,8 @@ import java.util.List;
  */
 public final class EmployerTest extends AbstractTest {
 
-    private static final String USERNAME = "albania@iaeste.al";
-    private static final String PASSWORD = "albania";
+    private static final String USERNAME = "vietnam@iaeste.vn";
+    private static final String PASSWORD = "vietnam";
     private final Access access = new AccessClient();
 
     @Before

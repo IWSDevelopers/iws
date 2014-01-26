@@ -53,6 +53,38 @@ public final class AccessClientTest extends AbstractTest {
     public void tearDown() {
     }
 
+    /**
+     * This test verifies that an Account which is in status Suspended, cannot
+     * access the system.
+     */
+    @Test
+    public void testSuspendedAccount() {
+        final String username = "albania@iaeste.al";
+        final AuthenticationRequest request = new AuthenticationRequest();
+        request.setUsername(username);
+        request.setPassword("albania");
+        final AuthenticationResponse response = access.generateSession(request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(response.getMessage(), is("No account for the user 'albania@iaeste.al' was found."));
+    }
+
+    /**
+     * This test verifies that members of a country which is in status
+     * Suspended, cannot access the system.
+     */
+    @Test
+    public void testSuspendedCountry() {
+        final String username = "argentina@iaeste.ar";
+        final AuthenticationRequest request = new AuthenticationRequest();
+        request.setUsername(username);
+        request.setPassword("argentina");
+        final AuthenticationResponse response = access.generateSession(request);
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(response.getMessage(), is("No account for the user '" + username + "' was found."));
+    }
+
     @Test
     public void testInvalidGenerateSession() {
         final AuthenticationRequest request = new AuthenticationRequest();
@@ -92,7 +124,7 @@ public final class AccessClientTest extends AbstractTest {
 
     @Test
     public void testExceedingLoginAttempts() {
-        final AuthenticationRequest request = new AuthenticationRequest("sweden@iaeste.dk", "wrongPassword");
+        final AuthenticationRequest request = new AuthenticationRequest("sweden@iaeste.se", "wrongPassword");
         for (int i = 0; i < IWSConstants.MAX_LOGIN_RETRIES; i++) {
             assertThat(access.generateSession(request).getError(), is(IWSErrors.AUTHENTICATION_ERROR));
         }

@@ -786,3 +786,8 @@ insert into users (external_id, status, username, alias, password, salt, firstna
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('d4085ac6-557d-494a-b202-ef50cdf977e1', 86, 180, 1);
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('b95026ab-a2b6-41c5-9b70-4edea2a887f8', 86, 181, 1);
 -- Completed generating test data for WestBank
+
+-- For our testing, we need to suspend a single Country -> First country, Albania
+update groups set status = 'SUSPENDED' where id = 10;
+-- Four out testing, we need to suspend a single Account, First available, Argentina
+update users set status = 'SUSPENDED' where id = 2;

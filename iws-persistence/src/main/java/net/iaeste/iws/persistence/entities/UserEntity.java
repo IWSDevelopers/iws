@@ -73,9 +73,11 @@ import java.util.Map;
                 query = "select u from UserEntity u " +
                         "where u.username = :username"),
         @NamedQuery(name = "user.findActiveByUserName",
-                query = "select u from UserEntity u " +
-                        "where u.status = 'ACTIVE'" +
-                        "  and u.username = :username"),
+                query = "select u2g.user from UserGroupEntity u2g " +
+                        "where u2g.group.groupType.grouptype = 'MEMBER'" +
+                        "  and u2g.group.status = 'ACTIVE'" +
+                        "  and u2g.user.status = 'ACTIVE'" +
+                        "  and u2g.user.username = :username"),
         @NamedQuery(name = "user.findExistingByUsername",
                 query = "select u from UserEntity u " +
                         "where u.status <> 'DELETED'" +

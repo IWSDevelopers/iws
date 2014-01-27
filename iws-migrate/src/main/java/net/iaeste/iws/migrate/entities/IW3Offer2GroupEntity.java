@@ -48,7 +48,7 @@ import java.util.Date;
         @NamedQuery(name = "offergroup.findAll",
                 query = "select og from IW3Offer2GroupEntity og, IW3OffersEntity o " +
                         "where o.deadline >= '2014-01-26'" +
-                        "order by created asc"),
+                        "order by og.created asc"),
         @NamedQuery(name = "offergroup.findRecent",
                 query = "select og from IW3Offer2GroupEntity og, IW3OffersEntity o " +
                         "where o.offerid = og.id.offerId" +

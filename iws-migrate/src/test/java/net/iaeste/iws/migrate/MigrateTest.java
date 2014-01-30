@@ -25,12 +25,14 @@ import net.iaeste.iws.migrate.daos.MailDao;
 import net.iaeste.iws.migrate.daos.MailJpaDao;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
+import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
 import net.iaeste.iws.migrate.migrators.CountryMigrator;
 import net.iaeste.iws.migrate.migrators.GroupMigrator;
 import net.iaeste.iws.migrate.migrators.MigrationResult;
+import net.iaeste.iws.migrate.migrators.OfferGroupMigrator;
 import net.iaeste.iws.migrate.migrators.OfferMigrator;
 import net.iaeste.iws.migrate.migrators.UserGroupMigrator;
 import net.iaeste.iws.migrate.migrators.UserMigrator;
@@ -210,20 +212,24 @@ public class MigrateTest {
         log.info("Completed Migrating Offers; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
     }
 
-//    @Test
-//    @Transactional("transactionManagerIWS")
-//    public void test7ReadingWritingOfferGroups() {
-//        final OfferGroupMigrator migrator = new OfferGroupMigrator(iwsDao);
-//        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups(null);
-//        log.info("Found {} OfferGroups to migrate.", offerGroups.size());
-//
-//        final MigrationResult result = runMigration(migrator, offerGroups);
-//        final int persisted = result.getPersisted();
-//        final int skipped = result.getSkipped();
-//
-//        assertThat(persisted + skipped, is(offerGroups.size()));
-//        log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", persisted, skipped);
-//    }
+    @Test
+    @Transactional("transactionManagerIWS")
+    public void test7ReadingWritingOfferGroups() {
+        final OfferGroupMigrator migrator = new OfferGroupMigrator(iwsDao);
+        final Long count = iw3Dao.countOfferGroups();
+        final long blocks = (count / BLOCK_SIZE) + 1;
+        log.info("Found {} OfferGroups to migrate.", count);
+        MigrationResult result = new MigrationResult();
+
+        for (int page = 0; page < blocks; page++) {
+            log.debug("Migrating OfferGroups block {} of {}.", page + 1, blocks);
+            final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findOfferGroups(page);
+            result = result.merge(migrator.migrate(offerGroups));
+        }
+
+        assertThat(result.getPersisted() + result.getSkipped(), is(count));
+        log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
+    }
 
     // =========================================================================
     // Internal Help Classes

@@ -65,6 +65,23 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
         }
     }
 
+    private static boolean skipThis(final OfferEntity offer, GroupEntity group) {
+        final boolean result;
+
+        switch (Integer.valueOf(offer.getId().toString())) {
+            case 115:
+            case 463:
+            case 514:
+            case 539:
+            case 578:
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
+    }
     /**
      * {@inheritDoc}
      */
@@ -79,23 +96,28 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
 
             if (group != null) {
                 final OfferEntity offer = iwsDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
-                final OfferGroupEntity entity = convert(oldEntity);
-                entity.setOffer(offer);
-                entity.setGroup(group);
-                // Those offer which are shared, need to change the state to SHARED
-                offer.setStatus(OfferState.SHARED);
-
-                try {
-                    final OfferGroup offerGroup = ExchangeTransformer.transform(entity);
-                    offerGroup.verify();
-                    iwsDao.persist(entity);
-                    persisted++;
-                } catch (IllegalArgumentException | VerificationException e) {
-                    log.error("Cannot process OfferGroup with refno:{} and Group:{} => {}",
-                            entity.getOffer().getRefNo(),
-                            entity.getGroup().getId(),
-                            e.getMessage());
+                if (skipThis(offer, group)) {
+                    log.info("Skipping Offer {} to Group {}.", offer.getRefNo(), group.getGroupName());
                     skipped++;
+                } else {
+                    final OfferGroupEntity entity = convert(oldEntity);
+                    entity.setOffer(offer);
+                    entity.setGroup(group);
+                    // Those offer which are shared, need to change the state to SHARED
+                    offer.setStatus(OfferState.SHARED);
+
+                    try {
+                        final OfferGroup offerGroup = ExchangeTransformer.transform(entity);
+                        offerGroup.verify();
+                        iwsDao.persist(entity);
+                        persisted++;
+                    } catch (IllegalArgumentException | VerificationException e) {
+                        log.error("Cannot process OfferGroup with refno:{} and Group:{} => {}",
+                                entity.getOffer().getRefNo(),
+                                entity.getGroup().getId(),
+                                e.getMessage());
+                        skipped++;
+                    }
                 }
             } else {
                 log.info("Failed to migrate OfferGroup for Offer = {} and Group = {}, as the Group doesn't exist.",

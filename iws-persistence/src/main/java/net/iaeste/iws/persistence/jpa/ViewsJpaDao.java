@@ -98,8 +98,8 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("year", exchangeYear);
 
         // Todo 2014-01-23 by Kim; When Trac Task #719 is finished, then we'll use the pagination
-        return fetchList(query, page);
-        //return query.getResultList();
+        //return fetchList(query, page);
+        return query.getResultList();
     }
 
     /**
@@ -113,8 +113,8 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         query.setParameter("date", new Date());
 
         // Todo 2014-01-23 by Kim; When Trac Task #719 is finished, then we'll use the pagination
-        return fetchList(query, page);
-        //return query.getResultList();
+        //return fetchList(query, page);
+        return query.getResultList();
     }
 
     /**

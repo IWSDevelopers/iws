@@ -19,8 +19,8 @@ import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
+import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
-import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +42,10 @@ public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> 
     /**
      * Default Constructor for the Countries Migration.
      *
-     * @param accessDao IWS Dao for persisting the new IWS Entities
+     * @param iwsDao IWS Dao for persisting the new IWS Entities
      */
-    public CountryMigrator(final AccessDao accessDao) {
-        super(accessDao);
+    public CountryMigrator(final IWSDao iwsDao) {
+        super(iwsDao);
     }
 
     /**
@@ -64,7 +64,7 @@ public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> 
                 try {
                     final Country country = CommonTransformer.transform(entity);
                     country.verify();
-                    accessDao.persist(entity);
+                    iwsDao.persist(entity);
                     persisted++;
                 } catch (IllegalArgumentException | VerificationException e) {
                     log.error("Cannot process Country id:{}, name = {} => {}", oldCountry.getCountryid(), oldCountry.getCountryname(), e.getMessage());
@@ -110,45 +110,43 @@ public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> 
         Currency converted = null;
         final String value = upper(currency);
 
-        if ("Estonia".equals(countryname)) {
-            // Estonia converted from EEK to EUR in 2011.
-            converted = Currency.EUR;
-        } else if ("BGL".equals(value)) {
-            // Bulgaria converted in 1999 to BGN
-            converted = Currency.BGN;
-        } else if ("ZMK".equals(value)) {
-            // Zambia converted in 2013 to a new currency
-            converted = Currency.ZMW;
-        } else if ("GHC".equals(value)) {
-            // Ghana converted in 2007 to the third Cedi
-            converted = Currency.ZMW;
-        } else if ("ROL".equals(value)) {
-            // Romania converted in 2005 to the fourth Leu
-            converted = Currency.RON;
-        } else if ("TRL".equals(value)) {
-            // Turkey converted in 2005 to the second Lira
-            converted = Currency.TRY;
-        } else if ("UYP".equals(value)) {
-            // Not sure why we've had the wrong currency for Uruguay in the DB!
-            converted = Currency.UYU;
-        } else if (currency != null) {
-            converted = valueOf(value, countryname);
-        }
-
-        if (converted == null) {
-            for (final Currency cur : Currency.values()) {
-                if (upper(cur.getDescription()).contains(upper(countryname))) {
-                    converted = cur;
-                    break;
+        switch (value) {
+            case "BGL": // Bulgaria converted in 1999 to BGN
+                converted = Currency.BGN;
+                break;
+            case "EEK": // Estonia converted from EEK to EUR in 2011.
+                converted = Currency.EUR;
+                break;
+            case "GHC": // Ghana converted in 2007 to the third Cedi
+                converted = Currency.GHS;
+                break;
+            case "JD": // Invalid Currency for Jordan
+                converted = Currency.JOD;
+                break;
+            case "NEP": // Not sure why we've had the wrong currency for Nepal in the DB!
+                converted = Currency.NPR;
+                break;
+            case "ROL": // Romania converted in 2005 to the fourth Leu
+                converted = Currency.RON;
+                break;
+            case "TRL": // Turkey converted in 2005 to the second Lira
+                converted = Currency.TRY;
+                break;
+            case "UYP": // Not sure why we've had the wrong currency for Uruguay in the DB!
+                converted = Currency.UYU;
+                break;
+            case "": // as 138 countries have no currency we just log this at debug level to avoid being spammed!
+                log.debug("Failed to convert Currency '" + currency + "' for " + countryname + ", falling back to USD.");
+            case "XYZ": // Test value
+                converted = Currency.USD;
+                break;
+            case "ZMK": // Zambia converted in 2013 to a new currency
+                converted = Currency.ZMW;
+                break;
+            default:
+                if (currency != null) {
+                    converted = valueOf(value, countryname);
                 }
-            }
-        }
-
-        // Finally fallback solution...
-        if (converted == null) {
-            // as 138 countries have no currency we just log this at debug level to avoid being spammed!
-            log.debug("Failed to convert Currency '" + currency + "' for " + countryname + ", falling back to USD.");
-            converted = Currency.USD;
         }
 
         return converted;

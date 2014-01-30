@@ -16,6 +16,8 @@ package net.iaeste.iws.migrate.spring;
 
 import net.iaeste.iws.migrate.daos.IW3Dao;
 import net.iaeste.iws.migrate.daos.IW3JpaDao;
+import net.iaeste.iws.migrate.daos.IWSDao;
+import net.iaeste.iws.migrate.daos.IWSJpaDao;
 import net.iaeste.iws.migrate.daos.MailDao;
 import net.iaeste.iws.migrate.daos.MailJpaDao;
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
@@ -32,15 +34,11 @@ import net.iaeste.iws.migrate.migrators.OfferGroupMigrator;
 import net.iaeste.iws.migrate.migrators.OfferMigrator;
 import net.iaeste.iws.migrate.migrators.UserGroupMigrator;
 import net.iaeste.iws.migrate.migrators.UserMigrator;
-import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.ExchangeDao;
-import net.iaeste.iws.persistence.jpa.AccessJpaDao;
-import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -52,14 +50,11 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-//@Transactional("transactionManagerIWS")
-//@Repository("migrateService")
+@Repository("migrateService")
+@Transactional("transactionManagerIWS")
 public class MigrateService implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger log = LoggerFactory.getLogger(MigrateService.class);
-
-    @Autowired
-    private Boolean migrateRecentOffersOnly;
 
     @PersistenceContext(unitName = "IW3PersistenceUnit")
     private EntityManager iw3EntityManager;
@@ -70,20 +65,18 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @PersistenceContext(unitName = "MailPersistenceUnit")
     private EntityManager mailEntityManager;
 
-    private ExchangeDao exchangeDao = null;
-    private AccessDao accessDao = null;
-    private MailDao mailDao = null;
     private IW3Dao iw3Dao = null;
+    private IWSDao iwsDao = null;
+    private MailDao mailDao = null;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent event) {
-        exchangeDao = new ExchangeJpaDao(iwsEntityManager);
-        accessDao = new AccessJpaDao(iwsEntityManager);
+        iw3Dao = new IW3JpaDao(iw3EntityManager, 1000);
+        iwsDao = new IWSJpaDao(iwsEntityManager);
         mailDao = new MailJpaDao(mailEntityManager);
-        iw3Dao = new IW3JpaDao(iw3EntityManager, migrateRecentOffersOnly);
     }
 
     // =========================================================================
@@ -96,7 +89,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateCountries() {
         // Our Migrator
-        final CountryMigrator migrator = new CountryMigrator(accessDao);
+        final CountryMigrator migrator = new CountryMigrator(iwsDao);
 
         // Fetch the List of Country Entities from IW3 to migrate
         final List<IW3CountriesEntity> countries = iw3Dao.findAllCountries();
@@ -104,8 +97,8 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
 
         // Now, run the migration
         final MigrationResult result = migrator.migrate(countries);
-        final int persisted = result.getPersisted();
-        final int skipped = result.getSkipped();
+        final long persisted = result.getPersisted();
+        final long skipped = result.getSkipped();
 
         // And log the result
         log.info("Completed Migratring Countries; Persisted {} & Skipped {}.", persisted, skipped);
@@ -114,7 +107,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateGroups() {
         // Our Migrator
-        final GroupMigrator migrator = new GroupMigrator(accessDao);
+        final GroupMigrator migrator = new GroupMigrator(iwsDao);
 
         // Fetch the List of Group Entities from IW3 to migrate
         final List<IW3GroupsEntity> groups = iw3Dao.findAllGroups();
@@ -122,8 +115,8 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
 
         // Now, run the migration
         final MigrationResult result = migrator.migrate(groups);
-        final int persisted = result.getPersisted();
-        final int skipped = result.getSkipped();
+        final long persisted = result.getPersisted();
+        final long skipped = result.getSkipped();
 
         // And log the result
         log.info("Completed Migrating Groups; Persisted {} & Skipped {}.", persisted, skipped);
@@ -132,15 +125,15 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateUsers() {
         // Our Migrator
-        final UserMigrator migrator = new UserMigrator(accessDao);
+        final UserMigrator migrator = new UserMigrator(iwsDao);
 
         // Fetch the List of Profile (User) Entities from IW3 to migrate
-        final List<IW3ProfilesEntity> profiles = iw3Dao.findAllProfiles();
+        final List<IW3ProfilesEntity> profiles = iw3Dao.findProfiles(0);
         log.info("Found {} Users to migrate.", profiles.size());
 
         // Now, run the migration
         final MigrationResult result = migrator.migrate(profiles);
-        final int persisted = result.getPersisted();
+        final long persisted = result.getPersisted();
 
         // And log the result
         log.info("Completed Migrating Users; Persisted {}.", persisted);
@@ -149,16 +142,16 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateUserGroups() {
         // Our Migrator
-        final UserGroupMigrator migrator = new UserGroupMigrator(accessDao);
+        final UserGroupMigrator migrator = new UserGroupMigrator(iwsDao);
 
         // Fetch the List of User2Group Entities from IW3 to migrate
-        final List<IW3User2GroupEntity> userGroups = iw3Dao.findAllUserGroups();
+        final List<IW3User2GroupEntity> userGroups = iw3Dao.findUserGroups(0);
         log.info("Found {} UserGroups to migrate.", userGroups.size());
 
         // Now, run the migration
         final MigrationResult result = migrator.migrate(userGroups);
-        final int persisted = result.getPersisted();
-        final int skipped = result.getSkipped();
+        final long persisted = result.getPersisted();
+        final long skipped = result.getSkipped();
 
         // And log the result
         log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", persisted, skipped);
@@ -167,7 +160,7 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerMail")
     public void migrateMail() {
         // Our Migrator
-        final MailMigrator migrator = new MailMigrator(iwsEntityManager, mailDao);
+        final MailMigrator migrator = new MailMigrator(iwsDao, mailDao);
 
         // Now, run the migration
         migrator.migrate();
@@ -179,16 +172,16 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateOffers() {
         // Our Migrator
-        final OfferMigrator migrator = new OfferMigrator(accessDao, exchangeDao, iwsEntityManager);
+        final OfferMigrator migrator = new OfferMigrator(iwsDao);
 
         // Fetch the List of Offer Entities from IW3 to migrate
-        final List<IW3OffersEntity> offers = iw3Dao.findAllOffers();
+        final List<IW3OffersEntity> offers = iw3Dao.findOffers(0);
         log.info("Found {} Offers to migrate.", offers.size());
 
         // Now, run the migration
         final MigrationResult result = migrator.migrate(offers);
-        final int persisted = result.getPersisted();
-        final int skipped = result.getSkipped();
+        final long persisted = result.getPersisted();
+        final long skipped = result.getSkipped();
 
         // And log the result
         log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", persisted, skipped);
@@ -197,16 +190,16 @@ public class MigrateService implements ApplicationListener<ContextRefreshedEvent
     @Transactional("transactionManagerIWS")
     public void migrateOfferGroups() {
         // Our Migrator
-        final OfferGroupMigrator migrator = new OfferGroupMigrator(accessDao, exchangeDao);
+        final OfferGroupMigrator migrator = new OfferGroupMigrator(iwsDao);
 
         // Fetch the List of Offer Entities from IW3 to migrate
-        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findAllOfferGroups();
+        final List<IW3Offer2GroupEntity> offerGroups = iw3Dao.findOfferGroups(0);
         log.info("Found {} OfferGroups to migrate.", offerGroups.size());
 
         // Now, run the migration
         final MigrationResult result = migrator.migrate(offerGroups);
-        final int persisted = result.getPersisted();
-        final int skipped = result.getSkipped();
+        final long persisted = result.getPersisted();
+        final long skipped = result.getSkipped();
 
         // And log the result
         log.info("Completed Migrating OfferGroups; Persisted {} & Skipped {}.", persisted, skipped);

@@ -17,9 +17,9 @@ package net.iaeste.iws.migrate.daos;
 import javax.persistence.EntityManager;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   1.7
  */
 public final class MailJpaDao implements MailDao {
 

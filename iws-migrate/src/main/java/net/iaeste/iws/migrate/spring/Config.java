@@ -53,7 +53,7 @@ public class Config {
     // Hardcoded values for the Test Server
     private static final String PORT = "5432";
     private static final String IW3_SERVER = "192.38.77.85";
-    private static final String IW3_DATABASE = "iw3_test";
+    private static final String IW3_DATABASE = "iw3";
     private static final String IW3_USERNAME = "readonly";
     private static final String IW3_PASSWORD = "af9v7aq6";
     private static final String IWS_SERVER = "localhost";
@@ -216,7 +216,7 @@ public class Config {
      * @param password Password (optional)
      * @return New Pooled DataSource
      */
-    private BasicDataSource preparePooledDataSource(final String server, final String port, final String database, final String username, final String password) {
+    private static BasicDataSource preparePooledDataSource(final String server, final String port, final String database, final String username, final String password) {
         // Using a Pooled Database Connection, as I've better experiences with
         // this than with the Spring default DataSource.
         final BasicDataSource dataSource = new BasicDataSource();
@@ -226,11 +226,11 @@ public class Config {
         // The URL have PostgreSQL special settings. So we prepare the
         // connection URL here
         final String url = "jdbc:postgresql://" + server + ':' + port + '/' + database;
-        log.debug("Preparing DataSource: URL=" + url);
+        log.trace("Preparing DataSource: URL=" + url);
         dataSource.setUrl(url);
 
         // Just have to fill in the Username & Optional Password
-        log.debug("Preparing DataSource: User=" + username);
+        log.trace("Preparing DataSource: User=" + username);
         dataSource.setUsername(username);
         if ((password != null) && !password.isEmpty()) {
             dataSource.setPassword(password);

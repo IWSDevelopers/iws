@@ -23,8 +23,8 @@ import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.api.enums.UserType;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
+import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
-import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -56,10 +56,10 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
     /**
      * Default Constructor for the Users Migration.
      *
-     * @param accessDao IWS Dao for persisting the new IWS Entities
+     * @param iwsDao IWS Dao for persisting the new IWS Entities
      */
-    public UserMigrator(final AccessDao accessDao) {
-        super(accessDao);
+    public UserMigrator(final IWSDao iwsDao) {
+        super(iwsDao);
     }
 
     /**
@@ -74,8 +74,8 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
         for (final IW3ProfilesEntity profile : oldEntities) {
             final CountryEntity country = findExistingCountry(convert(profile.getUser().getCountry()));
             final CountryEntity nationality = findExistingCountry(profile.getUser().getNationality());
-            final GroupTypeEntity groupType = accessDao.findGroupType(GroupType.PRIVATE);
-            final RoleEntity role = accessDao.findRoleById(IWSConstants.ROLE_OWNER);
+            final GroupTypeEntity groupType = iwsDao.findGroupType(GroupType.PRIVATE);
+            final RoleEntity role = iwsDao.findRoleById(IWSConstants.ROLE_OWNER);
 
             final UserEntity userEntity = convertUser(profile);
             userEntity.getPerson().setNationality(nationality);
@@ -87,11 +87,11 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
             try {
                 user = AdministrationTransformer.transform(userEntity);
                 user.verify();
-                accessDao.persist(userEntity.getPerson().getAddress());
-                accessDao.persist(userEntity.getPerson());
-                accessDao.persist(userEntity);
-                accessDao.persist(entity.getGroup());
-                accessDao.persist(entity);
+                iwsDao.persist(userEntity.getPerson().getAddress());
+                iwsDao.persist(userEntity.getPerson());
+                iwsDao.persist(userEntity);
+                iwsDao.persist(entity.getGroup());
+                iwsDao.persist(entity);
                 persisted++;
             } catch (IllegalArgumentException | VerificationException e) {
                 log.error("Cannot process User {} => {}", user, e.getMessage());

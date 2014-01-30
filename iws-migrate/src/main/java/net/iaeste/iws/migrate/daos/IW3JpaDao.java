@@ -15,7 +15,6 @@
 package net.iaeste.iws.migrate.daos;
 
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
-import net.iaeste.iws.migrate.entities.IW3FacultiesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
 import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
@@ -34,11 +33,11 @@ import java.util.List;
 public class IW3JpaDao implements IW3Dao {
 
     private final EntityManager entityManager;
-    private final boolean migrateRecentOffersOnly;
+    private final int blockSize;
 
-    public IW3JpaDao(final EntityManager entityManager, final boolean migrateRecentOffersOnly) {
+    public IW3JpaDao(final EntityManager entityManager, final int blockSize) {
         this.entityManager = entityManager;
-        this.migrateRecentOffersOnly = migrateRecentOffersOnly;
+        this.blockSize = blockSize;
     }
 
     // =========================================================================
@@ -58,18 +57,6 @@ public class IW3JpaDao implements IW3Dao {
      * {@inheritDoc}
      */
     @Override
-    public IW3FacultiesEntity findFaculty(final String name) {
-        final Query query = entityManager.createNamedQuery("faculty.findByName");
-        query.setParameter("name", name);
-        final List<IW3FacultiesEntity> found = query.getResultList();
-
-        return found.isEmpty() ? null : found.get(0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<IW3GroupsEntity> findAllGroups() {
         final Query query = entityManager.createNamedQuery("groups.findAll");
         return query.getResultList();
@@ -79,48 +66,77 @@ public class IW3JpaDao implements IW3Dao {
      * {@inheritDoc}
      */
     @Override
-    public List<IW3ProfilesEntity> findAllProfiles() {
+    public Long countProfiles() {
+        return (Long) entityManager.createNamedQuery("profiles.countAll").getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<IW3ProfilesEntity> findProfiles(final int page) {
         final Query query = entityManager.createNamedQuery("profiles.findAll");
-        return query.getResultList();
+        return fetchList(query, page);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<IW3User2GroupEntity> findAllUserGroups() {
+    public Long countUserGroups() {
+        return (Long) entityManager.createNamedQuery("usergroup.countAll").getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<IW3User2GroupEntity> findUserGroups(final int page) {
         final Query query = entityManager.createNamedQuery("usergroup.findAll");
-        return query.getResultList();
+        return fetchList(query, page);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<IW3OffersEntity> findAllOffers() {
-        final Query query;
-
-        if (migrateRecentOffersOnly) {
-            query = entityManager.createNamedQuery("offers.findRecent");
-        } else {
-            query = entityManager.createNamedQuery("offers.findAll");
-        }
-
-        return query.getResultList();
+    public Long countOffers() {
+        return (Long) entityManager.createNamedQuery("offers.countAll").getSingleResult();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<IW3Offer2GroupEntity> findAllOfferGroups() {
-        final Query query;
+    public List<IW3OffersEntity> findOffers(final int page) {
+        final Query query = entityManager.createNamedQuery("offers.findAll");
+        return fetchList(query, page);
+    }
 
-        if (migrateRecentOffersOnly) {
-            query = entityManager.createNamedQuery("offergroup.findRecent");
-        } else {
-            query = entityManager.createNamedQuery("offergroup.findAll");
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Long countOfferGroups() {
+        return (Long) entityManager.createNamedQuery("offergroup.countAll").getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<IW3Offer2GroupEntity> findOfferGroups(final int page) {
+        final Query query = entityManager.createNamedQuery("offergroup.findAll");
+        return fetchList(query, page);
+    }
+
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
+
+    private <T> List<T> fetchList(final Query query, final int page) {
+        query.setFirstResult(page * blockSize);
+        query.setMaxResults(blockSize);
 
         return query.getResultList();
     }

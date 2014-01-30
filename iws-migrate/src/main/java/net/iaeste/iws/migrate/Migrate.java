@@ -38,7 +38,7 @@ public final class Migrate {
     public static void main(final String [] args) {
         log.info("Starting Migration of the IW3 Database to IWS.");
         final Long start = new Date().getTime();
-        final MigrateService service = context.getMigrateService();
+        final MigrateService service = context.getBean(MigrateService.class);
 
         // Now run the migrations
         service.migrateCountries();

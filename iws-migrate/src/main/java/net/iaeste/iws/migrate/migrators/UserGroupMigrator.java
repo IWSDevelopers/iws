@@ -17,8 +17,8 @@ package net.iaeste.iws.migrate.migrators;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
+import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
-import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -52,10 +52,10 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
     /**
      * Default Constructor for the UserGroups Migration.
      *
-     * @param accessDao IWS Dao for persisting the new IWS Entities
+     * @param iwsDao IWS Dao for persisting the new IWS Entities
      */
-    public UserGroupMigrator(final AccessDao accessDao) {
-        super(accessDao);
+    public UserGroupMigrator(final IWSDao iwsDao) {
+        super(iwsDao);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
                         convert(oldUserGroupEntity.getGroup().getFullname()));
                 skipped++;
             } else {
-                final UserEntity user = accessDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
+                final UserEntity user = iwsDao.findUserByIW3Id(oldUserGroupEntity.getUser().getUserid());
                 final UserGroupEntity entity = convertOldEntity(oldUserGroupEntity, user);
                 UserGroupEntity toPersist = null;
 
@@ -97,8 +97,8 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
     }
 
     private UserGroupEntity convertOldEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserEntity user) {
-        final GroupEntity group = accessDao.findGroupByIW3Id(oldUserGroupEntity.getGroup().getGroupid());
-        final RoleEntity role = accessDao.findRoleById(0L + oldUserGroupEntity.getRole().getRoleid());
+        final GroupEntity group = iwsDao.findGroupByIW3Id(oldUserGroupEntity.getGroup().getGroupid());
+        final RoleEntity role = iwsDao.findRoleById(0L + oldUserGroupEntity.getRole().getRoleid());
 
         final UserGroupEntity entity = new UserGroupEntity(user, group, role);
         entity.setTitle(AbstractMigrator.convert(oldUserGroupEntity.getUsertitle()));
@@ -116,7 +116,7 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
             try {
                 dto = AdministrationTransformer.transform(toPersist);
                 dto.verify();
-                accessDao.persist(toPersist);
+                iwsDao.persist(toPersist);
             } catch (IllegalArgumentException | VerificationException e) {
                 log.error("Cannot process UserGroup {} => {}", dto, e.getMessage());
             } catch (final RuntimeException e) {

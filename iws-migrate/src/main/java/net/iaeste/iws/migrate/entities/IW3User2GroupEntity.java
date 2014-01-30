@@ -39,10 +39,13 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@NamedQueries(
+@NamedQueries({
+        @NamedQuery(name = "usergroup.countAll",
+                query = "select count(ug) from IW3User2GroupEntity ug"),
         @NamedQuery(name = "usergroup.findAll",
-                query = "select ug from IW3User2GroupEntity ug")
-)
+                query = "select ug from IW3User2GroupEntity ug " +
+                        "order by ug.created asc"),
+})
 @Entity
 @Table(name = "user2group")
 public class IW3User2GroupEntity implements Serializable {

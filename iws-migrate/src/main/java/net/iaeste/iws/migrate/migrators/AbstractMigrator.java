@@ -17,7 +17,7 @@ package net.iaeste.iws.migrate.migrators;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
@@ -35,13 +35,16 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractMigrator.class);
 
-    protected final AccessDao accessDao;
+    protected final IWSDao iwsDao;
 
     /**
-     * Empty Constructor, this is a utility Class.
+     * Default Constructor, setting the IWS Dao class, which is used by all
+     * Migrators.
+     *
+     * @param iwsDao IWS Dao for persisting the new IWS Entities
      */
-    protected AbstractMigrator(final AccessDao accessDao) {
-        this.accessDao = accessDao;
+    protected AbstractMigrator(final IWSDao iwsDao) {
+        this.iwsDao = iwsDao;
     }
 
     // =========================================================================
@@ -53,7 +56,7 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
 
         try {
             if ((countrycode != null) && (countrycode.length() == 2) && !"$$".equals(countrycode)) {
-                entity = accessDao.findCountry(upper(countrycode));
+                entity = iwsDao.findCountry(countrycode);
             }
         } catch (IWSException e) {
             log.warn("Couldn't find Entity for country {} => {}.", countrycode, e.getMessage());

@@ -19,9 +19,8 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
+import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
-import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
@@ -35,6 +34,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * IW4 does not implement the request/answer functionality of iw3, thus
+ * following rules for migration apply:<br />
+ *   An offer is shared, if the an Offer2Group entity exists AND the nomination
+ * deadline is not passed.<br />
+ *   Info: If an offer gets unshared in IW4, the offer_to_group entry will be
+ * removed.
+ *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
@@ -44,17 +50,15 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(OfferGroupMigrator.class);
 
-    private final ExchangeDao exchangeDao;
     private final Map<Integer, GroupEntity> nationalGroups;
 
-    public OfferGroupMigrator(final AccessDao accessDao, final ExchangeDao exchangeDao) {
-        super(accessDao);
-        this.exchangeDao = exchangeDao;
+    public OfferGroupMigrator(final IWSDao iwsDao) {
+        super(iwsDao);
 
         // We have 150.000+ records in the database, but less than 100 groups.
         // We cache all Groups so we can make a direct Id comparison rather than
         // trusting that the JPA implementation is caching things properly
-        final List<GroupEntity> groups = accessDao.findAllGroups(GroupType.NATIONAL);
+        final List<GroupEntity> groups = iwsDao.findAllGroups(GroupType.NATIONAL);
         nationalGroups = new HashMap<>(groups.size());
         for (final GroupEntity entity : groups) {
             nationalGroups.put(entity.getOldId(), entity);
@@ -74,7 +78,7 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
             final GroupEntity group = findCachedGroup(oldEntity.getId().getGroupId());
 
             if (group != null) {
-                final OfferEntity offer = exchangeDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
+                final OfferEntity offer = iwsDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
                 final OfferGroupEntity entity = convert(oldEntity);
                 entity.setOffer(offer);
                 entity.setGroup(group);
@@ -84,7 +88,7 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
                 try {
                     final OfferGroup offerGroup = ExchangeTransformer.transform(entity);
                     offerGroup.verify();
-                    accessDao.persist(entity);
+                    iwsDao.persist(entity);
                     persisted++;
                 } catch (IllegalArgumentException | VerificationException e) {
                     log.error("Cannot process OfferGroup with refno:{} and Group:{} => {}",

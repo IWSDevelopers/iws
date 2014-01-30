@@ -27,9 +27,8 @@ import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.CollectionTransformer;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
+import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
-import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.AddressEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -40,8 +39,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.EnumSet;
@@ -99,18 +96,14 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
             "TR12-0370,VN13-0066,JO14-0159";
 
     private final Map<Integer, GroupEntity> nationalGroups;
-    private final ExchangeDao exchangeDao;
-    private final EntityManager manager;
 
-    public OfferMigrator(final AccessDao accessDao, final ExchangeDao exchangeDao, final EntityManager manager) {
-        super(accessDao);
-        this.exchangeDao = exchangeDao;
-        this.manager = manager;
+    public OfferMigrator(final IWSDao iwsDao) {
+        super(iwsDao);
 
         // We have 27.000+ records in the database, but less than 100 groups.
         // We cache all Groups so we can make a direct Id comparison rather than
         // trusting that the JPA implementation is caching things properly
-        final List<GroupEntity> groups = accessDao.findAllGroups(GroupType.NATIONAL);
+        final List<GroupEntity> groups = iwsDao.findAllGroups(GroupType.NATIONAL);
         nationalGroups = new HashMap<>(groups.size());
         for (final GroupEntity entity : groups) {
             nationalGroups.put(entity.getOldId(), entity);
@@ -128,9 +121,8 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
 
         for (final IW3OffersEntity oldEntity : oldEntities) {
             final OfferEntity offerEntity = convertOffer(oldEntity);
-            //final GroupEntity groupEntity = accessDao.findGroupByIW3Id(oldEntity.getGroupid());
             final GroupEntity groupEntity = nationalGroups.get(oldEntity.getGroupid());
-            EmployerEntity employerEntity = exchangeDao.findUniqueEmployer(groupEntity, offerEntity.getEmployer());
+            EmployerEntity employerEntity = iwsDao.findUniqueEmployer(groupEntity, offerEntity.getEmployer());
 
             try {
                 if (employerEntity == null) {
@@ -139,7 +131,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
                 offerEntity.setEmployer(employerEntity);
                 final Offer offer = ExchangeTransformer.transform(offerEntity);
                 offer.verify();
-                accessDao.persist(offerEntity);
+                iwsDao.persist(offerEntity);
                 persisted++;
             } catch (IllegalArgumentException | VerificationException e) {
                 log.error("Cannot process Offer with refno:{} => {}", offerEntity.getRefNo(), e.getMessage());
@@ -151,15 +143,15 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
     }
 
     private EmployerEntity prepareAndPersistEmployer(final IW3OffersEntity oldEntity, final OfferEntity offerEntity, final GroupEntity groupEntity) {
-        final CountryEntity countryEntity = accessDao.findCountryByCode(oldEntity.getCountryid());
+        final CountryEntity countryEntity = iwsDao.findCountry(oldEntity.getCountryid());
 
         final EmployerEntity employerEntity;
         employerEntity = offerEntity.getEmployer();
         employerEntity.getAddress().setCountry(countryEntity);
         employerEntity.setGroup(groupEntity);
 
-        accessDao.persist(employerEntity.getAddress());
-        accessDao.persist(employerEntity);
+        iwsDao.persist(employerEntity.getAddress());
+        iwsDao.persist(employerEntity);
 
         return employerEntity;
     }
@@ -230,8 +222,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         final String serialNumber = systemrefno.substring(5,9);
         final Character appender;
         if (duplicateRefnos.contains(systemrefno)) {
-            final Query query = manager.createQuery("select count(refNo) from OfferEntity where refNo like '" + countryCode + "-20" + year + '%' + serialNumber + '\'');
-            final Long count = (Long) query.getResultList().get(0);
+            final Long count = iwsDao.countRefNos(countryCode, year, serialNumber);
             appender = (char) (REFNO_START_SERIALNUMBER + count);
             if (!appender.equals(REFNO_START_SERIALNUMBER)) {
                 log.info("Duplicate Reference number {} found, will append {} to it.", systemrefno, appender);
@@ -835,7 +826,7 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
         entity.setWeeklyHours(round(oldOffer.getHoursweekly()));
         entity.setDailyHours(round(oldOffer.getHoursdaily()));
         entity.setModified(convert(oldOffer.getModified()));
-        log.debug("Workhours: weekly = {}, daily = {}", entity.getWeeklyHours(), entity.getDailyHours());
+        log.trace("Workhours: weekly = {}, daily = {}", entity.getWeeklyHours(), entity.getDailyHours());
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
         return entity;

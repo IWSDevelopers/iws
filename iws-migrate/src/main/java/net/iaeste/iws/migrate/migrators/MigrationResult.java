@@ -21,19 +21,31 @@ package net.iaeste.iws.migrate.migrators;
  */
 public final class MigrationResult {
 
-    private final int persisted;
-    private final int skipped;
+    private final long persisted;
+    private final long skipped;
 
-    public MigrationResult(final int persisted, final int skipped) {
+    public MigrationResult() {
+        this.persisted = 0;
+        this.skipped = 0;
+    }
+
+    public MigrationResult(final long persisted, final long skipped) {
         this.persisted = persisted;
         this.skipped = skipped;
     }
 
-    public int getPersisted() {
+    public MigrationResult merge(final MigrationResult result) {
+        final long newPersisted = persisted + result.persisted;
+        final long newSkipped = skipped + result.skipped;
+
+        return new MigrationResult(newPersisted, newSkipped);
+    }
+
+    public long getPersisted() {
         return persisted;
     }
 
-    public int getSkipped() {
+    public long getSkipped() {
         return skipped;
     }
 }

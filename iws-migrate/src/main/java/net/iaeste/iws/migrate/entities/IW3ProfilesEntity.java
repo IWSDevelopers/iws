@@ -35,6 +35,8 @@ import java.util.Date;
  * @since   1.7
  */
 @NamedQueries({
+        @NamedQuery(name = "profiles.countAll",
+                query = "select count(p.profileid) from IW3ProfilesEntity p"),
         @NamedQuery(name = "profiles.findAll",
                 query = "select p from IW3ProfilesEntity p " +
                         "order by p.profileid asc"),

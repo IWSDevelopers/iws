@@ -19,8 +19,8 @@ import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.CommonTransformer;
+import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
-import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
@@ -44,10 +44,10 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
     /**
      * Default Constructor for the Groups Migration.
      *
-     * @param accessDao IWS Dao for persisting the new IWS Entities
+     * @param iwsDao IWS Dao for persisting the new IWS Entities
      */
-    public GroupMigrator(final AccessDao accessDao) {
-        super(accessDao);
+    public GroupMigrator(final IWSDao iwsDao) {
+        super(iwsDao);
     }
 
     /**
@@ -60,8 +60,8 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         int skipped = 0;
 
         for (final IW3GroupsEntity oldGroup : oldEntities) {
-            final GroupTypeEntity groupType = accessDao.findGroupType(convertGroupType(oldGroup.getGrouptype().getGrouptype()));
-            final GroupEntity parent = accessDao.findGroupByIW3Id(oldGroup.getParentid());
+            final GroupTypeEntity groupType = iwsDao.findGroupType(convertGroupType(oldGroup.getGrouptype().getGrouptype()));
+            final GroupEntity parent = iwsDao.findGroupByIW3Id(oldGroup.getParentid());
             final GroupEntity converted = convertGroup(oldGroup, groupType, parent);
             GroupEntity toPersist = null;
 
@@ -69,7 +69,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
             // properly map the old information into the new Groups - hence
             // we're dealing with them in a special way
             if (converted.getOldId() < 10) {
-                final GroupEntity existing = accessDao.findGroupByIW3Id(converted.getOldId());
+                final GroupEntity existing = iwsDao.findGroupByIW3Id(converted.getOldId());
                 if (existing != null) {
                     existing.merge(converted);
                     toPersist = existing;
@@ -103,7 +103,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                 try {
                     group = CommonTransformer.transform(toPersist);
                     group.verify();
-                    accessDao.persist(toPersist);
+                    iwsDao.persist(toPersist);
 
                     persisted++;
                 } catch (IllegalArgumentException | VerificationException e) {
@@ -145,7 +145,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         return group;
     }
 
-    private String convertGroupName(final GroupType type, final String committee, final GroupEntity parent) {
+    private static String convertGroupName(final GroupType type, final String committee, final GroupEntity parent) {
         final String result;
 
         switch (type) {
@@ -177,7 +177,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         return result;
     }
 
-    private String convertFullName(final GroupType type, final String committee, final GroupEntity parent) {
+    private static String convertFullName(final GroupType type, final String committee, final GroupEntity parent) {
         final String result;
 
         switch (type) {
@@ -222,7 +222,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         return result;
     }
 
-    private String convertListName(final GroupType type, final String committee, final GroupEntity parent) {
+    private static String convertListName(final GroupType type, final String committee, final GroupEntity parent) {
         final String result;
 
         switch (type) {

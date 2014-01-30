@@ -15,7 +15,6 @@
 package net.iaeste.iws.migrate.daos;
 
 import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
-import net.iaeste.iws.migrate.entities.IW3FacultiesEntity;
 import net.iaeste.iws.migrate.entities.IW3GroupsEntity;
 import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
@@ -31,17 +30,19 @@ import java.util.List;
  */
 public interface IW3Dao {
 
-    IW3FacultiesEntity findFaculty(String name);
-
     List<IW3CountriesEntity> findAllCountries();
 
     List<IW3GroupsEntity> findAllGroups();
 
-    List<IW3ProfilesEntity> findAllProfiles();
+    Long countProfiles();
+    List<IW3ProfilesEntity> findProfiles(int page);
 
-    List<IW3User2GroupEntity> findAllUserGroups();
+    Long countUserGroups();
+    List<IW3User2GroupEntity> findUserGroups(int page);
 
-    List<IW3OffersEntity> findAllOffers();
+    Long countOffers();
+    List<IW3OffersEntity> findOffers(int page);
 
-    List<IW3Offer2GroupEntity> findAllOfferGroups();
+    Long countOfferGroups();
+    List<IW3Offer2GroupEntity> findOfferGroups(int page);
 }

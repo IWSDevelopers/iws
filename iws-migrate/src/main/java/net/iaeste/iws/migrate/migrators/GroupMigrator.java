@@ -133,7 +133,11 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         final GroupType type = groupTypeEntity.getGrouptype();
 
         group.setOldId(entity.getGroupid());
-        group.setGroupName(convertGroupName(type, convert(entity.getGroupname()), parent));
+        if (entity.getGroupid() == 629) {
+            group.setGroupName("Holland " + type.getDescription());
+        } else {
+            group.setGroupName(convertGroupName(type, convert(entity.getGroupname()), parent));
+        }
         group.setDescription(convert(entity.getGroupdescription()));
         group.setFullName(convertFullName(type, convert(entity.getGroupname()), parent));
         group.setListName(convertListName(type, convert(entity.getGroupname()), parent));
@@ -150,14 +154,14 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
 
         switch (type) {
             case NATIONAL:
-                if (parent == null) {
-                    // Special case for IWS Group 629, Holland Staff, where
-                    // Members are missing. We need it migrated, since it is
-                    // needed for Exchanged Offers
-                    result = "Holland " + type.getDescription();
-                } else {
+                //if (parent == null) {
+                //    // Special case for IWS Group 629, Holland Staff, where
+                //    // Members are missing. We need it migrated, since it is
+                //    // needed for Exchanged Offers
+                //    result = "Holland " + type.getDescription();
+                //} else {
                     result = parent.getGroupName() + ' ' + type.getDescription();
-                }
+                //}
                 break;
             case STUDENT:
                 result = parent.getGroupName() + ' ' + type.getDescription();

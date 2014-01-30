@@ -86,7 +86,8 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
             } else {
                 if (parent == null) {
                     // For Holland, we have the problem that Group 629 exists, but 628 (the parent) doesn't.
-                    log.info("Couldn't find a parent for {} with id {}", convert(oldGroup.getGroupname()), oldGroup.getGroupid());
+                    log.info("Couldn't find a parent for {} with id {}", convert(oldGroup.getGroupdescription()), oldGroup.getGroupid());
+                    converted.setFullName(convert(oldGroup.getGroupdescription()) + ' ' + converted.getGroupType().getGrouptype().getDescription());
                     converted.setParentId(0L);
                 } else {
                     converted.setParentId(parent.getId());
@@ -133,11 +134,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         final GroupType type = groupTypeEntity.getGrouptype();
 
         group.setOldId(entity.getGroupid());
-        if (entity.getGroupid() == 629) {
-            group.setGroupName("Netherlands " + type.getDescription());
-        } else {
-            group.setGroupName(convertGroupName(type, convert(entity.getGroupname()), parent));
-        }
+        group.setGroupName(convertGroupName(type, convert(entity.getGroupname()), parent));
         group.setDescription(convert(entity.getGroupdescription()));
         group.setFullName(convertFullName(type, convert(entity.getGroupname()), parent));
         group.setListName(convertListName(type, convert(entity.getGroupname()), parent));

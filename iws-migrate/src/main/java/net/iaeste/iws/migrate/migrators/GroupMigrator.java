@@ -134,7 +134,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
 
         group.setOldId(entity.getGroupid());
         if (entity.getGroupid() == 629) {
-            group.setGroupName("Holland " + type.getDescription());
+            group.setGroupName("Netherlands " + type.getDescription());
         } else {
             group.setGroupName(convertGroupName(type, convert(entity.getGroupname()), parent));
         }

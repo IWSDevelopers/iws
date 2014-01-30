@@ -154,14 +154,11 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
 
         switch (type) {
             case NATIONAL:
-                //if (parent == null) {
-                //    // Special case for IWS Group 629, Holland Staff, where
-                //    // Members are missing. We need it migrated, since it is
-                //    // needed for Exchanged Offers
-                //    result = "Holland " + type.getDescription();
-                //} else {
+                if (parent == null) {
+                    result = committee + ' ' + type.getDescription();
+                } else {
                     result = parent.getGroupName() + ' ' + type.getDescription();
-                //}
+                }
                 break;
             case STUDENT:
                 result = parent.getGroupName() + ' ' + type.getDescription();

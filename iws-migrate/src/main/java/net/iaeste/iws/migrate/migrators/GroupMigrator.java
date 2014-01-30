@@ -155,7 +155,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         switch (type) {
             case NATIONAL:
                 if (parent == null) {
-                    result = committee + ' ' + type.getDescription();
+                    result = committee + ' ' + type.getDescription() + '.';
                 } else {
                     result = parent.getGroupName() + ' ' + type.getDescription();
                 }

@@ -99,7 +99,11 @@ import java.util.Map;
         @NamedQuery(name = "offer.findExpired",
                 query = "select o from OfferEntity o " +
                         "where o.nominationDeadline <= :date" +
-                        "  and o.status = 'SHARED'")})
+                        "  and o.status = 'SHARED'"),
+        @NamedQuery(name = "offer.updateStateByIds",
+                query = "update OfferEntity o " +
+                        "set o.status = :status " +
+                        "where o.id in :ids")})
 
 @Entity
 @Table(name = "offers")

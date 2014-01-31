@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.persistence.entities.AttachmentEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
@@ -243,4 +244,27 @@ public interface ExchangeDao extends BasicDao {
     List<AttachmentEntity> findAttachments(String table, Long id);
 
     List<OfferEntity> findExpiredOffers(Date currentDate);
+
+    /**
+     * Sets given state for given list of offer IDs
+     *
+     * @param ids List of offer IDs
+     * @param state New offer state
+     */
+    void updateOfferState(List<Long> ids, OfferState state);
+
+    /**
+     * Sets given state for given list of OfferGroup IDs
+     *
+     * @param ids List of OfferGroups IDs
+     * @param state New OfferGroup state
+     */
+    void updateOfferGroupState(List<Long> ids, OfferState state);
+
+    /**
+     * Deletes OfferGroup by given list of IDs
+     *
+     * @param ids List of offer IDs
+     */
+    void deleteOfferGroup(List<Long> ids);
 }

@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.exchange.Employer;
+import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.AttachmentEntity;
@@ -461,12 +462,69 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferGroupEntity> findInfoForSharedOffers(final List<Long> offerIds) {
+    public void updateOfferState(final List<Long> ids, final OfferState state) {
+        final Query query = entityManager.createNamedQuery("offer.updateStateByIds");
+
+        //error when passing empty list
+        //QuerySyntaxException: unexpected end of subtree [delete from net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity og where og.id in ()]
+        if (ids.isEmpty()) {
+            ids.add(-1L);
+        }
+
+        query.setParameter("ids", ids);
+        query.setParameter("status", state);
+
+        query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateOfferGroupState(final List<Long> ids, final OfferState state) {
+        final Query query = entityManager.createNamedQuery("offerGroup.updateStateByIds");
+
+        //error when passing empty list
+        //QuerySyntaxException: unexpected end of subtree [delete from net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity og where og.id in ()]
+        if (ids.isEmpty()) {
+            ids.add(-1L);
+        }
+
+        query.setParameter("ids", ids);
+        query.setParameter("status", state);
+
+        query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteOfferGroup(final List<Long> ids) {
+        final Query query = entityManager.createNamedQuery("offerGroup.deleteByIds");
+
+        //error when passing empty list
+        //QuerySyntaxException: unexpected end of subtree [delete from net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity og where og.id in ()]
+        if (ids.isEmpty()) {
+            ids.add(-1L);
+        }
+
+        query.setParameter("ids", ids);
+
+        query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<OfferGroupEntity> findInfoForSharedOffers(/*final*/ List<Long> offerIds) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByOffers");
         //TODO @Kim: is it possible to pass empty list? It was a bug but I don't know which version we are using now
         //TODO see https://hibernate.atlassian.net/browse/HHH-6876
         //TODO workaround to "unexpected end of subtree" exception when empty list is passed
         if (offerIds.isEmpty()) {
+            offerIds = new ArrayList<>(1);
             offerIds.add(-1L);
         }
 

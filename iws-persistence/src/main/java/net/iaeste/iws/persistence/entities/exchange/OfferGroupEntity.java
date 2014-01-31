@@ -83,6 +83,9 @@ import java.util.Date;
         @NamedQuery(name = "offerGroup.deleteByOffer",
                 query = "delete from OfferGroupEntity og " +
                         "where og.offer.id = :oid"),
+        @NamedQuery(name = "offerGroup.deleteByIds",
+                query = "delete from OfferGroupEntity og " +
+                        "where og.id in :ids"),
         @NamedQuery(name = "offerGroup.deleteByOfferIdAndGroups",
                 query = "delete from OfferGroupEntity og " +
                         "where og.offer.id = :oid" +
@@ -96,7 +99,12 @@ import java.util.Date;
         @NamedQuery(name = "offerGroup.deleteByOfferExternalIdAndGroups",
                 query = "delete from OfferGroupEntity og " +
                         "where og.group.id in :gids " +
-                        " and og.offer.id = (select o.id from OfferEntity o where o.externalId = :eoid)")
+                        " and og.offer.id = (select o.id from OfferEntity o where o.externalId = :eoid)"),
+        @NamedQuery(name = "offerGroup.updateStateByIds",
+                query = "update OfferGroupEntity og " +
+                        "set og.status = :status " +
+                        "where og.id in :ids")
+
 })
 @Entity
 @Table(name = "offer_to_group")

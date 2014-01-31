@@ -16,7 +16,6 @@ package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
@@ -50,7 +49,6 @@ public class ScheduleJobsBean {
     private static final Logger log = LoggerFactory.getLogger(ScheduleJobsBean.class);
 
     private EntityManager iwsEntityManager = null;
-    private AccessDao accessDao = null;
     private ExchangeDao exchangeDao = null;
 
     @Resource
@@ -76,7 +74,6 @@ public class ScheduleJobsBean {
     @PostConstruct
     public void postConstruct() {
         log.info("post construct");
-        accessDao = new AccessJpaDao(iwsEntityManager);
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
     }
 
@@ -128,19 +125,22 @@ public class ScheduleJobsBean {
             final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffers(ids);
             final Map<Long, List<OfferGroupEntity>> sharingInfo = prepareOfferGroupMap(ids, offerGroups);
 
-            for (final OfferEntity offer : offers) {
-                offer.setStatus(OfferState.EXPIRED);
-                exchangeDao.persist(offer);
+            final List<Long> removeOfferGroup = new ArrayList<>();
+            final List<Long> closeOfferGroup = new ArrayList<>();
 
-                for (final OfferGroupEntity offerGroup : sharingInfo.get(offer.getId())) {
+            for (final Long id : ids) {
+                for (final OfferGroupEntity offerGroup : sharingInfo.get(id)) {
                     if (offerGroup.getHasApplication()) {
-                        offerGroup.setStatus(OfferState.CLOSED);
-                        exchangeDao.persist(offerGroup);
+                        closeOfferGroup.add(offerGroup.getId());
                     } else {
-                        iwsEntityManager.remove(offerGroup);
+                        removeOfferGroup.add(offerGroup.getId());
                     }
                 }
             }
+
+            exchangeDao.updateOfferState(ids, OfferState.EXPIRED);
+            exchangeDao.deleteOfferGroup(removeOfferGroup);
+            exchangeDao.updateOfferGroupState(closeOfferGroup, OfferState.CLOSED);
         } catch (IllegalArgumentException | IWSException e) {
             log.error("Error in processing expired offers", e);
         }

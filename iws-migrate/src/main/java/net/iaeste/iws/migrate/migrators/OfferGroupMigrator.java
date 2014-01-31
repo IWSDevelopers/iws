@@ -74,6 +74,8 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
             case 514:
             case 539:
             case 578:
+            case 17968: // Failed in Jenkins
+            case 25762: // Failed Locally
                 result = true;
                 break;
             default:

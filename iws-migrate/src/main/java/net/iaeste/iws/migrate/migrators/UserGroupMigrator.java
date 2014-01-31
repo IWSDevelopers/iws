@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.migrate.migrators;
 
+import static net.iaeste.iws.migrate.migrators.Helpers.convert;
+
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
@@ -25,6 +27,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,25 +47,25 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Transactional
-public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntity> {
+public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(UserGroupMigrator.class);
 
-    /**
-     * Default Constructor for the UserGroups Migration.
-     *
-     * @param iwsDao IWS Dao for persisting the new IWS Entities
-     */
+    @Autowired
+    private IWSDao iwsDao;
+
+    public UserGroupMigrator() {
+    }
+
     public UserGroupMigrator(final IWSDao iwsDao) {
-        super(iwsDao);
+        this.iwsDao = iwsDao;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(value = "transactionManagerIWS", propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3User2GroupEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;
@@ -96,16 +99,20 @@ public final class UserGroupMigrator extends AbstractMigrator<IW3User2GroupEntit
         return new MigrationResult(persisted, skipped);
     }
 
+    // =========================================================================
+    // Internal UserGroup Migration Methods
+    // =========================================================================
+
     private UserGroupEntity convertOldEntity(final IW3User2GroupEntity oldUserGroupEntity, final UserEntity user) {
         final GroupEntity group = iwsDao.findGroupByIW3Id(oldUserGroupEntity.getGroup().getGroupid());
         final RoleEntity role = iwsDao.findRoleById(0L + oldUserGroupEntity.getRole().getRoleid());
 
         final UserGroupEntity entity = new UserGroupEntity(user, group, role);
-        entity.setTitle(AbstractMigrator.convert(oldUserGroupEntity.getUsertitle()));
+        entity.setTitle(convert(oldUserGroupEntity.getUsertitle()));
         entity.setOnPublicList(oldUserGroupEntity.getOnmailinglist());
         entity.setOnPrivateList(oldUserGroupEntity.getOnmailinglist());
-        entity.setModified(AbstractMigrator.convert(oldUserGroupEntity.getModified()));
-        entity.setCreated(AbstractMigrator.convert(oldUserGroupEntity.getCreated(), oldUserGroupEntity.getModified()));
+        entity.setModified(convert(oldUserGroupEntity.getModified()));
+        entity.setCreated(convert(oldUserGroupEntity.getCreated(), oldUserGroupEntity.getModified()));
 
         return entity;
     }

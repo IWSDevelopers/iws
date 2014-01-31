@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.migrate.migrators;
 
+import static net.iaeste.iws.migrate.migrators.Helpers.convert;
+import static net.iaeste.iws.migrate.migrators.Helpers.upper;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.Gender;
@@ -35,6 +38,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,32 +52,32 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Transactional
-public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
+public class UserMigrator implements Migrator<IW3ProfilesEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(UserMigrator.class);
 
-    /**
-     * Default Constructor for the Users Migration.
-     *
-     * @param iwsDao IWS Dao for persisting the new IWS Entities
-     */
+    @Autowired
+    private IWSDao iwsDao;
+
+    public UserMigrator() {
+    }
+
     public UserMigrator(final IWSDao iwsDao) {
-        super(iwsDao);
+        this.iwsDao = iwsDao;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(value = "transactionManagerIWS", propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3ProfilesEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;
 
         for (final IW3ProfilesEntity profile : oldEntities) {
-            final CountryEntity country = findExistingCountry(convert(profile.getUser().getCountry()));
-            final CountryEntity nationality = findExistingCountry(profile.getUser().getNationality());
+            final CountryEntity country = iwsDao.findExistingCountry(convert(profile.getUser().getCountry()));
+            final CountryEntity nationality = iwsDao.findExistingCountry(profile.getUser().getNationality());
             final GroupTypeEntity groupType = iwsDao.findGroupType(GroupType.PRIVATE);
             final RoleEntity role = iwsDao.findRoleById(IWSConstants.ROLE_OWNER);
 
@@ -104,6 +108,10 @@ public final class UserMigrator extends AbstractMigrator<IW3ProfilesEntity> {
 
         return new MigrationResult(persisted, skipped);
     }
+
+    // =========================================================================
+    // Internal User Migration Methods
+    // =========================================================================
 
     private static UserEntity convertUser(final IW3ProfilesEntity profile) {
         final UserEntity entity = new UserEntity();

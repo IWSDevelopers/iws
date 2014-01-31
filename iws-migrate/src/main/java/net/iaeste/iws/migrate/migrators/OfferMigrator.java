@@ -14,6 +14,11 @@
  */
 package net.iaeste.iws.migrate.migrators;
 
+import static net.iaeste.iws.migrate.migrators.Helpers.convert;
+import static net.iaeste.iws.migrate.migrators.Helpers.lowerAndShorten;
+import static net.iaeste.iws.migrate.migrators.Helpers.round;
+import static net.iaeste.iws.migrate.migrators.Helpers.upper;
+
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Language;
@@ -36,6 +41,7 @@ import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,12 +62,16 @@ import java.util.Set;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Transactional
-public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
+public class OfferMigrator implements Migrator<IW3OffersEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(OfferMigrator.class);
     private static final Character REFNO_START_SERIALNUMBER = 'A';
     private static final Date SEPTEMBER_1ST_2013 = new Date(1377986400000L);
+
+    @Autowired
+    private IWSDao iwsDao;
+
+    private final Map<Integer, GroupEntity> nationalGroups = new HashMap<>(80);
 
     /**
      * To try to speed up the migration, and not having to check all refno's,
@@ -95,18 +105,22 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
             "RO13-0093,SE11-0007,TN13-0401,TN13-0404,TR12-0147,TR12-0270," +
             "TR12-0370,VN13-0066,JO14-0159";
 
-    private final Map<Integer, GroupEntity> nationalGroups;
+    public OfferMigrator() {
+    }
 
     public OfferMigrator(final IWSDao iwsDao) {
-        super(iwsDao);
+        this.iwsDao = iwsDao;
+    }
 
-        // We have 27.000+ records in the database, but less than 100 groups.
-        // We cache all Groups so we can make a direct Id comparison rather than
-        // trusting that the JPA implementation is caching things properly
-        final List<GroupEntity> groups = iwsDao.findAllGroups(GroupType.NATIONAL);
-        nationalGroups = new HashMap<>(groups.size());
-        for (final GroupEntity entity : groups) {
-            nationalGroups.put(entity.getOldId(), entity);
+    private void init() {
+        if (nationalGroups.isEmpty()) {
+            // We have 150.000+ records in the database, but less than 100 groups.
+            // We cache all Groups so we can make a direct Id comparison rather than
+            // trusting that the JPA implementation is caching things properly
+            final List<GroupEntity> groups = iwsDao.findAllGroups(GroupType.NATIONAL);
+            for (final GroupEntity entity : groups) {
+                nationalGroups.put(entity.getOldId(), entity);
+            }
         }
     }
 
@@ -114,8 +128,9 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(value = "transactionManagerIWS", propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3OffersEntity> oldEntities) {
+        init();
         int persisted = 0;
         int skipped = 0;
 
@@ -141,6 +156,10 @@ public final class OfferMigrator extends AbstractMigrator<IW3OffersEntity> {
 
         return new MigrationResult(persisted, skipped);
     }
+
+    // =========================================================================
+    // Internal Offer Migration Methods
+    // =========================================================================
 
     private EmployerEntity prepareAndPersistEmployer(final IW3OffersEntity oldEntity, final OfferEntity offerEntity, final GroupEntity groupEntity) {
         final CountryEntity countryEntity = iwsDao.findCountry(oldEntity.getCountryid());

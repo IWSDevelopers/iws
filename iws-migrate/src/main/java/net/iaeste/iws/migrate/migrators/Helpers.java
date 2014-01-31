@@ -17,11 +17,7 @@ package net.iaeste.iws.migrate.migrators;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.migrate.daos.IWSDao;
-import net.iaeste.iws.persistence.entities.CountryEntity;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -31,50 +27,21 @@ import java.util.Date;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public abstract class AbstractMigrator<T> implements Migrator<T> {
-
-    private static final Logger log = LoggerFactory.getLogger(AbstractMigrator.class);
-
-    protected final IWSDao iwsDao;
-
-    /**
-     * Default Constructor, setting the IWS Dao class, which is used by all
-     * Migrators.
-     *
-     * @param iwsDao IWS Dao for persisting the new IWS Entities
-     */
-    protected AbstractMigrator(final IWSDao iwsDao) {
-        this.iwsDao = iwsDao;
-    }
+public final class Helpers {
 
     // =========================================================================
-    // General AbstractMigrator
+    // General Helpers
     // =========================================================================
 
-    protected CountryEntity findExistingCountry(final String countrycode) {
-        CountryEntity entity = null;
-
-        try {
-            if ((countrycode != null) && (countrycode.length() == 2) && !"$$".equals(countrycode)) {
-                entity = iwsDao.findCountry(countrycode);
-            }
-        } catch (IWSException e) {
-            log.warn("Couldn't find Entity for country {} => {}.", countrycode, e.getMessage());
-            entity = null;
-        }
-
-        return entity;
-    }
-
-    protected static Float round(final Float value) {
+    public static Float round(final Float value) {
         return (float) Math.round(value * 100) / 100;
     }
 
-    protected static Date convert(final Date date) {
+    public static Date convert(final Date date) {
         return (date == null) ? new Date() : date;
     }
 
-    protected static Date convert(final Date original, final Date alternate) {
+    public static Date convert(final Date original, final Date alternate) {
         final Date result;
 
         if (original != null) {
@@ -88,7 +55,7 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
         return result;
     }
 
-    protected static String convert(final byte[] bytes) {
+    public static String convert(final byte[] bytes) {
         final String result;
 
         if (bytes != null) {
@@ -104,11 +71,11 @@ public abstract class AbstractMigrator<T> implements Migrator<T> {
         return result;
     }
 
-    protected static String upper(final String str) {
+    public static String upper(final String str) {
         return (str != null) ? str.toUpperCase(IWSConstants.DEFAULT_LOCALE) : null;
     }
 
-    protected static String lowerAndShorten(final String str, final int maxLength) {
+    public static String lowerAndShorten(final String str, final int maxLength) {
         final String result;
 
         if ((str != null) && (str.length() > maxLength)) {

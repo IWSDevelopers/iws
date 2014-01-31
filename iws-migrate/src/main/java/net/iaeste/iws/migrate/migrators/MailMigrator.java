@@ -26,6 +26,8 @@ import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,18 +42,25 @@ import java.util.UUID;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class MailMigrator {
+public class MailMigrator {
 
     private static final Logger log = LoggerFactory.getLogger(MailMigrator.class);
 
-    private final IWSDao iwsDao;
-    private final MailDao mailDao;
+    @Autowired
+    private IWSDao iwsDao;
+
+    @Autowired
+    private MailDao mailDao;
+
+    public MailMigrator() {
+    }
 
     public MailMigrator(final IWSDao iwsDao, final MailDao mailDao) {
         this.iwsDao = iwsDao;
         this.mailDao = mailDao;
     }
 
+    @Transactional("transactionManagerMail")
     public MigrationResult migrate() {
         final MigrationResult groups = migrateGroups();
         final MigrationResult aliases = migrateAliases();
@@ -59,6 +68,10 @@ public final class MailMigrator {
 
         return new MigrationResult(groups.getPersisted() + aliases.getPersisted() + ncs.getPersisted(), 0);
     }
+
+    // =========================================================================
+    // Internal Mail Migration Methods
+    // =========================================================================
 
     private MigrationResult migrateGroups() {
         final List<GroupEntity> groups = iwsDao.findAllGroups();

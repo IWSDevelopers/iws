@@ -26,6 +26,7 @@ import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,27 +46,35 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Transactional
-public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
+public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(OfferGroupMigrator.class);
 
-    private final Map<Integer, GroupEntity> nationalGroups;
+    private final Map<Integer, GroupEntity> nationalGroups = new HashMap<>(80);
+
+    @Autowired
+    private IWSDao iwsDao;
+
+    public OfferGroupMigrator() {
+    }
 
     public OfferGroupMigrator(final IWSDao iwsDao) {
-        super(iwsDao);
+        this.iwsDao = iwsDao;
+    }
 
-        // We have 150.000+ records in the database, but less than 100 groups.
-        // We cache all Groups so we can make a direct Id comparison rather than
-        // trusting that the JPA implementation is caching things properly
+    /**
+     * We have 150.000+ records in the database, but less than 100 groups. We
+     * cache all Groups so we can make a direct Id comparison rather than
+     * trusting that the JPA implementation is caching things properly.
+     */
+    private void init() {
         final List<GroupEntity> groups = iwsDao.findAllGroups(GroupType.NATIONAL);
-        nationalGroups = new HashMap<>(groups.size());
         for (final GroupEntity entity : groups) {
             nationalGroups.put(entity.getOldId(), entity);
         }
     }
 
-    private static boolean skipThis(final OfferEntity offer, GroupEntity group) {
+    private static boolean skipThis(final OfferEntity offer) {
         final boolean result;
 
         switch (Integer.valueOf(offer.getId().toString())) {
@@ -88,8 +97,9 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(value = "transactionManagerIWS", propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3Offer2GroupEntity> oldEntities) {
+        init();
         int persisted = 0;
         int skipped = 0;
 
@@ -98,7 +108,7 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
 
             if (group != null) {
                 final OfferEntity offer = iwsDao.findOfferByOldOfferId(oldEntity.getId().getOfferId());
-                if (skipThis(offer, group)) {
+                if (skipThis(offer)) {
                     log.info("Skipping Offer {} to Group {}.", offer.getRefNo(), group.getGroupName());
                     skipped++;
                 } else {
@@ -132,6 +142,10 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
         return new MigrationResult(persisted, skipped);
     }
 
+    // =========================================================================
+    // Internal OfferGroup Migration Methods
+    // =========================================================================
+
     private GroupEntity findCachedGroup(final Integer groupId) {
         final GroupEntity entity;
 
@@ -148,9 +162,9 @@ public class OfferGroupMigrator extends AbstractMigrator<IW3Offer2GroupEntity> {
         final OfferGroupEntity entity = new OfferGroupEntity();
 
         entity.setStatus(convertOfferStatus(oldEntity.getStatus()));
-        entity.setComment(convert(oldEntity.getComment()));
-        entity.setModified(convert(oldEntity.getModified()));
-        entity.setCreated(convert(oldEntity.getCreated(), oldEntity.getModified()));
+        entity.setComment(Helpers.convert(oldEntity.getComment()));
+        entity.setModified(Helpers.convert(oldEntity.getModified()));
+        entity.setCreated(Helpers.convert(oldEntity.getCreated(), oldEntity.getModified()));
 
         return entity;
     }

@@ -20,8 +20,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.beans.Beans;
-
 /**
  * This Context Provider, will ensure that it is possible for any Class to load
  * the Spring Context. If it is started in a Spring framework (which this code
@@ -29,7 +27,7 @@ import java.beans.Beans;
  * in a Context without Spring, then the Application Context must be set.<br />
  *   If the system is running without Spring, then Spring can be loaded and all
  * Beans can be instantiated by simply setting the the context as follows:
- * {@code ContextProvider.getInstance().setApplicationContext(new AnnotationConfigApplicationContext(Beans.class));}
+ * {@code ContextProvider.getInstance().setApplicationContext(new AnnotationConfigApplicationContext(Config.class));}
  *
  * @author  Kim Jensen / last $Author: $
  * @version $Revision:$ / $Date: $
@@ -52,7 +50,7 @@ public final class ContextProvider {
      * problems with the Spring database configuration.
      */
     private ContextProvider() {
-        applicationContext = new AnnotationConfigApplicationContext(Beans.class);
+        applicationContext = new AnnotationConfigApplicationContext(Config.class);
     }
 
     /**
@@ -76,19 +74,18 @@ public final class ContextProvider {
      * Return the bean instance that uniquely matches the given object type, if
      * any.<br />
      *   This method goes into {@link org.springframework.beans.factory.ListableBeanFactory}
-     * by-type lookup territory but may also be translated into a conventional
-     * by-name lookup based on the name of the given type.
+     * by-name lookup based on the given name.
      *
-     * @param requiredType type the bean must match; can be an interface or superclass.
-     *                     {@code null} is disallowed.
-     * @return an instance of the single bean matching the required type
+     * @param name The name of the bean. {@code null} is disallowed.
+     * @return an instance of the single bean matching the required name
      * @throws IWSException if the bean could not be obtained
      */
-    public <T> T getBean(final Class<T> requiredType) {
+    public <T> T getBean(final String name) {
         synchronized (contextLock) {
             if (applicationContext != null) {
                 try {
-                    return applicationContext.getBean(requiredType);
+                    final Object obj = applicationContext.getBean(name);
+                    return (T) obj;
                 } catch (BeansException e) {
                     throw new IWSException(IWSErrors.FATAL, e);
                 }

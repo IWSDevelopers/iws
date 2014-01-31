@@ -14,19 +14,33 @@
  */
 package net.iaeste.iws.migrate.daos;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public final class MailJpaDao implements MailDao {
+@Repository("mailDao")
+@Transactional("transactionManagerMail")
+public class MailJpaDao implements MailDao {
 
-    private EntityManager entityManager = null;
+    private EntityManager entityManager;
 
-    public MailJpaDao(final EntityManager entityManager) {
+    @PersistenceContext(unitName = "MailPersistenceUnit")
+    public void setMailEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    public MailJpaDao() {
+    }
+
+    public MailJpaDao(final EntityManager mailEntityManager) {
+        this.entityManager = mailEntityManager;
     }
 
     // =========================================================================

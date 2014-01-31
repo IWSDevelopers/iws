@@ -29,8 +29,13 @@ import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.UUID;
@@ -40,11 +45,16 @@ import java.util.UUID;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Repository("iwsDao")
+@Transactional("transactionManagerIWS")
 public class IWSJpaDao implements IWSDao {
 
-    private final EntityManager entityManager;
+    private static final Logger log = LoggerFactory.getLogger(IWSJpaDao.class);
 
-    public IWSJpaDao(final EntityManager entityManager) {
+    private EntityManager entityManager;
+
+    @PersistenceContext(unitName = "IWSPersistenceUnit")
+    public void setIWSEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -73,6 +83,25 @@ public class IWSJpaDao implements IWSDao {
         query.setParameter("code", toUpper(countryCode));
 
         return findUniqueResult(query, "country");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CountryEntity findExistingCountry(final String countrycode) {
+        CountryEntity entity = null;
+
+        try {
+            if ((countrycode != null) && (countrycode.length() == 2) && !"$$".equals(countrycode)) {
+                entity = findCountry(countrycode);
+            }
+        } catch (IWSException e) {
+            log.warn("Couldn't find Entity for country {} => {}.", countrycode, e.getMessage());
+            entity = null;
+        }
+
+        return entity;
     }
 
     /**

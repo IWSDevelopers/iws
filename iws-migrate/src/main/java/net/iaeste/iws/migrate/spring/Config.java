@@ -16,12 +16,21 @@ package net.iaeste.iws.migrate.spring;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.migrate.migrators.CountryMigrator;
+import net.iaeste.iws.migrate.migrators.GroupMigrator;
+import net.iaeste.iws.migrate.migrators.MailMigrator;
+import net.iaeste.iws.migrate.migrators.Migrator;
+import net.iaeste.iws.migrate.migrators.OfferGroupMigrator;
+import net.iaeste.iws.migrate.migrators.OfferMigrator;
+import net.iaeste.iws.migrate.migrators.UserGroupMigrator;
+import net.iaeste.iws.migrate.migrators.UserMigrator;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -35,55 +44,41 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Spring JavaConfig, for Setting up the EntityManager for the Migration.
+ * Spring Annotation Config, for Setting up the Migration Beans. Since we need
+ * to embed the Transactions deeper to avoid that they are accumulated and thus
+ * slowing down everything. We need have quite a few Beans in the setup.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
 @Configuration
-@ComponentScan("net.iaeste.iws.migrate.spring")
 @EnableTransactionManagement
+@ComponentScan("net.iaeste.iws.migrate.daos")
 public class Config {
 
     private static final Logger log = LoggerFactory.getLogger(Config.class);
     private final Object lock = new Object();
     private final Properties properties = new Properties();
 
-    // Hardcoded values for the Test Server
+    // Hardcoded values for the Production Server (excl. passwords)
     private static final String PORT = "5432";
     private static final String IW3_SERVER = "192.38.77.85";
     private static final String IW3_DATABASE = "iw3";
     private static final String IW3_USERNAME = "readonly";
     private static final String IW3_PASSWORD = "af9v7aq6";
-    private static final String IWS_SERVER = "localhost";
-    private static final String IWS_DATABASE = "db_iw4_test";
-    private static final String IWS_USERNAME = "iw4_test_user";
-    private static final String IWS_PASSWORD = "jIf6rOAX92niHMFsQJjbuyf0";
-    private static final String MAIL_SERVER = "localhost";
-    private static final String MAIL_DATABASE = "db_iw4_maillists_test";
-    private static final String MAIL_USERNAME = "iw4_test_user";
-    private static final String MAIL_PASSWORD = "jIf6rOAX92niHMFsQJjbuyf0";
+    private static final String IWS_SERVER = "5.35.251.91";
+    private static final String IWS_DATABASE = "db_iw4";
+    private static final String IWS_USERNAME = "user_iw4";
+    private static final String IWS_PASSWORD = "xxxxxxxx";
+    private static final String MAIL_SERVER = "5.35.251.91";
+    private static final String MAIL_DATABASE = "db_iw4_maillists";
+    private static final String MAIL_USERNAME = "user_iw4";
+    private static final String MAIL_PASSWORD = "xxxxxxxx";
 
-    private String readProperty(final String key, final String defaultValue) {
-        synchronized (lock) {
-            if (properties.isEmpty()) {
-                try (InputStream inputStream = Config.class.getResourceAsStream("/migration.properties")) {
-                    if (inputStream != null) {
-                        properties.load(inputStream);
-                    }
-                } catch (final IOException e) {
-                    throw new IWSException(IWSErrors.FATAL, "Cannot load the Properties.", e);
-                }
-            }
-
-            return properties.getProperty(key, defaultValue);
-        }
-    }
-
-    @Bean(name = "migrateRecentOffersOnly")
-    public Boolean migrateRecentOffersOnly() {
-        return Boolean.valueOf(readProperty("migrate.recent.offers.only", "false"));
+    @Bean(name = "blockSize")
+    public Integer blockSize() {
+        return Integer.valueOf(readProperty("migrate.block.size", "1000"));
     }
 
     @Bean(name = "dataSourceIW3")
@@ -198,6 +193,72 @@ public class Config {
         jpaProperties.setProperty("hibernate.connection.autocommit", "false");
 
         return jpaProperties;
+    }
+
+    // =========================================================================
+    // The Migrators
+    // =========================================================================
+
+    @Scope("prototype")
+    @Bean(name = "countryMigrator")
+    public Migrator countryMigrator() {
+        return new CountryMigrator();
+    }
+
+    @Scope("prototype")
+    @Bean(name = "groupMigrator")
+    public GroupMigrator groupMigrator() {
+        return new GroupMigrator();
+    }
+
+    @Scope("prototype")
+    @Bean(name = "userMigrator")
+    public UserMigrator userMigrator() {
+        return new UserMigrator();
+    }
+
+    @Scope("prototype")
+    @Bean(name = "userGroupMigrator")
+    public UserGroupMigrator userGroupMigrator() {
+        return new UserGroupMigrator();
+    }
+
+    @Scope("prototype")
+    @Bean(name = "mailMigrator")
+    public MailMigrator mailMigrator() {
+        return new MailMigrator();
+    }
+
+    @Scope("prototype")
+    @Bean(name = "offerMigrator")
+    public OfferMigrator offerMigrator() {
+        return new OfferMigrator();
+    }
+
+    @Scope("prototype")
+    @Bean(name = "offerGroupMigrator")
+    public OfferGroupMigrator offerGroupMigrator() {
+        return new OfferGroupMigrator();
+    }
+
+    // =========================================================================
+    // Internal Methods
+    // =========================================================================
+
+    private String readProperty(final String key, final String defaultValue) {
+        synchronized (lock) {
+            if (properties.isEmpty()) {
+                try (InputStream inputStream = Config.class.getResourceAsStream("/migration.properties")) {
+                    if (inputStream != null) {
+                        properties.load(inputStream);
+                    }
+                } catch (final IOException e) {
+                    throw new IWSException(IWSErrors.FATAL, "Cannot load the Properties.", e);
+                }
+            }
+
+            return properties.getProperty(key, defaultValue);
+        }
     }
 
     /**

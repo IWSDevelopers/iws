@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.migrate.migrators;
 
+import static net.iaeste.iws.migrate.migrators.Helpers.convert;
+import static net.iaeste.iws.migrate.migrators.Helpers.upper;
+
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.api.enums.GroupType;
@@ -26,6 +29,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.GroupTypeEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,25 +40,25 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Transactional
-public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
+public class GroupMigrator implements Migrator<IW3GroupsEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(GroupMigrator.class);
 
-    /**
-     * Default Constructor for the Groups Migration.
-     *
-     * @param iwsDao IWS Dao for persisting the new IWS Entities
-     */
+    @Autowired
+    private IWSDao iwsDao;
+
+    public GroupMigrator() {
+    }
+
     public GroupMigrator(final IWSDao iwsDao) {
-        super(iwsDao);
+        this.iwsDao = iwsDao;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(value = "transactionManagerIWS", propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3GroupsEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;
@@ -118,13 +122,17 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
         return new MigrationResult(persisted, skipped);
     }
 
+    // =========================================================================
+    // Internal Group Migration Methods
+    // =========================================================================
+
     private CountryEntity convertCountry(final GroupEntity parent, final IW3GroupsEntity oldGroup) {
         final CountryEntity entity;
 
         if ((parent != null) && (parent.getCountry() != null)) {
             entity = parent.getCountry();
         } else {
-            entity = findExistingCountry(findCorrectCountry(oldGroup.getCountryid(), oldGroup.getRealcountryid()));
+            entity = iwsDao.findExistingCountry(findCorrectCountry(oldGroup.getCountryid(), oldGroup.getRealcountryid()));
         }
         return entity;
     }

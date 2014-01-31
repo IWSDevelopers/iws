@@ -20,8 +20,12 @@ import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -30,13 +34,20 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
+@Repository("iw3Dao")
+@Transactional(value = "transactionManagerIW3", readOnly = true)
 public class IW3JpaDao implements IW3Dao {
 
-    private final EntityManager entityManager;
-    private final int blockSize;
+    private EntityManager entityManager;
+    private Integer blockSize;
 
-    public IW3JpaDao(final EntityManager entityManager, final int blockSize) {
+    @PersistenceContext(unitName = "IW3PersistenceUnit")
+    public void setIw3EntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    @Autowired
+    public void setBlockSize(final Integer blockSize) {
         this.blockSize = blockSize;
     }
 

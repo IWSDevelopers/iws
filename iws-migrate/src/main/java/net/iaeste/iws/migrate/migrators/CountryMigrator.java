@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.migrate.migrators;
 
+import static net.iaeste.iws.migrate.migrators.Helpers.convert;
+import static net.iaeste.iws.migrate.migrators.Helpers.upper;
+
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.enums.Currency;
 import net.iaeste.iws.api.enums.Membership;
@@ -24,6 +27,7 @@ import net.iaeste.iws.migrate.entities.IW3CountriesEntity;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,25 +38,25 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-@Transactional
-public final class CountryMigrator extends AbstractMigrator<IW3CountriesEntity> {
+public class CountryMigrator implements Migrator<IW3CountriesEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(CountryMigrator.class);
 
-    /**
-     * Default Constructor for the Countries Migration.
-     *
-     * @param iwsDao IWS Dao for persisting the new IWS Entities
-     */
+    @Autowired
+    private IWSDao iwsDao;
+
+    public CountryMigrator() {
+    }
+
     public CountryMigrator(final IWSDao iwsDao) {
-        super(iwsDao);
+        this.iwsDao = iwsDao;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(value = "transactionManagerIWS", propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3CountriesEntity> oldEntities) {
         int persisted = 0;
         int skipped = 0;

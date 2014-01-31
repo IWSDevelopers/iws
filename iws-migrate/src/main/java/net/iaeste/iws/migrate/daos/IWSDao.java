@@ -43,6 +43,8 @@ public interface IWSDao {
      */
     CountryEntity findCountry(String countryCode);
 
+    CountryEntity findExistingCountry(String countrycode);
+
     /**
      * Finds a role based on the Id. Returns either the found RoleEntity or if
      * nothing was found - null.

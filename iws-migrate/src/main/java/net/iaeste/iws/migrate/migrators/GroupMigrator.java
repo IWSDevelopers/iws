@@ -87,7 +87,7 @@ public final class GroupMigrator extends AbstractMigrator<IW3GroupsEntity> {
                 if (parent == null) {
                     // For Holland, we have the problem that Group 629 exists, but 628 (the parent) doesn't.
                     log.info("Couldn't find a parent for {} with id {}", convert(oldGroup.getGroupdescription()), oldGroup.getGroupid());
-                    converted.setFullName(convert(oldGroup.getGroupdescription()) + ' ' + converted.getGroupType().getGrouptype().getDescription());
+                    converted.setFullName(convert(oldGroup.getGroupdescription()) + " Staff");
                     converted.setParentId(0L);
                 } else {
                     converted.setParentId(parent.getId());

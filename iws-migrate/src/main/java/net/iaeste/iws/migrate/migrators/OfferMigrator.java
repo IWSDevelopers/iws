@@ -812,7 +812,8 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
                     result = OfferState.DELETED;
                     break;
                 default:
-                    result = null;
+                    //result = null;
+                    result = OfferState.SHARED;
             }
         } else {
             result = null;

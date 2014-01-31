@@ -256,7 +256,7 @@ public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
             // can only happen, if the offer gets unshared after the the status APPLIED" passed
             // as the IW3 did never used the nomination functionality, this can never be a valid state
             case "c": // Cancelled
-                state = OfferState.SHARED;
+                state = OfferState.CLOSED;
                 break;
             // See above explanation
             case "p": // Nomination

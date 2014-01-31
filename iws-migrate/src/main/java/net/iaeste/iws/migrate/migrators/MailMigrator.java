@@ -18,6 +18,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.GroupStatus;
 import net.iaeste.iws.migrate.daos.IWSDao;
 import net.iaeste.iws.migrate.daos.MailDao;
+import net.iaeste.iws.migrate.entities.IW3UsersEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
@@ -42,7 +43,7 @@ import java.util.UUID;
  * @version $Revision:$ / $Date:$
  * @since   1.7
  */
-public class MailMigrator {
+public class MailMigrator implements Migrator<IW3UsersEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(MailMigrator.class);
 
@@ -60,6 +61,10 @@ public class MailMigrator {
         this.mailDao = mailDao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional("transactionManagerMail")
     public MigrationResult migrate() {
         final MigrationResult groups = migrateGroups();
@@ -67,6 +72,14 @@ public class MailMigrator {
         final MigrationResult ncs = migrateNCs();
 
         return new MigrationResult(groups.getPersisted() + aliases.getPersisted() + ncs.getPersisted(), 0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MigrationResult migrate(List<IW3UsersEntity> oldEntities) {
+        throw new IllegalArgumentException("This Migrator is not allowed here.");
     }
 
     // =========================================================================

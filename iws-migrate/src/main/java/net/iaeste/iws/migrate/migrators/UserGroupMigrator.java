@@ -65,6 +65,14 @@ public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
      * {@inheritDoc}
      */
     @Override
+    public MigrationResult migrate() {
+        throw new IllegalArgumentException("This Migrator is not allowed here.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional(value = "transactionManagerIWS", propagation = Propagation.REQUIRES_NEW)
     public MigrationResult migrate(final List<IW3User2GroupEntity> oldEntities) {
         int persisted = 0;

@@ -20,7 +20,7 @@ import net.iaeste.iws.migrate.entities.IW3Offer2GroupEntity;
 import net.iaeste.iws.migrate.entities.IW3OffersEntity;
 import net.iaeste.iws.migrate.entities.IW3ProfilesEntity;
 import net.iaeste.iws.migrate.entities.IW3User2GroupEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.iaeste.iws.migrate.migrators.Migrator;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,16 +39,10 @@ import java.util.List;
 public class IW3JpaDao implements IW3Dao {
 
     private EntityManager entityManager;
-    private Integer blockSize;
 
     @PersistenceContext(unitName = "IW3PersistenceUnit")
     public void setIw3EntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
-    }
-
-    @Autowired
-    public void setBlockSize(final Integer blockSize) {
-        this.blockSize = blockSize;
     }
 
     // =========================================================================
@@ -145,9 +139,9 @@ public class IW3JpaDao implements IW3Dao {
     // Internal Methods
     // =========================================================================
 
-    private <T> List<T> fetchList(final Query query, final int page) {
-        query.setFirstResult(page * blockSize);
-        query.setMaxResults(blockSize);
+    private static <T> List<T> fetchList(final Query query, final int page) {
+        query.setFirstResult(page * Migrator.BLOCK_SIZE);
+        query.setMaxResults(Migrator.BLOCK_SIZE);
 
         return query.getResultList();
     }

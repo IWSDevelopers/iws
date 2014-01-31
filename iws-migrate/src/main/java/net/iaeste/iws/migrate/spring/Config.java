@@ -19,7 +19,6 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.migrate.migrators.CountryMigrator;
 import net.iaeste.iws.migrate.migrators.GroupMigrator;
 import net.iaeste.iws.migrate.migrators.MailMigrator;
-import net.iaeste.iws.migrate.migrators.Migrator;
 import net.iaeste.iws.migrate.migrators.OfferGroupMigrator;
 import net.iaeste.iws.migrate.migrators.OfferMigrator;
 import net.iaeste.iws.migrate.migrators.UserGroupMigrator;
@@ -75,11 +74,6 @@ public class Config {
     private static final String MAIL_DATABASE = "db_iw4_maillists";
     private static final String MAIL_USERNAME = "user_iw4";
     private static final String MAIL_PASSWORD = "xxxxxxxx";
-
-    @Bean(name = "blockSize")
-    public Integer blockSize() {
-        return Integer.valueOf(readProperty("migrate.block.size", "1000"));
-    }
 
     @Bean(name = "dataSourceIW3")
     public DataSource dataSourceIW3() {
@@ -201,7 +195,7 @@ public class Config {
 
     @Scope("prototype")
     @Bean(name = "countryMigrator")
-    public Migrator countryMigrator() {
+    public CountryMigrator countryMigrator() {
         return new CountryMigrator();
     }
 

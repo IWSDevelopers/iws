@@ -32,10 +32,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -50,7 +52,6 @@ public class MigrateTest {
 
     private static final Logger log = LoggerFactory.getLogger(MigrateTest.class);
     private static final ContextProvider context = ContextProvider.getInstance();
-    private static final int BLOCK_SIZE = 1000;
 
     private Migrator countryMigrator;
     private Migrator groupMigrator;
@@ -84,12 +85,11 @@ public class MigrateTest {
         groupMigrator = context.getBean("groupMigrator");
         userMigrator = context.getBean("userMigrator");
         userGroupMigrator = context.getBean("userGroupMigrator");
+        mailMigrator = context.getBean("mailMigrator");
         offerMigrator = context.getBean("offerMigrator");
         offerGroupMigrator = context.getBean("offerGroupMigrator");
 
         //final MailDao mailDao = new MailJpaDao(mailEntityManager);
-
-        //mailMigrator = new MailMigrator(iwsDao, mailDao);
     }
 
     // =========================================================================
@@ -126,7 +126,7 @@ public class MigrateTest {
     @Test
     public void test3ReadingWritingUsers() {
         final Long count = iw3Dao.countProfiles();
-        final long blocks = (count / BLOCK_SIZE) + 1;
+        final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
         log.info("Found {} Users to migrate.", count);
         MigrationResult result = new MigrationResult();
 
@@ -143,7 +143,7 @@ public class MigrateTest {
     @Test
     public void test4ReadingWritingUserGroups() {
         final Long count = iw3Dao.countUserGroups();
-        final long blocks = (count / BLOCK_SIZE) + 1;
+        final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
         log.info("Found {} UserGroups to migrate.", count);
         MigrationResult result = new MigrationResult();
 
@@ -157,23 +157,23 @@ public class MigrateTest {
         log.info("Completed Migrating UserGroups; Persisted {} & Skipped {}.", result.getPersisted(), result.getSkipped());
     }
 
-//    @Test
-//    @Transactional("transactionManagerMail")
-//    public void test5ReadingWritingMail() {
-//        final MailMigrator migrator = new MailMigrator(iwsDao, mailDao);
-//        log.info("Starting migration of Mail settings.");
-//
-//        final MigrationResult result = migrator.migrate();
-//        final long persisted = result.getPersisted();
-//
-//        assertThat(persisted > 0, is(true));
-//        log.info("Completed Migrating Mail.");
-//    }
+    @Test
+    @Ignore("Ignored 2014-01-31 by Kim - Reason: There's some unresolved problems that needs fixing.")
+    @Transactional("transactionManagerMail")
+    public void test5ReadingWritingMail() {
+        log.info("Starting migration of Mail settings.");
+
+        final MigrationResult result = mailMigrator.migrate();
+        final long persisted = result.getPersisted();
+
+        assertThat(persisted > 0, is(true));
+        log.info("Completed Migrating Mail.");
+    }
 
     @Test
     public void test6ReadingWritingOffers() {
         final Long count = iw3Dao.countOffers();
-        final long blocks = (count / BLOCK_SIZE) + 1;
+        final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
         log.info("Found {} Offers to migrate.", count);
         MigrationResult result = new MigrationResult();
 
@@ -190,7 +190,7 @@ public class MigrateTest {
     @Test
     public void test7ReadingWritingOfferGroups() {
         final Long count = iw3Dao.countOfferGroups();
-        final long blocks = (count / BLOCK_SIZE) + 1;
+        final long blocks = (count / Migrator.BLOCK_SIZE) + 1;
         log.info("Found {} OfferGroups to migrate.", count);
         MigrationResult result = new MigrationResult();
 

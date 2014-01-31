@@ -74,25 +74,14 @@ public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
         }
     }
 
-    private static boolean skipThis(final OfferEntity offer) {
-        final boolean result;
-
-        switch (Integer.valueOf(offer.getId().toString())) {
-            case 115:
-            case 463:
-            case 514:
-            case 539:
-            case 578:
-            case 17968: // Failed in Jenkins
-            case 25762: // Failed Locally
-                result = true;
-                break;
-            default:
-                result = false;
-        }
-
-        return result;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MigrationResult migrate() {
+        throw new IllegalArgumentException("This Migrator is not allowed here.");
     }
+
     /**
      * {@inheritDoc}
      */
@@ -156,6 +145,26 @@ public class OfferGroupMigrator implements Migrator<IW3Offer2GroupEntity> {
         }
 
         return entity;
+    }
+
+    private static boolean skipThis(final OfferEntity offer) {
+        final boolean result;
+
+        switch (Integer.valueOf(offer.getId().toString())) {
+            case 115:
+            case 463:
+            case 514:
+            case 539:
+            case 578:
+            case 17968: // Failed in Jenkins
+            case 25762: // Failed Locally
+                result = true;
+                break;
+            default:
+                result = false;
+        }
+
+        return result;
     }
 
     private static OfferGroupEntity convert(final IW3Offer2GroupEntity oldEntity) {

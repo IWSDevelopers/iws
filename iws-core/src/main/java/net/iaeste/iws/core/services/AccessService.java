@@ -62,7 +62,7 @@ import java.util.UUID;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class AccessService extends CommonService<AccessDao> {
 
@@ -221,7 +221,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity session = dao.findActiveSession(token);
         dao.deprecateSession(session.getUser());
         activeSessions.removeToken(token.getToken());
-        log.info("Deprecated session for user: " + session.getUser().toString());
+        log.info("Deprecated session for user: " + session.getUser());
     }
 
     /**
@@ -338,13 +338,13 @@ public final class AccessService extends CommonService<AccessDao> {
             final SessionEntity session = dao.findActiveSession(token);
             final UserEntity user = session.getUser();
             dao.deprecateSession(user);
-            log.info("Deprecated inactive session for user " + user.toString());
+            log.info("Deprecated inactive session for user " + user);
         }
     }
 
     private String generateAndPersistSessionKey(final UserEntity user) {
         // Generate new Hashcode from the User Credentials, and some other entropy
-        final String entropy = UUID.randomUUID().toString() + user.getPassword();
+        final String entropy = UUID.randomUUID() + user.getPassword();
         final String sessionKey = generateHash(entropy);
 
         // Generate the new Session, and persist it

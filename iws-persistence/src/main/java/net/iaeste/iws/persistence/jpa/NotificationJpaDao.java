@@ -16,8 +16,6 @@
 package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.api.constants.IWSErrors;
-import net.iaeste.iws.api.enums.NotificationMessageStatus;
-import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.NotificationDao;
@@ -35,7 +33,7 @@ import java.util.List;
 /**
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
 
@@ -59,7 +57,7 @@ public class NotificationJpaDao extends BasicJpaDao implements NotificationDao {
 
         final List<UserNotificationEntity> result = query.getResultList();
 
-        if (result.size() == 0) {
+        if (result.isEmpty()) {
             return null;
         } else if (result.size() > 1) {
             throw new IWSException(IWSErrors.AUTHORIZATION_ERROR, "No user notification (" + type + ") for the user with id: '" + user.getId() + "' was found.");

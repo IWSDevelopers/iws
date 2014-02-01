@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 /**
  * @author  Martin Eisfeld / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class FetchCountries extends AbstractFixture<FetchCountryResponse> {
 

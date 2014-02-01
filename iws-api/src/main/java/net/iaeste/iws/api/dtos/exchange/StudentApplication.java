@@ -48,7 +48,7 @@ import java.util.Set;
  *
  * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class StudentApplication extends AbstractVerification {
 

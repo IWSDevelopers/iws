@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public interface IWSConstants {
 
@@ -41,7 +41,7 @@ public interface IWSConstants {
      *
      * {@code private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;}
      */
-    long SERIAL_VERSION_UID = 201201010010000L; // YYYYMMDDvvvnnnn
+    long SERIAL_VERSION_UID = 201402010010000L; // YYYYMMDDvvvnnnn
 
     /**
      * The default encoding used for all processing of strings.

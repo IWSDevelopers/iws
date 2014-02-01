@@ -26,7 +26,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 /**
  * @author  Martin Eisfeld / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class ProcessEmployer extends AbstractFixture<EmployerResponse> {
 

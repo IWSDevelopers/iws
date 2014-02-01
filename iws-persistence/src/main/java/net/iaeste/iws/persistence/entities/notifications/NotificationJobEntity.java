@@ -38,7 +38,7 @@ import java.util.Date;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @NamedQueries(@NamedQuery(name = "notifications.findJobsByNotifiedAndDate",
         query = "select nj from NotificationJobEntity nj " +

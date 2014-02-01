@@ -51,7 +51,7 @@ import java.util.Map;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @NamedQueries({
         // Query is used by the Migration Tool

@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * @author  Sondre Naustdal / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class PublishingGroup extends AbstractVerification {
 

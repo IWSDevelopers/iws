@@ -22,7 +22,7 @@ import net.iaeste.iws.persistence.entities.Updateable;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public interface Externable<T> extends Updateable<T> {
 

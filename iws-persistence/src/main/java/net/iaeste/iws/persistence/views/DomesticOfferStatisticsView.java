@@ -14,32 +14,23 @@
  */
 package net.iaeste.iws.persistence.views;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.enums.exchange.OfferState;
-
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "view.findStatisticsForDomesticOffersForGroupAndYear",
-                query = "select s from DomesticOfferStatisticsView s " +
-                        "where s.id.groupId = :gid" +
-                        "  and s.exchangeYear = :year")
-})
+@NamedQueries(@NamedQuery(name = "view.findStatisticsForDomesticOffersForGroupAndYear",
+        query = "select s from DomesticOfferStatisticsView s " +
+                "where s.id.groupId = :gid" +
+                "  and s.exchangeYear = :year"))
 @Table(name = "domestic_offer_statistics")
 public class DomesticOfferStatisticsView {
 

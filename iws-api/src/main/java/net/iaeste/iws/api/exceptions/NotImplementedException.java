@@ -27,7 +27,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  * @deprecated Please implement the logic
  */
 @Deprecated

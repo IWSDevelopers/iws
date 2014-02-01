@@ -28,15 +28,13 @@ import java.util.Date;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "view.findAttachments",
-                query = "select v from AttachedFileView v " +
-                        "where v.recordTable = :table" +
-                        "  and v.recordId = :recordId")
-})
+@NamedQueries(@NamedQuery(name = "view.findAttachments",
+        query = "select v from AttachedFileView v " +
+                "where v.recordTable = :table" +
+                "  and v.recordId = :recordId"))
 @Table(name = "file_attachments")
 public class AttachedFileView  extends AbstractView<AttachedFileView> {
 

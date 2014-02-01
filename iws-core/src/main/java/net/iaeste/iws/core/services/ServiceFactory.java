@@ -40,7 +40,7 @@ import javax.persistence.EntityManager;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class ServiceFactory {
 
@@ -50,6 +50,7 @@ public final class ServiceFactory {
     private final Notifications notifications;
     private final CountryDao countryDao;
     private final AccessDao accessDao;
+    private final ExchangeDao exchangeDao;
     private final StudentDao studentDao;
     private final Settings settings;
 
@@ -60,6 +61,7 @@ public final class ServiceFactory {
 
         accessDao = new AccessJpaDao(entityManager);
         countryDao = new CountryJpaDao(entityManager);
+        exchangeDao = new ExchangeJpaDao(entityManager);
         studentDao = new StudentJpaDao(entityManager);
     }
 
@@ -105,8 +107,6 @@ public final class ServiceFactory {
     }
 
     public StudentService prepareStudentService() {
-        final ExchangeDao exchangeDao = new ExchangeJpaDao(entityManager);
-        final StudentDao studentDao = new StudentJpaDao(entityManager);
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
 
         return new StudentService(settings, accessDao, exchangeDao, studentDao, viewsDao);

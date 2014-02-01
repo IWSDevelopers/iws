@@ -38,7 +38,7 @@ import java.util.Map;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  * @noinspection StaticNonFinalField
  */
 public final class LoginRetries {

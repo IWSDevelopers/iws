@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public interface BasicDao {
 

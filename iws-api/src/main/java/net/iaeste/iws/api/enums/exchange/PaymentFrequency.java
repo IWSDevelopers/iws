@@ -19,7 +19,7 @@ package net.iaeste.iws.api.enums.exchange;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public enum PaymentFrequency {
 

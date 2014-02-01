@@ -28,7 +28,7 @@ import java.util.Map;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class OfferGroup extends AbstractVerification {
 

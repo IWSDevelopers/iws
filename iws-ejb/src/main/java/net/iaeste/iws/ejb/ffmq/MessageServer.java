@@ -38,7 +38,7 @@ import javax.jms.JMSException;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class MessageServer extends Thread {
 
@@ -53,6 +53,7 @@ public class MessageServer extends Thread {
     private ClientListener tcpListener;
     private boolean deployed = false;
 
+    @Override
     public void run() {
         try {
             System.setProperty("FFMQ_BASE", "..");

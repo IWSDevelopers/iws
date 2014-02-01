@@ -20,11 +20,9 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationField;
-import net.iaeste.iws.ejb.IwsSystemSetting;
 import net.iaeste.iws.common.exceptions.NotificationException;
 import net.iaeste.iws.common.notification.NotificationType;
 
-import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -34,7 +32,7 @@ import java.util.Map;
 /**
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class NotificationMessageGeneratorFreemarker implements NotificationMessageGenerator {
 
@@ -42,8 +40,8 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
      * TEMPLATE_DIR refers to the place where our templates are located, i.e. in the freemarker_templates package,
      * relative to the root of the current class
      */
-    private final String TEMPLATE_DIR = "freemarker_templates";
-    private final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
+    private static final String TEMPLATE_DIR = "freemarker_templates";
+    private static final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
     private Settings settings;
 
     public NotificationMessageGeneratorFreemarker() {
@@ -109,7 +107,7 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
             final Map<String, String> result = new HashMap<>();
 
             final Configuration cfg = new Configuration();
-            cfg.setClassForTemplateLoading(this.getClass(), dir);
+            cfg.setClassForTemplateLoading(getClass(), dir);
 
             Template template = cfg.getTemplate(templateName);
 
@@ -137,8 +135,8 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
         Map<String, String> outputMap = new HashMap<>(inputMap.size());
         outputMap.put("baseUrl", settings.getBaseUrl());
 
-        for (NotificationField field : inputMap.keySet()) {
-            outputMap.put(field.name(), inputMap.get(field));
+        for (final Map.Entry<NotificationField, String> notificationFieldStringEntry : inputMap.entrySet()) {
+            outputMap.put(notificationFieldStringEntry.getKey().name(), notificationFieldStringEntry.getValue());
         }
         return outputMap;
     }

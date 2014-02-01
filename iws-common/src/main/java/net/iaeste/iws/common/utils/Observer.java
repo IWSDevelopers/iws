@@ -26,7 +26,7 @@ import javax.persistence.EntityManager;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  * @see <a href="http://en.wikipedia.org/wiki/Observer_pattern">Observer Design Pattern</a>
  */
 public interface Observer {

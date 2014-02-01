@@ -20,7 +20,6 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationField;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.common.exceptions.NotificationException;
-import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -41,12 +40,12 @@ import java.util.Properties;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class NotificationMessageGeneratorVelocity implements NotificationMessageGenerator {
 
-    private final String TEMPLATE_DIR = "velocity_templates";
-    private final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
+    private static final String TEMPLATE_DIR = "velocity_templates";
+    private static final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
     private Settings settings;
 
     /**

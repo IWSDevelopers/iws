@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  * @noinspection StaticNonFinalField, SynchronizationOnStaticField, BooleanMethodNameMustStartWithQuestion
  */
 abstract class AbstractFixture<T extends Fallible> implements Fixture {

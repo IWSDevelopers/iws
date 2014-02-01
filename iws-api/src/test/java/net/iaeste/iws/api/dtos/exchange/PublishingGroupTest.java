@@ -30,7 +30,7 @@ import java.util.UUID;
 /**
  * @author  Sondre Naustdal / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  * @noinspection ResultOfObjectAllocationIgnored
  */
 public final class PublishingGroupTest {

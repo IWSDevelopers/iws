@@ -31,7 +31,7 @@ import java.util.Set;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
 
@@ -51,7 +51,7 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
     public ApplicationEntity findApplicationByExternalId(final String externalId) {
         //TODO very stupid but efective fix for #515
         //TODO Does it mean that now it buffers OfferGroupEntity and then it works but without the extra query, it can't find OfferGroupEntities???
-        final List workaround = entityManager.createQuery("select og from OfferGroupEntity og").getResultList();;
+        final List workaround = entityManager.createQuery("select og from OfferGroupEntity og").getResultList();
 
         //TODO ensure that only application for owned or shared offers can be retrieved
         final Query query = entityManager.createNamedQuery("application.findByExternalId");
@@ -124,6 +124,7 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Boolean otherOfferGroupWithCertainStatus(final Long offerId, Set<OfferState> offerStates) {
         final Query query = entityManager.createNamedQuery("offerGroup.findByOfferAndStatuses");
         query.setParameter("oid", offerId);
@@ -131,12 +132,13 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
 
         List<OfferGroupEntity> list = query.getResultList();
 
-        return list.size() > 0;
+        return !list.isEmpty();
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public Boolean otherDomesticApplicationsWithCertainStatus(final Long offerGroupId, final Set<ApplicationStatus> applicationStates) {
         final Query query = entityManager.createNamedQuery("application.findByOfferGroupIdAndStatuses");
         query.setParameter("ogid", offerGroupId);
@@ -144,6 +146,6 @@ public final class StudentJpaDao extends BasicJpaDao implements StudentDao {
 
         List<OfferGroupEntity> list = query.getResultList();
 
-        return list.size() > 0;
+        return !list.isEmpty();
     }
 }

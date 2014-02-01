@@ -35,7 +35,7 @@ import java.util.Date;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Entity
 @Table(name = "permission_to_role")

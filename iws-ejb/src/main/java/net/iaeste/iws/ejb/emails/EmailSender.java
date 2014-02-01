@@ -17,7 +17,6 @@ package net.iaeste.iws.ejb.emails;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
-import net.iaeste.iws.ejb.IwsSystemSetting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +41,7 @@ import java.util.Properties;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  * @noinspection CastToConcreteClass, AccessOfSystemProperties, MethodMayBeStatic
  */
 @MessageDriven(

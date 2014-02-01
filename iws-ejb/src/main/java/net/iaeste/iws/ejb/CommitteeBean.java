@@ -17,7 +17,6 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.InternationalGroupRequest;
 import net.iaeste.iws.api.requests.RegionalGroupRequest;
@@ -55,7 +54,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

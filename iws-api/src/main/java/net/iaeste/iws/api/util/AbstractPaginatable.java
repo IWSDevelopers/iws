@@ -23,7 +23,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public abstract class AbstractPaginatable extends AbstractVerification {
 

@@ -50,7 +50,7 @@ import java.util.concurrent.Future;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Ignore("The test is very heavy, and is designed to run against a Migated PostgreSQL database.")
 public final class HeavyLoadTest {

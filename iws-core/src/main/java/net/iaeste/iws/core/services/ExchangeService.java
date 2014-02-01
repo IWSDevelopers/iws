@@ -14,7 +14,6 @@
  */
 package net.iaeste.iws.core.services;
 
-import static net.iaeste.iws.api.util.Copier.copy;
 import static net.iaeste.iws.core.transformers.ExchangeTransformer.transform;
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
@@ -24,7 +23,6 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.GroupType;
-import net.iaeste.iws.api.enums.exchange.ApplicationStatus;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
@@ -62,7 +60,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,7 +67,7 @@ import java.util.Set;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class ExchangeService extends CommonService<ExchangeDao> {
 
@@ -305,7 +302,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             for(final OfferGroupEntity offerGroup : allOfferGroups) {
                 if (groups.contains(offerGroup.getGroup())) {
-                    if (OfferState.CLOSED.equals(offerGroup.getStatus())) {
+                    if (OfferState.CLOSED == offerGroup.getStatus()) {
                         resharing.add(offerGroup.getGroup());
                         reshareGroups.add(offerGroup);
                     } else {
@@ -313,7 +310,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                         keepOfferGroups.add(offerGroup);
                     }
                 } else {
-                    if (!OfferState.CLOSED.equals(offerGroup.getStatus())) {
+                    if (OfferState.CLOSED != offerGroup.getStatus()) {
                         unshareOfferGroups.add(offerGroup);
                     }
                 }
@@ -337,7 +334,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             if (!unshareOfferGroups.isEmpty()) {
                 final OfferState removedState = unshareOfferFromGroups(offer, unshareOfferGroups);
-                if (offer.getStatus().equals(removedState)) {
+                if (offer.getStatus() == removedState) {
                     updateOfferState = true;
                 }
             }
@@ -348,7 +345,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
                 if (!keepOfferGroups.isEmpty()) {
                     for (final OfferGroupEntity offerGroup : keepOfferGroups) {
-                        if (!offerGroup.getStatus().equals(oldOfferState) && isOtherCurrentOfferGroupStateHigher(newOfferState, offerGroup.getStatus())) {
+                        if (offerGroup.getStatus() != oldOfferState && isOtherCurrentOfferGroupStateHigher(newOfferState, offerGroup.getStatus())) {
                             newOfferState = offerGroup.getStatus();
                         }
                     }
@@ -357,7 +354,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 }
 
 
-                if (!oldOfferState.equals(newOfferState)) {
+                if (oldOfferState != newOfferState) {
                     offer.setStatus(newOfferState);
                 }
             }
@@ -379,7 +376,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         OfferState result = OfferState.NEW; //first possible state for offer
 
         for(final OfferGroupEntity offerGroup : offerGroups) {
-            if (!offerGroup.getStatus().equals(result) && (offer.getStatus().equals(offerGroup.getStatus()) || isOtherCurrentOfferGroupStateHigher(offer.getStatus(), offerGroup.getStatus()))) {
+            if (offerGroup.getStatus() != result && (offer.getStatus() == offerGroup.getStatus() || isOtherCurrentOfferGroupStateHigher(offer.getStatus(), offerGroup.getStatus()))) {
                 result = offerGroup.getStatus();
             }
 
@@ -394,7 +391,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         return result;
     }
 
-    private Boolean isOtherCurrentOfferGroupStateHigher(final OfferState oldState, final OfferState otherState) {
+    private static Boolean isOtherCurrentOfferGroupStateHigher(final OfferState oldState, final OfferState otherState) {
         Boolean result = false;
         switch (oldState) {
             case NEW:

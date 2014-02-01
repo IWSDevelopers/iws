@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class AccessJpaDao extends BasicJpaDao implements AccessDao {
 
@@ -453,9 +453,9 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public UserEntity findNationalSecretaryByMemberGroup(final GroupEntity group) {
+    public UserEntity findNationalSecretaryByMemberGroup(final GroupEntity memberGroup) {
         final Query query = entityManager.createNamedQuery("usergroup.findNationalSecretaryByMemberGroup");
-        query.setParameter("mgid", group.getParentId());
+        query.setParameter("mgid", memberGroup.getParentId());
 
         UserGroupEntity userGroupEntity = findUniqueResult(query, "UserGroup");
         return userGroupEntity.getUser();

@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Ignore("Ignored 2014-01-20 by Kim - Reason: Trac task #648 has forced a few changes in the copier. Until a proper permanent solution is found, this test is ignored.")
 public class CopierTest {

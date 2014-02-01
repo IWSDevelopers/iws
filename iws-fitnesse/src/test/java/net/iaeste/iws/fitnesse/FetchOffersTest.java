@@ -26,7 +26,7 @@ import org.junit.Test;
 /**
  * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class FetchOffersTest {
     private FetchOffers cut;

@@ -32,7 +32,7 @@ import javax.persistence.EntityManager;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class NotificationImSender implements Observer {
     private Long id = null;
@@ -66,6 +66,7 @@ public class NotificationImSender implements Observer {
 //        }
     }
 
+    @Override
     public void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         dao = new NotificationJpaDao(iwsEntityManager);
         initialized = true;

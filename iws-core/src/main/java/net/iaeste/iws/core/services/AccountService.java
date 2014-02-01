@@ -58,7 +58,7 @@ import java.util.UUID;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class AccountService extends CommonService<AccessDao> {
 
@@ -440,7 +440,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final String clear = request.getUsername()
                            + request.getFirstname()
                            + request.getLastname()
-                           + UUID.randomUUID().toString();
+                           + UUID.randomUUID();
 
         return generateHash(clear);
     }
@@ -593,7 +593,7 @@ public final class AccountService extends CommonService<AccessDao> {
             // otherwise block if the user later on create a new Account. A
             // deleted account should remaing deleted - and we do not wish to
             // drop the Unique Constraint in the database.
-            user.setUsername(UUID.randomUUID().toString() + "@iaeste.com");
+            user.setUsername(UUID.randomUUID() + "@iaeste.com");
             user.setPassword(null);
             user.setSalt(null);
             user.setPerson(null);

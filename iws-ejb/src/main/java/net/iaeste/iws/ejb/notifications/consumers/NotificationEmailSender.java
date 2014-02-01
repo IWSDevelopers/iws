@@ -64,7 +64,7 @@ import java.util.Map;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  * @noinspection ObjectAllocationInLoop
  */
 public class NotificationEmailSender implements Observer {
@@ -94,6 +94,7 @@ public class NotificationEmailSender implements Observer {
     public NotificationEmailSender() {
     }
 
+    @Override
     public void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         dao = new NotificationJpaDao(iwsEntityManager);
         accessDao = new AccessJpaDao(iwsEntityManager);
@@ -126,13 +127,14 @@ public class NotificationEmailSender implements Observer {
         }
     }
 
-    private Hashtable<String, String> getFfmqEnvironment() {
+    private static Hashtable<String, String> getFfmqEnvironment() {
 //        try {
             final Hashtable<String, String> env = new Hashtable<>();
             env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
             env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
             return env;
     }
+
     private void initializeFfmqQueue() {
         try {
             final Hashtable<String, String> env = new Hashtable<>();
@@ -220,7 +222,7 @@ public class NotificationEmailSender implements Observer {
                 if (fields != null) {
                     processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
-                boolean processed = (processedStatus != NotificationProcessTaskStatus.ERROR);
+                boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
             } catch (IOException |ClassNotFoundException ignored) {
                 //TODO write to log and skip the task or throw an exception?
@@ -247,9 +249,8 @@ public class NotificationEmailSender implements Observer {
         }
 
         for (final UserEntity recipient : recipients) {
-            final UserNotificationEntity userSetting;
             try {
-                userSetting = dao.findUserNotificationSetting(recipient, type);
+                final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
                 //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
                 //should be get from DB directly according to the NotificationType
                 if (userSetting != null && userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
@@ -311,7 +312,7 @@ public class NotificationEmailSender implements Observer {
         return result;
     }
 
-    private String getTargetEmailAddress(final UserEntity recipient, final NotificationType type) {
+    private static String getTargetEmailAddress(final UserEntity recipient, final NotificationType type) {
         final String result;
         switch (type) {
             case ACTIVATE_USER:

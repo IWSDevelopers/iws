@@ -17,16 +17,10 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.exceptions.IWSException;
-import net.iaeste.iws.api.requests.CommitteeRequest;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FileRequest;
-import net.iaeste.iws.api.requests.InternationalGroupRequest;
-import net.iaeste.iws.api.requests.RegionalGroupRequest;
-import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FileResponse;
-import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StorageController;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -59,7 +53,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

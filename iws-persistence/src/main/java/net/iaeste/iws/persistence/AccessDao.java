@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public interface AccessDao extends BasicDao {
 
@@ -166,9 +166,9 @@ public interface AccessDao extends BasicDao {
 
     RoleEntity findRoleByUserAndGroup(String externalUserId, GroupEntity group);
 
-    UserEntity findNationalSecretaryByMemberGroup(final GroupEntity memberGroup);
+    UserEntity findNationalSecretaryByMemberGroup(GroupEntity memberGroup);
 
-    UserEntity findOwnerByGroup(final GroupEntity group);
+    UserEntity findOwnerByGroup(GroupEntity group);
 
     UserEntity findActiveUserByExternalId(String externalUserId);
 

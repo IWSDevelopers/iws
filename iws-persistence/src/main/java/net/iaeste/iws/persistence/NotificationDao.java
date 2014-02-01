@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.persistence;
 
-import net.iaeste.iws.api.enums.NotificationMessageStatus;
-import net.iaeste.iws.api.enums.NotificationDeliveryMode;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
 import net.iaeste.iws.persistence.entities.notifications.NotificationJobEntity;
@@ -29,7 +27,7 @@ import java.util.List;
 /**
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public interface NotificationDao extends BasicDao {
 
@@ -64,7 +62,7 @@ public interface NotificationDao extends BasicDao {
      * @param id      The consumer id
      * @return        NotificationConsumerEntity
      */
-    NotificationConsumerEntity findNotificationConsumerById(final Long id);
+    NotificationConsumerEntity findNotificationConsumerById(Long id);
 
     /**
      * Finds NotificationJobTaskEntity by ConsumerId
@@ -73,7 +71,7 @@ public interface NotificationDao extends BasicDao {
      * @param attemptsLimit Number of attempts when the processing failed, if the value is larger than limit, ignor the task
      * @return            NotificationJobTaskEntity
      */
-    List<NotificationJobTasksView> findUnprocessedNotificationJobTaskByConsumerId(final Long consumerId, final Integer attemptsLimit);
+    List<NotificationJobTasksView> findUnprocessedNotificationJobTaskByConsumerId(Long consumerId, Integer attemptsLimit);
 
     /**
      * Updates NotificationJobTask entity
@@ -82,5 +80,5 @@ public interface NotificationDao extends BasicDao {
      * @param processed  flag processed/unprocessed
      * @param attempts   number of processing attempts
      */
-    void updateNotificationJobTask(final Long id, boolean processed, final Integer attempts);
+    void updateNotificationJobTask(Long id, boolean processed, Integer attempts);
 }

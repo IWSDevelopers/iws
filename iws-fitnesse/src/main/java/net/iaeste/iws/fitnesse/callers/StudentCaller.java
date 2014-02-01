@@ -31,7 +31,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class StudentCaller implements Students {
 

@@ -27,7 +27,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  *
  * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class FetchOffers extends AbstractFixture<FetchOffersResponse> {
 

@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Repository("iw3Dao")
 @Transactional(value = "transactionManagerIW3", readOnly = true)

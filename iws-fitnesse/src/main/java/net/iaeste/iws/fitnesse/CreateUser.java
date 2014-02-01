@@ -25,7 +25,7 @@ import net.iaeste.iws.common.notification.NotificationField;
 /**
  * @author  Martin Eisfeld / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public final class CreateUser extends AbstractFixture<Fallible> {
 

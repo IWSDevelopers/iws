@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Documented
 @Target({TYPE, FIELD})

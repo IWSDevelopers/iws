@@ -19,7 +19,6 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
-import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -41,7 +40,7 @@ import java.util.Map;
 /**
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 @Singleton
 public class ScheduleJobsBean {

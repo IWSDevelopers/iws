@@ -27,7 +27,7 @@ import java.util.Properties;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class IwsSystemSetting {
     private static final String IWS_SETTING = "iws-setting";

@@ -51,7 +51,7 @@ import java.util.zip.Checksum;
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class CommonService<T extends BasicDao> {
 

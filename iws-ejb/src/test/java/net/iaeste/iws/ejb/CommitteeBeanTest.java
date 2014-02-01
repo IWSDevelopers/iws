@@ -34,7 +34,7 @@ import static org.mockito.Mockito.mock;
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class CommitteeBeanTest {
 

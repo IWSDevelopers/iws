@@ -29,7 +29,6 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
@@ -46,7 +45,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +55,7 @@ import java.util.Set;
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  * @noinspection ObjectAllocationInLoop
  */
 public class NotificationSystemAdministration implements Observer {
@@ -78,6 +76,7 @@ public class NotificationSystemAdministration implements Observer {
     public NotificationSystemAdministration() {
     }
 
+    @Override
     public void init(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings) {
         this.accessDao = new AccessJpaDao(iwsEntityManager);
         this.mailingListDao = new MailingListJpaDao(mailingEntityManager);
@@ -175,7 +174,7 @@ public class NotificationSystemAdministration implements Observer {
         try {
             final GroupType groupType = GroupType.valueOf(groupTypeName);
 
-            if (GroupType.NATIONAL.equals(groupType)) {
+            if (GroupType.NATIONAL == groupType) {
                 addToNcsList(username);
             }
         } catch (IllegalArgumentException e) {
@@ -260,7 +259,7 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private void updateUsernameInMailingAlias(final String oldAddress, final String newAddress) {
-        if (newAddress != null && newAddress.length() > 0) {
+        if (newAddress != null && !newAddress.isEmpty()) {
             mailingListDao.updateUsernameInMailingAlias(oldAddress, newAddress);
         }
     }
@@ -351,7 +350,7 @@ public class NotificationSystemAdministration implements Observer {
         try {
             final GroupType groupType = GroupType.valueOf(type);
 
-            if (GroupType.NATIONAL.equals(groupType)) {
+            if (GroupType.NATIONAL == groupType) {
                 if (isRoleForNcsList(role) && UserStatus.ACTIVE.name().equals(userStatus)) {
                     addToNcsList(emailAddress);
                 } else {
@@ -405,7 +404,7 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private void updateUserSubscriptionEmail(final String oldAddress, final String newAddress) {
-        if (newAddress != null && newAddress.length() > 0) {
+        if (newAddress != null && !newAddress.isEmpty()) {
             mailingListDao.updateUserSubscriptionEmail(newAddress, oldAddress);
         }
     }

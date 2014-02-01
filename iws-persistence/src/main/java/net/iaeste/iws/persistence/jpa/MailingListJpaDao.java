@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
-import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
@@ -27,7 +25,7 @@ import javax.persistence.Query;
 /**
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   1.7
+ * @since   IWS 1.0
  */
 public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
 

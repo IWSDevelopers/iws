@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.ejb.emails;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 import java.io.Serializable;
 
 /**
@@ -28,6 +30,9 @@ import java.io.Serializable;
  * @since   IWS 1.0
  */
 public class EmailMessage implements Serializable {
+
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String to = null;
     private String subject = null;

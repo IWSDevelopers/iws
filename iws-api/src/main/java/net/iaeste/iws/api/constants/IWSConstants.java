@@ -41,7 +41,7 @@ public interface IWSConstants {
      *
      * {@code private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;}
      */
-    long SERIAL_VERSION_UID = 201402010010000L; // YYYYMMDDvvvnnnn
+    long SERIAL_VERSION_UID = 201402020010000L; // YYYYMMDDvvvnnnn
 
     /**
      * The default encoding used for all processing of strings.

@@ -27,7 +27,6 @@ import java.lang.reflect.InvocationTargetException;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection CustomClassloader
  */
 public final class NotificationConsumerClassLoader {
 

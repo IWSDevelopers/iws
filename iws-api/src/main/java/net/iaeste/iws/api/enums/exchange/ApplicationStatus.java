@@ -17,12 +17,11 @@ package net.iaeste.iws.api.enums.exchange;
 /**
  * Describes the status of a student application for an offer
  *
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   IWS 1.0
  */
 public enum ApplicationStatus {
-    // TODO the following states are just preliminary
 
     /**
      * A student applies for an offer in his local/national committee.
@@ -65,5 +64,4 @@ public enum ApplicationStatus {
      * Both countries can see the application.
      */
     CANCELLED
-
 }

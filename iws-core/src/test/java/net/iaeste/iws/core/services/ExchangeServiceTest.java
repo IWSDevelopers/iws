@@ -37,10 +37,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @author Michal Knapik / last $Author:$
+ * @author  Michal Knapik / last $Author:$
  * @version $Revision:$ / $Date:$
- * @noinspection unchecked, CastToConcreteClass
- * @since 1.7
+ * @since   IWS 1.0
  */
 @Ignore
 public class ExchangeServiceTest {

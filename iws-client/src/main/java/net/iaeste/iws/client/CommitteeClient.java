@@ -22,9 +22,9 @@ import net.iaeste.iws.api.requests.RegionalGroupRequest;
 import net.iaeste.iws.api.util.Fallible;
 
 /**
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   IWS 1.0
  */
 public final class CommitteeClient implements Committees {
 

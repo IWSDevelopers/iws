@@ -22,6 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -40,7 +41,7 @@ import javax.persistence.Table;
 })
 @Entity
 @Table(name = "permissions")
-public class PermissionEntity {
+public class PermissionEntity implements Serializable {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;

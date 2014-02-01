@@ -111,7 +111,7 @@ public class NotificationMessageGeneratorVelocity implements NotificationMessage
         }
     }
 
-    private Map<String, String> processUser(final UserEntity user, final NotificationType type) {
+    private static Map<String, String> processUser(final UserEntity user, final NotificationType type) {
         final String templateName;
         final String titleTemplateName;
         switch (type) {

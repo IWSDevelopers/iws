@@ -23,9 +23,9 @@ import net.iaeste.iws.api.enums.GroupType;
  * to generate the Group Names. It is extracted, so it can also be used for
  * other purposes besides the GroupService, such as the Migration.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   IWS 1.0
  */
 public final class GroupUtil {
 

@@ -36,9 +36,9 @@ import java.util.Date;
 /**
  * This entity is to be used for storing registerd notification consumers
  *
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   IWS 1.0
  */
 @NamedQueries({
         @NamedQuery(name = "notifications.findConsumersByActive",

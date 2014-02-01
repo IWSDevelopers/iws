@@ -14,6 +14,9 @@
  */
 package net.iaeste.iws.core.transformers;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.enums.Language;
 import org.junit.Test;
 
@@ -24,13 +27,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
 /**
- * @author Pavel Fiala / last $Author:$
+ * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   IWS 1.0
  */
 public class CollectionTransformerTest {
 

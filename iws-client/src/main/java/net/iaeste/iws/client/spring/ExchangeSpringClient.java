@@ -57,7 +57,6 @@ import javax.persistence.PersistenceContext;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection OverlyCoupledClass
  */
 @Transactional
 @Repository("exchangeSpringClient")

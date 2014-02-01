@@ -23,7 +23,6 @@ import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observable;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.ejb.emails.EmailMessage;
-import net.iaeste.iws.ejb.ffmq.MessageServer;
 import net.iaeste.iws.ejb.notifications.NotificationMessageGenerator;
 import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
 import net.iaeste.iws.persistence.AccessDao;
@@ -33,7 +32,6 @@ import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import net.iaeste.iws.persistence.views.NotificationJobTasksView;
-import net.timewalker.ffmq3.FFMQConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +52,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -127,42 +124,42 @@ public class NotificationEmailSender implements Observer {
         }
     }
 
-    private static Hashtable<String, String> getFfmqEnvironment() {
+//    private static Hashtable<String, String> getFfmqEnvironment() {
+////        try {
+//            final Hashtable<String, String> env = new Hashtable<>();
+//            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
+//            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
+//            return env;
+//    }
+
+//    private void initializeFfmqQueue() {
 //        try {
-            final Hashtable<String, String> env = new Hashtable<>();
-            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
-            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
-            return env;
-    }
-
-    private void initializeFfmqQueue() {
-        try {
-            final Hashtable<String, String> env = new Hashtable<>();
-            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
-            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
-            //connection using 'vm://' protocol should have better performance, if not working, use tcp connection instead
-//            env.put(Context.PROVIDER_URL, "tcp://" + MessageServer.listenAddr + ":" + MessageServer.listenPort);
-            final Context context = new InitialContext(env);
-
-            queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
-            // end FFMQ specific
-
-            queueConnection = queueConnectionFactory.createQueueConnection();
-            queueConnection.start();
-
-            //FFMQ specific
-            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
-            context.close();
-            // end FFMQ specific
-
-            session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-            sender = session.createSender(queue);
-            //TODO added for FFMQ, keep it for glassfish?
-            sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-        } catch (NamingException|JMSException e) {
-            throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailSender) initialization failed.", e);
-        }
-    }
+//            final Hashtable<String, String> env = new Hashtable<>();
+//            env.put(Context.INITIAL_CONTEXT_FACTORY, FFMQConstants.JNDI_CONTEXT_FACTORY);
+//            env.put(Context.PROVIDER_URL, "vm://"+ MessageServer.engineName);
+//            //connection using 'vm://' protocol should have better performance, if not working, use tcp connection instead
+////            env.put(Context.PROVIDER_URL, "tcp://" + MessageServer.listenAddr + ":" + MessageServer.listenPort);
+//            final Context context = new InitialContext(env);
+//
+//            queueConnectionFactory = (QueueConnectionFactory)context.lookup(FFMQConstants.JNDI_QUEUE_CONNECTION_FACTORY_NAME);
+//            // end FFMQ specific
+//
+//            queueConnection = queueConnectionFactory.createQueueConnection();
+//            queueConnection.start();
+//
+//            //FFMQ specific
+//            queue = (Queue)context.lookup(MessageServer.queueNameForIws);
+//            context.close();
+//            // end FFMQ specific
+//
+//            session = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+//            sender = session.createSender(queue);
+//            //TODO added for FFMQ, keep it for glassfish?
+//            sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+//        } catch (NamingException|JMSException e) {
+//            throw new IWSException(IWSErrors.ERROR, "Queue sender (NotificationEmailSender) initialization failed.", e);
+//        }
+//    }
 
     /**
      * Method for unsubscibing from queue and closing connection
@@ -284,6 +281,7 @@ public class NotificationEmailSender implements Observer {
     private List<UserEntity> getRecipients(final Map<NotificationField, String> fields, final NotificationType type) {
         final List<UserEntity> result = new ArrayList<>();
         final UserEntity user;
+
         switch (type) {
             case ACTIVATE_USER:
                 user = accessDao.findUserByUsername(fields.get(NotificationField.EMAIL));
@@ -309,11 +307,13 @@ public class NotificationEmailSender implements Observer {
             default:
                 return null;
         }
+
         return result;
     }
 
     private static String getTargetEmailAddress(final UserEntity recipient, final NotificationType type) {
         final String result;
+
         switch (type) {
             case ACTIVATE_USER:
             case NEW_GROUP_OWNER:
@@ -327,7 +327,7 @@ public class NotificationEmailSender implements Observer {
             default:
                 result = "";
         }
+
         return result;
     }
-
 }

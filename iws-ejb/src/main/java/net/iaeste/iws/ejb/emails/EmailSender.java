@@ -42,7 +42,6 @@ import java.util.Properties;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection CastToConcreteClass, AccessOfSystemProperties, MethodMayBeStatic
  */
 @MessageDriven(
         mappedName = "queue/iwsEmailQueue",
@@ -119,7 +118,7 @@ public class EmailSender implements MessageListener {
         return Session.getDefaultInstance(properties);
     }
 
-    private InternetAddress prepareAddress(final String address) {
+    private static InternetAddress prepareAddress(final String address) {
         try {
             return new InternetAddress(address);
         } catch (AddressException e) {

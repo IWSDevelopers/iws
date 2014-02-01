@@ -33,8 +33,7 @@ import javax.persistence.Table;
                 "where o.groupId = :gid" +
                 "  and o.exchangeYear = :year" +
                 "  and (o.offer.nominationDeadline >= :date " +
-                "       or o.offerGroup.status = 'CLOSED'" +
-                ")"))
+                "       or o.offerGroup.status = 'CLOSED')"))
 @Table(name = "shared_offer_view")
 public class SharedOfferView extends AbstractView<SharedOfferView> {
 

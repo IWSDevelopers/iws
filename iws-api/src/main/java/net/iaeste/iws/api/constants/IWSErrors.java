@@ -17,9 +17,9 @@ package net.iaeste.iws.api.constants;
 /**
  * Defined IWS Errors.
  *
- * @author Kim Jensen / last $Author:$
+ * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   IWS 1.0
  */
 public interface IWSErrors {
 

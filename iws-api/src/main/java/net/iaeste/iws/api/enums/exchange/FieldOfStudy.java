@@ -37,9 +37,9 @@ import java.util.List;
  * The initial listing is generated from the SID provided Excel Sheet, see
  * Trac ticket #416.
  *
- * @author Matej Kosco / last $Author:$
+ * @author  Matej Kosco / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since 1.7
+ * @since   IWS 1.0
  */
 public enum FieldOfStudy {
 

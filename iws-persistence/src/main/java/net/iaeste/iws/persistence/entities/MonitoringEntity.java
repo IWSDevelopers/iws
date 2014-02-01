@@ -40,7 +40,6 @@ import java.util.Date;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection UnusedDeclaration, AssignmentToCollectionOrArrayFieldFromParameter, AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
         @NamedQuery(

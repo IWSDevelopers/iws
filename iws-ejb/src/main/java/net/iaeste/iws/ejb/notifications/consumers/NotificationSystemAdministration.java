@@ -56,7 +56,6 @@ import java.util.Set;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection ObjectAllocationInLoop
  */
 public class NotificationSystemAdministration implements Observer {
 
@@ -97,7 +96,12 @@ public class NotificationSystemAdministration implements Observer {
         if (initialized) {
             try {
                 processMessages();
-            } catch (Exception e) {
+            //} catch (IWSException e) {
+                // The comment below indicate that IWS Exceptions should be
+                // left, but it was originally referring to the Exception,
+                // which would also catch IWS Exceptions.
+            //    throw e;
+            } catch (RuntimeException e) {
                 //catching all exceptions other than IWSException to prevent
                 //stopping notification processing and leaving error message in log
                 log.error("System error occured", e);
@@ -161,7 +165,7 @@ public class NotificationSystemAdministration implements Observer {
                 status = NotificationProcessTaskStatus.OK;
                 break;
             case NEW_GROUP_OWNER:
-                processNewGroupOwner(fields.get(NotificationField.GROUP_EXTERNAL_ID), fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.EMAIL));
+                processNewGroupOwner(fields.get(NotificationField.GROUP_TYPE), fields.get(NotificationField.EMAIL));
             default:
                 // For all other cases
                 status = NotificationProcessTaskStatus.NOT_FOR_ME;
@@ -170,11 +174,11 @@ public class NotificationSystemAdministration implements Observer {
         return status;
     }
 
-    private void processNewGroupOwner(final String groupExternalId, final String groupTypeName, final String username) {
+    private void processNewGroupOwner(final String groupTypeName, final String username) {
         try {
             final GroupType groupType = GroupType.valueOf(groupTypeName);
 
-            if (GroupType.NATIONAL == groupType) {
+            if (groupType == GroupType.NATIONAL) {
                 addToNcsList(username);
             }
         } catch (IllegalArgumentException e) {
@@ -350,7 +354,7 @@ public class NotificationSystemAdministration implements Observer {
         try {
             final GroupType groupType = GroupType.valueOf(type);
 
-            if (GroupType.NATIONAL == groupType) {
+            if (groupType == GroupType.NATIONAL) {
                 if (isRoleForNcsList(role) && UserStatus.ACTIVE.name().equals(userStatus)) {
                     addToNcsList(emailAddress);
                 } else {
@@ -376,7 +380,7 @@ public class NotificationSystemAdministration implements Observer {
         }
     }
 
-    private boolean isRoleForNcsList(final String role) {
+    private static boolean isRoleForNcsList(final String role) {
         final Set<String> rolesForNcsList = new HashSet<>(2);
         rolesForNcsList.add("owner");
         rolesForNcsList.add("moderator");

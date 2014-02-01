@@ -51,7 +51,6 @@ import java.util.Map;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection CastToConcreteClass, ChainOfInstanceofChecks, ObjectAllocationInLoop
  */
 public final class NotificationManager implements Notifications {
 

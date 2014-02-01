@@ -302,7 +302,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             for(final OfferGroupEntity offerGroup : allOfferGroups) {
                 if (groups.contains(offerGroup.getGroup())) {
-                    if (OfferState.CLOSED == offerGroup.getStatus()) {
+                    if (offerGroup.getStatus() == OfferState.CLOSED) {
                         resharing.add(offerGroup.getGroup());
                         reshareGroups.add(offerGroup);
                     } else {
@@ -310,7 +310,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                         keepOfferGroups.add(offerGroup);
                     }
                 } else {
-                    if (OfferState.CLOSED != offerGroup.getStatus()) {
+                    if (offerGroup.getStatus() != OfferState.CLOSED) {
                         unshareOfferGroups.add(offerGroup);
                     }
                 }

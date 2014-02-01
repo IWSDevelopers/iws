@@ -287,6 +287,7 @@ public final class ExchangeTransformer {
 
             result.setApplicationId(entity.getExternalId());
             result.setOfferId(entity.getOfferGroup().getOffer().getExternalId());
+            result.setOfferState(entity.getOfferGroup().getOffer().getStatus());
             result.setStudent(transform(entity.getStudent()));
             result.setStatus(entity.getStatus());
             result.setHomeAddress(CommonTransformer.transform(entity.getHomeAddress()));

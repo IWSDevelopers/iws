@@ -156,6 +156,7 @@ public final class StudentApplication extends AbstractVerification {
         if (studentApplication != null) {
             applicationId = studentApplication.applicationId;
             offerId = studentApplication.offerId;
+            offerState = studentApplication.offerState;
             student = new Student(studentApplication.student);
             status = studentApplication.status;
             homeAddress = new Address(studentApplication.homeAddress);
@@ -554,8 +555,6 @@ public final class StudentApplication extends AbstractVerification {
 
         isNotNull(validation, "offerId", offerId);
         isNotNull(validation, "student", student);
-        // Made optional, please see Trac ticket #512
-        //isNotNull(validation, "homeAddress", homeAddress);
 
         return validation;
     }
@@ -568,154 +567,125 @@ public final class StudentApplication extends AbstractVerification {
         if (this == obj) {
             return true;
         }
-
         if (!(obj instanceof StudentApplication)) {
             return false;
         }
 
-        final StudentApplication studentApplication = (StudentApplication) obj;
+        final StudentApplication that = (StudentApplication) obj;
 
-        if ((applicationId != null) ? !applicationId.equals(studentApplication.applicationId) : (studentApplication.applicationId != null)) {
+        if (acceptance != null ? !acceptance.equals(that.acceptance) : that.acceptance != null) {
+            return false;
+        }
+        if (addressDuringTerms != null ? !addressDuringTerms.equals(that.addressDuringTerms) : that.addressDuringTerms != null) {
+            return false;
+        }
+        if (applicationId != null ? !applicationId.equals(that.applicationId) : that.applicationId != null) {
+            return false;
+        }
+        if (attachments != null ? !attachments.equals(that.attachments) : that.attachments != null) {
+            return false;
+        }
+        if (available != null ? !available.equals(that.available) : that.available != null) {
+            return false;
+        }
+        if (completedYearsOfStudy != null ? !completedYearsOfStudy.equals(that.completedYearsOfStudy) : that.completedYearsOfStudy != null) {
+            return false;
+        }
+        if (created != null ? !created.equals(that.created) : that.created != null) {
+            return false;
+        }
+        if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(that.email) : that.email != null) {
+            return false;
+        }
+        if (fieldOfStudies != null ? !fieldOfStudies.equals(that.fieldOfStudies) : that.fieldOfStudies != null) {
+            return false;
+        }
+        if (gender != that.gender) {
+            return false;
+        }
+        if (homeAddress != null ? !homeAddress.equals(that.homeAddress) : that.homeAddress != null) {
+            return false;
+        }
+        if (language1 != that.language1) {
+            return false;
+        }
+        if (language1Level != that.language1Level) {
+            return false;
+        }
+        if (language2 != that.language2) {
+            return false;
+        }
+        if (language2Level != that.language2Level) {
+            return false;
+        }
+        if (language3 != that.language3) {
+            return false;
+        }
+        if (language3Level != that.language3Level) {
+            return false;
+        }
+        if (lodgingByIaeste != null ? !lodgingByIaeste.equals(that.lodgingByIaeste) : that.lodgingByIaeste != null) {
+            return false;
+        }
+        if (modified != null ? !modified.equals(that.modified) : that.modified != null) {
+            return false;
+        }
+        if (nationality != null ? !nationality.equals(that.nationality) : that.nationality != null) {
+            return false;
+        }
+        if (nominatedAt != null ? !nominatedAt.equals(that.nominatedAt) : that.nominatedAt != null) {
+            return false;
+        }
+        if (offerId != null ? !offerId.equals(that.offerId) : that.offerId != null) {
+            return false;
+        }
+        if (offerState != that.offerState) {
+            return false;
+        }
+        if (passportNumber != null ? !passportNumber.equals(that.passportNumber) : that.passportNumber != null) {
+            return false;
+        }
+        if (passportPlaceOfIssue != null ? !passportPlaceOfIssue.equals(that.passportPlaceOfIssue) : that.passportPlaceOfIssue != null) {
+            return false;
+        }
+        if (passportValidUntil != null ? !passportValidUntil.equals(that.passportValidUntil) : that.passportValidUntil != null) {
+            return false;
+        }
+        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) {
+            return false;
+        }
+        if (placeOfBirth != null ? !placeOfBirth.equals(that.placeOfBirth) : that.placeOfBirth != null) {
+            return false;
+        }
+        if (rejectByEmployerReason != null ? !rejectByEmployerReason.equals(that.rejectByEmployerReason) : that.rejectByEmployerReason != null) {
+            return false;
+        }
+        if (rejectDescription != null ? !rejectDescription.equals(that.rejectDescription) : that.rejectDescription != null) {
+            return false;
+        }
+        if (rejectInternalComment != null ? !rejectInternalComment.equals(that.rejectInternalComment) : that.rejectInternalComment != null) {
+            return false;
+        }
+        if (specializations != null ? !specializations.equals(that.specializations) : that.specializations != null) {
+            return false;
+        }
+        if (status != that.status) {
+            return false;
+        }
+        if (student != null ? !student.equals(that.student) : that.student != null) {
+            return false;
+        }
+        if (totalYearsOfStudy != null ? !totalYearsOfStudy.equals(that.totalYearsOfStudy) : that.totalYearsOfStudy != null) {
+            return false;
+        }
+        if (travelInformation != null ? !travelInformation.equals(that.travelInformation) : that.travelInformation != null) {
             return false;
         }
 
-        if ((offerId != null) ? !offerId.equals(studentApplication.offerId) : (studentApplication.offerId != null)) {
-            return false;
-        }
-
-        if ((student != null) ? !student.equals(studentApplication.student) : (studentApplication.student != null)) {
-            return false;
-        }
-
-        if ((status != null) ? (status != studentApplication.status) : (studentApplication.status != null)) {
-            return false;
-        }
-
-        if ((homeAddress != null) ? !homeAddress.equals(studentApplication.homeAddress) : (studentApplication.homeAddress != null)) {
-            return false;
-        }
-
-        if ((email != null) ? !email.equals(studentApplication.email) : (studentApplication.email != null)) {
-            return false;
-        }
-
-        if ((phoneNumber != null) ? !phoneNumber.equals(studentApplication.phoneNumber) : (studentApplication.phoneNumber != null)) {
-            return false;
-        }
-
-        if ((addressDuringTerms != null) ? !addressDuringTerms.equals(studentApplication.addressDuringTerms) : (studentApplication.addressDuringTerms != null)) {
-            return false;
-        }
-
-        if ((dateOfBirth != null) ? !dateOfBirth.equals(studentApplication.dateOfBirth) : (studentApplication.dateOfBirth != null)) {
-            return false;
-        }
-
-        if ((university != null) ? !university.equals(studentApplication.university) : (studentApplication.university != null)) {
-            return false;
-        }
-
-        if ((placeOfBirth != null) ? !placeOfBirth.equals(studentApplication.placeOfBirth) : (studentApplication.placeOfBirth != null)) {
-            return false;
-        }
-
-        if ((nationality != null) ? !nationality.equals(studentApplication.nationality) : (studentApplication.nationality != null)) {
-            return false;
-        }
-
-        if ((gender != null) ? (gender != studentApplication.gender) : (studentApplication.gender != null)) {
-            return false;
-        }
-
-        if ((completedYearsOfStudy != null) ? !completedYearsOfStudy.equals(studentApplication.completedYearsOfStudy) : (studentApplication.completedYearsOfStudy != null)) {
-            return false;
-        }
-
-        if ((totalYearsOfStudy != null) ? !totalYearsOfStudy.equals(studentApplication.totalYearsOfStudy) : (studentApplication.totalYearsOfStudy != null)) {
-            return false;
-        }
-
-        if (lodgingByIaeste != studentApplication.lodgingByIaeste) {
-            return false;
-        }
-
-        if ((language1 != null) ? (language1 != studentApplication.language1) : (studentApplication.language1 != null)) {
-            return false;
-        }
-
-        if ((language1Level != null) ? (language1Level != studentApplication.language1Level) : (studentApplication.language1Level != null)) {
-            return false;
-        }
-
-        if ((language2 != null) ? (language2 != studentApplication.language2) : (studentApplication.language2 != null)) {
-            return false;
-        }
-
-        if ((language2Level != null) ? (language2Level != studentApplication.language2Level) : (studentApplication.language2Level != null)) {
-            return false;
-        }
-
-        if ((language3 != null) ? (language3 != studentApplication.language3) : (studentApplication.language3 != null)) {
-            return false;
-        }
-
-        if ((language3Level != null) ? (language3Level != studentApplication.language3Level) : (studentApplication.language3Level != null)) {
-            return false;
-        }
-
-        if ((available != null) ? !available.equals(studentApplication.available) : (studentApplication.available != null)) {
-            return false;
-        }
-
-        if ((fieldOfStudies != null) ? !fieldOfStudies.equals(studentApplication.fieldOfStudies) : (studentApplication.fieldOfStudies != null)) {
-            return false;
-        }
-
-        if ((specializations != null) ? !specializations.equals(studentApplication.specializations) : (studentApplication.specializations != null)) {
-            return false;
-        }
-
-        if ((passportNumber != null) ? !passportNumber.equals(studentApplication.passportNumber) : (studentApplication.passportNumber != null)) {
-            return false;
-        }
-
-        if ((passportPlaceOfIssue != null) ? !passportPlaceOfIssue.equals(studentApplication.passportPlaceOfIssue) : (studentApplication.passportPlaceOfIssue != null)) {
-            return false;
-        }
-
-        if ((passportValidUntil != null) ? !passportValidUntil.equals(studentApplication.passportValidUntil) : (studentApplication.passportValidUntil != null)) {
-            return false;
-        }
-
-        if ((rejectByEmployerReason != null) ? !rejectByEmployerReason.equals(studentApplication.rejectByEmployerReason) : (studentApplication.rejectByEmployerReason != null)) {
-            return false;
-        }
-
-        if ((rejectDescription != null) ? !rejectDescription.equals(studentApplication.rejectDescription) : (studentApplication.rejectDescription != null)) {
-            return false;
-        }
-
-        if ((rejectInternalComment != null) ? !rejectInternalComment.equals(studentApplication.rejectInternalComment) : (studentApplication.rejectInternalComment != null)) {
-            return false;
-        }
-
-        if ((acceptance != null) ? !acceptance.equals(studentApplication.acceptance) : (studentApplication.acceptance != null)) {
-            return false;
-        }
-
-        if ((travelInformation != null) ? !travelInformation.equals(studentApplication.travelInformation) : (studentApplication.travelInformation != null)) {
-            return false;
-        }
-
-        if ((modified != null) ? !modified.equals(studentApplication.modified) : (studentApplication.modified != null)) {
-            return false;
-        }
-
-        if ((created != null) ? !created.equals(studentApplication.created) : (studentApplication.created != null)) {
-            return false;
-        }
-
-        return !((nominatedAt != null) ? !nominatedAt.equals(studentApplication.nominatedAt) : (studentApplication.nominatedAt != null));
+        return !(university != null ? !university.equals(that.university) : that.university != null);
     }
 
     /**
@@ -723,43 +693,47 @@ public final class StudentApplication extends AbstractVerification {
      */
     @Override
     public int hashCode() {
-        int hash = IWSConstants.HASHCODE_INITIAL_VALUE;
+        int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((applicationId != null) ? applicationId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((offerId != null) ? offerId.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((student != null) ? student.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((status != null) ? status.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((homeAddress != null) ? homeAddress.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((email != null) ? email.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((phoneNumber != null) ? phoneNumber.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((addressDuringTerms != null) ? addressDuringTerms.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((dateOfBirth != null) ? dateOfBirth.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((university != null) ? university.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((placeOfBirth != null) ? placeOfBirth.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((nationality != null) ? nationality.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((gender != null) ? gender.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((completedYearsOfStudy != null) ? completedYearsOfStudy.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((totalYearsOfStudy != null) ? totalYearsOfStudy.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + (lodgingByIaeste ? 1 : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language1 != null) ? language1.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language1Level != null) ? language1Level.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language2 != null) ? language2.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language2Level != null) ? language2Level.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language3 != null) ? language3.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((language3Level != null) ? language3Level.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((available != null) ? available.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((fieldOfStudies != null) ? fieldOfStudies.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((specializations != null) ? specializations.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((passportNumber != null) ? passportNumber.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((passportPlaceOfIssue != null) ? passportPlaceOfIssue.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((passportValidUntil != null) ? passportValidUntil.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((acceptance != null) ? acceptance.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((travelInformation != null) ? travelInformation.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((nominatedAt != null) ? nominatedAt.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((modified != null) ? modified.hashCode() : 0);
-        hash = IWSConstants.HASHCODE_MULTIPLIER * hash + ((created != null) ? created.hashCode() : 0);
-
-        return hash;
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (applicationId != null ? applicationId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offerId != null ? offerId.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (offerState != null ? offerState.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (student != null ? student.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (homeAddress != null ? homeAddress.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (email != null ? email.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (addressDuringTerms != null ? addressDuringTerms.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (university != null ? university.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (placeOfBirth != null ? placeOfBirth.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nationality != null ? nationality.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (gender != null ? gender.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (completedYearsOfStudy != null ? completedYearsOfStudy.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (totalYearsOfStudy != null ? totalYearsOfStudy.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lodgingByIaeste != null ? lodgingByIaeste.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language1 != null ? language1.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language1Level != null ? language1Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language2 != null ? language2.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language2Level != null ? language2Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language3 != null ? language3.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language3Level != null ? language3Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (available != null ? available.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fieldOfStudies != null ? fieldOfStudies.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (specializations != null ? specializations.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (passportNumber != null ? passportNumber.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (passportPlaceOfIssue != null ? passportPlaceOfIssue.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (passportValidUntil != null ? passportValidUntil.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (rejectByEmployerReason != null ? rejectByEmployerReason.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (rejectDescription != null ? rejectDescription.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (rejectInternalComment != null ? rejectInternalComment.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (acceptance != null ? acceptance.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (travelInformation != null ? travelInformation.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nominatedAt != null ? nominatedAt.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (attachments != null ? attachments.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
+        return result;
     }
 
     /**
@@ -770,37 +744,42 @@ public final class StudentApplication extends AbstractVerification {
         return "StudentApplication{" +
                 "applicationId='" + applicationId + '\'' +
                 ", offerId='" + offerId + '\'' +
-                ", student='" + student + '\'' +
-                ", status ='" + status + '\'' +
-                ", homeAddress='" + homeAddress + '\'' +
+                ", offerState=" + offerState +
+                ", student=" + student +
+                ", status=" + status +
+                ", homeAddress=" + homeAddress +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", addressDuringTerms='" + addressDuringTerms + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", addressDuringTerms=" + addressDuringTerms +
+                ", dateOfBirth=" + dateOfBirth +
                 ", university='" + university + '\'' +
                 ", placeOfBirth='" + placeOfBirth + '\'' +
-                ", nationality='" + nationality + '\'' +
-                ", gender='" + gender + '\'' +
-                ", completedYearsOfStudy='" + completedYearsOfStudy + '\'' +
-                ", totalYearsOfStudy='" + totalYearsOfStudy + '\'' +
-                ", lodgingByIaeste='" + lodgingByIaeste + '\'' +
-                ", language1='" + language1 + '\'' +
-                ", language1Level='" + language1Level + '\'' +
-                ", language2='" + language2 + '\'' +
-                ", language2Level='" + language2Level + '\'' +
-                ", language3='" + language3 + '\'' +
-                ", language3Level='" + language3Level + '\'' +
-                ", available='" + available + '\'' +
-                ", fieldOfStudies='" + fieldOfStudies + '\'' +
-                ", specializations='" + specializations + '\'' +
+                ", nationality=" + nationality +
+                ", gender=" + gender +
+                ", completedYearsOfStudy=" + completedYearsOfStudy +
+                ", totalYearsOfStudy=" + totalYearsOfStudy +
+                ", lodgingByIaeste=" + lodgingByIaeste +
+                ", language1=" + language1 +
+                ", language1Level=" + language1Level +
+                ", language2=" + language2 +
+                ", language2Level=" + language2Level +
+                ", language3=" + language3 +
+                ", language3Level=" + language3Level +
+                ", available=" + available +
+                ", fieldOfStudies=" + fieldOfStudies +
+                ", specializations=" + specializations +
                 ", passportNumber='" + passportNumber + '\'' +
                 ", passportPlaceOfIssue='" + passportPlaceOfIssue + '\'' +
                 ", passportValidUntil='" + passportValidUntil + '\'' +
-                ", acceptance='" + acceptance + '\'' +
-                ", travelInformation='" + travelInformation + '\'' +
-                ", nominatedAt='" + nominatedAt + '\'' +
-                ", modified='" + modified + '\'' +
-                ", created='" + created + '\'' +
+                ", rejectByEmployerReason='" + rejectByEmployerReason + '\'' +
+                ", rejectDescription='" + rejectDescription + '\'' +
+                ", rejectInternalComment='" + rejectInternalComment + '\'' +
+                ", acceptance=" + acceptance +
+                ", travelInformation=" + travelInformation +
+                ", nominatedAt=" + nominatedAt +
+                ", attachments=" + attachments +
+                ", modified=" + modified +
+                ", created=" + created +
                 '}';
     }
 }

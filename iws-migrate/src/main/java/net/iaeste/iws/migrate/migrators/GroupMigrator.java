@@ -150,7 +150,12 @@ public class GroupMigrator implements Migrator<IW3GroupsEntity> {
         final GroupType type = groupTypeEntity.getGrouptype();
 
         group.setOldId(entity.getGroupid());
-        group.setGroupName(convertGroupName(type, convert(entity.getGroupname()), parent));
+        if (entity.getGroupid() == 180) {
+            // We need to add a special Case for Italy, PDM
+            group.setGroupName(convert(entity.getGroupdescription()));
+        } else {
+            group.setGroupName(convertGroupName(type, convert(entity.getGroupname()), parent));
+        }
         group.setDescription(convert(entity.getGroupdescription()));
         group.setFullName(convertFullName(type, convert(entity.getGroupname()), parent));
         group.setListName(convertListName(type, convert(entity.getGroupname()), parent));

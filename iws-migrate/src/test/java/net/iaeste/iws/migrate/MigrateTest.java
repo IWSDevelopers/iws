@@ -32,7 +32,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
@@ -158,7 +157,6 @@ public class MigrateTest {
     }
 
     @Test
-    @Ignore("Ignored 2014-01-31 by Kim - Reason: There's some unresolved problems that needs fixing.")
     @Transactional("transactionManagerMail")
     public void test5ReadingWritingMail() {
         log.info("Starting migration of Mail settings.");

@@ -65,7 +65,6 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
      * {@inheritDoc}
      */
     @Override
-    @Transactional("transactionManagerMail")
     public MigrationResult migrate() {
         final MigrationResult groups = migrateGroups();
         final MigrationResult aliases = migrateAliases();
@@ -86,7 +85,8 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
     // Internal Mail Migration Methods
     // =========================================================================
 
-    private MigrationResult migrateGroups() {
+    @Transactional("transactionManagerMail")
+    public MigrationResult migrateGroups() {
         final List<GroupEntity> groups = iwsDao.findAllGroups();
         log.info("Found {} Groups to Migrate.", groups.size());
         int persisted = 0;
@@ -95,6 +95,8 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         for (final GroupEntity group : groups) {
             if (group.getStatus() != GroupStatus.ACTIVE) {
                 log.info("Skipping Mailinglist for {} (id: {}), as their status is {}", group.getGroupName(), group.getId(), group.getStatus());
+            } else if (group.getListName() == null) {
+                log.info("Skipping Mailinglist for {} (id: {}), as it is invalid.", group.getGroupName(), group.getId());
             } else {
                 switch (group.getGroupType().getGrouptype()) {
                     case ADMINISTRATION: // Doesn't need a mailinglist
@@ -125,7 +127,8 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         return new MigrationResult(persisted, skipped);
     }
 
-    private MigrationResult migrateAliases() {
+    @Transactional("transactionManagerMail")
+    public MigrationResult migrateAliases() {
         final List<UserEntity> users = iwsDao.findAllUsers();
         log.info("Found {} Users to create Aliases for.", users.size());
         int persisted = 0;
@@ -144,7 +147,8 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         return new MigrationResult(persisted, 0);
     }
 
-    private MigrationResult migrateNCs() {
+    @Transactional("transactionManagerMail")
+    public MigrationResult migrateNCs() {
         final MailingListEntity list = new MailingListEntity();
         list.setExternalId(UUID.randomUUID().toString());
         list.setListAddress("ncs");
@@ -180,8 +184,11 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         entity.setActive(group.getStatus() == GroupStatus.ACTIVE);
         entity.setModified(group.getModified());
         entity.setCreated(group.getCreated());
+        if (group.getListName() == null) {
+            log.warn("Cannot migrate Group {}.", group);
+        } else {
         mailDao.persist(entity);
-
+        }
         addUsersToMailinglist(group, entity, ownerOnly);
     }
 

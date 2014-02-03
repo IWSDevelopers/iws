@@ -15,6 +15,7 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
+import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -24,6 +25,7 @@ import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.dtos.Role;
+import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.enums.UserStatus;
@@ -311,9 +313,11 @@ public final class AccessService extends CommonService<AccessDao> {
         final List<UserPermissionView> found = dao.findPermissions(authentication, externalGroupId);
         final Map<String, Set<Permission>> permissions = new HashMap<>(16);
         final Map<String, UserGroup> userGroups = new HashMap<>(16);
+        final User user = transform(authentication.getUser());
 
         for (final UserPermissionView view : found) {
             final UserGroup userGroup = readUserGroup(view);
+            userGroup.setUser(user);
             if (!userGroups.containsKey(userGroup.getUserGroupId())) {
                 userGroups.put(userGroup.getUserGroupId(), userGroup);
                 permissions.put(userGroup.getUserGroupId(), EnumSet.noneOf(Permission.class));
@@ -473,9 +477,14 @@ public final class AccessService extends CommonService<AccessDao> {
     }
 
     private static Country readCountry(final UserPermissionView view) {
-        final Country country = new Country();
+        final Country country;
 
-        country.setCountryCode(view.getCountryCode());
+        if (view .getCountryCode() != null) {
+            country = new Country();
+            country.setCountryCode(view.getCountryCode());
+        } else {
+            country = null;
+        }
 
         return country;
     }

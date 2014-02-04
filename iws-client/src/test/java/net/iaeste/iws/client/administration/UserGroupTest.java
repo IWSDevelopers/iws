@@ -148,7 +148,7 @@ public final class UserGroupTest extends AbstractAdministration {
         assertThat(failedResponse, is(not(nullValue())));
         assertThat(failedResponse.isOk(), is(false));
         assertThat(failedResponse.getError(), is(IWSErrors.AUTHORIZATION_ERROR));
-        assertThat(failedResponse.getMessage(), is("User is not permitted to perform actions of type: CHANGE_GROUP_OWNER"));
+        assertThat(failedResponse.getMessage().contains("is not permitted to perform action 'Change Group Owner'."), is(true));
         logout(alternativeToken);
     }
 

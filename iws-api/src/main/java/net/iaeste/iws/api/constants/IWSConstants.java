@@ -171,9 +171,17 @@ public interface IWSConstants {
     Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
     /**
-     * The e-mail compliance regular expression.
+     * E-mail addresses have changed numerous times over the years. To ensure
+     * that they are valid, we need a simple regex. Unfortunately, the constant
+     * changes to what is allowed and what isn't means that any regex will
+     * eventually fail. For this reason, we've tried to keep it simple yet able
+     * to allow at least 99% of all valid addresses.rb />
+     *   See <a href="http://en.wikipedia.org/wiki/Email_address">Wikipedia</a>
+     * for more information.<br />
+     *   This regex does not support the quotation rules, which makes the rule
+     * check more complicated, nor does it support IPv6 addresses.
      */
-    String EMAIL_REGEX = "^[a-z0-9_\\-]+(\\.[_a-z0-9\\-]+)*@([_a-z0-9\\-]+\\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|eu|mobi)$";
+    String EMAIL_REGEX = "^[a-z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([_a-z0-9\\-]+\\.)*[a-z0-9]{2,}$";
     Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     /**

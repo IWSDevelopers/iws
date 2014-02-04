@@ -337,6 +337,17 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
+    public int deleteStudent(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("student.deleteByUserId");
+        query.setParameter("uid", user.getId());
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Boolean hasGroupsWithSimilarName(final GroupEntity group, final String name) {
         final Query query = entityManager.createNamedQuery("group.findGroupsWithSimilarNames");
         query.setParameter("gid", group.getId());

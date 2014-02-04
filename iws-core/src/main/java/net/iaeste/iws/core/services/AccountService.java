@@ -545,6 +545,7 @@ public final class AccountService extends CommonService<AccessDao> {
             // We have a User Account, that was never activated. This we can
             // delete completely
             deletePerson(user.getPerson());
+            dao.deleteStudent(user);
             dao.delete(user);
         }
     }

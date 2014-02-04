@@ -126,6 +126,15 @@ public interface AccessDao extends BasicDao {
     List<GroupEntity> findSubGroups(Long parentId);
 
     /**
+     * Students are not linked from the UserEntity, so when deleting a
+     * UserEntity in status new, we need to also delete the student.
+     *
+     * @param user User to delete the Student Entity for
+     * @return Number of records deleted
+     */
+    int deleteStudent(UserEntity user);
+
+    /**
      * Checks if there exists other groups with similar names (checked
      * case-insensitive), and returns true if so, otherwise false.
      *

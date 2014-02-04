@@ -351,6 +351,46 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(deprecateSessionResult.isOk(), is(true));
     }
 
+    /**
+     * This test is a verification of the bugfix for Trac bug #704, concerning
+     * deletion of Student Accounts. Although not explicitly listed, Accounts
+     * are only completely deleted, if the User in question is in status new.
+     */
+    @Test
+    public void testCreateAndDeleteStudentAccount() {
+        // Create the new User Request Object
+        final String username = "student@flipflop.net";
+        final String password = "myPassword";
+        final CreateUserRequest createUserRequest = new CreateUserRequest(username, password, "Student", "Graduate");
+        createUserRequest.setStudentAccount(true);
+
+        final Students students = new StudentClient();
+        final FetchStudentsRequest fetchStudentsRequest = new FetchStudentsRequest();
+        final FetchStudentsResponse beforeStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
+
+        // Now, perform the actual test - create the Account, and verify that
+        // the response is ok, and that a Notification was sent
+        final CreateUserResponse created = administration.createUser(token, createUserRequest);
+        assertThat(created.isOk(), is(true));
+
+        // Verify that the Students exists
+        final FetchStudentsResponse afterFetchStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
+        assertThat(afterFetchStudentsResponse.isOk(), is(true));
+        assertThat(afterFetchStudentsResponse.getStudents().size(), is(beforeStudentsResponse.getStudents().size() + 1));
+
+        // Delete the Student Account
+        final UserRequest deleteRequest = new UserRequest();
+        deleteRequest.setUser(created.getUser());
+        deleteRequest.setNewStatus(UserStatus.DELETED);
+        final Fallible deleteResult = administration.controlUserAccount(token, deleteRequest);
+        assertThat(deleteResult.isOk(), is(true));
+
+        // Verify that the Student is deleted
+        final FetchStudentsResponse deleteFetchStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
+        assertThat(deleteFetchStudentsResponse.isOk(), is(true));
+        assertThat(deleteFetchStudentsResponse.getStudents().size(), is(beforeStudentsResponse.getStudents().size()));
+    }
+
     @Test
     public void testCreateAndListStudentAccounts() {
         final Students students = new StudentClient();

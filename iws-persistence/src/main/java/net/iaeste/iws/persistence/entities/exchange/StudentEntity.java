@@ -53,7 +53,10 @@ import java.util.Date;
                 query = "select s from StudentEntity s, UserGroupEntity ug " +
                         "where ug.user.id = s.user.id" +
                         "  and ug.group.parentId = :parentId" +
-                        "  and ug.user.externalId = :eid")
+                        "  and ug.user.externalId = :eid"),
+        @NamedQuery(name = "student.deleteByUserId",
+                query = "delete StudentEntity s " +
+                        "where s.user.id = :uid")
 })
 @Entity
 @Table(name = "students")

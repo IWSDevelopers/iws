@@ -47,6 +47,7 @@ public abstract class AbstractVerification implements Verifiable {
     private static final String ERROR_ARRAY_LONGER = "The field %s may not be longer than %d bytes.";
     private static final String ERROR_TOO_SHORT = "The field %s must be at least %d characters long";
     private static final String ERROR_NOT_EXACT_LENGTH = "The field %s is not matching the required length %d.";
+    private static final String ERROR_MINIMUM_VALUE = "The field %s must be at least %d.";
     private static final String ERROR_NOT_WITHIN_LIMITS = "The field %s is not within the required limits from %s to %d.";
     private static final String ERROR_INVALID = "The field %s is invalid.";
     private static final String ERROR_INVALID_REGEX = "The field %s does not follow the required format %s.";
@@ -289,6 +290,37 @@ public abstract class AbstractVerification implements Verifiable {
     }
 
     /**
+     * Throws an {@code IllegalArgumentException} if the given value is less
+     * than the value.
+     *
+     * @param field   Name of the field
+     * @param value   The value of the field
+     * @param minimum The minimally allowed value for the field
+     * @throws IllegalArgumentException if the value is too small
+     */
+    protected <T extends Number> void ensureMinimum(final String field, final T value, final T minimum) throws IllegalArgumentException {
+        if (value != null) {
+            if (value.doubleValue() < minimum.doubleValue()) {
+                throw new IllegalArgumentException(format(ERROR_MINIMUM_VALUE, field, minimum));
+            }
+        }
+    }
+
+    /**
+     * Throws an {@code IllegalArgumentException} if the given value is neither
+     * null or less than the value.
+     *
+     * @param field   Name of the field
+     * @param value   The value of the field
+     * @param minimum The minimally allowed value for the field
+     * @throws IllegalArgumentException if the value is null or too small
+     */
+    protected <T extends Number> void ensureNotNullAndMinimum(final String field, final T value, final T minimum) throws IllegalArgumentException {
+        ensureNotNull(field, value);
+        ensureMinimum(field, value, minimum);
+    }
+
+    /**
      * Throws an {@code IllegalArgumentException} if the given value is not
      * within the given limits.
      *
@@ -318,12 +350,7 @@ public abstract class AbstractVerification implements Verifiable {
      */
     protected <T extends Number> void ensureNotNullAndWithinLimits(final String field, final T value, final T minimum, final T maximum) throws IllegalArgumentException {
         ensureNotNull(field, value);
-
-        if (value != null) {
-            if ((value.doubleValue() < minimum.doubleValue()) || (value.doubleValue() > maximum.doubleValue())) {
-                throw new IllegalArgumentException(format(ERROR_NOT_WITHIN_LIMITS, field, minimum, maximum));
-            }
-        }
+        ensureWithinLimits(field, value, minimum, maximum);
     }
 
     /**

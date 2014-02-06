@@ -343,6 +343,7 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setMinimumWeeks(final Integer minimumWeeks) {
+        ensureNotNullAndMinimum("minimumWeeks", minimumWeeks, IWSExchangeConstants.MIN_OFFER_MINIMUM_WEEKS);
         this.minimumWeeks = minimumWeeks;
     }
 
@@ -351,6 +352,7 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setMaximumWeeks(final Integer maximumWeeks) {
+        ensureNotNullAndMinimum("maximumWeeks", maximumWeeks, IWSExchangeConstants.MIN_OFFER_MINIMUM_WEEKS);
         this.maximumWeeks = maximumWeeks;
     }
 

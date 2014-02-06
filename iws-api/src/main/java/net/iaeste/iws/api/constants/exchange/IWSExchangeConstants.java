@@ -80,7 +80,7 @@ public interface IWSExchangeConstants {
      * Defines the minimum number of weeks required
      * for an {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
-    int MIN_OFFER_MINIMUM_WEEKS = 1;
+    int MIN_OFFER_MINIMUM_WEEKS = 4;
 
     /**
      * Defines the maximum number of additional documents

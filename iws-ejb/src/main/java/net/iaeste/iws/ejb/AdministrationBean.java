@@ -18,6 +18,7 @@ import net.iaeste.iws.api.Administration;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AccountNameRequest;
+import net.iaeste.iws.api.requests.ContactsRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -28,12 +29,14 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.NCsResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
@@ -395,6 +398,44 @@ public class AdministrationBean extends AbstractBean implements Administration {
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    public NCsResponse fetchNCsList(final AuthenticationToken token) {
+        NCsResponse response;
+
+        try {
+            response = controller.fetchNCsList(token);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new NCsResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    public ContactsResponse fetchContacts(final AuthenticationToken token, final ContactsRequest request) {
+        ContactsResponse response;
+
+        try {
+            response = controller.fetchContacts(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new ContactsResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

@@ -112,6 +112,10 @@ public final class ServiceFactory {
         return new StudentService(settings, accessDao, exchangeDao, studentDao, viewsDao);
     }
 
+    public ContactsService prepareContacsService() {
+        return new ContactsService();
+    }
+
     public AccessDao getAccessDao() {
         return accessDao;
     }

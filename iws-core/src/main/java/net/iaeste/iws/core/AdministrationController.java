@@ -21,6 +21,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.AccountNameRequest;
+import net.iaeste.iws.api.requests.ContactsRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -31,15 +32,18 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.NCsResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccountService;
+import net.iaeste.iws.core.services.ContactsService;
 import net.iaeste.iws.core.services.CountryService;
 import net.iaeste.iws.core.services.GroupService;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -447,11 +451,62 @@ public final class AdministrationController extends CommonController implements 
             service.processUserGroupAssignment(authentication, request);
             response = new FallibleResponse();
         } catch (IWSException e) {
-            response = new FetchGroupResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished processUserGroupAssignment()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NCsResponse fetchNCsList(final AuthenticationToken token) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchNCsList()"));
+        }
+        NCsResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_NCS_LIST);
+
+            final ContactsService service = factory.prepareContacsService();
+            response = service.fetchNCsList(authentication);
+        } catch (IWSException e) {
+            response = new NCsResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchNCsList()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ContactsResponse fetchContacts(final AuthenticationToken token, final ContactsRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting fetchContacts()"));
+        }
+        ContactsResponse response;
+
+        try {
+            verify(request);
+            final Authentication authentication = verifyPrivateAccess(token);
+
+            final ContactsService service = factory.prepareContacsService();
+            response = service.fetchContacts(authentication, request);
+        } catch (IWSException e) {
+            response = new ContactsResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished fetchContacts()"));
         }
         return response;
     }

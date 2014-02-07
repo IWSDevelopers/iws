@@ -16,6 +16,7 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.AccountNameRequest;
+import net.iaeste.iws.api.requests.ContactsRequest;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
@@ -26,11 +27,13 @@ import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
+import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
+import net.iaeste.iws.api.responses.NCsResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 
@@ -258,4 +261,44 @@ public interface Administration {
      * @return Standard Error Object
      */
     Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
+
+    /**
+     * Fetches the list of all National Committee Members, which is used to
+     * generate the emergency contact list. This list is only available to
+     * members of the National Committee, and will also display certain private
+     * information.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @return List of all National Committees with Error information
+     */
+    NCsResponse fetchNCsList(AuthenticationToken token);
+
+    /**
+     * This Request is similar to the Contacts module from the old IntraWeb. The
+     * request will fetch either of three things:<br />
+     * <ul>
+     *   <li>
+     *     <b>View User Details/b><br />
+     *     Reads out the User details, unless the information if they are
+     *     public plus all the Groups the user is a member of.
+     *   </li>
+     *   <li>
+     *     <b>View Group Details</b><br />
+     *     Reads out the Group details, including a list of all the users who
+     *     are currently associated with it.
+     *   </li>
+     *   <li>
+     *     <b>Groups</b><br />
+     *     If no specific information is provided, then a list of all Member and
+     *     International Groups is returned.
+     *   </li>
+     * </ul>
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request for one of the requested types of fetching
+     * @return Matching response, with error information
+     */
+    ContactsResponse fetchContacts(AuthenticationToken token, ContactsRequest request);
 }

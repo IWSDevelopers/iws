@@ -42,6 +42,7 @@ insert into permissions (id, permission) values (210, 'PROCESS_GROUP');
 insert into permissions (id, permission) values (211, 'CHANGE_GROUP_OWNER');
 insert into permissions (id, permission) values (212, 'DELETE_GROUP');
 insert into permissions (id, permission) values (213, 'PROCESS_USER_GROUP_ASSIGNMENT');
+insert into permissions (id, permission) values (220, 'FETCH_NCS_LIST');
 -- Storage 3xx
 insert into permissions (id, permission) values (300, 'PROCESS_FILE');
 insert into permissions (id, permission) values (301, 'FETCH_FILE');
@@ -193,6 +194,14 @@ insert into permission_to_grouptype (grouptype_id, permission_id) values (6, 213
 insert into permission_to_grouptype (grouptype_id, permission_id) values (7, 213);
 insert into permission_to_role (role_id, permission_id) values (1, 213);
 insert into permission_to_role (role_id, permission_id) values (2, 213);
+
+-- Permission: 220 - Fetch NC's List
+--   -> GroupTypes: 4 National
+--   -> Roles:      1 Owner
+--                  2 Moderator
+insert into permission_to_grouptype (grouptype_id, permission_id) values (4, 220);
+insert into permission_to_role (role_id, permission_id) values (1, 220);
+insert into permission_to_role (role_id, permission_id) values (2, 220);
 
 -- Permission: 300 - Process File
 --   -> GroupTypes: All

@@ -70,6 +70,13 @@ public enum Permission {
     DELETE_GROUP("Selete Group", Administration.class, "deleteSubGroup"),
     PROCESS_USER_GROUP_ASSIGNMENT("Process UserGroup Assignment", Administration.class, "processUserGroupAssignment", "fetchRoles"),
 
+    /**
+     * For retrieving a list of all National Committee Owners & Moderators, who
+     * are also on the NC's mailinglist. This is needed to create the Emergency
+     * List.
+     */
+    FETCH_NCS_LIST("Fetch NC's List", Administration.class, "fetchNCsList"),
+
     // =========================================================================
     // Committee related Permissions
     // =========================================================================

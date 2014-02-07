@@ -2,7 +2,7 @@
  * =============================================================================
  * Copyright 1998-2014, IAESTE Internet Development Team. All rights reserved.
  * ----------------------------------------------------------------------------
- * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.requests.FetchRoleRequest
+ * Project: IntraWeb Services (iws-api) - net.iaeste.iws.api.responses.NCsResponse
  * -----------------------------------------------------------------------------
  * This software is provided by the members of the IAESTE Internet Development
  * Team (IDT) to IAESTE A.s.b.l. It is for internal use only and may not be
@@ -12,25 +12,26 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.api.requests;
+package net.iaeste.iws.api.responses;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.api.constants.IWSError;
+import net.iaeste.iws.api.dtos.UserGroup;
+import net.iaeste.iws.api.util.AbstractFallible;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class FetchRoleRequest extends AbstractVerification {
+public final class NCsResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private String groupId = null;
+    private List<UserGroup> administrators = null;
 
     // =========================================================================
     // Object Constructors
@@ -40,45 +41,73 @@ public final class FetchRoleRequest extends AbstractVerification {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public FetchRoleRequest() {
+    public NCsResponse() {
     }
 
     /**
-     * Default Constructor.
+     * Error Constructor.
      *
-     * @param groupId Id of the Group Object to fetch Roles for
+     * @param error   IWS Error Object
+     * @param message Error Message
      */
-    public FetchRoleRequest(final String groupId) {
-        this.groupId = groupId;
+    public NCsResponse(final IWSError error, final String message) {
+        super(error, message);
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setGroupId(final String groupId) {
-        ensureNotNullAndValidId("groupId", groupId);
-
-        this.groupId = groupId;
+    public void setAdministrators(final List<UserGroup> administrators) {
+        this.administrators = administrators;
     }
 
-    public String getGroupId() {
-        return groupId;
+    public List<UserGroup> getAdministrators() {
+        return administrators;
     }
 
     // =========================================================================
-    // Standard Request Methods
+    // Standard Response Methods
     // =========================================================================
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> validate() {
-        final Map<String, String> validation = new HashMap<>(1);
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof NCsResponse)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
 
-        isNotNull(validation, "groupId", groupId);
+        final NCsResponse that = (NCsResponse) obj;
+        return !(administrators != null ? !administrators.equals(that.administrators) : that.administrators != null);
+    }
 
-        return validation;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (administrators != null ? administrators.hashCode() : 0);
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "NCsResponse{" +
+                "administrators=" + administrators +
+                '}';
     }
 }

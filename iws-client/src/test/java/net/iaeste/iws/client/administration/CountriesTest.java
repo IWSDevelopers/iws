@@ -29,7 +29,6 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection InstanceMethodNamingConvention
  */
 public final class CountriesTest extends AbstractAdministration {
 

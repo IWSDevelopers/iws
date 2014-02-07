@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 import java.util.List;
 
@@ -47,4 +48,12 @@ public interface AdminDao extends BasicDao {
      * @return List of Countries
      */
     List<CountryEntity> findAllCountries();
+
+    /**
+     * Retrieves the Emergency Phone list, which is the list of all Owners and
+     * Moderators from the National Committees.
+     *
+     * @return List of all Owners and Moderators of National Groups
+     */
+    List<UserGroupEntity> findEmergencyList();
 }

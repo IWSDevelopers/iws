@@ -31,12 +31,12 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
+import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.NCsResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
@@ -408,15 +408,15 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
-    public NCsResponse fetchNCsList(final AuthenticationToken token) {
-        NCsResponse response;
+    public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
+        EmergencyListResponse response;
 
         try {
-            response = controller.fetchNCsList(token);
+            response = controller.fetchEmergencyList(token);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
-            response = new NCsResponse(IWSErrors.ERROR, e.getMessage());
+            response = new EmergencyListResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

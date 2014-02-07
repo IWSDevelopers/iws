@@ -75,7 +75,7 @@ public enum Permission {
      * are also on the NC's mailinglist. This is needed to create the Emergency
      * List.
      */
-    FETCH_NCS_LIST("Fetch NC's List", Administration.class, "fetchNCsList"),
+    FETCH_EMERGENCY_LIST("Fetch NC's List", Administration.class, "fetchEmergencyList"),
 
     // =========================================================================
     // Committee related Permissions

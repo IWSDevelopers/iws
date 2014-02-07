@@ -30,11 +30,11 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
+import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.NCsResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 
@@ -174,8 +174,8 @@ public final class AdministrationClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public NCsResponse fetchNCsList(final AuthenticationToken token) {
-        return client.fetchNCsList(token);
+    public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
+        return client.fetchEmergencyList(token);
     }
 
     /**

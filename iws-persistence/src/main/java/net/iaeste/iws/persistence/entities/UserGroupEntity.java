@@ -129,7 +129,14 @@ import java.util.Map;
         @NamedQuery(name = "usergroup.findAllUserGroups",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.user.id = :uid"),
-        // The roles are hardcoded to Owner, Moderator & Member, see
+        // The roles are hardcoded to Owner & Moderator, see
+        // IWSConstants for more information
+        @NamedQuery(name = "usergroup.emergencylist",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.status = 'ACTIVE'" +
+                        "  and ug.role.id <= 2" +
+                        "  and ug.group.groupType.grouptype = 'NATIONAL'"),
+        // The roles are hardcoded to Owner & Moderator, see
         // IWSConstants for more information
         @NamedQuery(name = "usergroup.findncs",
                 query = "select distinct ug from UserGroupEntity ug " +

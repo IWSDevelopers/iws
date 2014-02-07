@@ -18,11 +18,13 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.singletons.ActiveSessions;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.StudentDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
+import net.iaeste.iws.persistence.jpa.AdminJpaDao;
 import net.iaeste.iws.persistence.jpa.CountryJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import net.iaeste.iws.persistence.jpa.StudentJpaDao;
@@ -113,7 +115,9 @@ public final class ServiceFactory {
     }
 
     public ContactsService prepareContacsService() {
-        return new ContactsService();
+        final AdminDao adminDao = new AdminJpaDao(entityManager);
+
+        return new ContactsService(adminDao);
     }
 
     public AccessDao getAccessDao() {

@@ -33,7 +33,7 @@ import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.NCsResponse;
+import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 
@@ -272,7 +272,7 @@ public interface Administration {
      *                request
      * @return List of all National Committees with Error information
      */
-    NCsResponse fetchNCsList(AuthenticationToken token);
+    EmergencyListResponse fetchEmergencyList(AuthenticationToken token);
 
     /**
      * This Request is similar to the Contacts module from the old IntraWeb. The

@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -58,6 +59,16 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
     @Override
     public List<CountryEntity> findAllCountries() {
         final Query query = entityManager.createNamedQuery("country.findAll");
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findEmergencyList() {
+        final Query query = entityManager.createNamedQuery("usergroup.emergencylist");
 
         return query.getResultList();
     }

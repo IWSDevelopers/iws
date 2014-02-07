@@ -26,12 +26,12 @@ import java.util.List;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class NCsResponse extends AbstractFallible {
+public final class EmergencyListResponse extends AbstractFallible {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    private List<UserGroup> administrators = null;
+    private List<UserGroup> emergencyContacts = null;
 
     // =========================================================================
     // Object Constructors
@@ -41,7 +41,7 @@ public final class NCsResponse extends AbstractFallible {
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
      */
-    public NCsResponse() {
+    public EmergencyListResponse() {
     }
 
     /**
@@ -50,7 +50,7 @@ public final class NCsResponse extends AbstractFallible {
      * @param error   IWS Error Object
      * @param message Error Message
      */
-    public NCsResponse(final IWSError error, final String message) {
+    public EmergencyListResponse(final IWSError error, final String message) {
         super(error, message);
     }
 
@@ -58,12 +58,12 @@ public final class NCsResponse extends AbstractFallible {
     // Standard Setters & Getters
     // =========================================================================
 
-    public void setAdministrators(final List<UserGroup> administrators) {
-        this.administrators = administrators;
+    public void setEmergencyContacts(final List<UserGroup> emergencyContacts) {
+        this.emergencyContacts = emergencyContacts;
     }
 
-    public List<UserGroup> getAdministrators() {
-        return administrators;
+    public List<UserGroup> getEmergencyContacts() {
+        return emergencyContacts;
     }
 
     // =========================================================================
@@ -78,15 +78,15 @@ public final class NCsResponse extends AbstractFallible {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof NCsResponse)) {
+        if (!(obj instanceof EmergencyListResponse)) {
             return false;
         }
         if (!super.equals(obj)) {
             return false;
         }
 
-        final NCsResponse that = (NCsResponse) obj;
-        return !(administrators != null ? !administrators.equals(that.administrators) : that.administrators != null);
+        final EmergencyListResponse that = (EmergencyListResponse) obj;
+        return !(emergencyContacts != null ? !emergencyContacts.equals(that.emergencyContacts) : that.emergencyContacts != null);
     }
 
     /**
@@ -96,7 +96,7 @@ public final class NCsResponse extends AbstractFallible {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (administrators != null ? administrators.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (emergencyContacts != null ? emergencyContacts.hashCode() : 0);
 
         return result;
     }
@@ -106,8 +106,8 @@ public final class NCsResponse extends AbstractFallible {
      */
     @Override
     public String toString() {
-        return "NCsResponse{" +
-                "administrators=" + administrators +
+        return "EmergencyListResponse{" +
+                "emergencyContacts=" + emergencyContacts +
                 '}';
     }
 }

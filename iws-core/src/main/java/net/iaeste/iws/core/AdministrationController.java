@@ -34,12 +34,12 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
+import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.NCsResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccountService;
@@ -464,23 +464,23 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public NCsResponse fetchNCsList(final AuthenticationToken token) {
+    public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Starting fetchNCsList()"));
+            log.trace(formatLogMessage(token, "Starting fetchEmergencyList()"));
         }
-        NCsResponse response;
+        EmergencyListResponse response;
 
         try {
-            final Authentication authentication = verifyAccess(token, Permission.FETCH_NCS_LIST);
+            verifyAccess(token, Permission.FETCH_EMERGENCY_LIST);
 
             final ContactsService service = factory.prepareContacsService();
-            response = service.fetchNCsList(authentication);
+            response = service.fetchEmergencyList();
         } catch (IWSException e) {
-            response = new NCsResponse(e.getError(), e.getMessage());
+            response = new EmergencyListResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
-            log.trace(formatLogMessage(token, "Finished fetchNCsList()"));
+            log.trace(formatLogMessage(token, "Finished fetchEmergencyList()"));
         }
         return response;
     }
@@ -497,10 +497,10 @@ public final class AdministrationController extends CommonController implements 
 
         try {
             verify(request);
-            final Authentication authentication = verifyPrivateAccess(token);
+            verifyPrivateAccess(token);
 
             final ContactsService service = factory.prepareContacsService();
-            response = service.fetchContacts(authentication, request);
+            response = service.fetchContacts(request);
         } catch (IWSException e) {
             response = new ContactsResponse(e.getError(), e.getMessage());
         }

@@ -44,16 +44,25 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
         @NamedQuery(name = "usergroup.findById",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = 'ACTIVE'" +
                         "  and ug.id = :id"),
+        @NamedQuery(name = "usergroup.findForExternalGroupId",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.status <> 'DELETED'" +
+                        "  and ug.user.status <> 'DELETED'" +
+                        "  and ug.group.externalId = :egid"),
+        @NamedQuery(name = "usergroup.findForExternalUserId",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.status <> 'DELETED'" +
+                        "  and ug.user.externalId = :euid"),
         @NamedQuery(name = "usergroup.findByIw3UserAndGroup",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.user.oldId = :iw3User" +
+                        "  and ug.user.status <> 'DELETED'" +
                         "  and ug.group.oldId = :iw3Group"),
         @NamedQuery(name = "usergroup.findByExternalId",
                 query = "select ug from UserGroupEntity ug " +

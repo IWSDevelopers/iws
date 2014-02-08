@@ -15,6 +15,7 @@
 package net.iaeste.iws.persistence;
 
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 import java.util.List;
@@ -56,4 +57,10 @@ public interface AdminDao extends BasicDao {
      * @return List of all Owners and Moderators of National Groups
      */
     List<UserGroupEntity> findEmergencyList();
+
+    List<UserGroupEntity> findGroupMembers(String externalGroupId);
+
+    List<UserGroupEntity> findUserGroups(String externalUserId);
+
+    List<GroupEntity> findGroupsForContacts();
 }

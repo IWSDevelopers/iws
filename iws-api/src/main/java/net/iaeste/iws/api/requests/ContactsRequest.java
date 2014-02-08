@@ -101,6 +101,14 @@ public final class ContactsRequest extends AbstractVerification {
      */
     @Override
     public Map<String, String> validate() {
-        return new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>(0);
+
+        if ((type == ContactsType.USER) && (userId == null)) {
+            validation.put("userId", "Invalid User Request, userId is null.");
+        } else if ((type == ContactsType.GROUP) && (groupId == null)) {
+            validation.put("userId", "Invalid Group Request, groupID is null.");
+        }
+
+        return validation;
     }
 }

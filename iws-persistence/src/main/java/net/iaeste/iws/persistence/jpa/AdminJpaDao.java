@@ -16,6 +16,7 @@ package net.iaeste.iws.persistence.jpa;
 
 import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 import javax.persistence.EntityManager;
@@ -69,6 +70,38 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
     @Override
     public List<UserGroupEntity> findEmergencyList() {
         final Query query = entityManager.createNamedQuery("usergroup.emergencylist");
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findGroupMembers(final String externalGroupId) {
+        final Query query = entityManager.createNamedQuery("usergroup.findForExternalGroupId");
+        query.setParameter("egid", externalGroupId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> findUserGroups(final String externalUserId) {
+        final Query query = entityManager.createNamedQuery("usergroup.findForExternalUserId");
+        query.setParameter("euid", externalUserId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GroupEntity> findGroupsForContacts() {
+        final Query query = entityManager.createNamedQuery("group.findAllNationalAndInternational");
 
         return query.getResultList();
     }

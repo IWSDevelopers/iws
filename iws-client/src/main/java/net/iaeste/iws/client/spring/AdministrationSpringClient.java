@@ -36,6 +36,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -202,7 +203,7 @@ public final class AdministrationSpringClient implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+    public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         return client.processUserGroupAssignment(token, request);
     }
 

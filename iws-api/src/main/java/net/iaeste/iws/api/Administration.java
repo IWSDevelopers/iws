@@ -35,6 +35,7 @@ import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 
 import javax.ejb.Remote;
@@ -258,9 +259,9 @@ public interface Administration {
      * @param token   Authentication information about the user invoking the
      *                request
      * @param request Request data, must contain the UserGroup settings
-     * @return Standard Error Object
+     * @return Respose with altered relation and error information
      */
-    Fallible processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
+    ProcessUserGroupResponse processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
 
     /**
      * Fetches the list of all National Committee Members, which is used to

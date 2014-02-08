@@ -31,6 +31,7 @@ import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -310,12 +311,14 @@ public final class GroupService {
      *
      * @param authentication User & Group information
      * @param request        User Group Request information
+     * @return Processed result
      */
-    public void processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
+    public ProcessUserGroupResponse processUserGroupAssignment(final Authentication authentication, final UserGroupAssignmentRequest request) {
         final UserGroupEntity invokingUser = dao.findMemberGroupByUser(authentication.getUser());
+        final ProcessUserGroupResponse response;
 
         if (shouldChangeSelf(authentication, request)) {
-            updateSelf(authentication, invokingUser, request);
+            response = updateSelf(authentication, invokingUser, request);
         } else if (shouldChangeOwner(invokingUser, request)) {
             throw new PermissionException("It is not permitted to change ownership with this request. Please use the correct request.");
         } else {
@@ -326,11 +329,13 @@ public final class GroupService {
             final UserGroupEntity existingEntity = dao.findByGroupAndExternalUserId(authentication.getGroup(), externalUserId);
 
             if (request.isDeleteUserRequest()) {
-                deleteUserGroupRelation(role, existingEntity);
+                response = deleteUserGroupRelation(role, existingEntity);
             } else {
-                processUserGroupRelation(authentication, request, externalUserId, role, existingEntity);
+                response = processUserGroupRelation(authentication, request, externalUserId, role, existingEntity);
             }
         }
+
+        return response;
     }
 
     private static boolean shouldChangeSelf(final Authentication authentication, final UserGroupAssignmentRequest request) {
@@ -349,13 +354,16 @@ public final class GroupService {
      *
      * @param authentication User & Group information
      * @param request        User Group Request information
+     * @return Processed UserGroup relation
      */
-    private void updateSelf(final Authentication authentication, final UserGroupEntity currentEntity, final UserGroupAssignmentRequest request) {
+    private ProcessUserGroupResponse updateSelf(final Authentication authentication, final UserGroupEntity currentEntity, final UserGroupAssignmentRequest request) {
         // Update the UserGroup relation
         currentEntity.setTitle(request.getUserGroup().getTitle());
         currentEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
         currentEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
         dao.persist(authentication, currentEntity);
+
+        return new ProcessUserGroupResponse(transform(currentEntity));
     }
 
     private boolean shouldChangeOwner(final UserGroupEntity invokingUser, final UserGroupAssignmentRequest request) {
@@ -375,21 +383,25 @@ public final class GroupService {
         return result;
     }
 
-    private void deleteUserGroupRelation(final RoleEntity role, final UserGroupEntity existingEntity) {
+    private ProcessUserGroupResponse deleteUserGroupRelation(final RoleEntity role, final UserGroupEntity existingEntity) {
         if (existingEntity != null) {
             if (role.getId() == 1) {
                 // We're attempting to delete the owner, major no-no
                 throw new PermissionException("It is not allowed to delete the current Owner of the Group.");
             } else {
                 dao.delete(existingEntity);
+                // We're just returning an empty response Object, since the User
+                // has now been deleted
+                return new ProcessUserGroupResponse();
             }
         } else {
             throw new IdentificationException("No user were found to be deleted.");
         }
     }
 
-    private void processUserGroupRelation(final Authentication authentication, final UserGroupAssignmentRequest request, final String externalUserId, final RoleEntity role, final UserGroupEntity existingEntity) {
+    private ProcessUserGroupResponse processUserGroupRelation(final Authentication authentication, final UserGroupAssignmentRequest request, final String externalUserId, final RoleEntity role, final UserGroupEntity existingEntity) {
         final UserGroupEntity given = transform(request.getUserGroup());
+        final ProcessUserGroupResponse response;
 
         if (existingEntity == null) {
             // Throws an exception if no User was found
@@ -410,20 +422,24 @@ public final class GroupService {
             dao.persist(given);
 
             notifications.notify(authentication, given, NotificationType.CHANGE_IN_GROUP_MEMBERS);
+            response = new ProcessUserGroupResponse(transform(given));
         } else {
             // We're adding the new role here, and won't have history of the
             // changes, since the normal merge method is a general purpose
             // method. The role is not something we should allow being handled
             // via a general purpose method, since it critical information.
             existingEntity.setRole(role);
-            // Following two lines are set by the merge method, so this us duplication.
-            // TODO @Kim - This would be true IF given entity HAS id but there is NO id in given entity so it's not merged'
+
+            // Following two lines are set by the merge method, so this is duplication.
             existingEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
             existingEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
             dao.persist(authentication, existingEntity, given);
 
             notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
+            response = new ProcessUserGroupResponse(transform(existingEntity));
         }
+
+        return response;
     }
 
     // =========================================================================

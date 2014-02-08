@@ -36,6 +36,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -195,7 +196,7 @@ public final class AdministrationCaller implements Administration {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+    public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         try {
             return caller.processUserGroupAssignment(token, request);
         } catch (Exception e) {

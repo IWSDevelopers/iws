@@ -41,6 +41,7 @@ import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
+import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccountService;
 import net.iaeste.iws.core.services.ContactsService;
@@ -436,11 +437,11 @@ public final class AdministrationController extends CommonController implements 
      * {@inheritDoc}
      */
     @Override
-    public Fallible processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
+    public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processUserGroupAssignment()"));
         }
-        Fallible response;
+        ProcessUserGroupResponse response;
 
         try {
             verify(request);
@@ -448,10 +449,9 @@ public final class AdministrationController extends CommonController implements 
             final Authentication authentication = verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
 
             final GroupService service = factory.prepareGroupService();
-            service.processUserGroupAssignment(authentication, request);
-            response = new FallibleResponse();
+            response = service.processUserGroupAssignment(authentication, request);
         } catch (IWSException e) {
-            response = new FallibleResponse(e.getError(), e.getMessage());
+            response = new ProcessUserGroupResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {

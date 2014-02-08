@@ -217,6 +217,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      * {@inheritDoc}
      */
     @Override
+    @Interceptors(Profiler.class)
     public Fallible updateUsername(final String updateCode) {
         Fallible response;
 
@@ -409,6 +410,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public EmergencyListResponse fetchEmergencyList(final AuthenticationToken token) {
         EmergencyListResponse response;
 
@@ -428,6 +430,7 @@ public class AdministrationBean extends AbstractBean implements Administration {
      */
     @Override
     @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public ContactsResponse fetchContacts(final AuthenticationToken token, final ContactsRequest request) {
         ContactsResponse response;
 

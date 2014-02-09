@@ -268,6 +268,8 @@ public class NotificationEmailSender implements Observer {
                         //do something, log or exception?
                         log.error("Error during sending notification message to JMS queue", e);
                     }
+                } else if (userSetting == null) {
+                    log.warn("User " + recipient.getId() + " has no setting for notification type '" + type + "'");
                 }
             } catch (IWSException ignore) {
                 log.warn("User " + recipient.getId() + " has not proper notification setting for notification type " + type);

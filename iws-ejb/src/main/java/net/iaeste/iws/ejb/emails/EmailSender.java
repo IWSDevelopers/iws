@@ -100,7 +100,7 @@ public class EmailSender implements MessageListener {
             message.setSubject(msg.getSubject());
             message.setText(msg.getMessage());
 
-            log.info("Sending email message to " + msg.getTo() + " with body " + msg.getMessage());
+            log.info("Sending email message to " + msg.getTo());
             Transport.send(message);
         } catch (MessagingException e) {
             throw new IWSException(IWSErrors.ERROR, "Sending to '" + msg.getTo() + "' failed.", e);

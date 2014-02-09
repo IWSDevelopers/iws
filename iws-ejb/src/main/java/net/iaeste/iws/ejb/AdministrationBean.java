@@ -27,6 +27,7 @@ import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
+import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
@@ -39,6 +40,7 @@ import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.AdministrationController;
@@ -400,6 +402,26 @@ public class AdministrationBean extends AbstractBean implements Administration {
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new ProcessUserGroupResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public SearchUserResponse searchUsers(final AuthenticationToken token, final SearchUserRequest request) {
+        SearchUserResponse response;
+
+        try {
+            response = controller.searchUsers(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new SearchUserResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

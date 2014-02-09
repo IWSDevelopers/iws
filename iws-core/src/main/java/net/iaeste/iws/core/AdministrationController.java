@@ -30,6 +30,7 @@ import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
+import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
@@ -42,6 +43,7 @@ import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.core.services.AccountService;
 import net.iaeste.iws.core.services.ContactsService;
@@ -456,6 +458,32 @@ public final class AdministrationController extends CommonController implements 
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished processUserGroupAssignment()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SearchUserResponse searchUsers(final AuthenticationToken token, final SearchUserRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting searchUsers()"));
+        }
+        SearchUserResponse response;
+
+        try {
+            verify(request);
+            verifyAccess(token, Permission.PROCESS_USER_GROUP_ASSIGNMENT);
+
+            final ContactsService service = factory.prepareContacsService();
+            response = service.searchUsers(request);
+        } catch (IWSException e) {
+            response = new SearchUserResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished searchUsers()"));
         }
         return response;
     }

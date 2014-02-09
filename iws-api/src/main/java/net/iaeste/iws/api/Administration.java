@@ -25,6 +25,8 @@ import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
+import net.iaeste.iws.api.requests.SearchUserRequest;
+import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
@@ -254,7 +256,9 @@ public interface Administration {
      *   If invoked by an administrator against a different user, then it is
      * possible to change the persons permissions, though it is not possible to
      * use this request to assign a new owner to a Group, this is handled via a
-     * different request.
+     * different request.<br />
+     *   The search is trying to find as much information as possible, sorting
+     * the result alphabetically.
      *
      * @param token   Authentication information about the user invoking the
      *                request
@@ -262,6 +266,20 @@ public interface Administration {
      * @return Respose with altered relation and error information
      */
     ProcessUserGroupResponse processUserGroupAssignment(AuthenticationToken token, UserGroupAssignmentRequest request);
+
+    /**
+     * Search functionality for Members. When adding users to a Group, it must
+     * be possible to search among members from various groups.<br />
+     *   If the Request also contains a Member Group, then the search will be
+     * limited to this, otherwise the search will be among all users where the
+     * status is either active or new.
+     *
+     * @param token   Authentication information about the user invoking the
+     *                request
+     * @param request Request data, must contain the name and optionally Group
+     * @return Respose with altered relation and error information
+     */
+    SearchUserResponse searchUsers(AuthenticationToken token, SearchUserRequest request);
 
     /**
      * Fetches the list of all National Committee Members, which is used to

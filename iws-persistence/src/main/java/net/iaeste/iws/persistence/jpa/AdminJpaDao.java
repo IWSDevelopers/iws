@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -92,6 +93,37 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
     public List<UserGroupEntity> findUserGroups(final String externalUserId) {
         final Query query = entityManager.createNamedQuery("usergroup.findForExternalUserId");
         query.setParameter("euid", externalUserId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> searchUsers(String firstname, String lastname) {
+        final Query query = entityManager.createNamedQuery("userGroup.searchByFirstNameAndLastNameInMembers");
+        // Weird, if I add the following lines directly into the setParameter,
+        // then the trailing percentage sign is dropped!
+        final String name1 = '%' + firstname.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%';
+        final String name2 = '%' + lastname.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%';
+        query.setParameter("firstname", name1);
+        query.setParameter("lastname", name2);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserGroupEntity> searchUsers(String firstname, String lastname, String externalMemberGroupId) {
+        final Query query = entityManager.createNamedQuery("userGroup.searchByFirstNameAndLastNameInSpecificMember");
+        query.setParameter("egid", externalMemberGroupId);
+        final String name1 = '%' + firstname.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%';
+        final String name2 = '%' + lastname.toLowerCase(IWSConstants.DEFAULT_LOCALE) + '%';
+        query.setParameter("firstname", name1);
+        query.setParameter("lastname", name2);
 
         return query.getResultList();
     }

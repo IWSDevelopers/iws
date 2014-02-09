@@ -26,6 +26,7 @@ import net.iaeste.iws.api.requests.FetchRoleRequest;
 import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
+import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
@@ -37,6 +38,7 @@ import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.notifications.NotificationSpy;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -205,6 +207,14 @@ public final class AdministrationSpringClient implements Administration {
     @Override
     public ProcessUserGroupResponse processUserGroupAssignment(final AuthenticationToken token, final UserGroupAssignmentRequest request) {
         return client.processUserGroupAssignment(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SearchUserResponse searchUsers(final AuthenticationToken token, final SearchUserRequest request) {
+        return client.searchUsers(token, request);
     }
 
     /**

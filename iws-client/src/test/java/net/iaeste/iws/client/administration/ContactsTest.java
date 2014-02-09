@@ -20,10 +20,13 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.ContactsType;
 import net.iaeste.iws.api.requests.ContactsRequest;
+import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
+import net.iaeste.iws.api.responses.SearchUserResponse;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -54,6 +57,42 @@ public final class ContactsTest extends AbstractAdministration {
     // =========================================================================
     // Positive Tests
     // =========================================================================
+
+    @Test
+    public void testSearchingWithoutGroup() {
+        // The request is a generic one, so we need to set a Group for it
+        token.setGroupId(findNationalGroup(token).getGroupId());
+
+        final SearchUserRequest request = new SearchUserRequest();
+        request.setName("aust"); // Australia, Austria
+
+        final SearchUserResponse response = client.searchUsers(token, request);
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getUsers().size(), is(2));
+    }
+
+    @Test
+    public void testSearchingWithGroup() {
+        // The request is a generic one, so we need to set a Group for it
+        final Group memberGroup = findMemberGroup(token);
+        token.setGroupId(memberGroup.getGroupId());
+
+        final SearchUserRequest request1 = new SearchUserRequest();
+        request1.setName("aust"); // Australia, Austria
+        request1.setGroup(memberGroup);
+
+        final SearchUserResponse response1 = client.searchUsers(token, request1);
+        assertThat(response1.isOk(), is(true));
+        assertThat(response1.getUsers().size(), is(0));
+
+        final SearchUserRequest request2 = new SearchUserRequest();
+        request2.setName("spa"); // Spain
+        request2.setGroup(memberGroup);
+
+        final SearchUserResponse response2 = client.searchUsers(token, request2);
+        assertThat(response2.isOk(), is(true));
+        assertThat(response2.getUsers().size(), is(1));
+    }
 
     @Test
     public void testFindEmergencyList() {

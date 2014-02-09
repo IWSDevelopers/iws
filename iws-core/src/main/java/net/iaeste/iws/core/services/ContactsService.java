@@ -26,8 +26,10 @@ import net.iaeste.iws.api.enums.ContactsType;
 import net.iaeste.iws.api.enums.Privacy;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.ContactsRequest;
+import net.iaeste.iws.api.requests.SearchUserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.EmergencyListResponse;
+import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
 import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -35,6 +37,7 @@ import net.iaeste.iws.persistence.entities.UserGroupEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -43,10 +46,52 @@ import java.util.List;
  */
 public final class ContactsService {
 
+    private static final Pattern SPACE_PATTERN = Pattern.compile("/ +/");
+
     private final AdminDao dao;
 
     public ContactsService(final AdminDao dao) {
         this.dao = dao;
+    }
+
+    public SearchUserResponse searchUsers(final SearchUserRequest request) {
+        final String[] names = SPACE_PATTERN.split(request.getName());
+        final String firstname;
+        final String lastname;
+
+        if (names.length == 1) {
+            firstname = names[0];
+            lastname = names[0];
+        } else if (names.length >= 2) {
+            firstname = names[0];
+            lastname = names[1];
+        } else {
+            throw new IWSException(IWSErrors.ERROR, "Cannot determine search criterias.");
+        }
+
+        final List<UserGroupEntity> entities;
+        final String externalGroupId = request.getGroup().getGroupId();
+        if (externalGroupId == null) {
+            entities = dao.searchUsers(firstname, lastname);
+        } else {
+            entities = dao.searchUsers(firstname, lastname, externalGroupId);
+        }
+
+        final List<UserGroup> result = new ArrayList<>(entities.size());
+
+        for (final UserGroupEntity entity : entities) {
+            final User user = AdministrationTransformer.transform(entity.getUser());
+            // No private information is needed for this request
+            user.setPerson(null);
+
+            final UserGroup userGroup = new UserGroup();
+            userGroup.setUser(user);
+            userGroup.setGroup(transform(entity.getGroup()));
+            userGroup.setRole(AdministrationTransformer.transform(entity.getRole()));
+            result.add(userGroup);
+        }
+
+        return new SearchUserResponse(result);
     }
 
     /**
@@ -169,7 +214,7 @@ public final class ContactsService {
         if (!groupEntities.isEmpty()) {
             final ContactsResponse response = new ContactsResponse();
             response.setType(ContactsType.USER);
-            response.setUsers(extractUsers(groupEntities).subList(0,1));
+            response.setUsers(extractUsers(groupEntities).subList(0, 1));
             response.setGroups(extractGroups(groupEntities));
 
             return response;

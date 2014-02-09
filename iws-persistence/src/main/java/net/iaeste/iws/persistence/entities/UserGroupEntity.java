@@ -64,6 +64,21 @@ import java.util.Map;
                         "where ug.user.oldId = :iw3User" +
                         "  and ug.user.status <> 'DELETED'" +
                         "  and ug.group.oldId = :iw3Group"),
+        @NamedQuery(name = "userGroup.searchByFirstNameAndLastNameInMembers",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.groupType.grouptype = 'MEMBER'" +
+                        "  and ug.user.status <> 'DELETED'" +
+                        "  and ug.user.status <> 'SUSPENDED'" +
+                        "  and (lower(ug.user.firstname) like :firstname" +
+                        "   or lower(ug.user.lastname) like :lastname)"),
+        @NamedQuery(name = "userGroup.searchByFirstNameAndLastNameInSpecificMember",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.groupType.grouptype = 'MEMBER'" +
+                        "  and ug.group.externalId = :egid" +
+                        "  and ug.user.status <> 'DELETED'" +
+                        "  and ug.user.status <> 'SUSPENDED'" +
+                        "  and (lower(ug.user.firstname) like :firstname" +
+                        "   or lower(ug.user.lastname) like :lastname)"),
         @NamedQuery(name = "usergroup.findByExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = 'ACTIVE'" +

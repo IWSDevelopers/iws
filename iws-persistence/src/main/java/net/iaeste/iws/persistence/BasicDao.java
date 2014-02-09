@@ -108,7 +108,11 @@ public interface BasicDao {
     // =========================================================================
 
     /**
-     * Retrieves a list of available Roles, that belongs to a given Group.
+     * Retrieves a list of available Roles, that belongs to a given Group. As
+     * Roles can be customized, it means that some countries may have some
+     * overlap in names, and to prevent that a Role is incorrectly retrieved,
+     * only roles which are customized for the given country is retrieved as
+     * well as the standard roles.
      *
      * @param group Group to find Roles for
      * @return List of available Roles for this Group

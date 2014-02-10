@@ -16,11 +16,11 @@ package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
-import static net.iaeste.iws.core.transformers.AdministrationTransformer.transformRoleEntities;
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
+import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.Permission;
@@ -43,6 +43,7 @@ import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
+import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
 import net.iaeste.iws.persistence.entities.PersonEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -51,8 +52,13 @@ import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -347,10 +353,33 @@ public final class AccountService extends CommonService<AccessDao> {
     }
 
     public FetchRoleResponse fetchRoles(final Authentication authentication) {
-        final List<RoleEntity> roles = dao.findRoles(authentication.getGroup());
-        final FetchRoleResponse response = new FetchRoleResponse(transformRoleEntities(roles));
+        final List<PermissionRoleEntity> entities = dao.findRoles(authentication.getGroup());
+        final Map<Long, Set<Permission>> permissions = readPermissionMap(entities);
+        final List<Role> roles = new ArrayList<>(10);
 
-        return response;
+        for (final PermissionRoleEntity entity : entities) {
+            final Role role = transform(entity.getRole());
+            if (!roles.contains(role)) {
+                role.setPermissions(permissions.get(entity.getRole().getId()));
+                roles.add(role);
+            }
+        }
+
+        return new FetchRoleResponse(roles);
+    }
+
+    private static Map<Long, Set<Permission>> readPermissionMap(final List<PermissionRoleEntity> entities) {
+        final Map<Long, Set<Permission>> permissions = new HashMap<>(16);
+
+        for (final PermissionRoleEntity entity : entities) {
+            final Long id = entity.getRole().getId();
+            if (!permissions.containsKey(id)) {
+                permissions.put(id, EnumSet.noneOf(Permission.class));
+            }
+            permissions.get(id).add(entity.getPermission().getPermission());
+        }
+
+        return permissions;
     }
 
     // =========================================================================

@@ -187,9 +187,7 @@ public final class Role extends AbstractVerification {
 
         final Role role = (Role) obj;
 
-        if ((permissions != null) ? !permissions.equals(role.permissions) : (role.permissions != null)) {
-            return false;
-        }
+        // Permissions are ignored, since the Id & Name are suppose to be unique
 
         if ((roleId != null) ? !roleId.equals(role.roleId) : (role.roleId != null)) {
             return false;
@@ -205,9 +203,9 @@ public final class Role extends AbstractVerification {
     public int hashCode() {
         int result = super.hashCode();
 
+        // Permissions are ignored, since the Id & Name are suppose to be unique
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((roleId != null) ? roleId.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((roleName != null) ? roleName.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((permissions != null) ? permissions.hashCode() : 0);
 
         return result;
     }

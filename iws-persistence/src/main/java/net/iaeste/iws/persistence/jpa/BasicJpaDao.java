@@ -30,7 +30,7 @@ import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
-import net.iaeste.iws.persistence.entities.RoleEntity;
+import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
@@ -190,8 +190,9 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
-    public List<RoleEntity> findRoles(final GroupEntity group) {
-        final Query query = entityManager.createNamedQuery("role.findByGroup");
+    public List<PermissionRoleEntity> findRoles(final GroupEntity group) {
+        final Query query = entityManager.createNamedQuery("permissionRole.findByRoleToGroup");
+        //final Query query = entityManager.createNamedQuery("role.findByGroup");
         final Long cid = group.getCountry() != null ? group.getCountry().getId() : 0;
         query.setParameter("cid", cid);
         query.setParameter("gid", group.getId());

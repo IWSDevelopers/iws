@@ -15,9 +15,12 @@
 package net.iaeste.iws.persistence.entities;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.Permission;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -53,8 +56,9 @@ public class PermissionEntity implements Serializable {
     /**
      * The name of the Permission.
      */
+    @Enumerated(EnumType.STRING)
     @Column(name = "permission", length = 50, unique = true, nullable = false, updatable = false)
-    private String permission= null;
+    private Permission permission= null;
 
     /**
      * Determines if usage of this Permission is restricted or not, if the value
@@ -81,11 +85,11 @@ public class PermissionEntity implements Serializable {
         return id;
     }
 
-    public void setPermission(final String permission) {
+    public void setPermission(final Permission permission) {
         this.permission = permission;
     }
 
-    public String getPermission() {
+    public Permission getPermission() {
         return permission;
     }
 

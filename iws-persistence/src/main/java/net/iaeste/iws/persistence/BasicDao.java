@@ -22,6 +22,7 @@ import net.iaeste.iws.persistence.entities.FileEntity;
 import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.IWSEntity;
 import net.iaeste.iws.persistence.entities.MonitoringEntity;
+import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
 import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
@@ -117,7 +118,7 @@ public interface BasicDao {
      * @param group Group to find Roles for
      * @return List of available Roles for this Group
      */
-    List<RoleEntity> findRoles(GroupEntity group);
+    List<PermissionRoleEntity> findRoles(GroupEntity group);
 
     /**
      * Finds a Country based on the given Id (ISO_3166-1_alpha-2).

@@ -192,7 +192,8 @@ public class BasicJpaDao implements BasicDao {
     @Override
     public List<RoleEntity> findRoles(final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("role.findByGroup");
-        query.setParameter("cid", group.getCountry().getId());
+        final Long cid = group.getCountry() != null ? group.getCountry().getId() : 0;
+        query.setParameter("cid", cid);
         query.setParameter("gid", group.getId());
 
         return query.getResultList();

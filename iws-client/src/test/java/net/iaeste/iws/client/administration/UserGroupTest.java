@@ -61,6 +61,17 @@ public final class UserGroupTest extends AbstractAdministration {
     }
 
     @Test
+    public void testFetchingRoles() {
+        // Brazil has been added as Owner to the Board
+        final AuthenticationToken myToken = login("brazil@iaeste.br", "brazil");
+        final String sidGroupId = "80962576-3e38-4858-be0d-57252e7316b1";
+        final FetchRoleRequest request = new FetchRoleRequest(sidGroupId);
+        final FetchRoleResponse response = client.fetchRoles(myToken, request);
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getRoles().isEmpty(), is(false));
+    }
+
+    @Test
     public void testAddingUserToNationalGroup() {
         final CreateUserRequest createUserRequest = new CreateUserRequest();
         createUserRequest.setUsername("user@iaeste.dk");

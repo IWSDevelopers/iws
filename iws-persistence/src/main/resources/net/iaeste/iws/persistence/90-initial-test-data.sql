@@ -110,6 +110,8 @@ insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values ('138142b1-ad04-4ea2-8a6e-36ab03506bc6', 'ACTIVE', 'brazil@iaeste.br', 'NS.Brazil@iaeste.org', '692823bebc0cea9139e26083c0c6b5da0532db9f745be85aeece2b64c2664597', '04dd7015-986b-4c46-95d9-346ae9f4e817', 'NS', 'Brazil');
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('17a6b95e-2c51-4f7e-8f06-4219497b618a', 11, 30, 1);
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('e0e644c1-de37-467d-8f0e-1f360668ea77', 11, 31, 1);
+-- Manually added, we need to have someone who's working with International Groups
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('dd6635da-2483-433c-9663-8b7ab55fba82', 11,  3, 1);
 -- Completed generating test data for Brazil
 
 -- Generating Test data for Canada

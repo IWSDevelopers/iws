@@ -23,6 +23,7 @@ import net.iaeste.iws.api.util.Verifiable;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.SessionException;
 import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.core.singletons.ActiveSessions;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;
@@ -96,10 +97,18 @@ class CommonController {
     }
 
     private Authentication verifyAccess(final AuthenticationToken token, final Permission permission, final String externalGroupId) {
-        if (factory.getActiveSessions().isActive(token.getToken())) {
+        final ActiveSessions sessions = factory.getActiveSessions();
+
+        if (sessions.isActive(token.getToken())) {
             try {
                 // Authentication Check; Expect Exception if unable to find a User
                 final UserEntity user = dao.findActiveSession(token).getUser();
+
+                // Okay, Session is authentic (otherwise an exception would've
+                // been thrown), so let's register the last usage. The attempt
+                // at using the system is independent of the permission check
+                sessions.updateToken(token.getToken());
+
                 // Authorization Check; Expect Exception if unable to match a Group
                 final GroupEntity group = dao.findGroupByPermission(user, externalGroupId, permission);
 

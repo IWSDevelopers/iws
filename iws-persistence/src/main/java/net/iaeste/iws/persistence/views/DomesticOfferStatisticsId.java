@@ -70,4 +70,41 @@ public class DomesticOfferStatisticsId implements Serializable {
     public Long getGroupId() {
         return groupId;
     }
+
+    // =========================================================================
+    // Methods required by JPA
+    // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof DomesticOfferStatisticsId)) {
+            return false;
+        }
+
+        final DomesticOfferStatisticsId that = (DomesticOfferStatisticsId) obj;
+
+        if (groupId != null ? !groupId.equals(that.groupId) : that.groupId != null) {
+            return false;
+        }
+
+        return status == that.status;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = status != null ? status.hashCode() : 0;
+
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (groupId != null ? groupId.hashCode() : 0);
+
+        return result;
+    }
 }

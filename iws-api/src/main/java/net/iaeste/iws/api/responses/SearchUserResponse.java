@@ -50,7 +50,7 @@ public final class SearchUserResponse extends AbstractFallible {
      * @param users List of found Users With their Member Group information
      */
     public SearchUserResponse(final List<UserGroup> users) {
-        setUsers(users);
+        this.users = users;
     }
 
     /**

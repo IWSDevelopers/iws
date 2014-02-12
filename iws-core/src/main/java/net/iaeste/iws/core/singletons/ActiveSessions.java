@@ -17,6 +17,8 @@ package net.iaeste.iws.core.singletons;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.SessionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,9 +49,10 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection StaticNonFinalField
  */
 public final class ActiveSessions {
+
+    private static final Logger log = LoggerFactory.getLogger(ActiveSessions.class);
 
     // Singleton Instance Object & Lock Object
     private static final Object INSTANCE_LOCK = new Object();
@@ -187,6 +190,7 @@ public final class ActiveSessions {
         if (lastAccess != null) {
             result = lastAccess.after(mustBeAfter);
         } else {
+            log.debug("Token {} has expired, it is {} ms since last access.", token, maxMillisToLive);
             result = false;
         }
 
@@ -219,6 +223,7 @@ public final class ActiveSessions {
      * @return List of Sessions that have expired
      */
     public List<String> findAndRemoveExpiredTokens() {
+        log.info("Attempting to find and remove expired Tokens.");
         final List<String> expiredTokens = new ArrayList<>(10);
         // Although we always should narrow the scope of variables, we also have
         // to remember that the Synchronized block is a special case, that

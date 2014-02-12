@@ -71,10 +71,6 @@ public final class Helpers {
         return result;
     }
 
-    public static String upper(final String str) {
-        return (str != null) ? str.toUpperCase(IWSConstants.DEFAULT_LOCALE) : null;
-    }
-
     public static String lowerAndShorten(final String str, final int maxLength) {
         final String result;
 

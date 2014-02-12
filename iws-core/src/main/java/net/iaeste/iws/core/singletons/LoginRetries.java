@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.core.singletons;
 
+import static net.iaeste.iws.common.utils.StringUtils.toLower;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.common.configuration.Settings;
@@ -105,7 +107,7 @@ public final class LoginRetries {
     public void registerUser(final String user) {
         final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         final Date when = new Date(new Date().getTime() - blockedPeriod);
-        final String key = user.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        final String key = toLower(user);
 
         synchronized (lock) {
             if (users.containsKey(key)) {

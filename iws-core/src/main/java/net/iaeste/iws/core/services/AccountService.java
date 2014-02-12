@@ -15,6 +15,7 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
+import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 import static net.iaeste.iws.core.util.LogUtil.formatLogMessage;
 
@@ -90,6 +91,7 @@ public final class AccountService extends CommonService<AccessDao> {
      */
     public CreateUserResponse createUser(final Authentication authentication, final CreateUserRequest request) {
         final UserEntity user;
+
         if (request.isStudent()) {
             user = createStudentAccount(authentication, request);
         } else {
@@ -97,6 +99,7 @@ public final class AccountService extends CommonService<AccessDao> {
         }
 
         notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
+
         return new CreateUserResponse(transform(user));
     }
 
@@ -158,7 +161,7 @@ public final class AccountService extends CommonService<AccessDao> {
 
     private String verifyUsernameNotInSystem(final String toCheck) {
         // To avoid problems, all internal handling of the username is in lowercase
-        final String username = toCheck.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        final String username = toLower(toCheck);
 
         if (dao.findExistingUserByUsername(username) != null) {
             throw new IWSException(IWSErrors.USER_ACCOUNT_EXISTS, "An account for the user with username " + username + " already exists.");
@@ -422,7 +425,7 @@ public final class AccountService extends CommonService<AccessDao> {
         if (request.getPassword() == null) {
             password = PasswordGenerator.generatePassword();
         } else {
-            password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+            password = toLower(request.getPassword());
         }
 
         // As we doubt that a user will provide enough entropy to enable us to

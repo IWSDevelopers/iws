@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
+
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Field;
@@ -311,17 +313,6 @@ public class BasicJpaDao implements BasicDao {
      */
     protected static String toLower(final String str) {
         return str.toLowerCase(IWSConstants.DEFAULT_LOCALE);
-    }
-
-    /**
-     * Returns the lower case version of the String, using the default Locale
-     * for the conversion.
-     *
-     * @param str String to lower case
-     * @return Lower cased String
-     */
-    protected static String toUpper(final String str) {
-        return str.toUpperCase(IWSConstants.DEFAULT_LOCALE);
     }
 
     /**

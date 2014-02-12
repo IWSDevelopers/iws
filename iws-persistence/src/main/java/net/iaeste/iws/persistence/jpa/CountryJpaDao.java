@@ -14,7 +14,8 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
-import net.iaeste.iws.api.constants.IWSConstants;
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
+
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.persistence.CountryDao;
@@ -62,7 +63,7 @@ public final class CountryJpaDao extends BasicJpaDao implements CountryDao {
         final Query query = entityManager.createNamedQuery("view.findCountriesByCountryCode");
         final List<String> codes = new ArrayList<>(countryCodes.size());
         for (final String code : countryCodes) {
-            codes.add(code.toUpperCase(IWSConstants.DEFAULT_LOCALE));
+            codes.add(toUpper(code));
         }
         query.setParameter("codes", codes);
 

@@ -14,17 +14,18 @@
  */
 package net.iaeste.iws.core.services;
 
-import net.iaeste.iws.api.constants.IWSConstants;
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
+
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.util.Paginatable;
-import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
+import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import net.iaeste.iws.persistence.views.CountryView;
 
 import java.util.ArrayList;
@@ -166,7 +167,7 @@ public final class CountryService {
     private static CountryEntity transform(final Country country) {
         final CountryEntity entity = new CountryEntity();
 
-        entity.setCountryCode(country.getCountryCode().toUpperCase(IWSConstants.DEFAULT_LOCALE));
+        entity.setCountryCode(toUpper(country.getCountryCode()));
         entity.setCountryName(country.getCountryName());
         entity.setCountryNameFull(country.getCountryNameFull());
         entity.setCountryNameNative(country.getCountryNameNative());

@@ -15,9 +15,9 @@
 package net.iaeste.iws.core.services;
 
 import static net.iaeste.iws.common.utils.HashcodeGenerator.generateHash;
+import static net.iaeste.iws.common.utils.StringUtils.toLower;
 import static net.iaeste.iws.core.transformers.AdministrationTransformer.transform;
 
-import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Authorization;
@@ -100,7 +100,7 @@ public final class AccessService extends CommonService<AccessDao> {
      */
     public AuthenticationResponse generateSession(final AuthenticationRequest request) {
         removeDeprecatedSessions();
-        loginRetries.registerUser(request.getUsername());
+        loginRetries.registerUser(toLower(request.getUsername()));
         final UserEntity user = findUserFromCredentials(request);
         final SessionEntity activeSession = dao.findActiveSession(user);
 
@@ -256,7 +256,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final UserEntity user = dao.findUserByCodeAndStatus(resetPasswordToken, UserStatus.ACTIVE);
 
         if (user != null) {
-            final String pwd = password.getNewPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+            final String pwd = toLower(password.getNewPassword());
             final String salt = UUID.randomUUID().toString();
 
             user.setPassword(generateHash(pwd, salt));
@@ -281,7 +281,7 @@ public final class AccessService extends CommonService<AccessDao> {
      * @param password       New Password for the user
      */
     public void updatePassword(final Authentication authentication, final Password password) {
-        final String newPassword = password.getNewPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        final String newPassword = toLower(password.getNewPassword());
         final String salt = UUID.randomUUID().toString();
         final UserEntity user = authentication.getUser();
 
@@ -376,7 +376,7 @@ public final class AccessService extends CommonService<AccessDao> {
      */
     private UserEntity findUserFromCredentials(final AuthenticationRequest request) throws IWSException {
         // First, find an Entity exists for the given (lowercased) username
-        final String username = request.getUsername().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        final String username = toLower(request.getUsername());
         final UserEntity user = dao.findActiveUserByUsername(username);
 
         if (user != null) {
@@ -386,7 +386,7 @@ public final class AccessService extends CommonService<AccessDao> {
                 // Request Object, lowercase and generate a salted
                 // cryptographical hashvalue for it, which we can then match
                 // directly with the stored value from the UserEntity
-                final String password = request.getPassword().toLowerCase(IWSConstants.DEFAULT_LOCALE);
+                final String password = toLower(request.getPassword());
                 final String hashcode;
 
                 // Hack for migrated users, so they can reuse their old
@@ -434,7 +434,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final boolean result;
 
         if (oldPassword != null) {
-            final String pwd = generateHash(oldPassword.toLowerCase(IWSConstants.DEFAULT_LOCALE), user.getSalt());
+            final String pwd = generateHash(toLower(oldPassword), user.getSalt());
             result = user.getPassword().equals(pwd);
         } else {
             result = false;

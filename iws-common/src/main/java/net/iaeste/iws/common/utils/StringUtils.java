@@ -14,6 +14,8 @@
  */
 package net.iaeste.iws.common.utils;
 
+import net.iaeste.iws.api.constants.IWSConstants;
+
 /**
  * Wrapper for the Apache Commons Lang3 StringUtils.
  *
@@ -27,6 +29,20 @@ public final class StringUtils {
      * Private Constructor, this is a utility class.
      */
     private StringUtils() {
+    }
+
+    /**
+     * @see String#toLowerCase(java.util.Locale)
+     */
+    public static String toLower(final String str) {
+        return str != null ? str.toLowerCase(IWSConstants.DEFAULT_LOCALE) : null;
+    }
+
+    /**
+     * @see String#toUpperCase(java.util.Locale)
+     */
+    public static String toUpper(final String str) {
+        return str != null ? str.toUpperCase(IWSConstants.DEFAULT_LOCALE) : null;
     }
 
     /**

@@ -14,7 +14,8 @@
  */
 package net.iaeste.iws.core.util;
 
-import net.iaeste.iws.api.constants.IWSConstants;
+import static net.iaeste.iws.common.utils.StringUtils.toLower;
+
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
 
@@ -142,7 +143,7 @@ public final class GroupUtil {
                 groupName = group.getGroupName();
         }
 
-        return groupName.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        return toLower(groupName);
     }
 
     /**
@@ -180,6 +181,6 @@ public final class GroupUtil {
                 fullGroupName = group.getGroupName();
         }
 
-        return fullGroupName.toLowerCase(IWSConstants.DEFAULT_LOCALE);
+        return toLower(fullGroupName);
     }
 }

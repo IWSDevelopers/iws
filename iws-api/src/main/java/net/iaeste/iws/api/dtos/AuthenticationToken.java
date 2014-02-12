@@ -104,6 +104,7 @@ public final class AuthenticationToken extends AbstractVerification {
         // Object, we're not going to invoke the setters here.
         setToken(token.token);
         groupId = token.groupId;
+        traceId = token.traceId;
     }
 
     // =========================================================================

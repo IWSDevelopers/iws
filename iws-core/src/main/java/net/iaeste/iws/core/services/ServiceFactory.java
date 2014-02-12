@@ -16,7 +16,7 @@ package net.iaeste.iws.core.services;
 
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.notifications.Notifications;
-import net.iaeste.iws.core.singletons.ActiveSessions;
+import net.iaeste.iws.core.monitors.ActiveSessions;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.AdminDao;
 import net.iaeste.iws.persistence.CountryDao;

@@ -132,7 +132,7 @@ public final class AccessClientTest extends AbstractTest {
         final AuthenticationResponse response = access.generateSession(request);
         assertThat(response.isOk(), is(false));
         assertThat(response.getError(), is(IWSErrors.EXCEEDED_LOGIN_ATTEMPTS));
-        assertThat(response.getMessage().contains("User have attempted to login too many times unsuccessfully, the account is being Blocked"), is(true));
+        assertThat(response.getMessage().contains("User have attempted to login too many times unsuccessfully. The account is being Blocked"), is(true));
     }
 
     @Test

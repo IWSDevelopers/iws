@@ -23,7 +23,7 @@ import net.iaeste.iws.api.util.Verifiable;
 import net.iaeste.iws.common.utils.HashcodeGenerator;
 import net.iaeste.iws.core.exceptions.SessionException;
 import net.iaeste.iws.core.services.ServiceFactory;
-import net.iaeste.iws.core.singletons.ActiveSessions;
+import net.iaeste.iws.core.monitors.ActiveSessions;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.GroupEntity;

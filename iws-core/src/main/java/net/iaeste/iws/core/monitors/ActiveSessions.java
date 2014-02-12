@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.core.singletons;
+package net.iaeste.iws.core.monitors;
 
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.common.configuration.Settings;
@@ -130,6 +130,7 @@ public final class ActiveSessions {
      * @param token Session Token
      */
     public void registerToken(final String token) {
+        log.info("Registering Token {} in the Active Session Monitor.", token);
         synchronized (lock) {
             if (tokens.containsKey(token)) {
                 tokens.put(token, new Date());
@@ -161,6 +162,7 @@ public final class ActiveSessions {
             }
         }
 
+        log.debug("The token {} was last used {}.", token, lastAccess);
         return lastAccess;
     }
 
@@ -170,6 +172,7 @@ public final class ActiveSessions {
      * @param token Session Token
      */
     public void removeToken(final String token) {
+        log.info("Removing token {} from the Active Session Monitor.", token);
         synchronized (lock) {
             tokens.remove(token);
         }
@@ -204,6 +207,7 @@ public final class ActiveSessions {
      * @param token Token to update
      */
     public void updateToken(final String token) {
+        log.debug("Updating the last access for the token {} to now.", token);
         synchronized (lock) {
             if (tokens.containsKey(token)) {
                 tokens.put(token, new Date());

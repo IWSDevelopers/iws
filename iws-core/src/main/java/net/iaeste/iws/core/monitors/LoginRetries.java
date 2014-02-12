@@ -12,7 +12,7 @@
  * cannot be held legally responsible for any problems the software may cause.
  * =============================================================================
  */
-package net.iaeste.iws.core.singletons;
+package net.iaeste.iws.core.monitors;
 
 import static net.iaeste.iws.common.utils.StringUtils.toLower;
 
@@ -20,6 +20,8 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.SessionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,6 +46,8 @@ import java.util.Map;
  * @noinspection StaticNonFinalField
  */
 public final class LoginRetries {
+
+    private static final Logger log = LoggerFactory.getLogger(LoginRetries.class);
 
     // Singleton Instance Object & Lock Object
     private static final Object INSTANCE_LOCK = new Object();
@@ -105,6 +109,7 @@ public final class LoginRetries {
      * @param user User to register
      */
     public void registerUser(final String user) {
+        log.info("Registering User {} in the Login Retry Monitor.", user);
         final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
         final Date when = new Date(new Date().getTime() - blockedPeriod);
         final String key = toLower(user);
@@ -127,8 +132,9 @@ public final class LoginRetries {
                         // and we're still within the cool down period... User
                         // is blocked!
                         final Date time = new Date(retries.getFirstAttempt().getTime() + blockedPeriod);
-                        throw new SessionException(IWSErrors.EXCEEDED_LOGIN_ATTEMPTS, "User have attempted to login too many times unsuccessfully," +
-                                " the account is being Blocked until " + format.format(time));
+                        throw new SessionException(IWSErrors.EXCEEDED_LOGIN_ATTEMPTS,
+                                "User have attempted to login too many times unsuccessfully. " +
+                                "The account is being Blocked until " + format.format(time));
                     }
                 } else {
                     // User has not exceeded the amount of Login attempts
@@ -207,6 +213,7 @@ public final class LoginRetries {
      * @param user User to remove
      */
     public void removeAuthenticatedUser(final String user) {
+        log.info("Removing User {} from the Login Retry Monitor.", user);
         synchronized (lock) {
             users.remove(user);
         }

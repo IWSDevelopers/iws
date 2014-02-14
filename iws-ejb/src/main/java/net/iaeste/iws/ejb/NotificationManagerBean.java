@@ -145,6 +145,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @Override
     public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
+        log.info("New '" + type + "' notification request at NotificationManagerBean");
         try {
             notifications.notify(authentication, obj, type);
         } catch (IWSException e) {
@@ -172,6 +173,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      */
     @Override
     public void notify(final UserEntity user) {
+        log.info("New 'user' notification request at NotificationManagerBean");
         try {
             notifications.notify(user);
         } catch (IWSException e) {

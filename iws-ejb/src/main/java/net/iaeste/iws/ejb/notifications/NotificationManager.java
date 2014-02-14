@@ -151,6 +151,7 @@ public final class NotificationManager implements Notifications {
 //        }
 
 //        notifyObservers();
+        log.info("New '" + type + "' notification request at NotificationManager");
         if (obj != null) {
             try {
                 final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -160,6 +161,7 @@ public final class NotificationManager implements Notifications {
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(type, bytes);
                 dao.persist(job);
+                log.info("New notification job for '" + type + "' created");
                 if (!hostedInBean) {
                     processJobs();
                 }
@@ -196,6 +198,7 @@ public final class NotificationManager implements Notifications {
             //write to log?
 //        }
 
+        log.info("New 'user' notification request at NotificationManager");
         if (user != null) {
             try {
                 final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -205,6 +208,7 @@ public final class NotificationManager implements Notifications {
                 final byte[] bytes = outputStream.toByteArray();
                 final NotificationJobEntity job = new NotificationJobEntity(NotificationType.RESET_PASSWORD, bytes);
                 dao.persist(job);
+                log.info("New notification job for '" + NotificationType.RESET_PASSWORD + "' created");
                 if (!hostedInBean) {
                     processJobs();
                 }

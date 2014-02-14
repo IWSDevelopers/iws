@@ -15,7 +15,7 @@
 package net.iaeste.iws.migrate.migrators;
 
 import static net.iaeste.iws.migrate.migrators.Helpers.convert;
-import static net.iaeste.iws.migrate.migrators.Helpers.upper;
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.enums.Currency;
@@ -98,7 +98,7 @@ public class CountryMigrator implements Migrator<IW3CountriesEntity> {
     private static CountryEntity convertEntity(final IW3CountriesEntity oldCountry) {
         final CountryEntity result = new CountryEntity();
 
-        result.setCountryCode(upper(oldCountry.getCountryid()));
+        result.setCountryCode(toUpper(oldCountry.getCountryid()));
         result.setCountryName(convert(oldCountry.getCountryname()));
         result.setCountryNameFull(convert(oldCountry.getCountrynamefull()));
         result.setCountryNameNative(convert(oldCountry.getCountrynamenative()));
@@ -120,7 +120,7 @@ public class CountryMigrator implements Migrator<IW3CountriesEntity> {
         final String currency = convert(currencyBytes);
         final String countryname = convert(countrynameBytes);
         Currency converted = null;
-        final String value = upper(currency);
+        final String value = toUpper(currency);
 
         switch (value) {
             case "BGL": // Bulgaria converted in 1999 to BGN

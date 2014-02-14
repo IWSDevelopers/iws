@@ -15,7 +15,7 @@
 package net.iaeste.iws.migrate.migrators;
 
 import static net.iaeste.iws.migrate.migrators.Helpers.convert;
-import static net.iaeste.iws.migrate.migrators.Helpers.upper;
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.User;
@@ -215,7 +215,7 @@ public class UserMigrator implements Migrator<IW3ProfilesEntity> {
     private static Gender convertGender(final String gender) {
         final Gender result;
 
-        switch (upper(gender)) {
+        switch (toUpper(gender)) {
             case "MALE" :
                 result = Gender.MALE;
                 break;
@@ -247,13 +247,13 @@ public class UserMigrator implements Migrator<IW3ProfilesEntity> {
     }
 
     private static UserStatus convertUserStatus(final String status) {
-        return UserStatus.valueOf(upper(status));
+        return UserStatus.valueOf(toUpper(status));
     }
 
     private static UserType convertUserType(final String type) {
         final UserType result;
 
-        switch (upper(type)) {
+        switch (toUpper(type)) {
             case "V":
                 result = UserType.VOLUNTEER;
                 break;

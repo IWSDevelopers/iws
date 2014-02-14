@@ -15,7 +15,7 @@
 package net.iaeste.iws.migrate.migrators;
 
 import static net.iaeste.iws.migrate.migrators.Helpers.convert;
-import static net.iaeste.iws.migrate.migrators.Helpers.upper;
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupStatus;
@@ -290,7 +290,7 @@ public class GroupMigrator implements Migrator<IW3GroupsEntity> {
     public static GroupType convertGroupType(final String type) {
         final GroupType groupType;
 
-        switch (upper(type)) {
+        switch (toUpper(type)) {
             case "ADMINISTRATION" :
                 groupType = GroupType.ADMINISTRATION;
                 break;
@@ -332,7 +332,7 @@ public class GroupMigrator implements Migrator<IW3GroupsEntity> {
     private static GroupStatus convertGroupStatus(final String status) {
         final GroupStatus groupStatus;
 
-        switch (upper(status)) {
+        switch (toUpper(status)) {
             case "ACTIVE" :
                 groupStatus = GroupStatus.ACTIVE;
                 break;

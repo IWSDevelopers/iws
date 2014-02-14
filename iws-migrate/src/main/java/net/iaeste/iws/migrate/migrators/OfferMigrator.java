@@ -17,7 +17,7 @@ package net.iaeste.iws.migrate.migrators;
 import static net.iaeste.iws.migrate.migrators.Helpers.convert;
 import static net.iaeste.iws.migrate.migrators.Helpers.lowerAndShorten;
 import static net.iaeste.iws.migrate.migrators.Helpers.round;
-import static net.iaeste.iws.migrate.migrators.Helpers.upper;
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;
@@ -431,7 +431,7 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
         final FieldOfStudy field;
 
         if ((faculty != null) && !faculty.isEmpty()) {
-            final String toCheck = upper(faculty.replace(' ', '_').trim());
+            final String toCheck = toUpper(faculty.replace(' ', '_').trim());
 
             switch (toCheck) {
                 case "AERONAUTICAL_ENGINEERING":
@@ -666,7 +666,7 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
      * @return IWS Language
      */
     private static Language convertLanguage(final String language, final Language defaultLanguage) {
-        final String toCheck = upper(language);
+        final String toCheck = toUpper(language);
         final Language result;
 
         if ((toCheck != null) && !toCheck.isEmpty()) {

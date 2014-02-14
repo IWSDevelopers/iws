@@ -238,7 +238,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         notifications.processJobs();
     }
 
-    @Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds")
+    @Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds", persistent = false)
     //@Schedule(minute = "*/1", hour = "*", info="Every 60 seconds")
     private void processJobsScheduled() {
         log.info("processJobsScheduled started at " + new DateTime());

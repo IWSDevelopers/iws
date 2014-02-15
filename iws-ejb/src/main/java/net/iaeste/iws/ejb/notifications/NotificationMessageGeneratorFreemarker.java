@@ -42,6 +42,7 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
      */
     private static final String TEMPLATE_DIR = "freemarker_templates";
     private static final String USER_TEMPLATE_DIR = TEMPLATE_DIR + "/user";
+    private static final String GROUP_TEMPLATE_DIR = TEMPLATE_DIR + "/group";
     private Settings settings;
 
     public NotificationMessageGeneratorFreemarker() {
@@ -92,6 +93,11 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
                 templateName = "updateUsername.ftl";
                 titleTemplateName = "updateUsernameTitle.ftl";
                 dir = USER_TEMPLATE_DIR;
+                break;
+            case NEW_GROUP_OWNER:
+                templateName = "newGroupOwner.ftl";
+                titleTemplateName = "newGroupOwnerTitle.ftl";
+                dir = GROUP_TEMPLATE_DIR;
                 break;
             default:
                 throw new NotificationException("NotificationType " + type + " is not supported in this context.");

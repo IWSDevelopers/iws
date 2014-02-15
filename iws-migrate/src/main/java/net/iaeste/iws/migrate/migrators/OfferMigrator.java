@@ -14,10 +14,10 @@
  */
 package net.iaeste.iws.migrate.migrators;
 
+import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 import static net.iaeste.iws.migrate.migrators.Helpers.convert;
 import static net.iaeste.iws.migrate.migrators.Helpers.lowerAndShorten;
 import static net.iaeste.iws.migrate.migrators.Helpers.round;
-import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.enums.GroupType;

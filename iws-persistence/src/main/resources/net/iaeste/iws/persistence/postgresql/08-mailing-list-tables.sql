@@ -5,25 +5,26 @@
 -- =============================================================================
 create sequence mailing_list_sequence start with 1 increment by 1;
 create table mailing_lists (
-    id            integer default nextval('mailing_list_sequence'),
-    external_id   varchar(36),
-    private       boolean default true,
-    list_address  varchar(100),
-    active        boolean,
-    created       timestamp default now(),
-    modified      timestamp default now(),
+    id             integer default nextval('mailing_list_sequence'),
+    external_id    varchar(36),
+    private        boolean default true,
+    list_address   varchar(100),
+    subject_prefix varchar(50),
+    active         boolean,
+    created        timestamp default now(),
+    modified       timestamp default now(),
 
     /* Primary & Foreign Keys */
-    constraint mailing_lists_pk              primary key (id),
+    constraint mailing_lists_pk primary key (id),
 
     /* Not Null Constraints */
-    constraint mailing_lists_notnull_id                  check (id is not null),
-    constraint mailing_lists_notnull_external_id         check (external_id is not null),
-    constraint mailing_lists_notnull_private             check (private is not null),
-    constraint mailing_lists_notnull_list_address        check (list_address is not null),
-    constraint mailing_lists_notnull_list_active         check (active is not null),
-    constraint mailing_lists_notnull_created             check (created is not null),
-    constraint mailing_lists_notnull_modified            check (modified is not null)
+    constraint mailing_lists_notnull_id           check (id is not null),
+    constraint mailing_lists_notnull_external_id  check (external_id is not null),
+    constraint mailing_lists_notnull_private      check (private is not null),
+    constraint mailing_lists_notnull_list_address check (list_address is not null),
+    constraint mailing_lists_notnull_list_active  check (active is not null),
+    constraint mailing_lists_notnull_created      check (created is not null),
+    constraint mailing_lists_notnull_modified     check (modified is not null)
 );
 
 

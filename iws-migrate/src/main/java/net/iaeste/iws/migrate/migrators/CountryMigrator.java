@@ -14,8 +14,8 @@
  */
 package net.iaeste.iws.migrate.migrators;
 
-import static net.iaeste.iws.migrate.migrators.Helpers.convert;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
+import static net.iaeste.iws.migrate.migrators.Helpers.convert;
 
 import net.iaeste.iws.api.dtos.Country;
 import net.iaeste.iws.api.enums.Currency;

@@ -15,7 +15,7 @@
 package net.iaeste.iws.persistence.entities.mailing_list;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.persistence.Externable;
+import net.iaeste.iws.persistence.entities.Updateable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ import java.util.Date;
 })
 @Entity
 @Table(name = "mailing_lists")
-public class MailingListEntity implements Externable<MailingListEntity> {
+public class MailingListEntity implements Updateable<MailingListEntity> {
 
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
@@ -69,6 +69,9 @@ public class MailingListEntity implements Externable<MailingListEntity> {
 
     @Column(name = "list_address", length = 100)
     private String listAddress = null;
+
+    @Column(name = "subject_prefix", length = 50)
+    private String subjectPrefix = null;
 
     @Column(name = "active")
     private boolean active = true;
@@ -104,7 +107,6 @@ public class MailingListEntity implements Externable<MailingListEntity> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setExternalId(final String externalId) {
         this.externalId = externalId;
     }
@@ -112,7 +114,6 @@ public class MailingListEntity implements Externable<MailingListEntity> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public String getExternalId() {
         return externalId;
     }
@@ -131,6 +132,14 @@ public class MailingListEntity implements Externable<MailingListEntity> {
 
     public String getListAddress() {
         return listAddress;
+    }
+
+    public void setSubjectPrefix(final String subjectPrefix) {
+        this.subjectPrefix = subjectPrefix;
+    }
+
+    public String getSubjectPrefix() {
+        return subjectPrefix;
     }
 
     public void setActive(final boolean active) {

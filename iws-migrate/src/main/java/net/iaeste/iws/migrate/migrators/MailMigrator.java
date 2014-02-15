@@ -37,7 +37,10 @@ import java.util.UUID;
 
 /**
  * This Class handles migtration of Mail information, which includes the default
- * listing for group mailinglists, user aliases, etc.
+ * listing for group mailinglists, user aliases, etc.<br />
+ *   As this migrator can be run repeatedly without a problem, we it may well be
+ * used so. Which is why, there's a setup method also, which resets the database
+ * prior to populating the tables with data from IWS.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
@@ -66,6 +69,10 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
      */
     @Override
     public MigrationResult migrate() {
+        // Wipe the mailing database prior to migrating
+        mailDao.wipeDatabase();
+
+        // Populate the mailing tables
         final MigrationResult groups = migrateGroups();
         final MigrationResult aliases = migrateAliases();
         final MigrationResult ncs = migrateNCs();
@@ -180,6 +187,7 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         final MailingListEntity entity = new MailingListEntity();
         entity.setExternalId(group.getExternalId());
         entity.setListAddress(group.getListName());
+        entity.setSubjectPrefix(group.getGroupName());
         entity.setPrivateList(isPrivate);
         entity.setActive(group.getStatus() == GroupStatus.ACTIVE);
         entity.setModified(group.getModified());

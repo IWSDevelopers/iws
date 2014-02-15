@@ -22,4 +22,6 @@ package net.iaeste.iws.migrate.daos;
 public interface MailDao {
 
     void persist(Object entity);
+
+    void wipeDatabase();
 }

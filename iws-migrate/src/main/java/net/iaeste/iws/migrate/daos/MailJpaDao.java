@@ -54,4 +54,23 @@ public class MailJpaDao implements MailDao {
     public void persist(final Object entity) {
         entityManager.persist(entity);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void wipeDatabase() {
+        // First we truncate the tables
+        entityManager.createNativeQuery("truncate mailing_list_membership restart identity cascade").executeUpdate();
+        entityManager.createNativeQuery("truncate mailing_aliases restart identity cascade").executeUpdate();
+        entityManager.createNativeQuery("truncate mailing_lists restart identity cascade").executeUpdate();
+
+        // Second, we force sequence values to restart. Although the
+        // documentation [1] states that the restart identity should take care
+        // of that part - the sequence values still seem to continue.
+        // [1] http://www.postgresql.org/docs/9.1/static/sql-truncate.html
+        entityManager.createNativeQuery("alter sequence mailing_list_membership_sequence restart with 1");
+        entityManager.createNativeQuery("alter sequence mailing_alias_sequence restart with 1");
+        entityManager.createNativeQuery("alter sequence mailing_list_sequence restart with 1");
+    }
 }

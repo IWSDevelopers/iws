@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.common.utils;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -23,7 +24,7 @@ import java.util.UUID;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-//@Ignore("This test is purely to help generate new passwords for IWS Accounts.")
+@Ignore("This test is purely to help generate new passwords for IWS Accounts.")
 public final class GeneratePasswordTest {
 
     private static final String info = "-- Updating Password for user '%s' to '%s'.";

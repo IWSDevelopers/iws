@@ -95,8 +95,8 @@ public class NotificationMessageGeneratorFreemarker implements NotificationMessa
                 dir = USER_TEMPLATE_DIR;
                 break;
             case NEW_GROUP_OWNER:
-                templateName = "newGroupOwner.ftl";
-                titleTemplateName = "newGroupOwnerTitle.ftl";
+                templateName = "groupOwnerChange.ftl";
+                titleTemplateName = "groupOwnerChangeTitle.ftl";
                 dir = GROUP_TEMPLATE_DIR;
                 break;
             default:

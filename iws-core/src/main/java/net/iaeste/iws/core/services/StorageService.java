@@ -18,6 +18,7 @@ import static net.iaeste.iws.core.transformers.StorageTransformer.transform;
 
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.enums.Permission;
+import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.requests.FetchFileRequest;
 import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
@@ -60,18 +61,23 @@ public final class StorageService extends CommonService<AccessDao> {
 
     public FetchFileResponse fetchFile(final Authentication authentication, final FetchFileRequest request) {
         final String externalGroupId = request.getGroupId();
+        final StorageType type = request.getType();
         final FileEntity entity;
         final File file;
 
-        if (externalGroupId == null) {
-            entity = dao.findFileByUserAndExternalId(authentication.getUser(), request.getFileId());
-        } else {
-            // Check if the user is permitted to fetch files for the group, if
-            // not then the method will thrown an Exception
-            final GroupEntity group = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.FETCH_FILE);
+        if (type == StorageType.OWNER) {
+            if (externalGroupId == null) {
+                entity = dao.findFileByUserAndExternalId(authentication.getUser(), request.getFileId());
+            } else {
+                // Check if the user is permitted to fetch files for the group, if
+                // not then the method will thrown an Exception
+                final GroupEntity group = dao.findGroupByPermission(authentication.getUser(), externalGroupId, Permission.FETCH_FILE);
 
-            // Read the allowed file
-            entity = dao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
+                // Read the allowed file
+                entity = dao.findFileByUserGroupAndExternalId(authentication.getUser(), group, request.getFileId());
+            }
+        } else {
+            entity = dao.findAttachedFile(request.getFileId(), externalGroupId, type);
         }
 
         file = transform(entity);

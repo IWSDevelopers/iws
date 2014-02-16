@@ -61,7 +61,13 @@ import java.util.Date;
                 query = "select a from AttachmentEntity a " +
                         "where a.table = :table" +
                         "  and a.record = :recordid" +
-                        "  and a.file.id = :fileid")
+                        "  and a.file.id = :fileid"),
+        @NamedQuery(name = "attachments.findApplicationAttachment",
+                    query = "select a.file  from AttachmentEntity a, GroupEntity g " +
+                            "where a.record = g.id" +
+                            "  and a.table = 'student_applications'" +
+                            "  and a.file.externalId = :efid" +
+                            "  and g.externalId = :egid")
 })
 @Entity
 @Table(name = "attachments")

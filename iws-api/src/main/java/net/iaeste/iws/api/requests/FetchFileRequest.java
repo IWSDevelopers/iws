@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public final class FetchFileRequest extends AbstractVerification {
 
     private String fileId = null;
     private String groupId = null;
+    private StorageType type = StorageType.OWNER;
     private Boolean readFileData = false;
 
     // =========================================================================
@@ -95,6 +97,26 @@ public final class FetchFileRequest extends AbstractVerification {
     }
 
     /**
+     * Sets the type of Storage that is requested. Most commonly, files are
+     * retrieved by their owners (default), but a file can also be attached to
+     * other Objects, which means that the system needs to be informed, if the
+     * fetching should be for an attached offer.<br />
+     *   The field is mandatory, since it is used to determine which mechanism
+     * is needed for the lookup, hence it must be defined. If set to null, the
+     * method will throw an {@code IllegalArgumentException}.
+     *
+     * @param type Storage Type
+     */
+    public void setType(final StorageType type) throws IllegalArgumentException {
+        ensureNotNull("type", type);
+        this.type = type;
+    }
+
+    public StorageType getType() {
+        return type;
+    }
+
+    /**
      * Determines if the data of the file should also be read out. If not set,
      * then the data is not returned, only the file information.<br />
      *   The method requires that this value is defined. If undefined, i.e.
@@ -124,6 +146,7 @@ public final class FetchFileRequest extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(1);
 
         isNotNull(validation, "fileId", fileId);
+        isNotNull(validation, "type", type);
 
         return validation;
     }

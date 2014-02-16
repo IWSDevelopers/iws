@@ -20,6 +20,7 @@ import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Field;
 import net.iaeste.iws.api.enums.GroupType;
+import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.common.monitoring.MonitoringLevel;
@@ -280,7 +281,27 @@ public class BasicJpaDao implements BasicDao {
         query.setParameter("gid", group.getId());
         query.setParameter("efid", externalId);
 
-        return findUniqueResult(query, "file");
+        return findUniqueResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileEntity findAttachedFile(String externalFileId, String externalGroupId, StorageType type) {
+        final Query query;
+
+        switch (type) {
+            case ATTACHED_TO_APPLICATION:
+                query = entityManager.createNamedQuery("attachments.findApplicationAttachment");
+                break;
+            default:
+                throw new IWSException(IWSErrors.NOT_IMPLEMENTED, "Retrieving Attachments of type " + type.getDescription() + " is not yet supported.");
+        }
+        query.setParameter("efid", externalFileId);
+        query.setParameter("egid", externalGroupId);
+
+        return findUniqueResult(query, "File");
     }
 
     // =========================================================================

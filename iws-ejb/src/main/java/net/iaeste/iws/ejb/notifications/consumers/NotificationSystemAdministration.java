@@ -124,12 +124,12 @@ public class NotificationSystemAdministration implements Observer {
                     processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
                 final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
-                log.info("Notification job task " + jobTask.getId() + " attempt number is going to be updated to " + jobTask.getAttempts()+1, ", processed set to " + processed);
+                log.info("Notification job task " + jobTask.getId() + " attempt number is going to be updated to " + (jobTask.getAttempts()+1) + ", processed set to " + processed);
                 notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
                 log.info("Notification job task " + jobTask.getId() + " was updated");
             } catch (IOException|ClassNotFoundException e) {
                 final boolean processed = false;
-                log.info("Notification job task " + jobTask.getId() + " failed, task is going to be updated to " + jobTask.getAttempts()+1, ", processed set to " + processed);
+                log.info("Notification job task " + jobTask.getId() + " failed, task is going to be updated to " + (jobTask.getAttempts()+1) + ", processed set to " + processed);
                 notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
                 log.info("Notification job task " + jobTask.getId() + " was updated");
                 log.error(e.getMessage(), e);
@@ -294,14 +294,14 @@ public class NotificationSystemAdministration implements Observer {
 
         if (user != null) {
             for (final NotificationType notificationType : notificationTypes) {
-                log.info("Setting " + notificationType + "for user " + user.getId());
+                log.info("Setting " + notificationType + " for user " + user.getId());
                 UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, notificationType);
                 if (userNotification == null) {
                     userNotification = new UserNotificationEntity(user, notificationType, NotificationFrequency.IMMEDIATELY);
                     notificationDao.persist(userNotification);
-                    log.info("Setting " + notificationType + "for user " + user.getId() + " created");
+                    log.info("Setting " + notificationType + " for user " + user.getId() + " created");
                 } else {
-                    log.info("Setting " + notificationType + "for user " + user.getId() + "exists already");
+                    log.info("Setting " + notificationType + " for user " + user.getId() + "exists already");
                 }
             }
             status = NotificationProcessTaskStatus.OK;

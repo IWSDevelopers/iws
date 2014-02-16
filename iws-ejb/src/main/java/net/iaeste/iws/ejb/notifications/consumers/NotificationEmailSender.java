@@ -218,12 +218,12 @@ public class NotificationEmailSender implements Observer {
                     processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
                 final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
-                log.info("Notification job task " + jobTask.getId() + " attempt number is going to be updated to " + jobTask.getAttempts()+1, ", processed set to " + processed);
+                log.info("Notification job task " + jobTask.getId() + " attempt number is going to be updated to " + (jobTask.getAttempts()+1) + ", processed set to " + processed);
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
                 log.info("Notification job task " + jobTask.getId() + " was updated");
             } catch (IOException|ClassNotFoundException e) {
                 final boolean processed = false;
-                log.info("Notification job task " + jobTask.getId() + " failed, task is going to be updated to " + jobTask.getAttempts()+1, ", processed set to " + processed);
+                log.info("Notification job task " + jobTask.getId() + " failed, task is going to be updated to " + (jobTask.getAttempts()+1) + ", processed set to " + processed);
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
                 log.info("Notification job task " + jobTask.getId() + " was updated");
                 log.error(e.getMessage(), e);

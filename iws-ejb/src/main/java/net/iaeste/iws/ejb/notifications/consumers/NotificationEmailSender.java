@@ -203,28 +203,30 @@ public class NotificationEmailSender implements Observer {
     }
 
     private void processMessages() {
-        //wait half minute in case system administration consumer has to do the job first
-//        try {
-//            Thread.sleep(30000);
-//        } catch (InterruptedException ignore) { }
-
         //TODO this DB request doesn't work just after the task is persisted, I (Pavel) have no idea why. once it's solved, some TODOs in NotificationManager(Bean) could fixed
         final List<NotificationJobTasksView> jobTasks = dao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
+            log.info("Processing email notification job task " + jobTask.getId());
             try {
                 final ByteArrayInputStream inputStream = new ByteArrayInputStream(jobTask.getObject());
                 final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
                 NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
+                //TODO task is not processed, so value false is hardcoded for now, should be changed or deleted once problems are solved
+                dao.updateNotificationJobTask(jobTask.getId(), false, jobTask.getAttempts()+1);
                 if (fields != null) {
                     processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
-                boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
+                final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
+                log.info("Notification job task " + jobTask.getId() + " attempt number is going to be updated to " + jobTask.getAttempts()+1, ", processed set to " + processed);
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
-            } catch (IOException |ClassNotFoundException ignored) {
-                //TODO write to log and skip the task or throw an exception?
+                log.info("Notification job task " + jobTask.getId() + " was updated");
+            } catch (IOException|ClassNotFoundException e) {
                 final boolean processed = false;
+                log.info("Notification job task " + jobTask.getId() + " failed, task is going to be updated to " + jobTask.getAttempts()+1, ", processed set to " + processed);
                 dao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
+                log.info("Notification job task " + jobTask.getId() + " was updated");
+                log.error(e.getMessage(), e);
             } catch (IWSException e) {
                 //prevent throwing IWSException out, it stops the timer to run this processing
                 final boolean processed = false;
@@ -242,25 +244,30 @@ public class NotificationEmailSender implements Observer {
         NotificationProcessTaskStatus ret = NotificationProcessTaskStatus.ERROR;
         final List<UserEntity> recipients = getRecipients(fields, type);
         if (recipients == null) {
+            log.info("Notification job task for " + type + " has no recipient");
             return NotificationProcessTaskStatus.NOT_FOR_ME;
         }
 
         for (final UserEntity recipient : recipients) {
+            log.info("Notification job task for " + type + " has recipient " + recipient.getId());
             try {
                 final UserNotificationEntity userSetting = dao.findUserNotificationSetting(recipient, type);
                 //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
                 //should be get from DB directly according to the NotificationType
                 if (userSetting != null && userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
+                    log.info("User notification setting for ", type, " was found");
                     try {
                         final ObjectMessage msg = session.createObjectMessage();
                         final EmailMessage emsg = new EmailMessage();
                         emsg.setTo(getTargetEmailAddress(recipient, type));
                         final Map<String, String> messageData = messageGenerator.generateFromTemplate(fields, type);
+                        log.info("Email message for for ", type, " was generated");
                         emsg.setSubject(messageData.get("title"));
                         emsg.setMessage(messageData.get("body"));
                         msg.setObject(emsg);
 
                         sender.send(msg);
+                        log.info("Email message for for ", type, " was sent to message queue");
                         ret = NotificationProcessTaskStatus.OK;
                     } catch (IWSException e) {
                         log.error("Notification message generating failed", e);

@@ -96,15 +96,12 @@ public class NotificationSystemAdministration implements Observer {
         if (initialized) {
             try {
                 processMessages();
-            //} catch (IWSException e) {
-                // The comment below indicate that IWS Exceptions should be
-                // left, but it was originally referring to the Exception,
-                // which would also catch IWS Exceptions.
-            //    throw e;
+            } catch (IWSException e) {
+                log.error("IWS error occurred", e);
             } catch (RuntimeException e) {
                 //catching all exceptions other than IWSException to prevent
                 //stopping notification processing and leaving error message in log
-                log.error("System error occured", e);
+                log.error("System error occurred", e);
             }
         } else {
             log.warn("Update called for uninitialized observer");
@@ -115,19 +112,26 @@ public class NotificationSystemAdministration implements Observer {
         //TODO this DB request doesn't work just after the task is persisted, I (Pavel) have no idea why. once it's solved, some TODOs in NotificationManager(Bean) could fixed
         final List<NotificationJobTasksView> jobTasks = notificationDao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
+            log.info("Processing system notification job task " + jobTask.getId());
             try {
                 final ByteArrayInputStream inputStream = new ByteArrayInputStream(jobTask.getObject());
                 final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
                 NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
+                //TODO task is not processed, so value false is hardcoded for now, should be changed or deleted once problems are solved
+                notificationDao.updateNotificationJobTask(jobTask.getId(), false, jobTask.getAttempts()+1);
                 if (fields != null) {
                     processedStatus = processTask(fields, jobTask.getNotificationType());
                 }
                 final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
+                log.info("Notification job task " + jobTask.getId() + " attempt number is going to be updated to " + jobTask.getAttempts()+1, ", processed set to " + processed);
                 notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
+                log.info("Notification job task " + jobTask.getId() + " was updated");
             } catch (IOException|ClassNotFoundException e) {
                 final boolean processed = false;
+                log.info("Notification job task " + jobTask.getId() + " failed, task is going to be updated to " + jobTask.getAttempts()+1, ", processed set to " + processed);
                 notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
+                log.info("Notification job task " + jobTask.getId() + " was updated");
                 log.error(e.getMessage(), e);
             } catch (IWSException e) {
                 //prevent throwing IWSException out, it stops the timer to run this processing
@@ -179,10 +183,11 @@ public class NotificationSystemAdministration implements Observer {
             final GroupType groupType = GroupType.valueOf(groupTypeName);
 
             if (groupType == GroupType.NATIONAL) {
+                log.info("New owner for group type " + groupType + ", adding user " + username + "to ncs list");
                 addToNcsList(username);
             }
         } catch (IllegalArgumentException e) {
-            log.error(e.getMessage(), e);
+            log.error("Processing new group owner notification failed", e);
         }
     }
 
@@ -193,6 +198,7 @@ public class NotificationSystemAdministration implements Observer {
             MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(ncsList.getId(), username);
 
             if (subscription == null) {
+                log.info("Adding user " + username + " to ncs list");
                 subscription = new MailingListMembershipEntity();
                 subscription.setMailingList(ncsList);
                 subscription.setMember(username);
@@ -204,6 +210,7 @@ public class NotificationSystemAdministration implements Observer {
     }
 
     private void removeFromNcsList(final String username) {
+        log.info("Deleting user " + username + " from ncs list");
         MailingListEntity ncsList = mailingListDao.findNcsList(settings.getNcsList());
 
         if (ncsList != null) {
@@ -211,6 +218,7 @@ public class NotificationSystemAdministration implements Observer {
 
             if (subscription != null) {
                 mailingListEntityManager.remove(subscription);
+                log.info("User " + username + " deleted from ncs list");
             }
         } else {
             log.error("NCs mailing list lookup failed using '" + settings.getNcsList() + "' address");
@@ -221,10 +229,17 @@ public class NotificationSystemAdministration implements Observer {
         final NotificationProcessTaskStatus status;
         final UserEntity user = accessDao.findUserByUsername(username);
         if (user != null) {
-            final UserNotificationEntity userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_USER, NotificationFrequency.IMMEDIATELY);
-            notificationDao.persist(userNotification);
+            log.info("User " + user.getId() + " to prepare " + NotificationType.ACTIVATE_USER + " notification for found");
+            UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, NotificationType.ACTIVATE_USER);
+            if (userNotification == null) {
+                userNotification = new UserNotificationEntity(user, NotificationType.ACTIVATE_USER, NotificationFrequency.IMMEDIATELY);
+                notificationDao.persist(userNotification);
+                log.info("Notification setting " + NotificationType.ACTIVATE_USER + " for user " + user.getId() + " created");
+            }
+
             status = NotificationProcessTaskStatus.OK;
         } else {
+            log.warn("User " + username + " to prepare notification for was not found");
             status = NotificationProcessTaskStatus.ERROR;
         }
 
@@ -241,10 +256,12 @@ public class NotificationSystemAdministration implements Observer {
         final UserEntity user = accessDao.findActiveUserByUsername(username);
 
         if (user != null) {
+            log.info("Activated user " + user.getId() + " was found");
             createUserMailingAlias(user);
             status = prepareActivatedUserNotificationSetting(user);
         }
         else {
+            log.warn("Activated user " + username + " was not found");
             status = NotificationProcessTaskStatus.ERROR;
         }
 
@@ -277,14 +294,19 @@ public class NotificationSystemAdministration implements Observer {
 
         if (user != null) {
             for (final NotificationType notificationType : notificationTypes) {
+                log.info("Setting " + notificationType + "for user " + user.getId());
                 UserNotificationEntity userNotification = notificationDao.findUserNotificationSetting(user, notificationType);
                 if (userNotification == null) {
                     userNotification = new UserNotificationEntity(user, notificationType, NotificationFrequency.IMMEDIATELY);
                     notificationDao.persist(userNotification);
+                    log.info("Setting " + notificationType + "for user " + user.getId() + " created");
+                } else {
+                    log.info("Setting " + notificationType + "for user " + user.getId() + "exists already");
                 }
             }
             status = NotificationProcessTaskStatus.OK;
         } else {
+            log.warn("No user to set system notification for");
             status = NotificationProcessTaskStatus.ERROR;
         }
 

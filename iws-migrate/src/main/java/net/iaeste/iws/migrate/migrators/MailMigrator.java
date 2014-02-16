@@ -186,7 +186,7 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
     private void createMailinglist(final GroupEntity group, final boolean isPrivate, final boolean ownerOnly) {
         final MailingListEntity entity = new MailingListEntity();
         entity.setExternalId(group.getExternalId());
-        entity.setListAddress(group.getListName());
+        entity.setListAddress(group.getListName() + '@' + (isPrivate ? IWSConstants.PRIVATE_EMAIL_ADDRESS : IWSConstants.PUBLIC_EMAIL_ADDRESS));
         entity.setSubjectPrefix(group.getGroupName());
         entity.setPrivateList(isPrivate);
         entity.setActive(group.getStatus() == GroupStatus.ACTIVE);

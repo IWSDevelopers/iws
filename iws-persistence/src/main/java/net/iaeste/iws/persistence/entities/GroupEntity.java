@@ -71,7 +71,7 @@ import java.util.Map;
                         "  and g.externalId = :id"),
         @NamedQuery(name = "group.findAllNationalAndInternational",
                 query = "select g from GroupEntity g " +
-                        "where g.groupType.grouptype = 'NATIONAL'" +
+                        "where g.groupType.grouptype = 'MEMBER'" +
                         "   or g.groupType.grouptype = 'INTERNATIONAL' " +
                         "order by g.groupType.grouptype asc, g.groupName asc"),
         @NamedQuery(name = "group.findByUserAndExternalId",

@@ -237,7 +237,7 @@ public final class ContactsService {
         if (!userEntities.isEmpty()) {
             final ContactsResponse response = new ContactsResponse();
             response.setType(ContactsType.GROUP);
-            response.setGroups(extractGroups(userEntities).subList(0,1));
+            response.setGroups(extractGroups(userEntities).subList(0,1));  // I think we should add all groups were this group is the parent group
             response.setUsers(extractUsers(userEntities));
 
             return response;

@@ -237,7 +237,17 @@ public final class ContactsService {
         if (!userEntities.isEmpty()) {
             final ContactsResponse response = new ContactsResponse();
             response.setType(ContactsType.GROUP);
-            response.setGroups(extractGroups(userEntities).subList(0,1));  // I think we should add all groups were this group is the parent group
+            // Martin: I think we should add all groups were this group is the
+            //         parent group
+            // Kim:      Although fetching all subgroups may be a good idea, we
+            //         need to alter the code a bit, so it is possible to know
+            //         which Group is the requested and which is the subgroups.
+            //         For this reason, we'll leave these comments here for now
+            //         so we can update the code later to provide this feature.
+            //           A possible solution is to have the UserGroup extracted
+            //         as the initial value, and have the two lists containing
+            //         members and subgroups.
+            response.setGroups(extractGroups(userEntities).subList(0,1));
             response.setUsers(extractUsers(userEntities));
 
             return response;

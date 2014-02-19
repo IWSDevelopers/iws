@@ -141,13 +141,17 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         int persisted = 0;
 
         for (final UserEntity user : users) {
-            final MailingAliasEntity alias = new MailingAliasEntity();
-            alias.setUserName(user.getUsername());
-            alias.setUserAlias(user.getAlias());
-            alias.setCreated(user.getCreated());
+            if (user.getAlias() != null) {
+                final MailingAliasEntity alias = new MailingAliasEntity();
+                alias.setUserName(user.getUsername());
+                alias.setUserAlias(user.getAlias());
+                alias.setCreated(user.getCreated());
 
-            mailDao.persist(alias);
-            persisted++;
+                mailDao.persist(alias);
+                persisted++;
+            } else {
+                log.info("Skipping {} this is a student account.", user.getUsername());
+            }
         }
 
         log.info("Completed Migrating user Aliases, persisted {}.", persisted);

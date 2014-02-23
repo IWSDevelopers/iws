@@ -63,9 +63,21 @@ import java.util.Date;
                         "  and a.record = :recordid" +
                         "  and a.file.id = :fileid"),
         @NamedQuery(name = "attachments.findApplicationAttachment",
-                    query = "select a.file  from AttachmentEntity a, GroupEntity g " +
-                            "where a.record = g.id" +
-                            "  and a.table = 'student_applications'" +
+                    query = "select" +
+                            "  a.file " +
+                            "from" +
+                            "  AttachmentEntity a," +
+                            "  ApplicationEntity sa," +
+                            "  OfferGroupEntity o2g," +
+                            "  OfferEntity o," +
+                            "  EmployerEntity e," +
+                            "  GroupEntity g " +
+                            "where a.table = 'student_applications'" +
+                            "  and sa.id = a.record" +
+                            "  and o2g.id = sa.offerGroup.id" +
+                            "  and o.id = o2g.offer.id" +
+                            "  and e.id = o.employer.id" +
+                            "  and g.id = e.group.id" +
                             "  and a.file.externalId = :efid" +
                             "  and g.externalId = :egid")
 })

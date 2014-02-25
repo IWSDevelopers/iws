@@ -147,6 +147,7 @@ public interface BasicDao {
      * @throws net.iaeste.iws.persistence.exceptions.PersistenceException if a single file could not be found
      */
     FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
+    FileEntity findAttachedFileByUserAndExternalId(GroupEntity group, String externalId) throws PersistenceException;
 
     GroupEntity findMemberGroup(UserEntity user);
 

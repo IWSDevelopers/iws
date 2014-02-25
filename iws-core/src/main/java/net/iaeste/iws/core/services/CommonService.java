@@ -21,6 +21,7 @@ import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Address;
 import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.Person;
+import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.exceptions.AuthorizationException;
@@ -291,8 +292,13 @@ public class CommonService<T extends BasicDao> {
         return bytes;
     }
 
-    protected void deleteFile(final Authentication authentication, final File file) {
-        final FileEntity entity = dao.findFileByUserAndExternalId(authentication.getUser(), file.getFileId());
+    protected void deleteFile(final Authentication authentication, final File file, final StorageType type) {
+        final FileEntity entity;
+        if (type == StorageType.ATTACHED_TO_APPLICATION) {
+            entity = dao.findAttachedFileByUserAndExternalId(authentication.getGroup(), file.getFileId());
+        } else {
+            entity = dao.findFileByUserAndExternalId(authentication.getUser(), file.getFileId());
+        }
 
         if (entity != null) {
             final String filename = entity.getFilename();

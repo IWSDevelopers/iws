@@ -62,24 +62,18 @@ import java.util.Date;
                         "where a.table = :table" +
                         "  and a.record = :recordid" +
                         "  and a.file.id = :fileid"),
-        @NamedQuery(name = "attachments.findApplicationAttachment",
-                    query = "select" +
-                            "  a.file " +
-                            "from" +
-                            "  AttachmentEntity a," +
-                            "  ApplicationEntity sa," +
-                            "  OfferGroupEntity o2g," +
-                            "  OfferEntity o," +
-                            "  EmployerEntity e," +
-                            "  GroupEntity g " +
-                            "where a.table = 'student_applications'" +
-                            "  and sa.id = a.record" +
-                            "  and o2g.id = sa.offerGroup.id" +
-                            "  and o.id = o2g.offer.id" +
-                            "  and e.id = o.employer.id" +
-                            "  and g.id = e.group.id" +
-                            "  and a.file.externalId = :efid" +
-                            "  and g.externalId = :egid")
+        @NamedQuery(name = "file.findApplicationBySendingGroupAndExternalFileId",
+                query = "select a.file from AttachmentEntity a, ApplicationEntity sa " +
+                        "where a.table = 'student_applications'" +
+                        "  and a.record = sa.id" +
+                        "  and sa.offerGroup.group.id = :gid" +
+                        "  and a.file.externalId = :efid"),
+        @NamedQuery(name = "file.findApplicationByReceivingGroupAndExternalFileId",
+                query = "select a.file from AttachmentEntity a, ApplicationEntity sa " +
+                        "where a.table = 'student_applications'" +
+                        "  and a.record = sa.id" +
+                        "  and sa.offerGroup.offer.employer.group.externalId = :egid" +
+                        "  and a.file.externalId = :efid")
 })
 @Entity
 @Table(name = "attachments")

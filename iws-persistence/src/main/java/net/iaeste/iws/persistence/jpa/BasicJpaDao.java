@@ -37,6 +37,7 @@ import net.iaeste.iws.persistence.entities.PermissionRoleEntity;
 import net.iaeste.iws.persistence.entities.Updateable;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
+import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.monitoring.MonitoringProcessor;
 import net.iaeste.iws.persistence.views.IWSView;
 
@@ -241,6 +242,18 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
+    public FileEntity findAttachedFileByUserAndExternalId(final GroupEntity group, final String externalId) throws PersistenceException {
+        final Query query = entityManager.createNamedQuery("file.findApplicationBySendingGroupAndExternalFileId");
+        query.setParameter("gid", group.getId());
+        query.setParameter("efid", externalId);
+
+        return findUniqueResult(query, "File");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public GroupEntity findMemberGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
         query.setParameter("uid", user.getId());
@@ -293,13 +306,13 @@ public class BasicJpaDao implements BasicDao {
 
         switch (type) {
             case ATTACHED_TO_APPLICATION:
-                query = entityManager.createNamedQuery("attachments.findApplicationAttachment");
+                query = entityManager.createNamedQuery("file.findApplicationByReceivingGroupAndExternalFileId");
                 break;
             default:
                 throw new IWSException(IWSErrors.NOT_IMPLEMENTED, "Retrieving Attachments of type " + type.getDescription() + " is not yet supported.");
         }
-        query.setParameter("efid", externalFileId);
         query.setParameter("egid", externalGroupId);
+        query.setParameter("efid", externalFileId);
 
         return findUniqueResult(query, "File");
     }

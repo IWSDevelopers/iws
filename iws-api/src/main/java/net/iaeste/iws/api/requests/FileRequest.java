@@ -16,6 +16,7 @@ package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.File;
+import net.iaeste.iws.api.enums.StorageType;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public final class FileRequest extends AbstractVerification {
      * The File Object to process.
      */
     private File file = null;
+    private StorageType type = StorageType.OWNER;
     private Boolean deleteFile = false;
 
     // =========================================================================
@@ -78,6 +80,26 @@ public final class FileRequest extends AbstractVerification {
     }
 
     /**
+     * Sets the type of Storage that is requested. Most commonly, files are
+     * retrieved by their owners (default), but a file can also be attached to
+     * other Objects, which means that the system needs to be informed, if the
+     * fetching should be for an attached offer.<br />
+     *   The field is mandatory, since it is used to determine which mechanism
+     * is needed for the lookup, hence it must be defined. If set to null, the
+     * method will throw an {@code IllegalArgumentException}.
+     *
+     * @param type Storage Type
+     */
+    public void setType(final StorageType type) throws IllegalArgumentException {
+        ensureNotNull("type", type);
+        this.type = type;
+    }
+
+    public StorageType getType() {
+        return type;
+    }
+
+    /**
      * Sets the Delete File flag. If the file exists and this flag is set, then
      * the file will be removed from the system. The deleting operation will
      * wipe the data from the system, and later recovery will not be possible.
@@ -97,7 +119,7 @@ public final class FileRequest extends AbstractVerification {
         return deleteFile;
     }
 
-// =========================================================================
+    // =========================================================================
     // Standard Request Methods
     // =========================================================================
 
@@ -109,6 +131,7 @@ public final class FileRequest extends AbstractVerification {
         final Map<String, String> validation = new HashMap<>(1);
 
         isNotNull(validation, "file", file);
+        isNotNull(validation, "type", type);
 
         return validation;
     }

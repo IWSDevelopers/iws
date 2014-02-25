@@ -48,7 +48,7 @@ public final class StorageService extends CommonService<AccessDao> {
         final FileResponse response;
 
         if (request.getDeleteFile()) {
-            deleteFile(authentication, request.getFile());
+            deleteFile(authentication, request.getFile(), request.getType());
             response = new FileResponse();
         } else {
             final FileEntity entity = processFile(authentication, request.getFile());

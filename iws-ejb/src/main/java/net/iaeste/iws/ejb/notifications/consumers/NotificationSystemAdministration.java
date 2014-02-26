@@ -113,32 +113,37 @@ public class NotificationSystemAdministration implements Observer {
         final List<NotificationJobTasksView> jobTasks = notificationDao.findUnprocessedNotificationJobTaskByConsumerId(id, ATTEMPTS_LIMIT);
         for (final NotificationJobTasksView jobTask : jobTasks) {
             log.info("Processing system notification job task " + jobTask.getId());
-            try {
-                final ByteArrayInputStream inputStream = new ByteArrayInputStream(jobTask.getObject());
-                final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
-                final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
-                NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
-                //TODO task is not processed, so value false is hardcoded for now, should be changed or deleted once problems are solved
-                notificationDao.updateNotificationJobTask(jobTask.getId(), false, jobTask.getAttempts()+1);
-                if (fields != null) {
-                    processedStatus = processTask(fields, jobTask.getNotificationType());
-                }
-                final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
-                log.info("Notification job task " + jobTask.getId() + " attempt number is going to be updated to " + (jobTask.getAttempts()+1) + ", processed set to " + processed);
-                notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
-                log.info("Notification job task " + jobTask.getId() + " was updated");
-            } catch (IOException|ClassNotFoundException e) {
-                final boolean processed = false;
-                log.info("Notification job task " + jobTask.getId() + " failed, task is going to be updated to " + (jobTask.getAttempts()+1) + ", processed set to " + processed);
-                notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
-                log.info("Notification job task " + jobTask.getId() + " was updated");
-                log.error(e.getMessage(), e);
-            } catch (IWSException e) {
-                //prevent throwing IWSException out, it stops the timer to run this processing
-                final boolean processed = false;
-                notificationDao.updateNotificationJobTask(jobTask.getId(), processed, jobTask.getAttempts()+1);
-                log.error("Error during notification processing", e);
+            processTask(jobTask);
+        }
+    }
+
+    private void processTask(final NotificationJobTasksView task) {
+        log.info("Processing system notification job task " + task.getId());
+        try {
+            final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
+            final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
+            final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
+            NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
+            //TODO task is not processed, so value false is hardcoded for now, should be changed or deleted once problems are solved
+            notificationDao.updateNotificationJobTask(task.getId(), false, task.getAttempts()+1);
+            if (fields != null) {
+                processedStatus = processTask(fields, task.getNotificationType());
             }
+            final boolean processed = processedStatus != NotificationProcessTaskStatus.ERROR;
+            log.info("Notification job task " + task.getId() + " attempt number is going to be updated to " + (task.getAttempts()+1) + ", processed set to " + processed);
+            notificationDao.updateNotificationJobTask(task.getId(), processed, task.getAttempts()+1);
+            log.info("Notification job task " + task.getId() + " was updated");
+        } catch (IOException|ClassNotFoundException e) {
+            final boolean processed = false;
+            log.info("Notification job task " + task.getId() + " failed, task is going to be updated to " + (task.getAttempts()+1) + ", processed set to " + processed);
+            notificationDao.updateNotificationJobTask(task.getId(), processed, task.getAttempts()+1);
+            log.info("Notification job task " + task.getId() + " was updated");
+            log.error(e.getMessage(), e);
+        } catch (IWSException e) {
+            //prevent throwing IWSException out, it stops the timer to run this processing
+            final boolean processed = false;
+            notificationDao.updateNotificationJobTask(task.getId(), processed, task.getAttempts()+1);
+            log.error("Error during notification processing", e);
         }
     }
 

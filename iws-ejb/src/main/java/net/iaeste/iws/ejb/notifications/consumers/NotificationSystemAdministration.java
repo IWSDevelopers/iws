@@ -98,7 +98,7 @@ public class NotificationSystemAdministration implements Observer {
                 processMessages();
             } catch (IWSException e) {
                 log.error("IWS error occurred", e);
-            } catch (RuntimeException e) {
+            } catch (Exception e) {
                 //catching all exceptions other than IWSException to prevent
                 //stopping notification processing and leaving error message in log
                 log.error("System error occurred", e);

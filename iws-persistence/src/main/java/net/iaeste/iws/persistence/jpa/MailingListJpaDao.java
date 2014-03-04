@@ -14,6 +14,7 @@
  */
 package net.iaeste.iws.persistence.jpa;
 
+import net.iaeste.iws.common.utils.StringUtils;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
@@ -67,7 +68,7 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
     public MailingListMembershipEntity findMailingListSubscription(final Long listId, final String emailAddress) {
         final Query query = entityManager.createNamedQuery("mailing_list.findListSubsciptionByUserAddressAndListId");
         query.setParameter("lid", listId);
-        query.setParameter("userAddress", emailAddress);
+        query.setParameter("userAddress", StringUtils.toLower(emailAddress));
 
         return findSingleResult(query, "mailinglist");
     }
@@ -78,8 +79,8 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
     @Override
     public void updateUserSubscriptionEmail(final String newEmailAddress, final String oldEmailAddress) {
         final Query query = entityManager.createNamedQuery("mailing_list.updateUserSubscriptionEmail");
-        query.setParameter("newUserAddress", newEmailAddress);
-        query.setParameter("oldUserAddress", oldEmailAddress);
+        query.setParameter("newUserAddress", StringUtils.toLower(newEmailAddress));
+        query.setParameter("oldUserAddress", StringUtils.toLower(oldEmailAddress));
 
         query.executeUpdate();
     }
@@ -90,7 +91,7 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
     @Override
     public MailingAliasEntity findMailingAliasByUsername(final String username) {
         final Query query = entityManager.createNamedQuery("mailing_list.findAliasByUsername");
-        query.setParameter("username", username);
+        query.setParameter("username", StringUtils.toLower(username));
 
         return findSingleResult(query, "MailingAlias");
     }
@@ -101,7 +102,7 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
     @Override
     public MailingAliasEntity findMailingAliasByAlias(final String userAlias) {
         final Query query = entityManager.createNamedQuery("mailing_list.findAliasByUserAlias");
-        query.setParameter("alias", userAlias);
+        query.setParameter("alias", StringUtils.toLower(userAlias));
 
         return findSingleResult(query, "MailingAlias");
     }
@@ -112,8 +113,8 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
     @Override
     public void updateUsernameInMailingAlias(final String newEmailAddress, final String oldEmailAddress) {
         final Query query = entityManager.createNamedQuery("mailing_list.updateUsernameinMailingAlias");
-        query.setParameter("newUserAddress", newEmailAddress);
-        query.setParameter("oldUserAddress", oldEmailAddress);
+        query.setParameter("newUserAddress", StringUtils.toLower(newEmailAddress));
+        query.setParameter("oldUserAddress", StringUtils.toLower(oldEmailAddress));
 
         query.executeUpdate();
     }
@@ -135,7 +136,7 @@ public class MailingListJpaDao extends BasicJpaDao implements MailingListDao {
     @Override
     public MailingListEntity findNcsList(final String ncsList) {
         final Query query = entityManager.createNamedQuery("mailing_list.findByMailingListAddress");
-        query.setParameter("address", ncsList);
+        query.setParameter("address", StringUtils.toLower(ncsList));
 
         return findSingleResult(query, "NCs List");
     }

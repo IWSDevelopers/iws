@@ -206,7 +206,7 @@ public class NotificationSystemAdministration implements Observer {
                 log.info("Adding user " + username + " to ncs list");
                 subscription = new MailingListMembershipEntity();
                 subscription.setMailingList(ncsList);
-                subscription.setMember(username);
+                subscription.setMember(StringUtils.toLower(username));
                 mailingListEntityManager.persist(subscription);
             }
         } else {
@@ -277,9 +277,9 @@ public class NotificationSystemAdministration implements Observer {
         MailingAliasEntity alias = mailingListDao.findMailingAliasByUsername(user.getUsername());
         if (alias == null) {
             alias = new MailingAliasEntity();
-            alias.setUserName(user.getUsername());
+            alias.setUserName(StringUtils.toLower(user.getUsername()));
         }
-        alias.setUserAlias(user.getAlias());
+        alias.setUserAlias(StringUtils.toLower(user.getAlias()));
 
         mailingListEntityManager.persist(alias);
     }
@@ -371,10 +371,9 @@ public class NotificationSystemAdministration implements Observer {
     private void createMailingList(final String groupId, final String address, final boolean privateList) {
         final MailingListEntity list = new MailingListEntity();
         list.setExternalId(groupId);
-        list.setListAddress(address);
+        list.setListAddress(StringUtils.toLower(address));
         list.setPrivateList(privateList);
 
-//        mailingListDao.persist(list);
         mailingListEntityManager.persist(list);
     }
 

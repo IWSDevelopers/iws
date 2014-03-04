@@ -31,6 +31,10 @@ import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -52,7 +56,9 @@ import java.util.Map;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class NotificationManager implements Notifications {
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionManagement(TransactionManagementType.CONTAINER)
+public class NotificationManager implements Notifications {
 
     private static final Logger log = LoggerFactory.getLogger(NotificationManager.class);
 
@@ -95,6 +101,7 @@ public final class NotificationManager implements Notifications {
      * {@inheritDoc}
      */
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void processJobs() {
         final Date now = new Date();
         final List<NotificationJobEntity> unprocessedJobs = dao.findUnprocessedNotificationJobs(now);

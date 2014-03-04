@@ -24,8 +24,8 @@ package net.iaeste.iws.common.monitoring;
  *     | Type (Class) Level   | NONE      | MARKED    | DETAILED |
  *     +----------------------+-----------+-----------+----------+
  *     | Field Level NONE     | NONE      | NONE      | NONE     |
- *     | Field Level MARKED   | NONE      | NONE      | MARKED   |
- *     | Field Level DETAILED | NONE      | NONE      | DETAILED |
+ *     | Field Level MARKED   | NONE      | MARKED    | MARKED   |
+ *     | Field Level DETAILED | NONE      | MARKED    | DETAILED |
  *     +======================+===========+===========+==========+
  * </pre>
  *

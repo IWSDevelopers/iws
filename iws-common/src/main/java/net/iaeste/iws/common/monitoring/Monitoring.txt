@@ -41,8 +41,8 @@ annotation also means that the monitoring was considered and not forgotten),
       | Type (Class) Level   | NONE      | MARKED    | DETAILED |
       +----------------------+-----------+-----------+----------+
       | Field Level NONE     | NONE      | NONE      | NONE     |
-      | Field Level MARKED   | NONE      | NONE      | MARKED   |
-      | Field Level DETAILED | NONE      | NONE      | DETAILED |
+      | Field Level MARKED   | NONE      | MARKED    | MARKED   |
+      | Field Level DETAILED | NONE      | MARKED    | DETAILED |
       +======================+===========+===========+==========+
 
 To Changes that are a result of the monitoring, is a simple list of

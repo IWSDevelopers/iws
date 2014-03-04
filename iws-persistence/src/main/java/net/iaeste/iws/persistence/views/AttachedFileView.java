@@ -36,7 +36,7 @@ import java.util.Date;
                 "where v.recordTable = :table" +
                 "  and v.recordId = :recordId"))
 @Table(name = "file_attachments")
-public class AttachedFileView  extends AbstractView<AttachedFileView> {
+public class AttachedFileView extends AbstractView<AttachedFileView> {
 
     @Id
     @Column(name = "attachment_id", insertable = false, updatable = false)

@@ -59,16 +59,6 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
      * {@inheritDoc}
      */
     @Override
-    public List<CountryEntity> findAllCountries() {
-        final Query query = entityManager.createNamedQuery("country.findAll");
-
-        return query.getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<UserGroupEntity> findEmergencyList() {
         final Query query = entityManager.createNamedQuery("usergroup.emergencylist");
 

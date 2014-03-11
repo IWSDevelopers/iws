@@ -17,11 +17,13 @@ package net.iaeste.iws.core.services;
 import static net.iaeste.iws.common.utils.StringUtils.toUpper;
 
 import net.iaeste.iws.api.dtos.Country;
+import net.iaeste.iws.api.enums.CountryType;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.requests.CountryRequest;
 import net.iaeste.iws.api.requests.FetchCountryRequest;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.util.Paginatable;
+import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.CountryDao;
 import net.iaeste.iws.persistence.entities.CountryEntity;
@@ -82,25 +84,39 @@ public final class CountryService {
      * @return Response Object with found Countries
      */
     public FetchCountryResponse fetchCountries(final FetchCountryRequest request) {
-        final FetchCountryResponse response;
-        final List<CountryView> entities;
-
         final Paginatable page = request.getPagingInformation();
         final List<String> countryCodes = request.getCountryIds();
         final Membership membership = request.getMembership();
 
-        if (membership != null) {
-            entities = dao.getCountries(membership, page);
-        } else if ((countryCodes != null) && !countryCodes.isEmpty()) {
-            entities = dao.getCountries(countryCodes, page);
+        final List<Country> countries;
+        if (request.getCountryType() == CountryType.COMMITTEES) {
+            final List<CountryView> entities;
+
+            if (membership != null) {
+                entities = dao.getCountries(membership, page);
+            } else if ((countryCodes != null) && !countryCodes.isEmpty()) {
+                entities = dao.getCountries(countryCodes, page);
+            } else {
+                entities = dao.getAllCountries(page);
+            }
+
+            countries = transform(entities);
         } else {
-            entities = dao.getAllCountries(page);
+            countries = retrieveAllCountries();
         }
 
-        final List<Country> countries = transform(entities);
-        response = new FetchCountryResponse(countries);
+        return new FetchCountryResponse(countries);
+    }
 
-        return response;
+    private List<Country> retrieveAllCountries() {
+        final List<Country> countries;
+        final List<CountryEntity> entities = dao.findAllCountries();
+
+        countries = new ArrayList<>(entities.size());
+        for (final CountryEntity entity : entities) {
+            countries.add(CommonTransformer.transform(entity));
+        }
+        return countries;
     }
 
     // =========================================================================

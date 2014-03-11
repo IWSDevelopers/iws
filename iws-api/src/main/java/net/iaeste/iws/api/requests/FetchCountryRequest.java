@@ -15,6 +15,7 @@
 package net.iaeste.iws.api.requests;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.CountryType;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
@@ -48,6 +49,7 @@ public final class FetchCountryRequest extends AbstractPaginatable {
 
     private List<String> countryIds;
     private Membership membership;
+    private CountryType countryType = CountryType.COMMITTEES;
 
     // =========================================================================
     // Object Constructors
@@ -140,6 +142,32 @@ public final class FetchCountryRequest extends AbstractPaginatable {
         return membership;
     }
 
+    /**
+     * Sets the Type of Countries to retrieve. Type is here defined as a list
+     * of countries which may either be IAESTE specific (CountryType#COMMITTEES)
+     * or of a more general type (CountryType#COUNTRIES).<br />
+     *   By default, all Country based requests are made with the Committe type,
+     * this means that the lookup will also try to fill in information about the
+     * current National Secretaries and mailing lists. If a different type is
+     * chosen, then the result will purely focus on retrieving country
+     * information and nothing else. This type is optimal for country
+     * administration, i.e. adding new members to the organization, and when a
+     * list of nationalities or country of residence is needed.<br />
+     *   The method will thrown an {@code IllegalArgumentException} if the value
+     * is set to null.
+     *
+     * @param countryType The current type of listing to retrieve
+     * @throws IllegalArgumentException if the countryType is null
+     */
+    public void setCountryType(final CountryType countryType) throws IllegalArgumentException {
+        ensureNotNull("countryType", countryType);
+        this.countryType = countryType;
+    }
+
+    public CountryType getCountryType() {
+        return countryType;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -149,9 +177,11 @@ public final class FetchCountryRequest extends AbstractPaginatable {
      */
     @Override
     public Map<String, String> validate() {
-        // As we're defaulting to retrieving all Countries, there's no need for
-        // a validation
-        return new HashMap<>(0);
+        final Map<String, String> validation = new HashMap<>();
+
+        isNotNull(validation, "countryType", countryType);
+
+        return validation;
     }
 
     /**

@@ -219,6 +219,16 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
+    public List<CountryEntity> findAllCountries() {
+        final Query query = entityManager.createNamedQuery("country.findAll");
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public AddressEntity findAddress(final Long id) {
         final Query query = entityManager.createNamedQuery("address.findById");
         query.setParameter("id", id);

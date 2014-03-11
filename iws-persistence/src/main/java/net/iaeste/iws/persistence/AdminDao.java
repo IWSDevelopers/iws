@@ -44,13 +44,6 @@ public interface AdminDao extends BasicDao {
     CountryEntity findCountryByName(String countryName);
 
     /**
-     * Returns a list of all known Countries in the database.
-     *
-     * @return List of Countries
-     */
-    List<CountryEntity> findAllCountries();
-
-    /**
      * Retrieves the Emergency Phone list, which is the list of all Owners and
      * Moderators from the National Committees.
      *

@@ -129,6 +129,13 @@ public interface BasicDao {
     CountryEntity findCountry(String countryCode);
 
     /**
+     * Returns a list of all known Countries in the database.
+     *
+     * @return List of Countries
+     */
+    List<CountryEntity> findAllCountries();
+
+    /**
      * Find Address from the Id. If no such entity exists, then an exception is
      * thrown, otherwise the found Address Entity is returned.
      *

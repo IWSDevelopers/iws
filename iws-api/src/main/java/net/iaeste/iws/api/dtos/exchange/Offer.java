@@ -169,7 +169,7 @@ public final class Offer extends AbstractVerification {
             created = copy(offer.created);
             nsFirstname = offer.nsFirstname;
             nsLastname = offer.nsLastname;
-            setShared(copy(offer.getShared()));
+            shared = copy(offer.getShared());
         }
     }
 

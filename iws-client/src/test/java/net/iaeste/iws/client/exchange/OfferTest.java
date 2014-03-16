@@ -440,6 +440,7 @@ public final class OfferTest extends AbstractTest {
         sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
         assertThat(sharedOffer, is(not(nullValue())));
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
+        assertThat("Shared timestamp in domestic offers is always null at the moment", sharedOffer.getShared(), is(nullValue()));
     }
 
     @Test

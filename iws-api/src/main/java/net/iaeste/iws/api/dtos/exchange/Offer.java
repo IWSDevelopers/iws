@@ -110,6 +110,9 @@ public final class Offer extends AbstractVerification {
 
     private DateTime shared = null;
 
+    // custom flag used by the FE to hide irrelevant offers
+    private boolean hidden = false;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -170,6 +173,7 @@ public final class Offer extends AbstractVerification {
             nsFirstname = offer.nsFirstname;
             nsLastname = offer.nsLastname;
             shared = copy(offer.getShared());
+            hidden = offer.hidden;
         }
     }
 
@@ -646,6 +650,14 @@ public final class Offer extends AbstractVerification {
         return shared;
     }
 
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
     // =========================================================================
     // Standard DTO Methods
     // =========================================================================
@@ -809,6 +821,10 @@ public final class Offer extends AbstractVerification {
         if ((privateComment != null) ? !privateComment.equals(offer.privateComment) : (offer.privateComment != null)) {
             return false;
         }
+
+        if (hidden != offer.hidden) {
+            return false;
+        }
         return !((workDescription != null) ? !workDescription.equals(offer.workDescription) : (offer.workDescription != null));
     }
 
@@ -860,6 +876,7 @@ public final class Offer extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((modified != null) ? modified.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((shared != null) ? shared.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (hidden ? 1 : 0);
 
         return result;
     }
@@ -911,6 +928,7 @@ public final class Offer extends AbstractVerification {
                 ", modified=" + modified +
                 ", created=" + created +
                 ", shared=" + shared +
+                ", hidden=" + hidden +
                 '}';
     }
 }

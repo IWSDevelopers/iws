@@ -39,6 +39,9 @@ public class EmbeddedOfferGroup {
     @Column(name = "shared_comment", insertable = false, updatable = false)
     private String sharedComment = null;
 
+    @Column(name = "shared_hidden", insertable = false, updatable = false)
+    private Boolean hidden = null;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "shared_modified", insertable = false, updatable = false)
     private Date modified = null;
@@ -73,6 +76,14 @@ public class EmbeddedOfferGroup {
 
     public String getSharedComment() {
         return sharedComment;
+    }
+
+    public void setHidden(final Boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
     }
 
     public void setModified(final Date modified) {

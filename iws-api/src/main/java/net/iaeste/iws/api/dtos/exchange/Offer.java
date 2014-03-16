@@ -111,7 +111,7 @@ public final class Offer extends AbstractVerification {
     private DateTime shared = null;
 
     // custom flag used by the FE to hide irrelevant offers
-    private boolean hidden = false;
+    private Boolean hidden = false;
 
     // =========================================================================
     // Object Constructors

@@ -133,6 +133,7 @@ public final class ViewTransformer {
         // Showing the OfferGroup status rather than the real Offer Status
         offer.setStatus(view.getOfferGroup().getStatus());
 
+        offer.setHidden(view.getOfferGroup().getHidden());
         offer.setShared(new DateTime(view.getOfferGroup().getCreated()));
 
         return offer;

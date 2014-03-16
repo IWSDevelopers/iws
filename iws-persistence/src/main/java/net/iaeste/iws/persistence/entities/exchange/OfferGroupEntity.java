@@ -151,6 +151,9 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
     @Column(name = "has_application")
     private Boolean hasApplication = false;
 
+    @Column(name = "hidden")
+    private Boolean hidden = false;
+
     @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "modified_by", referencedColumnName = "id", nullable = false)
     private UserEntity modifiedBy = null;
@@ -284,6 +287,14 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
 
     public Boolean getHasApplication() {
         return hasApplication;
+    }
+
+    public void setHidden(final Boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
     }
 
     /**

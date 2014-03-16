@@ -183,6 +183,7 @@ create view shared_offer_view as
     o2g.group_id               as shared_group_id,
     o2g.status                 as shared_status,
     o2g.comment                as shared_comment,
+    o2g.hidden                 as shared_hidden,
     o2g.modified               as shared_modified,
     o2g.created                as shared_created,
     u.firstname                as ns_firstname,

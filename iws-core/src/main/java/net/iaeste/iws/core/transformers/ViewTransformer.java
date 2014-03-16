@@ -25,6 +25,7 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
+import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.AttachedFileView;
 import net.iaeste.iws.persistence.views.EmployerView;
@@ -131,6 +132,8 @@ public final class ViewTransformer {
 
         // Showing the OfferGroup status rather than the real Offer Status
         offer.setStatus(view.getOfferGroup().getStatus());
+
+        offer.setShared(new DateTime(view.getOfferGroup().getCreated()));
 
         return offer;
     }

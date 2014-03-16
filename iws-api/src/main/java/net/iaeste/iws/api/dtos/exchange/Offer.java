@@ -108,6 +108,8 @@ public final class Offer extends AbstractVerification {
     private String nsFirstname = null;
     private String nsLastname = null;
 
+    private DateTime shared = null;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -167,6 +169,7 @@ public final class Offer extends AbstractVerification {
             created = copy(offer.created);
             nsFirstname = offer.nsFirstname;
             nsLastname = offer.nsLastname;
+            setShared(copy(offer.getShared()));
         }
     }
 
@@ -629,6 +632,20 @@ public final class Offer extends AbstractVerification {
         return nsLastname;
     }
 
+    /**
+     * Sets the Offer Sharing DateTime. Note, this field is controlled by the
+     * IWS, and cannot be altered by users.
+     *
+     * @param shared Offer Sharing DateTime
+     */
+    public void setShared(DateTime shared) {
+        this.shared = shared;
+    }
+
+    public DateTime getShared() {
+        return shared;
+    }
+
     // =========================================================================
     // Standard DTO Methods
     // =========================================================================
@@ -673,6 +690,9 @@ public final class Offer extends AbstractVerification {
         final Offer offer = (Offer) obj;
 
         if ((created != null) ? !created.equals(offer.created) : (offer.created != null)) {
+            return false;
+        }
+        if ((shared != null) ? !shared.equals(offer.created) : (offer.shared != null)) {
             return false;
         }
         if (currency != offer.currency) {
@@ -839,6 +859,7 @@ public final class Offer extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((status != null) ? status.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((modified != null) ? modified.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((shared != null) ? shared.hashCode() : 0);
 
         return result;
     }
@@ -889,6 +910,7 @@ public final class Offer extends AbstractVerification {
                 ", status=" + status +
                 ", modified=" + modified +
                 ", created=" + created +
+                ", shared=" + shared +
                 '}';
     }
 }

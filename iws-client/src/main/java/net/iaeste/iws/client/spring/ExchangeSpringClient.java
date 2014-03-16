@@ -22,6 +22,7 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -204,5 +205,13 @@ public final class ExchangeSpringClient implements Exchange {
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         return client.fetchPublishedGroups(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request) {
+        return client.processHideForeignOffers(token, request);
     }
 }

@@ -26,6 +26,7 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -406,6 +407,30 @@ public final class ExchangeController extends CommonController implements Exchan
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished fetchPublishedGroups()"));
+        }
+        return response;
+    }
+
+    @Override
+    public Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processHideForeignOffers()"));
+        }
+        Fallible response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
+            verify(request);
+
+            final ExchangeService service = factory.prepareExchangeService();
+            service.processHideForeignOffers(authentication, request);
+            response = new PublishOfferResponse();
+        } catch (IWSException e) {
+            response = new PublishOfferResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processHideForeignOffers()"));
         }
         return response;
     }

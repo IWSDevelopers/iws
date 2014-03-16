@@ -76,6 +76,10 @@ import java.util.Date;
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.externalId = :eoid" +
                         "  and og.group.id = :gid"),
+        @NamedQuery(name = "offerGroup.findByGroupAndExternalIds",
+                query = "select og from OfferGroupEntity og " +
+                        "where og.offer.externalId in :eoids" +
+                        "  and og.group.id = :gid"),
         @NamedQuery(name = "offerGroup.findUnexpiredByExternalOfferId",
                 query = "select og from OfferGroupEntity og " +
                         "where og.offer.externalId = :eoid" +
@@ -103,8 +107,11 @@ import java.util.Date;
         @NamedQuery(name = "offerGroup.updateStateByIds",
                 query = "update OfferGroupEntity og " +
                         "set og.status = :status " +
-                        "where og.id in :ids")
-
+                        "where og.id in :ids"),
+        @NamedQuery(name = "offerGroup.hideByIds",
+        query = "update OfferGroupEntity og " +
+                "set og.hidden = true " +
+                "where og.id in :ids")
 })
 @Entity
 @Table(name = "offer_to_group")

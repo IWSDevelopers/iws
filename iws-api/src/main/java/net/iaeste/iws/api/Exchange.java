@@ -21,6 +21,7 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -201,4 +202,13 @@ public interface Exchange {
      * @return contains no data
      */
     PublishOfferResponse processPublishOffer(AuthenticationToken token, PublishOfferRequest request);
+
+    /**
+     * Hides specified foreign offer for given group
+     *
+     * @param token   User Authentication Token
+     * @param request contains a list of offer
+     * @return Response Object
+     */
+    Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request);
 }

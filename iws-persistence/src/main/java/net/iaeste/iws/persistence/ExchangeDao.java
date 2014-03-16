@@ -180,6 +180,15 @@ public interface ExchangeDao extends BasicDao {
     OfferGroupEntity findInfoForSharedOffer(GroupEntity group, String offerId);
 
     /**
+     * Finds information about sharing of the offer
+     *
+     * @param  group group the offer is shared to
+     * @param  offerIds reference numbers of the offers to get sharing info for
+     * @return list of {@link OfferGroupEntity} which are shared
+     */
+    List<OfferGroupEntity> findInfoForSharedOffers(GroupEntity group, Set<String> offerIds);
+
+    /**
      * Finds information about sharing of the offer only if offer did not expire because of deadline
      *
      * @param  externalOfferId reference number of the offer to get sharing info for
@@ -266,4 +275,11 @@ public interface ExchangeDao extends BasicDao {
      * @param ids List of offer IDs
      */
     void deleteOfferGroup(List<Long> ids);
+
+    /**
+     * Sets the hidden flag in OfferGroup for given list of OfferGroup IDs
+     *
+     * @param ids List of OfferGroups IDs
+     */
+    void hideOfferGroups(List<Long> ids);
 }

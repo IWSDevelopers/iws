@@ -196,4 +196,16 @@ public final class ExchangeCaller implements Exchange {
             throw new StopTestException(e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request) {
+        try {
+            return caller.processHideForeignOffers(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
 }

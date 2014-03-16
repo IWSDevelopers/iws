@@ -339,6 +339,18 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
+    public List<OfferGroupEntity> findInfoForSharedOffers(final GroupEntity group, final Set<String> offerIds) {
+        final Query query = entityManager.createNamedQuery("offerGroup.findByGroupAndExternalIds");
+        query.setParameter("eoids", offerIds);
+        query.setParameter("gid", group.getId());
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<OfferGroupEntity> findInfoForUnexpiredSharedOffer(final String externalOfferId, final Date currentDate) {
         final Query query = entityManager.createNamedQuery("offerGroup.findUnexpiredByExternalOfferId");
         query.setParameter("eoid", externalOfferId);
@@ -531,5 +543,25 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("oids", offerIds);
 
         return query.getResultList();
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void hideOfferGroups(List<Long> ids) {
+        final Query query = entityManager.createNamedQuery("offerGroup.hideByIds");
+        //TODO @Kim: is it possible to pass empty list? It was a bug but I don't know which version we are using now
+        //TODO see https://hibernate.atlassian.net/browse/HHH-6876
+        //TODO workaround to "unexpected end of subtree" exception when empty list is passed
+        if (ids.isEmpty()) {
+            ids = new ArrayList<>(1);
+            ids.add(-1L);
+        }
+
+        query.setParameter("ids", ids);
+
+        query.executeUpdate();
     }
 }

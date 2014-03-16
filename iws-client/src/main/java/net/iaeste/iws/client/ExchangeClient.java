@@ -22,6 +22,7 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -162,5 +163,12 @@ public final class ExchangeClient implements Exchange {
     @Override
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         return client.fetchPublishedGroups(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
+        return client.processHideForeignOffers(token, request);
     }
 }

@@ -23,6 +23,7 @@ import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -405,6 +406,26 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new FetchPublishedGroupsResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Interceptors(Profiler.class)
+    @WebMethod(exclude = true)
+    public Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request) {
+        Fallible response;
+
+        try {
+            response = controller.processHideForeignOffers(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

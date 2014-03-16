@@ -30,6 +30,7 @@ import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
@@ -363,6 +364,18 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 offer.setNominationDeadline(request.getNominationDeadline().toDate());
             }
             dao.persist(authentication, offer);
+        }
+    }
+
+    public void processHideForeignOffers(final Authentication authentication, final HideForeignOffersRequest request) {
+        if (!request.getOffers().isEmpty()) {
+            final List<OfferGroupEntity> offerGroups = dao.findInfoForSharedOffers(authentication.getGroup(), request.getOffers());
+            final List<Long> ids = new ArrayList<>(offerGroups.size());
+            for(final OfferGroupEntity offerGroup : offerGroups) {
+                ids.add(offerGroup.getId());
+            }
+
+            dao.hideOfferGroups(ids);
         }
     }
 

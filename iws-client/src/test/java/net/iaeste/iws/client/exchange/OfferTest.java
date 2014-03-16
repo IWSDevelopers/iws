@@ -34,6 +34,7 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
+import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
@@ -45,6 +46,7 @@ import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Ignore;
@@ -821,6 +823,69 @@ public final class OfferTest extends AbstractTest {
         assertThat(response.getOffer(), is(not(nullValue())));
         assertThat(response.getOffer().getOfferId(), is(not(nullValue())));
         assertThat(response.getOffer().getAdditionalInformation(), is(additionalInformatin));
+    }
+
+    @Test
+    public void testHideForeignOffer() {
+        final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TIC772-R", "Poland A/S", "PL");
+        final Date nominationDeadline = new Date().plusDays(20);
+
+        final ProcessOfferRequest saveRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, saveRequest);
+        assertThat(saveResponse.isOk(), is(true));
+
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.DOMESTIC);
+        FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        offersToShare.add(sharedOffer.getOfferId());
+
+        final List<String> groupIds = new ArrayList<>(1);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
+
+        assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
+        assertThat(publishResponse1.isOk(), is(true));
+
+        final List<String> offersExternalId = new ArrayList<>(1);
+        offersExternalId.add(sharedOffer.getOfferId());
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
+        final FetchPublishedGroupsResponse fetchPublishResponse = exchange.fetchPublishedGroups(token, fetchPublishRequest);
+
+        //is it shared to two groups?
+        assertThat(fetchPublishResponse.isOk(), is(true));
+        List<Group> offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
+        assertThat(1, is(offerGroupsSharedTo.size()));
+
+        allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat(sharedOffer.getRefNo(), is(saveResponse.getOffer().getRefNo()));
+        assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
+
+        final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
+        FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
+        Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
+        assertThat(foreignOffer, is(notNullValue()));
+
+        final Set<String> offersToHide = new HashSet<>(1);
+        //offersToHide.add(offer.getOfferId());
+        offersToHide.add(sharedOffer.getOfferId());
+        final HideForeignOffersRequest hideOfferRequest = new HideForeignOffersRequest(offersToHide);
+        Fallible hideOfferResponse = exchange.processHideForeignOffers(austriaToken, hideOfferRequest);
+        assertThat(hideOfferResponse.getError(), is(IWSErrors.SUCCESS));
+        assertThat(hideOfferResponse.isOk(), is(true));
+
+        fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
+        foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
+        assertThat(foreignOffer, is(notNullValue()));
+        assertThat(foreignOffer.isHidden(), is(true));
     }
 
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {

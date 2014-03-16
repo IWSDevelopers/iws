@@ -211,7 +211,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request) {
+    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         return client.processHideForeignOffers(token, request);
     }
 }

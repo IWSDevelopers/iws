@@ -172,7 +172,7 @@ public final class Offer extends AbstractVerification {
             created = copy(offer.created);
             nsFirstname = offer.nsFirstname;
             nsLastname = offer.nsLastname;
-            shared = copy(offer.getShared());
+            shared = copy(offer.shared);
             hidden = offer.hidden;
         }
     }
@@ -650,12 +650,12 @@ public final class Offer extends AbstractVerification {
         return shared;
     }
 
-    public boolean isHidden() {
-        return hidden;
-    }
-
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 
     // =========================================================================

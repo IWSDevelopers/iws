@@ -33,6 +33,7 @@ import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -411,8 +412,11 @@ public final class ExchangeController extends CommonController implements Exchan
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request) {
+    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processHideForeignOffers()"));
         }
@@ -426,7 +430,7 @@ public final class ExchangeController extends CommonController implements Exchan
             service.processHideForeignOffers(authentication, request);
             response = new PublishOfferResponse();
         } catch (IWSException e) {
-            response = new PublishOfferResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {

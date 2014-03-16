@@ -371,7 +371,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         if (!request.getOffers().isEmpty()) {
             final List<OfferGroupEntity> offerGroups = dao.findInfoForSharedOffers(authentication.getGroup(), request.getOffers());
             final List<Long> ids = new ArrayList<>(offerGroups.size());
-            for(final OfferGroupEntity offerGroup : offerGroups) {
+            for (final OfferGroupEntity offerGroup : offerGroups) {
                 ids.add(offerGroup.getId());
             }
 

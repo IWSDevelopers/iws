@@ -417,7 +417,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
-    public Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request) {
+    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         Fallible response;
 
         try {

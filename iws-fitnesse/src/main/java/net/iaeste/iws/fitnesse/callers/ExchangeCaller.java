@@ -201,7 +201,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request) {
+    public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         try {
             return caller.processHideForeignOffers(token, request);
         } catch (Exception e) {

@@ -168,6 +168,7 @@ public final class ExchangeClient implements Exchange {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         return client.processHideForeignOffers(token, request);
     }

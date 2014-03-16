@@ -14,7 +14,13 @@
  */
 package net.iaeste.iws.client.exchange;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -45,7 +51,6 @@ import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Date;
-import net.iaeste.iws.api.util.DateTime;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
 import net.iaeste.iws.client.ExchangeClient;
@@ -630,7 +635,7 @@ public final class OfferTest extends AbstractTest {
 
         assertThat("as the Austrian offer was shared with Croatia, it should be loaded", readOffer, is(not(nullValue())));
         assertThat("status of the shared offer must not be null", readOffer.getStatus(), is(not(nullValue())));
-        assertThat("shared timestamp must not be null", readOffer.getShared(), is(notNullValue()));
+        assertThat("shared timestamp must not be null", readOffer.getShared(), is(not(nullValue())));
 
         assertThat(readOffer.getNsFirstname(), is(austriaNsFirstName));
         assertThat(readOffer.getNsLastname(), is(austriaNsLastName));
@@ -872,7 +877,7 @@ public final class OfferTest extends AbstractTest {
         final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
         FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
         Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
-        assertThat(foreignOffer, is(notNullValue()));
+        assertThat(foreignOffer, is(not(nullValue())));
 
         final Set<String> offersToHide = new HashSet<>(1);
         //offersToHide.add(offer.getOfferId());
@@ -884,7 +889,7 @@ public final class OfferTest extends AbstractTest {
 
         fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
         foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
-        assertThat(foreignOffer, is(notNullValue()));
+        assertThat(foreignOffer, is(not(nullValue())));
         assertThat(foreignOffer.isHidden(), is(true));
     }
 

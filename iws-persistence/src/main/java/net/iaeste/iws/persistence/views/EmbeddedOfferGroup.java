@@ -37,7 +37,7 @@ public class EmbeddedOfferGroup {
     private OfferState status = null;
 
     @Column(name = "shared_comment", insertable = false, updatable = false)
-    private String exchangeYear = null;
+    private String sharedComment = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "shared_modified", insertable = false, updatable = false)
@@ -67,12 +67,12 @@ public class EmbeddedOfferGroup {
         return status;
     }
 
-    public void setExchangeYear(final String exchangeYear) {
-        this.exchangeYear = exchangeYear;
+    public void setSharedComment(final String exchangeYear) {
+        this.sharedComment = exchangeYear;
     }
 
-    public String getExchangeYear() {
-        return exchangeYear;
+    public String getSharedComment() {
+        return sharedComment;
     }
 
     public void setModified(final Date modified) {

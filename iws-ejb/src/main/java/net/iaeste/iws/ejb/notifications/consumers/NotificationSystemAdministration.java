@@ -393,13 +393,26 @@ public class NotificationSystemAdministration implements Observer {
             final boolean subscribedToPublicList = "true".equals(onPublicList) && UserStatus.ACTIVE.name().equals(userStatus);
             final boolean subscribedToPrivateList = "true".equals(onPrivateList) && UserStatus.ACTIVE.name().equals(userStatus);
 
+            log.debug("Trying to update mailing list membership for user " + emailAddress + " with role " + role + " and status " + userStatus + " for list id '"
+                    + groupExternalId + "'. Membership private: " + subscribedToPrivateList + "; public: " + subscribedToPublicList);
+
             if (hasPublicList(groupType)) {
                 final MailingListEntity publicMailingList = mailingListDao.findPublicMailingList(groupExternalId);
+                if (publicMailingList != null) {
+                    log.debug("Public mailing list has ID="+publicMailingList.getId());
+                } else {
+                    log.debug("Private mailing list with external ID '" + groupExternalId + "' was not found");
+                }
                 updateListSubscription(publicMailingList, emailAddress, subscribedToPublicList);
             }
 
             if (hasPrivateList(groupType)) {
                 final MailingListEntity privateMailingList = mailingListDao.findPrivateMailingList(groupExternalId);
+                if (privateMailingList != null) {
+                    log.debug("Private mailing list has ID="+privateMailingList.getId());
+                } else {
+                    log.debug("Private mailing list with external ID '" + groupExternalId + "' was not found");
+                }
                 updateListSubscription(privateMailingList, emailAddress, subscribedToPrivateList);
             }
         } catch (IllegalArgumentException e) {
@@ -417,10 +430,17 @@ public class NotificationSystemAdministration implements Observer {
     private void updateListSubscription(final MailingListEntity mailingList, final String emailAddress, final boolean onList) {
         if (mailingList != null) {
             final MailingListMembershipEntity subscription = mailingListDao.findMailingListSubscription(mailingList.getId(), emailAddress);
+            if (subscription != null) {
+                log.debug("Mailing list subscription has ID="+subscription.getId());
+            } else {
+                log.debug("Subscription to list was not found");
+            }
             if (subscription != null && !onList) {
+                log.debug("Removing user from mailing list");
 //                mailingListDao.delete(subscription);
                 mailingListEntityManager.remove(subscription);
             } else if (subscription == null && onList) {
+                log.debug("Adding user to mailing list");
                 createListSubscription(mailingList, emailAddress);
             }
         }

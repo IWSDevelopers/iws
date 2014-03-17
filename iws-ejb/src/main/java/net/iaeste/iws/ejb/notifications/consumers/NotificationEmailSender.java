@@ -260,19 +260,19 @@ public class NotificationEmailSender implements Observer {
                 //Processing of other notification than 'IMMEDIATELY' ones will be triggered by a timer and all required information
                 //should be get from DB directly according to the NotificationType
                 if (userSetting != null && userSetting.getFrequency() == NotificationFrequency.IMMEDIATELY) {
-                    log.info("User notification setting for ", type, " was found");
+                    log.info("User notification setting for " + type + " was found");
                     try {
                         final ObjectMessage msg = session.createObjectMessage();
                         final EmailMessage emsg = new EmailMessage();
                         emsg.setTo(getTargetEmailAddress(recipient, type));
                         final Map<String, String> messageData = messageGenerator.generateFromTemplate(fields, type);
-                        log.info("Email message for for ", type, " was generated");
+                        log.info("Email message for for " + type + " was generated");
                         emsg.setSubject(messageData.get("title"));
                         emsg.setMessage(messageData.get("body"));
                         msg.setObject(emsg);
 
                         sender.send(msg);
-                        log.info("Email message for for ", type, " was sent to message queue");
+                        log.info("Email message for for " + type + " was sent to message queue");
                         ret = NotificationProcessTaskStatus.OK;
                     } catch (IWSException e) {
                         log.error("Notification message generating failed", e);

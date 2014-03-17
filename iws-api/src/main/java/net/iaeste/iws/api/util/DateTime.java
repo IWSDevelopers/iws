@@ -22,19 +22,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author  Kim Jensen / last $Author:$
+ * @author Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.0
+ * @since IWS 1.0
  */
-public class DateTime implements Serializable {
+public class DateTime implements Serializable, Comparable<DateTime> {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /**
+     * {@link IWSConstants#SERIAL_VERSION_UID}.
+     */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
-    /** Internal Date format. */
+    /**
+     * Internal Date format.
+     */
     private final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
 
-    /** The internal Date, implementation uses the JodaTime Classes. */
+    /**
+     * The internal Date, implementation uses the JodaTime Classes.
+     */
     private final org.joda.time.DateTime dateTime;
 
     /**
@@ -67,7 +73,7 @@ public class DateTime implements Serializable {
      * Checks if the given Date is after the current. If so, then a true is
      * returned, otherwise a false.
      *
-     * @param dateTime  Date to check if it comes after this
+     * @param dateTime Date to check if it comes after this
      * @return True if the given Date is after the current, otherwise false
      */
     public Boolean isAfter(final DateTime dateTime) {
@@ -78,7 +84,7 @@ public class DateTime implements Serializable {
      * Checks if the given Date is before the current. If so, then a true is
      * returned, otherwise a false.
      *
-     * @param dateTime  Date to check if it comes before this
+     * @param dateTime Date to check if it comes before this
      * @return True if the given Date is after the current, otherwise false
      */
     public Boolean isBefore(final DateTime dateTime) {
@@ -126,5 +132,19 @@ public class DateTime implements Serializable {
     @Override
     public String toString() {
         return format.format(dateTime.toDate());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(DateTime o) {
+        if (equals(o)) {
+            return 0;
+        } else if (isBefore(o)) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

@@ -54,7 +54,6 @@ import javax.persistence.PersistenceContext;
  * @since   IWS 1.0
  */
 @Singleton
-@Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {

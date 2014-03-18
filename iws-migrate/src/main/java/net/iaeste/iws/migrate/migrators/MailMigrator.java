@@ -77,8 +77,6 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
     private static final String[][] STATIC_ALIASES = {
             { "India@iaeste.org", "India_KU@iaeste.org" },
             { "India@iaeste.org", "India_MIT@iaeste.org" },
-            { "Bangladesh_Afzal_Management@iaeste.org", "bangladesh_cat@iaeste.org" },
-            { "Bangladesh_Afzal_Management@iaeste.org", "bangladeshcat@iaeste.org" },
             { "Bangladesh_Afzal_Management@iaeste.org", "bangladeshafm@iaeste.org" }};
 
     @Autowired

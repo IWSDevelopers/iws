@@ -53,6 +53,9 @@ import java.util.UUID;
  * the standard run command from psql:
  * <pre>
  *   # \i mail_db.sql
+ *   # grant all on all tables in schema public to user_iw4;
+ *   # grant all on all sequences in schema public to user_iw4;
+ *   # grant select on all tables in schema public to mailing_reader;
  * </pre>
  *
  * @author  Kim Jensen / last $Author:$
@@ -75,7 +78,8 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
             { "India@iaeste.org", "India_KU@iaeste.org" },
             { "India@iaeste.org", "India_MIT@iaeste.org" },
             { "Bangladesh_Afzal_Management@iaeste.org", "bangladesh_cat@iaeste.org" },
-            { "Bangladesh_Afzal_Management@iaeste.org", "bangladeshcat@iaeste.org" }};
+            { "Bangladesh_Afzal_Management@iaeste.org", "bangladeshcat@iaeste.org" },
+            { "Bangladesh_Afzal_Management@iaeste.org", "bangladeshafm@iaeste.org" }};
 
     @Autowired
     private IWSDao iwsDao;

@@ -56,7 +56,8 @@ import java.util.Map;
 @NamedQueries({
         // Query is used by the Migration Tool
         @NamedQuery(name = "user.findAll",
-                query = "select u from UserEntity u "),
+                query = "select u from UserEntity u " +
+                        "where u.status <> 'DELETED'"),
         // Query is used by the Migration Tool
         @NamedQuery(name = "user.findByIW3Id",
                 query = "select u from UserEntity u " +

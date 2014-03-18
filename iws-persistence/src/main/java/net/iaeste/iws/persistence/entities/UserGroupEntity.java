@@ -129,6 +129,7 @@ import java.util.Map;
         @NamedQuery(name = "usergroup.findGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = 'ACTIVE'" +
+                        "  and ug.user.status = 'ACTIVE'" +
                         "  and ug.group.id = :gid" +
                         "  and ug.role.id <= 3"),
         // The roles are hardcoded to Students, see IWSConstants for more

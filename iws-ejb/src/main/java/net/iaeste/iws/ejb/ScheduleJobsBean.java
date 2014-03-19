@@ -79,7 +79,7 @@ public class ScheduleJobsBean {
     //for local testing
     //@Schedule(second = "*/30", minute = "*", hour = "*", info="Every 30 seconds")
     //for server
-    @Schedule(second = "0", minute = "1", hour = "0", info = "Every day at 0:01 AM (server time)")
+    //@Schedule(second = "0", minute = "1", hour = "0", info = "Every day at 0:01 AM (server time)", persistent = false)
     private void processExpiredOffers() {
         log.info("processExpiredOffers started at " + new DateTime());
         final boolean run;

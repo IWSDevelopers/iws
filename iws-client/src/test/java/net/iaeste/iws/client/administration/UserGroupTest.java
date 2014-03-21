@@ -69,6 +69,9 @@ public final class UserGroupTest extends AbstractAdministration {
         final FetchRoleResponse response = client.fetchRoles(myToken, request);
         assertThat(response.isOk(), is(true));
         assertThat(response.getRoles().isEmpty(), is(false));
+
+        // Always remember to logout
+        logout(myToken);
     }
 
     @Test

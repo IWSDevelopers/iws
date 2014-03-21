@@ -260,7 +260,7 @@ public final class StudentTest extends AbstractTest {
     }
 
     //TODO Kim, have a look at this test please
-    @Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB. See #515")
+    @Ignore("2013-04-21 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB. See #515")
     @Test
     public void testUpdateStudentApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
@@ -345,8 +345,6 @@ public final class StudentTest extends AbstractTest {
         assertThat(createStudentApplicationResponse2.getStudentApplication().getUniversity(), is(application.getUniversity()));
     }
 
-    //TODO Kim, have a look at this test please
-    //@Ignore("2013-21-04 Pavel - failing OfferGroupEntity with id xyz cannot be found even it exists in DB. See #515")
     @Test
     public void testNominatingApplication() {
         final Date nominationDeadline = new Date().plusDays(20);
@@ -504,7 +502,6 @@ public final class StudentTest extends AbstractTest {
     }
 
     @Test
-    //@Ignore("Ignored 2014-01-19 by Kim - Reason: It's failing! Need to commit other work, so wish to see a stable build for the migration as well.")
     public void testRejectAppliedApplicationBySendingCountry() {
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);

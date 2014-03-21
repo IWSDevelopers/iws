@@ -106,7 +106,7 @@ public enum Permission {
     FETCH_GROUPS_FOR_SHARING("Fetch Groups for Sharing", Exchange.class, "fetchGroupsForSharing"),
     PROCESS_OFFER_TEMPLATES("processOfferTemplate", Exchange.class, "processOfferTemplate"),
     FETCH_OFFER_TEMPLATES("fetchOfferTemplates", Exchange.class, "fetchOfferTemplates"),
-    PROCESS_PUBLISH_OFFER("Process Publish Offer", Exchange.class, "processPublishOffer", "processPublishGroup"),
+    PROCESS_PUBLISH_OFFER("Process Publish Offer", Exchange.class, "processPublishOffer", "processPublishGroup", "processHideForeignOffers"),
     FETCH_PUBLISH_GROUPS("Fetch Published Groups", Exchange.class, "fetchPublishedGroups", "fetchPublishGroups"),
     APPLY_FOR_OPEN_OFFER("Apply for Open Offer", Exchange.class),
 

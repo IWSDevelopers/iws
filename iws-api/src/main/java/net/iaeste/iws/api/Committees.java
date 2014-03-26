@@ -116,6 +116,9 @@ public interface Committees {
     Fallible upgradeCommittee(AuthenticationToken token, CommitteeRequest request);
 
     /**
+     * Note; A problem was discovered with the Board. Normally, only the owner
+     * of an International Group is receiving the public mails, but the Board
+     * is a special case, here all members should receive the mails.
      *
      * @param token   User Authentication Request object
      * @param request International Group Request Object

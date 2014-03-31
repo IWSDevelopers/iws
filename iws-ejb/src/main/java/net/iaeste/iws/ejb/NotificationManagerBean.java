@@ -252,9 +252,14 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         }
 
         if (run) {
-            notifications.processJobs();
-            synchronized (lock) {
-                processingIsRunning = false;
+            try {
+                notifications.processJobs();
+            } catch (Exception e) {
+                log.error("Exception caught in notification processing", e);
+            } finally {
+                synchronized (lock) {
+                    processingIsRunning = false;
+                }
             }
         }
     }

@@ -133,7 +133,7 @@ public class NotificationSystemAdministration implements Observer {
             log.info("Notification job task " + task.getId() + " attempt number is going to be updated to " + (task.getAttempts()+1) + ", processed set to " + processed);
             notificationDao.updateNotificationJobTask(task.getId(), processed, task.getAttempts()+1);
             log.info("Notification job task " + task.getId() + " was updated");
-        } catch (IOException|ClassNotFoundException e) {
+        } catch (IOException|ClassNotFoundException|IllegalArgumentException e) {
             final boolean processed = false;
             log.info("Notification job task " + task.getId() + " failed, task is going to be updated to " + (task.getAttempts()+1) + ", processed set to " + processed);
             notificationDao.updateNotificationJobTask(task.getId(), processed, task.getAttempts()+1);
@@ -279,9 +279,13 @@ public class NotificationSystemAdministration implements Observer {
             alias = new MailingAliasEntity();
             alias.setUserName(StringUtils.toLower(user.getUsername()));
         }
-        alias.setUserAlias(StringUtils.toLower(user.getAlias()));
+        if (user.getAlias() != null) {
+            alias.setUserAlias(StringUtils.toLower(user.getAlias()));
 
-        mailingListEntityManager.persist(alias);
+            mailingListEntityManager.persist(alias);
+        } else {
+            throw new IllegalArgumentException("Null user alias not allowed, user id " + user.getId());
+        }
     }
 
     private void updateUsernameInMailingAlias(final String oldAddress, final String newAddress) {

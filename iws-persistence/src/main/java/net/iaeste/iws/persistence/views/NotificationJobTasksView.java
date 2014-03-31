@@ -37,7 +37,8 @@ import javax.persistence.Table;
 @NamedQueries(@NamedQuery(name = "view.NotificationJobTasksByConsumerId",
         query = "select v from NotificationJobTasksView v " +
                 "where v.consumerId = :consumerId " +
-                "      and v.attempts < :attempts"))
+                "      and v.attempts < :attempts " +
+                "order by v.id"))
 @Table(name = "notification_job_task_details")
 public class NotificationJobTasksView extends AbstractView<NotificationJobTasksView> {
 

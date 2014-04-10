@@ -31,9 +31,7 @@ import javax.persistence.Table;
 @NamedQueries(@NamedQuery(name = "view.findSharedOffersByGroupAndYear",
         query = "select o from SharedOfferView o " +
                 "where o.groupId = :gid" +
-                "  and o.exchangeYear = :year" +
-                "  and (o.offer.nominationDeadline >= :date " +
-                "       or o.offerGroup.status = 'CLOSED')"))
+                "  and o.exchangeYear = :year"))
 @Table(name = "shared_offer_view")
 public class SharedOfferView extends AbstractView<SharedOfferView> {
 

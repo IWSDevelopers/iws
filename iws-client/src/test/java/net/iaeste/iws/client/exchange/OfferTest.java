@@ -642,6 +642,7 @@ public final class OfferTest extends AbstractTest {
     }
 
     @Test
+    @Ignore("Ignored 2014-04-10 by Pavel - Reason: Countries want to see expired offers")
     public void testFetchSharedOfferAfterDeadline() {
         final Date nominationDeadlineInThePast = new Date().plusDays(-20);
 

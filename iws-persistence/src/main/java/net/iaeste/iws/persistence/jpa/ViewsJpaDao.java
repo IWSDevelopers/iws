@@ -110,7 +110,6 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         final Query query = entityManager.createNamedQuery("view.findSharedOffersByGroupAndYear");
         query.setParameter("gid", authentication.getGroup().getId());
         query.setParameter("year", exchangeYear);
-        query.setParameter("date", new Date());
 
         // Todo 2014-01-23 by Kim; When Trac Task #719 is finished, then we'll use the pagination
         //return fetchList(query, page);

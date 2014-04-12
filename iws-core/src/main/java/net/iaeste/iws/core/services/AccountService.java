@@ -96,9 +96,8 @@ public final class AccountService extends CommonService<AccessDao> {
             user = createStudentAccount(authentication, request);
         } else {
             user = createUserAccount(authentication, request);
+            notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
         }
-
-        notifications.notify(authentication, user, NotificationType.ACTIVATE_USER);
 
         return new CreateUserResponse(transform(user));
     }

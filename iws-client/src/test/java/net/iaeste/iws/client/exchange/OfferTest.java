@@ -745,8 +745,8 @@ public final class OfferTest extends AbstractTest {
         final FetchPublishedGroupsResponse fetchPublishedGroupsResponse = exchange.fetchPublishedGroups(token, request);
 
         assertThat(fetchPublishedGroupsResponse.getOffersGroups(), hasKey(savedOffer.getOfferId()));
-        assertThat("it's still before the nomination deadline so OfferGroup should be fetched",
-                fetchPublishedGroupsResponse.getOffersGroups().get(savedOffer.getOfferId()), empty());
+        assertThat("it's after the nomination deadline and OfferGroup should be fetched",
+                fetchPublishedGroupsResponse.getOffersGroups().get(savedOffer.getOfferId()), hasSize(1));
     }
 
     @Test

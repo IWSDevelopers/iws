@@ -423,7 +423,7 @@ insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_
 insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (6, 'ab111bed-d5e8-4e34-877d-1d2bc56fdbf2', 5, 3, 1, 'Alumni', 'Friends of IAESTE Network | IAESTE Alumni',  '2003-10-01 00:00:00');
 insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (7, '6885d3f1-ac37-4a2b-9ae0-3cd9b8c7c917', 6, 3, 1, 'JUMP', 'IAESTE Jump Seminar',  '2003-10-01 00:00:00');
 insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (8, '16654461-b6e0-46cd-983e-d528e6db081a', 7, 3, 1, 'Ombudsman', 'IAESTE Ombudsman', '2003-10-01 00:00:00');
-insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (9, '5b852a84-c557-460e-8c9d-ef098ae26e43', 9, 4, 1, 'CEC', 'CEC', '2003-10-01 00:00:00');
+insert into groups (id, external_id, old_iw3_id, grouptype_id, parent_id, group_name, full_name, created) VALUES (9, '5b852a84-c557-460e-8c9d-ef098ae26e43', 9, 3, 1, 'CEC', 'CEC', '2003-10-01 00:00:00');
 
 -- -- =============================================================================
 -- -- Default Folders for file handling

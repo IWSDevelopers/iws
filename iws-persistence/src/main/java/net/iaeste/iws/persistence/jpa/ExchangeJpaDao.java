@@ -463,9 +463,10 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<OfferEntity> findExpiredOffers(final Date currentDate) {
+    public List<OfferEntity> findExpiredOffers(final Date currentDate, final Integer exchangeYear) {
         final Query query = entityManager.createNamedQuery("offer.findExpired");
         query.setParameter("date", currentDate);
+        query.setParameter("exchangeYear", exchangeYear);
 
         return query.getResultList();
     }

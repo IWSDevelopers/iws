@@ -124,7 +124,6 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
         final Query query = entityManager.createNamedQuery("view.findSharedToForOwnerYearAndOffers");
         query.setParameter("pid", parentId);
         query.setParameter("year", exchangeYear);
-        query.setParameter("date", new Date());
         query.setParameter("externalOfferIds", externalOfferIds);
 
         return query.getResultList();

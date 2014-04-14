@@ -37,7 +37,6 @@ import java.util.Date;
         query = "select s from OfferSharedToGroupView s " +
                 "where s.offerOwner = :pid" +
                 "  and s.exchangeYear = :year" +
-                "  and nominationDeadline >= :date" +
                 "  and offerExternalId in (:externalOfferIds)" +
                 "  and s.status <> 'CLOSED'"))
 @Table(name = "find_shared_to_groups")

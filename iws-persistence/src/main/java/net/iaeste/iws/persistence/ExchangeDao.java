@@ -251,7 +251,7 @@ public interface ExchangeDao extends BasicDao {
 
     List<AttachmentEntity> findAttachments(String table, Long id);
 
-    List<OfferEntity> findExpiredOffers(Date currentDate);
+    List<OfferEntity> findExpiredOffers(Date currentDate, Integer exchangeYear);
 
     /**
      * Sets given state for given list of offer IDs

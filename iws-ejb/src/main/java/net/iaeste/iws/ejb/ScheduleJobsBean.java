@@ -14,11 +14,18 @@
  */
 package net.iaeste.iws.ejb;
 
+import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
+import net.iaeste.iws.api.util.AbstractVerification;
+import net.iaeste.iws.core.transformers.ExchangeTransformer;
+import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import net.iaeste.iws.persistence.jpa.ExchangeJpaDao;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -49,12 +56,13 @@ public class ScheduleJobsBean {
 
     private EntityManager iwsEntityManager = null;
     private ExchangeDao exchangeDao = null;
+    private AccessDao accessDao = null;
 
     @Resource
     private TimerService timerService;
 
     private final Object lock = new Object();
-    private boolean processExpiredOfferIsRunning = false;
+    private boolean processExpiredOfferIsRunning = true;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
@@ -74,10 +82,11 @@ public class ScheduleJobsBean {
     public void postConstruct() {
         log.info("post construct");
         exchangeDao = new ExchangeJpaDao(iwsEntityManager);
+        accessDao = new AccessJpaDao(iwsEntityManager);
     }
 
     //for local testing
-    //@Schedule(second = "*/30", minute = "*", hour = "*", info="Every 30 seconds")
+    @Schedule(second = "0", minute = "0", hour = "*", info="Every 1 hour, for testing only", persistent = false)
     //for server
     //@Schedule(second = "0", minute = "1", hour = "0", info = "Every day at 0:01 AM (server time)", persistent = false)
     private void processExpiredOffers() {
@@ -115,34 +124,51 @@ public class ScheduleJobsBean {
 
     private void runExpiredOfferProcessing() {
         try {
-            final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date());
-            final List<Long> ids = new ArrayList<>(offers.size());
-            for (final OfferEntity offer : offers) {
-                ids.add(offer.getId());
-            }
+            final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date(), AbstractVerification.calculateExchangeYear());
+            if (!offers.isEmpty()) {
+                UserEntity systemUser = accessDao.findUserByUsername("system.user@iaeste.net");
 
-            final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffers(ids);
-            final Map<Long, List<OfferGroupEntity>> sharingInfo = prepareOfferGroupMap(ids, offerGroups);
+                final List<Long> ids = new ArrayList<>(offers.size());
+                for (final OfferEntity offer : offers) {
+                    ids.add(offer.getId());
+                }
 
-            final List<Long> removeOfferGroup = new ArrayList<>();
-            final List<Long> closeOfferGroup = new ArrayList<>();
+                final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffers(ids);
+                final Map<Long, List<OfferGroupEntity>> sharingInfo = prepareOfferGroupMap(ids, offerGroups);
 
-            for (final Long id : ids) {
-                for (final OfferGroupEntity offerGroup : sharingInfo.get(id)) {
-                    if (offerGroup.getHasApplication()) {
-                        closeOfferGroup.add(offerGroup.getId());
-                    } else {
-                        removeOfferGroup.add(offerGroup.getId());
+                for (final OfferEntity offer : offers) {
+                    final Authentication authentication = new Authentication(new AuthenticationToken(), systemUser, offer.getEmployer().getGroup(), "empty-trace-id-for-system-user");
+                    for (final OfferGroupEntity offerGroup : sharingInfo.get(offer.getId())) {
+                        final OfferGroupEntity modifiedOfferGroup = copyOfferGroup(offerGroup);
+                        modifiedOfferGroup.setStatus(OfferState.EXPIRED);
+                        exchangeDao.persist(authentication, offerGroup, modifiedOfferGroup);
                     }
+                    OfferEntity modifiedOffer = ExchangeTransformer.transform(ExchangeTransformer.transform(offer));
+                    modifiedOffer.setStatus(OfferState.EXPIRED);
+                    exchangeDao.persist(authentication, offer, modifiedOffer);
                 }
             }
-
-            exchangeDao.updateOfferState(ids, OfferState.EXPIRED);
-            exchangeDao.deleteOfferGroup(removeOfferGroup);
-            exchangeDao.updateOfferGroupState(closeOfferGroup, OfferState.CLOSED);
         } catch (IllegalArgumentException | IWSException e) {
             log.error("Error in processing expired offers", e);
         }
+    }
+
+    private OfferGroupEntity copyOfferGroup(final OfferGroupEntity offerGroup) {
+        final OfferGroupEntity newEntity = new OfferGroupEntity();
+        newEntity.setId(offerGroup.getId());
+        newEntity.setExternalId(offerGroup.getExternalId());
+        newEntity.setOffer(offerGroup.getOffer());
+        newEntity.setGroup(offerGroup.getGroup());
+        newEntity.setComment(offerGroup.getComment());
+        newEntity.setStatus(offerGroup.getStatus());
+        newEntity.setHasApplication(offerGroup.getHasApplication());
+        newEntity.setHidden(offerGroup.getHidden());
+        newEntity.setModifiedBy(offerGroup.getModifiedBy());
+        newEntity.setCreatedBy(offerGroup.getCreatedBy());
+        newEntity.setModified(offerGroup.getModified());
+        newEntity.setCreated(offerGroup.getCreated());
+
+        return newEntity;
     }
 
     private Map<Long, List<OfferGroupEntity>> prepareOfferGroupMap(final List<Long> ids, final List<OfferGroupEntity> offerGroups) {

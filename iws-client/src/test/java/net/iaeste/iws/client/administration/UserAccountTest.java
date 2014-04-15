@@ -312,16 +312,20 @@ public final class UserAccountTest extends AbstractAdministration {
         // the response is ok, and that a Notification was sent
         final Fallible result = administration.createUser(token, createUserRequest);
         assertThat(result.isOk(), is(true));
-        assertThat(spy.size(), is(1));
-        final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
-        assertThat(activationCode, is(not(nullValue())));
+        assertThat(spy.size(), is(0));
+
+        //TODO Pavel 2014-04-15: students are not supposed to receive activation email now so the following test should not work
+        //                       since no notification is generated. Once the emails are sent, following lines have to be uncommented
+//        assertThat(spy.size(), is(1));
+//        final String activationCode = spy.getNext().getFields().get(NotificationField.CODE);
+//        assertThat(activationCode, is(not(nullValue())));
 
         // Attempt to login using the new User Account. It should not yet work,
         // since the account is not activated
-        final AuthenticationRequest request = new AuthenticationRequest(username, password);
-        final AuthenticationResponse response1 = accessClient.generateSession(request);
-        assertThat(response1.isOk(), is(false));
-        assertThat(response1.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+//        final AuthenticationRequest request = new AuthenticationRequest(username, password);
+//        final AuthenticationResponse response1 = accessClient.generateSession(request);
+//        assertThat(response1.isOk(), is(false));
+//        assertThat(response1.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
 
         // Verify that the Students exists
         final FetchStudentsResponse afterFetchStudentsResponse = students.fetchStudents(token, fetchStudentsRequest);
@@ -329,13 +333,13 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(afterFetchStudentsResponse.getStudents().size(), is(beforeStudentsResponse.getStudents().size() + 1));
 
         // Activate the Account
-        final Fallible acticationResult = administration.activateUser(activationCode);
-        assertThat(acticationResult.isOk(), is(true));
+//        final Fallible acticationResult = administration.activateUser(activationCode);
+//        assertThat(acticationResult.isOk(), is(true));
 
         // Now, attempt to login again
-        final AuthenticationResponse response2 = accessClient.generateSession(request);
-        assertThat(response2.isOk(), is(true));
-        assertThat(response2.getToken(), is(not(nullValue())));
+//        final AuthenticationResponse response2 = accessClient.generateSession(request);
+//        assertThat(response2.isOk(), is(true));
+//        assertThat(response2.getToken(), is(not(nullValue())));
 
         //// Now, read the Permissions that the student has, basically, there is
         //// only 1 permission - which is applying for Open Offers
@@ -347,8 +351,8 @@ public final class UserAccountTest extends AbstractAdministration {
         //assertThat(permissionResponse.getAuthorizations().get(0).getUserGroup().getRole().getPermissions().contains(Permission.APPLY_FOR_OPEN_OFFER), is(true));
 
         // Deprecate the Students Session, the test is over :-)
-        final Fallible deprecateSessionResult = accessClient.deprecateSession(response2.getToken());
-        assertThat(deprecateSessionResult.isOk(), is(true));
+//        final Fallible deprecateSessionResult = accessClient.deprecateSession(response2.getToken());
+//        assertThat(deprecateSessionResult.isOk(), is(true));
     }
 
     /**

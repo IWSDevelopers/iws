@@ -125,6 +125,7 @@ public class ScheduleJobsBean {
     private void runExpiredOfferProcessing() {
         try {
             final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date(), AbstractVerification.calculateExchangeYear());
+            log.debug("Found " + offers.size() + " expired offers for exchange year " + AbstractVerification.calculateExchangeYear());
             if (!offers.isEmpty()) {
                 UserEntity systemUser = accessDao.findUserByUsername("system.user@iaeste.net");
 
@@ -138,7 +139,9 @@ public class ScheduleJobsBean {
 
                 for (final OfferEntity offer : offers) {
                     final Authentication authentication = new Authentication(new AuthenticationToken(), systemUser, offer.getEmployer().getGroup(), "empty-trace-id-for-system-user");
-                    for (final OfferGroupEntity offerGroup : sharingInfo.get(offer.getId())) {
+                    final List<OfferGroupEntity> offerSharingInfo = sharingInfo.get(offer.getId());
+                    log.debug("Offer " + offer.getId() + " is shared to " + offerSharingInfo.size() + " countries");
+                    for (final OfferGroupEntity offerGroup : offerSharingInfo) {
                         final OfferGroupEntity modifiedOfferGroup = copyOfferGroup(offerGroup);
                         modifiedOfferGroup.setStatus(OfferState.EXPIRED);
                         exchangeDao.persist(authentication, offerGroup, modifiedOfferGroup);

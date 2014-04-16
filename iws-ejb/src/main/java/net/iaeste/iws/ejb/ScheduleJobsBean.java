@@ -62,7 +62,7 @@ public class ScheduleJobsBean {
     private TimerService timerService;
 
     private final Object lock = new Object();
-    private boolean processExpiredOfferIsRunning = true;
+    private boolean processExpiredOfferIsRunning = false;
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also

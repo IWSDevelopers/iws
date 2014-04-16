@@ -187,7 +187,7 @@ public final class GroupService {
 
         if (entity != null) {
             final Group group = CommonTransformer.transform(entity);
-            final List<UserGroup> users = findGroupMembers(entity, request.isFetchUsers());
+            final List<UserGroup> users = findGroupMembers(entity, request);
             final List<UserGroup> students = findStudents(entity, request.isFetchStudents());
             final List<Group> groups = findSubGroups(entity, request.isFetchSubGroups());
 
@@ -495,16 +495,20 @@ public final class GroupService {
         dao.persist(userGroup);
     }
 
-    private List<UserGroup> findGroupMembers(final GroupEntity entity, final boolean fetchUsers) {
-        final List<UserGroup> result;
-
-        if (fetchUsers) {
-            final List<UserGroupEntity> members = dao.findGroupUsers(entity);
-            result = transformMembers(members);
-        } else {
-            result = new ArrayList<>(0);
+    private List<UserGroup> findGroupMembers(final GroupEntity entity, final FetchGroupRequest request) {
+        List<UserGroupEntity> members = null;
+        switch (request.getUsersToFetch()) {
+            case ACTIVE:
+                members = dao.findActiveGroupMembers(entity);
+                break;
+            case ALL:
+                members = dao.findAllGroupMembers(entity);
+                break;
+            case NONE:
+                members = new ArrayList<>(0);
         }
 
+        final List<UserGroup> result = transformMembers(members);
         return result;
     }
 

@@ -237,7 +237,7 @@ public final class HeavyLoadTest {
 
             for (int i = 0; i <= loops; i++) {
                 final FetchGroupRequest request = new FetchGroupRequest(GroupType.MEMBER);
-                request.setFetchUsers(true);
+                request.setUsersToFetch(FetchGroupRequest.FetchType.ACTIVE);
 
                 final long tmp1 = System.nanoTime();
                 assertThat(administration.fetchGroup(token, request).isOk(), is(true));

@@ -33,9 +33,29 @@ public final class FetchGroupRequest extends AbstractVerification {
 
     private String groupId = null;
     private GroupType groupType = null;
-    private boolean fetchUsers = false;
+    private FetchType usersToFetch = FetchType.NONE;
     private boolean fetchStudents = false;
     private boolean fetchSubGroups = false;
+
+    public enum FetchType {
+
+        /**
+         * If set to this value, no users will be retrieved for this Group.
+         */
+        NONE,
+
+        /**
+         * If set to this value, all currently active users are retrieves for
+         * this Group.
+         */
+        ACTIVE,
+
+        /**
+         * If set to this value, all users currently associated with the Group
+         * is fetched, this includes Active, New and Suspended users.
+         */
+        ALL
+    }
 
     // =========================================================================
     // Object Constructors
@@ -89,12 +109,14 @@ public final class FetchGroupRequest extends AbstractVerification {
         return groupType;
     }
 
-    public void setFetchUsers(final boolean fetchUsers) {
-        this.fetchUsers = fetchUsers;
+    public void setUsersToFetch(final FetchType usersToFetch) {
+        ensureNotNull("usersToFetch", usersToFetch);
+
+        this.usersToFetch = usersToFetch;
     }
 
-    public boolean isFetchUsers() {
-        return fetchUsers;
+    public FetchType getUsersToFetch() {
+        return usersToFetch;
     }
 
     public void setFetchStudents(final boolean fetchStudents) {

@@ -126,12 +126,16 @@ import java.util.Map;
                         "  and ug.user = :user"),
         // The roles are hardcoded to Owner, Moderator & Member, see
         // IWSConstants for more information
-        @NamedQuery(name = "usergroup.findGroupMembers",
+        @NamedQuery(name = "usergroup.findActiveGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.status = 'ACTIVE'" +
                         "  and ug.user.status = 'ACTIVE'" +
-                        "  and ug.group.id = :gid" +
-                        "  and ug.role.id <= 3"),
+                        "  and ug.group.id = :gid"),
+        @NamedQuery(name = "usergroup.findAllGroupMembers",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.status = 'ACTIVE'" +
+                        "  and ug.user.status <> 'DELETED'" +
+                        "  and ug.group.id = :gid"),
         // The roles are hardcoded to Students, see IWSConstants for more
         // information
         @NamedQuery(name = "usergroup.findStudents",

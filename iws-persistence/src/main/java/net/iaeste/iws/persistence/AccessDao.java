@@ -119,7 +119,9 @@ public interface AccessDao extends BasicDao {
 
     UserGroupEntity findIw3UserGroup(Integer iw3UserId, Integer iw3GroupId);
 
-    List<UserGroupEntity> findGroupUsers(GroupEntity group);
+    List<UserGroupEntity> findActiveGroupMembers(GroupEntity group);
+
+    List<UserGroupEntity> findAllGroupMembers(GroupEntity group);
 
     List<UserGroupEntity> findStudents(Long memberGroupId);
 

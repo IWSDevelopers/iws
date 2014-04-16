@@ -35,7 +35,7 @@ public final class FetchGroup extends AbstractFixture<FetchGroupResponse> {
     }
 
     public void setFetchUsers(final boolean fetchUsers) {
-        request.setFetchUsers(fetchUsers);
+        request.setUsersToFetch(fetchUsers ? FetchGroupRequest.FetchType.ACTIVE : FetchGroupRequest.FetchType.NONE);
     }
 
     public void setFetchSubGroups(final boolean fetchSubGroups) {

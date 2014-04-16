@@ -114,7 +114,7 @@ public final class UserGroupTest extends AbstractAdministration {
         assertThat(response, is(not(nullValue())));
         assertThat(response.isOk(), is(true));
         final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getGroupId());
-        groupRequest.setFetchUsers(true);
+        groupRequest.setUsersToFetch(FetchGroupRequest.FetchType.ALL);
         final FetchGroupResponse groupResponse = client.fetchGroup(token, groupRequest);
         assertThat(groupResponse.isOk(), is(true));
         assertThat(groupResponse.getMembers().size(), is(2));
@@ -149,7 +149,7 @@ public final class UserGroupTest extends AbstractAdministration {
 
         // Ensure that we now have 2 members
         final FetchGroupRequest groupRequest = new FetchGroupRequest(group.getGroupId());
-        groupRequest.setFetchUsers(true);
+        groupRequest.setUsersToFetch(FetchGroupRequest.FetchType.ACTIVE);
         final FetchGroupResponse groupResponse = client.fetchGroup(alternativeToken, groupRequest);
         assertThat(groupResponse.isOk(), is(true));
         assertThat(groupResponse.getMembers().size(), is(2));
@@ -168,7 +168,7 @@ public final class UserGroupTest extends AbstractAdministration {
     @Test
     public void testChangingNationalSecretaryToSelf() {
         final FetchGroupRequest groupRequest = new FetchGroupRequest(GroupType.NATIONAL);
-        groupRequest.setFetchUsers(true);
+        groupRequest.setUsersToFetch(FetchGroupRequest.FetchType.ACTIVE);
         final FetchGroupResponse groupResponse = client.fetchGroup(token, groupRequest);
         final Group group = groupResponse.getGroup();
         final UserGroup user = groupResponse.getMembers().get(0);

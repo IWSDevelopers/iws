@@ -348,6 +348,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
         int changes = 0;
 
         changes += different(comment, obj.comment);
+        changes += different(status, obj.status);
 
         return changes == 0;
     }
@@ -360,6 +361,7 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
         // don't merge if objects are not the same entity
         if ((id != null) && (obj != null) && externalId.equals(obj.externalId)) {
             comment = obj.comment;
+            status = obj.status;
         }
     }
 }

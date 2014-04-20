@@ -124,32 +124,34 @@ public class ScheduleJobsBean {
 
     private void runExpiredOfferProcessing() {
         try {
-            final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date(), AbstractVerification.calculateExchangeYear());
-            log.debug("Found " + offers.size() + " expired offers for exchange year " + AbstractVerification.calculateExchangeYear());
-            if (!offers.isEmpty()) {
-                UserEntity systemUser = accessDao.findUserByUsername("system.user@iaeste.net");
+            final UserEntity systemUser = accessDao.findUserByUsername("system.user@iaeste.net");
+            if (systemUser != null) {
+                final List<OfferEntity> offers = exchangeDao.findExpiredOffers(new Date(), AbstractVerification.calculateExchangeYear());
+                log.info("Found " + offers.size() + " expired offers for exchange year " + AbstractVerification.calculateExchangeYear());
+                if (!offers.isEmpty()) {
 
-                final List<Long> ids = new ArrayList<>(offers.size());
-                for (final OfferEntity offer : offers) {
-                    ids.add(offer.getId());
-                }
-
-                final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffers(ids);
-                final Map<Long, List<OfferGroupEntity>> sharingInfo = prepareOfferGroupMap(ids, offerGroups);
-
-                for (final OfferEntity offer : offers) {
-                    final Authentication authentication = new Authentication(new AuthenticationToken(), systemUser, offer.getEmployer().getGroup(), "empty-trace-id-for-system-user");
-                    final List<OfferGroupEntity> offerSharingInfo = sharingInfo.get(offer.getId());
-                    log.debug("Offer " + offer.getId() + " is shared to " + offerSharingInfo.size() + " countries");
-                    for (final OfferGroupEntity offerGroup : offerSharingInfo) {
-                        final OfferGroupEntity modifiedOfferGroup = copyOfferGroup(offerGroup);
-                        modifiedOfferGroup.setStatus(OfferState.EXPIRED);
-                        exchangeDao.persist(authentication, offerGroup, modifiedOfferGroup);
+                    final List<Long> ids = new ArrayList<>(offers.size());
+                    for (final OfferEntity offer : offers) {
+                        ids.add(offer.getId());
                     }
-                    OfferEntity modifiedOffer = ExchangeTransformer.transform(ExchangeTransformer.transform(offer));
-                    modifiedOffer.setStatus(OfferState.EXPIRED);
-                    exchangeDao.persist(authentication, offer, modifiedOffer);
+
+                    final List<OfferGroupEntity> offerGroups = exchangeDao.findInfoForSharedOffers(ids);
+                    final Map<Long, List<OfferGroupEntity>> sharingInfo = prepareOfferGroupMap(ids, offerGroups);
+
+                    for (final OfferEntity offer : offers) {
+                        final Authentication authentication = new Authentication(new AuthenticationToken(), systemUser, offer.getEmployer().getGroup(), "empty-trace-id-for-system-user");
+                        for (final OfferGroupEntity offerGroup : sharingInfo.get(offer.getId())) {
+                            final OfferGroupEntity modifiedOfferGroup = copyOfferGroup(offerGroup);
+                            modifiedOfferGroup.setStatus(OfferState.EXPIRED);
+                            exchangeDao.persist(authentication, offerGroup, modifiedOfferGroup);
+                        }
+                        OfferEntity modifiedOffer = ExchangeTransformer.transform(ExchangeTransformer.transform(offer));
+                        modifiedOffer.setStatus(OfferState.EXPIRED);
+                        exchangeDao.persist(authentication, offer, modifiedOffer);
+                    }
                 }
+            } else {
+                log.warn("System user was not found");
             }
         } catch (IllegalArgumentException | IWSException e) {
             log.error("Error in processing expired offers", e);
@@ -158,7 +160,6 @@ public class ScheduleJobsBean {
 
     private OfferGroupEntity copyOfferGroup(final OfferGroupEntity offerGroup) {
         final OfferGroupEntity newEntity = new OfferGroupEntity();
-        newEntity.setId(offerGroup.getId());
         newEntity.setExternalId(offerGroup.getExternalId());
         newEntity.setOffer(offerGroup.getOffer());
         newEntity.setGroup(offerGroup.getGroup());

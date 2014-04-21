@@ -241,7 +241,7 @@ public class IWSJpaDao implements IWSDao {
      */
     @Override
     public List<UserGroupEntity> findGroupMembers(final Long groupId) {
-        final Query query = entityManager.createNamedQuery("usergroup.findGroupMembers");
+        final Query query = entityManager.createNamedQuery("usergroup.findActiveGroupMembers");
         query.setParameter("gid", groupId);
 
         return query.getResultList();

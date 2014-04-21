@@ -75,3 +75,17 @@ create table mailing_aliases (
     constraint mailing_aliases_notnull_user_alias  check (user_alias is not null),
     constraint mailing_aliases_notnull_created     check (created is not null)
 );
+
+create view list_members as
+  select
+    l.id             as list_id,
+    m.id             as member_id,
+    l.subject_prefix as list_prefix,
+    l.list_address,
+    m.member         as member_address,
+    l.private        as is_private,
+    l.active         as is_active,
+    l.created::date  as list_created,
+    m.created::date  as member_since
+  from mailing_lists l, mailing_list_membership m
+  where l.id = m.mailing_list_id;

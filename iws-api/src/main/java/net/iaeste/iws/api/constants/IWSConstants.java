@@ -74,7 +74,8 @@ public interface IWSConstants {
      * problems.<br />
      *   Due to problems for users, we're reducing the time to 1 hour.
      */
-    long MAX_SESSION_IDLE_PERIOD = 3600000L; //28800000L;
+    long MAX_SESSION_IDLE_PERIOD = 28800000L;  // 8 hours
+    //long MAX_SESSION_IDLE_PERIOD = 3600000L;   // 1 hour
 
     /**
      * The maximum number of times a user may attempt to login with incorrect
@@ -182,7 +183,7 @@ public interface IWSConstants {
      *   This regex does not support the quotation rules, which makes the rule
      * check more complicated, nor does it support IPv6 addresses.
      */
-    String EMAIL_REGEX = "^[a-z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([_a-z0-9\\-]+\\.)*[a-z0-9]{2,}$";
+    String EMAIL_REGEX = "^[a-zA-Z0-9_\\.\\-\\+ !#\\$%&'\\*/=\\?\\^`\\{\\}\\|~]+@([a-zA-Z0-9_\\-]+\\.)*[a-zA-Z0-9]{2,}$";
     Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     /**

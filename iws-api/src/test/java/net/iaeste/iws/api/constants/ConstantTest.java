@@ -73,6 +73,8 @@ public final class ConstantTest {
 
         // Explicitly testing the case from Trac ticket #725
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("marko@iaeste.mit").matches(), is(true));
+        // Testing e-mail which was rejected April 17th
+        assertThat(IWSConstants.EMAIL_PATTERN.matcher("Monika.KUMMEL@ensam.eu").matches(), is(true));
     }
 
     /**

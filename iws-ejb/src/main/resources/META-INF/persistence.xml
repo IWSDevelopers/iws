@@ -31,6 +31,7 @@
         <class>net.iaeste.iws.persistence.entities.exchange.OfferEntity</class>
         <class>net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity</class>
         <class>net.iaeste.iws.persistence.entities.exchange.StudentEntity</class>
+        <class>net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity</class>
 
         <!-- Views -->
         <class>net.iaeste.iws.persistence.views.ApplicationView</class>

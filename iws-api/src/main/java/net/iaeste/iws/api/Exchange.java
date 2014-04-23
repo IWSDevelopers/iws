@@ -26,14 +26,14 @@ import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
@@ -165,7 +165,7 @@ public interface Exchange {
      * @param request Request Object
      * @return Response Object
      */
-    Fallible processPublishGroup(AuthenticationToken token, PublishGroupRequest request);
+    Fallible processPublishGroup(AuthenticationToken token, ProcessPublishingGroupRequest request);
 
     /**
      * Not implemented
@@ -174,7 +174,7 @@ public interface Exchange {
      * @param request Request Object
      * @return Response Object
      */
-    FetchPublishGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
+    FetchPublishingGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
 
     /**
      * Retrieves the list of groups to which offers are shared to. A list of offers is

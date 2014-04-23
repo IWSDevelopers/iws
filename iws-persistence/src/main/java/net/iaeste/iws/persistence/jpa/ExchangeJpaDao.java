@@ -24,6 +24,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
@@ -564,5 +565,27 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
         query.setParameter("ids", ids);
 
         query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PublishingGroupEntity getSharingListByExternalId(final String externalId) {
+        final Query query = entityManager.createNamedQuery("publishingGroup.findByExternalId");
+        query.setParameter("eid", externalId);
+
+        return findSingleResult(query, "PublishingGroup");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<PublishingGroupEntity> getSharingListForOwner(final Long id) {
+        final Query query = entityManager.createNamedQuery("publishingGroup.findForOwner");
+        query.setParameter("gid", id);
+
+        return query.getResultList();
     }
 }

@@ -1,7 +1,7 @@
 -- =============================================================================
 -- Mailing lists
 -- -----------------------------------------------------------------------------
--- table is here to simulate remote mailing list database
+-- table is here to simulate remote mailing publishingGroup database
 -- =============================================================================
 create sequence mailing_list_sequence start with 1 increment by 1;
 create table mailing_lists (
@@ -31,7 +31,7 @@ create table mailing_lists (
 -- =============================================================================
 -- Mailing lists
 -- -----------------------------------------------------------------------------
--- table is here to simulate remote mailing list database
+-- table is here to simulate remote mailing publishingGroup database
 -- =============================================================================
 create sequence mailing_list_membership_sequence start with 1 increment by 1;
 create table mailing_list_membership (

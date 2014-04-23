@@ -31,7 +31,7 @@ import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
@@ -39,7 +39,7 @@ import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
@@ -285,7 +285,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
+    public Fallible processPublishGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processPublishGroup()"));
         }
@@ -297,9 +297,9 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final ExchangeService service = factory.prepareExchangeService();
             service.processPublishGroups(authentication, request);
-            response = new FetchPublishGroupResponse();
+            response = new FetchPublishingGroupResponse();
         } catch (IWSException e) {
-            response = new FetchPublishGroupResponse(e.getError(), e.getMessage());
+            response = new FetchPublishingGroupResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
@@ -312,11 +312,11 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    public FetchPublishingGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting fetchPublishGroups()"));
         }
-        FetchPublishGroupResponse response;
+        FetchPublishingGroupResponse response;
 
         try {
             final Authentication authentication = verifyAccess(token, Permission.FETCH_PUBLISH_GROUPS);
@@ -325,7 +325,7 @@ public final class ExchangeController extends CommonController implements Exchan
             final ExchangeFetchService service = factory.prepareExchangeFetchService();
             response = service.fetchPublishGroups(authentication, request);
         } catch (IWSException e) {
-            response = new FetchPublishGroupResponse(e.getError(), e.getMessage());
+            response = new FetchPublishingGroupResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {

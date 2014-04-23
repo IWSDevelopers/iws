@@ -15,7 +15,7 @@
 package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Exchange;
-import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
@@ -28,7 +28,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 public final class ProcessPublishGroup extends AbstractFixture<Fallible> {
 
     private final Exchange exchange = new ExchangeCaller();
-    private PublishGroupRequest request = new PublishGroupRequest();
+    private ProcessPublishingGroupRequest request = new ProcessPublishingGroupRequest();
 
     public void processPublishGroup() {
         execute();

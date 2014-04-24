@@ -20,6 +20,7 @@ import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferStatistics;
+import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
@@ -33,7 +34,7 @@ import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.util.Date;
@@ -51,6 +52,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.ForeignOfferStatisticsView;
@@ -272,8 +274,14 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public FetchPublishGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+    public FetchPublishingGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
+        final List<PublishingGroupEntity> sharingLists = dao.getSharingListForOwner(authentication.getGroup().getId());
+        final List<PublishingGroup> publishingGroups = new ArrayList<>(sharingLists.size());
+        for (PublishingGroupEntity sharingList : sharingLists) {
+            publishingGroups.add(ExchangeTransformer.transform(sharingList));
+        }
+
+        return new FetchPublishingGroupResponse(publishingGroups);
     }
 
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final Authentication authentication) {

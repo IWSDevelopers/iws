@@ -29,23 +29,22 @@ import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
-import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
+import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -55,6 +54,7 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.exceptions.IdentificationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -262,12 +262,31 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public void processPublishGroups(final Authentication authentication, final PublishGroupRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
-    }
+    public void processPublishGroups(final Authentication authentication, final ProcessPublishingGroupRequest request) {
+        final PublishingGroupEntity newEntity = ExchangeTransformer.transform(request.getPublishingGroup());
 
-    public FetchPublishGroupResponse fetchPublishGroups(final Authentication authentication, final FetchPublishGroupsRequest request) {
-        throw new NotImplementedException("Method pending implementation.");
+        final List<String> groupIds = new ArrayList<>();
+        for (final Group group : request.getPublishingGroup().getGroups()) {
+            if (!group.getGroupId().equals(authentication.getGroup().getExternalId())) {
+                groupIds.add(group.getGroupId());
+            }
+        }
+        final List<GroupEntity> countryList = getAndVerifyGroupExist(groupIds);
+        newEntity.setList(countryList);
+        newEntity.setGroup(authentication.getGroup());
+
+        String externalId = newEntity.getExternalId();
+
+        if (externalId == null) {
+            dao.persist(authentication, newEntity);
+        } else {
+            final PublishingGroupEntity existingEntity = dao.getSharingListByExternalId(externalId);
+            if (existingEntity == null) {
+                throw new IdentificationException(formatLogMessage(authentication, "No Sharing List could be found with the Id %s.", externalId));
+            }
+
+            dao.persist(authentication, existingEntity, newEntity);
+        }
     }
 
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final Authentication authentication) {

@@ -18,6 +18,7 @@ import net.iaeste.iws.api.dtos.File;
 import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
+import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
 import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
@@ -29,6 +30,7 @@ import net.iaeste.iws.persistence.entities.exchange.ApplicationEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 
 import java.util.ArrayList;
@@ -365,6 +367,34 @@ public final class ExchangeTransformer {
             result.setRejectDescription(application.getRejectDescription());
             result.setRejectInternalComment(application.getRejectInternalComment());
             result.setNominatedAt((application.getNominatedAt() != null) ? application.getNominatedAt().toDate() : null);
+        }
+
+        return result;
+    }
+
+    public static PublishingGroup transform(final PublishingGroupEntity list) {
+        PublishingGroup result = null;
+
+        if (list != null) {
+            result = new PublishingGroup();
+
+            result.setName(list.getName());
+            result.setPublishingGroupId(list.getExternalId());
+            result.setGroups(AdministrationTransformer.transform(list.getList()));
+        }
+
+        return result;
+    }
+
+    public static PublishingGroupEntity transform(final PublishingGroup list) {
+        PublishingGroupEntity result = null;
+
+        if (list != null) {
+            result = new PublishingGroupEntity();
+
+            result.setName(list.getName());
+            result.setExternalId(list.getPublishingGroupId());
+            //there is no need to transform Group to GroupEntity, we have to fetch them from DB
         }
 
         return result;

@@ -16,7 +16,7 @@ package net.iaeste.iws.fitnesse;
 
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.fitnesse.callers.ExchangeCaller;
 import net.iaeste.iws.fitnesse.exceptions.StopTestException;
 
@@ -25,7 +25,7 @@ import net.iaeste.iws.fitnesse.exceptions.StopTestException;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-public final class FetchPublishGroups extends AbstractFixture<FetchPublishGroupResponse> {
+public final class FetchPublishGroups extends AbstractFixture<FetchPublishingGroupResponse> {
 
     private final Exchange exchange = new ExchangeCaller();
     private FetchPublishGroupsRequest request = new FetchPublishGroupsRequest();

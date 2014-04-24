@@ -289,3 +289,58 @@ create table student_applications (
     constraint student_application_notnull_modified                check (modified is not null),
     constraint student_application_notnull_created                 check (created is not null)
 );
+
+-- =============================================================================
+-- Publishing Group
+-- -----------------------------------------------------------------------------
+-- Description of Table
+-- =============================================================================
+create sequence publishing_group_sequence start with 1 increment by 1;
+create table publishing_groups (
+  id                        integer default nextval('publishing_group_sequence'),
+  external_id               varchar(36),
+  group_id                  integer,
+  name                      varchar(100),
+  created                   timestamp default now(),
+  modified                  timestamp default now(),
+
+  /* Primary & Foreign Keys */
+  constraint publishing_group_pk                              primary key (id),
+  constraint publishing_group_fk_group_id                     foreign key (group_id) references groups (id) ON DELETE CASCADE,
+
+  /* Unique Constraints */
+  constraint publishing_group_unique_external_id unique (external_id),
+
+  /* Not Null Constraints */
+  constraint publishing_group_notnull_id                      check (id is not null),
+  constraint publishing_group_notnull_external_id             check (external_id is not null),
+  constraint publishing_group_notnull_group_id                check (group_id is not null),
+  constraint publishing_group_notnull_name                    check (name is not null),
+  constraint publishing_group_notnull_modified                check (modified is not null),
+  constraint publishing_group_notnull_created                 check (created is not null)
+);
+
+-- =============================================================================
+-- Publishing Group Selection
+-- -----------------------------------------------------------------------------
+-- Description of Table
+-- =============================================================================
+create table publishing_group_selection (
+  publishing_group_id       integer,
+  group_id                  integer,
+  modified                  timestamp default now(),
+  created                   timestamp default now(),
+
+/* Primary & Foreign Keys */
+  constraint publishing_group_selection_pk                         primary key (publishing_group_id, group_id),
+  constraint publishing_group_selection_fk_sharing_list_id         foreign key (publishing_group_id) references publishing_groups (id) on delete cascade,
+  constraint publishing_group_selection_fk_group_id                foreign key (group_id) references groups (id) on delete cascade,
+
+/* Unique Constraints */
+
+/* Not Null Constraints */
+  constraint publishing_group_notnull_sharing_list_id         check (publishing_group_id is not null),
+  constraint publishing_group_notnull_group_id                check (group_id is not null),
+  constraint publishing_group_notnull_modified                check (modified is not null),
+  constraint publishing_group_notnull_created                 check (created is not null)
+);

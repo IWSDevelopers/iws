@@ -141,7 +141,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
+    public Fallible processPublishGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         try {
             return caller.processPublishGroup(token, request);
         } catch (Exception e) {
@@ -153,7 +153,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    public FetchPublishingGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         try {
             return caller.fetchPublishGroups(token, request);
         } catch (Exception e) {

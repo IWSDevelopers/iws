@@ -28,7 +28,7 @@ import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
-import net.iaeste.iws.api.requests.exchange.PublishGroupRequest;
+import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
@@ -36,7 +36,7 @@ import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishGroupResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
@@ -335,7 +335,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
-    public Fallible processPublishGroup(final AuthenticationToken token, final PublishGroupRequest request) {
+    public Fallible processPublishGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         Fallible response;
 
         try {
@@ -356,15 +356,15 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public FetchPublishGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
-        FetchPublishGroupResponse response;
+    public FetchPublishingGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+        FetchPublishingGroupResponse response;
 
         try {
             response = controller.fetchPublishGroups(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
-            response = new FetchPublishGroupResponse(IWSErrors.ERROR, e.getMessage());
+            response = new FetchPublishingGroupResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

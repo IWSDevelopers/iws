@@ -123,7 +123,7 @@ create view country_details as
 
 
 -- =============================================================================
--- View to list file attachments to a document
+-- View to publishingGroup file attachments to a document
 -- =============================================================================
 create view file_attachments as
   select

@@ -21,6 +21,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.EmployerEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
 import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.exceptions.PersistenceException;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
@@ -282,4 +283,7 @@ public interface ExchangeDao extends BasicDao {
      * @param ids List of OfferGroups IDs
      */
     void hideOfferGroups(List<Long> ids);
+
+    PublishingGroupEntity getSharingListByExternalId(String externalId);
+    List<PublishingGroupEntity> getSharingListForOwner(Long id);
 }

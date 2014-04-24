@@ -26,21 +26,19 @@ import net.iaeste.iws.api.requests.FetchUserRequest;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.requests.OwnerRequest;
 import net.iaeste.iws.api.requests.SearchUserRequest;
-import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.requests.UserRequest;
 import net.iaeste.iws.api.responses.ContactsResponse;
 import net.iaeste.iws.api.responses.CreateUserResponse;
+import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.FetchCountryResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
 import net.iaeste.iws.api.responses.FetchUserResponse;
-import net.iaeste.iws.api.responses.EmergencyListResponse;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
+import net.iaeste.iws.api.responses.SearchUserResponse;
 import net.iaeste.iws.api.util.Fallible;
-
-import javax.ejb.Remote;
 
 /**
  * Handles Administration of User Accounts, Groups, Roles and Countries.
@@ -49,7 +47,6 @@ import javax.ejb.Remote;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Remote
 public interface Administration {
 
     /**

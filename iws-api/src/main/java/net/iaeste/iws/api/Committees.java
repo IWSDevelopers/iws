@@ -56,7 +56,6 @@ import javax.ejb.Remote;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Remote
 public interface Committees {
 
     /**

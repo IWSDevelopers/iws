@@ -17,9 +17,10 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
+import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
+import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
@@ -35,6 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -61,6 +63,7 @@ import javax.persistence.PersistenceContext;
  * @since   IWS 1.0
  */
 @Stateless
+@Remote(Students.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StudentBean extends AbstractBean implements Students {

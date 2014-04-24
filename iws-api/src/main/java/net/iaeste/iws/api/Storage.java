@@ -20,8 +20,6 @@ import net.iaeste.iws.api.requests.FileRequest;
 import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 
-import javax.ejb.Remote;
-
 /**
  * Storage Functionality.
  *
@@ -29,7 +27,6 @@ import javax.ejb.Remote;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Remote
 public interface Storage {
 
     /**

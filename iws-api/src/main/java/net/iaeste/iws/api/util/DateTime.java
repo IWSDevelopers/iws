@@ -17,8 +17,6 @@ package net.iaeste.iws.api.util;
 import net.iaeste.iws.api.constants.IWSConstants;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -32,11 +30,6 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      * {@link IWSConstants#SERIAL_VERSION_UID}.
      */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
-
-    /**
-     * Internal Date format.
-     */
-    private final DateFormat format = new SimpleDateFormat(IWSConstants.DATE_FORMAT, IWSConstants.DEFAULT_LOCALE);
 
     /**
      * The internal Date, implementation uses the JodaTime Classes.
@@ -131,7 +124,7 @@ public class DateTime implements Serializable, Comparable<DateTime> {
      */
     @Override
     public String toString() {
-        return format.format(dateTime.toDate());
+        return IWSConstants.FORMATTER.format(dateTime.toDate());
     }
 
     /**

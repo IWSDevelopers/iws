@@ -36,8 +36,8 @@ import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
@@ -51,6 +51,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -59,7 +60,10 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -79,9 +83,11 @@ import javax.persistence.PersistenceContext;
  * @since   IWS 1.0
  */
 @Stateless
+@Remote(Exchange.class)
+@WebService(serviceName = "exchange")
+@SOAPBinding(style = SOAPBinding.Style.RPC)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-@WebService(serviceName = "iwsService")
 public class ExchangeBean extends AbstractBean implements Exchange {
 
     private static final Logger log = LoggerFactory.getLogger(ExchangeBean.class);
@@ -96,8 +102,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      *
      * @param entityManager Transactional Entity Manager instance
      */
-    @PersistenceContext(unitName = "iwsDatabase")
     @WebMethod(exclude = true)
+    @PersistenceContext(unitName = "iwsDatabase")
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -108,8 +114,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      *
      * @param notificationManager Notification Manager Bean
      */
-    @EJB(beanInterface = NotificationManagerLocal.class)
     @WebMethod(exclude = true)
+    @EJB(beanInterface = NotificationManagerLocal.class)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
         this.notificationManager = notificationManager;
     }
@@ -120,6 +126,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      *
      * @param settings Settings Bean
      */
+    @WebMethod(exclude = true)
     @Inject
     public void setSettings(final Settings settings) {
         this.settings = settings;
@@ -130,6 +137,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      */
     @Override
     @PostConstruct
+    @WebMethod(exclude = true)
     public void postConstruct() {
         if (settings.getDoJndiLookup()) {
             settings.init();
@@ -147,8 +155,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
-    //@WebMethod
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
         OfferStatisticsResponse response;
@@ -168,9 +176,12 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod
-    public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
+    @WebResult(name = "response")
+    @Interceptors(Profiler.class)
+    public EmployerResponse processEmployer(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final ProcessEmployerRequest request) {
         EmployerResponse response;
 
         try {
@@ -188,10 +199,13 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod
+    @WebResult(name = "response")
+    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
+    public FetchEmployerResponse fetchEmployers(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final FetchEmployerRequest request) {
         FetchEmployerResponse response;
 
         try {
@@ -209,10 +223,12 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod
+    @WebResult(name = "response")
     @Interceptors(Profiler.class)
-    // There is a field in the ProcessOfferRequest, which causes a WS problem!
-    //@WebMethod
-    public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
+    public OfferResponse processOffer(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final ProcessOfferRequest request) {
         OfferResponse response;
 
         try {
@@ -230,8 +246,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         OfferResponse response;
 
@@ -250,10 +266,13 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod
+    @WebResult(name = "response")
     @Interceptors(Profiler.class)
-    @WebMethod(exclude = true)
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
+    public FetchOffersResponse fetchOffers(
+            @WebParam(name = "token") final AuthenticationToken token,
+            @WebParam(name = "request") final FetchOffersRequest request) {
         FetchOffersResponse response;
 
         try {
@@ -271,8 +290,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
         FetchGroupsForSharingResponse response;
@@ -292,8 +311,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         Fallible response;
 
@@ -312,8 +331,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         FetchOfferTemplateResponse response;
@@ -333,8 +352,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     public Fallible processPublishGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         Fallible response;
 
@@ -353,8 +372,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchPublishingGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         FetchPublishingGroupResponse response;
@@ -374,8 +393,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
         PublishOfferResponse response;
 
@@ -394,8 +413,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         FetchPublishedGroupsResponse response;
@@ -415,8 +434,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
     public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         Fallible response;
 

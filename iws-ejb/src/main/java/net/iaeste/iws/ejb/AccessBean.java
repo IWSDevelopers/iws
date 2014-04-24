@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -42,6 +43,8 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
@@ -64,10 +67,11 @@ import java.io.Serializable;
  * @since   IWS 1.0
  */
 @Stateless
+@Remote(Access.class)
+@WebService(serviceName = "access")
+@SOAPBinding(style = SOAPBinding.Style.RPC)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
-@WebService(serviceName = "iwsService")
-@SOAPBinding(style = SOAPBinding.Style.RPC)
 public class AccessBean extends AbstractBean implements Access {
 
     private static final Logger log = LoggerFactory.getLogger(AccessBean.class);
@@ -82,8 +86,8 @@ public class AccessBean extends AbstractBean implements Access {
      *
      * @param entityManager Transactional Entity Manager instance
      */
-    @PersistenceContext(unitName = "iwsDatabase")
     @WebMethod(exclude = true)
+    @PersistenceContext(unitName = "iwsDatabase")
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -94,8 +98,8 @@ public class AccessBean extends AbstractBean implements Access {
      *
      * @param notificationManager Notification Manager Bean
      */
-    @EJB(beanInterface = NotificationManagerLocal.class)
     @WebMethod(exclude = true)
+    @EJB(beanInterface = NotificationManagerLocal.class)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
         this.notificationManager = notificationManager;
     }
@@ -106,6 +110,7 @@ public class AccessBean extends AbstractBean implements Access {
      *
      * @param settings Settings Bean
      */
+    @WebMethod(exclude = true)
     @Inject
     public void setSettings(final Settings settings) {
         this.settings = settings;
@@ -134,9 +139,11 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @Interceptors(Profiler.class)
     @WebMethod
-    public AuthenticationResponse generateSession(final AuthenticationRequest request) {
+    @WebResult(name = "response")
+    @Interceptors(Profiler.class)
+    public AuthenticationResponse generateSession(
+            @WebParam(name="request") final AuthenticationRequest request) {
         AuthenticationResponse response;
 
         try {
@@ -230,9 +237,11 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public Fallible deprecateSession(final AuthenticationToken token) {
-        Fallible response;
+    @WebMethod
+    @WebResult(name = "response")
+    public FallibleResponse deprecateSession(
+            @WebParam(name="token") final AuthenticationToken token) {
+        FallibleResponse response;
 
         try {
             response = controller.deprecateSession(token);
@@ -287,9 +296,12 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
-    @WebMethod(exclude = true)
-    public Fallible updatePassword(final AuthenticationToken token, final Password password) {
-        Fallible response;
+    @WebMethod
+    @WebResult(name = "response")
+    public FallibleResponse updatePassword(
+            @WebParam(name="token") final AuthenticationToken token,
+            @WebParam(name="password") final Password password) {
+        FallibleResponse response;
 
         try {
             response = controller.updatePassword(token, password);
@@ -306,8 +318,11 @@ public class AccessBean extends AbstractBean implements Access {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod
+    @WebResult(name = "response")
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public FetchPermissionResponse fetchPermissions(final AuthenticationToken token) {
+    public FetchPermissionResponse fetchPermissions(
+            @WebParam(name="token") final AuthenticationToken token) {
         FetchPermissionResponse response;
 
         try {

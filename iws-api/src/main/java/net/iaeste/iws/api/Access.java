@@ -19,11 +19,11 @@ import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
 
-import javax.ejb.Remote;
 import java.io.Serializable;
 
 /**
@@ -43,13 +43,16 @@ import java.io.Serializable;
  * It is important to underline, that a User may only have 1 (one) active
  * Session at the time. Meaning, that the same user may not log into different
  * IWS based systems at the same time. This feature was added to prevent Account
- * misusage. Though the consequences of attempting will simply be a rejection.
+ * misusage. Though the consequences of attempting will simply be a
+ * rejection.<br />
+ *   The interface is annotated with the WebService annotations and XML elements
+ * used by JAXB, although some are implicit so named, it is helpful to
+ * explicitly set them, to avoid any future problems.
  *
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Remote
 public interface Access {
 
     /**
@@ -74,7 +77,8 @@ public interface Access {
      *   Although the main part of this functionality is similar to just making
      * a normal login request, the main goal here is to avoid that a misuse of
      * the account is taking place - so only the owner should be able to do
-     * this. As the resetting will also close the existing session.
+     * this. As the resetting will also close the existing session.<br />
+     *   This method is excluded from the WebService exposure, since it is
      *
      * @param request  User Authentication Request object
      * @return Standard Error object
@@ -119,7 +123,7 @@ public interface Access {
      * @param token The {@code AuthenticationToken} to deprecate the session for
      * @return Standard Error object
      */
-    Fallible deprecateSession(AuthenticationToken token);
+    FallibleResponse deprecateSession(AuthenticationToken token);
 
     /**
      * If a user forgot the password, then this request will send a notification
@@ -148,7 +152,7 @@ public interface Access {
      * @param password Password Object for the user
      * @return Standard Error object
      */
-    Fallible updatePassword(AuthenticationToken token, Password password);
+    FallibleResponse updatePassword(AuthenticationToken token, Password password);
 
     /**
      * Retrieves the list of permissions for a given user, identified by the

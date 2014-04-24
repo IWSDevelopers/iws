@@ -193,11 +193,11 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deprecateSession(final AuthenticationToken token) {
+    public FallibleResponse deprecateSession(final AuthenticationToken token) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting deprecateSession()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verifyPrivateAccess(token);
@@ -270,11 +270,11 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible updatePassword(final AuthenticationToken token, final Password password) {
+    public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting updatePassword()"));
         }
-        Fallible response;
+        FallibleResponse response;
 
         try {
             verify(password);

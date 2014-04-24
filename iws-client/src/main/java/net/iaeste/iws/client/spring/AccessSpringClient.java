@@ -20,6 +20,7 @@ import net.iaeste.iws.api.dtos.Password;
 import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Fallible;
@@ -124,7 +125,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible deprecateSession(final AuthenticationToken token) {
+    public FallibleResponse deprecateSession(final AuthenticationToken token) {
         return client.deprecateSession(token);
     }
 
@@ -148,7 +149,7 @@ public final class AccessSpringClient implements Access {
      * {@inheritDoc}
      */
     @Override
-    public Fallible updatePassword(final AuthenticationToken token, final Password password) {
+    public FallibleResponse updatePassword(final AuthenticationToken token, final Password password) {
         return client.updatePassword(token, password);
     }
 

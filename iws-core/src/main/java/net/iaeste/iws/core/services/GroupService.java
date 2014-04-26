@@ -234,6 +234,7 @@ public final class GroupService {
                 // Member Group
                 if ((type == GroupType.NATIONAL) || group.getId().equals(GENERAL_SECRETARY_GROUP)) {
                     final GroupEntity memberGroup = dao.findMemberGroup(user);
+                    log.debug(formatLogMessage(authentication, "Changing owner for Member Group '%s' with Id '%s'.", memberGroup.getGroupName(), memberGroup.getExternalId()));
                     if (memberGroup.getId().equals(group.getParentId())) {
                         changeGroupOwner(authentication, user, memberGroup, request.getTitle());
                     } else {
@@ -244,6 +245,7 @@ public final class GroupService {
 
                 // As the NS/GS aspects are gone, we can deal with the actual
                 // change just as with any other group
+                log.debug(formatLogMessage(authentication, "Changing owner for the Group '%s' with Id '%s'.", group.getGroupName(), group.getExternalId()));
                 changeGroupOwner(authentication, user, group, request.getTitle());
             } else {
                 throw new PermissionException("Cannot reassign ownership to an inactive person.");
@@ -298,8 +300,9 @@ public final class GroupService {
         // Persist the two Entities
         dao.persist(authentication, newOwner);
         dao.persist(authentication, oldOwner);
+        log.debug(formatLogMessage(authentication, "Persisting membership changes."));
 
-        //TODO notify obout OLD_GROUP_OWNER ? Is there anything to be changed?
+        // Old Owner is the one invoking this request, so no need to include that
         notifications.notify(authentication, newOwner, NotificationType.NEW_GROUP_OWNER);
         notifications.notify(authentication, newOwner, NotificationType.CHANGE_IN_GROUP_MEMBERS);
     }

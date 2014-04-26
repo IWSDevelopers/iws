@@ -282,10 +282,13 @@ public final class GroupService {
         // Owner will get all the same information as the existing
         newOwner.setGroup(group);
         newOwner.setUser(user);
-        newOwner.setRole(oldOwner.getRole());
+        // Bug #482; Copying instrumented Objects and changing them is a bad
+        // idea! Apparently, the EntityManager overwrote the Owner role with the
+        // new role!
+        newOwner.setRole(dao.findRoleById(IWSConstants.ROLE_OWNER));
         newOwner.setTitle(oldOwner.getTitle());
-        newOwner.setOnPublicList(oldOwner.getOnPublicList());
-        newOwner.setOnPrivateList(oldOwner.getOnPrivateList());
+        newOwner.setOnPublicList(true);
+        newOwner.setOnPrivateList(true);
 
         // The old  Owner will get the Moderator Role and have the title
         // removed, since it may no longer be valid

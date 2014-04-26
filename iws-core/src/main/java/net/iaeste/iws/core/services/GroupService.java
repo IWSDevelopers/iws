@@ -303,8 +303,9 @@ public final class GroupService {
         log.debug(formatLogMessage(authentication, "Persisting membership changes."));
 
         // Old Owner is the one invoking this request, so no need to include that
-        notifications.notify(authentication, newOwner, NotificationType.NEW_GROUP_OWNER);
-        notifications.notify(authentication, newOwner, NotificationType.CHANGE_IN_GROUP_MEMBERS);
+        // Commenting out the notifications, since they cause errors
+        //notifications.notify(authentication, newOwner, NotificationType.NEW_GROUP_OWNER);
+        //notifications.notify(authentication, newOwner, NotificationType.CHANGE_IN_GROUP_MEMBERS);
     }
 
     /**

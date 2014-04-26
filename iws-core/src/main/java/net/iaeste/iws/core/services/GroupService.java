@@ -271,36 +271,34 @@ public final class GroupService {
         final UserGroupEntity oldOwner = dao.findByGroupAndUser(group, authentication.getUser());
         final UserGroupEntity newOwner;
 
-        // Check if the person already are a member of the Group, if not then
+        // Check if the person already is a member of the Group, if not then
         // we'll create a new Record
         final UserGroupEntity existing = dao.findByGroupAndUser(group, user);
         if (existing == null) {
             newOwner = new UserGroupEntity();
+            newOwner.setGroup(group);
+            newOwner.setUser(user);
         } else {
             newOwner = existing;
         }
 
-        // Ensure that the data for the two new Entities are correct. The new
-        // Owner will get all the same information as the existing
-        newOwner.setGroup(group);
-        newOwner.setUser(user);
         // Bug #482; Copying instrumented Objects and changing them is a bad
-        // idea! Apparently, the EntityManager overwrote the Owner role with the
-        // new role!
+        // idea! Apparently, the EntityManager overwrites the Owner role with
+        // the new role!
         newOwner.setRole(dao.findRoleById(IWSConstants.ROLE_OWNER));
         newOwner.setTitle(oldOwner.getTitle());
         newOwner.setOnPublicList(true);
         newOwner.setOnPrivateList(true);
+        log.debug(formatLogMessage(authentication, "New Owner: %s gets the role %s for group %s.", user.getFirstname() + ' ' + user.getLastname(), newOwner.getRole().getRole(), group.getGroupName()));
+        dao.persist(authentication, newOwner);
 
         // The old  Owner will get the Moderator Role and have the title
         // removed, since it may no longer be valid
         oldOwner.setRole(dao.findRoleById(IWSConstants.ROLE_MODERATOR));
         oldOwner.setTitle(title);
-
-        // Persist the two Entities
-        dao.persist(authentication, newOwner);
+        log.debug(formatLogMessage(authentication, "Old Owner: %s gets the role %s for group %s.", user.getFirstname() + ' ' + user.getLastname(), newOwner.getRole().getRole(), group.getGroupName()));
         dao.persist(authentication, oldOwner);
-        log.debug(formatLogMessage(authentication, "Persisting membership changes."));
+        log.debug(formatLogMessage(authentication, "Ownership changes have been persisted."));
 
         // Old Owner is the one invoking this request, so no need to include that
         // Commenting out the notifications, since they cause errors

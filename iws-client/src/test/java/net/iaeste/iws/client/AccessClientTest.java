@@ -29,6 +29,7 @@ import net.iaeste.iws.api.requests.AuthenticationRequest;
 import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.SessionDataRequest;
 import net.iaeste.iws.api.responses.AuthenticationResponse;
+import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.FetchPermissionResponse;
 import net.iaeste.iws.api.responses.SessionDataResponse;
 import net.iaeste.iws.api.util.Date;
@@ -120,6 +121,32 @@ public final class AccessClientTest extends AbstractTest {
         assertThat(result.getMessage(), is(IWSConstants.SUCCESS));
         assertThat(result.isOk(), is(true));
         assertThat(result.getError(), is(IWSErrors.SUCCESS));
+    }
+
+    @Test
+    public void testVerifySession() {
+        final Access client = new AccessClient();
+        final String username = "austria@iaeste.at";
+        final String password = "austria";
+        final AuthenticationRequest request = new AuthenticationRequest(username, password);
+
+        // Login
+        final AuthenticationResponse response = client.generateSession(request);
+        final AuthenticationToken myToken = response.getToken();
+
+        // Verify that our current token is valid
+        final FallibleResponse aliveResponse = client.verifySession(myToken);
+        assertThat(aliveResponse.isOk(), is(true));
+
+        // Logout
+        final FallibleResponse deprecateResponse = client.deprecateSession(myToken);
+        assertThat(deprecateResponse.isOk(), is(true));
+
+        // Verify that our current token is invalid
+        final FallibleResponse inactiveResponse = client.verifySession(myToken);
+        assertThat(inactiveResponse.isOk(), is(false));
+        assertThat(inactiveResponse.getError(), is(IWSErrors.AUTHENTICATION_ERROR));
+        assertThat(inactiveResponse.getMessage(), is("No AuthenticationToken was found."));
     }
 
     @Test

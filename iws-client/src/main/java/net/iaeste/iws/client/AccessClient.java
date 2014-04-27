@@ -95,6 +95,14 @@ public final class AccessClient implements Access {
      * {@inheritDoc}
      */
     @Override
+    public FallibleResponse verifySession(final AuthenticationToken token) {
+        return client.verifySession(token);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FallibleResponse deprecateSession(final AuthenticationToken token) {
         return client.deprecateSession(token);
     }

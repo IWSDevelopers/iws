@@ -193,6 +193,29 @@ public final class AccessController extends CommonController implements Access {
      * {@inheritDoc}
      */
     @Override
+    public FallibleResponse verifySession(final AuthenticationToken token) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting verifySession()"));
+        }
+        FallibleResponse response;
+
+        try {
+            verifyPrivateAccess(token);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished verifySession()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FallibleResponse deprecateSession(final AuthenticationToken token) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting deprecateSession()"));

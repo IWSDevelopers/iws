@@ -239,6 +239,26 @@ public class AccessBean extends AbstractBean implements Access {
     @Override
     @WebMethod
     @WebResult(name = "response")
+    public FallibleResponse verifySession(
+            @WebParam(name = "token") final AuthenticationToken token) {
+        FallibleResponse response;
+
+        try {
+            response = controller.verifySession(token);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @WebMethod
+    @WebResult(name = "response")
     public FallibleResponse deprecateSession(
             @WebParam(name="token") final AuthenticationToken token) {
         FallibleResponse response;

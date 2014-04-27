@@ -112,6 +112,18 @@ public final class AccessCaller implements Access {
      * {@inheritDoc}
      */
     @Override
+    public FallibleResponse verifySession(final AuthenticationToken token) {
+        try {
+            return caller.verifySession(token);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FallibleResponse deprecateSession(final AuthenticationToken token) {
         try {
             return caller.deprecateSession(token);

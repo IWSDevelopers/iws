@@ -114,6 +114,17 @@ public interface Access {
     <T extends Serializable> SessionDataResponse<T> readSessionData(AuthenticationToken token);
 
     /**
+     * For WebServices using the IWS to manage Authentication & Authorization
+     * control, it is helpful to verify if a session is still valid or not. This
+     * request simply allows this. It returns a standard error object, which
+     * contains the verification information.
+     *
+     * @param token The {@code AuthenticationToken} to deprecate the session for
+     * @return Standard Error object
+     */
+    FallibleResponse verifySession(AuthenticationToken token);
+
+    /**
      * The IWS doesn't delete ongoing sessions, it only closes them for further
      * usage. By invoking this method, the currently active session for the
      * given token is being deprecated (i.e. closed).<br />

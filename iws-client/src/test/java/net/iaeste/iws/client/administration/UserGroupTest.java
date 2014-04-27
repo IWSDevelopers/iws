@@ -22,6 +22,7 @@ import static org.junit.Assert.assertThat;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
+import net.iaeste.iws.api.dtos.Role;
 import net.iaeste.iws.api.dtos.User;
 import net.iaeste.iws.api.dtos.UserGroup;
 import net.iaeste.iws.api.enums.GroupType;
@@ -33,6 +34,7 @@ import net.iaeste.iws.api.requests.UserGroupAssignmentRequest;
 import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.FetchGroupResponse;
 import net.iaeste.iws.api.responses.FetchRoleResponse;
+import net.iaeste.iws.api.responses.ProcessUserGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import org.junit.Test;
 
@@ -118,6 +120,62 @@ public final class UserGroupTest extends AbstractAdministration {
         final FetchGroupResponse groupResponse = client.fetchGroup(token, groupRequest);
         assertThat(groupResponse.isOk(), is(true));
         assertThat(groupResponse.getMembers().size(), is(2));
+    }
+
+    /**
+     * This is a proof of error test for Bug #482. The bug caused a huge
+     * problem, since all attempts at changing the NS for a country caused the
+     * new NS to have the permissions as either Moderator or Member! The error
+     * was noticed since many countries suddenly couldn't access their domestic
+     * offers. And the reason - no NS!<br />
+     *   When changing an NS, there was two requests invoked, although only one
+     * was needed. The first request was to change the NS, and the second was
+     * to change the settings. If the Object send contained the wrong RoleId,
+     * then the IWS neglected to check this Id, and only verified that you
+     * didn't attempt to change the user to Owner. Since the test was lacking,
+     * the newly created / updated NS account was downgraded.
+     */
+    @Test
+    public void testChangeNSWithWrongNSRole() {
+        // We need to use a different token, since this test will otherwise
+        // cause other tests to fail!
+        final AuthenticationToken alternativeToken = login("france@iaeste.fr", "france");
+        final User user = createAndActiveUser(alternativeToken, "omega@iaeste.dk", "Omega", "Beta");
+        final Group group = findNationalGroup(alternativeToken);
+
+        // Change the Owner
+        final OwnerRequest request = new OwnerRequest(group, user);
+        final Fallible response = client.changeGroupOwner(alternativeToken, request);
+        assertThat(response, is(not(nullValue())));
+        assertThat(response.isOk(), is(true));
+
+        // Fetch the list of assignable Roles
+        final FetchRoleRequest roleRequest = new FetchRoleRequest();
+        roleRequest.setGroupId(group.getGroupId());
+        final FetchRoleResponse roleResponse = client.fetchRoles(alternativeToken, roleRequest);
+        Role member = null;
+        for (final Role role : roleResponse.getRoles()) {
+            if ("Member".equals(role.getRoleName())) {
+                member = role;
+            }
+        }
+
+        // Now attempt to change the role
+        final UserGroup userGroup = new UserGroup();
+        userGroup.setUser(user);
+        userGroup.setGroup(group);
+        userGroup.setRole(member);
+        final UserGroupAssignmentRequest userGroupAssignmentRequest = new UserGroupAssignmentRequest();
+        userGroupAssignmentRequest.setUserGroup(userGroup);
+        final ProcessUserGroupResponse assignmentResponse = client.processUserGroupAssignment(alternativeToken, userGroupAssignmentRequest);
+
+        // Now, we can check that it didn't work
+        assertThat(assignmentResponse.isOk(), is(false));
+        assertThat(assignmentResponse.getError(), is(IWSErrors.NOT_PERMITTED));
+        assertThat(assignmentResponse.getMessage(), is("It is not permitted to change the current Owner."));
+
+        // Logout from the account
+        logout(alternativeToken);
     }
 
     @Test

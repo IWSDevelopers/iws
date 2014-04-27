@@ -282,9 +282,7 @@ public final class GroupService {
             newOwner = existing;
         }
 
-        // Bug #482; Copying instrumented Objects and changing them is a bad
-        // idea! Apparently, the EntityManager overwrites the Owner role with
-        // the new role!
+        // First we update the new Owner. By default, the Owner is on all lists
         newOwner.setRole(dao.findRoleById(IWSConstants.ROLE_OWNER));
         newOwner.setTitle(oldOwner.getTitle());
         newOwner.setOnPublicList(true);

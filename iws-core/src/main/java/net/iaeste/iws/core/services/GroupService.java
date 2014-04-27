@@ -292,11 +292,11 @@ public final class GroupService {
         log.debug(formatLogMessage(authentication, "New Owner: %s gets the role %s for group %s.", user.getFirstname() + ' ' + user.getLastname(), newOwner.getRole().getRole(), group.getGroupName()));
         dao.persist(authentication, newOwner);
 
-        // The old  Owner will get the Moderator Role and have the title
+        // The old Owner will get the Moderator Role and have the title
         // removed, since it may no longer be valid
         oldOwner.setRole(dao.findRoleById(IWSConstants.ROLE_MODERATOR));
         oldOwner.setTitle(title);
-        log.debug(formatLogMessage(authentication, "Old Owner: %s gets the role %s for group %s.", user.getFirstname() + ' ' + user.getLastname(), newOwner.getRole().getRole(), group.getGroupName()));
+        log.debug(formatLogMessage(authentication, "Old Owner: %s gets the role %s for group %s.", authentication.getUser().getFirstname() + ' ' + authentication.getUser().getLastname(), oldOwner.getRole().getRole(), group.getGroupName()));
         dao.persist(authentication, oldOwner);
         log.debug(formatLogMessage(authentication, "Ownership changes have been persisted."));
 
@@ -327,13 +327,19 @@ public final class GroupService {
         } else if (shouldChangeOwner(invokingUser, request)) {
             throw new PermissionException("It is not permitted to change ownership with this request. Please use the correct request.");
         } else {
+            // We have the case with bug #482, that it is possible for someone
+            // to change the role of the NS in error! If the invoking request is
+            // setting the role to member but it is in actuality owner, then the
+            // logic will force the correction!
             final String roleExternalId = request.getUserGroup().getRole().getRoleId();
             final String externalUserId = request.getUserGroup().getUser().getUserId();
 
             final RoleEntity role = dao.findRoleByExternalIdAndGroup(roleExternalId, authentication.getGroup());
             final UserGroupEntity existingEntity = dao.findByGroupAndExternalUserId(authentication.getGroup(), externalUserId);
 
-            if (request.isDeleteUserRequest()) {
+            if ((existingEntity != null) && existingEntity.getRole().getId().equals(IWSConstants.ROLE_OWNER)) {
+                throw new PermissionException("It is not permitted to change the current Owner.");
+            } else if (request.isDeleteUserRequest()) {
                 response = deleteUserGroupRelation(role, existingEntity);
             } else {
                 response = processUserGroupRelation(authentication, request, externalUserId, role, existingEntity);

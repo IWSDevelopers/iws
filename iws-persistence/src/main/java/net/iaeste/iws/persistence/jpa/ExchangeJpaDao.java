@@ -571,9 +571,10 @@ public final class ExchangeJpaDao extends BasicJpaDao implements ExchangeDao {
      * {@inheritDoc}
      */
     @Override
-    public PublishingGroupEntity getSharingListByExternalId(final String externalId) {
-        final Query query = entityManager.createNamedQuery("publishingGroup.findByExternalId");
+    public PublishingGroupEntity getSharingListByExternalIdAndOwnerId(final String externalId, final Long groupId) {
+        final Query query = entityManager.createNamedQuery("publishingGroup.findByExternalIdAndGroupId");
         query.setParameter("eid", externalId);
+        query.setParameter("gid", groupId);
 
         return findSingleResult(query, "PublishingGroup");
     }

@@ -17,6 +17,7 @@ package net.iaeste.iws.client;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -129,16 +130,24 @@ public final class ExchangeClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
-        return client.processPublishGroup(token, request);
+    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+        return client.processPublishingGroup(token, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishingGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
-        return client.fetchPublishGroups(token, request);
+    public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+        return client.fetchPublishingGroups(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+        return client.deletePublishingGroup(token, request);
     }
 
     /**

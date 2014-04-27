@@ -19,6 +19,7 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
+import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
@@ -41,7 +42,6 @@ import static org.junit.Assert.assertThat;
  */
 public final class PublishingGroupTest extends AbstractTest {
 
-    private final Administration administration = new AdministrationClient();
     private final Exchange exchange = new ExchangeClient();
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
@@ -72,7 +72,7 @@ public final class PublishingGroupTest extends AbstractTest {
 
         final ProcessPublishingGroupRequest processPublishingGroupRequest = new ProcessPublishingGroupRequest();
         processPublishingGroupRequest.setPublishingGroup(publishingGroupList);
-        final Fallible processPublishingGroupResponse = exchange.processPublishGroup(token, processPublishingGroupRequest);
+        final Fallible processPublishingGroupResponse = exchange.processPublishingGroup(token, processPublishingGroupRequest);
 
         assertThat(processPublishingGroupResponse.isOk(), is(true));
     }
@@ -89,11 +89,38 @@ public final class PublishingGroupTest extends AbstractTest {
         createPublishGroupList(listName, groups, listId);
 
         final FetchPublishGroupsRequest fetchRequest = new FetchPublishGroupsRequest();
-        final FetchPublishingGroupResponse fetchResponse = exchange.fetchPublishGroups(token, fetchRequest);
+        final FetchPublishingGroupResponse fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
 
         assertThat(fetchResponse.isOk(), is(true));
-        final PublishingGroup fetchedList = findApplicationFromResponse(listName, fetchResponse);
+        final PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
+    }
+
+    @Test
+    public void testDeletePublishGroup() {
+        final List<Group> groups = new ArrayList<>(2);
+        groups.add(findNationalGroup(austriaToken));
+        groups.add(findNationalGroup(croatiaToken));
+
+        final String listName = "My Sharing List To Be Deleted";
+        String listId = null;
+
+        createPublishGroupList(listName, groups, listId);
+
+        final FetchPublishGroupsRequest fetchRequest = new FetchPublishGroupsRequest();
+        FetchPublishingGroupResponse fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
+
+        assertThat(fetchResponse.isOk(), is(true));
+        PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
+        assertThat(fetchedList.getGroups().size(), is(groups.size()));
+
+        final DeletePublishingGroupRequest deleteRequest = new DeletePublishingGroupRequest();
+        deleteRequest.setPublishingGroupId(fetchedList.getPublishingGroupId());
+        final Fallible deleteResponse = exchange.deletePublishingGroup(token, deleteRequest);
+        assertThat(deleteResponse.isOk(), is(true));
+        fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
+        fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
+        assertThat(fetchedList, is(nullValue()));
     }
 
     @Test
@@ -108,10 +135,10 @@ public final class PublishingGroupTest extends AbstractTest {
         createPublishGroupList(listName, groups, listId);
 
         FetchPublishGroupsRequest fetchRequest = new FetchPublishGroupsRequest();
-        FetchPublishingGroupResponse fetchResponse = exchange.fetchPublishGroups(token, fetchRequest);
+        FetchPublishingGroupResponse fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
 
         assertThat(fetchResponse.isOk(), is(true));
-        PublishingGroup fetchedList = findApplicationFromResponse(listName, fetchResponse);
+        PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
 
         groups.clear();
@@ -122,13 +149,13 @@ public final class PublishingGroupTest extends AbstractTest {
         createPublishGroupList(newListName, groups, listId);
 
         fetchRequest = new FetchPublishGroupsRequest();
-        fetchResponse = exchange.fetchPublishGroups(token, fetchRequest);
+        fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
 
         assertThat(fetchResponse.isOk(), is(true));
-        fetchedList = findApplicationFromResponse(listName, fetchResponse);
+        fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
         assertThat("Looking for old list name has to return null", fetchedList, is(nullValue()));
 
-        fetchedList = findApplicationFromResponse(newListName, fetchResponse);
+        fetchedList = findPublishingGroupFromResponse(newListName, fetchResponse);
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
     }
 
@@ -138,12 +165,12 @@ public final class PublishingGroupTest extends AbstractTest {
 
         final ProcessPublishingGroupRequest processPublishingGroupRequest = new ProcessPublishingGroupRequest();
         processPublishingGroupRequest.setPublishingGroup(publishGroupList);
-        final Fallible processPublishGroupResponse = exchange.processPublishGroup(token, processPublishingGroupRequest);
+        final Fallible processPublishGroupResponse = exchange.processPublishingGroup(token, processPublishingGroupRequest);
 
         assertThat(processPublishGroupResponse.isOk(), is(true));
     }
 
-    private static PublishingGroup findApplicationFromResponse(final String listName, final FetchPublishingGroupResponse response) {
+    private static PublishingGroup findPublishingGroupFromResponse(final String listName, final FetchPublishingGroupResponse response) {
         for (final PublishingGroup found : response.getPublishingGroups()) {
             if (found.getName().equals(listName)) {
                 return found;

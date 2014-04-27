@@ -37,7 +37,7 @@ public final class FetchPublishGroups extends AbstractFixture<FetchPublishingGro
     @Override
     public void execute() throws StopTestException {
         createSession();
-        setResponse(exchange.fetchPublishGroups(getToken(), request));
+        setResponse(exchange.fetchPublishingGroups(getToken(), request));
     }
 
     @Override

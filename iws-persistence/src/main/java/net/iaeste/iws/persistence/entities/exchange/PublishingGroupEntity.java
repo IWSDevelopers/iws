@@ -23,6 +23,7 @@ import net.iaeste.iws.persistence.entities.GroupEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,9 +48,10 @@ import java.util.List;
  * @since   IWS 1.0
  */
 @NamedQueries({
-        @NamedQuery(name = "publishingGroup.findByExternalId",
+        @NamedQuery(name = "publishingGroup.findByExternalIdAndGroupId",
                 query = "select pg from PublishingGroupEntity pg " +
-                        "where pg.externalId = :eid"),
+                        "where pg.externalId = :eid" +
+                        "  and pg.group.id = :gid"),
         @NamedQuery(name = "publishingGroup.findForOwner",
                 query = "select pg from PublishingGroupEntity pg " +
                         "where pg.group.id = :gid")
@@ -87,7 +89,7 @@ public class PublishingGroupEntity extends AbstractUpdateable<PublishingGroupEnt
     @Column(name = "name", length = 100, nullable = false)
     private String name = null;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "publishing_group_selection",
                joinColumns = { @JoinColumn(name = "publishing_group_id")},
                inverseJoinColumns = {@JoinColumn(name = "group_id")})

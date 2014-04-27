@@ -284,6 +284,6 @@ public interface ExchangeDao extends BasicDao {
      */
     void hideOfferGroups(List<Long> ids);
 
-    PublishingGroupEntity getSharingListByExternalId(String externalId);
+    PublishingGroupEntity getSharingListByExternalIdAndOwnerId(String externalId, Long groupId);
     List<PublishingGroupEntity> getSharingListForOwner(Long id);
 }

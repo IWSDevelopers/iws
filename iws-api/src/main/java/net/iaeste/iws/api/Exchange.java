@@ -16,6 +16,7 @@ package net.iaeste.iws.api;
 
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -156,22 +157,29 @@ public interface Exchange {
     FetchOfferTemplateResponse fetchOfferTemplates(AuthenticationToken token, FetchOfferTemplatesRequest request);
 
     /**
-     * Not implemented
      *
      * @param token   User Authentication Token
-     * @param request Request Object
-     * @return Response Object
+     * @param request contains name of the Publishing Group and list of Groups the Publishing Group consists of
+     * @return Standard Error Object
      */
-    Fallible processPublishGroup(AuthenticationToken token, ProcessPublishingGroupRequest request);
+    Fallible processPublishingGroup(AuthenticationToken token, ProcessPublishingGroupRequest request);
 
     /**
-     * Not implemented
+     * Retrieve tha Publishing Groups for user's national group
      *
      * @param token   User Authentication Token
      * @param request Request Object
-     * @return Response Object
+     * @return Response Object with National group's Publishing Groups
      */
-    FetchPublishingGroupResponse fetchPublishGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
+    FetchPublishingGroupResponse fetchPublishingGroups(AuthenticationToken token, FetchPublishGroupsRequest request);
+
+    /**
+     *
+     * @param token   User Authentication Token
+     * @param request contains name of the Publishing Group and list of Groups the Publishing Group consists of
+     * @return Standard Error Object
+     */
+    Fallible deletePublishingGroup(AuthenticationToken token, DeletePublishingGroupRequest request);
 
     /**
      * Retrieves the list of groups to which offers are shared to. A list of offers is

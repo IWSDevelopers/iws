@@ -37,7 +37,7 @@ public final class ProcessPublishGroup extends AbstractFixture<Fallible> {
     @Override
     public void execute() throws StopTestException {
         createSession();
-        setResponse(exchange.processPublishGroup(getToken(), request));
+        setResponse(exchange.processPublishingGroup(getToken(), request));
     }
 
     @Override

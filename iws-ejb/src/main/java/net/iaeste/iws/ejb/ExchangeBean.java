@@ -18,6 +18,7 @@ import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -354,11 +355,11 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @Override
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
-    public Fallible processPublishGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         Fallible response;
 
         try {
-            response = controller.processPublishGroup(token, request);
+            response = controller.processPublishingGroup(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
@@ -375,15 +376,35 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public FetchPublishingGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         FetchPublishingGroupResponse response;
 
         try {
-            response = controller.fetchPublishGroups(token, request);
+            response = controller.fetchPublishingGroups(token, request);
             log.info(generateResponseLog(response, token));
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new FetchPublishingGroupResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
+    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+        Fallible response;
+
+        try {
+            response = controller.deletePublishingGroup(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new FallibleResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

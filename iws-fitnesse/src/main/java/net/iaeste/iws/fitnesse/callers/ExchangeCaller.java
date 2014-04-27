@@ -141,9 +141,9 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         try {
-            return caller.processPublishGroup(token, request);
+            return caller.processPublishingGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }
@@ -153,9 +153,21 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishingGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         try {
-            return caller.fetchPublishGroups(token, request);
+            return caller.fetchPublishingGroups(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+        try {
+            return caller.deletePublishingGroup(token, request);
         } catch (Exception e) {
             throw new StopTestException(e);
         }

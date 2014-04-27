@@ -21,6 +21,7 @@ import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
@@ -285,7 +286,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public Fallible processPublishGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
+    public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processPublishGroup()"));
         }
@@ -296,10 +297,10 @@ public final class ExchangeController extends CommonController implements Exchan
             verify(request);
 
             final ExchangeService service = factory.prepareExchangeService();
-            service.processPublishGroups(authentication, request);
-            response = new FetchPublishingGroupResponse();
+            service.processPublishingGroups(authentication, request);
+            response = new FallibleResponse();
         } catch (IWSException e) {
-            response = new FetchPublishingGroupResponse(e.getError(), e.getMessage());
+            response = new FallibleResponse(e.getError(), e.getMessage());
         }
 
         if (log.isTraceEnabled()) {
@@ -312,7 +313,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
-    public FetchPublishingGroupResponse fetchPublishGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
+    public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting fetchPublishGroups()"));
         }
@@ -330,6 +331,33 @@ public final class ExchangeController extends CommonController implements Exchan
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished fetchPublishGroups()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting processPublishGroup()"));
+        }
+        Fallible response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
+            verify(request);
+
+            final ExchangeService service = factory.prepareExchangeService();
+            service.deletePublishingGroup(authentication, request);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished processPublishGroup()"));
         }
         return response;
     }
@@ -428,7 +456,7 @@ public final class ExchangeController extends CommonController implements Exchan
 
             final ExchangeService service = factory.prepareExchangeService();
             service.processHideForeignOffers(authentication, request);
-            response = new PublishOfferResponse();
+            response = new FallibleResponse();
         } catch (IWSException e) {
             response = new FallibleResponse(e.getError(), e.getMessage());
         }

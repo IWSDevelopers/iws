@@ -105,12 +105,12 @@ public class PublishingGroupEntityTest {
 
         assertThat(sharingList.getId(), is(not(nullValue())));
 
-        PublishingGroupEntity fetchedList = exchangeDao.getSharingListByExternalId(SHARING_LIST_EXTERNAL_ID);
+        PublishingGroupEntity fetchedList = exchangeDao.getSharingListByExternalIdAndOwnerId(SHARING_LIST_EXTERNAL_ID, authentication.getGroup().getId());
         assertThat(sharingList, is(fetchedList));
 
         groups.remove(norwayGroup);
         entityManager.merge(sharingList);
-        fetchedList = exchangeDao.getSharingListByExternalId(SHARING_LIST_EXTERNAL_ID);
+        fetchedList = exchangeDao.getSharingListByExternalIdAndOwnerId(SHARING_LIST_EXTERNAL_ID, authentication.getGroup().getId());
         assertThat(sharingList, is(fetchedList));
     }
 

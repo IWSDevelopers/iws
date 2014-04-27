@@ -28,6 +28,7 @@ import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
+import net.iaeste.iws.api.requests.exchange.DeletePublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOfferTemplatesRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
@@ -262,7 +263,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         throw new NotImplementedException("Method pending implementation.");
     }
 
-    public void processPublishGroups(final Authentication authentication, final ProcessPublishingGroupRequest request) {
+    public void processPublishingGroups(final Authentication authentication, final ProcessPublishingGroupRequest request) {
         final PublishingGroupEntity newEntity = ExchangeTransformer.transform(request.getPublishingGroup());
 
         final List<String> groupIds = new ArrayList<>();
@@ -280,12 +281,20 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         if (externalId == null) {
             dao.persist(authentication, newEntity);
         } else {
-            final PublishingGroupEntity existingEntity = dao.getSharingListByExternalId(externalId);
+            final PublishingGroupEntity existingEntity = dao.getSharingListByExternalIdAndOwnerId(externalId, authentication.getGroup().getId());
             if (existingEntity == null) {
                 throw new IdentificationException(formatLogMessage(authentication, "No Sharing List could be found with the Id %s.", externalId));
             }
 
             dao.persist(authentication, existingEntity, newEntity);
+        }
+    }
+
+    public void deletePublishingGroup(final Authentication authentication, final DeletePublishingGroupRequest request) {
+        final PublishingGroupEntity existingEntity = dao.getSharingListByExternalIdAndOwnerId(request.getPublishingGroupId(), authentication.getGroup().getId());
+
+        if (existingEntity != null) {
+            dao.delete(existingEntity);
         }
     }
 

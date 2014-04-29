@@ -45,7 +45,6 @@ import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
-import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -264,29 +263,38 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
     }
 
     public void processPublishingGroups(final Authentication authentication, final ProcessPublishingGroupRequest request) {
-        final PublishingGroupEntity newEntity = ExchangeTransformer.transform(request.getPublishingGroup());
-
-        final List<String> groupIds = new ArrayList<>();
-        for (final Group group : request.getPublishingGroup().getGroups()) {
-            if (!group.getGroupId().equals(authentication.getGroup().getExternalId())) {
-                groupIds.add(group.getGroupId());
-            }
-        }
-        final List<GroupEntity> countryList = getAndVerifyGroupExist(groupIds);
-        newEntity.setList(countryList);
-        newEntity.setGroup(authentication.getGroup());
-
-        String externalId = newEntity.getExternalId();
-
-        if (externalId == null) {
-            dao.persist(authentication, newEntity);
-        } else {
+        if (request.getDeletePublishingGroup()) {
+            final String externalId = request.getPublishingGroup().getPublishingGroupId();
             final PublishingGroupEntity existingEntity = dao.getSharingListByExternalIdAndOwnerId(externalId, authentication.getGroup().getId());
-            if (existingEntity == null) {
-                throw new IdentificationException(formatLogMessage(authentication, "No Sharing List could be found with the Id %s.", externalId));
-            }
 
-            dao.persist(authentication, existingEntity, newEntity);
+            if (existingEntity != null) {
+                dao.delete(existingEntity);
+            }
+        } else {
+            final PublishingGroupEntity newEntity = transform(request.getPublishingGroup());
+
+            final List<String> groupIds = new ArrayList<>();
+            for (final Group group : request.getPublishingGroup().getGroups()) {
+                if (!group.getGroupId().equals(authentication.getGroup().getExternalId())) {
+                    groupIds.add(group.getGroupId());
+                }
+            }
+            final List<GroupEntity> countryList = getAndVerifyGroupExist(groupIds);
+            newEntity.setList(countryList);
+            newEntity.setGroup(authentication.getGroup());
+
+            String externalId = newEntity.getExternalId();
+
+            if (externalId == null) {
+                dao.persist(authentication, newEntity);
+            } else {
+                final PublishingGroupEntity existingEntity = dao.getSharingListByExternalIdAndOwnerId(externalId, authentication.getGroup().getId());
+                if (existingEntity == null) {
+                    throw new IdentificationException(formatLogMessage(authentication, "No Sharing List could be found with the Id %s.", externalId));
+                }
+
+                dao.persist(authentication, existingEntity, newEntity);
+            }
         }
     }
 

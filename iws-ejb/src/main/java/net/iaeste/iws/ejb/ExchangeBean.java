@@ -394,6 +394,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     @WebMethod(exclude = true)
     @Interceptors(Profiler.class)
     public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {

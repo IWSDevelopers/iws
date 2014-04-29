@@ -165,6 +165,7 @@ public final class ExchangeCaller implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         try {
             return caller.deletePublishingGroup(token, request);

@@ -339,6 +339,7 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting processPublishGroup()"));

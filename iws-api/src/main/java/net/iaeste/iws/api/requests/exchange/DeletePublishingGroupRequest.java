@@ -15,7 +15,6 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
 import net.iaeste.iws.api.util.AbstractVerification;
 
 import java.util.HashMap;
@@ -25,10 +24,12 @@ import java.util.Map;
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
+ * @deprecated please use the deleted flag in the ProcessPublishingGroupRequest
  */
+@Deprecated
 public final class DeletePublishingGroupRequest extends AbstractVerification {
 
-    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String publishingGroupId = null;

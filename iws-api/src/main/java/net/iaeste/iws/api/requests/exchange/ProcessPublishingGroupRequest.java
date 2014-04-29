@@ -32,6 +32,7 @@ public final class ProcessPublishingGroupRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private PublishingGroup publishingGroup = null;
+    private Boolean deletePublishingGroup = false;
 
     // =========================================================================
     // Object Constructors
@@ -57,6 +58,15 @@ public final class ProcessPublishingGroupRequest extends AbstractVerification {
         return publishingGroup;
     }
 
+    public void setDeletePublishingGroup(final Boolean deletePublishingGroup) {
+        ensureNotNull("deletePublishingGroup", deletePublishingGroup);
+        this.deletePublishingGroup = deletePublishingGroup;
+    }
+
+    public Boolean getDeletePublishingGroup() {
+        return deletePublishingGroup;
+    }
+
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -67,6 +77,10 @@ public final class ProcessPublishingGroupRequest extends AbstractVerification {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "publishingGroup", publishingGroup);
+        isNotNull(validation, "deletePublishingGroup", deletePublishingGroup);
+
         return validation;
     }
 }

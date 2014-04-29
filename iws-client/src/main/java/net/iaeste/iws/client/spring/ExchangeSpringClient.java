@@ -186,6 +186,7 @@ public final class ExchangeSpringClient implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         return client.deletePublishingGroup(token, request);
     }

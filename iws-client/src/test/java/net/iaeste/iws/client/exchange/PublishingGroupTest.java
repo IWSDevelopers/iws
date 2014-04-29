@@ -14,8 +14,13 @@
  */
 package net.iaeste.iws.client.exchange;
 
-import net.iaeste.iws.api.Administration;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import net.iaeste.iws.api.Exchange;
+import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.dtos.exchange.PublishingGroup;
@@ -25,15 +30,12 @@ import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
-import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.ExchangeClient;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import java.util.UUID;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -78,6 +80,26 @@ public final class PublishingGroupTest extends AbstractTest {
     }
 
     @Test
+    public void testProcessInvalidPublishGroup() {
+        final List<Group> groups = new ArrayList<>(2);
+        groups.add(findNationalGroup(austriaToken));
+        groups.add(findNationalGroup(croatiaToken));
+
+        final String listName = "My Sharing List";
+
+        final PublishingGroup publishingGroup = new PublishingGroup(listName, groups);
+        publishingGroup.setPublishingGroupId(UUID.randomUUID().toString());
+
+        final ProcessPublishingGroupRequest request = new ProcessPublishingGroupRequest();
+        request.setPublishingGroup(publishingGroup);
+        final Fallible response = exchange.processPublishingGroup(token, request);
+
+        assertThat(response.isOk(), is(false));
+        assertThat(response.getError(), is(IWSErrors.OBJECT_IDENTIFICATION_ERROR));
+        assertThat(response.getMessage(), containsString("No Sharing List could be found with the Id"));
+    }
+
+    @Test
     public void testFetchPublishGroup() {
         final List<Group> groups = new ArrayList<>(2);
         groups.add(findNationalGroup(austriaToken));
@@ -94,6 +116,33 @@ public final class PublishingGroupTest extends AbstractTest {
         assertThat(fetchResponse.isOk(), is(true));
         final PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
+    }
+
+    @Test
+    public void testDeprecatedDeletePublishGroup() {
+        final List<Group> groups = new ArrayList<>(2);
+        groups.add(findNationalGroup(austriaToken));
+        groups.add(findNationalGroup(croatiaToken));
+
+        final String listName = "My Sharing List To Be Deleted";
+        String listId = null;
+
+        createPublishGroupList(listName, groups, listId);
+
+        final FetchPublishGroupsRequest fetchRequest = new FetchPublishGroupsRequest();
+        FetchPublishingGroupResponse fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
+
+        assertThat(fetchResponse.isOk(), is(true));
+        PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
+        assertThat(fetchedList.getGroups().size(), is(groups.size()));
+
+        final DeletePublishingGroupRequest deleteRequest = new DeletePublishingGroupRequest();
+        deleteRequest.setPublishingGroupId(fetchedList.getPublishingGroupId());
+        final Fallible deleteResponse = exchange.deletePublishingGroup(token, deleteRequest);
+        assertThat(deleteResponse.isOk(), is(true));
+        fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
+        fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
+        assertThat(fetchedList, is(nullValue()));
     }
 
     @Test
@@ -114,9 +163,10 @@ public final class PublishingGroupTest extends AbstractTest {
         PublishingGroup fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);
         assertThat(fetchedList.getGroups().size(), is(groups.size()));
 
-        final DeletePublishingGroupRequest deleteRequest = new DeletePublishingGroupRequest();
-        deleteRequest.setPublishingGroupId(fetchedList.getPublishingGroupId());
-        final Fallible deleteResponse = exchange.deletePublishingGroup(token, deleteRequest);
+        final ProcessPublishingGroupRequest request = new ProcessPublishingGroupRequest();
+        request.setPublishingGroup(fetchedList);
+        request.setDeletePublishingGroup(true);
+        final Fallible deleteResponse = exchange.processPublishingGroup(token, request);
         assertThat(deleteResponse.isOk(), is(true));
         fetchResponse = exchange.fetchPublishingGroups(token, fetchRequest);
         fetchedList = findPublishingGroupFromResponse(listName, fetchResponse);

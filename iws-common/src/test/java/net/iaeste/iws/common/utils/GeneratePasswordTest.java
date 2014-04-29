@@ -14,7 +14,9 @@
  */
 package net.iaeste.iws.common.utils;
 
-import org.junit.Ignore;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
 import java.util.UUID;
@@ -24,19 +26,21 @@ import java.util.UUID;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Ignore("This test is purely to help generate new passwords for IWS Accounts.")
 public final class GeneratePasswordTest {
 
     private static final String info = "-- Updating Password for user '%s' to '%s'.";
-    private static final String sql = "update users set password = '%s', salt = '%s', modified = now() where username = '%s'";
+    private static final String sql = "update users set password = '%s', salt = '%s', modified = now(), status = 'ACTIVE' where username = '%s';";
+    private static final String[] usernames = { };
 
     @Test
     public void testGeneratePassword() {
-        final String username = "";
-        final String salt = UUID.randomUUID().toString();
-        final String password = PasswordGenerator.generatePassword();
-        final String generateHashedPassword = HashcodeGenerator.generateHash(password, salt);
-        System.out.println(String.format(info, username, password));
-        System.out.println(String.format(sql, generateHashedPassword, salt, username));
+        for (final String username : usernames) {
+            final String salt = UUID.randomUUID().toString();
+            final String password = PasswordGenerator.generatePassword();
+            final String generateHashedPassword = HashcodeGenerator.generateHash(password, salt);
+            System.out.println(String.format(info, username, password));
+            System.out.println(String.format(sql, generateHashedPassword, salt, username));
+        }
+        assertThat(true, is(Boolean.TRUE));
     }
 }

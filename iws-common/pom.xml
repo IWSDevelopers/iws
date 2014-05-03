@@ -97,6 +97,7 @@
             <artifactId>iws-api</artifactId>
         </dependency>
         <dependency>
+            <!-- Used for "split" & "join" operations -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>

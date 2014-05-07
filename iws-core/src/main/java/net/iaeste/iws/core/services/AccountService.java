@@ -564,6 +564,7 @@ public final class AccountService extends CommonService<AccessDao> {
                         user.setStatus(newStatus);
                         user.setModified(new Date());
                         dao.persist(authentication, user);
+                        notifications.notify(authentication, user, findNotificationType(newStatus));
                     } else {
                         throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Cannot revive a deleted user, please create a new Account.");
                     }
@@ -579,6 +580,26 @@ public final class AccountService extends CommonService<AccessDao> {
             dao.deleteStudent(user);
             dao.delete(user);
         }
+    }
+
+    private NotificationType findNotificationType(final UserStatus status) {
+        final NotificationType type;
+
+        switch (status) {
+            case NEW:
+                type = NotificationType.NEW_USER;
+                break;
+            case ACTIVE:
+                type = NotificationType.ACTIVATE_USER;
+                break;
+            case SUSPENDED:
+                type = NotificationType.SUSPEND_USER;
+                break;
+            default:
+                type = null;
+        }
+
+        return type;
     }
 
     /**

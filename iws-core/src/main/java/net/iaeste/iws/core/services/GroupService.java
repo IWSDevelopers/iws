@@ -338,7 +338,7 @@ public final class GroupService {
             if ((existingEntity != null) && existingEntity.getRole().getId().equals(IWSConstants.ROLE_OWNER)) {
                 throw new PermissionException("It is not permitted to change the current Owner.");
             } else if (request.isDeleteUserRequest()) {
-                response = deleteUserGroupRelation(role, existingEntity);
+                response = deleteUserGroupRelation(authentication, role, existingEntity);
             } else {
                 response = processUserGroupRelation(authentication, request, externalUserId, role, existingEntity);
             }
@@ -392,13 +392,14 @@ public final class GroupService {
         return result;
     }
 
-    private ProcessUserGroupResponse deleteUserGroupRelation(final RoleEntity role, final UserGroupEntity existingEntity) {
+    private ProcessUserGroupResponse deleteUserGroupRelation(final Authentication authentication, final RoleEntity role, final UserGroupEntity existingEntity) {
         if (existingEntity != null) {
             if (role.getId() == 1) {
                 // We're attempting to delete the owner, major no-no
                 throw new PermissionException("It is not allowed to delete the current Owner of the Group.");
             } else {
                 dao.delete(existingEntity);
+                notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);
                 // We're just returning an empty response Object, since the User
                 // has now been deleted
                 return new ProcessUserGroupResponse();

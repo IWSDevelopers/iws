@@ -46,6 +46,11 @@ public enum NotificationType {
     ACTIVATE_USER,
 
     /**
+     * When a User is either being suspended or re-activated.
+     */
+    SUSPEND_USER,
+
+    /**
      * New user is being created
      */
     NEW_USER,

@@ -61,6 +61,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -339,7 +340,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             for(final OfferGroupEntity offerGroup : allOfferGroups) {
                 if (groups.contains(offerGroup.getGroup())) {
-                    if (offerGroup.getStatus() == OfferState.CLOSED) {
+                    if (EnumSet.of(OfferState.CLOSED, OfferState.EXPIRED).contains(offerGroup.getStatus())) {
                         resharing.add(offerGroup.getGroup());
                         reshareGroups.add(offerGroup);
                     } else {

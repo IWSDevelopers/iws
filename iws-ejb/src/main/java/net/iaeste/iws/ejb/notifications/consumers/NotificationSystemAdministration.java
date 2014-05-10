@@ -29,6 +29,7 @@ import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.MailingListDao;
 import net.iaeste.iws.persistence.NotificationDao;
 import net.iaeste.iws.persistence.entities.UserEntity;
+import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.UserNotificationEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity;
 import net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity;
@@ -384,9 +385,10 @@ public class NotificationSystemAdministration implements Observer {
     private void updateMailingListSubscription(final String type, final String groupExternalId, final String role, final String emailAddress, final String userStatus, final String onPrivateList, final String onPublicList) {
         try {
             final GroupType groupType = GroupType.valueOf(type);
+            final UserGroupEntity userGroup = accessDao.findGroupMemberByUsernameAndGroupExternalId(emailAddress, groupExternalId);
 
             if (groupType == GroupType.NATIONAL) {
-                if (isRoleForNcsList(role) && UserStatus.ACTIVE.name().equals(userStatus)) {
+                if (isRoleForNcsList(role) && UserStatus.ACTIVE.name().equals(userStatus) && userGroup != null) {
                     addToNcsList(emailAddress);
                 } else {
                     removeFromNcsList(emailAddress);
@@ -394,8 +396,8 @@ public class NotificationSystemAdministration implements Observer {
             }
 
             //only active users can be subscribed to mailing lists
-            final boolean subscribedToPublicList = "true".equals(onPublicList) && UserStatus.ACTIVE.name().equals(userStatus);
-            final boolean subscribedToPrivateList = "true".equals(onPrivateList) && UserStatus.ACTIVE.name().equals(userStatus);
+            final boolean subscribedToPublicList = "true".equals(onPublicList) && UserStatus.ACTIVE.name().equals(userStatus) && userGroup != null;
+            final boolean subscribedToPrivateList = "true".equals(onPrivateList) && UserStatus.ACTIVE.name().equals(userStatus) && userGroup != null;
 
             log.debug("Trying to update mailing list membership for user " + emailAddress + " with role " + role + " and status " + userStatus + " for list id '"
                     + groupExternalId + "'. Membership private: " + subscribedToPrivateList + "; public: " + subscribedToPublicList);

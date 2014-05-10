@@ -256,4 +256,12 @@ public interface AccessDao extends BasicDao {
      * Finds all users for NCS mailing list
      */
     List<UserGroupEntity> findNcs();
+
+    /**
+     * Finds a group membership for given username
+     *
+     * @param username
+     * @param groupExternalId
+     */
+    UserGroupEntity findGroupMemberByUsernameAndGroupExternalId(String username, String groupExternalId);
 }

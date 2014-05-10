@@ -172,7 +172,11 @@ import java.util.Map;
                         "where ug.group.status = 'ACTIVE'" +
                         "  and ug.role.id <= 2" +
                         "  and (ug.group.groupType.grouptype = 'NATIONAL'" +
-                        "    or ug.group.groupType.grouptype = 'INTERNATIONAL')")
+                        "    or ug.group.groupType.grouptype = 'INTERNATIONAL')"),
+        @NamedQuery(name = "usergroup.findByUsernameAndGroupExternalId",
+                query = "select ug from UserGroupEntity ug " +
+                        "where ug.group.externalId = :egid" +
+                        "  and ug.user.username = :username")
 })
 @Entity
 @Table(name = "user_to_group")

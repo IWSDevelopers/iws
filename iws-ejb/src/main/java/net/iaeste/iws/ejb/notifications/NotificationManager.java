@@ -160,9 +160,8 @@ public class NotificationManager implements Notifications {
 //        notifyObservers();
         log.info("New '" + type + "' notification request at NotificationManager");
         if (obj != null) {
-            try {
-                final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
+            try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                 final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);) {
                 final Map<NotificationField, String> fields = obj.prepareNotifiableFields(type);
                 objectStream.writeObject(fields);
                 final byte[] bytes = outputStream.toByteArray();
@@ -207,9 +206,8 @@ public class NotificationManager implements Notifications {
 
         log.info("New 'user' notification request at NotificationManager");
         if (user != null) {
-            try {
-                final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);
+            try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                 final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);) {
                 final Map<NotificationField, String> fields = user.prepareNotifiableFields(NotificationType.RESET_PASSWORD);
                 objectStream.writeObject(fields);
                 final byte[] bytes = outputStream.toByteArray();

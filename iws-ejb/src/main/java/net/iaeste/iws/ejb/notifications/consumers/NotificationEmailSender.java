@@ -213,9 +213,8 @@ public class NotificationEmailSender implements Observer {
 
     private void processTask(final NotificationJobTasksView task) {
             log.info("Processing email notification job task " + task.getId());
-            try {
-                final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
-                final ObjectInputStream objectStream = new ObjectInputStream(inputStream);
+            try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(task.getObject());
+                 final ObjectInputStream objectStream = new ObjectInputStream(inputStream);) {
                 final Map<NotificationField, String> fields = (Map<NotificationField, String>) objectStream.readObject();
                 NotificationProcessTaskStatus processedStatus = NotificationProcessTaskStatus.ERROR;
                 //TODO task is not processed, so value false is hardcoded for now, should be changed or deleted once problems are solved

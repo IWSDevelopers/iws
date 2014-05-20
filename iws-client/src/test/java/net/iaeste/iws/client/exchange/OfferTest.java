@@ -77,11 +77,19 @@ public final class OfferTest extends AbstractTest {
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
 
+    private Group tokenNationallGroup = null;
+    private Group austriaTokenNationallGroup = null;
+    private Group croatiaTokenNationallGroup = null;
+
     @Override
     public void setup() {
         token = login("poland@iaeste.pl", "poland");
         austriaToken = login("austria@iaeste.at", "austria");
         croatiaToken = login("croatia@iaeste.hr", "croatia");
+
+        tokenNationallGroup = findNationalGroup(token);
+        austriaTokenNationallGroup = findNationalGroup(austriaToken);
+        croatiaTokenNationallGroup = findNationalGroup(croatiaToken);
     }
 
     @Override
@@ -452,6 +460,11 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testFailShareNonOwnedOffer() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
@@ -475,7 +488,7 @@ public final class OfferTest extends AbstractTest {
 
         final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
         //try to share Polish offer by Austrian user
-        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(austriaToken, publishRequest1);
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(austriaTokenWithNationalGroup, publishRequest1);
 
         //the request cannot be OK here
         assertThat(publishResponse1.isOk(), is(false));
@@ -585,12 +598,18 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testFetchForeignOffer() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
+
         final String refNo = AT_YEAR + "-000001";
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo(refNo);
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
-        final OfferResponse processResponse = exchange.processOffer(austriaToken, offerRequest);
+        final OfferResponse processResponse = exchange.processOffer(austriaTokenWithNationalGroup, offerRequest);
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
 
@@ -603,6 +622,11 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testFetchSharedForeignOffer() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
 
         final String refNo = AT_YEAR + "-000002";
@@ -610,7 +634,7 @@ public final class OfferTest extends AbstractTest {
         offer.setRefNo(refNo);
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
-        final OfferResponse processResponse = exchange.processOffer(austriaToken, offerRequest);
+        final OfferResponse processResponse = exchange.processOffer(austriaTokenWithNationalGroup, offerRequest);
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
 
@@ -624,7 +648,7 @@ public final class OfferTest extends AbstractTest {
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
         final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
-        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaToken, publishRequest);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaTokenWithNationalGroup, publishRequest);
 
         assertThat("verify that there was no error during sharing the offer", publishResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat("verify that the offer was successfully shared with Croatia", publishResponse.isOk(), is(true));
@@ -683,6 +707,11 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testFetchSharedOfferDeadlineToday() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadlineToday = new Date();
 
         final Offer offer = OfferTestUtility.getMinimalOffer();
@@ -693,7 +722,7 @@ public final class OfferTest extends AbstractTest {
         final String refNo = saveResponse2.getOffer().getRefNo();
 
         final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
-        final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
+        final FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
         final int size = fetchSharedResponse.getOffers().size();
 
         assertThat("verify that the offer was persisted", saveResponse2.isOk(), is(true));
@@ -713,7 +742,7 @@ public final class OfferTest extends AbstractTest {
         assertThat("verify that the offer has been shared to Austria", publishResponse.getError(), is(IWSErrors.SUCCESS));
 
         final FetchOffersRequest fetchSharedRequest2 = new FetchOffersRequest(FetchType.SHARED);
-        final FetchOffersResponse fetchSharedResponse2 = exchange.fetchOffers(austriaToken, fetchSharedRequest2);
+        final FetchOffersResponse fetchSharedResponse2 = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest2);
         final Offer readOffer = findOfferFromResponse(refNo, fetchSharedResponse2);
 
         assertThat(fetchSharedResponse2.getOffers().size(), is(size + 1));
@@ -833,6 +862,11 @@ public final class OfferTest extends AbstractTest {
 
     @Test
     public void testHideForeignOffer() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Offer offer = TestData.prepareMinimalOffer(PL_YEAR + "-TIC772-R", "Poland A/S", "PL");
         final Date nominationDeadline = new Date().plusDays(20);
 
@@ -876,7 +910,7 @@ public final class OfferTest extends AbstractTest {
         assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
 
         final FetchOffersRequest fetchSharedRequest = new FetchOffersRequest(FetchType.SHARED);
-        FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
+        FetchOffersResponse fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
         Offer foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
         assertThat(foreignOffer, is(not(nullValue())));
 
@@ -884,11 +918,11 @@ public final class OfferTest extends AbstractTest {
         //offersToHide.add(offer.getOfferId());
         offersToHide.add(sharedOffer.getOfferId());
         final HideForeignOffersRequest hideOfferRequest = new HideForeignOffersRequest(offersToHide);
-        Fallible hideOfferResponse = exchange.processHideForeignOffers(austriaToken, hideOfferRequest);
+        Fallible hideOfferResponse = exchange.processHideForeignOffers(austriaTokenWithNationalGroup, hideOfferRequest);
         assertThat(hideOfferResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat(hideOfferResponse.isOk(), is(true));
 
-        fetchSharedResponse = exchange.fetchOffers(austriaToken, fetchSharedRequest);
+        fetchSharedResponse = exchange.fetchOffers(austriaTokenWithNationalGroup, fetchSharedRequest);
         foreignOffer = findOfferFromResponse(offer.getRefNo(), fetchSharedResponse);
         assertThat(foreignOffer, is(not(nullValue())));
         assertThat(foreignOffer.isHidden(), is(true));

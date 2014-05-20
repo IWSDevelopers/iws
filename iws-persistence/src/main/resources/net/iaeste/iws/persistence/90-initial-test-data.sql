@@ -789,6 +789,10 @@ insert into user_to_group (external_id, user_id, group_id, role_id) values ('d40
 insert into user_to_group (external_id, user_id, group_id, role_id) values ('b95026ab-a2b6-41c5-9b70-4edea2a887f8', 86, 181, 1);
 -- Completed generating test data for WestBank
 
+-- Austria LC subgroup
+insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values ('2688c1ca-2113-4a4b-aef1-27da26dca479', 5, 16, 4, 'Austria LC1');
+insert into user_to_group (external_id, user_id, group_id, role_id) values ('2f42c597-059a-42c3-b9f8-d8735f7cd7c3', 4, 182, 1);
+
 -- For our testing, we need to suspend a single Country -> First country, Albania
 update groups set status = 'SUSPENDED' where id = 10;
 -- Four out testing, we need to suspend a single Account, First available, Argentina

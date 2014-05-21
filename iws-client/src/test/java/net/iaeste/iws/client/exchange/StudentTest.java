@@ -82,11 +82,19 @@ public final class StudentTest extends AbstractTest {
     private AuthenticationToken austriaToken = null;
     private AuthenticationToken croatiaToken = null;
 
+    private Group tokenNationallGroup = null;
+    private Group austriaTokenNationallGroup = null;
+    private Group croatiaTokenNationallGroup = null;
+
     @Override
     public void setup() {
         token = login("poland@iaeste.pl", "poland");
         austriaToken = login("austria@iaeste.at", "austria");
         croatiaToken = login("croatia@iaeste.hr", "croatia");
+
+        tokenNationallGroup = findNationalGroup(token);
+        austriaTokenNationallGroup = findNationalGroup(austriaToken);
+        croatiaTokenNationallGroup = findNationalGroup(croatiaToken);
     }
 
     @Override
@@ -98,6 +106,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testProcessStudentApplication() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001001", "Employer", "PL");
 
@@ -168,12 +181,17 @@ public final class StudentTest extends AbstractTest {
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
+        final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createStudentApplicationsRequest);
         assertThat(createStudentApplicationResponse.isOk(), is(true));
     }
 
     @Test
     public void testFetchStudentApplications() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001003", "Employer", "PL");
 
@@ -246,11 +264,11 @@ public final class StudentTest extends AbstractTest {
         application.setNationality(TestData.prepareCountry("DE"));
 
         final ProcessStudentApplicationsRequest createStudentApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaToken, createStudentApplicationsRequest);
+        final StudentApplicationResponse createStudentApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createStudentApplicationsRequest);
         assertThat(createStudentApplicationResponse.isOk(), is(true));
 
         final FetchStudentApplicationsRequest fetchStudentApplicationsRequest = new FetchStudentApplicationsRequest(sharedOffer.getOfferId());
-        final FetchStudentApplicationsResponse fetchStudentApplicationsResponse = students.fetchStudentApplications(austriaToken, fetchStudentApplicationsRequest);
+        final FetchStudentApplicationsResponse fetchStudentApplicationsResponse = students.fetchStudentApplications(austriaTokenWithNationalGroup, fetchStudentApplicationsRequest);
         assertThat(fetchStudentApplicationsResponse.isOk(), is(true));
         assertThat(fetchStudentApplicationsResponse.getStudentApplications().size(), is(1));
         final StudentApplication fetchedApplication = fetchStudentApplicationsResponse.getStudentApplications().get(0);
@@ -347,6 +365,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testNominatingApplication() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001004", "Employer", "PL");
 
@@ -388,14 +411,14 @@ public final class StudentTest extends AbstractTest {
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
         final StudentApplicationRequest nominateStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.NOMINATED);
-        final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaToken, nominateStudentRequest);
+        final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, nominateStudentRequest);
 
         assertThat("Student has been nominated by Austria to Poland", nominateStudentResponse.isOk(), is(true));
         assertThat("Application state is NOMINATED", nominateStudentResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
@@ -403,7 +426,7 @@ public final class StudentTest extends AbstractTest {
 
         final DateTime beforeNominationDate = new DateTime();
         final FetchStudentApplicationsRequest fetchApplicationsRequest = new FetchStudentApplicationsRequest(offerId);
-        final FetchStudentApplicationsResponse fetchApplicationsResponse = students.fetchStudentApplications(austriaToken, fetchApplicationsRequest);
+        final FetchStudentApplicationsResponse fetchApplicationsResponse = students.fetchStudentApplications(austriaTokenWithNationalGroup, fetchApplicationsRequest);
 
         assertThat(fetchApplicationsResponse.isOk(), is(true));
         final StudentApplication foundApplication = findApplicationFromResponse(studentApplication.getApplicationId(), fetchApplicationsResponse);
@@ -433,6 +456,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testRejectNominatedApplication() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001005", "Employer", "PL");
 
@@ -474,14 +502,14 @@ public final class StudentTest extends AbstractTest {
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
         final StudentApplicationRequest nominateStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.NOMINATED);
-        final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaToken, nominateStudentRequest);
+        final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, nominateStudentRequest);
 
         assertThat("Student has been nominated by Austria to Poland", nominateStudentResponse.isOk(), is(true));
         assertThat("Application state is NOMINATED", nominateStudentResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
@@ -503,6 +531,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testRejectAppliedApplicationBySendingCountry() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001065", "Employer", "PL");
@@ -545,7 +578,7 @@ public final class StudentTest extends AbstractTest {
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
@@ -554,7 +587,7 @@ public final class StudentTest extends AbstractTest {
                 ApplicationStatus.REJECTED_BY_SENDING_COUNTRY);
         rejectStudentRequest.setRejectInternalComment("reject internal comment");
         rejectStudentRequest.setRejectDescription("reject description");
-        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaToken, rejectStudentRequest);
+        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, rejectStudentRequest);
 
         assertThat("Student has been rejected by Austria (sending country)", rejectStudentResponse.isOk(), is(true));
         final StudentApplication rejectedApplication = rejectStudentResponse.getStudentApplication();
@@ -564,6 +597,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testRejectApplicationBySendingCountryForClosedOffer() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         //Sending country is only allowed to reject applied application
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001064", "Employer", "PL");
@@ -606,7 +644,7 @@ public final class StudentTest extends AbstractTest {
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
@@ -620,7 +658,7 @@ public final class StudentTest extends AbstractTest {
                 ApplicationStatus.REJECTED_BY_SENDING_COUNTRY);
         rejectStudentRequest.setRejectInternalComment("reject internal comment");
         rejectStudentRequest.setRejectDescription("reject description");
-        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaToken, rejectStudentRequest);
+        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, rejectStudentRequest);
 
         assertThat("Student has been rejected by Austria (sending country)", rejectStudentResponse.isOk(), is(true));
         final StudentApplication rejectedApplication = rejectStudentResponse.getStudentApplication();
@@ -630,6 +668,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testCancelNominatedApplication() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001006", "Employer", "PL");
 
@@ -671,14 +714,14 @@ public final class StudentTest extends AbstractTest {
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
         final StudentApplicationRequest nominateStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.NOMINATED);
-        final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaToken, nominateStudentRequest);
+        final StudentApplicationResponse nominateStudentResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, nominateStudentRequest);
 
         assertThat("Student has been nominated by Austria to Poland", nominateStudentResponse.isOk(), is(true));
         assertThat("Application state is NOMINATED", nominateStudentResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
@@ -686,7 +729,7 @@ public final class StudentTest extends AbstractTest {
         final StudentApplicationRequest cancelStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.CANCELLED);
-        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaToken, cancelStudentRequest);
+        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, cancelStudentRequest);
 
         assertThat("Student has been canceled by Austria", rejectStudentResponse.isOk(), is(true));
         final StudentApplication rejectedApplication = rejectStudentResponse.getStudentApplication();
@@ -735,15 +778,20 @@ public final class StudentTest extends AbstractTest {
         application.setHomeAddress(TestData.prepareAddress("DE"));
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
         final StudentApplicationRequest cancelStudentApplicationRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.CANCELLED);
-        final StudentApplicationResponse cancelStudentApplicationResponse = students.processApplicationStatus(austriaToken, cancelStudentApplicationRequest);
+        final StudentApplicationResponse cancelStudentApplicationResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, cancelStudentApplicationRequest);
 
         assertThat("Student has been cancelled", cancelStudentApplicationResponse.isOk(), is(true));
         assertThat("Application state is CANCELLED", cancelStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.CANCELLED));
@@ -751,7 +799,7 @@ public final class StudentTest extends AbstractTest {
         final StudentApplicationRequest applyStudentRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.APPLIED);
-        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaToken, applyStudentRequest);
+        final StudentApplicationResponse rejectStudentResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, applyStudentRequest);
 
         assertThat("Student has been canceled by Austria", rejectStudentResponse.isOk(), is(true));
         final StudentApplication rejectedApplication = rejectStudentResponse.getStudentApplication();
@@ -760,6 +808,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testAcceptAtEmployerApplication() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001008", "Employer", "PL");
 
@@ -801,14 +854,14 @@ public final class StudentTest extends AbstractTest {
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
         final StudentApplicationRequest nominateStudentApplicationRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.NOMINATED);
-        final StudentApplicationResponse nominateStudentApplicationResponse = students.processApplicationStatus(austriaToken, nominateStudentApplicationRequest);
+        final StudentApplicationResponse nominateStudentApplicationResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, nominateStudentApplicationRequest);
 
         assertThat("Student has been nominated by Austria to Poland", nominateStudentApplicationResponse.isOk(), is(true));
         assertThat("Application state is NOMINATED", nominateStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
@@ -832,6 +885,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testCancelAcceptedApplication() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
         final Offer offer = TestData.prepareMinimalOffer("PL-2014-001009", "Employer", "PL");
 
@@ -873,14 +931,14 @@ public final class StudentTest extends AbstractTest {
         application.setAddressDuringTerms(TestData.prepareAddress("AT"));
 
         final ProcessStudentApplicationsRequest createApplicationsRequest = new ProcessStudentApplicationsRequest(application);
-        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaToken, createApplicationsRequest);
+        final StudentApplicationResponse createApplicationResponse = students.processStudentApplication(austriaTokenWithNationalGroup, createApplicationsRequest);
         final StudentApplication studentApplication = createApplicationResponse.getStudentApplication();
         assertThat("Student application has been created", createApplicationResponse.isOk(), is(true));
 
         final StudentApplicationRequest nominateStudentApplicationRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.NOMINATED);
-        final StudentApplicationResponse nominateStudentApplicationResponse = students.processApplicationStatus(austriaToken, nominateStudentApplicationRequest);
+        final StudentApplicationResponse nominateStudentApplicationResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, nominateStudentApplicationRequest);
 
         assertThat("Student has been nominated by Austria to Poland", nominateStudentApplicationResponse.isOk(), is(true));
         assertThat("Application state is NOMINATED", nominateStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.NOMINATED));
@@ -904,7 +962,7 @@ public final class StudentTest extends AbstractTest {
         final StudentApplicationRequest cancelStudentApplicationRequest = new StudentApplicationRequest(
                 studentApplication.getApplicationId(),
                 ApplicationStatus.CANCELLED);
-        final StudentApplicationResponse cancelStudentApplicationResponse = students.processApplicationStatus(austriaToken, cancelStudentApplicationRequest);
+        final StudentApplicationResponse cancelStudentApplicationResponse = students.processApplicationStatus(austriaTokenWithNationalGroup, cancelStudentApplicationRequest);
 
         assertThat("Student has been cancelled", cancelStudentApplicationResponse.isOk(), is(true));
         assertThat("Application state is CANCELLED", cancelStudentApplicationResponse.getStudentApplication().getStatus(), is(ApplicationStatus.CANCELLED));
@@ -912,6 +970,11 @@ public final class StudentTest extends AbstractTest {
 
     @Test
     public void testFetchSharedDomesticOfferWithApplication() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
         final Date nominationDeadline = new Date().plusDays(20);
         final String refNo = "AT-2014-000003";
         final Offer offer = TestData.prepareMinimalOffer(refNo, "Employer", "PL");
@@ -919,7 +982,7 @@ public final class StudentTest extends AbstractTest {
         offer.setPrivateComment("austria");
 
         final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
-        final OfferResponse processResponse = exchange.processOffer(austriaToken, offerRequest);
+        final OfferResponse processResponse = exchange.processOffer(austriaTokenWithNationalGroup, offerRequest);
 
         assertThat("verify that the offer was persisted", processResponse.isOk(), is(true));
         assertThat(processResponse.getOffer().getStatus(), is(OfferState.NEW));
@@ -931,7 +994,7 @@ public final class StudentTest extends AbstractTest {
         groupIds.add(findNationalGroup(croatiaToken).getGroupId());
 
         final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
-        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaToken, publishRequest);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaTokenWithNationalGroup, publishRequest);
 
         assertThat("verify that there was no error during sharing the offer", publishResponse.getError(), is(IWSErrors.SUCCESS));
         assertThat("verify that the offer was successfully shared with Croatia", publishResponse.isOk(), is(true));
@@ -978,7 +1041,7 @@ public final class StudentTest extends AbstractTest {
         assertThat("Foreign offer should not see private comment", readOfferHr.getPrivateComment(), is(nullValue()));
 
         final FetchOffersRequest requestAt = new FetchOffersRequest(FetchType.DOMESTIC);
-        final FetchOffersResponse fetchResponseAt = exchange.fetchOffers(austriaToken, requestAt);
+        final FetchOffersResponse fetchResponseAt = exchange.fetchOffers(austriaTokenWithNationalGroup, requestAt);
         final Offer readOfferAt = findOfferFromResponse(refNo, fetchResponseAt);
 
         assertThat("Domestic offer was loaded", readOfferAt, is(not(nullValue())));

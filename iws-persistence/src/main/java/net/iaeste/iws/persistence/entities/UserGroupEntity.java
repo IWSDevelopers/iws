@@ -170,6 +170,7 @@ import java.util.Map;
         @NamedQuery(name = "usergroup.findncs",
                 query = "select distinct ug from UserGroupEntity ug " +
                         "where ug.group.status = 'ACTIVE'" +
+                        "  and ug.user.status = 'ACTIVE'" +
                         "  and ug.role.id <= 2" +
                         "  and (ug.group.groupType.grouptype = 'NATIONAL'" +
                         "    or ug.group.groupType.grouptype = 'INTERNATIONAL')"),

@@ -151,7 +151,7 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
      * for the Staff members to map back the migrated Offers, we're storing the
      * old local value.
      */
-    @Column(name = "old_refno", length = 36)
+    @Column(name = "old_refno", length = 50)
     private String oldRefno = null;
 
     /**

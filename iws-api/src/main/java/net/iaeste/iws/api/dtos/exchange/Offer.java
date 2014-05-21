@@ -229,6 +229,7 @@ public final class Offer extends AbstractVerification {
      * @param oldRefNo old Offer Reference Number
      */
     public void setOldRefNo(final String oldRefNo) {
+        ensureNotTooLong("oldRefNo", oldRefNo, 50);
         this.oldRefNo = oldRefNo;
     }
 
@@ -489,6 +490,7 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setDeduction(final String deduction) {
+        ensureNotTooLong("deduction", deduction, 50);
         this.deduction = deduction;
     }
 
@@ -513,6 +515,7 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setLodgingBy(final String lodgingBy) {
+        ensureNotTooLong("lodgingBy", lodgingBy, 255);
         this.lodgingBy = lodgingBy;
     }
 

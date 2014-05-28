@@ -58,21 +58,21 @@ insert into students (user_id) values (1090);
 insert into user_to_group (external_id, user_id, group_id, role_id) values
 -- NS
   ('02cb2ee0-da80-4bd9-b487-dadd9e019305', 1062, 1183, 3),
-  ('99c3d6fc-7ad5-4fb4-872f-80f80d37d294', 1062, 1184, 1),
+  ('99c3d6fc-7ad5-4fb4-872f-80f80d37d294', 1062, 1184, 3),
   ('a0586b77-0d68-4854-b549-7d9192cb72b6', 1062, 1185, 3), -- can NS be a member of LC workgroup if he is not a member of LC?
 -- staff member
   ('6b7fb67e-a56c-4beb-85eb-6d23f755bd53', 1088, 1132, 2),
   ('59ba0d75-797d-4c9a-930b-ca95bf12e9c6', 1088, 1133, 2),
 
   ('1ad4d5aa-3e3b-40ed-afc9-27f930a79397', 1088, 1183, 1),
-  ('09ae4d15-6c9e-4f58-9ad4-ed7d6794f9d1', 1088, 1184, 3),
+  ('09ae4d15-6c9e-4f58-9ad4-ed7d6794f9d1', 1088, 1184, 1),
   ('0fb9ef58-76da-40bb-b75c-0646fc9a388d', 1088, 1185, 3), -- can National Staff Member be a member of LC workgroup if he is not a member of LC?
 -- LC Owner
   ('6f072599-f93d-4830-8155-d56ec40d9fd1', 1089, 1182, 1),
   ('ac129a1c-ea14-432f-a86c-d3062e648ab0', 1089, 1132, 2),
 
   ('f6db70ea-84d5-43c2-ac2c-7721f8341192', 1089, 1183, 3),
-  ('c13c1ea2-1185-4849-864c-60f4556def81', 1089, 1184, 1),
+  ('c13c1ea2-1185-4849-864c-60f4556def81', 1089, 1184, 2),
   ('90e15a7e-0fbc-4f9d-bddf-123d8a6df9e8', 1089, 1185, 3),
 -- LC Member
   ('657d93dd-65ce-4499-b286-e768c740f184', 1090, 1132, 3),

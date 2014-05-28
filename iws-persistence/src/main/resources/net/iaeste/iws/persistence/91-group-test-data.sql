@@ -15,7 +15,7 @@ alter sequence user_sequence restart with 1062;
 
 insert into countries (country_code, country_name, country_name_full, currency, member_since, membership) values ('NV', 'Neverland', 'Neverland', 'USD', 1960, 'FULL_MEMBER');
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name) values
-  ('4e878cbb-f108-4ac4-b422-ba0ed3ea9253', 2, null, 62, 'Neverland'),
+  ('4e878cbb-f108-4ac4-b422-ba0ed3ea9253', 2, null, 1062, 'Neverland'),
   ('4b43dd02-f341-4578-94a5-7a93928ecee8', 4, 1132, 1062, 'Neverland');
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values
   ('782a3fa3-b653-4dec-943b-4f89cd4c3ac3', 'ACTIVE', 'neverland@iaeste.nv', 'NS.Neverland@iaeste.org', 'fe1ade81bf65e13fa965f65ae1e012fcaa059621d70391e07f9c011846ec6699', 'c26b14f3-ca89-4007-b103-e810caf30378', 'NS', 'Neverland');

@@ -80,8 +80,31 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
             { "Bangladesh_Afzal_Management@iaeste.org", "bangladeshafm@iaeste.org" },
             { "bolivia_ib@iaeste.org", "boliviaib@iaeste.org" },
             { "vietnam_nu@iaeste.org", "vietnamnu@iaeste.org" },
+            { "Nepal@iaeste.org", "Nepal_CI@iaeste.org" },
             { "board@iaeste.org", "president@iaeste.org" },
             { "idt@iaeste.net", "idt.members@iaeste.net"}};
+
+
+//
+//Kenya_DeKut    --> Kenya_DKUT
+//
+//
+//
+//   Bangladesh:
+//
+//   (the flu name is Bangladesh AF Management, so the name should be rather
+//
+//
+//
+//   Bangladesh_Afzal_Management --> Bangladesh_AFM@iaeste.org
+//
+//
+//
+//   Bangladesh     | College_of_Aviation_Technology --->Bangladesh_CAT@iaeste.org
+//
+//
+//
+//   Nepal CI---> Nepal_CI@iaeste.org
 
     @Autowired
     private IWSDao iwsDao;

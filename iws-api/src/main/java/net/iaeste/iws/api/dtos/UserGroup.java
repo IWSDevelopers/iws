@@ -44,6 +44,7 @@ public final class UserGroup extends AbstractVerification {
     private String title = null;
     private boolean onPublicList = false;
     private boolean onPrivateList = false;
+    private boolean writeToPrivateList = false;
     private Date memberSince = null;
 
     // =========================================================================
@@ -201,6 +202,21 @@ public final class UserGroup extends AbstractVerification {
 
     public boolean isOnPrivateList() {
         return onPrivateList;
+    }
+
+    /**
+     * If the user may write to the private mailing list, i.e. the @iaeste.net
+     * mailinglist. Note that this requires that the user is also on the private
+     * mailinglist, otherwise the field is ignored.
+     *
+     * @param writeToPrivateList True if user may write to private list, otherwise false
+     */
+    public void setWriteToPrivateList(final boolean writeToPrivateList) {
+        this.writeToPrivateList = writeToPrivateList;
+    }
+
+    public boolean mayWriteToPrivateList() {
+        return writeToPrivateList;
     }
 
     /**

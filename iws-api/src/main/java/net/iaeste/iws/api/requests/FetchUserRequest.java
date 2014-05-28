@@ -33,37 +33,54 @@ public final class FetchUserRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String userId = null;
+    private String name = null;
 
     // =========================================================================
     // Object Constructors
     // =========================================================================
 
     /**
-     * Empty Constructor, to use if the setters are invoked. This is required
-     * for WebServices to work properly.
+     * Default Constructor.
      */
     public FetchUserRequest() {
-    }
-
-    /**
-     * Default Constructor.
-     *
-     * @param userId The UserId of the user to retrieve
-     */
-    public FetchUserRequest(final String userId) {
-        this.userId = userId;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
 
+    /**
+     * Setting the Id of the User to retrieve. The details of the user is
+     * depending on the permisions that the user have granted others via the
+     * privacy settings.
+     *
+     * @param userId User Id
+     */
     public void setUserId(final String userId) {
+        ensureValidId("userId", userId);
         this.userId = userId;
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    /**
+     * When setting the name, and no User Id exists in this request Object, then
+     * the IWS will user the name to find a user. The name can be partial, but
+     * if special characters has been used in the name, and a lookup is made
+     * with non-special characters, then the method will not find the requested
+     * person.
+     *
+     * @param name Partial first or last name
+     */
+    public void setName(final String name) {
+        ensureNotEmpty("name", name);
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     // =========================================================================
@@ -77,8 +94,12 @@ public final class FetchUserRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(1);
 
-        if ((userId == null) || (userId.length() != 36)) {
-            validation.put("userId", "No valid UserId is present.");
+        if (userId == null && name == null) {
+            validation.put("userId & name", "No information is present to find a user from.");
+        } else if (userId != null) {
+            if (userId.length() != 36) {
+                validation.put("userId", "No valid UserId is present.");
+            }
         }
 
         return validation;

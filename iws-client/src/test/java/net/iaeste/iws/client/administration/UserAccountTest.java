@@ -45,7 +45,6 @@ import net.iaeste.iws.api.responses.FetchUserResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
-import net.iaeste.iws.client.AccessClient;
 import net.iaeste.iws.client.AdministrationClient;
 import net.iaeste.iws.client.StudentClient;
 import net.iaeste.iws.common.notification.NotificationField;
@@ -84,7 +83,8 @@ public final class UserAccountTest extends AbstractAdministration {
         final AccountNameRequest request = new AccountNameRequest(createResponse.getUser(), "Aaberg");
         final Fallible response = administration.changeAccountName(token, request);
         assertThat(response.isOk(), is(true));
-        final FetchUserRequest fetchRequest = new FetchUserRequest(createResponse.getUser().getUserId());
+        final FetchUserRequest fetchRequest = new FetchUserRequest();
+        fetchRequest.setUserId(createResponse.getUser().getUserId());
         final FetchUserResponse fetchResponse = administration.fetchUser(token, fetchRequest);
         assertThat(fetchResponse.isOk(), is(true));
         assertThat(fetchResponse.getUser().getLastname(), is("Aaberg"));
@@ -255,7 +255,8 @@ public final class UserAccountTest extends AbstractAdministration {
         assertThat(updateResult.isOk(), is(true));
 
         // Let's find the account again, and verify that the updates were applied
-        final FetchUserRequest userRequest = new FetchUserRequest(myself.getUserId());
+        final FetchUserRequest userRequest = new FetchUserRequest();
+        userRequest.setUserId(myself.getUserId());
         final FetchUserResponse userResponse = administration.fetchUser(myToken, userRequest);
         assertThat(userResponse.isOk(), is(true));
         final User myUpdate = userResponse.getUser();
@@ -294,7 +295,7 @@ public final class UserAccountTest extends AbstractAdministration {
     @Test
     public void testCreateStudentAccount() {
         // For this test, we also need the Access Client
-        final AccessClient accessClient = new AccessClient();
+        //final AccessClient accessClient = new AccessClient();
 
         // Create the new User Request Object
         final String username = "student@gamma.net";

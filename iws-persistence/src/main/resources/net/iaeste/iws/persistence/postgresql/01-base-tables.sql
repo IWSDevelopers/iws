@@ -543,17 +543,18 @@ create table sessions (
 -- =============================================================================
 create sequence user_to_group_sequence start with 1 increment by 1;
 create table user_to_group (
-    id                  integer default nextval('user_to_group_sequence'),
-    external_id         varchar(36),
-    user_id             integer,
-    group_id            integer,
-    role_id             integer,
-    custom_title        varchar(50),
-    on_public_list      boolean default false,
-    on_private_list     boolean default true,
-    status              boolean default true,
-    modified            timestamp default now(),
-    created             timestamp default now(),
+    id                     integer default nextval('user_to_group_sequence'),
+    external_id            varchar(36),
+    user_id                integer,
+    group_id               integer,
+    role_id                integer,
+    custom_title           varchar(50),
+    on_public_list         boolean default false,
+    on_private_list        boolean default true,
+    write_to_private_list  boolean default true,
+    status                 boolean default true,
+    modified               timestamp default now(),
+    created                timestamp default now(),
 
     /* Primary & Foreign Keys */
     constraint u2g_pk          primary key (id),
@@ -566,16 +567,17 @@ create table user_to_group (
     constraint u2g_unique_session_key unique (user_id, group_id),
 
     /* Not Null Constraints */
-    constraint u2g_notnull_id              check (id is not null),
-    constraint u2g_notnull_external_id     check (external_id is not null),
-    constraint u2g_notnull_user_id         check (user_id is not null),
-    constraint u2g_notnull_group_id        check (group_id is not null),
-    constraint u2g_notnull_role_id         check (role_id is not null),
-    constraint u2g_notnull_on_public_list  check (on_public_list is not null),
-    constraint u2g_notnull_on_private_list check (on_private_list is not null),
-    constraint u2g_notnull_status          check (status is not null),
-    constraint u2g_notnull_modified        check (modified is not null),
-    constraint u2g_notnull_created         check (created is not null)
+    constraint u2g_notnull_id                 check (id is not null),
+    constraint u2g_notnull_external_id        check (external_id is not null),
+    constraint u2g_notnull_user_id            check (user_id is not null),
+    constraint u2g_notnull_group_id           check (group_id is not null),
+    constraint u2g_notnull_role_id            check (role_id is not null),
+    constraint u2g_notnull_on_public_list     check (on_public_list is not null),
+    constraint u2g_notnull_on_private_list    check (on_private_list is not null),
+    constraint u2g_notnull_write_private_list check (write_to_private_list is not null),
+    constraint u2g_notnull_status             check (status is not null),
+    constraint u2g_notnull_modified           check (modified is not null),
+    constraint u2g_notnull_created            check (created is not null)
 );
 
 

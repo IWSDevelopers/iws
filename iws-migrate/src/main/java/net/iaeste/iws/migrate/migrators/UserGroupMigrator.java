@@ -119,6 +119,7 @@ public class UserGroupMigrator implements Migrator<IW3User2GroupEntity> {
         entity.setTitle(convert(oldUserGroupEntity.getUsertitle()));
         entity.setOnPublicList(oldUserGroupEntity.getOnmailinglist());
         entity.setOnPrivateList(oldUserGroupEntity.getOnmailinglist());
+        entity.setWriteToPrivateList(oldUserGroupEntity.getOnmailinglist());
         entity.setModified(convert(oldUserGroupEntity.getModified()));
         entity.setCreated(convert(oldUserGroupEntity.getCreated(), oldUserGroupEntity.getModified()));
 

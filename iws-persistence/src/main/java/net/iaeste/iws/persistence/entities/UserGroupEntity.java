@@ -229,6 +229,10 @@ public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable 
     @Column(name = "on_private_list", nullable = false)
     private Boolean onPrivateList = true;
 
+    @Monitored(name="User2Group Write To Private Mailinglist", level = MonitoringLevel.DETAILED)
+    @Column(name = "write_to_private_list", nullable = false)
+    private Boolean writeToPrivateList = true;
+
     /**
      * Last time the Entity was modified.
      */
@@ -353,6 +357,14 @@ public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable 
         return onPrivateList;
     }
 
+    public void setWriteToPrivateList(final Boolean writeToPrivateList) {
+        this.writeToPrivateList = writeToPrivateList;
+    }
+
+    public Boolean getWriteToPrivateList() {
+        return writeToPrivateList;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -408,6 +420,7 @@ public class UserGroupEntity implements Externable<UserGroupEntity>, Notifiable 
             title = obj.title;
             onPublicList = obj.onPublicList;
             onPrivateList = obj.onPrivateList;
+            writeToPrivateList = obj.writeToPrivateList;
         }
     }
 

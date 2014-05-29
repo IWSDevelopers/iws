@@ -98,6 +98,11 @@ public enum NotificationField {
     ON_PRIVATE_LIST,
 
     /**
+     * If a user may send messages to the privage mailing list or not.
+     */
+    WRITE_PRIVATE_LIST,
+
+    /**
      * The name of the Country that the Group which has been created or has a change
      * in the members belong to.
      */

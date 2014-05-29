@@ -154,6 +154,7 @@ public final class AdministrationTransformer {
             userGroup.setTitle(entity.getTitle());
             userGroup.setOnPublicList(entity.getOnPublicList());
             userGroup.setOnPrivateList(entity.getOnPrivateList());
+            userGroup.setWriteToPrivateList(entity.getWriteToPrivateList());
             userGroup.setMemberSince(CommonTransformer.convert(entity.getCreated()));
         } else {
             userGroup = null;
@@ -175,6 +176,7 @@ public final class AdministrationTransformer {
             entity.setTitle(userGroup.getTitle());
             entity.setOnPublicList(userGroup.isOnPublicList());
             entity.setOnPrivateList(userGroup.isOnPrivateList());
+            entity.setWriteToPrivateList(userGroup.mayWriteToPrivateList());
         } else {
             entity = new UserGroupEntity();
         }

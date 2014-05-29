@@ -287,6 +287,7 @@ public final class GroupService {
         newOwner.setTitle(oldOwner.getTitle());
         newOwner.setOnPublicList(true);
         newOwner.setOnPrivateList(true);
+        newOwner.setWriteToPrivateList(true);
         log.debug(formatLogMessage(authentication, "New Owner: %s gets the role %s for group %s.", user.getFirstname() + ' ' + user.getLastname(), newOwner.getRole().getRole(), group.getGroupName()));
         dao.persist(authentication, newOwner);
 
@@ -368,8 +369,9 @@ public final class GroupService {
     private ProcessUserGroupResponse updateSelf(final Authentication authentication, final UserGroupEntity currentEntity, final UserGroupAssignmentRequest request) {
         // Update the UserGroup relation
         currentEntity.setTitle(request.getUserGroup().getTitle());
-        currentEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
         currentEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
+        currentEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
+        currentEntity.setWriteToPrivateList(request.getUserGroup().mayWriteToPrivateList());
         dao.persist(authentication, currentEntity);
 
         return new ProcessUserGroupResponse(transform(currentEntity));
@@ -427,6 +429,7 @@ public final class GroupService {
             given.setTitle(information.getTitle());
             given.setOnPublicList(information.isOnPublicList());
             given.setOnPrivateList(information.isOnPrivateList());
+            given.setWriteToPrivateList(information.mayWriteToPrivateList());
 
             // And save...
             dao.persist(given);
@@ -441,8 +444,9 @@ public final class GroupService {
             existingEntity.setRole(role);
 
             // Following two lines are set by the merge method, so this is duplication.
-            existingEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
             existingEntity.setOnPublicList(request.getUserGroup().isOnPublicList());
+            existingEntity.setOnPrivateList(request.getUserGroup().isOnPrivateList());
+            existingEntity.setWriteToPrivateList(request.getUserGroup().mayWriteToPrivateList());
             dao.persist(authentication, existingEntity, given);
 
             notifications.notify(authentication, existingEntity, NotificationType.CHANGE_IN_GROUP_MEMBERS);

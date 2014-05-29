@@ -290,6 +290,9 @@ public final class UserGroup extends AbstractVerification {
         if (onPrivateList != userGroup.onPrivateList) {
             return false;
         }
+        if (writeToPrivateList != userGroup.writeToPrivateList) {
+            return false;
+        }
 
         return !((memberSince != null) ? !memberSince.equals(userGroup.memberSince) : (userGroup.memberSince != null));
     }
@@ -308,6 +311,7 @@ public final class UserGroup extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((title != null) ? title.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (onPublicList ? 1 : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + (onPrivateList ? 1 : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (writeToPrivateList ? 1 : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((memberSince != null) ? memberSince.hashCode() : 0);
 
         return result;
@@ -326,6 +330,7 @@ public final class UserGroup extends AbstractVerification {
                 ", title='" + title + '\'' +
                 ", onPublicList=" + onPublicList +
                 ", onPrivateList=" + onPrivateList +
+                ", writeToPrivateList=" + writeToPrivateList +
                 ", memberSince=" + memberSince +
                 '}';
     }

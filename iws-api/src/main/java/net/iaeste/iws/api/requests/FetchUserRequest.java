@@ -33,7 +33,6 @@ public final class FetchUserRequest extends AbstractVerification {
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     private String userId = null;
-    private String name = null;
 
     // =========================================================================
     // Object Constructors
@@ -65,24 +64,6 @@ public final class FetchUserRequest extends AbstractVerification {
         return userId;
     }
 
-    /**
-     * When setting the name, and no User Id exists in this request Object, then
-     * the IWS will user the name to find a user. The name can be partial, but
-     * if special characters has been used in the name, and a lookup is made
-     * with non-special characters, then the method will not find the requested
-     * person.
-     *
-     * @param name Partial first or last name
-     */
-    public void setName(final String name) {
-        ensureNotEmpty("name", name);
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     // =========================================================================
     // Standard Request Methods
     // =========================================================================
@@ -94,13 +75,7 @@ public final class FetchUserRequest extends AbstractVerification {
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(1);
 
-        if (userId == null && name == null) {
-            validation.put("userId & name", "No information is present to find a user from.");
-        } else if (userId != null) {
-            if (userId.length() != 36) {
-                validation.put("userId", "No valid UserId is present.");
-            }
-        }
+        isNotNull(validation, "userId", userId);
 
         return validation;
     }

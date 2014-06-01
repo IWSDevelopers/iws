@@ -122,7 +122,7 @@ public final class GroupService {
             if ((type == GroupType.LOCAL) || (type == GroupType.WORKGROUP)) {
                 final String name = request.getGroup().getGroupName();
                 if (!dao.hasGroupsWithSimilarName(entity, name)) {
-                    dao.persist(authentication, entity, CommonTransformer.transform(request.getGroup()));
+                    updateGroup(authentication, entity, request.getGroup());
                 } else {
                     throw new IdentificationException("Another Group exist with a similar name " + name);
                 }
@@ -132,6 +132,37 @@ public final class GroupService {
         }
 
         return new ProcessGroupResponse(CommonTransformer.transform(entity));
+    }
+
+    /**
+     * When updating a Group, we need to make sure that the fields are properly
+     * updated as well. Some fields reflect their value on others, so changes
+     * must also be reflected in the same way. The following fields are allowed
+     * to be updated:<br />
+     * <ul>
+     *   <li><b>groupName</b> - If provided</li>
+     *   <li><b>fullName</b> - Updated</li>
+     *   <li><b>description</b> - If provided</li>
+     *   <li><b>listName</b> - Generated</li>
+     * </ul>
+     *
+     * @param authentication Authentication information for requesting user
+     * @param entity         Entity to update
+     * @param changesToGroup Group Object from the requesting user
+     */
+    private void updateGroup(final Authentication authentication, final GroupEntity entity, final Group group) {
+        final String oldFullname = entity.getFullName();
+        final String basename = oldFullname.substring(0, entity.getFullName().lastIndexOf('.')) + '.';
+
+        // Create the new Entity
+        final GroupType type = entity.getGroupType().getGrouptype();
+        final GroupEntity groupEntity = new GroupEntity();
+        groupEntity.setGroupName(GroupUtil.prepareGroupName(type, group));
+        groupEntity.setDescription(group.getDescription());
+        groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
+        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), entity.getCountry().getCountryName()));
+
+        dao.persist(authentication, entity, groupEntity);
     }
 
     /**

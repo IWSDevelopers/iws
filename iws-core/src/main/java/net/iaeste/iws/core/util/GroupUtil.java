@@ -60,11 +60,20 @@ public final class GroupUtil {
                     basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
                 }
                 break;
+            case NATIONAL:
+                // Following is required to avoid problems with test data. As
+                // most countries already uses the countryname as the base -
+                // the solution is production safe
+                if (parentFullname == null) {
+                    basename = country + '.' + parentType.getDescription() + '.';
+                } else {
+                    basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
+                }
+                break;
             case INTERNATIONAL:
                 basename = parentGroupName + '.';
                 break;
             case LOCAL:
-            case NATIONAL:
             case STUDENT:
             case WORKGROUP:
                 basename = parentFullname;
@@ -112,7 +121,7 @@ public final class GroupUtil {
                 listname = "";
         }
 
-        return listname;
+        return toLower(listname);
     }
 
     /**
@@ -143,7 +152,7 @@ public final class GroupUtil {
                 groupName = group.getGroupName();
         }
 
-        return toLower(groupName);
+        return groupName;
     }
 
     /**
@@ -181,6 +190,6 @@ public final class GroupUtil {
                 fullGroupName = group.getGroupName();
         }
 
-        return toLower(fullGroupName);
+        return fullGroupName;
     }
 }

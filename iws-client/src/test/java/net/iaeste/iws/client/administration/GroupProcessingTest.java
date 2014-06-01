@@ -14,17 +14,21 @@
  */
 package net.iaeste.iws.client.administration;
 
+import static net.iaeste.iws.common.utils.StringUtils.toLower;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.startsWith;
+
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 
 /**
  * This test will attempt to verify the creation and updating of our normally
@@ -57,12 +61,12 @@ public final class GroupProcessingTest extends AbstractAdministration {
     // Positive Tests, when creating a subgroup
     // =========================================================================
 
-    @Ignore("2014-06-01: list and full name are missing")
     @Test
     public void testCreatingLocalAsSubGroupToMembers() {
         final String groupName = "My Local Committee";
-        final String fullName = "denmark.my local committee";
-        final String listName = "denmark.my_local_committee@iaeste.net";
+        final String groupDescription = "The Group Description";
+        final String fullName = "Denmark." + groupName;
+        final String listName = toLower(fullName.replace(' ', '_') + "@iaeste.net");
 
         final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
         assertThat(result.isOk(), is(true));
@@ -74,7 +78,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final Group group = result.getGroup();
         // Changes to GroupType should be ignored
         group.setGroupType(GroupType.ADMINISTRATION);
-        group.setDescription("My Description");
+        group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
         final ProcessGroupResponse response = client.processGroup(token, request);
@@ -83,19 +87,19 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(response.isOk(), is(true));
         assertThat(response.getGroup(), is(not(nullValue())));
         assertThat(response.getGroup().getGroupId(), is(group.getGroupId()));
-        assertThat(response.getGroup().getDescription(), is("My Description"));
+        assertThat(response.getGroup().getDescription(), is(groupDescription));
         assertThat(response.getGroup().getGroupType(), is(GroupType.LOCAL));
-        assertThat(response.getGroup().getGroupName(), equalToIgnoringCase(groupName));
+        assertThat(response.getGroup().getGroupName(), is(groupName));
         assertThat(response.getGroup().getListName(), is(listName));
         assertThat(response.getGroup().getFullName(), is(fullName));
     }
 
-    @Ignore("2014-06-01: list and full name are missing")
     @Test
     public void testCreatingWorkGroupAsSubGroupToMembers() {
-        final String groupName = "My Work Group A";
-        final String fullName = "denmark.my work group a";
-        final String listName = "denmark.my_work_group_a@iaeste.net";
+        final String groupName = "My Work Group";
+        final String groupDescription = "My Description";
+        final String fullName = "Denmark." + groupName;
+        final String listName = toLower(fullName.replace(' ', '_') + "@iaeste.net");
 
         final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
@@ -107,7 +111,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final Group group = result.getGroup();
         // Changes to GroupType should be ignored
         group.setGroupType(GroupType.ADMINISTRATION);
-        group.setDescription("My Description");
+        group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
         final ProcessGroupResponse response = client.processGroup(token, request);
@@ -116,30 +120,27 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(response.isOk(), is(true));
         assertThat(response.getGroup(), is(not(nullValue())));
         assertThat(response.getGroup().getGroupId(), is(group.getGroupId()));
-        assertThat(response.getGroup().getDescription(), is("My Description"));
+        assertThat(response.getGroup().getDescription(), is(groupDescription));
         assertThat(response.getGroup().getGroupType(), is(GroupType.WORKGROUP));
         assertThat(response.getGroup().getGroupName(), equalToIgnoringCase(groupName));
         assertThat(response.getGroup().getFullName(), is(fullName));
         assertThat(response.getGroup().getListName(), is(listName));
     }
 
-    @Ignore("2014-06-01: list and full name are missing")
     @Test
     public void testCreatingWorkGroupAsSubGroupToNational() {
-        final String groupName = "My Work Group B";
-        final String fullName = "denmark.my work group b"; // TODO: what is expected full name? how to differentiate from workgroup under Member group?
+        final String groupName = "My Work Group";
+        final String groupDescription = "My Description";
 
         final ProcessGroupResponse result = createGroup(token, GroupType.NATIONAL, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
         assertThat(result.getGroup(), is(not(nullValue())));
 
-        assertThat(result.getGroup().getListName(), not(startsWith("null")));
-
         // Okay, created Group - let's try to modify it
         final Group group = result.getGroup();
         // Changes to GroupType should be ignored
         group.setGroupType(GroupType.ADMINISTRATION);
-        group.setDescription("My Description");
+        group.setDescription(groupDescription);
 
         final GroupRequest request = new GroupRequest(group);
         final ProcessGroupResponse response = client.processGroup(token, request);
@@ -148,11 +149,12 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(response.isOk(), is(true));
         assertThat(response.getGroup(), is(not(nullValue())));
         assertThat(response.getGroup().getGroupId(), is(group.getGroupId()));
-        assertThat(response.getGroup().getDescription(), is("My Description"));
+        assertThat(response.getGroup().getDescription(), is(groupDescription));
         assertThat(response.getGroup().getGroupType(), is(GroupType.WORKGROUP));
-        assertThat(response.getGroup().getGroupName(), equalToIgnoringCase(groupName));
+        assertThat(response.getGroup().getGroupName(), is(groupName));
         assertThat(result.getGroup().getFullName(), not(nullValue()));
         assertThat(result.getGroup().getListName(), not(nullValue()));
+        assertThat(result.getGroup().getListName(), not(startsWith("null")));
     }
 
     // =========================================================================

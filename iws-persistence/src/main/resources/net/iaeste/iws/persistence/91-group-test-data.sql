@@ -36,13 +36,17 @@ alter sequence user_sequence restart with 1088;
 -- Additionally, add a Workgroup under the Staff, Member group & LC. Where user 1-4 are present in all three.
 
 insert into Groups (external_id, grouptype_id, parent_id, country_id, group_name, full_name) values
-  ('5f88dd38-4aa6-4146-bb1e-a1ef1b074323', 5, 1132, 1062, 'NeverlandCity', 'LC City'), -- id=182
+  ('5f88dd38-4aa6-4146-bb1e-a1ef1b074323', 5, 1132, 1062, 'City', 'neverland.city'), -- id=182
 
-  ('d5083fd8-9c85-4754-8fe4-c1ab61478542', 6, 1132, 1062, 'NeverlandFR', 'Neverland National Fund Raising'),
-  ('27a61e49-afbe-4657-bfd0-181a1acbf80e', 6, 1133, 1062, 'NeverlandExchange', 'Neverland Exchange Coordinators'),
-  ('83ecaa6e-1d54-4e46-bcd2-ecf75bb8d132', 6, 1182, 1062, 'NeverlandCityIT', 'LC City IT'),
+  ('d5083fd8-9c85-4754-8fe4-c1ab61478542', 6, 1132, 1062, 'Fund Raising', 'neverland.fund raising'),
+  ('27a61e49-afbe-4657-bfd0-181a1acbf80e', 6, 1133, 1062, 'Exchange', 'neverland.exchange'),
+  ('83ecaa6e-1d54-4e46-bcd2-ecf75bb8d132', 6, 1182, 1062, 'IT', 'neverland.city.it'),
 
-  ('a5a51fa4-93f3-4d73-b417-49cac26e558f', 7, 1182, 1062, 'NeverlandCityStudents', 'Students AGH City');
+  ('a5a51fa4-93f3-4d73-b417-49cac26e558f', 7, 1182, 1062, 'Students', 'neverland.city.students');
+
+UPDATE groups
+  SET list_name = REPLACE(full_name, ' ', '_')
+  WHERE id > 1000;
 
 -- Polish Test users, the NS is defined in the initial-test-data script
 insert into users (external_id, status, username, alias, password, salt, firstname, lastname) values

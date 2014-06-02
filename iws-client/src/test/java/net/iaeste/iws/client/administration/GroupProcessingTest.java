@@ -28,6 +28,7 @@ import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -155,6 +156,38 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(result.getGroup().getFullName(), not(nullValue()));
         assertThat(result.getGroup().getListName(), not(nullValue()));
         assertThat(result.getGroup().getListName(), not(startsWith("null")));
+    }
+
+    @Ignore("2014-06-02: list name for Local subgroup is not built correctly")
+    @Test
+    public void testCreatingWorkgroupAsSubGroupToLocal() {
+        final String localName = "Some Local Committee";
+
+        final String workgroupName = "My Local Work Group";
+        final String workgroupDescription = "The Group Description";
+        final String workgroupFullName = "Denmark." + localName + '.' + workgroupName;
+        final String workgroupListName = toLower(workgroupFullName.replace(' ', '_') + "@iaeste.net");
+
+        final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
+        assertThat(result.isOk(), is(true));
+
+        final Group group = new Group();
+        group.setGroupName(workgroupName);
+        group.setGroupType(GroupType.WORKGROUP);
+        group.setDescription(workgroupDescription);
+        token.setGroupId(result.getGroup().getGroupId());
+
+        final GroupRequest request = new GroupRequest(group);
+        final ProcessGroupResponse response = client.processGroup(token, request);
+
+        assertThat(response.isOk(), is(true));
+        assertThat(response.getGroup(), is(not(nullValue())));
+        assertThat(response.getGroup().getGroupId(), not(nullValue()));
+        assertThat(response.getGroup().getDescription(), is(workgroupDescription));
+        assertThat(response.getGroup().getGroupType(), is(GroupType.WORKGROUP));
+        assertThat(response.getGroup().getGroupName(), is(workgroupName));
+        assertThat(response.getGroup().getListName(), is(workgroupListName));
+        assertThat(response.getGroup().getFullName(), is(workgroupFullName));
     }
 
     // =========================================================================

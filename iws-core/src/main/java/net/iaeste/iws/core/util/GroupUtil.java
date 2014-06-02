@@ -76,7 +76,7 @@ public final class GroupUtil {
             case LOCAL:
             case STUDENT:
             case WORKGROUP:
-                basename = parentFullname;
+                basename = parentFullname + '.';
                 break;
             case ADMINISTRATION:
             case PRIVATE:

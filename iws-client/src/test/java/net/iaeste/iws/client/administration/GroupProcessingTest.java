@@ -22,13 +22,13 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.startsWith;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.requests.GroupRequest;
 import net.iaeste.iws.api.responses.ProcessGroupResponse;
 import net.iaeste.iws.api.util.Fallible;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -67,7 +67,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String groupName = "My Local Committee";
         final String groupDescription = "The Group Description";
         final String fullName = "Denmark." + groupName;
-        final String listName = toLower(fullName.replace(' ', '_') + "@iaeste.net");
+        final String listName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
         final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, groupName);
         assertThat(result.isOk(), is(true));
@@ -100,7 +100,7 @@ public final class GroupProcessingTest extends AbstractAdministration {
         final String groupName = "My Work Group";
         final String groupDescription = "My Description";
         final String fullName = "Denmark." + groupName;
-        final String listName = toLower(fullName.replace(' ', '_') + "@iaeste.net");
+        final String listName = toLower(fullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
         final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.WORKGROUP, groupName);
         assertThat(result.isOk(), is(true));
@@ -158,15 +158,13 @@ public final class GroupProcessingTest extends AbstractAdministration {
         assertThat(result.getGroup().getListName(), not(startsWith("null")));
     }
 
-    @Ignore("2014-06-02: list name for Local subgroup is not built correctly")
     @Test
     public void testCreatingWorkgroupAsSubGroupToLocal() {
         final String localName = "Some Local Committee";
-
         final String workgroupName = "My Local Work Group";
         final String workgroupDescription = "The Group Description";
         final String workgroupFullName = "Denmark." + localName + '.' + workgroupName;
-        final String workgroupListName = toLower(workgroupFullName.replace(' ', '_') + "@iaeste.net");
+        final String workgroupListName = toLower(workgroupFullName.replace(' ', '_') + '@' + IWSConstants.PRIVATE_EMAIL_ADDRESS);
 
         final ProcessGroupResponse result = createGroup(token, GroupType.MEMBER, GroupType.LOCAL, localName);
         assertThat(result.isOk(), is(true));

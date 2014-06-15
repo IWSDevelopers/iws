@@ -58,7 +58,8 @@ public enum OfferState {
     COMPLETED("Completed"),
     AT_EMPLOYER("At Employer"),
     ACCEPTED("Application accepted"),
-    EXPIRED("Expired");
+    EXPIRED("Expired"),
+    REJECTED("Rejected");
 
     // =========================================================================
     // Private Constructor & functionality

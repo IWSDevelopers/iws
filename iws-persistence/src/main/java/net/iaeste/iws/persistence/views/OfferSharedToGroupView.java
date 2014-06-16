@@ -38,7 +38,7 @@ import java.util.Date;
                 "where s.offerOwner = :pid" +
                 "  and s.exchangeYear = :year" +
                 "  and offerExternalId in (:externalOfferIds)" +
-                "  and s.status <> 'CLOSED'"))
+                "  and s.status not in ('CLOSED', 'REJECTED')"))
 @Table(name = "find_shared_to_groups")
 public class OfferSharedToGroupView {
 

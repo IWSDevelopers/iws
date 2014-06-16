@@ -36,6 +36,7 @@ import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
@@ -340,7 +341,7 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
             for(final OfferGroupEntity offerGroup : allOfferGroups) {
                 if (groups.contains(offerGroup.getGroup())) {
-                    if (EnumSet.of(OfferState.CLOSED, OfferState.EXPIRED).contains(offerGroup.getStatus())) {
+                    if (EnumSet.of(OfferState.CLOSED, OfferState.EXPIRED, OfferState.REJECTED).contains(offerGroup.getStatus())) {
                         resharing.add(offerGroup.getGroup());
                         reshareGroups.add(offerGroup);
                     } else {
@@ -413,6 +414,37 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
             }
 
             dao.hideOfferGroups(ids);
+        }
+    }
+
+    public void rejectOffer(final Authentication authentication, final RejectOfferRequest request) {
+        final List<OfferGroupEntity> offerGroups = dao.findInfoForSharedOffer(request.getOfferId());
+        final OfferGroupEntity offerGroupToReject = findOfferGroupByGroup(authentication.getGroup(), offerGroups);
+        final OfferGroupEntity updatedOfferGroup = new OfferGroupEntity(offerGroupToReject);
+        updatedOfferGroup.setStatus(OfferState.REJECTED);
+        dao.persist(authentication, offerGroupToReject, updatedOfferGroup);
+
+        offerGroups.remove(offerGroupToReject);
+
+        final EnumSet<OfferState> activeStates = EnumSet.of(OfferState.SHARED,
+                                                            OfferState.AT_EMPLOYER,
+                                                            OfferState.ACCEPTED,
+                                                            OfferState.APPLICATIONS,
+                                                            OfferState.COMPLETED,
+                                                            OfferState.NOMINATIONS);
+        boolean updateOfferState = true;
+        for (final OfferGroupEntity offerGroup : offerGroups) {
+            if (activeStates.contains(offerGroup.getStatus())) {
+                updateOfferState = false;
+                break;
+            }
+        }
+
+        if (updateOfferState) {
+            final List<Long> rejectedOfferIds = new ArrayList<>(1);
+            rejectedOfferIds.add(offerGroupToReject.getOffer().getId());
+
+            dao.updateOfferState(rejectedOfferIds, OfferState.REJECTED);
         }
     }
 
@@ -494,6 +526,13 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
                 }
                 break;
             case COMPLETED:
+                break;
+            case REJECTED:
+                switch (otherState) {
+                    case SHARED:
+                        result = true;
+                        break;
+                }
                 break;
         }
         return result;
@@ -585,6 +624,19 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
 
         dao.persist(authentication, offerGroupEntity);
         return offerGroupEntity;
+    }
+
+    private OfferGroupEntity findOfferGroupByGroup(final GroupEntity group, final List<OfferGroupEntity> offerGroups) {
+        OfferGroupEntity result = null;
+
+        for (final OfferGroupEntity offerGroup : offerGroups) {
+            if (offerGroup.getGroup().equals(group)) {
+                result = offerGroup;
+                break;
+            }
+        }
+
+        return result;
     }
 
 }

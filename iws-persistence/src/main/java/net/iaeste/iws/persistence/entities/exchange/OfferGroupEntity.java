@@ -204,6 +204,27 @@ public class OfferGroupEntity extends AbstractUpdateable<OfferGroupEntity> imple
         this.group = group;
     }
 
+    /**
+     * Copy Constructor
+     *
+     * @param entity OfferGroup entity to copy
+     */
+    public OfferGroupEntity(final OfferGroupEntity entity) {
+        if (entity != null) {
+            this.setExternalId(entity.getExternalId());
+            this.setOffer(entity.getOffer());
+            this.setGroup(entity.getGroup());
+            this.setComment(entity.getComment());
+            this.setStatus(entity.getStatus());
+            this.setHasApplication(entity.getHasApplication());
+            this.setHidden(entity.getHidden());
+            this.setModifiedBy(entity.getModifiedBy());
+            this.setCreatedBy(entity.getCreatedBy());
+            this.setModified(entity.getModified());
+            this.setCreated(entity.getCreated());
+        }
+    }
+
     // =========================================================================
     // Entity Setters & Getters
     // =========================================================================

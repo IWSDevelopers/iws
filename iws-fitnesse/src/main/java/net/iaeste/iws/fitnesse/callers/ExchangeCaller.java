@@ -221,4 +221,16 @@ public final class ExchangeCaller implements Exchange {
             throw new StopTestException(e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+        try {
+            return caller.rejectOffer(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
 }

@@ -30,6 +30,7 @@ import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -181,5 +182,13 @@ public final class ExchangeClient implements Exchange {
     @Override
     public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         return client.processHideForeignOffers(token, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+        return client.rejectOffer(token, request);
     }
 }

@@ -141,7 +141,7 @@ public class ScheduleJobsBean {
                     for (final OfferEntity offer : offers) {
                         final Authentication authentication = new Authentication(new AuthenticationToken(), systemUser, offer.getEmployer().getGroup(), "empty-trace-id-for-system-user");
                         for (final OfferGroupEntity offerGroup : sharingInfo.get(offer.getId())) {
-                            final OfferGroupEntity modifiedOfferGroup = copyOfferGroup(offerGroup);
+                            final OfferGroupEntity modifiedOfferGroup = new OfferGroupEntity(offerGroup);
                             modifiedOfferGroup.setStatus(OfferState.EXPIRED);
                             exchangeDao.persist(authentication, offerGroup, modifiedOfferGroup);
                         }
@@ -156,23 +156,6 @@ public class ScheduleJobsBean {
         } catch (IllegalArgumentException | IWSException e) {
             log.error("Error in processing expired offers", e);
         }
-    }
-
-    private OfferGroupEntity copyOfferGroup(final OfferGroupEntity offerGroup) {
-        final OfferGroupEntity newEntity = new OfferGroupEntity();
-        newEntity.setExternalId(offerGroup.getExternalId());
-        newEntity.setOffer(offerGroup.getOffer());
-        newEntity.setGroup(offerGroup.getGroup());
-        newEntity.setComment(offerGroup.getComment());
-        newEntity.setStatus(offerGroup.getStatus());
-        newEntity.setHasApplication(offerGroup.getHasApplication());
-        newEntity.setHidden(offerGroup.getHidden());
-        newEntity.setModifiedBy(offerGroup.getModifiedBy());
-        newEntity.setCreatedBy(offerGroup.getCreatedBy());
-        newEntity.setModified(offerGroup.getModified());
-        newEntity.setCreated(offerGroup.getCreated());
-
-        return newEntity;
     }
 
     private Map<Long, List<OfferGroupEntity>> prepareOfferGroupMap(final List<Long> ids, final List<OfferGroupEntity> offerGroups) {

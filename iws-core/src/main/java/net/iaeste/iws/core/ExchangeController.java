@@ -34,6 +34,7 @@ import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.FallibleResponse;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
@@ -464,6 +465,33 @@ public final class ExchangeController extends CommonController implements Exchan
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished processHideForeignOffers()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting rejectOffer()"));
+        }
+        Fallible response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_PUBLISH_OFFER);
+            verify(request);
+
+            final ExchangeService service = factory.prepareExchangeService();
+            service.rejectOffer(authentication, request);
+            response = new FallibleResponse();
+        } catch (IWSException e) {
+            response = new FallibleResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished rejectOffer()"));
         }
         return response;
     }

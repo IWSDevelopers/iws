@@ -29,6 +29,7 @@ import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
+import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.EmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
@@ -102,7 +103,7 @@ public interface Exchange {
      *
      * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
      * @param request contains a field with the RefNo (will be changed to id #359)
-     * @return emtpy {@link OfferResponse} (offer=null) on success
+     * @return empty {@link OfferResponse} (offer=null) on success
      */
     OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
@@ -218,4 +219,13 @@ public interface Exchange {
      * @return Response Object
      */
     Fallible processHideForeignOffers(AuthenticationToken token, HideForeignOffersRequest request);
+
+    /**
+     * Performs a rejection of the shared offer.
+     *
+     * @param token The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request contains a field with the offer id
+     * @return Response Object
+     */
+    Fallible rejectOffer(AuthenticationToken token, RejectOfferRequest request);
 }

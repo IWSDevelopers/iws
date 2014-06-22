@@ -112,7 +112,7 @@ public final class AccountService extends CommonService<AccessDao> {
         final UserGroupEntity privateUserGroup = new UserGroupEntity(user, privateGroup, owner);
 
         dao.persist(privateUserGroup);
-        addUserToGroup(user, authentication.getGroup(), member);
+        addUserToGroup(user, authentication.getGroup(), member, false);
 
         notifications.notify(authentication, user, NotificationType.NEW_USER);
         notifications.notify(authentication, user, NotificationType.PROCESS_EMAIL_ALIAS);
@@ -129,10 +129,8 @@ public final class AccountService extends CommonService<AccessDao> {
         dao.persist(studentEntity);
         final RoleEntity student = dao.findRoleById(IWSConstants.ROLE_STUDENT);
 
-        addUserToGroup(user, authentication.getGroup(), student);
-        addUserToGroup(user, studentGroup, student);
-
-        //notifications.notify(authentication, user, NotificationType.NEW_STUDENT);
+        addUserToGroup(user, authentication.getGroup(), student, true);
+        addUserToGroup(user, studentGroup, student, true);
 
         return user;
     }
@@ -169,8 +167,18 @@ public final class AccountService extends CommonService<AccessDao> {
         return username;
     }
 
-    private void addUserToGroup(final UserEntity user, final GroupEntity group, final RoleEntity role) {
+    private void addUserToGroup(final UserEntity user, final GroupEntity group, final RoleEntity role, final Boolean isStudent) {
         final UserGroupEntity userGroup = new UserGroupEntity(user, group, role);
+
+        // By default, users are not allowed to be on neither the public nor
+        // private mailing lists. We're therefore checking if it is a Student
+        // account we're generating and forcing an update accordling
+        if (isStudent) {
+            userGroup.setOnPublicList(false);
+            userGroup.setOnPrivateList(false);
+            userGroup.setWriteToPrivateList(false);
+        }
+
         dao.persist(userGroup);
     }
 

@@ -130,7 +130,7 @@ public final class StringUtils {
                           .replaceAll("[ÝŶŸýÿŷ]", "y")
                           .replaceAll("[ŹŻŽŽźżž]", "z")
                           .replaceAll("[×÷]", "")
-                          .replaceAll("[^a-zA-Z0-9_\\.@]", "_")
+                          .replaceAll("[^a-zA-Z0-9_'\\.@]", "_")
                           .toLowerCase();
     }
 }

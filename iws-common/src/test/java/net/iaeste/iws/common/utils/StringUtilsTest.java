@@ -15,13 +15,10 @@
 
 package net.iaeste.iws.common.utils;
 
-import org.junit.Test;
-
-import java.text.Normalizer;
-import java.util.regex.Pattern;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Test;
 
 /**
  * @author  Pavel Fiala / last $Author:$
@@ -36,8 +33,12 @@ public class StringUtilsTest {
         String expected = "doenald_dueck";
         assertThat(StringUtils.convertToAsciiMailAlias(testString), is(expected));
 
-        testString = "D'onald Duck";
+        testString = "D`onald Duck";
         expected = "d_onald_duck";
+        assertThat(StringUtils.convertToAsciiMailAlias(testString), is(expected));
+
+        testString = "D'onald Duck";
+        expected = "d'onald_duck";
         assertThat(StringUtils.convertToAsciiMailAlias(testString), is(expected));
 
         testString = "test = ÀÁÂÃĀĂĄàáâãāăą" + "Åå" + "ÄäÆæ" + "ÇĆĈĊČçćĉċč" + "ÐĎĐďđ" + "ÈÉÊËĒĔĖĘĚèéêëēĕėęě"

@@ -78,33 +78,15 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
             { "India@iaeste.org", "India_KU@iaeste.org" },
             { "India@iaeste.org", "India_MIT@iaeste.org" },
             { "Bangladesh_Afzal_Management@iaeste.org", "bangladeshafm@iaeste.org" },
+            { "Bangladesh_AFM@iaeste.org", "Bangladesh_Afzal_Management@iaeste.org" },
+            { "Bangladesh_CAT@iaeste.org", "College_of_Aviation_Technology@iaeste.org" },
             { "bolivia_ib@iaeste.org", "boliviaib@iaeste.org" },
             { "vietnam_nu@iaeste.org", "vietnamnu@iaeste.org" },
             { "Nepal@iaeste.org", "Nepal_CI@iaeste.org" },
+            { "Nepal_CI@iaeste.org", "NepalCI@iaeste.org" },
+            { "Kenya_DKUT@iaeste.org", "Kenya_DeKut@iaeste.org" },
             { "board@iaeste.org", "president@iaeste.org" },
             { "idt@iaeste.net", "idt.members@iaeste.net"}};
-
-
-//
-//Kenya_DeKut    --> Kenya_DKUT
-//
-//
-//
-//   Bangladesh:
-//
-//   (the flu name is Bangladesh AF Management, so the name should be rather
-//
-//
-//
-//   Bangladesh_Afzal_Management --> Bangladesh_AFM@iaeste.org
-//
-//
-//
-//   Bangladesh     | College_of_Aviation_Technology --->Bangladesh_CAT@iaeste.org
-//
-//
-//
-//   Nepal CI---> Nepal_CI@iaeste.org
 
     @Autowired
     private IWSDao iwsDao;
@@ -297,13 +279,16 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
                     persisted++;
                 }
             } else {
-                final MailingListMembershipEntity entity = new MailingListMembershipEntity();
-                entity.setMailingList(list);
-                entity.setMember(toLower(user.getUser().getUsername()));
-                entity.setCreated(user.getCreated());
+                if ((list.isPrivateList() && user.getOnPrivateList()) ||
+                    (!list.isPrivateList() && user.getOnPublicList())) {
+                    final MailingListMembershipEntity entity = new MailingListMembershipEntity();
+                    entity.setMailingList(list);
+                    entity.setMember(toLower(user.getUser().getUsername()));
+                    entity.setCreated(user.getCreated());
 
-                mailDao.persist(entity);
-                persisted++;
+                    mailDao.persist(entity);
+                    persisted++;
+                }
             }
         }
 

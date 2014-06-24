@@ -75,6 +75,8 @@ public final class ConstantTest {
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("marko@iaeste.mit").matches(), is(true));
         // Testing e-mail which was rejected April 17th
         assertThat(IWSConstants.EMAIL_PATTERN.matcher("Monika.KUMMEL@ensam.eu").matches(), is(true));
+        // Testing e-mail change which was requested by the Board on 2014-05-19
+        assertThat(IWSConstants.EMAIL_PATTERN.matcher("Lorna.O'Kane@britishcouncil.org").matches(), is(true));
     }
 
     /**

@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.enums.Currency;
@@ -136,9 +134,9 @@ public final class Offer extends AbstractVerification {
             employer = new Employer(offer.employer);
             workDescription = offer.workDescription;
             typeOfWork = offer.typeOfWork;
-            studyLevels = copy(offer.studyLevels);
-            fieldOfStudies = copy(offer.fieldOfStudies);
-            specializations = copy(offer.specializations);
+            studyLevels = offer.studyLevels;
+            fieldOfStudies = offer.fieldOfStudies;
+            specializations = offer.specializations;
             previousTrainingRequired = offer.previousTrainingRequired;
             otherRequirements = offer.otherRequirements;
             minimumWeeks = offer.minimumWeeks;
@@ -163,16 +161,16 @@ public final class Offer extends AbstractVerification {
             lodgingBy = offer.lodgingBy;
             lodgingCost = offer.lodgingCost;
             lodgingCostFrequency = offer.lodgingCostFrequency;
-            nominationDeadline = copy(offer.nominationDeadline);
+            nominationDeadline = offer.nominationDeadline;
             numberOfHardCopies = offer.numberOfHardCopies;
             additionalInformation = offer.additionalInformation;
             privateComment = offer.privateComment;
             status = offer.status;
-            modified = copy(offer.modified);
-            created = copy(offer.created);
+            modified = offer.modified;
+            created = offer.created;
             nsFirstname = offer.nsFirstname;
             nsLastname = offer.nsLastname;
-            shared = copy(offer.shared);
+            shared = offer.shared;
             hidden = offer.hidden;
         }
     }
@@ -286,11 +284,11 @@ public final class Offer extends AbstractVerification {
     public void setStudyLevels(final Set<StudyLevel> studyLevels) throws IllegalArgumentException {
         ensureNotNull("studyLevels", studyLevels);
         ensureNotTooLong("studyLevels", studyLevels.toString(), 25);
-        this.studyLevels = copy(studyLevels);
+        this.studyLevels = studyLevels;
     }
 
     public Set<StudyLevel> getStudyLevels() {
-        return copy(studyLevels);
+        return studyLevels;
     }
 
     /**
@@ -306,11 +304,11 @@ public final class Offer extends AbstractVerification {
      */
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
         ensureNotNullOrTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
-        this.fieldOfStudies = copy(fieldOfStudies);
+        this.fieldOfStudies = fieldOfStudies;
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
-        return copy(fieldOfStudies);
+        return fieldOfStudies;
     }
 
     /**
@@ -326,11 +324,11 @@ public final class Offer extends AbstractVerification {
      */
     public void setSpecializations(final Set<String> specializations) throws IllegalArgumentException {
         ensureNotNullOrTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
-        this.specializations = copy(specializations);
+        this.specializations = specializations;
     }
 
     public Set<String> getSpecializations() {
-        return copy(specializations);
+        return specializations;
     }
 
     public void setPreviousTrainingRequired(final Boolean previousTrainingRequired) {
@@ -540,11 +538,11 @@ public final class Offer extends AbstractVerification {
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
-        this.nominationDeadline = copy(nominationDeadline);
+        this.nominationDeadline = nominationDeadline;
     }
 
     public Date getNominationDeadline() {
-        return copy(nominationDeadline);
+        return nominationDeadline;
     }
 
     public void setNumberOfHardCopies(final Integer numberOfHardCopies) {

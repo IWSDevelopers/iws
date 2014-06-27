@@ -16,7 +16,6 @@ package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,7 +52,7 @@ public final class HideForeignOffersRequest extends AbstractVerification {
      * @param offers List of offer IDs to be hidden
      */
     public HideForeignOffersRequest(final Set<String> offers) {
-        this.offers = Copier.copy(offers);
+        this.offers = offers;
     }
 
     // =========================================================================
@@ -61,11 +60,11 @@ public final class HideForeignOffersRequest extends AbstractVerification {
     // =========================================================================
 
     public void setOffers(final Set<String> offers) {
-        this.offers = Copier.copy(offers);
+        this.offers = offers;
     }
 
     public Set<String> getOffers() {
-        return Copier.copy(offers);
+        return offers;
     }
 
     // =========================================================================

@@ -28,15 +28,8 @@ import java.util.List;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection ResultOfObjectAllocationIgnored
  */
 public final class FetchCountryRequestTest {
-
-    /**
-     * Our internal deep copying mechanism follows a standard best practice, and
-     * returns empty lists, rather than null values.
-     */
-    private static final List<String> EMPTY_LIST = new ArrayList<>(0);
 
     @Test
     public void testMembershipConstructor() {
@@ -45,7 +38,7 @@ public final class FetchCountryRequestTest {
         final FetchCountryRequest request = new FetchCountryRequest(membership);
         request.verify();
 
-        assertThat(request.getCountryIds(), is(EMPTY_LIST));
+        assertThat(request.getCountryIds(), is(nullValue()));
         assertThat(request.getMembership(), is(membership));
     }
 
@@ -60,7 +53,6 @@ public final class FetchCountryRequestTest {
 
         assertThat(request.getCountryIds(), is(countryIds));
         assertThat(request.getMembership(), is(nullValue()));
-        //assertThat(request.getCountryIds(), is(not(sameInstance(countryIds))));
     }
 
     @Test
@@ -75,7 +67,6 @@ public final class FetchCountryRequestTest {
 
         assertThat(request.getCountryIds(), is(countryIds));
         assertThat(request.getMembership(), is(nullValue()));
-        //assertThat(request.getCountryIds(), is(not(sameInstance(countryIds))));
     }
 
     @Test
@@ -85,11 +76,20 @@ public final class FetchCountryRequestTest {
         countryIds.add("DE");
         countryIds.add("FR");
 
+        // Fetching Countries will only allow that one search parameter is
+        // available, setting one will therefore override the other, as this
+        // test shows
         final FetchCountryRequest request = new FetchCountryRequest(countryIds);
-        request.setMembership(membership);
+        assertThat(request.getCountryIds(), is(countryIds));
+        assertThat(request.getMembership(), is(nullValue()));
 
-        assertThat(request.getCountryIds(), is(EMPTY_LIST));
+        request.setMembership(membership);
+        assertThat(request.getCountryIds(), is(nullValue()));
         assertThat(request.getMembership(), is(membership));
+
+        request.setCountryIds(countryIds);
+        assertThat(request.getCountryIds(), is(countryIds));
+        assertThat(request.getMembership(), is(nullValue()));
     }
 
     @Test(expected = IllegalArgumentException.class)

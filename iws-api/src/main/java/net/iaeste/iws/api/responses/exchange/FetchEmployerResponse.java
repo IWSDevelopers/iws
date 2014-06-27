@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Employer;
@@ -76,7 +74,7 @@ public final class FetchEmployerResponse extends AbstractFallible {
     }
 
     public List<Employer> getEmployers() {
-        return copy(employers);
+        return employers;
     }
 
     // =========================================================================

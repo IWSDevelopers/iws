@@ -19,7 +19,6 @@ import net.iaeste.iws.api.enums.CountryType;
 import net.iaeste.iws.api.enums.Membership;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
-import net.iaeste.iws.api.util.Copier;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +72,7 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     public FetchCountryRequest(final List<String> countryIds) {
         ensureNotNullOrEmpty("countryIds", countryIds);
 
-        this.countryIds = Copier.copy(countryIds);
+        this.countryIds = countryIds;
         this.membership = null;
     }
 
@@ -105,7 +104,7 @@ public final class FetchCountryRequest extends AbstractPaginatable {
     public void setCountryIds(final List<String> countryIds) throws IllegalArgumentException {
         ensureNotNullOrEmpty("countryIds", countryIds);
 
-        this.countryIds = Copier.copy(countryIds);
+        this.countryIds = countryIds;
         membership = null;
     }
 
@@ -115,7 +114,7 @@ public final class FetchCountryRequest extends AbstractPaginatable {
      * @return List of CountryIds to fetch
      */
     public List<String> getCountryIds() {
-        return Copier.copy(countryIds);
+        return countryIds;
     }
 
     /**

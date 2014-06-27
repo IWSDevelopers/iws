@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses.student;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -79,7 +77,7 @@ public final class FetchStudentApplicationsResponse extends AbstractFallible {
     }
 
     public List<StudentApplication> getStudentApplications() {
-        return copy(studentApplications);
+        return studentApplications;
     }
 
     // =========================================================================

@@ -53,7 +53,6 @@ import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
-import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.DatePeriod;
 import net.iaeste.iws.api.util.DateTime;
@@ -355,7 +354,7 @@ public final class StudentTest extends AbstractTest {
         assertThat(createStudentApplicationResponse.isOk(), is(true));
 
         //test updating existing application
-        application = Copier.copy(createStudentApplicationResponse.getStudentApplication());
+        application = createStudentApplicationResponse.getStudentApplication();
         application.setUniversity("MyUniversity");
         final ProcessStudentApplicationsRequest createStudentApplicationsRequest2 = new ProcessStudentApplicationsRequest(application);
         final StudentApplicationResponse createStudentApplicationResponse2 = students.processStudentApplication(austriaToken, createStudentApplicationsRequest2);

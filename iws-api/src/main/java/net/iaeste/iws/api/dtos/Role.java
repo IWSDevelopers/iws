@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.Permission;
 import net.iaeste.iws.api.util.AbstractVerification;
@@ -68,7 +66,7 @@ public final class Role extends AbstractVerification {
     public Role(final String roleId, final String roleName, final Set<Permission> permissions) {
         this.roleId = roleId;
         this.roleName = roleName;
-        this.permissions = copy(permissions);
+        this.permissions = permissions;
     }
 
     /**
@@ -149,11 +147,11 @@ public final class Role extends AbstractVerification {
      */
     public void setPermissions(final Set<Permission> permissions) throws IllegalArgumentException {
         ensureNotNull("permissions", permissions);
-        this.permissions = copy(permissions);
+        this.permissions = permissions;
     }
 
     public Set<Permission> getPermissions() {
-        return copy(permissions);
+        return permissions;
     }
 
     // =========================================================================

@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.util;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.constants.IWSErrors;
@@ -78,7 +76,7 @@ public abstract class AbstractFallible implements Fallible {
      */
     @Override
     public IWSError getError() {
-        return copy(error);
+        return error;
     }
 
     /**

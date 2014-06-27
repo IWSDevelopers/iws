@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.exchange.Offer;
@@ -68,7 +66,7 @@ public final class OfferResponse extends AbstractFallible {
     // =========================================================================
 
     public void setOffer(final Offer offer) {
-        this.offer = copy(offer);
+        this.offer = offer;
     }
 
     public Offer getOffer() {

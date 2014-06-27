@@ -17,7 +17,6 @@ package net.iaeste.iws.api.dtos.exchange;
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.util.AbstractVerification;
-import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.DateTime;
 
 import java.util.HashMap;
@@ -63,8 +62,8 @@ public final class OfferGroup extends AbstractVerification {
         if (offerGroup != null) {
             offerRefNo = offerGroup.offerRefNo;
             groupId = offerGroup.groupId;
-            modified = Copier.copy(offerGroup.modified);
-            created = Copier.copy(offerGroup.created);
+            modified = offerGroup.modified;
+            created = offerGroup.created;
         }
     }
 

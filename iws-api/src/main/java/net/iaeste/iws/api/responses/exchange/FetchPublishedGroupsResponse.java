@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copyMapWithList;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Group;
@@ -79,7 +77,7 @@ public final class FetchPublishedGroupsResponse extends AbstractFallible {
     }
 
     public Map<String, List<Group>> getOffersGroups() {
-        return copyMapWithList(offersGroups);
+        return offersGroups;
     }
 
     // =========================================================================

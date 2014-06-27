@@ -19,7 +19,6 @@ import net.iaeste.iws.api.Committees;
 import net.iaeste.iws.api.Exchange;
 import net.iaeste.iws.api.Storage;
 import net.iaeste.iws.api.Students;
-import net.iaeste.iws.api.util.Copier;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -158,6 +157,6 @@ public enum Permission {
      * @return List of requests for this Permission
      */
     public String[] getRequests() {
-        return Copier.copy(requests);
+        return requests;
     }
 }

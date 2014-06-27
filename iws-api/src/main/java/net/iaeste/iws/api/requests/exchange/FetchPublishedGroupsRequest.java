@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.requests.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
@@ -79,11 +77,11 @@ public final class FetchPublishedGroupsRequest extends AbstractPaginatable {
      */
     public void setOfferIds(final List<String> offerIds) throws IllegalArgumentException {
         ensureNotNullOrEmptyAndValidIds("offerIds", offerIds);
-        this.offerIds = copy(offerIds);
+        this.offerIds = offerIds;
     }
 
     public List<String> getOfferIds() {
-        return copy(offerIds);
+        return offerIds;
     }
 
     /**

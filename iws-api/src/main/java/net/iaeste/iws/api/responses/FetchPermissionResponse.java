@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.responses;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.IWSError;
 import net.iaeste.iws.api.dtos.Authorization;
@@ -58,7 +56,7 @@ public final class FetchPermissionResponse extends AbstractFallible {
      */
     public FetchPermissionResponse(final String userId, final List<Authorization> authorizations) {
         this.userId = userId;
-        this.authorizations = copy(authorizations);
+        this.authorizations = authorizations;
     }
 
     /**

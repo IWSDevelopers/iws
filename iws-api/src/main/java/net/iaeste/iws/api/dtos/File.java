@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.dtos;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
@@ -70,7 +68,7 @@ public final class File extends AbstractVerification {
             group = new Group(file.group);
             user = new User(file.user);
             filename = file.filename;
-            filedata = copy(file.filedata);
+            filedata = file.filedata;
             filesize = file.filesize;
             mimetype = file.mimetype;
             description = file.description;
@@ -165,11 +163,11 @@ public final class File extends AbstractVerification {
      */
     public void setFiledata(final byte[] filedata) throws IllegalArgumentException {
         ensureNotTooLong("filedata", filedata, 26214400);
-        this.filedata = copy(filedata);
+        this.filedata = filedata;
     }
 
     public byte[] getFiledata() {
-        return copy(filedata);
+        return filedata;
     }
 
     /**

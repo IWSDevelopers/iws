@@ -15,7 +15,6 @@
 package net.iaeste.iws.api.dtos;
 
 import net.iaeste.iws.api.constants.IWSConstants;
-import net.iaeste.iws.api.util.Copier;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -70,8 +69,8 @@ public final class Change implements Serializable {
     public Change(final User user, final Group group, final List<Field> fields, final Date changed) {
         this.user = user;
         this.group = group;
-        this.fields = Copier.copy(fields);
-        this.changed = Copier.copy(changed);
+        this.fields = fields;
+        this.changed = changed;
     }
 
     /**
@@ -83,8 +82,8 @@ public final class Change implements Serializable {
         if (change != null) {
             user = change.user;
             group = change.group;
-            fields = Copier.copy(change.fields);
-            changed = Copier.copy(change.changed);
+            fields = change.fields;
+            changed = change.changed;
         }
     }
 
@@ -124,11 +123,11 @@ public final class Change implements Serializable {
      * @param fields Changed Fields
      */
     public void setFields(final List<Field> fields) {
-        this.fields = Copier.copy(fields);
+        this.fields = fields;
     }
 
     public List<Field> getFields() {
-        return Copier.copy(fields);
+        return fields;
     }
 
     /**
@@ -137,11 +136,11 @@ public final class Change implements Serializable {
      * @param changed Date of Change
      */
     public void setChanged(final Date changed) {
-        this.changed = Copier.copy(changed);
+        this.changed = changed;
     }
 
     public Date getChanged() {
-        return Copier.copy(changed);
+        return changed;
     }
 
     // =========================================================================

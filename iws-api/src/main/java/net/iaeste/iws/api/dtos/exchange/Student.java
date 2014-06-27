@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.User;
@@ -91,8 +89,8 @@ public final class Student extends AbstractVerification {
             // Object is correct.
             user = new User(student.user);
             studyLevel = student.studyLevel;
-            fieldOfStudies = copy(student.fieldOfStudies);
-            specializations = copy(student.specializations);
+            fieldOfStudies = student.fieldOfStudies;
+            specializations = student.specializations;
             available = student.available;
             language1 = student.language1;
             language1Level = student.language1Level;
@@ -130,7 +128,7 @@ public final class Student extends AbstractVerification {
     }
 
     public void setStudyLevel(final StudyLevel studyLevel) throws IllegalArgumentException {
-        this.studyLevel = copy(studyLevel);
+        this.studyLevel = studyLevel;
     }
 
     public StudyLevel getStudyLevel() {
@@ -139,20 +137,20 @@ public final class Student extends AbstractVerification {
 
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
         ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
-        this.fieldOfStudies = copy(fieldOfStudies);
+        this.fieldOfStudies = fieldOfStudies;
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
-        return copy(fieldOfStudies);
+        return fieldOfStudies;
     }
 
     public void setSpecializations(final Set<Specialization> specializations) throws IllegalArgumentException {
         ensureNotTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
-        this.specializations = copy(specializations);
+        this.specializations = specializations;
     }
 
     public Set<Specialization> getSpecializations() {
-        return copy(specializations);
+        return specializations;
     }
 
     public void setAvailable(final DatePeriod available) {

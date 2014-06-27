@@ -16,7 +16,6 @@ package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.util.AbstractVerification;
-import net.iaeste.iws.api.util.Copier;
 import net.iaeste.iws.api.util.Date;
 
 import java.util.ArrayList;
@@ -60,9 +59,9 @@ public final class PublishOfferRequest extends AbstractVerification {
     }
 
     public PublishOfferRequest(final Set<String> offerIds, final List<String> groupIds, final Date nominationDeadline) {
-        this.offerIds = Copier.copy(offerIds);
-        this.groupIds = Copier.copy(groupIds);
-        this.nominationDeadline = Copier.copy(nominationDeadline);
+        this.offerIds = offerIds;
+        this.groupIds = groupIds;
+        this.nominationDeadline = nominationDeadline;
     }
 
     // =========================================================================
@@ -70,27 +69,27 @@ public final class PublishOfferRequest extends AbstractVerification {
     // =========================================================================
 
     public void setOfferIds(final Set<String> offerIds) {
-        this.offerIds = Copier.copy(offerIds);
+        this.offerIds = offerIds;
     }
 
     public Set<String> getOfferIds() {
-        return Copier.copy(offerIds);
+        return offerIds;
     }
 
     public void setGroupIds(final List<String> groupIds) {
-        this.groupIds = Copier.copy(groupIds);
+        this.groupIds = groupIds;
     }
 
     public List<String> getGroupIds() {
-        return Copier.copy(groupIds);
+        return groupIds;
     }
 
     public void setNominationDeadline(final Date nominationDeadline) {
-        this.nominationDeadline = Copier.copy(nominationDeadline);
+        this.nominationDeadline = nominationDeadline;
     }
 
     public Date getNominationDeadline() {
-        return Copier.copy(nominationDeadline);
+        return nominationDeadline;
     }
 
     // =========================================================================

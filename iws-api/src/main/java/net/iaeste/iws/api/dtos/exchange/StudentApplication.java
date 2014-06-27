@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.constants.exchange.IWSExchangeConstants;
 import net.iaeste.iws.api.dtos.Address;
@@ -177,9 +175,9 @@ public final class StudentApplication extends AbstractVerification {
             language2Level = studentApplication.language2Level;
             language3 = studentApplication.language3;
             language3Level = studentApplication.language3Level;
-            available = copy(studentApplication.available);
-            fieldOfStudies = copy(studentApplication.fieldOfStudies);
-            specializations = copy(studentApplication.specializations);
+            available = studentApplication.available;
+            fieldOfStudies = studentApplication.fieldOfStudies;
+            specializations = studentApplication.specializations;
             passportNumber = studentApplication.passportNumber;
             passportPlaceOfIssue = studentApplication.passportPlaceOfIssue;
             passportValidUntil = studentApplication.passportValidUntil;
@@ -189,7 +187,7 @@ public final class StudentApplication extends AbstractVerification {
             acceptance = new StudentAcceptance(studentApplication.acceptance);
             travelInformation = new StudentAcceptanceConfirmation(studentApplication.travelInformation);
             nominatedAt = studentApplication.nominatedAt;
-            attachments = copy(studentApplication.attachments);
+            attachments = studentApplication.attachments;
             modified = studentApplication.modified;
             created = studentApplication.created;
         }
@@ -284,11 +282,11 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setDateOfBirth(final Date dateOfBirth) {
-        this.dateOfBirth = copy(dateOfBirth);
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Date getDateOfBirth() {
-        return copy(dateOfBirth);
+        return dateOfBirth;
     }
 
     public void setUniversity(final String university) throws IllegalArgumentException {
@@ -407,29 +405,29 @@ public final class StudentApplication extends AbstractVerification {
     }
 
     public void setAvailable(final DatePeriod available) {
-        this.available = copy(available);
+        this.available = available;
     }
 
     public DatePeriod getAvailable() {
-        return copy(available);
+        return available;
     }
 
     public void setFieldOfStudies(final Set<FieldOfStudy> fieldOfStudies) throws IllegalArgumentException {
         ensureNotTooLong("fieldOfStudies", fieldOfStudies, IWSExchangeConstants.MAX_OFFER_FIELDS_OF_STUDY);
-        this.fieldOfStudies = copy(fieldOfStudies);
+        this.fieldOfStudies = fieldOfStudies;
     }
 
     public Set<FieldOfStudy> getFieldOfStudies() {
-        return copy(fieldOfStudies);
+        return fieldOfStudies;
     }
 
     public void setSpecializations(final List<String> specializations) throws IllegalArgumentException {
         ensureNotNullOrTooLong("specializations", specializations, IWSExchangeConstants.MAX_OFFER_SPECIALIZATIONS);
-        this.specializations = copy(specializations);
+        this.specializations = specializations;
     }
 
     public List<String> getSpecializations() {
-        return copy(specializations);
+        return specializations;
     }
 
     public void setPassportNumber(final String passportNumber) throws IllegalArgumentException {
@@ -516,27 +514,27 @@ public final class StudentApplication extends AbstractVerification {
      */
     public void setAttachments(final List<File> attachments) throws IllegalArgumentException {
         ensureNotNull("attachments", attachments);
-        this.attachments = copy(attachments);
+        this.attachments = attachments;
     }
 
     public List<File> getAttachments() {
-        return copy(attachments);
+        return attachments;
     }
 
     public void setModified(final DateTime modified) {
-        this.modified = copy(modified);
+        this.modified = modified;
     }
 
     public DateTime getModified() {
-        return copy(modified);
+        return modified;
     }
 
     public void setCreated(final DateTime created) {
-        this.created = copy(created);
+        this.created = created;
     }
 
     public DateTime getCreated() {
-        return copy(created);
+        return created;
     }
 
     // =========================================================================

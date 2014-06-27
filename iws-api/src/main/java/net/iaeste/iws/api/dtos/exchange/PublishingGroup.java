@@ -14,8 +14,6 @@
  */
 package net.iaeste.iws.api.dtos.exchange;
 
-import static net.iaeste.iws.api.util.Copier.copy;
-
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.dtos.Group;
 import net.iaeste.iws.api.util.AbstractVerification;
@@ -102,7 +100,7 @@ public final class PublishingGroup extends AbstractVerification {
         if (publishingGroup != null) {
             publishingGroupId = publishingGroup.publishingGroupId;
             name = publishingGroup.name;
-            groups = copy(publishingGroup.groups);
+            groups = publishingGroup.groups;
         }
     }
 
@@ -157,11 +155,11 @@ public final class PublishingGroup extends AbstractVerification {
      */
     public void setGroups(final List<Group> groups) {
         ensureNotNull("groups", groups);
-        this.groups = copy(groups);
+        this.groups = groups;
     }
 
     public List<Group> getGroups() {
-        return copy(groups);
+        return groups;
     }
 
     // =========================================================================

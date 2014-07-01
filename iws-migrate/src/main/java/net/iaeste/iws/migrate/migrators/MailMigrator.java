@@ -86,6 +86,8 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
             { "Nepal_CI@iaeste.org", "NepalCI@iaeste.org" },
             { "Kenya_DKUT@iaeste.org", "Kenya_DeKut@iaeste.org" },
             { "board@iaeste.org", "president@iaeste.org" },
+            { "board@iaeste.org", "gs@iaeste.org" },
+            { "board@iaeste.org", "general.secretary@iaeste.org" },
             { "idt@iaeste.net", "idt.members@iaeste.net"}};
 
     @Autowired

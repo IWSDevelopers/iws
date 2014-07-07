@@ -61,7 +61,6 @@ public enum Language {
     TURKISH("Turkish"),
     VIETNAMESE("Vietnamese"),
     UKRAINIAN("Ukrainian");
-    //ANY("Any"); Removed in accordance with ticket #690
 
     // =========================================================================
     // Private Constructor & functionality

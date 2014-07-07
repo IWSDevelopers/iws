@@ -60,8 +60,8 @@ public enum Language {
     THAI("Thai"),
     TURKISH("Turkish"),
     VIETNAMESE("Vietnamese"),
-    UKRAINIAN("Ukrainian"),
-    ANY("Any");
+    UKRAINIAN("Ukrainian");
+    //ANY("Any"); Removed in accordance with ticket #690
 
     // =========================================================================
     // Private Constructor & functionality

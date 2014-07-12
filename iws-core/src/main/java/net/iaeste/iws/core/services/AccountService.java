@@ -102,6 +102,11 @@ public final class AccountService extends CommonService<AccessDao> {
         return new CreateUserResponse(transform(user));
     }
 
+    public CreateUserResponse createStudent(final Authentication authentication, final CreateUserRequest request) {
+        final UserEntity user = createStudentAccount(authentication, request);
+        return new CreateUserResponse(transform(user));
+    }
+
     private UserEntity createUserAccount(final Authentication authentication, final CreateUserRequest request) {
         final RoleEntity owner = dao.findRoleById(IWSConstants.ROLE_OWNER);
         final RoleEntity member = dao.findRoleById(IWSConstants.ROLE_MEMBER);

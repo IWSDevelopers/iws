@@ -44,6 +44,14 @@ public enum Permission {
     CONTROL_USER_ACCOUNT("createUser", Administration.class, "createUser", "controlUserAccount"),
 
     /**
+     * The Create Student Account permission is required, to create new Student
+     * Accounts in the IWS. An Account, is defined as a mean for someone to gain
+     * access to the system.<br />
+     *   The permission allow for creating a new student accounts.
+     */
+    CREATE_STUDENT_ACCOUNT("createStudent", Administration.class, "createStudent"),
+
+    /**
      * To view user accounts, you must be allowed to fetch them first. The
      * viewing is limitted to the account information, and only of the user has
      * allowed that private information is also revealed (opt-in), then more

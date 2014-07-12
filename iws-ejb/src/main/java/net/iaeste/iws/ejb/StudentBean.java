@@ -17,12 +17,13 @@ package net.iaeste.iws.ejb;
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
-import net.iaeste.iws.api.dtos.exchange.Student;
+import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
@@ -36,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -63,7 +64,7 @@ import javax.persistence.PersistenceContext;
  * @since   IWS 1.0
  */
 @Stateless
-@Remote(Students.class)
+@Local(Students.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StudentBean extends AbstractBean implements Students {
@@ -124,6 +125,24 @@ public class StudentBean extends AbstractBean implements Students {
     // =========================================================================
     // Implementation of methods from Student in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CreateUserResponse createStudent(final AuthenticationToken token, final CreateUserRequest request) {
+        CreateUserResponse response;
+
+        try {
+            response = controller.createStudent(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new CreateUserResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
 
     /**
      * {@inheritDoc}

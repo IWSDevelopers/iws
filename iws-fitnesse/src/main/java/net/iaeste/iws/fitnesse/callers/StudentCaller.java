@@ -16,11 +16,13 @@ package net.iaeste.iws.fitnesse.callers;
 
 import net.iaeste.iws.api.Students;
 import net.iaeste.iws.api.dtos.AuthenticationToken;
+import net.iaeste.iws.api.requests.CreateUserRequest;
 import net.iaeste.iws.api.requests.student.ProcessStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentApplicationsRequest;
 import net.iaeste.iws.api.requests.student.FetchStudentsRequest;
 import net.iaeste.iws.api.requests.student.StudentApplicationRequest;
 import net.iaeste.iws.api.requests.student.StudentRequest;
+import net.iaeste.iws.api.responses.CreateUserResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentApplicationsResponse;
 import net.iaeste.iws.api.responses.student.FetchStudentsResponse;
 import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
@@ -41,6 +43,18 @@ public final class StudentCaller implements Students {
     // =========================================================================
     // Implementation of methods from Student in the API
     // =========================================================================
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CreateUserResponse createStudent(final AuthenticationToken token, final CreateUserRequest request) {
+        try {
+            return caller.createStudent(token, request);
+        } catch (Exception e) {
+            throw new StopTestException(e);
+        }
+    }
 
     /**
      * {@inheritDoc}

@@ -141,18 +141,17 @@ public final class AccountService extends CommonService<AccessDao> {
     }
 
     private GroupEntity findOrCreateStudentGroup(final Authentication authentication) {
+        final GroupEntity memberGroup = dao.findMemberGroup(authentication.getUser());
         final GroupEntity studentGroup;
 
-        final GroupEntity existingGroup = dao.findStudentGroup(authentication.getGroup());
+        final GroupEntity existingGroup = dao.findStudentGroup(memberGroup);
         if (existingGroup != null) {
             studentGroup = existingGroup;
         } else {
-            final GroupEntity memberGroup = authentication.getGroup();
-
             studentGroup = new GroupEntity();
             studentGroup.setExternalId(UUID.randomUUID().toString());
             studentGroup.setCountry(memberGroup.getCountry());
-            studentGroup.setGroupName(memberGroup.getGroupName() + ".Students");
+            studentGroup.setGroupName(memberGroup.getGroupName() + '.' + GroupType.STUDENT.getDescription());
             studentGroup.setGroupType(dao.findGroupType(GroupType.STUDENT));
             studentGroup.setParentId(memberGroup.getId());
             dao.persist(studentGroup);

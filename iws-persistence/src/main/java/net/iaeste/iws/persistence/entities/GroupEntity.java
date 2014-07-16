@@ -47,7 +47,6 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection AssignmentToDateFieldFromParameter
  */
 @NamedQueries({
         // Query is used by the Migration Tool
@@ -122,7 +121,7 @@ import java.util.Map;
                 query = "select g from GroupEntity g " +
                         "where g.status = 'ACTIVE'" +
                         "  and g.parentId = :gid" +
-                        "  and g.groupType.grouptype = 'STUDENTS'"),
+                        "  and g.groupType.grouptype = 'STUDENT'"),
         @NamedQuery(name = "group.findGroupsWithSimilarNames",
                 query = "select g from GroupEntity g " +
                         "where g.status = 'ACTIVE'" +

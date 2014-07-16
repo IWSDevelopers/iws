@@ -21,7 +21,6 @@ import net.iaeste.iws.persistence.Authentication;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection OverloadedVarargsMethod
  */
 public final class LogUtil {
 

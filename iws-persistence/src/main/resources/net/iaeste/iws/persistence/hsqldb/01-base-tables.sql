@@ -221,6 +221,12 @@ create table groups (
     constraint group_unique_old_iw3_id  unique (old_iw3_id),
     -- Required, since we otherwise cannot guarantee that mailinglists are unique
     constraint group_unique_full_name   unique (full_name),
+    -- Required, to avoid that multiple identical Groups are being added. Since
+    -- the Unique Constraint won't apply for null values, it means that it
+    -- should not be a problem for Private groups (See Trac ticket #854).
+    --   However, since the constraint may cause clashes with suspended/deleted
+    -- Groups, it cannot be applied!
+    --constraint group_unique_name_parent unique (group_name, parent_id),
 
     /* Not Null & Other Constraints */
     constraint group_notnull_id           check (id is not null),

@@ -62,82 +62,82 @@ import java.util.Map;
                         "where g.oldId = :oldid"),
         @NamedQuery(name = "group.findById",
                 query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.id = :id"),
         @NamedQuery(name = "group.findByExternalId",
                 query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.externalId = :id"),
         @NamedQuery(name = "group.findAllNationalAndInternational",
                 query = "select g from GroupEntity g " +
-                        "where g.groupType.grouptype = 'MEMBER'" +
-                        "   or g.groupType.grouptype = 'INTERNATIONAL' " +
+                        "where g.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
+                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
                         "order by g.groupType.grouptype asc, g.groupName asc"),
         @NamedQuery(name = "group.findByUserAndExternalId",
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.id = ug.group.id" +
                         "  and g.externalId = :eid" +
                         "  and ug.user.id = :uid"),
         @NamedQuery(name = "group.findGroupByUserAndType",
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.id = ug.group.id" +
                         "  and g.groupType.grouptype = :type" +
                         "  and ug.user.id = :uid"),
         @NamedQuery(name = "group.findGroupByParent",
                 query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "and g.parentId = :pid"),
         @NamedQuery(name = "group.findGroupByParentAndName",
                 query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.parentId = :pid" +
                         "  and lower(g.groupName) like lower(:name)"),
         @NamedQuery(name = "group.findNationalByUser",
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.id = ug.group.id" +
                         "  and ug.user.id = :uid" +
-                        "  and g.groupType.grouptype = 'NATIONAL'"),
+                        "  and g.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL),
         @NamedQuery(name = "group.findSubGroupsByParentId",
-                    query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                query = "select g from GroupEntity g " +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.parentId = :pid"),
         @NamedQuery(name = "group.findByPermission",
                 query = "select g from GroupEntity g, UserPermissionView v " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.id = v.id.groupId" +
                         "  and v.id.userId = :uid" +
                         "  and v.permission = :permission"),
         @NamedQuery(name = "group.findByExternalGroupIdAndPermission",
                 query = "select g from GroupEntity g, UserPermissionView v " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.id = v.id.groupId" +
                         "  and v.id.userId = :uid" +
                         "  and g.externalId = :egid" +
                         "  and v.permission = :permission"),
         @NamedQuery(name = "group.findStudentGroup",
                 query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.parentId = :gid" +
-                        "  and g.groupType.grouptype = 'STUDENT'"),
+                        "  and g.groupType.grouptype = " + EntityConstants.GROUPTYPE_STUDENT),
         @NamedQuery(name = "group.findGroupsWithSimilarNames",
                 query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.id != :gid" +
                         "  and g.parentId = :pid" +
-                        "  and lower(g.groupName) = :name"),
+                        "  and lower(g.groupName) = lower(:name)"),
         @NamedQuery(name = "group.findByExternalGroupIds",
                 query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.externalId in :egids"),
         // find all "member countries" for sharing and exclude the own group
         @NamedQuery(name = "group.findGroupsForSharing",
                 query = "select g from GroupEntity g " +
-                        "where g.status = 'ACTIVE'" +
+                        "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and g.id <> :gid" +
-                        "  and g.groupType.grouptype = 'NATIONAL'" +
+                        "  and g.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
                         "order by g.groupName")
 })
 @Entity
@@ -145,7 +145,7 @@ import java.util.Map;
 @Monitored(name = "Group", level = MonitoringLevel.DETAILED)
 public class GroupEntity implements Externable<GroupEntity>, Notifiable {
 
-    /** {@link IWSConstants#SERIAL_VERSION_UID}. */
+    /** {@link net.iaeste.iws.api.constants.IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
     @Id

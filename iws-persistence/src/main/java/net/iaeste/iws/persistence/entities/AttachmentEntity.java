@@ -64,13 +64,13 @@ import java.util.Date;
                         "  and a.file.id = :fileid"),
         @NamedQuery(name = "file.findApplicationBySendingGroupAndExternalFileId",
                 query = "select a.file from AttachmentEntity a, ApplicationEntity sa " +
-                        "where a.table = 'student_applications'" +
+                        "where a.table = " + EntityConstants.STUDENT_APPLICATIONS_ATTACHMENT +
                         "  and a.record = sa.id" +
                         "  and sa.offerGroup.group.id = :gid" +
                         "  and a.file.externalId = :efid"),
         @NamedQuery(name = "file.findApplicationByReceivingGroupAndExternalFileId",
                 query = "select a.file from AttachmentEntity a, ApplicationEntity sa " +
-                        "where a.table = 'student_applications'" +
+                        "where a.table = " + EntityConstants.STUDENT_APPLICATIONS_ATTACHMENT +
                         "  and a.record = sa.id" +
                         "  and sa.offerGroup.offer.employer.group.externalId = :egid" +
                         "  and a.file.externalId = :efid")

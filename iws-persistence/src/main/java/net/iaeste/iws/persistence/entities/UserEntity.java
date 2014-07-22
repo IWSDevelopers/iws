@@ -57,7 +57,7 @@ import java.util.Map;
         // Query is used by the Migration Tool
         @NamedQuery(name = "user.findAll",
                 query = "select u from UserEntity u " +
-                        "where u.status <> 'DELETED'"),
+                        "where u.status <> " + EntityConstants.USER_STATUS_DELETED),
         // Query is used by the Migration Tool
         @NamedQuery(name = "user.findByIW3Id",
                 query = "select u from UserEntity u " +
@@ -67,7 +67,7 @@ import java.util.Map;
                         "where u.id = :id"),
         @NamedQuery(name = "user.loginCredentials",
                 query = "select u from UserEntity u " +
-                        "where u.status = 'ACTIVE'" +
+                        "where u.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and u.username = :username" +
                         "  and u.password = :password"),
         @NamedQuery(name = "user.findByUserName",
@@ -75,21 +75,21 @@ import java.util.Map;
                         "where u.username = :username"),
         @NamedQuery(name = "user.findActiveByUserName",
                 query = "select u2g.user from UserGroupEntity u2g " +
-                        "where u2g.group.groupType.grouptype = 'MEMBER'" +
-                        "  and u2g.group.status = 'ACTIVE'" +
-                        "  and u2g.user.status = 'ACTIVE'" +
+                        "where u2g.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
+                        "  and u2g.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and u2g.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and u2g.user.username = :username"),
         @NamedQuery(name = "user.findExistingByUsername",
                 query = "select u from UserEntity u " +
-                        "where u.status <> 'DELETED'" +
+                        "where u.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and lower(u.username) = lower(:username)"),
         @NamedQuery(name = "user.findActiveByExternalId",
                 query = "select u from UserEntity u " +
-                        "where u.status = 'ACTIVE'" +
+                        "where u.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and u.externalId = :euid"),
         @NamedQuery(name = "user.findByExternalId",
                 query = "select u from UserEntity u " +
-                        "where u.status <> 'DELETED'" +
+                        "where u.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and u.externalId = :euid"),
         @NamedQuery(name = "user.findByCodeAndStatus",
                 query = "select u from UserEntity u " +
@@ -97,7 +97,7 @@ import java.util.Map;
                         "  and u.code = :code"),
         @NamedQuery(name = "user.findByAlias",
                 query = "select u from UserEntity u " +
-                        "where u.status <> 'DELETED'" +
+                        "where u.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and u.alias = :alias"),
         @NamedQuery(name = "user.findNumberOfSimilarAliases",
                 query = "select count(u.id) from UserEntity u " +

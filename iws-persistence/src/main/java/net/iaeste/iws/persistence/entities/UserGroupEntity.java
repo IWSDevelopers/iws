@@ -48,76 +48,76 @@ import java.util.Map;
 @NamedQueries({
         @NamedQuery(name = "usergroup.findById",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.id = :id"),
         @NamedQuery(name = "usergroup.findForExternalGroupId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status <> 'DELETED'" +
-                        "  and ug.user.status <> 'DELETED'" +
+                        "where ug.group.status <> " + EntityConstants.GROUP_STATUS_DELETED +
+                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and ug.group.externalId = :egid"),
         @NamedQuery(name = "usergroup.findForExternalUserId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status <> 'DELETED'" +
+                        "where ug.group.status <> " + EntityConstants.GROUP_STATUS_DELETED +
                         "  and ug.user.externalId = :euid"),
         @NamedQuery(name = "usergroup.findByIw3UserAndGroup",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.user.oldId = :iw3User" +
-                        "  and ug.user.status <> 'DELETED'" +
+                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and ug.group.oldId = :iw3Group"),
         @NamedQuery(name = "userGroup.searchByFirstNameAndLastNameInMembers",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.groupType.grouptype = 'MEMBER'" +
-                        "  and ug.user.status <> 'DELETED'" +
-                        "  and ug.user.status <> 'SUSPENDED'" +
+                        "where ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
+                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
+                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_SUSPENDED +
                         "  and (lower(ug.user.firstname) like :firstname" +
                         "   or lower(ug.user.lastname) like :lastname)"),
         @NamedQuery(name = "userGroup.searchByFirstNameAndLastNameInSpecificMember",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.groupType.grouptype = 'MEMBER'" +
+                        "where ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
                         "  and ug.group.externalId = :egid" +
-                        "  and ug.user.status <> 'DELETED'" +
-                        "  and ug.user.status <> 'SUSPENDED'" +
+                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
+                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_SUSPENDED +
                         "  and (lower(ug.user.firstname) like :firstname" +
                         "   or lower(ug.user.lastname) like :lastname)"),
         @NamedQuery(name = "usergroup.findByExternalId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.externalId = :eid"),
         @NamedQuery(name = "usergroup.findMemberByGroupAndUser",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.group.groupType.grouptype = 'MEMBER'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
                         "  and ug.group.id = :gid" +
                         "  and ug.user.externalId = :euid"),
         @NamedQuery(name = "usergroup.findByGroupAndUser",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.id = :gid" +
                         "  and ug.user.id= :uid"),
         @NamedQuery(name = "usergroup.findMemberByUserExternalId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.group.groupType.grouptype = 'MEMBER'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
                         "  and ug.user.externalId = :euid"),
         @NamedQuery(name = "usergroup.findNationalSecretaryByMemberGroup",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.group.groupType.grouptype = 'NATIONAL'" +
-                        "  and ug.role.id = 1" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
+                        "  and ug.role.id = " + EntityConstants.ROLE_OWNER +
                         "  and ug.group.parentId = :mgid"),
         @NamedQuery(name = "usergroup.findOwnerByGroup",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.externalId = :egid" +
-                        "  and ug.role.id = 1"),
+                        "  and ug.role.id = " + EntityConstants.ROLE_OWNER),
         @NamedQuery(name = "usergroup.findMemberByUserId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.group.groupType.grouptype = 'MEMBER'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
                         "  and ug.user.id = :uid"),
         @NamedQuery(name = "userGroup.findByGroupIdAndExternalUserId",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.id = :gid" +
                         "  and ug.user.externalId = :euid"),
         @NamedQuery(name = "userGroup.findByGroupIdAndUserId",
@@ -128,31 +128,31 @@ import java.util.Map;
         // IWSConstants for more information
         @NamedQuery(name = "usergroup.findActiveGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.user.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and ug.group.id = :gid"),
         @NamedQuery(name = "usergroup.findAllGroupMembers",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.user.status <> 'DELETED'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status <> " + EntityConstants.USER_STATUS_DELETED +
                         "  and ug.group.id = :gid"),
         // The roles are hardcoded to Students, see IWSConstants for more
         // information
         @NamedQuery(name = "usergroup.findStudents",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
                         "  and ug.group.parentId = :pid" +
-                        "  and ug.role.id = 5"),
+                        "  and ug.role.id = " + EntityConstants.ROLE_STUDENT),
         @NamedQuery(name = "usergroup.findGroupMembersOnPublicList",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.user.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and ug.group.id = :gid" +
                         "  and ug.onPublicList = true"),
         @NamedQuery(name = "usergroup.findGroupMembersOnPrivateList",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.user.status = 'ACTIVE'" +
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
                         "  and ug.group.id = :gid" +
                         "  and ug.onPrivateList = true"),
         @NamedQuery(name = "usergroup.findAllUserGroups",
@@ -162,18 +162,18 @@ import java.util.Map;
         // IWSConstants for more information
         @NamedQuery(name = "usergroup.emergencylist",
                 query = "select ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.role.id <= 2" +
-                        "  and ug.group.groupType.grouptype = 'NATIONAL'"),
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
+                        "  and ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL),
         // The roles are hardcoded to Owner & Moderator, see
         // IWSConstants for more information
         @NamedQuery(name = "usergroup.findncs",
                 query = "select distinct ug from UserGroupEntity ug " +
-                        "where ug.group.status = 'ACTIVE'" +
-                        "  and ug.user.status = 'ACTIVE'" +
-                        "  and ug.role.id <= 2" +
-                        "  and (ug.group.groupType.grouptype = 'NATIONAL'" +
-                        "    or ug.group.groupType.grouptype = 'INTERNATIONAL')"),
+                        "where ug.group.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ug.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
+                        "  and ug.role.id <= " + EntityConstants.ROLE_MODERATOR +
+                        "  and (ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
+                        "    or ug.group.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL + ')'),
         @NamedQuery(name = "usergroup.findByUsernameAndGroupExternalId",
                 query = "select ug from UserGroupEntity ug " +
                         "where ug.group.externalId = :egid" +

@@ -22,9 +22,9 @@ package net.iaeste.iws.api.enums.exchange;
  */
 public enum StudyLevel {
 
-    B("Beginning"),
-    M("Middle"),
-    E("End");
+    B("Begin (1-3 semesters)"),
+    M("Middle (4-6 semesters)"),
+    E("End (7 and more semesters)");
 
     // =========================================================================
     // Private Constructor & functionality

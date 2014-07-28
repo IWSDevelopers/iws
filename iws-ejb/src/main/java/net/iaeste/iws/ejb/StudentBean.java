@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -64,7 +64,7 @@ import javax.persistence.PersistenceContext;
  * @since   IWS 1.0
  */
 @Stateless
-@Local(Students.class)
+@Remote(Students.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StudentBean extends AbstractBean implements Students {

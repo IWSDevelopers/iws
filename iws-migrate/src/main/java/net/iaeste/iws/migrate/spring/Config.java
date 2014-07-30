@@ -182,9 +182,6 @@ public class Config {
         // executed against the database, preferably formatted as well :-)
         jpaProperties.setProperty("hibernate.show_sql", "false");
         jpaProperties.setProperty("hibernate.format_sql", "false");
-        // For some braindead reason - someone thought it was a good idea to
-        // have the default behaviour being true for the autocommit setting!
-        jpaProperties.setProperty("hibernate.connection.autocommit", "false");
 
         return jpaProperties;
     }

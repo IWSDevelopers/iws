@@ -52,10 +52,21 @@ import java.util.UUID;
  * The result of the above listed command will be a script that can be run using
  * the standard run command from psql:
  * <pre>
- *   # \i mail_db.sql
- *   # grant all on all tables in schema public to user_iw4;
- *   # grant all on all sequences in schema public to user_iw4;
- *   # grant select on all tables in schema public to mailing_reader;
+ * -- Before creating all data, we first need to wipe the content
+ * drop table mailing_lists;
+ * drop table mailing_list_membership;
+ * drop table mailing_aliases;
+ * drop sequence mailing_alias_sequence;
+ * drop sequence mailing_list_membership_sequence;
+ * drop sequence mailing_alias_sequence;
+ *
+ * -- Now, we can apply the data from the dump created above
+ * \i mail_db.sql
+ *
+ * -- Finally, set the permissions again
+ * grant all on all tables in schema public to user_iw4;
+ * grant all on all sequences in schema public to user_iw4;
+ * grant select on all tables in schema public to mailing_reader;
  * </pre>
  *
  * @author  Kim Jensen / last $Author:$
@@ -154,16 +165,16 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
                     case MEMBER:
                     case LOCAL:
                     case WORKGROUP:
-                        createMailinglist(group, true, false);
+                        createMailinglist(group, true);
                         persisted++;
                         break;
                     case INTERNATIONAL:
-                        createMailinglist(group, false, true);
-                        createMailinglist(group, true, false);
+                        createMailinglist(group, false);
+                        createMailinglist(group, true);
                         persisted += 2;
                         break;
                     case NATIONAL:
-                        createMailinglist(group, false, false);
+                        createMailinglist(group, false);
                         persisted++;
                         break;
                 }
@@ -205,6 +216,7 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         list.setExternalId(UUID.randomUUID().toString());
         list.setListAddress("ncs@" + IWSConstants.PRIVATE_EMAIL_ADDRESS);
         list.setPrivateList(true);
+        list.setSubjectPrefix("NCS");
         mailDao.persist(list);
         int persisted = 1;
 
@@ -245,7 +257,7 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
         return persisted;
     }
 
-    private void createMailinglist(final GroupEntity group, final boolean isPrivate, final boolean ownerOnly) {
+    private void createMailinglist(final GroupEntity group, final boolean isPrivate) {
         final MailingListEntity entity = new MailingListEntity();
 
         entity.setExternalId(group.getExternalId());
@@ -262,35 +274,22 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
             mailDao.persist(entity);
         }
 
-        addUsersToMailinglist(group, entity, ownerOnly);
+        addUsersToMailinglist(group, entity, isPrivate);
     }
 
-    private int addUsersToMailinglist(final GroupEntity group, final MailingListEntity list, final boolean ownerOnly) {
+    private int addUsersToMailinglist(final GroupEntity group, final MailingListEntity list, final boolean isPrivate) {
         final List<UserGroupEntity> users = iwsDao.findGroupMembers(group.getId());
         int persisted = 0;
 
         for (final UserGroupEntity user : users) {
-            if (ownerOnly) {
-                if (IWSConstants.ROLE_OWNER.equals(user.getRole().getId())) {
-                    final MailingListMembershipEntity entity = new MailingListMembershipEntity();
-                    entity.setMailingList(list);
-                    entity.setMember(toLower(user.getUser().getUsername()));
-                    entity.setCreated(user.getCreated());
+            if ((isPrivate && user.getOnPrivateList()) || (!isPrivate && user.getOnPublicList())) {
+                final MailingListMembershipEntity entity = new MailingListMembershipEntity();
+                entity.setMailingList(list);
+                entity.setMember(toLower(user.getUser().getUsername()));
+                entity.setCreated(user.getCreated());
 
-                    mailDao.persist(entity);
-                    persisted++;
-                }
-            } else {
-                if ((list.isPrivateList() && user.getOnPrivateList()) ||
-                    (!list.isPrivateList() && user.getOnPublicList())) {
-                    final MailingListMembershipEntity entity = new MailingListMembershipEntity();
-                    entity.setMailingList(list);
-                    entity.setMember(toLower(user.getUser().getUsername()));
-                    entity.setCreated(user.getCreated());
-
-                    mailDao.persist(entity);
-                    persisted++;
-                }
+                mailDao.persist(entity);
+                persisted++;
             }
         }
 

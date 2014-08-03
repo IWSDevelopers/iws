@@ -24,7 +24,6 @@ import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.OfferGroup;
 import net.iaeste.iws.api.enums.GroupType;
 import net.iaeste.iws.api.enums.exchange.OfferState;
-import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.exceptions.NotImplementedException;
 import net.iaeste.iws.api.exceptions.VerificationException;
 import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
@@ -43,6 +42,7 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.common.configuration.Settings;
+import net.iaeste.iws.common.exceptions.ExchangeException;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
@@ -236,13 +236,25 @@ public final class ExchangeService extends CommonService<ExchangeDao> {
         }
     }
 
+    /**
+     * It is allowed to delete Objects from the database, provided that their
+     * state indicates that the Offer has never been shared or exchanged, or
+     * anything, i.e. that the state is NEW and NEW only.
+     *
+     * @param authentication User & Group information
+     * @param request        Offer Request information, i.e. OfferId
+     */
     public void deleteOffer(final Authentication authentication, final DeleteOfferRequest request) {
         final OfferEntity foundOffer = dao.findOfferByExternalId(authentication, request.getOfferId());
 
         if (foundOffer != null) {
-            dao.delete(foundOffer);
+            if (foundOffer.getStatus() == OfferState.NEW) {
+                dao.delete(foundOffer);
+            } else {
+                throw new ExchangeException(IWSErrors.CANNOT_DELETE_OFFER, "It is not permitted to delete the offer with OfferId " + request.getOfferId() + " because it has been shared already");
+            }
         } else {
-            throw new IWSException(IWSErrors.OBJECT_IDENTIFICATION_ERROR, "Cannot delete Offer with OfferId " + request.getOfferId());
+            throw new IdentificationException("Cannot delete Offer with OfferId " + request.getOfferId());
         }
     }
 

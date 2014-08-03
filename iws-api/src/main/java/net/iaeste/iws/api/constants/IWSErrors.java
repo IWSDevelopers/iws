@@ -139,6 +139,10 @@ public interface IWSErrors {
 
     IWSError CANNOT_UPDATE_PASSWORD = new IWSError(604, "The provided old Password is invalid.");
 
+    IWSError GENERAL_EXCHANGE_ERROR = new IWSError(700, "A General error occurred in the Exchange Module.");
+
+    IWSError CANNOT_DELETE_OFFER = new IWSError(701, "Shared Offers cannot be deleted.");
+
     /**
      * The current method is not yet implemented.
      */

@@ -15,7 +15,6 @@
 package net.iaeste.iws.client.exchange;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -283,7 +282,7 @@ public final class OfferTest extends AbstractTest {
     }
 
     @Test
-    public void testDeleteOffer() {
+    public void testDeleteNewOffer() {
         final Offer offer = OfferTestUtility.getMinimalOffer();
         offer.setRefNo(PL_YEAR + "-000003");
 
@@ -312,6 +311,70 @@ public final class OfferTest extends AbstractTest {
                 fail("offer is supposed to be deleted");
             }
         }
+    }
+
+    @Test
+    public void testDeleteSharedOffer() {
+        final Date nominationDeadline = new Date().plusDays(20);
+
+        final Offer offer = OfferTestUtility.getMinimalOffer();
+        offer.setRefNo(PL_YEAR + "-000099");
+
+        final ProcessOfferRequest offerRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(token, offerRequest);
+
+        assertThat(saveResponse.isOk(), is(true));
+
+        assertThat(saveResponse.getOffer().getNsFirstname(), is(not(nullValue())));
+        assertThat(saveResponse.getOffer().getNsLastname(), is(not(nullValue())));
+
+        final FetchOffersRequest allOffersRequest = new FetchOffersRequest(FetchType.DOMESTIC);
+        FetchOffersResponse allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        Offer sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        // Following assertion is now deprecated, see trac task #372
+        //assertThat(sharedOffer.getRefNo(), is(offer.getRefNo()));
+        assertThat(sharedOffer.getStatus(), is(OfferState.NEW));
+        assertThat(sharedOffer.getNominationDeadline(), is(not(nominationDeadline)));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        offersToShare.add(sharedOffer.getOfferId());
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(austriaToken).getGroupId());
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferRequest publishRequest1 = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse1 = exchange.processPublishOffer(token, publishRequest1);
+
+        assertThat(publishResponse1.getError(), is(IWSErrors.SUCCESS));
+        assertThat(publishResponse1.isOk(), is(true));
+
+        final List<String> offersExternalId = new ArrayList<>(1);
+        offersExternalId.add(sharedOffer.getOfferId());
+        final FetchPublishedGroupsRequest fetchPublishRequest = new FetchPublishedGroupsRequest(offersExternalId);
+        final FetchPublishedGroupsResponse fetchPublishResponse1 = exchange.fetchPublishedGroups(token, fetchPublishRequest);
+
+        //is it shared to two groups?
+        assertThat(fetchPublishResponse1.isOk(), is(true));
+        List<Group> offerGroupsSharedTo = fetchPublishResponse1.getOffersGroups().get(offersExternalId.get(0));
+        assertThat(2, is(offerGroupsSharedTo.size()));
+
+        allOffersResponse = exchange.fetchOffers(token, allOffersRequest);
+        assertThat(allOffersResponse.getOffers().isEmpty(), is(false));
+        sharedOffer = findOfferFromResponse(saveResponse.getOffer().getRefNo(), allOffersResponse);
+        assertThat(sharedOffer, is(not(nullValue())));
+        assertThat(sharedOffer.getRefNo(), is(saveResponse.getOffer().getRefNo()));
+        assertThat("The offer is shared now, the status has to be SHARED", sharedOffer.getStatus(), is(OfferState.SHARED));
+        assertThat(sharedOffer.getNominationDeadline(), is(nominationDeadline));
+
+        final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(saveResponse.getOffer().getOfferId());
+        final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);
+
+        assertThat(deleteResponse.isOk(), is(false));
+        assertThat(deleteResponse.getError(), is(IWSErrors.CANNOT_DELETE_OFFER));
+        assertThat(deleteResponse.getMessage().contains("It is not permitted to delete the offer"), is(true));
     }
 
     @Test

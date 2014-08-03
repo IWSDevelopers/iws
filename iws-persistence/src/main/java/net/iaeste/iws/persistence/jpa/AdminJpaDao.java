@@ -127,4 +127,15 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
 
         return query.getResultList();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GroupEntity> findSubGroupsByParentId(Long parentGroupId) {
+        final Query query = entityManager.createNamedQuery("group.findSubGroupsByParentId");
+        query.setParameter("pid", parentGroupId);
+
+        return query.getResultList();
+    }
 }

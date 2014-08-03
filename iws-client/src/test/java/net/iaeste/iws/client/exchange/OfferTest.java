@@ -296,7 +296,7 @@ public final class OfferTest extends AbstractTest {
         assertThat(response.getOffers().isEmpty(), is(false));
         final int size = response.getOffers().size();
 
-        final Offer offerToDelete = response.getOffers().get(0);
+        Offer offerToDelete = findOfferFromResponse(saveResponse.getOffer().getRefNo(), response);
 
         final DeleteOfferRequest deleteRequest = new DeleteOfferRequest(offerToDelete.getOfferId());
         final OfferResponse deleteResponse = exchange.deleteOffer(token, deleteRequest);

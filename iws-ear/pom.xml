@@ -4,7 +4,7 @@
     <parent>
         <artifactId>iws-parent</artifactId>
         <groupId>net.iaeste.iws</groupId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
         <relativePath>../iws-parent/pom.xml</relativePath>
     </parent>
     <artifactId>iws-ear</artifactId>
@@ -34,26 +34,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>deployEar</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.ashlux</groupId>
-                        <artifactId>oc4j-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>verify</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>deployEar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>sonar</id>
             <build>

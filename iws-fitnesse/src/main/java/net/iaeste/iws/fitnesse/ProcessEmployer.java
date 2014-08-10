@@ -99,14 +99,6 @@ public final class ProcessEmployer extends AbstractFixture<EmployerResponse> {
         employer.setNearestPublicTransport(nearestPublicTransport);
     }
 
-    public void setWeeklyHours(final Float weeklyHours) {
-       employer.setWeeklyHours(weeklyHours);
-    }
-
-    public void setDailyHours(final Float dailyHours) {
-        employer.setDailyHours(dailyHours);
-    }
-
     public String printEmployer() {
         return getResponse().getEmployer().toString();
     }

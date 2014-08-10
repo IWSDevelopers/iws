@@ -62,6 +62,9 @@ public final class ExchangeTransformer {
             result.setRefNo(offer.getRefNo());
             result.setEmployer(transform(offer.getEmployer()));
             result.setWorkDescription(offer.getWorkDescription());
+            result.setWeeklyHours(offer.getWeeklyHours());
+            result.setDailyHours(offer.getDailyHours());
+            result.setWeeklyWorkDays(offer.getWeeklyWorkDays());
             result.setTypeOfWork(offer.getTypeOfWork());
             result.setStudyLevels(CollectionTransformer.concatEnumCollection(offer.getStudyLevels()));
             result.setFieldOfStudies(CollectionTransformer.concatEnumCollection(offer.getFieldOfStudies()));
@@ -115,6 +118,9 @@ public final class ExchangeTransformer {
             result.setEmployer(transform(entity.getEmployer()));
             result.setWorkDescription(entity.getWorkDescription());
             result.setTypeOfWork(entity.getTypeOfWork());
+            result.setWeeklyHours(entity.getWeeklyHours());
+            result.setDailyHours(entity.getDailyHours());
+            result.setWeeklyWorkDays(entity.getWeeklyWorkDays());
             result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, entity.getStudyLevels()));
             result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, entity.getFieldOfStudies()));
             result.setSpecializations(CollectionTransformer.explodeStringSet(entity.getSpecializations()));
@@ -171,8 +177,8 @@ public final class ExchangeTransformer {
             result.setWorkingPlace(entity.getWorkingPlace());
             result.setNearestAirport(entity.getNearestAirport());
             result.setNearestPublicTransport(entity.getNearestPublicTransport());
-            result.setWeeklyHours(entity.getWeeklyHours());
-            result.setDailyHours(entity.getDailyHours());
+            //result.setWeeklyHours(entity.getWeeklyHours());
+            //result.setDailyHours(entity.getDailyHours());
             result.setCanteen(entity.getCanteen());
         }
 
@@ -196,8 +202,8 @@ public final class ExchangeTransformer {
             result.setWorkingPlace(employer.getWorkingPlace());
             result.setNearestAirport(employer.getNearestAirport());
             result.setNearestPublicTransport(employer.getNearestPublicTransport());
-            result.setWeeklyHours(employer.getWeeklyHours());
-            result.setDailyHours(employer.getDailyHours());
+            //result.setWeeklyHours(employer.getWeeklyHours());
+            //result.setDailyHours(employer.getDailyHours());
             result.setCanteen(employer.getCanteen());
         }
 

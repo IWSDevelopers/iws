@@ -99,10 +99,7 @@ public class SpringConfig {
         // For testing the result, it is helpful to be able to see the queries
         // executed against the database, preferably formatted as well :-)
         properties.setProperty("hibernate.show_sql", "false");
-        properties.setProperty("hibernate.format_sql", "false");
-        // For some braindead reason - someone thought it was a good idea to
-        // have the default behaviour being true for the autocommit setting!
-        properties.setProperty("hibernate.connection.autocommit", "false");
+        properties.setProperty("hibernate.format_sql", "true");
 
         return properties;
     }

@@ -75,13 +75,14 @@ public final class TestData {
     public static final Boolean EMPLOYER_CANTEEN = Boolean.TRUE;
     public static final String EMPLOYER_NEAREAST_AIRPORT = "";
     public static final String EMPLOYER_NEAREST_PUBLIC_TRANSPORT = "";
-    public static final Float EMPLOYER_WEEKLY_HOURS = 37.5f;
-    public static final Float EMPLOYER_DAILY_HOURS = 7.5f;
 
     // Default data for filling our test Offer Object. Lacking is the refNo,
     // which must be provided
     private static final Date INITIAL_DATE = new Date().plusDays(90);
     public static final String OFFER_WORK_DESCRIPTION = "Work Description";
+    public static final Float OFFER_WEEKLY_HOURS = 37.5f;
+    public static final Float OFFER_DAILY_HOURS = 7.5f;
+    public static final Float OFFER_WEEKLY_WORK_DAYS = 5.0f;
     public static final TypeOfWork OFFER_TYPE_OF_WORK = TypeOfWork.R;
     public static final Set<StudyLevel> OFFER_STUDY_LEVELS = Collections.unmodifiableSet(EnumSet.of(StudyLevel.E, StudyLevel.M));
     public static final Set<FieldOfStudy> OFFER_FIELD_OF_STUDY = Collections.unmodifiableSet(EnumSet.of(FieldOfStudy.IT, FieldOfStudy.AGRICULTURE));
@@ -146,6 +147,9 @@ public final class TestData {
         final Offer offer = prepareMinimalOffer(refNo, employerName, countryCode);
 
         offer.setTypeOfWork(OFFER_TYPE_OF_WORK);
+        offer.setWeeklyHours(OFFER_WEEKLY_HOURS);
+        offer.setDailyHours(OFFER_DAILY_HOURS);
+        offer.setWeeklyWorkDays(OFFER_WEEKLY_WORK_DAYS);
         offer.setSpecializations(OFFER_SPECIALIZATIONS);
         offer.setPreviousTrainingRequired(OFFER_PREVIOUS_TRAINING_REQURED);
         offer.setOtherRequirements(OFFER_OTHER_REQUIREMENTS);
@@ -186,8 +190,8 @@ public final class TestData {
         employer.setCanteen(EMPLOYER_CANTEEN);
         employer.setNearestAirport(EMPLOYER_NEAREAST_AIRPORT);
         employer.setNearestPublicTransport(EMPLOYER_NEAREST_PUBLIC_TRANSPORT);
-        employer.setWeeklyHours(EMPLOYER_WEEKLY_HOURS);
-        employer.setDailyHours(EMPLOYER_DAILY_HOURS);
+        //employer.setWeeklyHours(OFFER_WEEKLY_HOURS);
+        //employer.setDailyHours(OFFER_DAILY_HOURS);
 
         return employer;
     }

@@ -76,6 +76,10 @@ create table mailing_aliases (
     constraint mailing_aliases_notnull_created     check (created is not null)
 );
 
+
+-- =============================================================================
+-- List the members of a mailing list, complete with list and member address.
+-- =============================================================================
 create view list_members as
   select
     l.id             as list_id,

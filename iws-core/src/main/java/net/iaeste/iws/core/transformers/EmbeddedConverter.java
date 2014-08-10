@@ -168,8 +168,8 @@ public final class EmbeddedConverter {
         employer.setCanteen(embedded.getCanteen());
         employer.setNearestAirport(embedded.getNearestAirport());
         employer.setNearestPublicTransport(embedded.getNearestPublicTransport());
-        employer.setWeeklyHours(embedded.getWeeklyHours());
-        employer.setDailyHours(embedded.getDailyHours());
+        //employer.setWeeklyHours(embedded.getWeeklyHours());
+        //employer.setDailyHours(embedded.getDailyHours());
 
         return employer;
     }
@@ -182,6 +182,9 @@ public final class EmbeddedConverter {
         result.setOldRefNo(embedded.getOldRefNo());
         result.setWorkDescription(embedded.getWorkDescription());
         result.setTypeOfWork(embedded.getTypeOfWork());
+        result.setWeeklyHours(embedded.getWeeklyHours());
+        result.setDailyHours(embedded.getDailyHours());
+        result.setWeeklyWorkDays(embedded.getWeeklyWorkDays());
         result.setStudyLevels(CollectionTransformer.explodeEnumSet(StudyLevel.class, embedded.getStudyLevels()));
         result.setFieldOfStudies(CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embedded.getFieldOfStudies()));
         result.setSpecializations(CollectionTransformer.explodeStringSet(embedded.getSpecializations()));

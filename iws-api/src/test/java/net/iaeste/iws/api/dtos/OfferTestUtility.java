@@ -41,7 +41,7 @@ public final class OfferTestUtility {
     public static final String WORK_DESCRIPTION = TestData.OFFER_WORK_DESCRIPTION;
     public static final Integer MAXIMUM_WEEKS = TestData.OFFER_MAXIMUM_WEEKS;
     public static final Integer MINIMUM_WEEKS = TestData.OFFER_MINIMUM_WEEKS;
-    public static final Float WEEKLY_HOURS = TestData.EMPLOYER_WEEKLY_HOURS;
+    public static final Float WEEKLY_HOURS = TestData.OFFER_WEEKLY_HOURS;
     public static final Date FROM_DATE = TestData.OFFER_PERIOD1.getFromDate();
     public static final Date TO_DATE = TestData.OFFER_PERIOD1.getToDate();
     public static final TypeOfWork TYPE_OF_WORK = TestData.OFFER_TYPE_OF_WORK;
@@ -61,7 +61,7 @@ public final class OfferTestUtility {
     public static final String WORKING_PLACE = TestData.EMPLOYER_WORKING_PLACE;
     public static final String NEAREST_AIRPORT = TestData.EMPLOYER_NEAREAST_AIRPORT;
     public static final String NEAREST_PUBLIC_TRANSPORT = TestData.EMPLOYER_NEAREST_PUBLIC_TRANSPORT;
-    public static final Float DAILY_HOURS = TestData.EMPLOYER_DAILY_HOURS;
+    public static final Float DAILY_HOURS = TestData.OFFER_DAILY_HOURS;
     public static final Currency CURRENCY = Currency.EUR;
     public static final PaymentFrequency PAYMENT_FREQUENCY = TestData.OFFER_PAYMENT_FREQUENCY;
     public static final String DEDUCTION = TestData.OFFER_DEDUCTION;

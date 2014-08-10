@@ -145,11 +145,11 @@ public class OfferGroupEntityTest {
     private static OfferEntity getMinimalOffer() {
         final EmployerEntity employer = new EmployerEntity();
         employer.setName(EMPLOYER_NAME);
-        employer.setWeeklyHours(WEEKLY_HOURS);
 
         final OfferEntity offer = new OfferEntity();
         offer.setRefNo(REF_NO);
         offer.setEmployer(employer);
+        offer.setWeeklyHours(WEEKLY_HOURS);
         offer.setStudyLevels(STUDY_LEVELS);
         offer.setFieldOfStudies(FIELDS_OF_STUDY);
         offer.setLanguage1(Language.ENGLISH);

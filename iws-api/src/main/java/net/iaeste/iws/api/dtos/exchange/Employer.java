@@ -50,8 +50,6 @@ public final class Employer extends AbstractVerification {
     private Boolean canteen = null;
     private String nearestAirport = null;
     private String nearestPublicTransport = null;
-    private Float weeklyHours = null;
-    private Float dailyHours = null;
 
     // =========================================================================
     // Object Constructors
@@ -82,8 +80,6 @@ public final class Employer extends AbstractVerification {
             canteen = employer.canteen;
             nearestAirport = employer.nearestAirport;
             nearestPublicTransport = employer.nearestPublicTransport;
-            weeklyHours = employer.weeklyHours;
-            dailyHours = employer.dailyHours;
         }
     }
 
@@ -322,32 +318,6 @@ public final class Employer extends AbstractVerification {
         return nearestPublicTransport;
     }
 
-    /**
-     * Sets the Weekly Hours expected by the Employer.
-     *
-     * @param weeklyHours Employer Weekly Hours
-     */
-    public void setWeeklyHours(final Float weeklyHours) {
-        this.weeklyHours = weeklyHours;
-    }
-
-    public Float getWeeklyHours() {
-        return weeklyHours;
-    }
-
-    /**
-     * Sets the Daily Hours expected by the Employer.
-     *
-     * @param dailyHours Employer Daily Hours
-     */
-    public void setDailyHours(final Float dailyHours) {
-        this.dailyHours = dailyHours;
-    }
-
-    public Float getDailyHours() {
-        return dailyHours;
-    }
-
     // =========================================================================
     // DTO required methods
     // =========================================================================
@@ -413,14 +383,8 @@ public final class Employer extends AbstractVerification {
         if ((nearestAirport != null) ? !nearestAirport.equals(employer.nearestAirport) : (employer.nearestAirport != null)) {
             return false;
         }
-        if ((nearestPublicTransport != null) ? !nearestPublicTransport.equals(employer.nearestPublicTransport) : (employer.nearestPublicTransport != null)) {
-            return false;
-        }
-        if ((weeklyHours != null) ? !weeklyHours.equals(employer.weeklyHours) : (employer.weeklyHours != null)) {
-            return false;
-        }
 
-        return !((dailyHours != null) ? !dailyHours.equals(employer.dailyHours) : (employer.dailyHours != null));
+        return !((nearestPublicTransport != null) ? !nearestPublicTransport.equals(employer.nearestPublicTransport) : (employer.nearestPublicTransport != null));
     }
 
     /**
@@ -442,8 +406,6 @@ public final class Employer extends AbstractVerification {
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((canteen != null) ? canteen.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nearestAirport != null) ? nearestAirport.hashCode() : 0);
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nearestPublicTransport != null) ? nearestPublicTransport.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((weeklyHours != null) ? weeklyHours.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((dailyHours != null) ? dailyHours.hashCode() : 0);
 
         return result;
     }
@@ -466,8 +428,6 @@ public final class Employer extends AbstractVerification {
                 ", canteen=" + canteen +
                 ", nearestAirport='" + nearestAirport + '\'' +
                 ", nearestPublicTransport='" + nearestPublicTransport + '\'' +
-                ", weeklyHours=" + weeklyHours +
-                ", dailyHours=" + dailyHours +
                 '}';
     }
 }

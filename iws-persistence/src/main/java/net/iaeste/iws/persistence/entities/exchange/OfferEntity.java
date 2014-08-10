@@ -53,7 +53,6 @@ import java.util.Map;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection OverlyComplexClass, OverlyLongMethod
  */
 @NamedQueries({
         // Query is used by the Migration Tool
@@ -176,6 +175,18 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
     @Enumerated(EnumType.STRING)
     @Column(name = "work_type", length = 1)
     private TypeOfWork typeOfWork = null;
+
+    @Monitored(name="Offer weekly hours", level = MonitoringLevel.DETAILED)
+    @Column(name = "weekly_hours")
+    private Float weeklyHours = null;
+
+    @Monitored(name="Offer daily hours", level = MonitoringLevel.DETAILED)
+    @Column(name = "daily_hours")
+    private Float dailyHours = null;
+
+    @Monitored(name = "Offer Weekly Work Days", level = MonitoringLevel.DETAILED)
+    @Column(name = "work_days_per_week")
+    private Float weeklyWorkDays = null;
 
     @Monitored(name="Offer study levels", level = MonitoringLevel.DETAILED)
     @Column(name = "study_levels", length = 25, nullable = false)
@@ -433,6 +444,30 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
 
     public TypeOfWork getTypeOfWork() {
         return typeOfWork;
+    }
+
+    public void setWeeklyHours(final Float weeklyHours) {
+        this.weeklyHours = weeklyHours;
+    }
+
+    public Float getWeeklyHours() {
+        return weeklyHours;
+    }
+
+    public void setDailyHours(final Float dailyHours) {
+        this.dailyHours = dailyHours;
+    }
+
+    public Float getDailyHours() {
+        return dailyHours;
+    }
+
+    public void setWeeklyWorkDays(final Float weeklyWorkDays) {
+        this.weeklyWorkDays = weeklyWorkDays;
+    }
+
+    public Float getWeeklyWorkDays() {
+        return weeklyWorkDays;
     }
 
     public void setStudyLevels(final String studyLevels) {
@@ -775,6 +810,9 @@ public class OfferEntity implements Externable<OfferEntity>, Notifiable {
             workDescription = obj.workDescription;
             typeOfWork = obj.typeOfWork;
             studyLevels = obj.studyLevels;
+            weeklyHours = obj.weeklyHours;
+            dailyHours = obj.dailyHours;
+            weeklyWorkDays = obj.weeklyWorkDays;
             fieldOfStudies = obj.fieldOfStudies;
             specializations = obj.specializations;
             prevTrainingRequired = obj.prevTrainingRequired;

@@ -58,6 +58,9 @@ public final class Offer extends AbstractVerification {
     private Employer employer = null;
     private String workDescription = null;
     private TypeOfWork typeOfWork = null;
+    private Float weeklyHours = null;
+    private Float dailyHours = null;
+    private Float weeklyWorkDays = null;
     private Set<StudyLevel> studyLevels = EnumSet.noneOf(StudyLevel.class);
     private Set<FieldOfStudy> fieldOfStudies = EnumSet.noneOf(FieldOfStudy.class);
     private Set<String> specializations = new HashSet<>(1);
@@ -133,6 +136,9 @@ public final class Offer extends AbstractVerification {
             refNo = offer.refNo;
             employer = new Employer(offer.employer);
             workDescription = offer.workDescription;
+            weeklyHours = offer.weeklyHours;
+            dailyHours = offer.dailyHours;
+            weeklyWorkDays = offer.weeklyWorkDays;
             typeOfWork = offer.typeOfWork;
             studyLevels = offer.studyLevels;
             fieldOfStudies = offer.fieldOfStudies;
@@ -279,6 +285,45 @@ public final class Offer extends AbstractVerification {
 
     public TypeOfWork getTypeOfWork() {
         return typeOfWork;
+    }
+
+    /**
+     * Sets the Weekly Hours expected by the Employer.
+     *
+     * @param weeklyHours Offer Weekly Hours
+     */
+    public void setWeeklyHours(final Float weeklyHours) {
+        this.weeklyHours = weeklyHours;
+    }
+
+    public Float getWeeklyHours() {
+        return weeklyHours;
+    }
+
+    /**
+     * Sets the Daily Hours expected by the Employer.
+     *
+     * @param dailyHours Offer Daily Hours
+     */
+    public void setDailyHours(final Float dailyHours) {
+        this.dailyHours = dailyHours;
+    }
+
+    public Float getDailyHours() {
+        return dailyHours;
+    }
+
+    /**
+     * Sets the number of work days expected by the Employer.
+     *
+     * @param dailyHours Offer Weekly Work Days
+     */
+    public void setWeeklyWorkDays(final Float weeklyWorkDays) {
+        this.weeklyWorkDays = weeklyWorkDays;
+    }
+
+    public Float getWeeklyWorkDays() {
+        return weeklyWorkDays;
     }
 
     public void setStudyLevels(final Set<StudyLevel> studyLevels) throws IllegalArgumentException {
@@ -702,25 +747,28 @@ public final class Offer extends AbstractVerification {
 
         final Offer offer = (Offer) obj;
 
-        if ((created != null) ? !created.equals(offer.created) : (offer.created != null)) {
+        if (additionalInformation != null ? !additionalInformation.equals(offer.additionalInformation) : offer.additionalInformation != null) {
             return false;
         }
-        if ((shared != null) ? !shared.equals(offer.created) : (offer.shared != null)) {
+        if (created != null ? !created.equals(offer.created) : offer.created != null) {
             return false;
         }
         if (currency != offer.currency) {
             return false;
         }
-        if ((deduction != null) ? !deduction.equals(offer.deduction) : (offer.deduction != null)) {
+        if (dailyHours != null ? !dailyHours.equals(offer.dailyHours) : offer.dailyHours != null) {
             return false;
         }
-        if ((employer != null) ? !employer.equals(offer.employer) : (offer.employer != null)) {
+        if (deduction != null ? !deduction.equals(offer.deduction) : offer.deduction != null) {
             return false;
         }
-        if ((fieldOfStudies != null) ? !fieldOfStudies.equals(offer.fieldOfStudies) : (offer.fieldOfStudies != null)) {
+        if (employer != null ? !employer.equals(offer.employer) : offer.employer != null) {
             return false;
         }
-        if ((offerId != null) ? !offerId.equals(offer.offerId) : (offer.offerId != null)) {
+        if (fieldOfStudies != null ? !fieldOfStudies.equals(offer.fieldOfStudies) : offer.fieldOfStudies != null) {
+            return false;
+        }
+        if (hidden != null ? !hidden.equals(offer.hidden) : offer.hidden != null) {
             return false;
         }
         if (language1 != offer.language1) {
@@ -747,86 +795,98 @@ public final class Offer extends AbstractVerification {
         if (language3Level != offer.language3Level) {
             return false;
         }
-        if ((livingCost != null) ? !(livingCost.compareTo(offer.livingCost) == 0) : (offer.livingCost != null)) {
+        if (livingCost != null ? !(livingCost.compareTo(offer.livingCost) == 0) : offer.livingCost != null) {
             return false;
         }
         if (livingCostFrequency != offer.livingCostFrequency) {
             return false;
         }
-        if ((lodgingBy != null) ? !lodgingBy.equals(offer.lodgingBy) : (offer.lodgingBy != null)) {
+        if (lodgingBy != null ? !lodgingBy.equals(offer.lodgingBy) : offer.lodgingBy != null) {
             return false;
         }
-        if ((lodgingCost != null) ? !(lodgingCost.compareTo(offer.lodgingCost) == 0) : (offer.lodgingCost != null)) {
+        if (lodgingCost != null ? !(lodgingCost.compareTo(offer.lodgingCost) == 0) : offer.lodgingCost != null) {
             return false;
         }
         if (lodgingCostFrequency != offer.lodgingCostFrequency) {
             return false;
         }
-        if ((maximumWeeks != null) ? !maximumWeeks.equals(offer.maximumWeeks) : (offer.maximumWeeks != null)) {
+        if (maximumWeeks != null ? !maximumWeeks.equals(offer.maximumWeeks) : offer.maximumWeeks != null) {
             return false;
         }
-        if ((minimumWeeks != null) ? !minimumWeeks.equals(offer.minimumWeeks) : (offer.minimumWeeks != null)) {
+        if (minimumWeeks != null ? !minimumWeeks.equals(offer.minimumWeeks) : offer.minimumWeeks != null) {
             return false;
         }
-        if ((modified != null) ? !modified.equals(offer.modified) : (offer.modified != null)) {
+        if (modified != null ? !modified.equals(offer.modified) : offer.modified != null) {
             return false;
         }
-        if ((nominationDeadline != null) ? !nominationDeadline.equals(offer.nominationDeadline) : (offer.nominationDeadline != null)) {
+        if (nominationDeadline != null ? !nominationDeadline.equals(offer.nominationDeadline) : offer.nominationDeadline != null) {
             return false;
         }
-        if ((numberOfHardCopies != null) ? !numberOfHardCopies.equals(offer.numberOfHardCopies) : (offer.numberOfHardCopies != null)) {
+        if (nsFirstname != null ? !nsFirstname.equals(offer.nsFirstname) : offer.nsFirstname != null) {
             return false;
         }
-        if ((otherRequirements != null) ? !otherRequirements.equals(offer.otherRequirements) : (offer.otherRequirements != null)) {
+        if (nsLastname != null ? !nsLastname.equals(offer.nsLastname) : offer.nsLastname != null) {
             return false;
         }
-        if ((payment != null) ? !(payment.compareTo(offer.payment) == 0) : (offer.payment != null)) {
+        if (numberOfHardCopies != null ? !numberOfHardCopies.equals(offer.numberOfHardCopies) : offer.numberOfHardCopies != null) {
+            return false;
+        }
+        if (offerId != null ? !offerId.equals(offer.offerId) : offer.offerId != null) {
+            return false;
+        }
+        if (oldRefNo != null ? !oldRefNo.equals(offer.oldRefNo) : offer.oldRefNo != null) {
+            return false;
+        }
+        if (otherRequirements != null ? !otherRequirements.equals(offer.otherRequirements) : offer.otherRequirements != null) {
+            return false;
+        }
+        if (payment != null ? !(payment.compareTo(offer.payment) == 0) : offer.payment != null) {
             return false;
         }
         if (paymentFrequency != offer.paymentFrequency) {
             return false;
         }
-        if ((period1 != null) ? !period1.equals(offer.period1) : (offer.period1 != null)) {
+        if (period1 != null ? !period1.equals(offer.period1) : offer.period1 != null) {
             return false;
         }
-        if ((period2 != null) ? !period2.equals(offer.period2) : (offer.period2 != null)) {
+        if (period2 != null ? !period2.equals(offer.period2) : offer.period2 != null) {
             return false;
         }
-        if ((previousTrainingRequired != null) ? !previousTrainingRequired.equals(offer.previousTrainingRequired) : (offer.previousTrainingRequired != null)) {
+        if (previousTrainingRequired != null ? !previousTrainingRequired.equals(offer.previousTrainingRequired) : offer.previousTrainingRequired != null) {
             return false;
         }
-        if ((refNo != null) ? !refNo.equals(offer.refNo) : (offer.refNo != null)) {
+        if (privateComment != null ? !privateComment.equals(offer.privateComment) : offer.privateComment != null) {
             return false;
         }
-        if ((oldRefNo != null) ? !oldRefNo.equals(offer.oldRefNo) : (offer.oldRefNo != null)) {
+        if (refNo != null ? !refNo.equals(offer.refNo) : offer.refNo != null) {
             return false;
         }
-        if ((specializations != null) ? !specializations.equals(offer.specializations) : (offer.specializations != null)) {
+        if (shared != null ? !shared.equals(offer.shared) : offer.shared != null) {
+            return false;
+        }
+        if (specializations != null ? !specializations.equals(offer.specializations) : offer.specializations != null) {
             return false;
         }
         if (status != offer.status) {
             return false;
         }
-        if ((studyLevels != null) ? !studyLevels.equals(offer.studyLevels) : (offer.studyLevels != null)) {
+        if (studyLevels != null ? !studyLevels.equals(offer.studyLevels) : offer.studyLevels != null) {
             return false;
         }
         if (typeOfWork != offer.typeOfWork) {
             return false;
         }
-        if ((unavailable != null) ? !unavailable.equals(offer.unavailable) : (offer.unavailable != null)) {
+        if (unavailable != null ? !unavailable.equals(offer.unavailable) : offer.unavailable != null) {
             return false;
         }
-        if ((additionalInformation != null) ? !additionalInformation.equals(offer.additionalInformation) : (offer.additionalInformation != null)) {
+        if (weeklyHours != null ? !weeklyHours.equals(offer.weeklyHours) : offer.weeklyHours != null) {
             return false;
         }
-        if ((privateComment != null) ? !privateComment.equals(offer.privateComment) : (offer.privateComment != null)) {
+        if (weeklyWorkDays != null ? !weeklyWorkDays.equals(offer.weeklyWorkDays) : offer.weeklyWorkDays != null) {
             return false;
         }
 
-        if (hidden != offer.hidden) {
-            return false;
-        }
-        return !((workDescription != null) ? !workDescription.equals(offer.workDescription) : (offer.workDescription != null));
+        return !(workDescription != null ? !workDescription.equals(offer.workDescription) : offer.workDescription != null);
     }
 
     /**
@@ -837,47 +897,52 @@ public final class Offer extends AbstractVerification {
         int result = IWSConstants.HASHCODE_INITIAL_VALUE;
 
         result = IWSConstants.HASHCODE_MULTIPLIER * result + ((offerId != null) ? offerId.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((refNo != null) ? refNo.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((oldRefNo != null) ? oldRefNo.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((employer != null) ? employer.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((workDescription != null) ? workDescription.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((typeOfWork != null) ? typeOfWork.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((studyLevels != null) ? studyLevels.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((fieldOfStudies != null) ? fieldOfStudies.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((specializations != null) ? specializations.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((previousTrainingRequired != null) ? previousTrainingRequired.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((otherRequirements != null) ? otherRequirements.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((minimumWeeks != null) ? minimumWeeks.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((maximumWeeks != null) ? maximumWeeks.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((period1 != null) ? period1.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((period2 != null) ? period2.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((unavailable != null) ? unavailable.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language1 != null) ? language1.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language1Level != null) ? language1Level.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language1Operator != null) ? language1Operator.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language2 != null) ? language2.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language2Level != null) ? language2Level.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language2Operator != null) ? language2Operator.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language3 != null) ? language3.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((language3Level != null) ? language3Level.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((payment != null) ? payment.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((paymentFrequency != null) ? paymentFrequency.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((currency != null) ? currency.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((deduction != null) ? deduction.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((livingCost != null) ? livingCost.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((livingCostFrequency != null) ? livingCostFrequency.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((lodgingBy != null) ? lodgingBy.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((lodgingCost != null) ? lodgingCost.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((lodgingCostFrequency != null) ? lodgingCostFrequency.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((nominationDeadline != null) ? nominationDeadline.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((numberOfHardCopies != null) ? numberOfHardCopies.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((additionalInformation != null) ? additionalInformation.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((privateComment != null) ? privateComment.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((status != null) ? status.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((modified != null) ? modified.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((created != null) ? created.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + ((shared != null) ? shared.hashCode() : 0);
-        result = IWSConstants.HASHCODE_MULTIPLIER * result + (hidden ? 1 : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (refNo != null ? refNo.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (oldRefNo != null ? oldRefNo.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (employer != null ? employer.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (workDescription != null ? workDescription.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (typeOfWork != null ? typeOfWork.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (weeklyHours != null ? weeklyHours.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (dailyHours != null ? dailyHours.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (weeklyWorkDays != null ? weeklyWorkDays.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (studyLevels != null ? studyLevels.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (fieldOfStudies != null ? fieldOfStudies.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (specializations != null ? specializations.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (previousTrainingRequired != null ? previousTrainingRequired.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (otherRequirements != null ? otherRequirements.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (minimumWeeks != null ? minimumWeeks.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (maximumWeeks != null ? maximumWeeks.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (period1 != null ? period1.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (period2 != null ? period2.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (unavailable != null ? unavailable.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language1 != null ? language1.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language1Level != null ? language1Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language1Operator != null ? language1Operator.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language2 != null ? language2.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language2Level != null ? language2Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language2Operator != null ? language2Operator.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language3 != null ? language3.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (language3Level != null ? language3Level.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (payment != null ? payment.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (paymentFrequency != null ? paymentFrequency.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (currency != null ? currency.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (deduction != null ? deduction.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (livingCost != null ? livingCost.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (livingCostFrequency != null ? livingCostFrequency.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lodgingBy != null ? lodgingBy.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lodgingCost != null ? lodgingCost.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (lodgingCostFrequency != null ? lodgingCostFrequency.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nominationDeadline != null ? nominationDeadline.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (numberOfHardCopies != null ? numberOfHardCopies.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (additionalInformation != null ? additionalInformation.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (privateComment != null ? privateComment.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (status != null ? status.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (modified != null ? modified.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (created != null ? created.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nsFirstname != null ? nsFirstname.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (nsLastname != null ? nsLastname.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (shared != null ? shared.hashCode() : 0);
+        result = IWSConstants.HASHCODE_MULTIPLIER * result + (hidden != null ? hidden.hashCode() : 0);
 
         return result;
     }
@@ -890,10 +955,13 @@ public final class Offer extends AbstractVerification {
         return "Offer{" +
                 "offerId='" + offerId + '\'' +
                 ", refNo='" + refNo + '\'' +
-                ", refNo='" + oldRefNo + '\'' +
+                ", oldRefNo='" + oldRefNo + '\'' +
                 ", employer=" + employer +
                 ", workDescription='" + workDescription + '\'' +
                 ", typeOfWork=" + typeOfWork +
+                ", weeklyHours=" + weeklyHours +
+                ", dailyHours=" + dailyHours +
+                ", weeklyWorkDays=" + weeklyWorkDays +
                 ", studyLevels=" + studyLevels +
                 ", fieldOfStudies=" + fieldOfStudies +
                 ", specializations=" + specializations +
@@ -923,11 +991,13 @@ public final class Offer extends AbstractVerification {
                 ", lodgingCostFrequency=" + lodgingCostFrequency +
                 ", nominationDeadline=" + nominationDeadline +
                 ", numberOfHardCopies=" + numberOfHardCopies +
-                ", additionalInformation=" + additionalInformation +
-                ", privateComment=" + privateComment +
+                ", additionalInformation='" + additionalInformation + '\'' +
+                ", privateComment='" + privateComment + '\'' +
                 ", status=" + status +
                 ", modified=" + modified +
                 ", created=" + created +
+                ", nsFirstname='" + nsFirstname + '\'' +
+                ", nsLastname='" + nsLastname + '\'' +
                 ", shared=" + shared +
                 ", hidden=" + hidden +
                 '}';

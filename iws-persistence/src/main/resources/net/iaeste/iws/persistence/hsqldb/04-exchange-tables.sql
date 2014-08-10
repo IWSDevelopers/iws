@@ -30,8 +30,6 @@ create table employers (
     canteen                   boolean,
     nearest_airport           varchar(255),
     nearest_public_transport  varchar(255),
-    weekly_hours              float,
-    daily_hours               float,
     modified                  timestamp default now(),
     created                   timestamp default now(),
 
@@ -50,7 +48,6 @@ create table employers (
     constraint employer_notnull_id          check (id is not null),
     constraint employer_notnull_external_id check (external_id is not null),
     constraint employer_notnull_name        check (name is not null),
-    constraint employer_notnull_weeklyhours check (weekly_hours is not null),
     constraint employer_notnull_modified    check (modified is not null),
     constraint employer_notnull_created     check (created is not null)
 );
@@ -73,6 +70,9 @@ create table offers (
     employer_id               integer,
     work_description          varchar(3000),
     work_type                 char(1),
+    weekly_hours              float,
+    daily_hours               float,
+    work_days_per_week        float,
     study_levels              varchar(25),
     study_fields              varchar(1000),
     specializations           varchar(1000),
@@ -132,6 +132,8 @@ create table offers (
     constraint offer_notnull_ref_no           check (ref_no is not null),
     -- Must be left ignored until added to OfferDTO
     --constraint offer_notnull_exchange_year    check (exchange_year is not null),
+    -- Commented out until all changes for #668 & #734 have been completed
+    --constraint offer_notnull_weeklyhours      check (weekly_hours is not null),
     constraint offer_notnull_from_date        check (from_date is not null),
     constraint offer_notnull_to_date          check (to_date is not null),
     constraint offer_notnull_language_1       check (language_1 is not null),

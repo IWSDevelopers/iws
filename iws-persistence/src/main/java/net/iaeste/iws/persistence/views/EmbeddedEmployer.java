@@ -16,9 +16,6 @@ package net.iaeste.iws.persistence.views;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
 
 /**
  * This is the Embedded Employer Object, which is used by various Views. The
@@ -65,19 +62,13 @@ public class EmbeddedEmployer {
     @Column(name = "employer_nearest_public_transport", insertable = false, updatable = false)
     private String nearestPublicTransport = null;
 
-    @Column(name = "employer_weekly_hours", insertable = false, updatable = false)
-    private Float weeklyHours = null;
-
-    @Column(name = "employer_daily_hours", insertable = false, updatable = false)
-    private Float dailyHours = null;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "employer_modified", insertable = false, updatable = false)
-    private Date modified = null;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "employer_created", insertable = false, updatable = false)
-    private Date created = null;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @Column(name = "employer_modified", insertable = false, updatable = false)
+//    private Date modified = null;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @Column(name = "employer_created", insertable = false, updatable = false)
+//    private Date created = null;
 
     // =========================================================================
     // View Setters & Getters
@@ -163,35 +154,19 @@ public class EmbeddedEmployer {
         return nearestPublicTransport;
     }
 
-    public void setWeeklyHours(final Float weeklyHours) {
-        this.weeklyHours = weeklyHours;
-    }
-
-    public Float getWeeklyHours() {
-        return weeklyHours;
-    }
-
-    public void setDailyHours(final Float dailyHours) {
-        this.dailyHours = dailyHours;
-    }
-
-    public Float getDailyHours() {
-        return dailyHours;
-    }
-
-    public void setModified(final Date modified) {
-        this.modified = modified;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setCreated(final Date created) {
-        this.created = created;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
+//    public void setModified(final Date modified) {
+//        this.modified = modified;
+//    }
+//
+//    public Date getModified() {
+//        return modified;
+//    }
+//
+//    public void setCreated(final Date created) {
+//        this.created = created;
+//    }
+//
+//    public Date getCreated() {
+//        return created;
+//    }
 }

@@ -26,7 +26,6 @@ import javax.persistence.Table;
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
- * @noinspection CompareToUsesNonFinalVariable
  */
 @Entity
 @NamedQueries({

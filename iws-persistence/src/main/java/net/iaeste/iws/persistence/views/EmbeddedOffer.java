@@ -55,6 +55,15 @@ public class EmbeddedOffer {
     @Column(name = "offer_work_type", insertable = false, updatable = false)
     private TypeOfWork typeOfWork = null;
 
+    @Column(name = "offer_weekly_hours", insertable = false, updatable = false)
+    private Float weeklyHours = null;
+
+    @Column(name = "offer_daily_hours", insertable = false, updatable = false)
+    private Float dailyHours = null;
+
+    @Column(name = "offer_work_days_per_week", insertable = false, updatable = false)
+    private Float weeklyWorkDays = null;
+
     @Column(name = "offer_study_levels", insertable = false, updatable = false)
     private String studyLevels = null;
 
@@ -232,6 +241,30 @@ public class EmbeddedOffer {
 
     public void setStudyLevels(final String studyLevels) {
         this.studyLevels = studyLevels;
+    }
+
+    public void setWeeklyHours(final Float weeklyHours) {
+        this.weeklyHours = weeklyHours;
+    }
+
+    public Float getWeeklyHours() {
+        return weeklyHours;
+    }
+
+    public void setDailyHours(final Float dailyHours) {
+        this.dailyHours = dailyHours;
+    }
+
+    public Float getDailyHours() {
+        return dailyHours;
+    }
+
+    public void setWeeklyWorkDays(final Float weeklyWorkDays) {
+        this.weeklyWorkDays = weeklyWorkDays;
+    }
+
+    public Float getWeeklyWorkDays() {
+        return weeklyWorkDays;
     }
 
     public String getStudyLevels() {

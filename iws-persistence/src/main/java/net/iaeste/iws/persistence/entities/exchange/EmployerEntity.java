@@ -129,14 +129,6 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
     @Column(name = "nearest_public_transport", length = 255)
     private String nearestPublicTransport = null;
 
-    @Monitored(name="Employer weekly hours", level = MonitoringLevel.DETAILED)
-    @Column(name = "weekly_hours")
-    private Float weeklyHours = null;
-
-    @Monitored(name="Employer daily hours", level = MonitoringLevel.DETAILED)
-    @Column(name = "daily_hours")
-    private Float dailyHours = null;
-
     /**
      * Last time the Entity was modified.
      */
@@ -296,22 +288,6 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
         return nearestPublicTransport;
     }
 
-    public void setWeeklyHours(final Float weeklyHours) {
-        this.weeklyHours = weeklyHours;
-    }
-
-    public Float getWeeklyHours() {
-        return weeklyHours;
-    }
-
-    public Float getDailyHours() {
-        return dailyHours;
-    }
-
-    public void setDailyHours(final Float dailyHours) {
-        this.dailyHours = dailyHours;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -364,8 +340,6 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
         changes += different(canteen, obj.canteen);
         changes += different(nearestAirport, obj.nearestAirport);
         changes += different(nearestPublicTransport, obj.nearestPublicTransport);
-        changes += different(weeklyHours, obj.weeklyHours);
-        changes += different(dailyHours, obj.dailyHours);
 
         return changes == 0;
     }
@@ -386,8 +360,6 @@ public class EmployerEntity extends AbstractUpdateable<EmployerEntity> implement
             canteen = obj.canteen;
             nearestAirport = obj.nearestAirport;
             nearestPublicTransport = obj.nearestPublicTransport;
-            weeklyHours = obj.weeklyHours;
-            dailyHours = obj.dailyHours;
         }
     }
 }

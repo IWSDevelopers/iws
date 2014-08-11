@@ -25,6 +25,9 @@ import net.iaeste.iws.api.constants.IWSConstants;
  */
 public final class StringUtils {
 
+    public static final String EMPTY_STRING = "";
+    public static final String[] EMPTY_STRING_ARRAY = new String[0];
+
     /**
      * Private Constructor, this is a utility class.
      */
@@ -46,19 +49,44 @@ public final class StringUtils {
     }
 
     /**
-     * <p>Joins the elements of the provided {@code Iterable} into
-     * a single String containing the provided elements.</p>
-     * <p/>
-     * <p>No delimiter is added before or after the list.
-     * A {@code null} separator is the same as an empty String ("").</p>
+     * Joins the elements of the provided {@code Iterable} into a single String
+     * containing the provided elements.<br />
+     *   If the given iterable element contains two or more Objects, then they
+     * are joined with the separator. If no Objects exists, the Empty String is
+     * returned, if only a single Object exists, then the String represenation
+     * of this is returned.<br />
+     *   Note, The code is a replacement of the formerly used Apache Commons
+     * Join method, to avoid dragging unwanted dependencies along. From analysis
+     * of the Apache Commons Join method, it seems that the logic is written for
+     * pre Java 5 code, so it has been rewritten to better suit Java 5+.
      *
-     * @param iterable  the {@code Iterable} providing the values to join together, may be null
-     * @param separator the separator character to use, null treated as ""
-     * @return the joined String, {@code null} if null iterator input
-     * @since 2.3
+     * @param iterable  {@code Iterable} Object to join together
+     * @param separator the separator to use, if multiple Objects exists
+     * @return The joined String
      */
     public static String join(final Iterable<?> iterable, final String separator) {
-        return org.apache.commons.lang3.StringUtils.join(iterable, separator);
+        //return org.apache.commons.lang3.StringUtils.join(iterable, separator);
+        final String result;
+
+        if (iterable != null) {
+            final StringBuilder builder = new StringBuilder(16);
+            boolean theFirst = true;
+
+            for (final Object obj : iterable) {
+                if (theFirst) {
+                    builder.append(obj.toString());
+                    theFirst = false;
+                } else {
+                    builder.append(separator);
+                    builder.append(obj.toString());
+                }
+            }
+            result = builder.toString();
+        } else {
+            result = EMPTY_STRING;
+        }
+
+        return result;
     }
 
     /**
@@ -87,7 +115,20 @@ public final class StringUtils {
      * @return an array of parsed Strings, {@code null} if null String input
      */
     public static String[] split(final String str, final String separatorChars) {
-        return org.apache.commons.lang3.StringUtils.split(str, separatorChars);
+        //return org.apache.commons.lang3.StringUtils.split(str, separatorChars);
+        final String[] result;
+
+        if (str != null) {
+            if (!str.isEmpty() && str.contains(separatorChars)) {
+                result = str.split('\\' + separatorChars);
+            } else {
+                result = EMPTY_STRING_ARRAY;
+            }
+        } else {
+            result = null;
+        }
+
+        return result;
     }
 
     /**

@@ -228,6 +228,9 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
         entity.setNumberOfHardCopies(oldOffer.getNohardcopies());
         entity.setNominationDeadline(oldOffer.getDeadline());
         entity.setExchangeYear(convertExchangeYear(oldOffer.getExchangeyear(), oldOffer.getCreated()));
+        entity.setWeeklyHours(round(oldOffer.getHoursweekly()));
+        entity.setDailyHours(round(oldOffer.getHoursdaily()));
+        log.trace("Workhours: weekly = {}, daily = {}", entity.getWeeklyHours(), entity.getDailyHours());
         entity.setModified(convert(oldOffer.getModified()));
         entity.setCreated(convert(oldOffer.getCreated()));
 
@@ -851,10 +854,7 @@ public class OfferMigrator implements Migrator<IW3OffersEntity> {
         entity.setWorkingPlace(convert(oldOffer.getWorkplace()));
         entity.setNearestAirport(convert(oldOffer.getAirport()));
         entity.setNearestPublicTransport(oldOffer.getTransport());
-        entity.setWeeklyHours(round(oldOffer.getHoursweekly()));
-        entity.setDailyHours(round(oldOffer.getHoursdaily()));
         entity.setModified(convert(oldOffer.getModified()));
-        log.trace("Workhours: weekly = {}, daily = {}", entity.getWeeklyHours(), entity.getDailyHours());
         entity.setCreated(convert(oldOffer.getCreated(), oldOffer.getModified()));
 
         return entity;

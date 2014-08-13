@@ -1,6 +1,6 @@
-This is your requested password reset from the IAESTE asbl IntraWeb.
+This is your requested password reset from the IAESTE a.s.b.l. IntraWeb. 
 
-NOTE: If you didn't requested a password reset, ignore this mail!
+NOTE: If you didn't request a password reset, ignore this mail! 
 
 To reset the password, please open the following page and enter the Reset Password Token along with your new password.
 
@@ -8,9 +8,9 @@ To reset the password, please open the following page and enter the Reset Passwo
  Reset Password Token; ${CODE}
 
 
-For issues with the system, feel free to contact gst@iaeste.org or idt@iaeste.org.
+For issues with the system, feel free to contact idt@iaeste.org.
 --
-IAESTE a.s.b.l
+IAESTE A.s.b.l.
 IntraWeb
 
-Brought to you by the IDT team
+brought to you by the IDT team

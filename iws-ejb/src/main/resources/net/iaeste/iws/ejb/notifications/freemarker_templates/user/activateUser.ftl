@@ -3,11 +3,22 @@
 NOTE: If you do not want an IAESTE IntraWeb account, simply ignore this email.
 
 This email contains:
-* End User License Agreement (EULA) for using the IAESTE IntraWeb
-* URL for activating the account
+
+* Instructions and URL for activating the account
 * User and initial password
 * Hints for future help
+* End User License Agreement (EULA) for using the IAESTE IntraWeb
 
+To activate your account and agree to the EULA below, please visit the following page:
+
+ ${baseUrl}/pages/activateUser.xhtml?code=${CODE}
+
+Once activated, to login use the following credentials. You can change your password if required once logged in.
+
+ User:     ${EMAIL}
+ Password: ${CLEARTEXT_PASSWORD}
+
+If at any point you are told ‘the account is currently being used’ then you can click the ‘reset running session’ button on the login page. You'll receive an email with a reset token and you should follow the instructions contained within to reset your session and login again.
 
 By activating your account, you agree to following EULA:
 
@@ -17,7 +28,7 @@ By accessing or using our Site, you (the “User”) signify that you have read,
 We reserve the right to make changes to this Agreement from time to time. When these changes are made, we will make the Agreement up-dated available on the Site. You understand and agree that it is your responsibility to regularly check the Site for changes to the Agreement and to review such changes. Your continued use of the Site and the Service now, or following the posting of any changes, will indicate your acceptance of this Agreement, and of any such changes. If any future changes are unacceptable to you, you should discontinue using the Site and the Service.
 
 1. Eligibility
-1.1.  The IAESTE IntraWeb (in the following “Portal”) is exclusively
+1.1. The IAESTE IntraWeb (in the following “Portal”) is exclusively
     a. for IAESTE members (officials, volunteers and employers of IAESTE A.s.b.l, IAESTE full members, IAESTE associated members or IAESTE cooperating institutions) to coordinate the IAESTE exchange program and internal affairs.
     b. employers and students who want to participate in the IAESTE exchange program.
 1.2. By using the Portal, the User represents and warrants that he or she agrees to and abides by all of the terms and conditions of this Agreement.
@@ -32,11 +43,11 @@ Before registering for or using the Portal, please take into consideration that 
 3. Proprietary Rights of Portal Content
 
 3.1. With the exception of the User Content as defined in section 5, all, text, pictures, video, information, music, logos, trademarks, brands, sound and other files, and their selection and arrangement (the “Portal Content) are the (intellectual) property of IAESTE A.s.b.l. with all rights reserved.
-3.2. No Portal Content may be modified, copied, distributed, framed, reproduced, republished, displayed, posted, transmitted, or sold in any form or by any means, without prior written consent of IAESTE .
+3.2. No Portal Content may be modified, copied, distributed, framed, reproduced, republished, displayed, posted, transmitted, or sold in any form or by any means, without prior written consent of IAESTE.
 3.3. Provided that you are eligible to use the Portal, you are granted with a limited, non-exclusive license to access and use the Portal and the Portal Content.
 3.4. Except for your own User Content, you may not upload or republish Portal Content elsewhere or use the information for any other means without written consent from IAESTE A.s.b.l.
 3.5. With the exception in section 4.3.c, the limited license granted to you by IAESTE is subject to this Agreement and does not permit the use of any data gathering or extraction methods.
-3.6.  Any use of the Portal or the Portal Content other than as specifically allowed in this Agreement, without the prior written permission of IAESTE A.s.b.l., is strictly prohibited and will terminate the license granted in the Agreement.
+3.6. Any use of the Portal or the Portal Content other than as specifically allowed in this Agreement, without the prior written permission of IAESTE A.s.b.l., is strictly prohibited and will terminate the license granted in the Agreement.
 3.7. Unless explicitly stated in this Agreement, nothing in this Agreement shall be construed as conferring any license to intellectual property rights, whether by estoppel, implication or otherwise.
 3.8. This license is revocable at any time without notice and with or without cause.
 
@@ -62,7 +73,7 @@ Before registering for or using the Portal, please take into consideration that 
     n. To use or attempt to use another user’s account, service or system without authorization from IAESTE A.s.b.l., or create a false identity on the Portal.
     o. To make available content, that in the sole judgment of IAESTE A.s.b.l., is objectionable or which, restricts or inhibits any other person from using the Portal, or which, may expose IAESTE A.s.b.l. or its users to any harm or liability of any type.
 4.4. You agree not to:
-    a.  Attempt to circumvent content filtering techniques we may employ.
+    a. Attempt to circumvent content filtering techniques we may employ.
     b. Engage in behaviour or make available content that is obscene, pornographic, and sexually explicit, depicts graphic or gratuitous violence, makes threats of any kind or is malicious.
     c. Engage in predatory or stalking behaviour.
     d. Facilitate or encourage any violations of this Agreement.
@@ -76,25 +87,25 @@ Before registering for or using the Portal, please take into consideration that 
 5.6. Content of job offers and student data are collected and processed by IAESTE.
 
 6. Copyright Complaints
-6.1. IAESTE respects the intellectual property rights of others and  IAESTE prohibits Users from uploading, posting or otherwise transmitting on the Portal any materials that violate another party’s intellectual property rights. When IAESTE receive proper complaints, IAESTE may promptly remove the content and/or disable access to the allegedly infringing material.
-6.2. If you believe that any material on the Portal infringes upon any intellectual property which you own or control, you may send a written notification of such infringement to general.secretary@iaeste.org.
-6.3. If IAESTE removed your content for infringing someone else’s copyright, and you believe we removed it by mistake, IAESTE will provide you with an opportunity to send a written notification to general.secretary@iaeste.org
+6.1. IAESTE respects the intellectual property rights of others and IAESTE prohibits Users from uploading, posting or otherwise transmitting on the Portal any materials that violate another party’s intellectual property rights. When IAESTE receive proper complaints, IAESTE may promptly remove the content and/or disable access to the allegedly infringing material.
+6.2. If you believe that any material on the Portal infringes upon any intellectual property which you own or control, you may send a written notification of such infringement to board@iaeste.org.
+6.3. If IAESTE removed your content for infringing someone else’s copyright, and you believe we removed it by mistake, IAESTE will provide you with an opportunity to send a written notification to board@iaeste.org
 
 7. Repeat Infringer Policy
 7.1. In appropriate circumstances and at IAESTE’s sole discretion, IAESTE A.s.b.l. may disable accounts of members who repeatedly infringe any intellectual property rights of others.
 
 8. Third Party Websites and Content
 8.1.  The Portal contains (or you may be sent through the Portal) links to other web sites (“Third Party Sites”) as well as other content or items belonging to or originating from third parties (the “Third Party Content”).
-8.2. Such Third Party Sites and Third Party Content are not investigated, monitored or checked for accuracy, appropriateness, or completeness by IAESTE A.s.b.l., and IAESTE A.s.bl. is not responsible for any Third Party Sites accessed through the Portal or any Third Party Content posted on, available through or installed from the Portal, including the content, accuracy, offensiveness, opinions, reliability, privacy practices or other policies of or contained in the Third Party Sites or the Third Party Content.
+8.2. Such Third Party Sites and Third Party Content are not investigated, monitored or checked for accuracy, appropriateness, or completeness by IAESTE A.s.b.l., and IAESTE A.s.b.l. is not responsible for any Third Party Sites accessed through the Portal or any Third Party Content posted on, available through or installed from the Portal, including the content, accuracy, offensiveness, opinions, reliability, privacy practices or other policies of or contained in the Third Party Sites or the Third Party Content.
 8.3. Inclusion of, linking to or permitting the use or installation of any Third Party Site or any Third Party Content does not imply approval or endorsement thereof by IAESTE A.s.b.l.
 8.4. If you decide to leave the Portal and access the Third Party Sites or to use or install any Third Party Content, you do so at your own risk and you should be aware that our terms and policies no longer govern. You should review the applicable terms and policies, including privacy and data gathering practices, of any site to which you navigate from the Portal or relating to any applications you use or install from such site.
 
 9. User Disputes
 9.1. You are solely responsible for your interactions with other users on the Portal.
-9.2. IAESTE reserve the right, but have no obligation, to monitor disputes between you and other users.
+9.2. IAESTE reserves the right, but have no obligation, to monitor disputes between you and other users.
 
 10. Privacy Policy / Data Protection
-10.1.  Your privacy is very important to us. Please take the time to view the Privacy Policy of the Portal. The terms of the Privacy Policy also govern and apply to your use of the Portal, and they are incorporated herein by this reference.  // Is a Privacy Policy needed?
+10.1. Your privacy is very important to us. Please take the time to view the Privacy Policy of the Portal. The terms of the Privacy Policy also govern and apply to your use of the Portal, and they are incorporated herein by this reference.  // Is a Privacy Policy needed?
 10.2. By using the Portal, you are consenting to have your personal data transferred to and processed in any country, which is an IAESTE member, associate member, or cooperating institution.
 10.3. By using the Portal and participating in the IAESTE exchange program, you agree that the personal data, which has been provided to IAESTE member, IAESTE associate member, or IAESTE cooperating institution may be passed to IAESTE member, IAESTE associate member, or IAESTE cooperating institution and potential employers for the purpose of arranging my traineeship; your personal data may be provided to government authorities for the issuance of visa/work permit purpose.
 10.4. You agree that all data must be handled in accordance with Luxembourg and EU laws regarding data protection and security.
@@ -112,7 +123,7 @@ Before registering for or using the Portal, please take into consideration that 
 11.10. Reference to any products, services, processes or other information, by trade name, trademark, manufacturer, supplier or otherwise does not constitute or imply endorsement, sponsorship or recommendation thereof, or any affiliation therewith, by the IAESTE A.s.b.l., unless otherwise stated.
 
 12. Limitation on Liability and Indemnity
-12.1.  Except where provided by law, in no event will IAESTE A.s.b.l., its officials, employees or volunteers be liable to you or any third person for any direct, indirect, consequential, exemplary, incidental, special or punitive damages, including for any lost profits or lost data arising from your use of the Portal or any of the Portal Content or other materials on, accessed through or downloaded from the Portal.
+12.1. Except where provided by law, in no event will IAESTE A.s.b.l., its officials, employees or volunteers be liable to you or any third person for any direct, indirect, consequential, exemplary, incidental, special or punitive damages, including for any lost profits or lost data arising from your use of the Portal or any of the Portal Content or other materials on, accessed through or downloaded from the Portal.
 You agree to indemnity and hold IAESTE A.s.b.l., its subsidiaries and affiliates, and each of their directors, officers, agents, contractors, partners and employees, harmless from and against any loss, liability, claim, demand, damages, costs and expenses, including reasonable attorney’s fees, arising out of or in connection with any User Content, any Third Party Content you post or share on or through the Portal, your conduct in connection with the Portal or with other users of the Portal, or any violation of this Agreement or of any law or the rights of any third party.
 
 13. Termination
@@ -130,27 +141,17 @@ The mediation proceedings shall be conducted in English.
 
 16. Contact
 
-You may contact us by email at general.secretary@iaeste.org
+You may contact us by email at board@iaeste.org
 
 The information contained in this Agreement is subject to change without notice.
 
 === End of EULA ===
 
 
-To activate your account and agree to the above EULA, please visit following page:
 
- ${baseUrl}/pages/activateUser.xhtml?code=${CODE}
-
-
-To finally login use the following credentials. You can change your password if wanted when logged in.
-
- User:     ${EMAIL}
- Password: ${CLEARTEXT_PASSWORD}
-
-
-For issues with the system, feel free to contact gst@iaeste.org or idt@iaeste.org.
+For issues with the system, feel free to contact idt@iaeste.org
 --
-IAESTE a.s.b.l
+IAESTE A.s.b.l.
 IntraWeb
 
-Brought to you by the IDT team
+brought to you by the IDT team

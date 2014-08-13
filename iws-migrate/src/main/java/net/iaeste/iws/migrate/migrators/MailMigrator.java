@@ -99,7 +99,8 @@ public class MailMigrator implements Migrator<IW3UsersEntity> {
             { "board@iaeste.org", "president@iaeste.org" },
             { "board@iaeste.org", "gs@iaeste.org" },
             { "board@iaeste.org", "general.secretary@iaeste.org" },
-            { "idt@iaeste.net", "idt.members@iaeste.net"}};
+            { "idt@iaeste.net", "idt.members@iaeste.net"},
+            { "bruce.wicks@iaeste.org", "bruce.mehlmann-wicks@iaeste.org" }};
 
     @Autowired
     private IWSDao iwsDao;

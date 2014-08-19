@@ -44,10 +44,15 @@ import java.util.Properties;
  * @since   IWS 1.0
  */
 @MessageDriven(
-        mappedName = "queue/iwsEmailQueue",
-        activationConfig = @ActivationConfigProperty(
-                propertyName = "destinationType",
-                propertyValue = "javax.jms.Queue")
+        mappedName = "queue/iwsEmailQueue", /*required by glassfish*/
+        activationConfig = {
+                @ActivationConfigProperty(
+                        propertyName = "destinationType",
+                        propertyValue = "javax.jms.Queue"),
+                @ActivationConfigProperty(/* required by jboss */
+                        propertyName = "destinationLookup",
+                        propertyValue = "queue/iwsEmailQueue")
+        }
 )
 public class EmailSender implements MessageListener {
 

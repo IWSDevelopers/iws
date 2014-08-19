@@ -112,96 +112,24 @@
             <groupId>net.iaeste.iws</groupId>
             <artifactId>iws-persistence</artifactId>
         </dependency>
-        <!-- this has to come from local respository set to iws-accessories and has to be placed before javaee-api -->
-        <dependency>
-            <groupId>jms</groupId>
-            <artifactId>jms</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- FFMQ dependencies -->
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>mx4j</groupId>
-            <artifactId>mx4j</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>mx4j</groupId>
-            <artifactId>mx4j-remote</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4.7</version>
-        </dependency>
-        <!-- this has to come from local respository set to iws-accessories -->
+        <!-- this has to come from local respository set to iws-accessories and has to be placed before javaee-api -->
         <!--<dependency>-->
             <!--<groupId>jms</groupId>-->
             <!--<artifactId>jms</artifactId>-->
             <!--<version>1.1</version>-->
         <!--</dependency>-->
         <dependency>
-            <groupId>net.timewalker.ffmq3</groupId>
-            <artifactId>ffmq3-core</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>net.timewalker.ffmq3</groupId>
-            <artifactId>ffmq3-server</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>net.timewalker.ffmq3</groupId>
-            <artifactId>ffmq3-tools</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <!-- end FFMQ dependencies -->
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.7</version>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.19</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -217,6 +145,10 @@
             <groupId>gsbase</groupId>
             <artifactId>gsbase</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

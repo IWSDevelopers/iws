@@ -20,6 +20,7 @@ import net.iaeste.iws.common.notification.Notifiable;
 import net.iaeste.iws.common.notification.NotificationType;
 import net.iaeste.iws.common.utils.Observer;
 import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.ejb.notifications.NotificationManager;
 import net.iaeste.iws.ejb.notifications.NotificationMessageGenerator;
 import net.iaeste.iws.ejb.notifications.NotificationMessageGeneratorFreemarker;
@@ -35,9 +36,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.Schedule;
+import javax.ejb.Local;
 import javax.ejb.Singleton;
-import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerService;
@@ -45,8 +45,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -54,17 +54,18 @@ import javax.persistence.PersistenceContext;
  * @since   IWS 1.0
  */
 @Singleton
+@Local(NotificationManagerLocal.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class NotificationManagerBean implements NotificationManagerLocal {
 
     private static final Logger log = LoggerFactory.getLogger(NotificationManagerBean.class);
-    private EntityManager iwsEntityManager = null;
-    private EntityManager mailingListEntityManager = null;
-    private Settings settings = new Settings();
+    @Inject @IWSBean(IWSBean.Type.SECONDARY) private EntityManager mailEntityManager;
+    @Inject @IWSBean private EntityManager entityManager;
+    @Inject @IWSBean private Notifications notifications;
+    @Inject @IWSBean private Settings settings;
     private NotificationDao dao = null;
     private AccessDao accessDao = null;
-    private Notifications notifications = null;
 
     @Resource
     private TimerService timerService;
@@ -78,22 +79,20 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      * Setter for the JNDI injected persistence context. This allows us to also
      * test the code, by invoking these setters on the instantiated Object.
      *
-     * @param iwsEntityManager Transactional Entity Manager instance
+     * @param entityManager Transactional Entity Manager instance
      */
-    @PersistenceContext(unitName = "iwsDatabase")
-    public void setIwsEntityManager(final EntityManager iwsEntityManager) {
-        this.iwsEntityManager = iwsEntityManager;
+    public void setEntityManager(final EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     /**
      * Setter for the JNDI injected persistence context. This allows us to also
      * test the code, by invoking these setters on the instantiated Object.
      *
-     * @param mailingListEntityManager Transactional Entity Manager instance for mailing list database
+     * @param mailEntityManager Transactional Entity Manager instance for mailing list database
      */
-    @PersistenceContext(unitName = "mailingListDatabase")
-    public void setMailingListEntityManager(final EntityManager mailingListEntityManager) {
-        this.mailingListEntityManager = mailingListEntityManager;
+    public void setMailEntityManager(final EntityManager mailEntityManager) {
+        this.mailEntityManager = mailEntityManager;
     }
 
     /**
@@ -102,7 +101,6 @@ public class NotificationManagerBean implements NotificationManagerLocal {
      *
      * @param settings Settings Bean
      */
-    //@Inject
     public void setSettings(final Settings settings) {
         if (settings != null) {
             this.settings = settings;
@@ -115,16 +113,12 @@ public class NotificationManagerBean implements NotificationManagerLocal {
     @PostConstruct
     public void postConstruct() {
         log.info("post construct");
-        dao = new NotificationJpaDao(iwsEntityManager);
-        accessDao = new AccessJpaDao(iwsEntityManager);
-
-        if (settings.getDoJndiLookup()) {
-            settings.init();
-        }
+        dao = new NotificationJpaDao(entityManager);
+        accessDao = new AccessJpaDao(entityManager);
 
         final NotificationMessageGenerator generator = new NotificationMessageGeneratorFreemarker();
         generator.setSettings(settings);
-        final NotificationManager notificationManager = new NotificationManager(iwsEntityManager, mailingListEntityManager, settings, generator, true);
+        final NotificationManager notificationManager = new NotificationManager(entityManager, mailEntityManager, settings, generator, true);
         notificationManager.startupConsumers();
         notifications = notificationManager;
     }
@@ -237,8 +231,8 @@ public class NotificationManagerBean implements NotificationManagerLocal {
         notifications.processJobs();
     }
 
-    @Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds", persistent = false)
-    //@Schedule(minute = "*/1", hour = "*", info="Every 60 seconds")
+    // Commented for now, since this causes huge stack traces!
+    //@Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds", persistent = false)
     private void processJobsScheduled() {
         log.info("processJobsScheduled started at " + new DateTime());
         final boolean run;

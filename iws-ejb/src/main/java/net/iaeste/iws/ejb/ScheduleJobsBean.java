@@ -19,6 +19,7 @@ import net.iaeste.iws.api.enums.exchange.OfferState;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
+import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
@@ -36,8 +37,8 @@ import javax.annotation.Resource;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.TimerService;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,8 +54,7 @@ import java.util.Map;
 public class ScheduleJobsBean {
 
     private static final Logger log = LoggerFactory.getLogger(ScheduleJobsBean.class);
-
-    private EntityManager iwsEntityManager = null;
+    @Inject @IWSBean private EntityManager iwsEntityManager;
     private ExchangeDao exchangeDao = null;
     private AccessDao accessDao = null;
 
@@ -70,7 +70,6 @@ public class ScheduleJobsBean {
      *
      * @param iwsEntityManager Transactional Entity Manager instance
      */
-    @PersistenceContext(unitName = "iwsDatabase")
     public void setIwsEntityManager(final EntityManager iwsEntityManager) {
         this.iwsEntityManager = iwsEntityManager;
     }

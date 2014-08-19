@@ -4,7 +4,11 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
     <persistence-unit name="iwsDatabase" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <jta-data-source>iws</jta-data-source>
+        <jta-data-source>java:jboss/datasources/iwsDS</jta-data-source>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        </properties>
 
         <!-- Entities -->
         <class>net.iaeste.iws.persistence.entities.AddressEntity</class>
@@ -46,27 +50,18 @@
         <class>net.iaeste.iws.persistence.views.OfferView</class>
         <class>net.iaeste.iws.persistence.views.UserPermissionView</class>
         <class>net.iaeste.iws.persistence.views.StudentView</class>
-
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
-        </properties>
-
     </persistence-unit>
     <persistence-unit name="mailingListDatabase" transaction-type="JTA">
-
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>java:jboss/datasources/mailDS</jta-data-source>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        </properties>
 
-        <jta-data-source>mailingList</jta-data-source>
-
+        <!-- Entities -->
         <class>net.iaeste.iws.persistence.entities.mailing_list.MailingAliasEntity</class>
         <class>net.iaeste.iws.persistence.entities.mailing_list.MailingListEntity</class>
         <class>net.iaeste.iws.persistence.entities.mailing_list.MailingListMembershipEntity</class>
-
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
-        </properties>
-
     </persistence-unit>
 </persistence>

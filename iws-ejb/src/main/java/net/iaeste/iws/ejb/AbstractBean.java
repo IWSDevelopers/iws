@@ -27,7 +27,6 @@ import javax.annotation.PostConstruct;
  * @author  Kim Jensen / last $Author: $
  * @version $Revision: $ / $Date:$
  * @since   IWS 1.0
- * @noinspection MethodMayBeStatic
  */
 public abstract class AbstractBean {
 

@@ -1,0 +1,205 @@
+#!/bin/bash
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# WildFly Control Script
+# -----------------------------------------------------------------------------
+# History:
+#   Version 1.00 - 2014-08-19, Kim Jensen <Kim.Jensen@secunet.com>
+#     o Initial version
+# -----------------------------------------------------------------------------
+# Methods:
+#     o show_help     ( Void )   :: Shows help on using the script
+#     o doLock        ( Void )   :: Creates a lock file
+#     o getProcesses  ( Void )   :: Retrieves WildFly process count
+#     o doStart       ( Void )   :: Attempts to start WildFly
+#     o doStop        ( Void )   :: Attempts to stop WildFly
+#     o doStatus      ( Void )   :: Retrieves the WildFly status
+#     o doClean       ( Void )   :: Cleans existing test results
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Configuration settings, please only modify this section
+# -----------------------------------------------------------------------------
+readonly appDirectory="/opt/java/wildfly"
+# WildFly expects the JBOSS_HOME to be set
+export JBOSS_HOME=${appDirectory}
+readonly WildFlyPort=9990
+readonly WildFlyDebugPort=8787
+readonly consoleLog="${appDirectory}/standalone/log/console.log"
+
+# Java Settings, with WildFly - we're initially using Java 7, but will upgrade to
+# Java 8 as part of release 1.2
+readonly JAVA_HOME=/opt/java/jdk-7
+readonly PATH=${JAVA_HOME}/bin:${PATH}
+readonly java=${JAVA_HOME}/bin/java
+
+readonly cmdStart="${appDirectory}/bin/standalone.sh --server-config=standalone-iws.xml --debug ${WildFlyDebugPort}"
+
+# Lock file settings for flock. Please don't change this!
+readonly scriptLockFD="200"
+readonly scriptLock="/tmp/.`basename $0`.lock"
+
+# Script specific information, should only be altered, if logic is updated
+readonly scriptVersion="1.00"
+readonly scriptAuthor="Kim Jensen"
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Show Help - Displays the help, to use this script
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+show_help () {
+    echo "WildFly Control script, Version ${scriptVersion} by ${scriptAuthor}"
+    echo "Usage: `basename $0` [COMMAND]"
+    echo
+    echo "  The Command must be one of the following:"
+    echo "    start   Attempts to start WildFly"
+    echo "    stop    Attempts to stop WildFly"
+    echo "    status  Retrieves the status of WildFly"
+    echo "    clean   Cleanup of WildFly, removing all deployments & log files"
+    echo
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doLock - Locks the program, so a second instance cannot start
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> 0 if successful, otherwise 1 (failed to obtain lock)
+# -----------------------------------------------------------------------------
+# Create the Lock file and assign a FileDescriptor to it, this is then used by
+# flock to create a lock that will prevent other programs from running
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doLock () {
+    # create lock file
+    eval "exec ${scriptLockFD}>${scriptLock}"
+
+    # acquire the lock
+    flock -n ${scriptLockFD} \
+        && return 0 \
+        || return 1
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# getProcesses - Returns the number of processes associated with WildFly
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Number of running processes (either one if running or zero if not)
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+getProcesses () {
+    return `netstat -pant 2>/dev/null | grep "LISTEN" | grep "${WildFlyPort}" | wc -l`
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doStart - Attempts to start WildFly
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doStart () {
+    getProcesses
+
+    if [ $? -eq 0 ]; then
+        echo "Starting WildFly ..."
+        ${cmdStart} 2>&1 >>${consoleLog} &
+    else
+        echo "WildFly is already running"
+    fi
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doStop - Attempts to stop WildFly
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doStop () {
+    getProcesses
+
+    if [ $? -ge 1 ]; then
+        echo "Stopping WildFly ..."
+
+        netstat -pant 2>/dev/null | grep ${WildFlyPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${consoleLog}
+        # If the debugging is running, the process may not be killed by the above command
+        netstat -pant 2>/dev/null | grep ${WildFlyDebugPort} | grep java | awk '{print $7;}' | cut -d'/' -f1 | xargs kill -15 2>&1 >>${consoleLog}
+        pgrep wildfly | xargs kill -15 2>&1 >/dev/null
+    else
+        echo "WildFly is not running"
+    fi
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doStatus - Retrieves the WildFly Status
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doStatus () {
+    getProcesses
+
+    if [ $? -ge 1 ]; then
+        echo "WildFly is running"
+    else
+        echo "WildFly is not running"
+    fi
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# doClean - Cleaning up logs and results
+# -----------------------------------------------------------------------------
+# Param  -> Void
+# Return -> Void
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doClean () {
+    getProcesses
+
+    if [ $? -ge 1 ]; then
+        echo "Cannot clear files when WildFly is running."
+    else
+        standalone=${appDirectory}/standalone
+        configuration=${standalone}/configuration
+
+        echo "Cleaning WildFly Log files"
+        rm -fr ${standalone}/log/*.log* 2>/dev/null
+
+        echo "Cleaning WildFly Data & Deployments"
+        rm -fr ${standalone}/data/* 2>/dev/null
+        rm -fr ${standalone}/deployments/* 2>/dev/null
+        rm -fr ${standalone}/tmp/vfs/deployment/* 2>/dev/null
+        rm -fr ${standalone}/tmp/vfs/temp/* 2>/dev/null
+        rm -fr ${standalone}/work/jboss.web/default-host/* 2>/dev/null
+
+        echo "Cleaning (Reverting) WildFly Standalone Configuration"
+        cp ${configuration}/standalone-clean.xml ${configuration}/standalone-iws.xml
+        rm -fr ${configuration}/standalone_xml_history 2>/dev/null
+    fi
+}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Main part, please don't touch!
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+doLock
+if [ $? -ne 0 ]; then
+    echo "Another instance is already running..."
+    exit 1
+elif [ $# = 1 ]; then
+    action=${1}
+
+    if [ "${action}" = "start" ]; then
+        doStart
+    elif [ "${action}" = "stop" ]; then
+        doStop
+    elif [ "${action}" = "status" ]; then
+        doStatus
+    elif [ "${action}" = "clean" ]; then
+        doClean
+    else
+        show_help
+    fi
+else
+    show_help
+fi
+
+# Now, remove the lockfile
+rm ${scriptLock}

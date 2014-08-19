@@ -23,13 +23,14 @@ import net.iaeste.iws.api.responses.FetchFileResponse;
 import net.iaeste.iws.api.responses.FileResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StorageController;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -39,11 +40,10 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  * Committee Bean, serves as the default EJB for the IWS Committee interface.
- * It uses JDNI instances for the Persistence Context and the Notification
+ * It uses JNDI instances for the Persistence Context and the Notification
  * Manager Bean.<br />
  *   The default implemenentation will catch any uncaught Exception. However,
  * there are some types of Exceptions that should be handled by the Contained,
@@ -63,9 +63,9 @@ import javax.persistence.PersistenceContext;
 public class StorageBean extends AbstractBean implements Storage {
 
     private static final Logger log = LoggerFactory.getLogger(StorageBean.class);
-    private EntityManager entityManager = null;
-    private NotificationManagerLocal notificationManager = null;
-    private Settings settings = new Settings();
+    @Inject @IWSBean private EntityManager entityManager;
+    @Inject @IWSBean private Notifications notifications;
+    @Inject @IWSBean private Settings settings;
     private Storage controller = null;
 
     /**
@@ -74,7 +74,6 @@ public class StorageBean extends AbstractBean implements Storage {
      *
      * @param entityManager Transactional Entity Manager instance
      */
-    @PersistenceContext(unitName = "iwsDatabase")
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -85,9 +84,8 @@ public class StorageBean extends AbstractBean implements Storage {
      *
      * @param notificationManager Notification Manager Bean
      */
-    @EJB(beanInterface = NotificationManagerLocal.class)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
-        this.notificationManager = notificationManager;
+        this.notifications = notificationManager;
     }
 
     /**
@@ -106,11 +104,7 @@ public class StorageBean extends AbstractBean implements Storage {
     @Override
     @PostConstruct
     public void postConstruct() {
-        if (settings.getDoJndiLookup()) {
-            settings.init();
-        }
-
-        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
+        final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
         controller = new StorageController(factory);
     }
 

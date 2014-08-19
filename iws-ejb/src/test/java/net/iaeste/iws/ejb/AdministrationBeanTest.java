@@ -26,6 +26,7 @@ import net.iaeste.iws.ejb.util.SettingJndiProperties;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
@@ -36,6 +37,7 @@ import javax.persistence.EntityManager;
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
+@Ignore("The entire test needs rewriting!")
 public class AdministrationBeanTest {
 
     private final EntityManager mockedEntityManager = mock(EntityManager.class);

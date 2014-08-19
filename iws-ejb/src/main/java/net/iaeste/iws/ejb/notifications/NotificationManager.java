@@ -52,9 +52,9 @@ import java.util.Map;
  * handling should be done via a "cron" job. That is a Timer job in EJB, or
  * perhaps via an external queuing system like Quartz.
  *
- * @author  Pavel Fiala / last $Author:$
+ * @author Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
- * @since   IWS 1.0
+ * @since IWS 1.0
  */
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -62,7 +62,7 @@ public class NotificationManager implements Notifications {
 
     private static final Logger log = LoggerFactory.getLogger(NotificationManager.class);
 
-    private final EntityManager iwsEntityManager;
+    private final EntityManager entityManager;
     private final EntityManager mailingEntityManager;
     private final Settings settings;
 
@@ -73,14 +73,14 @@ public class NotificationManager implements Notifications {
 
     private final boolean hostedInBean;
 
-    public NotificationManager(final EntityManager iwsEntityManager, final EntityManager mailingEntityManager, final Settings settings, final NotificationMessageGenerator messageGenerator, final boolean hostedInBean) {
-        this.iwsEntityManager = iwsEntityManager;
+    public NotificationManager(final EntityManager entityManager, final EntityManager mailingEntityManager, final Settings settings, final NotificationMessageGenerator messageGenerator, final boolean hostedInBean) {
+        this.entityManager = entityManager;
         this.mailingEntityManager = mailingEntityManager;
         this.settings = settings;
         this.messageGenerator = messageGenerator;
         this.hostedInBean = hostedInBean;
 
-        dao = new NotificationJpaDao(iwsEntityManager);
+        dao = new NotificationJpaDao(entityManager);
     }
 
     /**
@@ -91,7 +91,7 @@ public class NotificationManager implements Notifications {
         final NotificationConsumerClassLoader classLoader = new NotificationConsumerClassLoader();
 
         for (final NotificationConsumerEntity consumer : consumers) {
-            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), iwsEntityManager, mailingEntityManager, settings);
+            final Observer observer = classLoader.findConsumerClass(consumer.getClassName(), entityManager, mailingEntityManager, settings);
             observer.setId(consumer.getId());
             addObserver(observer);
         }
@@ -113,7 +113,6 @@ public class NotificationManager implements Notifications {
                 job.setModified(new Date());
                 dao.persist(job);
             }
-//            notifyObservers();
         }
         //TODO call observers even there is no new job. however, there is probably some tasks in the db... can be removed once the db (transaction?) issue is solved
         notifyObservers();
@@ -132,36 +131,11 @@ public class NotificationManager implements Notifications {
      */
     @Override
     public void notify(final Authentication authentication, final Notifiable obj, final NotificationType type) {
-        // Save the general information about the Object to be notified.
-//        final List<UserEntity> users = getRecipients(obj, type);
-
-//        final Map<String, String> messageTexts = messageGenerator.generateFromTemplate(obj, type);
-//        for (final UserEntity user : users) {
-            //get user settings
-            //TODO user should have permanent entry in the notification setting to receive messages about NotificationSubject.USER immediately
-//            final UserNotificationEntity userNotification = dao.findUserNotificationSetting(user, type);
-//
-//            if (userNotification != null) {
-//                final NotificationMessageEntity message = new NotificationMessageEntity();
-//                message.setUser(user);
-//                message.setStatus(NotificationMessageStatus.NEW);
-//                message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-//                only immediate messages for now
-//                message.setProcessAfter(new Date().toDate());
-//                message.setNotificationDeliveryMode(NotificationDeliveryMode.EMAIL);
-
-//                message.setMessage(messageTexts.get("body"));
-//                message.setMessageTitle(messageTexts.get("title"));
-//
-//                dao.persist(message);
-//            }
-//        }
-
-//        notifyObservers();
         log.info("New '" + type + "' notification request at NotificationManager");
+
         if (obj != null) {
-            try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                 final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);) {
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                 ObjectOutputStream objectStream = new ObjectOutputStream(outputStream)) {
                 final Map<NotificationField, String> fields = obj.prepareNotifiableFields(type);
                 objectStream.writeObject(fields);
                 final byte[] bytes = outputStream.toByteArray();
@@ -172,11 +146,9 @@ public class NotificationManager implements Notifications {
                     processJobs();
                 }
             } catch (IWSException e) {
-                log.error("Preparing notification job failed", e);
-            } catch (IOException ignored) {
-                //TODO write to log and skip the task or throw an exception?
-//                LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
-                log.warn("Serializing of Notifiable instance for NotificationType " + type + " failed");
+                log.error("Preparing notification job failed: " + e.getMessage(), e);
+            } catch (IOException e) {
+                log.warn("Serializing of Notifiable instance for NotificationType " + type + " failed: " + e.getMessage(), e);
             }
         }
     }
@@ -186,28 +158,11 @@ public class NotificationManager implements Notifications {
      */
     @Override
     public void notify(final UserEntity user) {
-//        final List<UserEntity> users = getRecipients(user, NotificationType.RESET_PASSWORD);
-//        if(users.size()==1) {
-//            final Map<String, String> messageTexts = messageGenerator.generateFromTemplate(user, NotificationType.RESET_PASSWORD);
-//            final NotificationMessageEntity message = new NotificationMessageEntity();
-//            message.setStatus(NotificationMessageStatus.NEW);
-//                message.setProcessAfter(getNotificationTime(userNotification.getFrequency()));
-            //only immediate messages for now
-//            message.setProcessAfter(new Date().toDate());
-//
-//            message.setMessage(messageTexts.get("body"));
-//            message.setMessageTitle(messageTexts.get("title"));
-//
-//            dao.persist(message);
-//            notifyObservers();
-//        } else {
-            //write to log?
-//        }
-
         log.info("New 'user' notification request at NotificationManager");
+
         if (user != null) {
-            try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                 final ObjectOutputStream objectStream = new ObjectOutputStream(outputStream);) {
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                 ObjectOutputStream objectStream = new ObjectOutputStream(outputStream)) {
                 final Map<NotificationField, String> fields = user.prepareNotifiableFields(NotificationType.RESET_PASSWORD);
                 objectStream.writeObject(fields);
                 final byte[] bytes = outputStream.toByteArray();
@@ -218,11 +173,9 @@ public class NotificationManager implements Notifications {
                     processJobs();
                 }
             } catch (IWSException e) {
-                log.error("Preparing notification job failed", e);
-            } catch (IOException ignored) {
-                //TODO write to log and skip the task or throw an exception?
-    //            LOG.warn("Serializing of Notifiable instance for NotificationType " + type + " failed", ignored);
-                log.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed");
+                log.error("Preparing notification job failed: " + e.getMessage(), e);
+            } catch (IOException e) {
+                log.warn("Serializing of Notifiable instance for NotificationType.RESET_PASSWORD failed: " + e.getMessage(), e);
             }
         }
     }
@@ -247,6 +200,4 @@ public class NotificationManager implements Notifications {
     public int getObserversCount() {
         return observers.size();
     }
-
-
 }

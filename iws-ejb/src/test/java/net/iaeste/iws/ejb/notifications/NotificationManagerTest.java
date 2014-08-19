@@ -14,24 +14,6 @@
  */
 package net.iaeste.iws.ejb.notifications;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import net.iaeste.iws.ejb.ffmq.MessageServer;
-import net.iaeste.iws.persistence.AccessDao;
-import net.iaeste.iws.persistence.NotificationDao;
-import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.notifications.NotificationConsumerEntity;
-import net.iaeste.iws.persistence.jpa.AccessJpaDao;
-import net.iaeste.iws.persistence.jpa.NotificationJpaDao;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This test uses FFMQ server, if it fails or is unstable, ignore it. Or to use mocking instead?
  *

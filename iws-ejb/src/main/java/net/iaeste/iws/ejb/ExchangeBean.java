@@ -46,13 +46,14 @@ import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.ExchangeController;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -67,11 +68,10 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  * Exchange Bean, serves as the default EJB for the IWS Exchange interface. It
- * uses JDNI instances for the Persistence Context and the Notification Manager
+ * uses JNDI instances for the Persistence Context and the Notification Manager
  * Bean.<br />
  *   The default implemenentation will catch any uncaught Exception. However,
  * there are some types of Exceptions that should be handled by the Contained,
@@ -93,9 +93,9 @@ import javax.persistence.PersistenceContext;
 public class ExchangeBean extends AbstractBean implements Exchange {
 
     private static final Logger log = LoggerFactory.getLogger(ExchangeBean.class);
-    private EntityManager entityManager = null;
-    private NotificationManagerLocal notificationManager = null;
-    private Settings settings = new Settings();
+    @Inject @IWSBean private EntityManager entityManager;
+    @Inject @IWSBean private Notifications notifications;
+    @Inject @IWSBean private Settings settings;
     private Exchange controller = null;
 
     /**
@@ -105,7 +105,6 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * @param entityManager Transactional Entity Manager instance
      */
     @WebMethod(exclude = true)
-    @PersistenceContext(unitName = "iwsDatabase")
     public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -117,9 +116,8 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * @param notificationManager Notification Manager Bean
      */
     @WebMethod(exclude = true)
-    @EJB(beanInterface = NotificationManagerLocal.class)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
-        this.notificationManager = notificationManager;
+        this.notifications = notificationManager;
     }
 
     /**
@@ -140,11 +138,7 @@ public class ExchangeBean extends AbstractBean implements Exchange {
     @PostConstruct
     @WebMethod(exclude = true)
     public void postConstruct() {
-        if (settings.getDoJndiLookup()) {
-            settings.init();
-        }
-
-        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
+        final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
         controller = new ExchangeController(factory);
     }
 

@@ -30,7 +30,9 @@ import net.iaeste.iws.api.responses.student.StudentApplicationResponse;
 import net.iaeste.iws.api.responses.student.StudentResponse;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.StudentController;
+import net.iaeste.iws.core.notifications.Notifications;
 import net.iaeste.iws.core.services.ServiceFactory;
+import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.ejb.interceptors.Profiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +52,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  * Exchange Bean, serves as the default EJB for the IWS Exchange interface. It
- * uses JDNI instances for the Persistence Context and the Notification Manager
+ * uses JNDI instances for the Persistence Context and the Notification Manager
  * Bean.<br />
  *   The default implemenentation will catch any uncaught Exception. However,
  * there are some types of Exceptions that should be handled by the Contained,
@@ -70,9 +72,9 @@ import javax.persistence.PersistenceContext;
 public class StudentBean extends AbstractBean implements Students {
 
     private static final Logger log = LoggerFactory.getLogger(StudentBean.class);
-    private EntityManager entityManager = null;
-    private NotificationManagerLocal notificationManager = null;
-    private Settings settings = new Settings();
+    @Inject @IWSBean private EntityManager entityManager;
+    @Inject @IWSBean private Notifications notifications;
+    @Inject @IWSBean private Settings settings;
     private Students controller = null;
 
     /**
@@ -94,7 +96,7 @@ public class StudentBean extends AbstractBean implements Students {
      */
     @EJB(beanInterface = NotificationManagerLocal.class)
     public void setNotificationManager(final NotificationManagerLocal notificationManager) {
-        this.notificationManager = notificationManager;
+        this.notifications = notificationManager;
     }
 
     /**
@@ -113,11 +115,7 @@ public class StudentBean extends AbstractBean implements Students {
     @Override
     @PostConstruct
     public void postConstruct() {
-        if (settings.getDoJndiLookup()) {
-            settings.init();
-        }
-
-        final ServiceFactory factory = new ServiceFactory(entityManager, notificationManager, settings);
+        final ServiceFactory factory = new ServiceFactory(entityManager, notifications, settings);
         controller = new StudentController(factory);
     }
 

@@ -16,14 +16,11 @@ package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.core.notifications.Notifications;
 
-import javax.ejb.Local;
-
 /**
  * @author  Kim Jensen / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
-@Local
 public interface NotificationManagerLocal extends Notifications {
 
     void setNotifications(Notifications notifications);

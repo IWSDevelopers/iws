@@ -17,6 +17,7 @@ package net.iaeste.iws.ejb.emails;
 import net.iaeste.iws.api.constants.IWSErrors;
 import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
+import net.iaeste.iws.ejb.cdi.IWSBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,29 +38,33 @@ import java.io.Serializable;
 import java.util.Properties;
 
 /**
- *   The sending information (port, addresses) will be injected using JNDI.
+ * The sending information (port, addresses) will be injected using JNDI.
  *
  * @author  Pavel Fiala / last $Author:$
  * @version $Revision:$ / $Date:$
  * @since   IWS 1.0
  */
 @MessageDriven(
-        mappedName = "queue/iwsEmailQueue", /*required by glassfish*/
+//        mappedName = "queue/iwsEmailQueue", /*required by glassfish*/
         activationConfig = {
-                @ActivationConfigProperty(
-                        propertyName = "destinationType",
-                        propertyValue = "javax.jms.Queue"),
-                @ActivationConfigProperty(/* required by jboss */
-                        propertyName = "destinationLookup",
-                        propertyValue = "queue/iwsEmailQueue")
+                @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+                @ActivationConfigProperty(propertyName = "destination", propertyValue = "jms/queue/iwsEmailQueue"),
+                @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
         }
+//        activationConfig = {
+//                @ActivationConfigProperty(
+//                        propertyName = "destinationType",
+//                        propertyValue = "javax.jms.Queue"),
+//                @ActivationConfigProperty(/* required by jboss */
+//                        propertyName = "destinationLookup",
+//                        propertyValue = "jms/queue/iwsEmailQueue")
+//        }
 )
 public class EmailSender implements MessageListener {
 
     private static final Logger log = LoggerFactory.getLogger(EmailSender.class);
-    //private IwsSystemSetting iwsSystemSetting;
 
-    private Settings settings;
+    @Inject @IWSBean private Settings settings;
 
     /**
      * Default constructor
@@ -68,9 +73,6 @@ public class EmailSender implements MessageListener {
      */
     public EmailSender() {
         log.info("Starting EmailSender");
-        //iwsSystemSetting = IwsSystemSetting.getInstance();
-        settings = new Settings();
-        settings.init();
     }
 
     /**
@@ -122,7 +124,7 @@ public class EmailSender implements MessageListener {
         return Session.getDefaultInstance(properties);
     }
 
-    private static InternetAddress prepareAddress(final String address) {
+    private InternetAddress prepareAddress(final String address) {
         try {
             return new InternetAddress(address);
         } catch (AddressException e) {

@@ -100,15 +100,11 @@ public class Beans {
 
     public static Settings settings() {
         final Settings settings = new Settings();
-        settings.setDoJndiLookup(false);
 
         settings.setMaxActiveTokens(MAX_ACTIVE_TOKENS);
         settings.setMaxIdleTimeForSessions(MAX_IDLE_TIME_FOR_SESSIONS);
         settings.setMaxLoginRetries(MAX_LOGIN_RETRIES);
         settings.setLoginBlockedTime(LOGIN_BLOCKED_TIME);
-
-        // For our tests, we're just setting this to the TEMP dir.
-        settings.setRootFilePath(System.getProperty("java.io.tmpdir"));
 
         return settings;
     }

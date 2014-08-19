@@ -54,7 +54,6 @@ public class EmailSender implements MessageListener {
     private static final Logger log = LoggerFactory.getLogger(EmailSender.class);
     //private IwsSystemSetting iwsSystemSetting;
 
-    @Inject
     private Settings settings;
 
     /**

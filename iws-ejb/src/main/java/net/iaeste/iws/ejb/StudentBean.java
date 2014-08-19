@@ -103,7 +103,6 @@ public class StudentBean extends AbstractBean implements Students {
      *
      * @param settings Settings Bean
      */
-    @Inject
     public void setSettings(final Settings settings) {
         this.settings = settings;
     }

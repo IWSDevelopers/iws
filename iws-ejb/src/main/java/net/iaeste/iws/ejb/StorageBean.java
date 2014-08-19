@@ -96,7 +96,6 @@ public class StorageBean extends AbstractBean implements Storage {
      *
      * @param settings Settings Bean
      */
-    @Inject
     public void setSettings(final Settings settings) {
         this.settings = settings;
     }

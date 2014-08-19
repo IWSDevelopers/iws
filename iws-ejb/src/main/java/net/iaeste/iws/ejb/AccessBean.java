@@ -111,7 +111,6 @@ public class AccessBean extends AbstractBean implements Access {
      * @param settings Settings Bean
      */
     @WebMethod(exclude = true)
-    @Inject
     public void setSettings(final Settings settings) {
         this.settings = settings;
     }

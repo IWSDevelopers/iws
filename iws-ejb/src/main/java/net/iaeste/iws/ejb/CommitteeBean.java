@@ -97,7 +97,6 @@ public class CommitteeBean extends AbstractBean implements Committees {
      *
      * @param settings Settings Bean
      */
-    @Inject
     public void setSettings(final Settings settings) {
         this.settings = settings;
     }

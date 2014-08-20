@@ -94,4 +94,18 @@ public class CollectionTransformerTest {
         assertThat(resultSet, is(expectedSet));
     }
 
+    @Test
+    public void testExplodeOneItemStringTicket873() {
+        final String[] strings = { "str1" };
+        final String stringToExplode = strings[0];
+        final List<String> expectedList = Arrays.asList(strings);
+        final Set<String> expectedSet = new HashSet<>(expectedList);
+
+        final List<String> resultList = CollectionTransformer.explodeStringList(stringToExplode);
+        final Set<String> resultSet = CollectionTransformer.explodeStringSet(stringToExplode);
+
+        assertThat(resultList, is(expectedList));
+        assertThat(resultSet, is(expectedSet));
+    }
+
 }

@@ -379,6 +379,8 @@
                             <entry name="java:/JmsXA"/>
                             <!-- Global JNDI entry used to provide a default JMS Connection factory to EE application -->
                             <entry name="java:jboss/DefaultJMSConnectionFactory"/>
+                             <!-- An IWS connection factory, maybe we can use the default one, it was not available on glassfish -->
++                            <entry name="java:/jms/factory/iwsQueueConnectionFactory"/>
                         </entries>
                     </pooled-connection-factory>
                 </jms-connection-factories>

@@ -77,11 +77,11 @@ public class NotificationEmailSender implements Observer {
 
     //Need to be EJB to use @resource
 //    @Resource(mappedName = "iwsEmailQueue")
-    private static final String QUEUE_NAME = "jms/iwsEmailQueue";
+    private static final String QUEUE_NAME = "jms/queue/iwsEmailQueue";
     private Queue queue;
 
 //    @Resource(mappedName = "iwsQueueConnectionFactory")
-    private static final String QUEUE_FACTORY_NAME = "factory/iwsQueueConnectionFactory";
+    private static final String QUEUE_FACTORY_NAME = "jms/factory/iwsQueueConnectionFactory";
     private QueueConnectionFactory queueConnectionFactory;
 
     private QueueConnection queueConnection = null;

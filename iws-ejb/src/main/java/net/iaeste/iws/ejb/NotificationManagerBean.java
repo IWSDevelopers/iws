@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Local;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
@@ -232,7 +233,7 @@ public class NotificationManagerBean implements NotificationManagerLocal {
     }
 
     // Commented for now, since this causes huge stack traces!
-    //@Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds", persistent = false)
+    @Schedule(second = "*/30",minute = "*", hour = "*", info="Every 30 seconds", persistent = false)
     private void processJobsScheduled() {
         log.info("processJobsScheduled started at " + new DateTime());
         final boolean run;

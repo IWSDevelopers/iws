@@ -119,8 +119,13 @@ public final class StringUtils {
         final String[] result;
 
         if (str != null) {
-            if (!str.isEmpty() && str.contains(separatorChars)) {
-                result = str.split('\\' + separatorChars);
+            if (!str.isEmpty()) {
+                if (str.contains(separatorChars)) {
+                    result = str.split('\\' + separatorChars);
+                } else {
+                    result = new String[1];
+                    result[0] = str;
+                }
             } else {
                 result = EMPTY_STRING_ARRAY;
             }

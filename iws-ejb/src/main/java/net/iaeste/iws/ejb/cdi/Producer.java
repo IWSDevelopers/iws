@@ -40,8 +40,9 @@ import java.util.Properties;
 public class Producer {
 
     private static final Logger log = LoggerFactory.getLogger(Producer.class);
-    private static final String JBOSS_HOME = "JBOSS_HOME";
-    private static final String PROPERTIES_FILE = "/standalone/configuration/iws.properties";
+    // See https://docs.jboss.org/author/display/WFLY8/Command+line+parameters
+    private static final String JBOSS_CONFIG_DIR = "jboss.server.config.dir";
+    private static final String PROPERTIES_FILE = "/iws.properties";
 
     /**
      * The primary database for the IWS.
@@ -93,7 +94,8 @@ public class Producer {
      * @return IWS Settings
      */
     private Settings prepareSettings() {
-        final String file = System.getProperty(JBOSS_HOME) + PROPERTIES_FILE;
+        final String file = System.getProperty(JBOSS_CONFIG_DIR) + PROPERTIES_FILE;
+        log.info("Reading the IWS Properties from '" + file + "'.");
         Settings mySettings = null;
 
         try (InputStream stream = new FileInputStream(file)) {

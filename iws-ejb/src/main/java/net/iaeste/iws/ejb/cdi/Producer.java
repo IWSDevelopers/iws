@@ -24,6 +24,7 @@ import javax.ejb.EJB;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,9 +41,22 @@ import java.util.Properties;
 public class Producer {
 
     private static final Logger log = LoggerFactory.getLogger(Producer.class);
-    // See https://docs.jboss.org/author/display/WFLY8/Command+line+parameters
+
+    /**
+     * See https://docs.jboss.org/author/display/WFLY8/Command+line+parameters
+     */
     private static final String JBOSS_CONFIG_DIR = "jboss.server.config.dir";
-    private static final String PROPERTIES_FILE = "/iws.properties";
+
+    /**
+     * See http://czetsuya-tech.blogspot.de/2012/07/how-to-load-property-file-from.html
+     */
+    private static String GLASSFISH_HOME = "com.sun.aas.instanceRoot";
+    /**
+     * Glassfish configuration folder.
+     */
+    private static String GLASSFISH_CONFIG_DIR = "config";
+
+    private static final String PROPERTIES_FILE = "iws.properties";
 
     /**
      * The primary database for the IWS.
@@ -94,23 +108,46 @@ public class Producer {
      * @return IWS Settings
      */
     private Settings prepareSettings() {
-        final String file = System.getProperty(JBOSS_CONFIG_DIR) + PROPERTIES_FILE;
-        log.info("Reading the IWS Properties from '" + file + "'.");
+        final String dir = readPropertyFileLocationFromSystem();
         Settings mySettings = null;
 
-        try (InputStream stream = new FileInputStream(file)) {
-            final Properties properties = new Properties();
-            properties.load(stream);
+        if (dir != null) {
+            final String file = dir + File.separator + PROPERTIES_FILE;
+            log.info("Reading the IWS Properties from '" + file + "'.");
 
-            mySettings = new Settings(properties);
-        } catch (FileNotFoundException e) {
-            log.warn("Properties file was not found, reverting to default values.", e);
-            mySettings = new Settings();
-        } catch (IOException e) {
-            log.warn("Properties file could not be loaded, reverting to default values.", e);
+            try (InputStream stream = new FileInputStream(file)) {
+                final Properties properties = new Properties();
+                properties.load(stream);
+
+                mySettings = new Settings(properties);
+            } catch (FileNotFoundException e) {
+                log.warn("Properties file was not found, reverting to default values.", e);
+                mySettings = new Settings();
+            } catch (IOException e) {
+                log.warn("Properties file could not be loaded, reverting to default values.", e);
+                mySettings = new Settings();
+            }
+        } else {
+            log.warn("Application Server Configuration Path cannot be read.");
             mySettings = new Settings();
         }
 
         return mySettings;
+    }
+
+    private String readPropertyFileLocationFromSystem() {
+        String config = null;
+
+        final String jbossConfig = System.getProperty(JBOSS_CONFIG_DIR);
+        if (jbossConfig != null) {
+            config = jbossConfig;
+        } else {
+            final String glassfishInstance = System.getProperty(GLASSFISH_HOME);
+            if (glassfishInstance != null) {
+                config = glassfishInstance + File.separator + GLASSFISH_CONFIG_DIR;
+            }
+        }
+
+        return config;
     }
 }

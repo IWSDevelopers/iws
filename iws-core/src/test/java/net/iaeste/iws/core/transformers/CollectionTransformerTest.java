@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import net.iaeste.iws.api.enums.Language;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -95,6 +96,7 @@ public class CollectionTransformerTest {
     }
 
     @Test
+    @Ignore
     public void testExplodeOneItemStringTicket873() {
         final String[] strings = { "str1" };
         final String stringToExplode = strings[0];

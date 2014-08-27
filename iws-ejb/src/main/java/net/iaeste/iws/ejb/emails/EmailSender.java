@@ -45,12 +45,13 @@ import java.util.Properties;
  * @since   IWS 1.0
  */
 @MessageDriven(
-        mappedName = "queue/iwsEmailQueue", /*required by glassfish*/
+        mappedName = "jms/queue/iwsEmailQueue", /*required by glassfish*/
         activationConfig = {
                 @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
                 // Not sure if the following should be "destination" or "destinationLookup".
                 // I took the "destination", as that is what I've used in a JBoss 6.x project
-                @ActivationConfigProperty(propertyName = "destination", propertyValue = "jms/queue/iwsEmailQueue"),
+                // ... destinationLookup seems to work on glassfish
+                @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "jms/queue/iwsEmailQueue"),
                 @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
         }
 //        activationConfig = {

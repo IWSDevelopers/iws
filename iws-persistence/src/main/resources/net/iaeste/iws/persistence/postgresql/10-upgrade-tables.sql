@@ -33,6 +33,19 @@ commit;
 -- Now, we just have to add the views again :-)
 
 -- =============================================================================
+-- Corrections for trac Tickets: #890
+-- -----------------------------------------------------------------------------
+-- Add default value for offer_to_group.has_application
+-- =============================================================================
+-- Start a transaction, so the process dies if there is an error somewhere
+begin;
+-- Update existing rows and set default value
+update offer_to_group set has_application = false where has_application is null;
+alter table offer_to_group alter column has_application set default false;
+-- Save the changes
+commit;
+
+-- =============================================================================
 -- Corrections for trac Tickets: #668 & #734
 -- -----------------------------------------------------------------------------
 -- Changes to the Session Table, required to fix Trac ticket #846. Where are

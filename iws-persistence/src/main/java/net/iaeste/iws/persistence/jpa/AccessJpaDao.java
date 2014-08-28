@@ -35,6 +35,8 @@ import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -165,8 +167,13 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public Integer deprecateSession(final UserEntity user) {
+        // Format is: Year + Month + Date + Hour24 + Minute + Second + Millis
+        // Example: 20140503193432987 -> May 3rd, 2014 at 19:34:43.987
+        final String timestampFormat = "yyyyMMddHHmmssSSS";
+        DateFormat formatter = new SimpleDateFormat(timestampFormat, IWSConstants.DEFAULT_LOCALE);
+
         final Query query = entityManager.createNamedQuery("session.deprecate");
-        query.setParameter("deprecated", new Date());
+        query.setParameter("deprecated", formatter.format(new Date()));
         query.setParameter("id", user.getId());
 
         return query.executeUpdate();

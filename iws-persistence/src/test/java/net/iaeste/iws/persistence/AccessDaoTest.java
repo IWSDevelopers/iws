@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
@@ -32,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -60,10 +63,12 @@ public class AccessDaoTest {
         entity.setUser(user);
         dao.persist(entity);
 
+        DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS", IWSConstants.DEFAULT_LOCALE);
+
         // Find the newly created Session, deprecate it, and save it again
         final SessionEntity found = dao.findActiveSession(user);
         assertThat(found, is(not(nullValue())));
-        found.setDeprecated(new Date());
+        found.setDeprecated(formatter.format(new Date()));
         dao.persist(found);
 
         // Now, we should not be able to find it

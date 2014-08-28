@@ -43,18 +43,18 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "session.findByToken",
                 query = "select s from SessionEntity s " +
-                        "where s.deprecated is null " +
+                        "where s.deprecated = '0'" +
                         "  and s.sessionKey = :key"),
         @NamedQuery(name = "session.findByUser",
                 query = "select s from SessionEntity s " +
-                        "where s.deprecated is null " +
+                        "where s.deprecated = '0'" +
                         "  and s.user.id = :id"),
         @NamedQuery(name = "session.deprecate",
                 query = "update SessionEntity s set " +
                         "   s.deprecated = :deprecated, " +
                         "   s.sessionData = null, " +
                         "   s.modified = current_timestamp " +
-                        "where s.deprecated is null " +
+                        "where s.deprecated = '0'" +
                         "  and s.user.id = :id"),
         @NamedQuery(name = "session.deleteUserSessions",
                 query = "delete from SessionEntity s " +
@@ -80,8 +80,8 @@ public class SessionEntity implements Externable<SessionEntity> {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
     private UserEntity user = null;
 
-    @Column(name = "deprecated")
-    private Date deprecated = null;
+    @Column(name = "deprecated", length = 32, nullable = false)
+    private String deprecated = "0";
 
     @Column(name = "session_data")
     private byte[] sessionData = null;
@@ -173,11 +173,11 @@ public class SessionEntity implements Externable<SessionEntity> {
         return user;
     }
 
-    public void setDeprecated(final Date deprecated) {
+    public void setDeprecated(final String deprecated) {
         this.deprecated = deprecated;
     }
 
-    public Date getDeprecated() {
+    public String getDeprecated() {
         return deprecated;
     }
 

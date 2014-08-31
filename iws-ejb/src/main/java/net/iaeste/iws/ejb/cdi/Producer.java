@@ -71,7 +71,7 @@ public class Producer {
      * upgrade (see Trac task #) & PostgreSQL replication (see Trac task #).
      */
     @Produces @IWSBean(IWSBean.Type.SECONDARY)
-    @PersistenceContext(unitName = "mailingListDatabase")
+    @PersistenceContext(unitName = "mailDatabase")
     private EntityManager mailEntityManager = null;
 
     /**

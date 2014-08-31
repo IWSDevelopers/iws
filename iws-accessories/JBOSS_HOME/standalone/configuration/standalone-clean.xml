@@ -146,7 +146,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:datasources:2.0">
             <datasources>
-                <datasource jta="false" jndi-name="java:jboss/datasources/iwsDS" pool-name="iwsDS" enabled="true" use-ccm="false">
+                <datasource jta="false" jndi-name="java:/datasources/iwsDS" pool-name="iwsDS" enabled="true" use-ccm="false">
                     <connection-url>jdbc:postgresql://localhost:5432/iws</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>
@@ -171,7 +171,7 @@
                         <share-prepared-statements>true</share-prepared-statements>
                     </statement>
                 </datasource>
-                <datasource jta="false" jndi-name="java:jboss/datasources/mailDS" pool-name="mailDS" enabled="true" use-ccm="false">
+                <datasource jta="false" jndi-name="java:/datasources/mailDS" pool-name="mailDS" enabled="true" use-ccm="false">
                     <connection-url>jdbc:postgresql://localhost:5432/iws</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql</driver>

@@ -201,12 +201,9 @@ public final class FetchPermissionResponse extends AbstractFallible {
 
                 for (Permission permission : role.getPermissions()) {
                     if (!permissionMap.containsKey(permission)) {
-                        final List<Group> groups = new ArrayList<>(1);
-                        groups.add(group);
-                        permissionMap.put(permission, groups);
-                    } else {
-                        permissionMap.get(permission).add(group);
+                        permissionMap.put(permission, new ArrayList<Group>(1));
                     }
+                    permissionMap.get(permission).add(group);
                 }
             }
         }

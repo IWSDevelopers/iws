@@ -166,6 +166,10 @@ public final class FetchPermissionResponse extends AbstractFallible {
     public List<Group> getGroups(final Permission permission) {
         final List<Group> groups;
 
+        // Before checking the map, let's ensure that it has been generated.
+        // Otherwise we'll get a NullPointerException
+        convertPermissions();
+
         if (permissionMap.containsKey(permission)) {
             groups = permissionMap.get(permission);
         } else {

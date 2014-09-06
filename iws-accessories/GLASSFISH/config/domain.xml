@@ -23,55 +23,32 @@
       <property name="connectionAttributes" value=";create=true"></property>
     </jdbc-connection-pool>
     <jdbc-connection-pool datasource-classname="org.postgresql.ds.PGConnectionPoolDataSource" res-type="javax.sql.ConnectionPoolDataSource" name="iwsDatabasePool" ping="true">
-      <property name="PortNumber" value="5432"></property>
       <property name="ServerName" value="localhost"></property>
+      <property name="PortNumber" value="5432"></property>
       <property name="DatabaseName" value="iws"></property>
       <property name="User" value="iws_user"></property>
       <property name="Password" value="iws"></property>
     </jdbc-connection-pool>
-    <jdbc-resource pool-name="iwsDatabasePool" jndi-name="iws"></jdbc-resource>
+    <jdbc-resource pool-name="iwsDatabasePool" description="IWS Primary Database" jndi-name="datasources/iwsDS"></jdbc-resource>
     <jdbc-connection-pool datasource-classname="org.postgresql.xa.PGXADataSource" res-type="javax.sql.XADataSource" name="mailDatabasePool" ping="true">
-      <property name="PortNumber" value="5432"></property>
       <property name="ServerName" value="localhost"></property>
+      <property name="PortNumber" value="5432"></property>
       <property name="DatabaseName" value="iws"></property>
       <property name="User" value="mail_user"></property>
       <property name="Password" value="mail"></property>
     </jdbc-connection-pool>
-    <jdbc-resource pool-name="mailDatabasePool" jndi-name="mail"></jdbc-resource>
-    <connector-connection-pool max-pool-size="250" steady-pool-size="1" name="factory/iwsQueueConnectionFactory" resource-adapter-name="jmsra" connection-definition-name="javax.jms.QueueConnectionFactory"></connector-connection-pool>
-    <connector-resource pool-name="factory/iwsQueueConnectionFactory" jndi-name="factory/iwsQueueConnectionFactory"></connector-resource>
-    <admin-object-resource res-adapter="jmsra" res-type="javax.jms.Queue" jndi-name="queue/iwsEmailQueue">
-      <property name="Name" value="queue_iwsEmailQueue"></property>
-    </admin-object-resource>
-    <custom-resource res-type="java.util.Properties" jndi-name="iws-setting" factory-class="org.glassfish.resources.custom.factory.PropertiesFactory">
-      <property name="privateMailAddress" value="[&lt;ENV&gt;.]iaeste.net"></property>
-      <property name="iw4BaseUrl" value="http://localhost:8080/intraweb"></property>
-      <property name="publicMailAddress" value="[&lt;ENV&gt;.]iaeste.org"></property>
-      <property name="smtpPort" value="25"></property>
-      <property name="rootFilePath" value="/path/to/file/directory"></property>
-      <property name="smtpAddress" value="localhost"></property>
-      <property name="sendingEmailAddress" value="iw4@[&lt;ENV&gt;.]iaeste.net"></property>
-    </custom-resource>
+    <jdbc-resource pool-name="mailDatabasePool" description="IWS Mail Database" jndi-name="datasources/mailDS"></jdbc-resource>
     <connector-connection-pool max-pool-size="250" steady-pool-size="1" name="jms/factory/iwsQueueConnectionFactory" resource-adapter-name="jmsra" connection-definition-name="javax.jms.QueueConnectionFactory"></connector-connection-pool>
     <connector-resource pool-name="jms/factory/iwsQueueConnectionFactory" jndi-name="jms/factory/iwsQueueConnectionFactory"></connector-resource>
     <admin-object-resource res-adapter="jmsra" res-type="javax.jms.Queue" jndi-name="jms/queue/iwsEmailQueue">
       <property name="Name" value="jms_queue_iwsEmailQueue"></property>
     </admin-object-resource>
-    <jdbc-resource pool-name="iwsDatabasePool" description="IWS Primary Database" jndi-name="datasources/iwsDS"></jdbc-resource>
-    <jdbc-resource pool-name="mailDatabasePool" description="IWS Mail Database" jndi-name="datasources/mailDS"></jdbc-resource>
   </resources>
   <servers>
     <server name="server" config-ref="server-config">
       <application-ref ref="__admingui" virtual-servers="__asadmin"></application-ref>
-      <application-ref ref="iws" virtual-servers="server"></application-ref>
-      <application-ref ref="iws-fe-1.1-SNAPSHOT" virtual-servers="server"></application-ref>
       <resource-ref ref="jdbc/__TimerPool"></resource-ref>
       <resource-ref ref="jdbc/__default"></resource-ref>
-      <resource-ref ref="iws"></resource-ref>
-      <resource-ref ref="mailingList"></resource-ref>
-      <resource-ref ref="factory/iwsQueueConnectionFactory"></resource-ref>
-      <resource-ref ref="queue/iwsEmailQueue"></resource-ref>
-      <resource-ref ref="iws-setting"></resource-ref>
       <resource-ref ref="jms/factory/iwsQueueConnectionFactory"></resource-ref>
       <resource-ref ref="jms/queue/iwsEmailQueue"></resource-ref>
       <resource-ref ref="datasources/iwsDS"></resource-ref>
@@ -186,6 +163,7 @@
       </security-service>
       <transaction-service tx-log-dir="${com.sun.aas.instanceRoot}/logs"></transaction-service>
       <java-config debug-options="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009" system-classpath="" classpath-suffix="">
+        <jvm-options>-Xmx2048m</jvm-options>
         <jvm-options>-XX:MaxPermSize=192m</jvm-options>
         <jvm-options>-XX:PermSize=64m</jvm-options>
         <jvm-options>-client</jvm-options>
@@ -462,32 +440,5 @@
   <lb-configs></lb-configs>
   <clusters></clusters>
   <applications>
-    <application location="${com.sun.aas.instanceRootURI}/applications/iws/" name="iws" object-type="user">
-      <property name="java-web-start-enabled" value="true"></property>
-      <property name="preserveAppScopedResources" value="false"></property>
-      <property name="isComposite" value="true"></property>
-      <property name="appLocation" value="${com.sun.aas.instanceRootURI}/applications/__internal/iws/iws2437738555992048289.ear"></property>
-      <property name="org.glassfish.ejb.container.application_unique_id" value="92374098791170048"></property>
-      <property name="defaultAppName" value="iws2437738555992048289"></property>
-      <engine sniffer="ear"></engine>
-      <module name="iws-ejb.jar">
-        <property name="org.glassfish.persistence.app_name_property" value="iws"></property>
-        <engine sniffer="ejb"></engine>
-        <engine sniffer="security"></engine>
-        <engine sniffer="webservices"></engine>
-        <engine sniffer="jpa"></engine>
-        <engine sniffer="weld"></engine>
-      </module>
-    </application>
-    <application context-root="/iws-fe-1.1-SNAPSHOT" location="${com.sun.aas.instanceRootURI}/applications/iws-fe-1.1-SNAPSHOT/" name="iws-fe-1.1-SNAPSHOT" object-type="user">
-      <property name="appLocation" value="${com.sun.aas.instanceRootURI}/applications/__internal/iws-fe-1.1-SNAPSHOT/iws-fe-13274641972189204591.1-SNAPSHOT.war"></property>
-      <property name="preserveAppScopedResources" value="false"></property>
-      <property name="defaultAppName" value="iws-fe-13274641972189204591.1-SNAPSHOT"></property>
-      <module name="iws-fe-1.1-SNAPSHOT">
-        <engine sniffer="security"></engine>
-        <engine sniffer="web"></engine>
-        <engine sniffer="weld"></engine>
-      </module>
-    </application>
   </applications>
 </domain>

@@ -60,13 +60,13 @@ public class SpringConfig {
 
     private static DataSource hsqldbDataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL)
-                .addScript("net/iaeste/iws/persistence/hsqldb/01-base-tables.sql")
-                .addScript("net/iaeste/iws/persistence/02-base-views.sql")
-                .addScript("net/iaeste/iws/persistence/03-base-data.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/04-exchange-tables.sql")
-                .addScript("net/iaeste/iws/persistence/05-exchange-views.sql")
-                .addScript("net/iaeste/iws/persistence/06-exchange-data.sql")
-                .addScript("net/iaeste/iws/persistence/hsqldb/08-mailing-list-tables.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/10-base-tables.sql")
+                .addScript("net/iaeste/iws/persistence/15-base-views.sql")
+                .addScript("net/iaeste/iws/persistence/19-base-data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/30-exchange-tables.sql")
+                .addScript("net/iaeste/iws/persistence/35-exchange-views.sql")
+                .addScript("net/iaeste/iws/persistence/39-exchange-data.sql")
+                .addScript("net/iaeste/iws/persistence/hsqldb/20-mailing-list-tables.sql")
                 .addScript("net/iaeste/iws/persistence/90-initial-test-data.sql")
                 .build();
     }

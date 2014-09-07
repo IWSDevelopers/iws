@@ -2,13 +2,16 @@
 -- This script contain the basic tables for the IWS
 -- -----------------------------------------------------------------------------
 -- Revision History:
+-- 1.00 September 7, 2014 - Kim Jensen <kim@dawn.dk>
+--   - Various minor upgrades for IWS 1.1
+--   - Moved creation to a different script, making this script safer to run
 -- 0.01 June 4, 2013 - Kim Jensen <kim@dawn.dk>
 --   - Initial revision, based on the hsqldb
 -- -----------------------------------------------------------------------------
 -- The script uses PostgreSQL 9+ specific commands, it will not work with
 -- previous versions of PostgreSQL, nor with any other database system.
 --   To install, please do the following:
--- $ psql <DATABASE_NAME> < core.sql
+-- $ psql -f 10-base-tables.sql <DATABASE_NAME>
 -- -----------------------------------------------------------------------------
 -- To view the comments, please invoke the enhanced descriptor command: \d+
 -- -----------------------------------------------------------------------------
@@ -26,16 +29,6 @@
 -- File Handling:
 --     - Files
 -- =============================================================================
-
-
--- =============================================================================
--- Drop & Create the public schema for clean up. Although the user requires
--- super-user rights perform, we do no care - since the production database
--- will be instantiated via a super-user, and for development, the developer is
--- expected to be superuser.
--- =============================================================================
-drop schema if exists public cascade;
-create schema public;
 
 
 -- =============================================================================

@@ -163,6 +163,13 @@
       </security-service>
       <transaction-service tx-log-dir="${com.sun.aas.instanceRoot}/logs"></transaction-service>
       <java-config debug-options="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009" system-classpath="" classpath-suffix="">
+        <!-- Default is 512MB, which is working fine for most cases. IWS is
+             working fine within that limit. However, on production it was
+             raised to 8GB, but this causes problems with IW4, as the JSF Pages
+             requires rather large amounts of memory to keep all data. However,
+             8GB also causes problems for the Garbage Collector, so a better
+             limit is 2GB. If this is insufficient, we should consider multiple
+             instances and a load balancer. -->
         <jvm-options>-Xmx2048m</jvm-options>
         <jvm-options>-XX:MaxPermSize=192m</jvm-options>
         <jvm-options>-XX:PermSize=64m</jvm-options>
@@ -174,7 +181,6 @@
         <jvm-options>-Djava.security.policy=${com.sun.aas.instanceRoot}/config/server.policy</jvm-options>
         <jvm-options>-Djava.security.auth.login.config=${com.sun.aas.instanceRoot}/config/login.conf</jvm-options>
         <jvm-options>-Dcom.sun.enterprise.security.httpsOutboundKeyAlias=s1as</jvm-options>
-        <jvm-options>-Xmx512m</jvm-options>
         <jvm-options>-Djavax.net.ssl.keyStore=${com.sun.aas.instanceRoot}/config/keystore.jks</jvm-options>
         <jvm-options>-Djavax.net.ssl.trustStore=${com.sun.aas.instanceRoot}/config/cacerts.jks</jvm-options>
         <jvm-options>-Djava.ext.dirs=${com.sun.aas.javaRoot}/lib/ext${path.separator}${com.sun.aas.javaRoot}/jre/lib/ext${path.separator}${com.sun.aas.instanceRoot}/lib/ext</jvm-options>

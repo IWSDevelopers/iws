@@ -34,8 +34,8 @@
       <property name="ServerName" value="localhost"></property>
       <property name="PortNumber" value="5432"></property>
       <property name="DatabaseName" value="iws"></property>
-      <property name="User" value="mail_user"></property>
-      <property name="Password" value="mail"></property>
+      <property name="User" value="iws_user"></property>
+      <property name="Password" value="iws"></property>
     </jdbc-connection-pool>
     <jdbc-resource pool-name="mailDatabasePool" description="IWS Mail Database" jndi-name="datasources/mailDS"></jdbc-resource>
     <connector-connection-pool max-pool-size="250" steady-pool-size="1" name="jms/factory/iwsQueueConnectionFactory" resource-adapter-name="jmsra" connection-definition-name="javax.jms.QueueConnectionFactory"></connector-connection-pool>

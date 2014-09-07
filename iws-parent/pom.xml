@@ -21,21 +21,31 @@
 
     <organization>
         <name>IAESTE Internet Development Team</name>
-        <url>http://www.iaeste.org/</url>
+        <url>https://www.iaeste.net/</url>
     </organization>
 
     <developers>
         <developer>
             <id>kim</id>
             <name>Kim Nørregaard Jensen</name>
+            <email>kim@dawn.dk</email>
             <roles>
                 <role>architect</role>
                 <role>developer</role>
             </roles>
         </developer>
         <developer>
-            <id>matej</id>
-            <name>Matej Kosco</name>
+            <id>pavel</id>
+            <name>Pavel Fiala</name>
+            <email>pavel.fiala@iaeste.cz</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>martin</id>
+            <name>Martin Eisfeld</name>
+            <email>martin.eisfeld@gmx.net</email>
             <roles>
                 <role>developer</role>
             </roles>
@@ -58,26 +68,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-jgitflow-plugin</artifactId>
-                <version>1.0-alpha21.1</version>
-                <configuration>
-                    <flowInitContext>
-                        <masterBranchName>stable</masterBranchName>
-                        <developBranchName>master</developBranchName>
-                        <featureBranchPrefix>feature/</featureBranchPrefix>
-                        <releaseBranchPrefix>release/</releaseBranchPrefix>
-                        <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-                        <versionTagPrefix>v</versionTagPrefix>
-                    </flowInitContext>
-                    <pushReleases>true</pushReleases>
-                    <noDeploy>true</noDeploy>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <allowUntracked>false</allowUntracked>
-                    <enableSshAgent>true</enableSshAgent>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -149,7 +139,6 @@
     </build>
 
     <profiles>
-
         <profile>
             <id>sonar</id>
             <build>
@@ -287,9 +276,10 @@
                 <!-- <version>9.3-1101.jdbc41</version> -->
             </dependency>
             <dependency>
+                <!-- For our in-memory testing, we're using HSQLDB -->
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
-                <version>2.2.9</version>
+                <version>2.3.2</version>
             </dependency>
             <dependency>
                 <groupId>cglib</groupId>
@@ -298,43 +288,33 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>3.2.8.RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>3.2.8.RELEASE</version>
+                <version>3.2.10.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>3.2.8.RELEASE</version>
+                <version>3.2.10.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
-                <version>3.2.8.RELEASE</version>
+                <version>3.2.10.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>3.2.8.RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>3.2.8.RELEASE</version>
+                <version>3.2.10.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>3.2.8.RELEASE</version>
+                <version>3.2.10.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>3.2.8.RELEASE</version>
+                <version>3.2.10.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
@@ -344,12 +324,25 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
-                <version>4.1.1.Final</version>
+                <!-- We're using Hibernate EntityManager for our Spring based
+                     testing, and it is also used under Glassfish. However, for
+                     our Spring based testing, the following versions are
+                     causing problems:
+                       Version 4.2.*.Final
+                       Version 4.3.*.Final
+                       Version 4.1.[7-12].Final
+                 -->
+                <version>4.1.6.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.7</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -363,21 +356,6 @@
                 <version>1.2.17</version>
                 <scope>test</scope>
             </dependency>
-            <!--<dependency>-->
-                <!--<groupId>org.slf4j</groupId>-->
-                <!--<artifactId>jul-to-slf4j</artifactId>-->
-                <!--<version>1.7.2</version>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-                <!--<groupId>ch.qos.logback</groupId>-->
-                <!--<artifactId>logback-core</artifactId>-->
-                <!--<version>1.0.13</version>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-                <!--<groupId>ch.qos.logback</groupId>-->
-                <!--<artifactId>logback-classic</artifactId>-->
-                <!--<version>1.0.13</version>-->
-            <!--</dependency>-->
             <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>

@@ -53,8 +53,10 @@ public final class GroupUtil {
             case MEMBER:
                 // Following is required to avoid problems with test data. As
                 // most countries already uses the countryname as the base -
-                // the solution is production safe
-                if (parentFullname == null || parentFullname.lastIndexOf('.') == -1) {
+                // the solution is production safe.
+                //   Note, that bugs was discovered with the data model for Trac
+                // task #811. Requiring an additional check
+                if ((parentFullname == null) || (parentFullname.lastIndexOf('.') == -1)) {
                     basename = country + '.';
                 } else {
                     basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
@@ -63,8 +65,10 @@ public final class GroupUtil {
             case NATIONAL:
                 // Following is required to avoid problems with test data. As
                 // most countries already uses the countryname as the base -
-                // the solution is production safe
-                if (parentFullname == null  || parentFullname.lastIndexOf('.') == -1) {
+                // the solution is production safe.
+                //   Note, that bugs was discovered with the data model for Trac
+                // task #811. Requiring an additional check
+                if ((parentFullname == null) || (parentFullname.lastIndexOf('.') == -1)) {
                     basename = country + '.' + parentType.getDescription() + '.';
                 } else {
                     basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';

@@ -93,8 +93,9 @@ public final class CommonTransformer {
             group.setListName(entity.getListName());
             group.setGroupType(transform(entity.getGroupType()));
             group.setDescription(entity.getDescription());
-            if(entity.getCountry() != null)
+            if (entity.getCountry() != null) {
                 group.setCountry(transform(entity.getCountry()));
+            }
         }
 
         return group;
@@ -110,8 +111,9 @@ public final class CommonTransformer {
             entity.setGroupName(group.getGroupName());
             entity.setGroupType(transform(group.getGroupType()));
             entity.setDescription(group.getDescription());
-            if(group.getCountry() != null)
+            if (group.getCountry() != null) {
                 entity.setCountry(transform(group.getCountry()));
+            }
         }
 
         return entity;

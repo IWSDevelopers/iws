@@ -612,7 +612,7 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public RoleEntity findRoleByExternalIdAndGroup(final String reid, final GroupEntity group) {
         final Query query = entityManager.createNamedQuery("role.findByExternalIdAndGroup");
         query.setParameter("reid", reid);
-        query.setParameter("cid", group.getCountry().getId());
+        query.setParameter("cid", group.getCountry() != null ?  group.getCountry().getId() : null);
         query.setParameter("gid", group.getId());
 
         return findUniqueResult(query, "Role");

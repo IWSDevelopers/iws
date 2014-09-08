@@ -54,7 +54,7 @@ public final class GroupUtil {
                 // Following is required to avoid problems with test data. As
                 // most countries already uses the countryname as the base -
                 // the solution is production safe
-                if (parentFullname == null) {
+                if (parentFullname == null || parentFullname.lastIndexOf('.') == -1) {
                     basename = country + '.';
                 } else {
                     basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
@@ -64,7 +64,7 @@ public final class GroupUtil {
                 // Following is required to avoid problems with test data. As
                 // most countries already uses the countryname as the base -
                 // the solution is production safe
-                if (parentFullname == null) {
+                if (parentFullname == null  || parentFullname.lastIndexOf('.') == -1) {
                     basename = country + '.' + parentType.getDescription() + '.';
                 } else {
                     basename = parentFullname.substring(0, parentFullname.lastIndexOf('.')) + '.';
@@ -103,10 +103,10 @@ public final class GroupUtil {
         switch (type) {
             case MEMBER:
             case NATIONAL:
-                if (fullname == null) {
+                if (fullname == null  || fullname.lastIndexOf('.') == -1) {
                     listname = country;
                 } else {
-                    listname = fullname.substring(0, fullname.lastIndexOf('.'));    // TODO: needs to be fixed because it throws an exception for "Germany Staff"
+                    listname = fullname.substring(0, fullname.lastIndexOf('.'));
                 }
                 break;
             case INTERNATIONAL:

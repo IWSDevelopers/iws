@@ -431,13 +431,15 @@ public class GroupEntity implements Externable<GroupEntity>, Notifiable {
             //case CHANGE_IN_GROUP_MEMBERS:
             //case NEW_GROUP_OWNER:
                 fields.put(NotificationField.GROUP_NAME, groupName);
-                fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
+                if(country != null)
+                    fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
                 fields.put(NotificationField.GROUP_TYPE, groupType.getGrouptype().name());
                 fields.put(NotificationField.GROUP_EXTERNAL_ID, externalId);
                 break;
             case PROCESS_MAILING_LIST:
                 fields.put(NotificationField.GROUP_NAME, groupName);
-                fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
+                if(country != null)
+                    fields.put(NotificationField.COUNTRY_NAME, country.getCountryName());
                 fields.put(NotificationField.GROUP_TYPE, groupType.getGrouptype().name());
                 fields.put(NotificationField.GROUP_EXTERNAL_ID, externalId);
                 break;

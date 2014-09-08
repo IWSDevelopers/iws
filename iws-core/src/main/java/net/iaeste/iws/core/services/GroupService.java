@@ -160,7 +160,7 @@ public final class GroupService {
         groupEntity.setGroupName(GroupUtil.prepareGroupName(type, group));
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
-        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), entity.getCountry().getCountryName()));
+        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), entity.getCountry() != null ? entity.getCountry().getCountryName() : null));
 
         dao.persist(authentication, entity, groupEntity);
     }
@@ -496,11 +496,11 @@ public final class GroupService {
         // with the same name
         throwIfGroupnameIsUsed(parent, group.getGroupName());
         // Find pre-requisites
-        final CountryEntity country = dao.findCountryByCode(parent.getCountry().getCountryCode()); // TODO: needs to be fixed for global groups where country is null
+        final CountryEntity country = parent.getCountry() != null ? dao.findCountryByCode(parent.getCountry().getCountryCode()) : null;
         final GroupTypeEntity groupType = dao.findGroupTypeByType(type);
         final String basename = GroupUtil.prepareBaseGroupName(
                 parent.getGroupType().getGrouptype(),
-                parent.getCountry().getCountryName(),
+                parent.getCountry() != null ? parent.getCountry().getCountryName() : null,
                 parent.getGroupName(),
                 parent.getFullName());
 
@@ -512,7 +512,7 @@ public final class GroupService {
         groupEntity.setDescription(group.getDescription());
         groupEntity.setFullName(GroupUtil.prepareFullGroupName(type, group, basename));
         groupEntity.setParentId(parent.getId());
-        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), country.getCountryName()));
+        groupEntity.setListName(GroupUtil.prepareListName(type, groupEntity.getFullName(), country != null ? country.getCountryName() : null));
 
         // Save the new Group in the database
         dao.persist(authentication, groupEntity);

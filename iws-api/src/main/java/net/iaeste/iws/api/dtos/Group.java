@@ -63,7 +63,8 @@ public final class Group extends AbstractVerification {
             listName = group.listName;
             groupType = group.groupType;
             description = group.description;
-            country = new Country(group.country);
+            if(group.country != null)
+                country = new Country(group.country);
         }
     }
 

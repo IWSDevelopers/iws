@@ -496,7 +496,7 @@ public final class GroupService {
         // with the same name
         throwIfGroupnameIsUsed(parent, group.getGroupName());
         // Find pre-requisites
-        final CountryEntity country = dao.findCountryByCode(parent.getCountry().getCountryCode());
+        final CountryEntity country = dao.findCountryByCode(parent.getCountry().getCountryCode()); // TODO: needs to be fixed for global groups where country is null
         final GroupTypeEntity groupType = dao.findGroupTypeByType(type);
         final String basename = GroupUtil.prepareBaseGroupName(
                 parent.getGroupType().getGrouptype(),

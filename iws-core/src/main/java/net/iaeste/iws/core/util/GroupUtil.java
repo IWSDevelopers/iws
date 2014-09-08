@@ -106,7 +106,7 @@ public final class GroupUtil {
                 if (fullname == null) {
                     listname = country;
                 } else {
-                    listname = fullname.substring(0, fullname.lastIndexOf('.'));
+                    listname = fullname.substring(0, fullname.lastIndexOf('.'));    // TODO: needs to be fixed because it throws an exception for "Germany Staff"
                 }
                 break;
             case INTERNATIONAL:

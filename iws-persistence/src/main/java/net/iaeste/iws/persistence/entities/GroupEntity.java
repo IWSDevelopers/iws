@@ -73,6 +73,14 @@ import java.util.Map;
                         "where g.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
                         "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
                         "order by g.groupType.grouptype asc, g.groupName asc"),
+        @NamedQuery(name = "group.findAllForContacts",
+                query = "select g from GroupEntity g " +
+                        "where g.groupType.grouptype = " + EntityConstants.GROUPTYPE_MEMBER +
+                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_INTERNATIONAL +
+                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
+                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_LOCAL +
+                        "   or g.groupType.grouptype = " + EntityConstants.GROUPTYPE_WORKGROUP +
+                        "order by g.groupType.grouptype asc, g.groupName asc"),
         @NamedQuery(name = "group.findByUserAndExternalId",
                 query = "select g from GroupEntity g, UserGroupEntity ug " +
                         "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +

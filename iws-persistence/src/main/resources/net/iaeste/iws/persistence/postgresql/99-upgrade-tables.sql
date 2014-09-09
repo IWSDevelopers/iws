@@ -1,3 +1,7 @@
+-- Before being able to update, we need to know who to grant ownership of the
+-- database views, i.e. the primary IWS user.
+\prompt 'IWS Account used to access the Database with (Cancel with <Esc>):  ' iws_user
+
 -- This is the 1.1 release script to update the database to newest state.
 -- The changes makes the system incompatible with earlier versions of the IWS,
 -- so let's add the information that this is the second DB version, and the IWS
@@ -807,4 +811,14 @@ create view shared_offer_view as
     and e.group_id = u2g.group_id
     and u2g.role_id = 1;
 
+-- =============================================================================
+-- Correct Ownership
+-- =============================================================================
+-- When the views are created new, the ownership is dropped, and it is set to
+-- the user who created the database.
+alter view find_active_sessions owner to :iws_user;
+alter view find_inactive_sessions owner to :iws_user;
+alter view employer_view owner to :iws_user;
+alter view offer_view owner to :iws_user;
+alter view shared_offer_view owner to :iws_user;
 -- Done :-)

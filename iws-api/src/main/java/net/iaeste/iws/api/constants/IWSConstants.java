@@ -44,7 +44,16 @@ public interface IWSConstants {
     long SERIAL_VERSION_UID = 201402020010000L; // YYYYMMDDvvvnnnn
 
     /**
-     * The default encoding used for all processing of strings.
+     * The default encoding used for all processing of strings. The main reason
+     * why we're forcing a rather old encoding, which is limited in characters
+     * that it can represent is simple. If someone uses special characters, then
+     * the recipients of the information may not be able to understand or read
+     * it properly.<br />
+     *   Also, it happens all too often that data is getting corrupted while
+     * being processed, simply because of strange charactersets being
+     * used.<br />
+     *   Latin 15 was chosen as default, as it supports the Euro sign. The Euro
+     * is one of the largest currencies being used.
      */
     String DEFAULT_ENCODING = "ISO-8859-15";
 

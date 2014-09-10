@@ -123,7 +123,7 @@ public class AdminJpaDao extends BasicJpaDao implements AdminDao {
      */
     @Override
     public List<GroupEntity> findGroupsForContacts() {
-        final Query query = entityManager.createNamedQuery("group.findAllNationalAndInternational");
+        final Query query = entityManager.createNamedQuery("group.findAllForContacts");
 
         return query.getResultList();
     }

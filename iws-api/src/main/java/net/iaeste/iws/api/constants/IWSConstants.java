@@ -147,6 +147,8 @@ public interface IWSConstants {
      */
     String DATE_TIME_FORMAT = DATE_FORMAT + " HH:mm:ss";
 
+    String TIMESTAMP_FORMAT = "yyyyMMddHHmmssSSS";
+
     /**
      * DateFormat Object for formatting and parsing Date Object.
      */

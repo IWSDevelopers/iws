@@ -49,6 +49,9 @@ import java.util.Date;
                 query = "select s from SessionEntity s " +
                         "where s.deprecated = '0'" +
                         "  and s.user.id = :id"),
+        @NamedQuery(name = "session.findActive",
+                query = "select s from SessionEntity s " +
+                        "where s.deprecated = '0'"),
         @NamedQuery(name = "session.deprecate",
                 query = "update SessionEntity s set " +
                         "   s.deprecated = :deprecated, " +

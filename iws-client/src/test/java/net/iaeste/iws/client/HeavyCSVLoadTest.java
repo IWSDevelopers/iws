@@ -62,6 +62,7 @@ public class HeavyCSVLoadTest {
     private static final String URL = "http://localhost:8080/intraweb/exchange/inbox.csv";
 
     private static final int LOOPS = 100;
+    private static final int year = 2014;
 
     /**
      * Note, all passwords for these users needs to be updated. This is the SQL
@@ -170,7 +171,7 @@ public class HeavyCSVLoadTest {
 
         private String sendRequest(final String username) throws IOException {
             HttpURLConnection connection = prepareConnection();
-            String parameters = "username=" + username + "&password=" + password;
+            String parameters = "username=" + username + "&password=" + password + "&year=" + year;
             sendOutputPostRequest(connection, parameters);
 
             int responseCode = connection.getResponseCode();

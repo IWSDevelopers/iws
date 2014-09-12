@@ -288,11 +288,14 @@ public final class Offer extends AbstractVerification {
     }
 
     /**
-     * Sets the Weekly Hours expected by the Employer.
+     * Sets the Weekly Hours expected by the Employer.<br />
+     *   The method will throw an {@code IllegalArgumentException} if the Weekly
+     * Hours is a null value.
      *
      * @param weeklyHours Offer Weekly Hours
      */
     public void setWeeklyHours(final Float weeklyHours) {
+        ensureNotNull("weeklyHours", weeklyHours);
         this.weeklyHours = weeklyHours;
     }
 
@@ -721,6 +724,7 @@ public final class Offer extends AbstractVerification {
         // We need to ensure that the Employer is verifiable also!
         isNotNullAndVerifiable(validation, "employer", employer);
         isNotNull(validation, "employer", employer);
+        isNotNull(validation, "weeklyHours", weeklyHours);
         isNotNull(validation, "workDescription", workDescription);
         isNotNull(validation, "studyLevels", studyLevels);
         isNotNull(validation, "fieldOfStudies", fieldOfStudies);

@@ -51,9 +51,10 @@ public class SpringConfig {
         final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
         dataSource.setServerName("localhost");
+        dataSource.setPortNumber(5432);
         dataSource.setDatabaseName("iws");
-        dataSource.setUser("kim");
-        //dataSource.setPassword("iws");
+        dataSource.setUser("iws_user");
+        dataSource.setPassword("iws");
 
         return dataSource;
     }

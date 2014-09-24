@@ -537,7 +537,7 @@ create table sessions (
 -- crammed into it, since a users association with a group also include
 -- information about how the user may access data, and how the system should
 -- deal with information sent to the mailinglists of the Group.
---   Further, a user can remain on the publishingGroup, but with the status  "Suspended",
+--   Further, a user can remain on the Group, but with the status  "Suspended",
 -- meaning that the user cannot access anything, but the status can be restored
 -- together with all other settings, if so desired.
 -- =============================================================================
@@ -693,7 +693,7 @@ create table attachments (
     constraint attachment_fk_file_id  foreign key (attached_file_id) references files (id),
 
     /* Unique Constraints */
-    constraint attachment_unique_record_file unique (attached_to_table, attached_to_record, attached_file_id),
+    constraint attachment_unique_record_file unique (attached_file_id, attached_to_record, attached_to_table),
 
     /* Not Null Constraints */
     constraint attachment_notnull_id       check (id is not null),
@@ -707,7 +707,7 @@ create table attachments (
 -- =============================================================================
 -- User notifications setting
 -- -----------------------------------------------------------------------------
--- The notification should additionally publishingGroup the group that the notification is
+-- The notification should additionally Group the group that the notification is
 -- sent to. Further, the frequency is a user setting, so it should be read from
 -- the user table and linked in
 -- =============================================================================

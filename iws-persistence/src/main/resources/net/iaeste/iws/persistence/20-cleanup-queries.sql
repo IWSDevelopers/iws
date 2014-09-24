@@ -69,7 +69,8 @@ create view find_active_sessions as
     sessions s,
     users u
   where u.id = s.user_id
-    and s.deprecated is null
+    and s.deprecated = '0'
+    and s.modified > now() - interval '12 hours'
   order by last_access desc;
 
 create view find_inactive_sessions as
@@ -87,7 +88,7 @@ create view find_inactive_sessions as
     sessions s,
     users u
   where u.id = s.user_id
-    and s.deprecated is null
+    and s.deprecated = '0'
     and s.modified < now() - interval '12 hours'
   order by last_access desc;
 

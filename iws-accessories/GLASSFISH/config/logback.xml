@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{ISO8601}: %-5p (%logger:%line) - %message%n\n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ROLL" class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+        <File>target/junit.log</File>
+        <encoder>
+            <pattern>%d{ISO8601}: %-5p %c:L (%F:%L) - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${com.sun.aas.instanceRoot}/logs/server.log</file>
+        <append>true</append>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{52}:%line - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache.commons.digester" level="warn"/>
+    <logger name="org.springframework" level="warn"/>
+    <logger name="jdepend.framework" level="debug">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.hibernate" level="warn"/>
+    <logger name="net.iaeste.iws" level="debug"/>
+
+    <root level="info">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
+

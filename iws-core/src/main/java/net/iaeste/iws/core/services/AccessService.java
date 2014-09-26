@@ -161,7 +161,7 @@ public final class AccessService extends CommonService<AccessDao> {
         final SessionEntity deadSession = dao.findActiveSession(user);
 
         if (deadSession != null) {
-            dao.deprecateSession(user);
+            dao.deprecateSession(deadSession);
             activeSessions.removeToken(deadSession.getSessionKey());
             return new AuthenticationToken(generateAndPersistSessionKey(user));
         } else {
@@ -221,7 +221,7 @@ public final class AccessService extends CommonService<AccessDao> {
     public void deprecateSession(final AuthenticationToken token) {
         removeDeprecatedSessions();
         final SessionEntity session = dao.findActiveSession(token);
-        dao.deprecateSession(session.getUser());
+        dao.deprecateSession(session);
         activeSessions.removeToken(token.getToken());
         log.info("Deprecated session for user: " + session.getUser());
     }
@@ -341,7 +341,7 @@ public final class AccessService extends CommonService<AccessDao> {
         for (final String token : activeSessions.findAndRemoveExpiredTokens()) {
             final SessionEntity session = dao.findActiveSession(token);
             final UserEntity user = session.getUser();
-            dao.deprecateSession(user);
+            dao.deprecateSession(session);
             log.info("Deprecated inactive session for user " + user);
         }
     }

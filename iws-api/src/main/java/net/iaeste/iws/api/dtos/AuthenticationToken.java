@@ -52,7 +52,7 @@ public final class AuthenticationToken extends AbstractVerification {
      * independent of the internal logic, and is purely for the purpose of
      * tracing log messages.
      */
-    private String traceId = UUID.randomUUID().toString();
+    private String traceId = UUID.randomUUID().toString().substring(0, 8);
 
     // =========================================================================
     // Object Constructors

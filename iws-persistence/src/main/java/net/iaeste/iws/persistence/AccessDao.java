@@ -89,7 +89,20 @@ public interface AccessDao extends BasicDao {
 
     SessionEntity findActiveSession(String token);
 
-    Integer deprecateSession(UserEntity user);
+    /**
+     * Finds all active Sessions from the database.
+     */
+    List<SessionEntity> findActiveSessions();
+
+    /**
+     * This will deprecate all currently active Sessons and return the number of
+     * records which was updated.
+     *
+     * @return Number of Sessions deprecated
+     */
+    Integer deprecateAllActiveSessions();
+
+    Integer deprecateSession(SessionEntity session);
 
     int deleteSessions(UserEntity user);
 

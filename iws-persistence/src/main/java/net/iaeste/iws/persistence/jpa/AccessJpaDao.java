@@ -166,15 +166,30 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      * {@inheritDoc}
      */
     @Override
-    public Integer deprecateSession(final UserEntity user) {
-        // Format is: Year + Month + Date + Hour24 + Minute + Second + Millis
-        // Example: 20140503193432987 -> May 3rd, 2014 at 19:34:43.987
-        final String timestampFormat = "yyyyMMddHHmmssSSS";
-        DateFormat formatter = new SimpleDateFormat(timestampFormat, IWSConstants.DEFAULT_LOCALE);
+    public List<SessionEntity> findActiveSessions() {
+        final Query query = entityManager.createNamedQuery("session.findActive");
+        return query.getResultList();
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer deprecateAllActiveSessions() {
+        final Query query = entityManager.createNamedQuery("session.deprecateAllActiveSessions");
+        query.setParameter("deprecated", generateTimestamp());
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer deprecateSession(final SessionEntity session) {
         final Query query = entityManager.createNamedQuery("session.deprecate");
-        query.setParameter("deprecated", formatter.format(new Date()));
-        query.setParameter("id", user.getId());
+        query.setParameter("deprecated", generateTimestamp());
+        query.setParameter("id", session.getId());
 
         return query.executeUpdate();
     }
@@ -720,5 +735,14 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         }
 
         return super.findUniqueResult(query, entityName);
+    }
+
+    private String generateTimestamp() {
+        // Format is: Year + Month + Date + Hour24 + Minute + Second + Millis
+        // Example: 20140503193432987 -> May 3rd, 2014 at 19:34:43.987
+        final String timestampFormat = "yyyyMMddHHmmssSSS";
+        DateFormat formatter = new SimpleDateFormat(timestampFormat, IWSConstants.DEFAULT_LOCALE);
+
+        return formatter.format(new Date());
     }
 }

@@ -58,7 +58,13 @@ import java.util.Date;
                         "   s.sessionData = null, " +
                         "   s.modified = current_timestamp " +
                         "where s.deprecated = '0'" +
-                        "  and s.user.id = :id"),
+                        "  and s.id = :id"),
+        @NamedQuery(name = "session.deprecateAllActiveSessions",
+                query = "update SessionEntity s set " +
+                        "   s.deprecated = :deprecated, " +
+                        "   s.sessionData = null, " +
+                        "   s.modified = current_timestamp " +
+                        "where s.deprecated = '0'"),
         @NamedQuery(name = "session.deleteUserSessions",
                 query = "delete from SessionEntity s " +
                         "where s.user.id = :uid")

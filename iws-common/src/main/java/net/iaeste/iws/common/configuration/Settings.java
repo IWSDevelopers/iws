@@ -36,6 +36,9 @@ public final class Settings {
     private static final String PROPERTY_MAX_LOGIN_RETRIES = "max.login.retries";
     private static final String PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS = "max.idle.time.for.sessions";
     private static final String PROPERTY_LOGIN_BLOCKED_PERIOD = "login.blocked.period";
+    private static final String PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS = "account.unused.removed.days";
+    private static final String PROPERTY_ACCOUNT_SUSPENDED_DAYS = "account.suspended.days";
+    private static final String PROPERTY_ACCOUNT_DELETED_DAYS = "account.deleted.days";
     private static final String PROPERTY_PUBLIC_EMAIL_ADDRESS = "public.email.address";
     private static final String PROPERTY_PRIVATE_EMAIL_ADDRESS = "private.email.address";
     private static final String PROPERTY_SENDING_EMAIL_ADDRESS = "sending.email.address";
@@ -56,6 +59,9 @@ public final class Settings {
         properties.setProperty(PROPERTY_MAX_LOGIN_RETRIES, String.valueOf(IWSConstants.MAX_LOGIN_RETRIES));
         properties.setProperty(PROPERTY_MAX_IDLE_TIME_FOR_SESSIONS, String.valueOf(IWSConstants.MAX_SESSION_IDLE_PERIOD));
         properties.setProperty(PROPERTY_LOGIN_BLOCKED_PERIOD, String.valueOf(IWSConstants.LOGIN_BLOCKING_PERIOD));
+        properties.setProperty(PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS, String.valueOf(IWSConstants.ACCOUNT_UNUSED_REMOVED_DAYS));
+        properties.setProperty(PROPERTY_ACCOUNT_SUSPENDED_DAYS, String.valueOf(IWSConstants.ACCOUNT_SUSPENDED_DAYS));
+        properties.setProperty(PROPERTY_ACCOUNT_DELETED_DAYS, String.valueOf(IWSConstants.ACCOUNT_DELETED_DAYS));
         properties.setProperty(PROPERTY_PUBLIC_EMAIL_ADDRESS, IWSConstants.PUBLIC_EMAIL_ADDRESS);
         properties.setProperty(PROPERTY_PRIVATE_EMAIL_ADDRESS, IWSConstants.PRIVATE_EMAIL_ADDRESS);
         properties.setProperty(PROPERTY_SENDING_EMAIL_ADDRESS, IWSConstants.IWS_EMAIL_SENDER);
@@ -118,6 +124,34 @@ public final class Settings {
     public long getLoginBlockedTime() {
         return Long.valueOf(properties.getProperty(PROPERTY_LOGIN_BLOCKED_PERIOD));
     }
+
+    public void setAccountUnusedRemovedDays(final Long accountUnusedRemovedDays) {
+        throwIfNull("accountUnusedRemovedDays", accountUnusedRemovedDays);
+        properties.setProperty(PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS, String.valueOf(accountUnusedRemovedDays));
+    }
+
+    public Long getAccountUnusedRemovedDays() {
+        return Long.valueOf(properties.getProperty(PROPERTY_ACCOUNT_UNUSED_REMOVED_DAYS));
+    }
+
+    public void setAccountSuspendedDays(final Long accountSuspendedDays) {
+        throwIfNull("accountSuspendedDays", accountSuspendedDays);
+        properties.setProperty(PROPERTY_ACCOUNT_SUSPENDED_DAYS, String.valueOf(accountSuspendedDays));
+    }
+
+    public Long getAccountSuspendedDays() {
+        return Long.valueOf(properties.getProperty(PROPERTY_ACCOUNT_SUSPENDED_DAYS));
+    }
+
+    public void setAccountDeletedDays(final Long accountDeletedDays) {
+        throwIfNull("accountDeletedDays", accountDeletedDays);
+        properties.setProperty(PROPERTY_ACCOUNT_DELETED_DAYS, String.valueOf(accountDeletedDays));
+    }
+
+    public Long getAccountDeletedDays() {
+        return Long.valueOf(properties.getProperty(PROPERTY_ACCOUNT_DELETED_DAYS));
+    }
+
 
     public void setPublicMailAddress(final String publicMailAddress) throws IllegalArgumentException {
         throwIfNull("publicMailAddress", publicMailAddress);

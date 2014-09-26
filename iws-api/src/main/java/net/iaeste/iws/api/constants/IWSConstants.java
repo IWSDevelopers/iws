@@ -108,6 +108,39 @@ public interface IWSConstants {
     long LOGIN_BLOCKING_PERIOD = 1800000L;
 
     /**
+     * Accounts, which have been created but not activated before this number of
+     * days, is considered dead. If the user is unable to activate the account
+     * before this time - it is very unlikely that it will ever be activated,
+     * and it will be completely removed from the system.<br />
+     *   If the user later regrets activating the account, no harm has been done
+     * as no data was associated with the account. So it is a simple matter to
+     * create a new one.
+     */
+    long ACCOUNT_UNUSED_REMOVED_DAYS = 91;
+
+    /**
+     * Active accounts, which have not been used after this number of days, is
+     * considered deprecated, and will be suspended.<br />
+     *   Suspension of an account simply means that it cannot be used unless it
+     * is reactivated. The User account data is still there, but all the account
+     * will be removed from the mailing lists and the alias will also be
+     * removed. However, all personal data is still present.
+     */
+    long ACCOUNT_SUSPENDED_DAYS = 365;
+
+    /**
+     * Accounts, which have been suspended this number of days, will be deleted.
+     * Deletion means that the account will change status and all private data
+     * will be removed. However, the account will still contain the meta data -
+     * so any place where the account was referenced will still have the data
+     * present.<br />
+     *   Deletion of an account is irreversible, as the username (e-mail used to
+     * login) will be replaced with an invalid random value, the password will
+     * also be removed.
+     */
+    long ACCOUNT_DELETED_DAYS = 365;
+
+    /**
      * The year that IAESTE was founded.
      */
     int FOUNDING_YEAR = 1948;

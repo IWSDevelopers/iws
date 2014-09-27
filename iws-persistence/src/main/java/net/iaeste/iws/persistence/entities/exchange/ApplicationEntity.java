@@ -56,7 +56,10 @@ import java.util.Date;
         @NamedQuery(name = "application.findByOfferGroupIdAndStatuses",
                 query = "select a from ApplicationEntity a " +
                         "where a.offerGroup.id = :ogid " +
-                        "  and a.status in :statuses")
+                        "  and a.status in :statuses"),
+        @NamedQuery(name = "application.findStudentByUserId",
+                query = "select a.student from ApplicationEntity a " +
+                        "where a.student.user.id = :uid")
 })
 @Entity
 @Table(name = "student_applications")

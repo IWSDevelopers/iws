@@ -586,11 +586,38 @@ public final class AccountService extends CommonService<AccessDao> {
                     break;
             }
         } else if (newStatus == UserStatus.DELETED) {
+            deleteNewUser(user);
+        }
+    }
+
+    /**
+     * Deleting Accounts with status NEW can be done either via the normal API
+     * methods, or it can be done via the Cron jobs running. However, to ensure
+     * that the same logic is applied to both - this method is public, so it
+     * can be used by both.<br />
+     *   The method will check that the current Status is NEW, and if so - it
+     * will remove the data for the user completely.
+     *
+     * @param user UserEntity to delete
+     */
+    public void deleteNewUser(final UserEntity user) {
+        if (user.getStatus() == UserStatus.NEW) {
             // We have a User Account, that was never activated. This we can
             // delete completely
-            deletePerson(user.getPerson());
-            dao.deleteStudent(user);
-            dao.delete(user);
+            if (!dao.findStudentWithApplications(user).isEmpty()) {
+                log.info("Expired Account to be deleted is a Student Account with Applications. Only private information is removed.");
+                deleteAccountData(user);
+            //} else if (!dao.findHistory(user).isEmpty()) {
+            //    log.info("Damn, we found some history for user " + user.getUsername());
+            } else {
+                deletePerson(user.getPerson());
+                // We'll just remove the Student Account, if added - since we
+                // have already checked that no data is associated with it
+                dao.deleteStudent(user);
+                dao.delete(user);
+            }
+        } else {
+            throw new IWSException(IWSErrors.PROCESSING_FAILURE, "Illegal User state change.");
         }
     }
 
@@ -624,7 +651,7 @@ public final class AccountService extends CommonService<AccessDao> {
      *
      * @param authentication User that is invoking the request
      */
-    private void deletePrivateData(final Authentication authentication, final UserEntity user) {
+    public void deletePrivateData(final Authentication authentication, final UserEntity user) {
         final List<UserGroupEntity> groupRelations = findGroupRelationsForDeletion(user);
 
         // First, delete the Sessions, they are linked to the User account, and
@@ -650,28 +677,32 @@ public final class AccountService extends CommonService<AccessDao> {
 
             log.info(formatLogMessage(authentication, "Deleted the new user %s completely.", user));
         } else {
-            // Now, remove and System specific data from the Account, and set the
-            // Status to deleted, thus preventing the account from being used
-            // anymore
-            user.setCode(null);
-            // We remove the Username from the account as well, since it may
-            // otherwise block if the user later on create a new Account. A
-            // deleted account should remaing deleted - and we do not wish to
-            // drop the Unique Constraint in the database.
-            user.setUsername(UUID.randomUUID() + "@iaeste.com");
-            user.setPassword(null);
-            user.setSalt(null);
-            user.setPerson(null);
-            user.setStatus(UserStatus.DELETED);
-            dao.persist(user);
-            deletePerson(person);
-
+            deleteAccountData(user);
             for (final UserGroupEntity userGroup : groupRelations) {
                 notifications.notify(authentication, userGroup, NotificationType.CHANGE_IN_GROUP_MEMBERS);
             }
 
             log.info(formatLogMessage(authentication, "Deleted all private data for user %s, including %d sessions.", user, deletedSessions));
         }
+    }
+
+    private void deleteAccountData(final UserEntity user) {
+        deletePerson(user.getPerson());
+
+        // Now, remove and System specific data from the Account, and set the
+        // Status to deleted, thus preventing the account from being used
+        // anymore
+        user.setCode(null);
+        // We remove the Username from the account as well, since it may
+        // otherwise block if the user later on create a new Account. A
+        // deleted account should remaing deleted - and we do not wish to
+        // drop the Unique Constraint in the database.
+        user.setUsername(UUID.randomUUID() + "@iaeste.com");
+        user.setPassword(null);
+        user.setSalt(null);
+        user.setPerson(null);
+        user.setStatus(UserStatus.DELETED);
+        dao.persist(user);
     }
 
     /**

@@ -95,6 +95,10 @@ import java.util.Map;
                 query = "select u from UserEntity u " +
                         "where u.status = :status" +
                         "  and u.code = :code"),
+        @NamedQuery(name = "user.findAccountsWithStateAfterModification",
+                query = "select u from UserEntity u " +
+                        "where u.status = :status" +
+                        "  and u.modified < :days"),
         @NamedQuery(name = "user.findByAlias",
                 query = "select u from UserEntity u " +
                         "where u.status <> " + EntityConstants.USER_STATUS_DELETED +

@@ -26,6 +26,7 @@ import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import java.util.List;
@@ -139,6 +140,8 @@ public interface AccessDao extends BasicDao {
     List<UserGroupEntity> findStudents(Long memberGroupId);
 
     List<GroupEntity> findSubGroups(Long parentId);
+
+    List<StudentEntity> findStudentWithApplications(UserEntity user);
 
     /**
      * Students are not linked from the UserEntity, so when deleting a
@@ -277,4 +280,14 @@ public interface AccessDao extends BasicDao {
      * @param groupExternalId
      */
     UserGroupEntity findGroupMemberByUsernameAndGroupExternalId(String username, String groupExternalId);
+
+    /**
+     * Finds a list of User Accounts, which is having status NEW, but have not
+     * been updated for x days. Where x is a number defined via the IWS
+     * Settings, and injected here as parameter.
+     *
+     * @param  daysBeforeExpiration Days before a NEW account has expired
+     * @return
+     */
+    List<UserEntity> findAccountsWithState(UserStatus status, Long daysBeforeExpiration);
 }

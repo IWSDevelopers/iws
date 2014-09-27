@@ -31,6 +31,7 @@ import net.iaeste.iws.persistence.entities.RoleEntity;
 import net.iaeste.iws.persistence.entities.SessionEntity;
 import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
+import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
 
 import javax.persistence.EntityManager;
@@ -46,6 +47,8 @@ import java.util.List;
  * @since   IWS 1.0
  */
 public class AccessJpaDao extends BasicJpaDao implements AccessDao {
+
+    private static final Integer DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 
     /**
      * Default Constructor.
@@ -362,6 +365,17 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public List<GroupEntity> findSubGroups(final Long parentId) {
         final Query query = entityManager.createNamedQuery("group.findSubGroupsByParentId");
         query.setParameter("pid", parentId);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<StudentEntity> findStudentWithApplications(final UserEntity user) {
+        final Query query = entityManager.createNamedQuery("application.findStudentByUserId");
+        query.setParameter("uid", user.getId());
 
         return query.getResultList();
     }
@@ -708,6 +722,19 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("egid", groupExternalId);
 
         return findSingleResult(query, "UserGroup");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserEntity> findAccountsWithState(final UserStatus status, final Long daysBeforeExpiration) {
+        final Date date = new Date(new Date().getTime() - daysBeforeExpiration * DAY_IN_MILLIS);
+        final Query query = entityManager.createNamedQuery("user.findAccountsWithStateAfterModification");
+        query.setParameter("status", status);
+        query.setParameter("days", date);
+
+        return query.getResultList();
     }
 
     // =========================================================================

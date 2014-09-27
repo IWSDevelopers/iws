@@ -15,11 +15,16 @@
 package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.UserStatus;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.monitors.ActiveSessions;
+import net.iaeste.iws.core.notifications.Notifications;
+import net.iaeste.iws.core.services.AccountService;
 import net.iaeste.iws.ejb.cdi.IWSBean;
 import net.iaeste.iws.persistence.AccessDao;
+import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.entities.SessionEntity;
+import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.jpa.AccessJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +33,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
@@ -42,6 +46,7 @@ import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * When the IWS is starting up, we need to ensure that the current State is such
@@ -64,7 +69,6 @@ import java.util.Date;
  */
 @Startup
 @Singleton
-@Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class StateBean {
@@ -72,34 +76,43 @@ public class StateBean {
     private static final Logger log = LoggerFactory.getLogger(StateBean.class);
 
     /**
-     * Simple Formatter Object, used to log when the cleaning will nect occur.
+     * The System Account is the Account used by the Notification system & this
+     * Bean to write history information, and log
      */
+    private static final long SYSTEM_ACCOUNT = 2553L;
+
+    /**
+    * Simple Formatter Object, used to log when the cleaning will nect occur.
+    */
     private static final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
 
     /**
-     * The initial Expiration, is when the Timer should run for the first time,
-     * this is set to be in a minute, so the startup will not be disturbed by a
-     * potentially big database operation.<br />
-     *   The initial time is calculated using our internal Date Object which is
-     * set to use midnight of the startup-date as base. This is a time in the
-     * past, so to ensure that it is starting at 2 in the morning (time with the
-     * lowest activity), we simply add 26 hours to it.
-     */
+    * The initial Expiration, is when the Timer should run for the first time,
+    * this is set to be in a minute, so the startup will not be disturbed by a
+    * potentially big database operation.<br />
+    *   The initial time is calculated using our internal Date Object which is
+    * set to use midnight of the startup-date as base. This is a time in the
+    * past, so to ensure that it is starting at 2 in the morning (time with the
+    * lowest activity), we simply add 26 hours to it.
+    */
     private static final Long INITIAL_EXPIRATION = new net.iaeste.iws.api.util.Date().toDate().getTime() + (26 * 60 * 60 * 1000L);
 
     /**
-     * The interval between invocations of the Timer is set to be 24 hours,
-     * which is infrequent enough to ensure that it is not disrupting normal
-     * operations, yet frequent enough to ensure that garbage is removed from
-     * the system in a timely fashion.
-     */
+    * The interval between invocations of the Timer is set to be 24 hours,
+    * which is infrequent enough to ensure that it is not disrupting normal
+    * operations, yet frequent enough to ensure that garbage is removed from
+    * the system in a timely fashion.
+    */
     private static final Long INTERVAL_DURATION = 86400000L;
 
+    @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Settings settings;
-    @Resource private TimerService timerService;
+    @Resource
+    private TimerService timerService;
 
     private ActiveSessions activeSessions = null;
+    private AccountService service = null;
     private AccessDao accessDao = null;
 
     // =========================================================================
@@ -126,6 +139,7 @@ public class StateBean {
         // First, we need to initialize our dependencies
         activeSessions = ActiveSessions.getInstance(settings);
         accessDao = new AccessJpaDao(entityManager);
+        service = new AccountService(settings, accessDao, notifications);
 
         // Just to ensure that at the startup - no other timers exists, which
         // may cause conflicts with the new ones we're adding
@@ -144,7 +158,7 @@ public class StateBean {
         // Sessions with a Windows Id, and upon restart - the Windows Id is
         // renewed. Even if it isn't renewed, JSF will not recognize it
         final int deprecated = accessDao.deprecateAllActiveSessions();
-        log.info("Deprecated {} Sessions.", deprecated);
+        log.info("Deprecated {} Stale Sessions.", deprecated);
 
         // That's it - we're done :-)
         log.info("IWS Initialization Completed.");
@@ -155,10 +169,10 @@ public class StateBean {
     // =========================================================================
 
     /**
-     * Timeout Method, which will start the frequent cleaning.
-     *
-     * @param timer Timer information, useful for logging
-     */
+    * Timeout Method, which will start the frequent cleaning.
+    *
+    * @param timer Timer information, useful for logging
+    */
     @Timeout
     public void doCleanup(final Timer timer) {
         log.info("Timout occurred, will start the Cleanup");
@@ -170,57 +184,100 @@ public class StateBean {
 
         // Second, we'll deal with accounts which are inactive. For more
         // information, see the Trac ticket #720.
-        removeUnusedAccounts();
-        suspendInactiveAccounts();
-        deleteSuspendedAccounts();
+        final int expired = removeUnusedAccounts();
+        final int suspended = suspendInactiveAccounts();
+        final int deleted = deleteSuspendedAccounts(timer);
 
         final long duration = System.currentTimeMillis() - start;
-        log.info("Cleanup took: " + duration + " ms, next Timeout: " + formatter.format(timer.getNextTimeout()));
+        log.info("Cleanup took: {}ms (expired {}, suspended {} & deleted {}), next Timeout: {}", duration, expired, suspended, deleted, formatter.format(timer.getNextTimeout()));
     }
 
     /**
      * Remove deprecated Sessions.
      */
-    private void removeDeprecatedsessions() {
+    private int removeDeprecatedsessions() {
         // First, let's calculate the time of expiry. All Sessions with a
         // modification date before this, will be deprecated
         final Long timeout = settings.getMaxIdleTimeForSessions();
         final Date date = new Date(new Date().getTime() - timeout);
+        int count = 0;
 
         // Iterate over the currently active sessions and remove them.
-        for (final SessionEntity session : accessDao.findActiveSessions()) {
+        final List<SessionEntity> sessions = accessDao.findActiveSessions();
+        for (final SessionEntity session : sessions) {
             if (session.getModified().before(date)) {
+                // Remove the found Session from the ActiveSessions Registry ...
+                activeSessions.removeToken(session.getSessionKey());
+                // ... and remove it from the database as well
                 accessDao.deprecateSession(session);
+                count++;
             }
         }
 
-        // As we've removed the dead sessions from the database, let's also
-        // remove them from the Active Session Map.
-        activeSessions.findAndRemoveExpiredTokens();
+        return count;
     }
 
     /**
      * Remove unused Accounts, i.e. Account with status NEW and which have not
      * been activated following a period of x days.
+     *
+     * @return Number of Expired (never activated) Accounts
      */
-    private void removeUnusedAccounts() {
-        log.info("TODO: Implement Proper Account Handling from ticket #720.");
+    private int removeUnusedAccounts() {
+        final Long days = settings.getAccountUnusedRemovedDays();
+        log.debug("Checking of any accounts exists which has expired, i.e. status NEW after {} days.", days);
+        int accounts = 0;
+
+        // We have a User Account, that was never activated. This we can
+        // delete completely
+        final List<UserEntity> newUsers = accessDao.findAccountsWithState(UserStatus.NEW, days);
+        for (final UserEntity user : newUsers) {
+            if (user.getId() == SYSTEM_ACCOUNT) {
+                log.debug("The System User Account, used for Notifications, is still in status NEW!");
+            } else {
+                log.info("Deleting Expired NEW account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                service.deleteNewUser(user);
+                accounts++;
+            }
+        }
+
+        return accounts;
     }
 
     /**
      * Suspend inactive users. Accounts which are currently having status
      * ACTIVE, but have not been used after z days, will be set to SUSPENDED.
+     *
+     * @return Number of Suspended Accounts
      */
-    private void suspendInactiveAccounts() {
+    private int suspendInactiveAccounts() {
         log.info("TODO: Implement Proper Account Handling from ticket #720.");
+        return 0;
     }
 
     /**
      * Delete inactive users. Accounts which have status SUSPENDED will after a
      * period of y days be deleted, meaning that all private information will be
      * removed, and account will have the status set to DELETED.
+     *
+     * @return Number of Deleted Accounts
      */
-    private void deleteSuspendedAccounts() {
-        log.info("TODO: Implement Proper Account Handling from ticket #720.");
+    private int deleteSuspendedAccounts(final Timer timer) {
+        final Long days = settings.getAccountDeletedDays();
+        log.debug("Checking of any accounts exists with status SUSPENDED after {} days.", days);
+        int accounts = 0;
+
+        final List<UserEntity> suspendedUsers = accessDao.findAccountsWithState(UserStatus.SUSPENDED, days);
+        if (!suspendedUsers.isEmpty()) {
+            final UserEntity system = entityManager.find(UserEntity.class, SYSTEM_ACCOUNT);
+            final Authentication authentication = new Authentication(system, timer.getInfo().toString());
+            for (final UserEntity user : suspendedUsers) {
+                log.info("Deleting Suspended account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                service.deletePrivateData(authentication, user);
+                accounts++;
+            }
+        }
+
+        return accounts;
     }
 }

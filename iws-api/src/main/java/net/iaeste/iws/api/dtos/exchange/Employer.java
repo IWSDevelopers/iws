@@ -50,7 +50,6 @@ public final class Employer extends AbstractVerification {
     private Boolean canteen = null;
     private String nearestAirport = null;
     private String nearestPublicTransport = null;
-    private Integer numberOfWorkingDays = null;
 
     // =========================================================================
     // Object Constructors
@@ -81,7 +80,6 @@ public final class Employer extends AbstractVerification {
             canteen = employer.canteen;
             nearestAirport = employer.nearestAirport;
             nearestPublicTransport = employer.nearestPublicTransport;
-            numberOfWorkingDays = employer.numberOfWorkingDays;
         }
     }
 
@@ -318,16 +316,6 @@ public final class Employer extends AbstractVerification {
 
     public String getNearestPublicTransport() {
         return nearestPublicTransport;
-    }
-
-    public void setNumberOfWorkingDays(final Integer numberOfWorkingDays)
-    {
-        this.numberOfWorkingDays = numberOfWorkingDays;
-    }
-
-    public Integer getNumberOfWorkingDays ()
-    {
-        return this.numberOfWorkingDays;
     }
 
     // =========================================================================

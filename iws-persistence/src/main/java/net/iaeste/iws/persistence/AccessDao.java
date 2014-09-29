@@ -290,4 +290,19 @@ public interface AccessDao extends BasicDao {
      * @return
      */
     List<UserEntity> findAccountsWithState(UserStatus status, Long daysBeforeExpiration);
+
+    /**
+     * Accounts, which have not been in used for a while is considered Inactive,
+     * and will be suspended. Finding these is a rather heavy operation, as it
+     * requires a check against the Session Table, to see who have been logging
+     * in and who haven't.<br />
+     *   The check is made against the Sessions, where the Login records is
+     * reviewed. The last login record is used as base, and is compared against
+     * the given number of days before an account is considered abandoned
+     * (inactive).
+     *
+     * @param daysBeforeBecomingInactive Days before an account is inactive
+     * @return List of Inactive Accounts
+     */
+    List<UserEntity> findInactiveAccounts(Long daysBeforeBecomingInactive);
 }

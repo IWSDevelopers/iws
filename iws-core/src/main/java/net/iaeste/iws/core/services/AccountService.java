@@ -591,6 +591,26 @@ public final class AccountService extends CommonService<AccessDao> {
     }
 
     /**
+     * Although the same functionality is present in the updateUserStatus()
+     * method, there's a problem with invokingthe Notification for Suspending
+     * Users via the Cron job. The purpose of the notification is to remove the
+     * User's e-mail Aliases and access to Mailing lists. However, it is the
+     * long term goal to have all this functionality moved to Database Views,
+     * so changes in the Users Status will immediately be reflected in the Mail
+     * Access.<br />
+     *   This means that we're omitting the removal of Suspended Users access
+     * to Aliases & Mailing lists for now.
+     *
+     * @param authentication User that is invoking the request
+     * @param user           The User to Suspend from the system
+     */
+    public void suspendUser(final Authentication authentication, final UserEntity user) {
+        user.setStatus(UserStatus.SUSPENDED);
+        user.setModified(new Date());
+        dao.persist(authentication, user);
+    }
+
+    /**
      * Deleting Accounts with status NEW can be done either via the normal API
      * methods, or it can be done via the Cron jobs running. However, to ensure
      * that the same logic is applied to both - this method is public, so it

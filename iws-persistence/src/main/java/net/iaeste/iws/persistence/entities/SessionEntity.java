@@ -67,7 +67,12 @@ import java.util.Date;
                         "where s.deprecated = '0'"),
         @NamedQuery(name = "session.deleteUserSessions",
                 query = "delete from SessionEntity s " +
-                        "where s.user.id = :uid")
+                        "where s.user.id = :uid"),
+        @NamedQuery(name = "session.findLastUserSession",
+                query = "select s.user.id, max(modified) from SessionEntity s " +
+                        "where s.user.status = " + EntityConstants.USER_STATUS_ACTIVE +
+                        "  and modified < :days " +
+                        "group by s.user.id")
 })
 @Entity
 @Table(name = "sessions")

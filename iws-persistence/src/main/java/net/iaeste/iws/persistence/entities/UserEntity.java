@@ -105,7 +105,10 @@ import java.util.Map;
                         "  and u.alias = :alias"),
         @NamedQuery(name = "user.findNumberOfSimilarAliases",
                 query = "select count(u.id) from UserEntity u " +
-                        "where lower(alias) like :startOfAlias")
+                        "where lower(alias) like :startOfAlias"),
+        @NamedQuery(name = "user.findUsersByIds",
+                query = "select u from UserEntity u " +
+                        "where id in :ids")
 })
 @Entity
 @Table(name = "users")

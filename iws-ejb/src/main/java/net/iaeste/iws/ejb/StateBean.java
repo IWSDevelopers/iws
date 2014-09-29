@@ -108,8 +108,7 @@ public class StateBean {
     @Inject @IWSBean private Notifications notifications;
     @Inject @IWSBean private EntityManager entityManager;
     @Inject @IWSBean private Settings settings;
-    @Resource
-    private TimerService timerService;
+    @Resource private TimerService timerService;
 
     private ActiveSessions activeSessions = null;
     private AccountService service = null;
@@ -178,6 +177,14 @@ public class StateBean {
         log.info("Timout occurred, will start the Cleanup");
         final long start = System.currentTimeMillis();
 
+        // For the suspension & deleting, we need to use an Authentication
+        // Object for history information. We're using the System account for
+        // this. Even if nothing is to be deleted, we're still fetching the
+        // record here, since the Cron job is only running once every 24 hours,
+        // we do not care much for performance problems.
+        final UserEntity system = entityManager.find(UserEntity.class, SYSTEM_ACCOUNT);
+        final Authentication authentication = new Authentication(system, timer.getInfo().toString());
+
         // First, let's get rid of those pesky expired sessions. For more
         // information, see the Trac ticket #900.
         removeDeprecatedsessions();
@@ -185,8 +192,8 @@ public class StateBean {
         // Second, we'll deal with accounts which are inactive. For more
         // information, see the Trac ticket #720.
         final int expired = removeUnusedAccounts();
-        final int suspended = suspendInactiveAccounts();
-        final int deleted = deleteSuspendedAccounts(timer);
+        final int suspended = suspendInactiveAccounts(authentication);
+        final int deleted = deleteSuspendedAccounts(authentication);
 
         final long duration = System.currentTimeMillis() - start;
         log.info("Cleanup took: {}ms (expired {}, suspended {} & deleted {}), next Timeout: {}", duration, expired, suspended, deleted, formatter.format(timer.getNextTimeout()));
@@ -250,9 +257,56 @@ public class StateBean {
      *
      * @return Number of Suspended Accounts
      */
-    private int suspendInactiveAccounts() {
-        log.info("TODO: Implement Proper Account Handling from ticket #720.");
-        return 0;
+    private int suspendInactiveAccounts(final Authentication authentication) {
+        // Note, that we have 2 problems here. The first problem is to fetch all
+        // Users, who've been inactive for a a period of x days. This is the
+        // permanent problem to solve with this function, since otherwise
+        // inactive accounts, i.e. accounts where no sessions exists will be
+        // dealt with also.
+        //   However, it leaves remaining accounts, which was migrated and have
+        // status ACTIVE, but was never used. Dealing with these accounts is
+        // beyond the scope of this Bean - and must be dealt with separately. It
+        // is easy to find these, since the SALT they have for their encrypted
+        // Passwords is either "undefined" or "heartbleed".
+        //   Accounts which have not been used since the Migration from IW3 to
+        // IWS in January 2014, was given the "undefined" SALT, since IW3 used a
+        // simple MD5 checksum, and IWS uses a Salted SHA2. As of September
+        // 2014, 1.645 Accounts still have this Salt. Which means these Accounts
+        // can all be considered abandoned or deprecated.
+        //   In April 2014, an OpenSSL flaw submerged dubbed Heartbleed. All
+        // Accounts was re-salted with the salt "heartbleed", to force a renewal
+        // of the Passwords. As of September 2014, 375 Accounts still have this
+        // Salt, and have thus never updated the Passwords. However, Re-salting
+        // was never applied to the originally migrated Accounts, so these will
+        // be caught by this method.
+        //   The complexity of this Update is rather high, since we have to look
+        // at a number of parameters, which either is or should be indexed! This
+        // is an SQL query to solve the issue, which must be converted to JPA:
+        // -----------------------------------
+        // select
+        //   s.user_id,
+        //   s.max(modified)
+        // from
+        //   sessions s,
+        //   users u
+        // where s.user_id = u.id
+        //   and u.status = 'ACTIVE'
+        //   and modified < 'DATE'::date
+        // group by user_id
+        // order by max(modified);
+        // -----------------------------------
+        final Long days = settings.getAccountInactiveDays();
+        log.info("Fetching the list of Users to be suspended.");
+        final List<UserEntity> users = accessDao.findInactiveAccounts(days);
+        if (!users.isEmpty()) {
+            for (final UserEntity user : users) {
+                log.info("Suspending the user {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                service.suspendUser(authentication, user);
+            }
+        }
+
+        // For now - just returning the number of Records
+        return users.size();
     }
 
     /**
@@ -262,15 +316,13 @@ public class StateBean {
      *
      * @return Number of Deleted Accounts
      */
-    private int deleteSuspendedAccounts(final Timer timer) {
-        final Long days = settings.getAccountDeletedDays();
-        log.debug("Checking of any accounts exists with status SUSPENDED after {} days.", days);
+    private int deleteSuspendedAccounts(final Authentication authentication) {
+        final Long days = settings.getAccountSuspendedDays();
+        log.debug("Checking if Accounts exists with status SUSPENDED after {} days.", days);
         int accounts = 0;
 
         final List<UserEntity> suspendedUsers = accessDao.findAccountsWithState(UserStatus.SUSPENDED, days);
         if (!suspendedUsers.isEmpty()) {
-            final UserEntity system = entityManager.find(UserEntity.class, SYSTEM_ACCOUNT);
-            final Authentication authentication = new Authentication(system, timer.getInfo().toString());
             for (final UserEntity user : suspendedUsers) {
                 log.info("Deleting Suspended account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                 service.deletePrivateData(authentication, user);

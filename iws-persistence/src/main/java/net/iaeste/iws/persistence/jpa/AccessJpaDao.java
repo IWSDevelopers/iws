@@ -33,11 +33,14 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +51,7 @@ import java.util.List;
  */
 public class AccessJpaDao extends BasicJpaDao implements AccessDao {
 
+    private static final Logger log = LoggerFactory.getLogger(AccessJpaDao.class);
     private static final Integer DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 
     /**
@@ -735,6 +739,42 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         query.setParameter("days", date);
 
         return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserEntity> findInactiveAccounts(final Long daysBeforeBecomingInactive) {
+        log.debug("Starting: findInactiveAccounts({})", daysBeforeBecomingInactive);
+        final Date date = new Date(new Date().getTime() - daysBeforeBecomingInactive * DAY_IN_MILLIS);
+        final Query query = entityManager.createNamedQuery("session.findLastUserSession");
+        query.setParameter("days", date);
+
+        // This is a special Query, which isn't mapped to any Object, so we have
+        // to do the mapping ourselves. In this case, we're only interested in
+        // the first Object, which is the UserId - this can then be used to
+        // fetch the actual List of Users.
+        final List<Object[]> result = query.getResultList();
+        log.debug("Found {} Users to suspend", result.size());
+        final List<Long> userIds = new ArrayList<>(result.size());
+        for (final Object[] objects : result) {
+            userIds.add((Long) objects[0]);
+        }
+
+        log.debug("Now we're trying to fetch the Users from the database.");
+        // Okay, now we have a list of UserId's, which we can use to retrieve
+        // the actual User Entities
+        final List<UserEntity> users;
+        if (!userIds.isEmpty()) {
+            final Query userQuery = entityManager.createNamedQuery("user.findUsersByIds");
+            userQuery.setParameter("ids", userIds);
+            users = userQuery.getResultList();
+        } else {
+            users = new ArrayList<>(0);
+        }
+
+        return users;
     }
 
     // =========================================================================

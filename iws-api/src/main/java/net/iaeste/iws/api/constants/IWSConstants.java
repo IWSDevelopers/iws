@@ -126,7 +126,7 @@ public interface IWSConstants {
      * will be removed from the mailing lists and the alias will also be
      * removed. However, all personal data is still present.
      */
-    long ACCOUNT_SUSPENDED_DAYS = 365;
+    long ACCOUNT_INACTIVE_DAYS = 365;
 
     /**
      * Accounts, which have been suspended this number of days, will be deleted.
@@ -138,7 +138,7 @@ public interface IWSConstants {
      * login) will be replaced with an invalid random value, the password will
      * also be removed.
      */
-    long ACCOUNT_DELETED_DAYS = 365;
+    long ACCOUNT_SUSPENDED_DAYS = 365;
 
     /**
      * The year that IAESTE was founded.

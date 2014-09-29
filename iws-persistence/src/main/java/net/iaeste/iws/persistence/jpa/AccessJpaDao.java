@@ -746,7 +746,6 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
      */
     @Override
     public List<UserEntity> findInactiveAccounts(final Long daysBeforeBecomingInactive) {
-        log.debug("Starting: findInactiveAccounts({})", daysBeforeBecomingInactive);
         final Date date = new Date(new Date().getTime() - daysBeforeBecomingInactive * DAY_IN_MILLIS);
         final Query query = entityManager.createNamedQuery("session.findLastUserSession");
         query.setParameter("days", date);
@@ -756,13 +755,11 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
         // the first Object, which is the UserId - this can then be used to
         // fetch the actual List of Users.
         final List<Object[]> result = query.getResultList();
-        log.debug("Found {} Users to suspend", result.size());
         final List<Long> userIds = new ArrayList<>(result.size());
         for (final Object[] objects : result) {
             userIds.add((Long) objects[0]);
         }
 
-        log.debug("Now we're trying to fetch the Users from the database.");
         // Okay, now we have a list of UserId's, which we can use to retrieve
         // the actual User Entities
         final List<UserEntity> users;

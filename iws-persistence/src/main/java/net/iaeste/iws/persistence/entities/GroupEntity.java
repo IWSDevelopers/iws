@@ -108,6 +108,15 @@ import java.util.Map;
                         "  and g.id = ug.group.id" +
                         "  and ug.user.id = :uid" +
                         "  and g.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL),
+        @NamedQuery(name = "group.findNationalByLocalGroupAndUser",
+                query = "select ng from GroupEntity ng, GroupEntity lg, UserGroupEntity ug " +
+                        "where ng.status = " + EntityConstants.GROUP_STATUS_ACTIVE +
+                        "  and ng.parentId = lg.parentId" +
+                        "  and ng.groupType.grouptype = " + EntityConstants.GROUPTYPE_NATIONAL +
+                        "  and lg.groupType.grouptype = " + EntityConstants.GROUPTYPE_LOCAL +
+                        "  and lg.id = ug.group.id" +
+                        "  and ug.group.id = :gid" +
+                        "  and ug.user.id = :uid"),
         @NamedQuery(name = "group.findSubGroupsByParentId",
                 query = "select g from GroupEntity g " +
                         "where g.status = " + EntityConstants.GROUP_STATUS_ACTIVE +

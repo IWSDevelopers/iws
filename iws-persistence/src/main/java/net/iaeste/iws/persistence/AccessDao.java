@@ -166,6 +166,8 @@ public interface AccessDao extends BasicDao {
 
     GroupEntity findNationalGroup(UserEntity user);
 
+    GroupEntity findNationalGroupByLocalGroup(Authentication authentication);
+
     GroupEntity findPrivateGroup(UserEntity user);
 
     List<GroupEntity> findGroupByNameAndParent(String groupName, GroupEntity parent);

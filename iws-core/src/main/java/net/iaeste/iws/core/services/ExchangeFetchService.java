@@ -34,24 +34,19 @@ import net.iaeste.iws.api.responses.exchange.FetchEmployerResponse;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
-import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
-import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Paginatable;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.exceptions.PermissionException;
 import net.iaeste.iws.core.transformers.AdministrationTransformer;
-import net.iaeste.iws.core.transformers.CommonTransformer;
 import net.iaeste.iws.core.transformers.ExchangeTransformer;
 import net.iaeste.iws.persistence.AccessDao;
 import net.iaeste.iws.persistence.Authentication;
 import net.iaeste.iws.persistence.ExchangeDao;
 import net.iaeste.iws.persistence.ViewsDao;
 import net.iaeste.iws.persistence.entities.GroupEntity;
-import net.iaeste.iws.persistence.entities.UserEntity;
-import net.iaeste.iws.persistence.entities.exchange.OfferEntity;
-import net.iaeste.iws.persistence.entities.exchange.OfferGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.PublishingGroupEntity;
 import net.iaeste.iws.persistence.views.DomesticOfferStatisticsView;
 import net.iaeste.iws.persistence.views.EmployerView;
@@ -117,13 +112,23 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
         return new OfferStatistics(statistics, year);
     }
 
+    /**
+     * We need to find the National Group for a User, but necessarily a Group
+     * which the User is a member of (see bug #902, where a Local Committee
+     * member cannot fetch Statistics). So, if the given Groun in the
+     * Authentication, isn't a National Group, we will assume that it is a Local
+     * Committee. In which case, we can find it via the Parent.
+     *
+     * @param authentication
+     * @return National Group Entity
+     */
     private GroupEntity findNationalGroup(final Authentication authentication) {
         final GroupEntity group;
 
         if (authentication.getGroup().getGroupType().getGrouptype() == GroupType.NATIONAL) {
             group = authentication.getGroup();
         } else {
-            group = accessDao.findNationalGroup(authentication.getUser());
+            group = accessDao.findNationalGroupByLocalGroup(authentication);
         }
 
         return group;
@@ -230,45 +235,6 @@ public final class ExchangeFetchService extends CommonService<ExchangeDao> {
 
         return result;
     }
-
-    private List<Offer> oldFindSharedOffers(final Authentication authentication, final Integer exchangeYear) {
-        final java.util.Date now = new Date().toDate();
-        final List<OfferEntity> offerEntities = dao.findSharedOffers(authentication, exchangeYear);
-        final List<Offer> offers = new ArrayList<>(offerEntities.size());
-
-        for (final OfferEntity offerEntity : offerEntities) {
-            if (!offerEntity.getNominationDeadline().before(now)) {
-                OfferGroupEntity og = dao.findInfoForSharedOfferAndGroup(offerEntity.getId(), authentication.getGroup().getId());
-                //overwrite status for each country - it's independent for each country in sharing process
-
-                final Offer offer = ExchangeTransformer.transform(offerEntity);
-                offer.setStatus(og.getStatus());
-
-                final UserEntity nationalSecretary = accessDao.findOwnerByGroup(CommonTransformer.transform(offer.getEmployer().getGroup()));
-                offer.setNsFirstname(nationalSecretary.getFirstname());
-                offer.setNsLastname(nationalSecretary.getLastname());
-
-                // do not expose private comment to foreign offers
-                if (!offerEntity.getEmployer().getGroup().getId().equals(authentication.getGroup().getId())) {
-                    offer.setPrivateComment(null);
-                }
-
-                offers.add(offer);
-            }
-        }
-
-        return offers;
-    }
-
-    //private static List<OfferGroup> convertOfferGroupEntityList(final List<OfferGroupEntity> found) {
-    //    final List<OfferGroup> result = new ArrayList<>(found.size());
-    //
-    //    for (final OfferGroupEntity entity : found) {
-    //        result.add(ExchangeTransformer.transform(entity));
-    //    }
-    //
-    //    return result;
-    //}
 
     public FetchOfferTemplateResponse fetchOfferTemplates(final Authentication authentication, final FetchOfferTemplatesRequest request) {
         throw new NotImplementedException("Method pending implementation.");

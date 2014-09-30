@@ -33,8 +33,6 @@ import net.iaeste.iws.persistence.entities.UserEntity;
 import net.iaeste.iws.persistence.entities.UserGroupEntity;
 import net.iaeste.iws.persistence.entities.exchange.StudentEntity;
 import net.iaeste.iws.persistence.views.UserPermissionView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -51,7 +49,6 @@ import java.util.List;
  */
 public class AccessJpaDao extends BasicJpaDao implements AccessDao {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessJpaDao.class);
     private static final Integer DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 
     /**
@@ -427,6 +424,18 @@ public class AccessJpaDao extends BasicJpaDao implements AccessDao {
     public GroupEntity findNationalGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findNationalByUser");
         query.setParameter("uid", user.getId());
+
+        return findSingleResult(query, "Group");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GroupEntity findNationalGroupByLocalGroup(final Authentication authentication) {
+        final Query query = entityManager.createNamedQuery("group.findNationalByLocalGroupAndUser");
+        query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("uid", authentication.getUser().getId());
 
         return findSingleResult(query, "Group");
     }

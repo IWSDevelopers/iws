@@ -16,6 +16,7 @@ package net.iaeste.iws.ejb;
 
 import net.iaeste.iws.api.constants.IWSConstants;
 import net.iaeste.iws.api.enums.UserStatus;
+import net.iaeste.iws.api.exceptions.IWSException;
 import net.iaeste.iws.common.configuration.Settings;
 import net.iaeste.iws.core.monitors.ActiveSessions;
 import net.iaeste.iws.core.notifications.Notifications;
@@ -44,6 +45,7 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -82,9 +84,15 @@ public class StateBean {
     private static final long SYSTEM_ACCOUNT = 2553L;
 
     /**
-    * Simple Formatter Object, used to log when the cleaning will nect occur.
-    */
-    private static final DateFormat formatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
+     * Simple Date Formatter Object, used to log when the cleaning will nect
+     * occur.
+     */
+    private static final DateFormat dateFormatter = new SimpleDateFormat(IWSConstants.DATE_TIME_FORMAT, IWSConstants.DEFAULT_LOCALE);
+
+    /**
+     * Simple Number Formatter, to be used to present numbers in a nice format.
+     */
+    private static final NumberFormat numberFormatter = NumberFormat.getNumberInstance(IWSConstants.DEFAULT_LOCALE);
 
     /**
     * The initial Expiration, is when the Timer should run for the first time,
@@ -150,7 +158,7 @@ public class StateBean {
         // Bean is invoked at 2 in the morning and every 24 hours later.
         final TimerConfig config = new TimerConfig(StateBean.class.getSimpleName(), false);
         timerService.createIntervalTimer(INITIAL_EXPIRATION, INTERVAL_DURATION, config);
-        log.info("First cleanup run scheduled to begin at " + formatter.format(new Date(INITIAL_EXPIRATION)));
+        log.info("First cleanup run scheduled to begin at " + dateFormatter.format(new Date(INITIAL_EXPIRATION)));
 
         // Now, remove all deprecated Sessions from the Server. These Sessions
         // may or may not work correctly, since IW4 with JSF is combining the
@@ -195,8 +203,11 @@ public class StateBean {
         final int suspended = suspendInactiveAccounts(authentication);
         final int deleted = deleteSuspendedAccounts(authentication);
 
+        // Third, let's try to free some resources.
+        freeMemory();
+
         final long duration = System.currentTimeMillis() - start;
-        log.info("Cleanup took: {}ms (expired {}, suspended {} & deleted {}), next Timeout: {}", duration, expired, suspended, deleted, formatter.format(timer.getNextTimeout()));
+        log.info("Cleanup took: {}ms (expired {}, suspended {} & deleted {}), next Timeout: {}", duration, expired, suspended, deleted, dateFormatter.format(timer.getNextTimeout()));
     }
 
     /**
@@ -239,10 +250,8 @@ public class StateBean {
         // delete completely
         final List<UserEntity> newUsers = accessDao.findAccountsWithState(UserStatus.NEW, days);
         for (final UserEntity user : newUsers) {
-            if (user.getId() == SYSTEM_ACCOUNT) {
-                log.debug("The System User Account, used for Notifications, is still in status NEW!");
-            } else {
-                log.info("Deleting Expired NEW account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+            if (user.getId() != SYSTEM_ACCOUNT) {
+                log.info("Deleting Expired NEW Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                 service.deleteNewUser(user);
                 accounts++;
             }
@@ -300,7 +309,7 @@ public class StateBean {
         final List<UserEntity> users = accessDao.findInactiveAccounts(days);
         if (!users.isEmpty()) {
             for (final UserEntity user : users) {
-                log.info("Suspending the user {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                log.info("Suspending the User {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
                 service.suspendUser(authentication, user);
             }
         }
@@ -324,12 +333,42 @@ public class StateBean {
         final List<UserEntity> suspendedUsers = accessDao.findAccountsWithState(UserStatus.SUSPENDED, days);
         if (!suspendedUsers.isEmpty()) {
             for (final UserEntity user : suspendedUsers) {
-                log.info("Deleting Suspended account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
-                service.deletePrivateData(authentication, user);
-                accounts++;
+                try {
+                    log.info("Deleting Suspended Account for {} {} <{}>.", user.getFirstname(), user.getLastname(), user.getUsername());
+                    service.deletePrivateData(authentication, user);
+                    accounts++;
+                } catch (IWSException e) {
+                    log.warn("Unable to delete the Account for {} {} <{}>, reason: {}", user.getFirstname(), user.getLastname(), user.getUsername(), e.getMessage());
+                }
             }
         }
 
         return accounts;
+    }
+
+    /**
+     * The current Glassfish instance is suffering from a problem, where the
+     * memory consumption is steadily increasing. The exact cause of this
+     * problem has not been resolved, but to avoid that the system crashes with
+     * OutOfMemory Exceptions, this method will try to free unused resources by
+     * explicitly running the Garbage Collector and log the freed memory.<br />
+     *   Although explicitly invoking the Garbage Collector is a major no-no, it
+     * is done here explicitly because of the stability problems. It is better
+     * to have frequent performance drops, than to have server crashes.
+     */
+    private void freeMemory() {
+        final long maxMemory = Runtime.getRuntime().maxMemory();
+        final long freeMemoryBefore = Runtime.getRuntime().freeMemory();
+
+        // Now invoke the Garbage Collector
+        System.gc();
+
+        // Let's log the information to display exactly what we've gained from
+        // invoking the Garbage Collector.
+        final long freeMemoryAfter = Runtime.getRuntime().freeMemory();
+        log.info("Explicit invocation of the Garbage Collector resulted in {} bytes freed, leaving {} of {} bytes used.",
+                numberFormatter.format(freeMemoryAfter - freeMemoryBefore),
+                numberFormatter.format(freeMemoryAfter),
+                numberFormatter.format(maxMemory));
     }
 }

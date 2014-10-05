@@ -303,9 +303,10 @@ public class CommonService<T extends BasicDao> {
         if (entity != null) {
             final String filename = entity.getFilename();
             deleteFileFromSystem(entity.getStoredFilename());
+            final int attachmentsDeleted = dao.deleteAttachmentRecord(entity);
             dao.delete(entity);
 
-            log.info("File {} has been successfully deleted from the IWS.", filename);
+            log.info("File {}, Attached {} times, has been successfully deleted from the IWS.", filename, attachmentsDeleted);
         } else {
             throw new AuthorizationException("The user is not authorized to process this file.");
         }

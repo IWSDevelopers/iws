@@ -156,6 +156,8 @@ public interface BasicDao {
     FileEntity findFileByUserAndExternalId(UserEntity user, String externalId) throws PersistenceException;
     FileEntity findAttachedFileByUserAndExternalId(GroupEntity group, String externalId) throws PersistenceException;
 
+    int deleteAttachmentRecord(FileEntity file);
+
     GroupEntity findMemberGroup(UserEntity user);
 
     List<GroupEntity> findAllGroups(GroupType type);

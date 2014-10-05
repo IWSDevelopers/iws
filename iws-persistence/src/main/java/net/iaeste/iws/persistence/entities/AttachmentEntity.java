@@ -57,6 +57,9 @@ import java.util.Date;
                 query = "select a from AttachmentEntity a " +
                         "where a.table = :table" +
                         "  and a.record = :recordid"),
+        @NamedQuery(name = "attachments.deleteByFile",
+                query = "delete AttachmentEntity a " +
+                        "where a.file.id = :fid"),
         @NamedQuery(name = "attachments.findForRecordAndFile",
                 query = "select a from AttachmentEntity a " +
                         "where a.table = :table" +

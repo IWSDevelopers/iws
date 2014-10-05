@@ -264,6 +264,17 @@ public class BasicJpaDao implements BasicDao {
      * {@inheritDoc}
      */
     @Override
+    public int deleteAttachmentRecord(final FileEntity file) {
+        final Query query = entityManager.createNamedQuery("attachments.deleteByFile");
+        query.setParameter("fid", file.getId());
+
+        return query.executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public GroupEntity findMemberGroup(final UserEntity user) {
         final Query query = entityManager.createNamedQuery("group.findGroupByUserAndType");
         query.setParameter("uid", user.getId());

@@ -72,6 +72,7 @@ public final class Employer extends AbstractVerification {
             employerId = employer.employerId;
             group = employer.group != null ? new Group(employer.group) : null;
             name = employer.name;
+            department = employer.department;
             business = employer.business;
             address = employer.address != null ? new Address(employer.address) : null;
             employeesCount = employer.employeesCount;

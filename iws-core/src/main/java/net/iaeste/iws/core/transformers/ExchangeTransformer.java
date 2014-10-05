@@ -177,8 +177,6 @@ public final class ExchangeTransformer {
             result.setWorkingPlace(entity.getWorkingPlace());
             result.setNearestAirport(entity.getNearestAirport());
             result.setNearestPublicTransport(entity.getNearestPublicTransport());
-            //result.setWeeklyHours(entity.getWeeklyHours());
-            //result.setDailyHours(entity.getDailyHours());
             result.setCanteen(entity.getCanteen());
         }
 
@@ -202,8 +200,6 @@ public final class ExchangeTransformer {
             result.setWorkingPlace(employer.getWorkingPlace());
             result.setNearestAirport(employer.getNearestAirport());
             result.setNearestPublicTransport(employer.getNearestPublicTransport());
-            //result.setWeeklyHours(employer.getWeeklyHours());
-            //result.setDailyHours(employer.getDailyHours());
             result.setCanteen(employer.getCanteen());
         }
 

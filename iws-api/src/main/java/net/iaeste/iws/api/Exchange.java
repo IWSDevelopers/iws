@@ -23,8 +23,10 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessPublishingGroupRequest;
@@ -37,6 +39,8 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
@@ -108,6 +112,20 @@ public interface Exchange {
     OfferResponse deleteOffer(AuthenticationToken token, DeleteOfferRequest request);
 
     /**
+     * IW3, IAESTE IntraWeb version 3, allowed users to upload their Offers
+     * directly as a CSV file, to avoid typing it all again. Although IWS
+     * provides better mechanisms in the form of a published API which will
+     * allow a much greater control - it is still requested by Users, that they
+     * can perform this action, as some countries do not have the capacity to
+     * implement an IWS API Client otherwise.
+     *
+     * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request Offer CSV Upload Request
+     * @return
+     */
+    OfferCSVUploadResponse uploadOffers(AuthenticationToken token, OfferCSVUploadRequest request);
+
+    /**
      * Retrieves a list of offers. This can be either the list of owned offers or offers which are shared with your
      * country.
      *
@@ -124,6 +142,19 @@ public interface Exchange {
      * @return contains a list of {@link net.iaeste.iws.api.dtos.exchange.Offer}
      */
     FetchOffersResponse fetchOffers(AuthenticationToken token, FetchOffersRequest request);
+
+    /**
+     * IW3, IAESTE IntraWeb version 3, provided a simple way whereby Offers
+     * could be downloaded. The download was primarily of the countries incoming
+     * or foreign Offers. This functionality mimics this service in IWS, so the
+     * request, will fetch Offers, though with a few more options as described
+     * in the Request Object.
+     *
+     * @param token   The valid authentication token provided by {@link Access#generateSession(net.iaeste.iws.api.requests.AuthenticationRequest)}
+     * @param request Offer CSV Download Request
+     * @return
+     */
+    OfferCSVDownloadResponse downloadOffers(AuthenticationToken token, OfferCSVDownloadRequest request);
 
     /**
      * Retrieves a list of all groups to which an offer can be shared to. The group types of the groups are:

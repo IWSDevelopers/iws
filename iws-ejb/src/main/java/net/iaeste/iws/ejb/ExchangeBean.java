@@ -25,6 +25,8 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -40,6 +42,8 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
@@ -261,6 +265,26 @@ public class ExchangeBean extends AbstractBean implements Exchange {
      * {@inheritDoc}
      */
     @Override
+    @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
+    public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
+        OfferCSVUploadResponse response;
+
+        try {
+            response = controller.uploadOffers(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new OfferCSVUploadResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @WebMethod
     @WebResult(name = "response")
     @Interceptors(Profiler.class)
@@ -276,6 +300,27 @@ public class ExchangeBean extends AbstractBean implements Exchange {
         } catch (RuntimeException e) {
             log.error(generateErrorLog(e, token));
             response = new FetchOffersResponse(IWSErrors.ERROR, e.getMessage());
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @WebMethod(exclude = true)
+    @Interceptors(Profiler.class)
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
+        OfferCSVDownloadResponse response;
+
+        try {
+            response = controller.downloadOffers(token, request);
+            log.info(generateResponseLog(response, token));
+        } catch (RuntimeException e) {
+            log.error(generateErrorLog(e, token));
+            response = new OfferCSVDownloadResponse(IWSErrors.ERROR, e.getMessage());
         }
 
         return response;

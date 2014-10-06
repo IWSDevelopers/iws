@@ -28,6 +28,8 @@ import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVUploadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.OfferTemplateRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessEmployerRequest;
@@ -43,10 +45,13 @@ import net.iaeste.iws.api.responses.exchange.FetchOfferTemplateResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishingGroupResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVUploadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
 import net.iaeste.iws.api.util.Fallible;
+import net.iaeste.iws.core.services.ExchangeCSVService;
 import net.iaeste.iws.core.services.ExchangeFetchService;
 import net.iaeste.iws.core.services.ExchangeService;
 import net.iaeste.iws.core.services.ServiceFactory;
@@ -208,6 +213,32 @@ public final class ExchangeController extends CommonController implements Exchan
      * {@inheritDoc}
      */
     @Override
+    public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting uploadOffers()"));
+        }
+        OfferCSVUploadResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.PROCESS_OFFER);
+            verify(request);
+
+            final ExchangeCSVService service = factory.prepareExchangeCSVService();
+            response = service.uploadOffers(authentication, request);
+        } catch (IWSException e) {
+            response = new OfferCSVUploadResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished uploadOffers()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Starting fetchOffers()"));
@@ -226,6 +257,32 @@ public final class ExchangeController extends CommonController implements Exchan
 
         if (log.isTraceEnabled()) {
             log.trace(formatLogMessage(token, "Finished fetchOffers()"));
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OfferCSVDownloadResponse downloadOffers(AuthenticationToken token, OfferCSVDownloadRequest request) {
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Starting downloadOffers()"));
+        }
+        OfferCSVDownloadResponse response;
+
+        try {
+            final Authentication authentication = verifyAccess(token, Permission.FETCH_OFFERS);
+            verify(request);
+
+            final ExchangeCSVService service = factory.prepareExchangeCSVService();
+            response = service.downloadOffers(authentication, request);
+        } catch (IWSException e) {
+            response = new OfferCSVDownloadResponse(e.getError(), e.getMessage());
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace(formatLogMessage(token, "Finished downloadOffers()"));
         }
         return response;
     }

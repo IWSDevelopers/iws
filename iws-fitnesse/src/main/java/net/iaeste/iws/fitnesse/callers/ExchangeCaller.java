@@ -48,7 +48,7 @@ public final class ExchangeCaller implements Exchange {
     public OfferStatisticsResponse fetchOfferStatistics(final AuthenticationToken token, final OfferStatisticsRequest request) {
         try {
             return caller.fetchOfferStatistics(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -60,7 +60,7 @@ public final class ExchangeCaller implements Exchange {
     public EmployerResponse processEmployer(final AuthenticationToken token, final ProcessEmployerRequest request) {
         try {
             return caller.processEmployer(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -72,7 +72,7 @@ public final class ExchangeCaller implements Exchange {
     public FetchEmployerResponse fetchEmployers(final AuthenticationToken token, final FetchEmployerRequest request) {
         try {
             return caller.fetchEmployers(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -84,7 +84,7 @@ public final class ExchangeCaller implements Exchange {
     public OfferResponse processOffer(final AuthenticationToken token, final ProcessOfferRequest request) {
         try {
             return caller.processOffer(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -96,7 +96,19 @@ public final class ExchangeCaller implements Exchange {
     public OfferResponse deleteOffer(final AuthenticationToken token, final DeleteOfferRequest request) {
         try {
             return caller.deleteOffer(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OfferCSVUploadResponse uploadOffers(final AuthenticationToken token, final OfferCSVUploadRequest request) {
+        try {
+            return caller.uploadOffers(token, request);
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -108,7 +120,19 @@ public final class ExchangeCaller implements Exchange {
     public FetchOffersResponse fetchOffers(final AuthenticationToken token, final FetchOffersRequest request) {
         try {
             return caller.fetchOffers(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            throw new StopTestException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OfferCSVDownloadResponse downloadOffers(final AuthenticationToken token, final OfferCSVDownloadRequest request) {
+        try {
+            return caller.downloadOffers(token, request);
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -120,7 +144,7 @@ public final class ExchangeCaller implements Exchange {
     public Fallible processOfferTemplate(final AuthenticationToken token, final OfferTemplateRequest request) {
         try {
             return caller.processOfferTemplate(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -132,7 +156,7 @@ public final class ExchangeCaller implements Exchange {
     public FetchOfferTemplateResponse fetchOfferTemplates(final AuthenticationToken token, final FetchOfferTemplatesRequest request) {
         try {
             return caller.fetchOfferTemplates(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -144,7 +168,7 @@ public final class ExchangeCaller implements Exchange {
     public Fallible processPublishingGroup(final AuthenticationToken token, final ProcessPublishingGroupRequest request) {
         try {
             return caller.processPublishingGroup(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -156,7 +180,7 @@ public final class ExchangeCaller implements Exchange {
     public FetchPublishingGroupResponse fetchPublishingGroups(final AuthenticationToken token, final FetchPublishGroupsRequest request) {
         try {
             return caller.fetchPublishingGroups(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -169,7 +193,7 @@ public final class ExchangeCaller implements Exchange {
     public Fallible deletePublishingGroup(final AuthenticationToken token, final DeletePublishingGroupRequest request) {
         try {
             return caller.deletePublishingGroup(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -181,7 +205,7 @@ public final class ExchangeCaller implements Exchange {
     public FetchGroupsForSharingResponse fetchGroupsForSharing(final AuthenticationToken token) {
         try {
             return caller.fetchGroupsForSharing(token);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -193,7 +217,7 @@ public final class ExchangeCaller implements Exchange {
     public PublishOfferResponse processPublishOffer(final AuthenticationToken token, final PublishOfferRequest request) {
         try {
             return caller.processPublishOffer(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -205,7 +229,7 @@ public final class ExchangeCaller implements Exchange {
     public FetchPublishedGroupsResponse fetchPublishedGroups(final AuthenticationToken token, final FetchPublishedGroupsRequest request) {
         try {
             return caller.fetchPublishedGroups(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -217,7 +241,7 @@ public final class ExchangeCaller implements Exchange {
     public Fallible processHideForeignOffers(final AuthenticationToken token, final HideForeignOffersRequest request) {
         try {
             return caller.processHideForeignOffers(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }
@@ -229,7 +253,7 @@ public final class ExchangeCaller implements Exchange {
     public Fallible rejectOffer(final AuthenticationToken token, final RejectOfferRequest request) {
         try {
             return caller.rejectOffer(token, request);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new StopTestException(e);
         }
     }

@@ -108,6 +108,13 @@ public final class ServiceFactory {
         return new ExchangeFetchService(settings, dao, viewsDao, accessDao);
     }
 
+    public ExchangeCSVService prepareExchangeCSVService() {
+        final ExchangeDao dao = new ExchangeJpaDao(entityManager);
+        final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
+
+        return new ExchangeCSVService(dao, viewsDao);
+    }
+
     public StudentService prepareStudentService() {
         final ViewsDao viewsDao = new ViewsJpaDao(entityManager);
 

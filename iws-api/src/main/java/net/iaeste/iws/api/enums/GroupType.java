@@ -35,7 +35,7 @@ public enum GroupType {
      * such as marriage where the family name is changed.<br />
      *   There can only exists 1 Administration Group.
      */
-    ADMINISTRATION("Administration"),
+    ADMINISTRATION("Administration", false, true),
 
     /**
      * All user accounts have a private group assigned, with this type. It is
@@ -45,7 +45,7 @@ public enum GroupType {
      * from the system, then the private data can be easily removed as
      * well.
      */
-    PRIVATE("Private"),
+    PRIVATE("Private", false, false),
 
     /**
      * All members are assigned to this type, which gives the rights to the
@@ -58,7 +58,7 @@ public enum GroupType {
      * IDT members, etc.<br />
      *   Note; users can only be member of 1 Members Group!
      */
-    MEMBER("Members"),
+    MEMBER("Members", true, false),
 
     /**
      * International Groups, are Groups which share members across Country
@@ -99,7 +99,7 @@ public enum GroupType {
      *   Regardless of the purpose, any group which purpose is not bound to a
      * Single country, is an International Group.
      */
-    INTERNATIONAL("International"),
+    INTERNATIONAL("International", true, true),
 
     /**
      * All Countries have both a Members group, where all the people who are a
@@ -111,13 +111,13 @@ public enum GroupType {
      * be allowed to join the NC's Mailinglist.<br />
      *   Note; users can only be member of 1 National Group!
      */
-    NATIONAL("Staff"),
+    NATIONAL("Staff", false, true),
 
     /**
      * Local Groups are for Local Committees around the Country. Local Groups
      * will have a National Group as parent Group.
      */
-    LOCAL("Local Committee"),
+    LOCAL("Local Committee", true, true),
 
     /**
      * For Groups, where you need only to have a common mailinglist as well as
@@ -125,7 +125,7 @@ public enum GroupType {
      * purpose well.<br />
      *   Workgroups can be assigned as a sub-group to any of the other groups.
      */
-    WORKGROUP("WorkGroup"),
+    WORKGROUP("WorkGroup", true, true),
 
     /**
      * The Student Group is for Offer Applicants, meaning that if a person
@@ -139,19 +139,46 @@ public enum GroupType {
      * group (with role Student). Normal members who wishes to apply for Offers,
      * must also be added to the Student Group.
      */
-    STUDENT("Students");
+    STUDENT("Students", false, false);
 
     // =========================================================================
     // Private Constructor & functionality
     // =========================================================================
 
     private final String description;
+    private final Boolean mayHavePrivateMailinglist;
+    private final Boolean mayHavePublicMailinglist;
 
-    GroupType(final String description) {
+    /**
+     * Constructor for this enumerated type. GroupTypes is there to handle meta
+     * information for other Groups, and is used extensively within the
+     * IWS.<br />
+     *   The enumerated type have a few settings, which is important for
+     * displaying and creating/altering Groups. The provided description is used
+     * for displaying information about the Group. The two Boolean flags, is
+     * there to say if this Group may have a private or public mailing list. The
+     * presence of one such list requires that there's some members present
+     * who's on either.
+     *
+     * @param description               Display name for this GroupType
+     * @param mayHavePrivateMailinglist May this GroupType have private lists
+     * @param mayHavePublicMailinglist  May this GroupType have public lists
+     */
+    GroupType(final String description, final Boolean mayHavePrivateMailinglist, final Boolean mayHavePublicMailinglist) {
         this.description = description;
+        this.mayHavePrivateMailinglist = mayHavePrivateMailinglist;
+        this.mayHavePublicMailinglist = mayHavePublicMailinglist;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public Boolean getMayHavePrivateMailinglist() {
+        return mayHavePrivateMailinglist;
+    }
+
+    public Boolean getMayHavePublicMailinglist() {
+        return mayHavePublicMailinglist;
     }
 }

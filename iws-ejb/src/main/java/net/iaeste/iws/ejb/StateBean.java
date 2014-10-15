@@ -95,13 +95,14 @@ public class StateBean {
     private static final NumberFormat numberFormatter = NumberFormat.getNumberInstance(IWSConstants.DEFAULT_LOCALE);
 
     /**
-    * The initial Expiration, is when the Timer should run for the first time,
-    * this is set to be in a minute, so the startup will not be disturbed by a
-    * potentially big database operation.<br />
-    *   The initial time is calculated using our internal Date Object which is
-    * set to use midnight of the startup-date as base. This is a time in the
-    * past, so to ensure that it is starting at 2 in the morning (time with the
-    * lowest activity), we simply add 26 hours to it.
+     * The initial Expiration, is when the Timer should run for the first time,
+     * this is set to be in at 2 in the morning, so neither the startup will nor
+     * any other peak load periods will be disturbed by a potentially big
+     * database operation.<br />
+     *   The initial time is calculated using our internal Date Object which is
+     * set to use midnight of the startup-date as base. This is a time in the
+     * past, so to ensure that it is starting at 2 in the morning (time with the
+     * lowest activity), we simply add 26 hours to it.
     */
     private static final Long INITIAL_EXPIRATION = new net.iaeste.iws.api.util.Date().toDate().getTime() + (26 * 60 * 60 * 1000L);
 
@@ -360,7 +361,7 @@ public class StateBean {
         final long maxMemory = Runtime.getRuntime().maxMemory();
         final long freeMemoryBefore = Runtime.getRuntime().freeMemory();
 
-        // Now invoke the Garbage Collector
+        // Now invoke the Garbage Collector.
         System.gc();
 
         // Let's log the information to display exactly what we've gained from

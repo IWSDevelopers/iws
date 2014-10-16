@@ -28,6 +28,8 @@ public class OfferCSVDownloadResponse extends AbstractFallible {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private byte[] data = null;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -53,6 +55,15 @@ public class OfferCSVDownloadResponse extends AbstractFallible {
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setData(final byte[] data) {
+        this.data = data;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
 
     // =========================================================================
     // Standard Response Methods

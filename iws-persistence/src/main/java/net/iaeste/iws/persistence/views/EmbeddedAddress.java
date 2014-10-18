@@ -41,6 +41,9 @@ public class EmbeddedAddress {
     @Column(name = "address_street2", insertable = false, updatable = false)
     private String street2 = null;
 
+    @Column(name = "address_pobox", insertable = false, updatable = false)
+    private String pobox = null;
+
     @Column(name = "address_postal_code", insertable = false, updatable = false)
     private String postalCode = null;
 
@@ -76,6 +79,14 @@ public class EmbeddedAddress {
 
     public String getStreet2() {
         return street2;
+    }
+
+    public void setPobox(final String pobox) {
+        this.pobox = pobox;
+    }
+
+    public String getPobox() {
+        return pobox;
     }
 
     public void setPostalCode(final String postalCode) {

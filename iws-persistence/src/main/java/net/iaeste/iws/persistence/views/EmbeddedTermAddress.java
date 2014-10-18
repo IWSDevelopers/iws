@@ -48,6 +48,9 @@ public class EmbeddedTermAddress {
     @Column(name = "term_address_street2", insertable = false, updatable = false)
     private String street2 = null;
 
+    @Column(name = "term_address_pobox", insertable = false, updatable = false)
+    private String pobox = null;
+
     @Column(name = "term_address_postal_code", insertable = false, updatable = false)
     private String postalCode = null;
 
@@ -109,6 +112,14 @@ public class EmbeddedTermAddress {
 
     public String getStreet2() {
         return street2;
+    }
+
+    public void setPobox(final String pobox) {
+        this.pobox = pobox;
+    }
+
+    public String getPobox() {
+        return pobox;
     }
 
     public void setPostalCode(final String postalCode) {

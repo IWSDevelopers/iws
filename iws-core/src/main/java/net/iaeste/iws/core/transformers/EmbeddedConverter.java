@@ -72,6 +72,7 @@ public final class EmbeddedConverter {
 
         result.setStreet1(embedded.getStreet1());
         result.setStreet2(embedded.getStreet2());
+        result.setPobox(embedded.getPobox());
         result.setPostalCode(embedded.getPostalCode());
         result.setCity(embedded.getCity());
         result.setState(embedded.getState());
@@ -95,6 +96,7 @@ public final class EmbeddedConverter {
 
         result.setStreet1(embedded.getStreet1());
         result.setStreet2(embedded.getStreet2());
+        result.setPobox(embedded.getPobox());
         result.setPostalCode(embedded.getPostalCode());
         result.setCity(embedded.getCity());
         result.setState(embedded.getState());
@@ -119,6 +121,7 @@ public final class EmbeddedConverter {
 
         result.setStreet1(embedded.getStreet1());
         result.setStreet2(embedded.getStreet2());
+        result.setPobox(embedded.getPobox());
         result.setPostalCode(embedded.getPostalCode());
         result.setCity(embedded.getCity());
         result.setState(embedded.getState());

@@ -247,4 +247,14 @@ public final class CommonTransformer {
     static Date convert(final java.util.Date date) {
         return date != null ? new Date(date) : null;
     }
+
+    static String convertToYesNo(final Boolean value) {
+        final String result;
+        if (value != null && value) {
+            result = "Yes";
+        } else {
+            result = "No";
+        }
+        return result;
+    }
 }

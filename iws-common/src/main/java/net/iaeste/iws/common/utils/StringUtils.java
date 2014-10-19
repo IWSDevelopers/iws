@@ -179,4 +179,14 @@ public final class StringUtils {
                           .replaceAll("[^a-zA-Z0-9_'\\.@]", "_")
                           .toLowerCase();
     }
+
+    public static String removeLineBreaks(final String input) {
+        String result = null;
+        if (input != null) {
+            result = input.replaceAll("\\r\\n|\\r|\\n", " ");
+        }
+        return result;
+    }
+
+
 }

@@ -25,14 +25,26 @@ import net.iaeste.iws.api.dtos.exchange.Employer;
 import net.iaeste.iws.api.dtos.exchange.Offer;
 import net.iaeste.iws.api.dtos.exchange.Student;
 import net.iaeste.iws.api.dtos.exchange.StudentApplication;
+import net.iaeste.iws.api.enums.exchange.FieldOfStudy;
+import net.iaeste.iws.api.enums.exchange.StudyLevel;
+import net.iaeste.iws.api.enums.exchange.TypeOfWork;
 import net.iaeste.iws.api.util.DateTime;
+import net.iaeste.iws.common.utils.StringUtils;
 import net.iaeste.iws.persistence.views.ApplicationView;
 import net.iaeste.iws.persistence.views.AttachedFileView;
+import net.iaeste.iws.persistence.views.EmbeddedAddress;
+import net.iaeste.iws.persistence.views.EmbeddedCountry;
+import net.iaeste.iws.persistence.views.EmbeddedEmployer;
+import net.iaeste.iws.persistence.views.EmbeddedOffer;
+import net.iaeste.iws.persistence.views.EmbeddedOfferGroup;
 import net.iaeste.iws.persistence.views.EmployerView;
 import net.iaeste.iws.persistence.views.OfferSharedToGroupView;
 import net.iaeste.iws.persistence.views.OfferView;
 import net.iaeste.iws.persistence.views.SharedOfferView;
 import net.iaeste.iws.persistence.views.StudentView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author  Kim Jensen / last $Author:$
@@ -221,5 +233,155 @@ public final class ViewTransformer {
         file.setCreated(CommonTransformer.convert(view.getFile().getCreated()));
 
         return file;
+    }
+
+    /**
+     * Transforms the {@link SharedOfferView} to an {@link java.util.List <Object>} for CSVPrinter.
+     *
+     * @param view OfferView to transform
+     * @return List of offer objects to be exported to CSV
+     */
+    public static List<Object> transformToStringList(final SharedOfferView view) {
+        //use following?
+        //public static List<String> transformToStringList(final Class<List> list, final SharedOfferView view) {
+        final List<Object> result = new ArrayList<>();
+
+        final EmbeddedOffer embeddedOffer = view.getOffer() != null ? view.getOffer() : new EmbeddedOffer();
+        final EmbeddedEmployer embeddedEmployer = view.getEmployer() != null ? view.getEmployer() : new EmbeddedEmployer();
+        final EmbeddedAddress embeddedAddress = view.getAddress() != null ? view.getAddress() : new EmbeddedAddress();
+        final EmbeddedCountry embeddedCountry = view.getCountry() != null ? view.getCountry() : new EmbeddedCountry();
+        final EmbeddedOfferGroup embeddedOfferGroup = view.getOfferGroup() != null ? view.getOfferGroup() : new EmbeddedOfferGroup();
+
+        final String exportedRefNo = embeddedOffer.getOldRefNo() != null ? embeddedOffer.getOldRefNo() : embeddedOffer.getRefNo();
+
+        result.add(exportedRefNo);
+        result.add(embeddedOffer.getNominationDeadline());
+        result.add(null);
+        result.add(embeddedEmployer.getName());
+        result.add(embeddedAddress.getStreet1());
+        result.add(embeddedAddress.getStreet2());
+        result.add(embeddedAddress.getPobox());
+        result.add(embeddedAddress.getPostalCode());
+        result.add(embeddedAddress.getCity());
+        result.add(embeddedAddress.getState());
+        result.add(embeddedCountry.getCountryName());
+        result.add(embeddedEmployer.getWebsite());
+        result.add(embeddedEmployer.getWorkingPlace());
+        result.add(embeddedEmployer.getBusiness());
+        result.add(null);
+        result.add(embeddedEmployer.getNearestPublicTransport());
+        result.add(embeddedEmployer.getNumberOfEmployees());
+        result.add(embeddedOffer.getWeeklyHours());
+        result.add(embeddedOffer.getDailyHours());
+        result.add(CommonTransformer.convertToYesNo(embeddedEmployer.getCanteen()));
+
+        String fieldOfStudiesString = "";
+        for (FieldOfStudy fieldOfStudy : CollectionTransformer.explodeEnumSet(FieldOfStudy.class, embeddedOffer.getFieldOfStudies())) {
+            if (fieldOfStudiesString.isEmpty()) {
+                fieldOfStudiesString = fieldOfStudy.getDescription();
+            } else {
+                fieldOfStudiesString = fieldOfStudiesString + ", " + fieldOfStudy.getDescription();
+            }
+        }
+        result.add(fieldOfStudiesString);
+
+
+        String specializationsString = "";
+        for (String spe : CollectionTransformer.explodeStringSet(embeddedOffer.getSpecializations())) {
+            String toPut = spe.charAt(0) + spe.toLowerCase().replace('_', ' ').substring(1);
+            if (!specializationsString.isEmpty()) {
+                specializationsString = specializationsString + ", " + toPut;
+            } else {
+                specializationsString = toPut;
+            }
+        }
+        result.add(specializationsString);
+
+        result.add(CommonTransformer.convertToYesNo(embeddedOffer.getPrevTrainingRequired()));
+        result.add(StringUtils.removeLineBreaks(embeddedOffer.getOtherRequirements()));
+        result.add(StringUtils.removeLineBreaks(embeddedOffer.getWorkDescription()));
+        result.add(embeddedOffer.getMinimumWeeks());
+        result.add(embeddedOffer.getMaximumWeeks());
+        result.add(embeddedOffer.getFromDate());
+        result.add(embeddedOffer.getToDate());
+
+        boolean studyBeginning = false;
+        boolean studyMiddle = false;
+        boolean studyEnd = false;
+
+        for (StudyLevel sl : CollectionTransformer.explodeEnumSet(StudyLevel.class, embeddedOffer.getStudyLevels())) {
+            switch(sl) {
+                case B:studyBeginning = true; break;
+                case M:studyMiddle = true; break;
+                case E:studyEnd = true; break;
+            }
+        }
+        result.add(CommonTransformer.convertToYesNo(studyBeginning));
+        result.add(CommonTransformer.convertToYesNo(studyMiddle));
+        result.add(CommonTransformer.convertToYesNo(studyEnd));
+
+        if (TypeOfWork.R.equals(embeddedOffer.getTypeOfWork())) {
+            result.add(CommonTransformer.convertToYesNo(true));
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(false));
+        } else if (TypeOfWork.O.equals(embeddedOffer.getTypeOfWork())) {
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(true));
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(false));
+        } else if (TypeOfWork.F.equals(embeddedOffer.getTypeOfWork())) {
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(true));
+            result.add(CommonTransformer.convertToYesNo(false));
+        } else {
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(false));
+            result.add(CommonTransformer.convertToYesNo(false));
+        }
+
+        result.add(embeddedOffer.getLanguage1() != null ? embeddedOffer.getLanguage1().getDescription() : null);
+        result.add(embeddedOffer.getLanguage1Level() != null ? embeddedOffer.getLanguage1Level().getDescription() : null);
+        result.add(embeddedOffer.getLanguage1Operator() != null ? embeddedOffer.getLanguage1Operator().getDescription() : null);
+
+        result.add(embeddedOffer.getLanguage2() != null ? embeddedOffer.getLanguage2().getDescription() : null);
+        result.add(embeddedOffer.getLanguage2Level() != null ? embeddedOffer.getLanguage2Level().getDescription() : null);
+        result.add(embeddedOffer.getLanguage2Operator() != null ? embeddedOffer.getLanguage2Operator().getDescription() : null);
+
+        result.add(embeddedOffer.getLanguage3() != null ? embeddedOffer.getLanguage3().getDescription() : null);
+        result.add(embeddedOffer.getLanguage3Level() != null ? embeddedOffer.getLanguage3Level().getDescription() : null);
+
+        result.add(embeddedCountry.getCurrency() != null ? embeddedCountry.getCurrency().getDescription() : null);
+        result.add(embeddedOffer.getPayment());
+        result.add(embeddedOffer.getPaymentFrequency() != null ? embeddedOffer.getPaymentFrequency().getDescription() : null);
+        result.add(embeddedOffer.getDeduction());
+        result.add(embeddedOffer.getLodgingBy());
+        result.add(embeddedOffer.getLodgingCost());
+        result.add(embeddedOffer.getLodgingCostFrequency() != null ? embeddedOffer.getLodgingCostFrequency().getDescription() : null);
+        result.add(embeddedOffer.getLivingCost());
+        result.add(embeddedOffer.getLivingCostFrequency() != null ? embeddedOffer.getLivingCostFrequency().getDescription() : null);
+        result.add(embeddedOffer.getNumberOfHardCopies());
+        result.add(embeddedOfferGroup.getStatus() != null ? embeddedOfferGroup.getStatus().getDescription() : null);
+
+
+        result.add(embeddedOffer.getFromDate2());
+        result.add(embeddedOffer.getToDate2());
+
+        result.add(embeddedOffer.getUnavailableFrom());
+        result.add(embeddedOffer.getUnavailableTo());
+
+        result.add(StringUtils.removeLineBreaks(embeddedOffer.getAdditionalInformation()));
+
+        result.add(embeddedOfferGroup.getCreated());
+
+        result.add(embeddedOffer.getModified());
+        result.add(view.getNsFirstname());
+        result.add(view.getNsLastname());
+
+        result.add(embeddedCountry.getCountryName());
+
+        return result;
     }
 }

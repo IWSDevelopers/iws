@@ -121,8 +121,7 @@ public class ExchangeCSVService {
 
     private CSVPrinter getDefaultCsvPrinter(final Appendable output) {
         try {
-            return CSVFormat.RFC4180.withHeader()
-                                    .withDelimiter(DELIMITER)
+            return CSVFormat.RFC4180.withDelimiter(DELIMITER)
                                     .withNullString("")
                                     .print(output);
         } catch (IOException e) {

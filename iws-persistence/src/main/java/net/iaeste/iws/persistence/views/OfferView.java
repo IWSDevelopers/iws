@@ -28,10 +28,17 @@ import javax.persistence.Table;
  * @since   IWS 1.0
  */
 @Entity
-@NamedQueries(@NamedQuery(name = "view.findDomesticOffersByGroupAndYear",
-        query = "select o from OfferView o " +
-                "where o.groupId = :gid" +
-                "  and o.exchangeYear = :year"))
+@NamedQueries({
+        @NamedQuery(name = "view.findDomesticOffersByGroupAndYear",
+            query = "select o from OfferView o " +
+                    "where o.groupId = :gid" +
+                    "  and o.exchangeYear = :year"),
+        @NamedQuery(name = "view.findDomesticOffersByGroupAndYearAndOfferExternalId",
+            query = "select o from OfferView o " +
+                    "where o.groupId = :gid" +
+                    "  and o.exchangeYear = :year" +
+                    "  and o.offer.externalId in (:eids)")
+})
 @Table(name = "offer_view")
 public class OfferView extends AbstractView<OfferView> {
 

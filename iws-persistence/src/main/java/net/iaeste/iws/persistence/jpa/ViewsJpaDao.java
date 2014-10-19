@@ -106,6 +106,19 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
      * {@inheritDoc}
      */
     @Override
+    public List<OfferView> findDomesticOffersByOfferIds(final Authentication authentication, final Integer exchangeYear, final List<String> offerIds) {
+        final Query query = entityManager.createNamedQuery("view.findDomesticOffersByGroupAndYearAndOfferExternalId");
+        query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("year", exchangeYear);
+        query.setParameter("eids", offerIds);
+
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<SharedOfferView> findSharedOffers(Authentication authentication, Integer exchangeYear, final Paginatable page) {
         final Query query = entityManager.createNamedQuery("view.findSharedOffersByGroupAndYear");
         query.setParameter("gid", authentication.getGroup().getId());
@@ -113,6 +126,19 @@ public final class ViewsJpaDao extends BasicJpaDao implements ViewsDao {
 
         // Todo 2014-01-23 by Kim; When Trac Task #719 is finished, then we'll use the pagination
         //return fetchList(query, page);
+        return query.getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<SharedOfferView> findSharedOffersByOfferIds(final Authentication authentication, final Integer exchangeYear, final List<String> offerIds) {
+        final Query query = entityManager.createNamedQuery("view.findSharedOffersByGroupAndYearAndOfferExternalId");
+        query.setParameter("gid", authentication.getGroup().getId());
+        query.setParameter("year", exchangeYear);
+        query.setParameter("eids", offerIds);
+
         return query.getResultList();
     }
 

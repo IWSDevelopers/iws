@@ -41,6 +41,7 @@ import net.iaeste.iws.api.requests.exchange.DeleteOfferRequest;
 import net.iaeste.iws.api.requests.exchange.FetchOffersRequest;
 import net.iaeste.iws.api.requests.exchange.FetchPublishedGroupsRequest;
 import net.iaeste.iws.api.requests.exchange.HideForeignOffersRequest;
+import net.iaeste.iws.api.requests.exchange.OfferCSVDownloadRequest;
 import net.iaeste.iws.api.requests.exchange.OfferStatisticsRequest;
 import net.iaeste.iws.api.requests.exchange.ProcessOfferRequest;
 import net.iaeste.iws.api.requests.exchange.PublishOfferRequest;
@@ -48,9 +49,11 @@ import net.iaeste.iws.api.requests.exchange.RejectOfferRequest;
 import net.iaeste.iws.api.responses.exchange.FetchGroupsForSharingResponse;
 import net.iaeste.iws.api.responses.exchange.FetchOffersResponse;
 import net.iaeste.iws.api.responses.exchange.FetchPublishedGroupsResponse;
+import net.iaeste.iws.api.responses.exchange.OfferCSVDownloadResponse;
 import net.iaeste.iws.api.responses.exchange.OfferResponse;
 import net.iaeste.iws.api.responses.exchange.OfferStatisticsResponse;
 import net.iaeste.iws.api.responses.exchange.PublishOfferResponse;
+import net.iaeste.iws.api.util.AbstractVerification;
 import net.iaeste.iws.api.util.Date;
 import net.iaeste.iws.api.util.Fallible;
 import net.iaeste.iws.client.AbstractTest;
@@ -1263,6 +1266,44 @@ public final class OfferTest extends AbstractTest {
         assertThat(fetchPublishResponse.isOk(), is(true));
         offerGroupsSharedTo = fetchPublishResponse.getOffersGroups().get(offersExternalId.get(0));
         assertThat(2, is(offerGroupsSharedTo.size()));
+    }
+
+    @Test
+    public void testOutboxCsvDownload() {
+        final AuthenticationToken austriaTokenWithNationalGroup = new AuthenticationToken(austriaToken);
+        if (austriaTokenNationallGroup != null) {
+            austriaTokenWithNationalGroup.setGroupId(austriaTokenNationallGroup.getGroupId());
+        }
+
+        final Offer offer = TestData.prepareMinimalOffer(AT_YEAR + "-01T453-R", "Austria A/S", "AT");
+        final Date nominationDeadline = new Date().plusDays(20);
+
+        final ProcessOfferRequest saveRequest = new ProcessOfferRequest(offer);
+        final OfferResponse saveResponse = exchange.processOffer(austriaTokenWithNationalGroup, saveRequest);
+        assertThat(saveResponse.isOk(), is(true));
+
+        final Set<String> offersToShare = new HashSet<>(1);
+        offersToShare.add(saveResponse.getOffer().getOfferId());
+
+        final List<String> groupIds = new ArrayList<>(2);
+        groupIds.add(findNationalGroup(croatiaToken).getGroupId());
+
+        final PublishOfferRequest publishRequest = new PublishOfferRequest(offersToShare, groupIds, nominationDeadline);
+        final PublishOfferResponse publishResponse = exchange.processPublishOffer(austriaTokenWithNationalGroup, publishRequest);
+        assertThat(publishResponse.getError(), is(IWSErrors.SUCCESS));
+        assertThat(publishResponse.isOk(), is(true));
+
+        OfferCSVDownloadRequest outboxCsvRequest = new OfferCSVDownloadRequest(FetchType.DOMESTIC, new ArrayList<String>(0), AbstractVerification.calculateExchangeYear());
+        OfferCSVDownloadResponse outboxCsvResponse = exchange.downloadOffers(austriaTokenWithNationalGroup, outboxCsvRequest);
+
+        assertThat(outboxCsvResponse.isOk(), is(true));
+        assertThat(outboxCsvResponse.getData(), is(not(nullValue())));
+
+        OfferCSVDownloadRequest inboxCsvRequest = new OfferCSVDownloadRequest(FetchType.SHARED, new ArrayList<String>(0), AbstractVerification.calculateExchangeYear());
+        OfferCSVDownloadResponse inboxCsvResponse = exchange.downloadOffers(croatiaToken, inboxCsvRequest);
+
+        assertThat(inboxCsvResponse.isOk(), is(true));
+        assertThat(inboxCsvResponse.getData(), is(not(nullValue())));
     }
 
     private static Offer findOfferFromResponse(final String refno, final FetchOffersResponse response) {

@@ -37,9 +37,12 @@ public class OfferCSVDownloadResponse extends AbstractFallible {
     /**
      * Empty Constructor, to use if the setters are invoked. This is required
      * for WebServices to work properly.
-     * Constructor is used in {@code OfferResponse} when deleteing an offer.
      */
     public OfferCSVDownloadResponse() {
+    }
+
+    public OfferCSVDownloadResponse(final byte[] data) {
+        this.data = data;
     }
 
     /**

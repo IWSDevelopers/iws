@@ -43,7 +43,11 @@ public interface ViewsDao {
 
     List<OfferView> findDomesticOffers(Authentication authentication, Integer exchangeYear, Paginatable page);
 
+    List<OfferView> findDomesticOffersByOfferIds(Authentication authentication, Integer exchangeYear, List<String> offerIds);
+
     List<SharedOfferView> findSharedOffers(Authentication authentication, Integer exchangeYear, Paginatable page);
+
+    List<SharedOfferView> findSharedOffersByOfferIds(Authentication authentication, Integer exchangeYear, List<String> offerIds);
 
     List<OfferSharedToGroupView> findSharedToGroup(Long parentId, Integer exchangeYear, List<String> externalOfferIds);
 

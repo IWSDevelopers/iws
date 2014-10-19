@@ -15,10 +15,12 @@
 package net.iaeste.iws.api.requests.exchange;
 
 import net.iaeste.iws.api.constants.IWSConstants;
+import net.iaeste.iws.api.enums.FetchType;
 import net.iaeste.iws.api.enums.SortingField;
 import net.iaeste.iws.api.util.AbstractPaginatable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +33,10 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
     /** {@link IWSConstants#SERIAL_VERSION_UID}. */
     private static final long serialVersionUID = IWSConstants.SERIAL_VERSION_UID;
 
+    private FetchType fetchType;
+    private List<String> offerIds;
+    private Integer exchangeYear;
+
     // =========================================================================
     // Object Constructors
     // =========================================================================
@@ -40,11 +46,44 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
      * for WebServices to work properly.
      */
     public OfferCSVDownloadRequest() {
+        this.fetchType = null;
+        this.offerIds = null;
+        this.exchangeYear = calculateExchangeYear();
+    }
+
+    public OfferCSVDownloadRequest(final FetchType fetchType, final List<String> offerIds, final Integer exchangeYear) {
+        this.fetchType = fetchType;
+        this.offerIds = offerIds;
+        this.exchangeYear = exchangeYear;
     }
 
     // =========================================================================
     // Standard Setters & Getters
     // =========================================================================
+
+    public void setFetchType(final FetchType fetchType) {
+        this.fetchType = fetchType;
+    }
+
+    public FetchType getFetchType() {
+        return fetchType;
+    }
+
+    public void setOfferIds(final List<String> offerIds) {
+        this.offerIds = offerIds;
+    }
+
+    public List<String> getOfferIds() {
+        return offerIds;
+    }
+
+    public void setExchangeYear(final Integer exchangeYear) {
+        this.exchangeYear = exchangeYear;
+    }
+
+    public Integer getExchangeYear() {
+        return exchangeYear;
+    }
 
     // =========================================================================
     // Standard Request Methods
@@ -56,6 +95,10 @@ public class OfferCSVDownloadRequest extends AbstractPaginatable {
     @Override
     public Map<String, String> validate() {
         final Map<String, String> validation = new HashMap<>(0);
+
+        isNotNull(validation, "fetchType", fetchType);
+        isNotNull(validation, "offerIds", offerIds);
+        isNotNull(validation, "exchangeYear", exchangeYear);
 
         return validation;
     }
